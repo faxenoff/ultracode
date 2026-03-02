@@ -136,8 +136,16 @@ export async function buildRelationships(
     // Parser-provided relationships (calls, decorates, overrides, etc.)
     if (parsed.relationships) {
       for (const rel of parsed.relationships) {
-        // Try to find target entity in current file
-        const targetKey = Array.from(entityMap.keys()).find((key) => key.startsWith(`${rel.target}:`));
+        // Try to find target entity in current file.
+        // For "this.method()" calls the parser sets target="this.methodName", but entityMap
+        // keys use "ClassName.methodName:line" — strip "this." prefix to find intra-class calls.
+        const effectiveTarget = rel.target.startsWith("this.") ? rel.target.slice(5) : rel.target;
+        const targetKey = Array.from(entityMap.keys()).find((key) => {
+          // Skip import stub keys (e.g. "this.methodName:0") — they are dead-ends in the graph
+          const entityName = key.split(":")[0] ?? "";
+          if (entityName.startsWith("this.")) return false;
+          return key.startsWith(`${effectiveTarget}:`) || key.includes(`.${effectiveTarget}:`);
+        });
         const targetId = targetKey ? entityMap.get(targetKey)! : `external:${rel.target}`;
 
         // Map parser relationship types to storage RelationType

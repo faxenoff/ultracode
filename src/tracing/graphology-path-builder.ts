@@ -168,12 +168,26 @@ export class GraphologyPathBuilder {
     // Build name-to-id lookup for resolving external references
     // Key: entity name (lowercase), Value: array of entity IDs (may have multiple with same name)
     const nameToIds = new Map<string, string[]>();
+    // Secondary index: short method name (after last dot) → real entity IDs only (no import stubs).
+    // Used to resolve "external:this.someMethod" → actual method implementation.
+    const methodToRealIds = new Map<string, string[]>();
     for (const entity of entities) {
       const key = entity.name.toLowerCase();
       if (!nameToIds.has(key)) {
         nameToIds.set(key, []);
       }
       nameToIds.get(key)!.push(entity.id);
+
+      // Exclude import stubs from the real-entity index
+      const isStub = entity.filePath?.includes("external://") || entity.type === "import";
+      if (!isStub) {
+        const lastDot = key.lastIndexOf(".");
+        const shortName = lastDot >= 0 ? key.slice(lastDot + 1) : key;
+        if (!methodToRealIds.has(shortName)) {
+          methodToRealIds.set(shortName, []);
+        }
+        methodToRealIds.get(shortName)!.push(entity.id);
+      }
     }
 
     // Add nodes
@@ -196,7 +210,20 @@ export class GraphologyPathBuilder {
       // Resolve external references (e.g., "external:functionName" -> actual entity ID)
       if (toId.startsWith("external:")) {
         const targetName = toId.slice(9).toLowerCase(); // Remove "external:" prefix
-        const candidates = nameToIds.get(targetName);
+        let candidates = nameToIds.get(targetName);
+
+        // For "this.method()" calls: targetName looks like "this.somemethod" or "this.obj.method".
+        // Import stubs with name "this.somemethod" have no outgoing edges — resolve to real entities.
+        if (targetName.startsWith("this.")) {
+          const afterThis = targetName.slice(5); // "this.somemethod" → "somemethod"
+          const lastDot = afterThis.lastIndexOf(".");
+          const methodName = lastDot >= 0 ? afterThis.slice(lastDot + 1) : afterThis;
+          const realCandidates = methodToRealIds.get(methodName);
+          if (realCandidates && realCandidates.length > 0) {
+            candidates = realCandidates;
+          }
+        }
+
         if (candidates && candidates.length > 0) {
           // Use targetClass from metadata to filter candidates (for cross-file calls)
           const meta = rel.metadata as Record<string, unknown> | undefined;

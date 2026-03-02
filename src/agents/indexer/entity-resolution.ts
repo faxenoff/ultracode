@@ -86,6 +86,12 @@ export function resolveByNameAndLine(
   preferContainerType?: boolean,
   bySuffix?: Map<string, Entity[]>,
 ): string | undefined {
+  // Normalize "this.method" → "method" for intra-class call resolution.
+  // The parser emits "this.methodName" as the call target, but real entities
+  // are stored as "ClassName.methodName". Strip "this." so the suffix search below
+  // (lines 94-108) can find the real entity instead of landing on an import stub.
+  if (name.startsWith("this.")) name = name.slice(5);
+
   // First try exact match
   let candidates = byName.get(name);
 

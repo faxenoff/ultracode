@@ -633,14 +633,14 @@ export class PathBuilder {
         });
 
         if (fileMatches.length > 0) {
-          // Return best match from file-filtered results
-          const exact = fileMatches.find((e) => e.name === name);
+          // Return best match from file-filtered results: exact → suffix → first
+          const exact = fileMatches.find((e) => e.name === name || e.name.endsWith(`.${name}`));
           return exact || fileMatches[0]!;
         }
       }
 
-      // Return best match (exact name match preferred)
-      const exact = entities.find((e) => e.name === name);
+      // Return best match: exact → suffix (ClassName.name) → first
+      const exact = entities.find((e) => e.name === name || e.name.endsWith(`.${name}`));
       return exact || entities[0]!;
     }
 

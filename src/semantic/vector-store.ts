@@ -64,6 +64,12 @@ export class VectorStore {
   private initializationPromise: Promise<void> | null = null;
   private debugMode = process.env["VECTOR_STORE_DEBUG"] === "true";
 
+  // AutoDoc manager cache (avoid re-initialize on every search)
+  private cachedAutoDocManager: Awaited<
+    ReturnType<typeof import("../autodoc/storage/autodoc-manager.js")["getAutoDocManager"]>
+  > | null = null;
+  private autoDocInitialized = false;
+
   // Project context for multi-project support
   // MUST be set via setProjectContext() before any operations
   private currentContext: ProjectContext | null = null;
@@ -88,6 +94,11 @@ export class VectorStore {
    * v6: Also initializes/switches LayeredFaissProvider
    */
   async setProjectContext(context: ProjectContext): Promise<void> {
+    // Reset AutoDoc cache on project switch
+    if (this.currentContext && this.currentContext.projectHash !== context.projectHash) {
+      this.autoDocInitialized = false;
+      this.cachedAutoDocManager = null;
+    }
     this.currentContext = context;
 
     if (this.useLayeredIndex && this.layeredProvider) {
@@ -523,11 +534,13 @@ export class VectorStore {
       const entityResults = results.filter((r) => !r.id.startsWith("doc::"));
       const docResults = results.filter((r) => r.id.startsWith("doc::"));
 
-      log.d("VECTOR", "enrich_split", {
-        total: results.length,
-        entities: entityResults.length,
-        docs: docResults.length,
-      });
+      if (this.debugMode) {
+        log.d("VECTOR", "enrich_split", {
+          total: results.length,
+          entities: entityResults.length,
+          docs: docResults.length,
+        });
+      }
 
       // Extract entity IDs from result IDs (format: "ent:{entityId}" or "ent:{filePath}:{type}:{name}")
       const entityIds = entityResults.map((r) => (r.id.startsWith("ent:") ? r.id.slice(4) : r.id));
@@ -594,20 +607,25 @@ export class VectorStore {
 
       // Enrich AutoDoc document results with metadata from AutoDoc database
       const enrichedDocs: SimilarityResult[] = [];
-      let adm: Awaited<ReturnType<typeof import("../autodoc/storage/autodoc-manager.js")["getAutoDocManager"]>> | null =
-        null; // Store adm for phase 2
+      let adm = this.cachedAutoDocManager;
       if (docResults.length > 0) {
         try {
-          const { getAutoDocManager } = await import("../autodoc/storage/autodoc-manager.js");
-          const { getGlobalDbPaths } = await import("../shared/storage-paths.js");
-          const { dirname, join } = await import("node:path");
+          if (!adm) {
+            const { getAutoDocManager } = await import("../autodoc/storage/autodoc-manager.js");
+            const { getGlobalDbPaths } = await import("../shared/storage-paths.js");
+            const { dirname, join } = await import("node:path");
 
-          const paths = getGlobalDbPaths();
-          const autodocDbPath = join(dirname(paths.graphDbPath), "autodoc.db");
-          adm = getAutoDocManager(autodocDbPath);
+            const paths = getGlobalDbPaths();
+            const autodocDbPath = join(dirname(paths.graphDbPath), "autodoc.db");
+            adm = getAutoDocManager(autodocDbPath);
+            this.cachedAutoDocManager = adm;
+          }
 
-          // Initialize AutoDoc manager (creates tables if needed)
-          await adm.initialize(storage);
+          // Initialize AutoDoc manager once (creates tables if needed)
+          if (!this.autoDocInitialized) {
+            await adm.initialize(storage);
+            this.autoDocInitialized = true;
+          }
 
           for (const r of docResults) {
             const doc = await adm.getDocument(r.id);
@@ -629,24 +647,33 @@ export class VectorStore {
             }
           }
 
-          log.d("VECTOR", "enrich_autodoc", {
-            total: docResults.length,
-            enriched: enrichedDocs.length,
-          });
+          if (this.debugMode) {
+            log.d("VECTOR", "enrich_autodoc", {
+              total: docResults.length,
+              enriched: enrichedDocs.length,
+            });
+          }
         } catch (error) {
           log.w("VECTOR", "Failed to enrich AutoDoc results", { error: (error as Error).message });
           enrichedDocs.push(...docResults); // Keep originals on error
         }
       }
 
-      // PHASE 2: AutoDoc-driven entity enrichment
+      // PHASE 2: AutoDoc-driven entity enrichment (lazy: only top-N docs for large sets)
+      const AUTODOC_ENRICHMENT_LIMIT = 50;
       const autodocDerivedResults: SimilarityResult[] = [];
+      const docsForEnrichment =
+        enrichedDocs.length > AUTODOC_ENRICHMENT_LIMIT ? enrichedDocs.slice(0, AUTODOC_ENRICHMENT_LIMIT) : enrichedDocs;
 
-      if (enrichedDocs.length > 0 && adm) {
+      if (docsForEnrichment.length > 0 && adm) {
         try {
-          log.i("VECTOR", "autodoc_enrichment_start", {
-            docCount: enrichedDocs.length,
-          });
+          if (this.debugMode) {
+            log.i("VECTOR", "autodoc_enrichment_start", {
+              docCount: docsForEnrichment.length,
+              totalDocs: enrichedDocs.length,
+              limited: enrichedDocs.length > AUTODOC_ENRICHMENT_LIMIT,
+            });
+          }
 
           // Helper: determine refType weight
           const getRefTypeWeight = (refType: string): number => {
@@ -683,7 +710,7 @@ export class VectorStore {
 
           const entityRefsFromDocs = new Map<string, EntityRefInfo>();
 
-          for (const docResult of enrichedDocs) {
+          for (const docResult of docsForEnrichment) {
             const doc = await adm.getDocument(docResult.id);
             if (!doc) continue;
 
@@ -691,13 +718,15 @@ export class VectorStore {
             const refs = await adm.getReferences(doc.filePath);
 
             // Verbose logging for diagnostics
-            log.i("VECTOR", "autodoc_all_refs", {
-              docId: docResult.id,
-              totalRefs: refs.length,
-              refTypes: refs.map((r: Reference) => r.targetType),
-              refTargetIds: refs.map((r: Reference) => r.targetId),
-              refValid: refs.map((r: Reference) => r.valid),
-            });
+            if (this.debugMode) {
+              log.i("VECTOR", "autodoc_all_refs", {
+                docId: docResult.id,
+                totalRefs: refs.length,
+                refTypes: refs.map((r: Reference) => r.targetType),
+                refTargetIds: refs.map((r: Reference) => r.targetId),
+                refValid: refs.map((r: Reference) => r.valid),
+              });
+            }
 
             // TEMPORARY: also accept LINE_RANGE until parser is fixed
             const entityRefs = refs.filter(
@@ -707,12 +736,14 @@ export class VectorStore {
                 ref.targetId,
             );
 
-            log.i("VECTOR", "autodoc_refs_from_doc", {
-              docId: docResult.id,
-              totalRefs: refs.length,
-              entityRefs: entityRefs.length,
-              sampleTargetIds: entityRefs.slice(0, 3).map((r: Reference) => r.targetId),
-            });
+            if (this.debugMode) {
+              log.i("VECTOR", "autodoc_refs_from_doc", {
+                docId: docResult.id,
+                totalRefs: refs.length,
+                entityRefs: entityRefs.length,
+                sampleTargetIds: entityRefs.slice(0, 3).map((r: Reference) => r.targetId),
+              });
+            }
 
             // Count mention frequency of each entityId
             const mentionCounts = new Map<string, number>();
@@ -740,9 +771,11 @@ export class VectorStore {
             }
           }
 
-          log.i("VECTOR", "autodoc_refs_collected", {
-            uniqueEntities: entityRefsFromDocs.size,
-          });
+          if (this.debugMode) {
+            log.i("VECTOR", "autodoc_refs_collected", {
+              uniqueEntities: entityRefsFromDocs.size,
+            });
+          }
 
           // 2. Deduplicate with already found entities
           const existingEntityIds = new Set<string>();
@@ -755,36 +788,47 @@ export class VectorStore {
 
           const newEntityIds = Array.from(entityRefsFromDocs.keys()).filter((id) => !existingEntityIds.has(id));
 
-          log.i("VECTOR", "autodoc_deduplication", {
-            totalRefs: entityRefsFromDocs.size,
-            existing: existingEntityIds.size,
-            new: newEntityIds.length,
-          });
+          if (this.debugMode) {
+            log.i("VECTOR", "autodoc_deduplication", {
+              totalRefs: entityRefsFromDocs.size,
+              existing: existingEntityIds.size,
+              new: newEntityIds.length,
+            });
+          }
 
           // 3. Resolve entity names to full entityIds
           if (newEntityIds.length > 0) {
-            log.i("VECTOR", "autodoc_resolving_names", {
-              names: newEntityIds,
-            });
+            if (this.debugMode) {
+              log.i("VECTOR", "autodoc_resolving_names", {
+                names: newEntityIds,
+              });
+            }
 
             const resolvedEntities: Array<{ name: string; entity: Entity; refInfo: EntityRefInfo }> = [];
 
-            // Get all entities from storage for name matching
-            const allEntities = await storage.getAllEntities();
-            log.i("VECTOR", "autodoc_total_entities", { count: allEntities.length });
+            // Batch fetch entities by name using findEntities (avoids loading ALL entities)
+            const batchResults = await Promise.all(
+              newEntityIds.map((entityName) =>
+                storage.findEntities({
+                  filters: { name: entityName },
+                  limit: 1,
+                }),
+              ),
+            );
 
-            for (const entityName of newEntityIds) {
-              // Find entities matching this name
-              const matchingEntities = allEntities.filter((e) => e.name === entityName);
+            for (let i = 0; i < newEntityIds.length; i++) {
+              const entityName = newEntityIds[i]!;
+              const matchingEntities = batchResults[i]!;
 
-              log.i("VECTOR", "autodoc_name_match", {
-                name: entityName,
-                matches: matchingEntities.length,
-              });
+              if (this.debugMode) {
+                log.i("VECTOR", "autodoc_name_match", {
+                  name: entityName,
+                  matches: matchingEntities.length,
+                });
+              }
 
               if (matchingEntities.length > 0) {
-                // If multiple matches, prefer the first one (could be enhanced with file path matching)
-                const entity = matchingEntities[0]!; // Safe: length > 0 checked above
+                const entity = matchingEntities[0]!;
                 const refInfo = entityRefsFromDocs.get(entityName)!;
                 resolvedEntities.push({ name: entityName, entity, refInfo });
               }
@@ -804,18 +848,20 @@ export class VectorStore {
 
               const derivedSimilarity = refInfo.docSimilarity * refTypeWeight * sectionWeight * frequencyBoost;
 
-              log.d("VECTOR", "autodoc_entity_score", {
-                entityId: entity.id,
-                entityName,
-                docSim: refInfo.docSimilarity,
-                refType: refInfo.refType,
-                refWeight: refTypeWeight,
-                section: refInfo.sectionTitle,
-                secWeight: sectionWeight,
-                mentions: refInfo.mentions,
-                freqBoost: frequencyBoost,
-                finalSim: derivedSimilarity,
-              });
+              if (this.debugMode) {
+                log.d("VECTOR", "autodoc_entity_score", {
+                  entityId: entity.id,
+                  entityName,
+                  docSim: refInfo.docSimilarity,
+                  refType: refInfo.refType,
+                  refWeight: refTypeWeight,
+                  section: refInfo.sectionTitle,
+                  secWeight: sectionWeight,
+                  mentions: refInfo.mentions,
+                  freqBoost: frequencyBoost,
+                  finalSim: derivedSimilarity,
+                });
+              }
 
               autodocDerivedResults.push({
                 id: `ent:${entity.id}`,
@@ -838,9 +884,11 @@ export class VectorStore {
               });
             }
 
-            log.d("VECTOR", "autodoc_enrichment_complete", {
-              added: autodocDerivedResults.length,
-            });
+            if (this.debugMode) {
+              log.d("VECTOR", "autodoc_enrichment_complete", {
+                added: autodocDerivedResults.length,
+              });
+            }
           }
         } catch (error) {
           log.w("VECTOR", "AutoDoc enrichment failed", {
@@ -863,12 +911,14 @@ export class VectorStore {
 
       combined.sort((a, b) => (b.similarity || 0) - (a.similarity || 0));
 
-      log.d("VECTOR", "enrich_complete", {
-        enrichedEntities: enrichedEntities.length,
-        enrichedDocs: enrichedDocs.length,
-        autodocDerived: autodocDerivedResults.length,
-        total: combined.length,
-      });
+      if (this.debugMode) {
+        log.d("VECTOR", "enrich_complete", {
+          enrichedEntities: enrichedEntities.length,
+          enrichedDocs: enrichedDocs.length,
+          autodocDerived: autodocDerivedResults.length,
+          total: combined.length,
+        });
+      }
 
       return combined;
     } catch (error) {

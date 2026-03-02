@@ -45,12 +45,26 @@ const DEFAULT_MAX_PATHS = 5;
 // 2. TRACE ENGINE CLASS
 // =============================================================================
 
+// Entity types that represent real code (not imports/stubs)
+const REAL_CODE_TYPES = new Set(["method", "function", "async_function", "class", "interface", "property"]);
+
+/** Check if an entity is a real code entity (not an external stub or import) */
+function isRealEntity(entity: Entity): boolean {
+  if (entity.id.startsWith("external:")) return false;
+  if (entity.filePath?.includes("external://")) return false;
+  if (entity.type === "import") return false;
+  return true;
+}
+
 export class TraceEngine {
   private storage: GraphStorage;
   private semanticSearch?: SemanticSearchService;
   private pathBuilder: PathBuilder;
   private graphologyBuilder: GraphologyPathBuilder;
   private useOptimized: boolean;
+
+  // Cache for resolveEntity results (cleared on clearCache())
+  private resolveEntityCache = new Map<string, Entity | null>();
 
   constructor(storage: GraphStorage, semanticSearch?: SemanticSearchService, useOptimized = true) {
     this.storage = storage;
@@ -544,8 +558,17 @@ export class TraceEngine {
    *   - "index.ts:main" - finds "main" in any file ending with index.ts
    */
   private async resolveEntity(nameOrQuery: string): Promise<Entity | null> {
+    // Check cache first (2A: avoid repeated resolution of same name within a trace)
+    const cached = this.resolveEntityCache.get(nameOrQuery);
+    if (cached !== undefined) return cached;
+
+    const result = await this.resolveEntityUncached(nameOrQuery);
+    this.resolveEntityCache.set(nameOrQuery, result);
+    return result;
+  }
+
+  private async resolveEntityUncached(nameOrQuery: string): Promise<Entity | null> {
     // Parse file:name format (supports both / and \)
-    // Match pattern: anything with path separator followed by .ts/.js/.py/.kt etc, then :name
     const fileQualifiedMatch = nameOrQuery.match(
       /^(.+?\.(?:ts|js|tsx|jsx|py|go|rs|java|kt|kts|c|cs|csx|cpp|h|hpp)):(.+)$/i,
     );
@@ -557,30 +580,49 @@ export class TraceEngine {
       name = fileQualifiedMatch[2]!;
     }
 
+    // 2C: Normalize filePath once for all levels
+    const normalizedFilter = filePath ? filePath.replace(/\\/g, "/").toLowerCase() : undefined;
+
+    /** Helper: filter entities by normalized filePath */
+    const filterByFile = (entities: Entity[]): Entity | null => {
+      if (!normalizedFilter) return null;
+      for (const e of entities) {
+        const entityPath = (e.filePath || "").replace(/\\/g, "/").toLowerCase();
+        if (entityPath.includes(normalizedFilter) || entityPath.endsWith(normalizedFilter)) {
+          return e;
+        }
+      }
+      return null;
+    };
+
     // 1. Try exact name match first (fastest)
-    // But skip import stubs - prefer real code entities
     const exactMatch = await this.pathBuilder.findEntityByName(name, undefined, filePath);
-    if (exactMatch && exactMatch.type !== "import" && !exactMatch.id.startsWith("external:")) {
+    if (exactMatch && isRealEntity(exactMatch)) {
       return exactMatch;
     }
 
-    // 2. Try suffix match for partial names (e.g., "methodName" -> "ClassName.methodName")
+    // 2. Try partial name match via pattern (uses index, faster than suffix scan)
+    // 2D: Moved before suffix match since searchEntities uses DB index
+    const patternEntities = await this.storage.searchEntities({
+      namePattern: name,
+    });
+    if (patternEntities.length > 0) {
+      if (normalizedFilter) {
+        const filtered = filterByFile(patternEntities);
+        if (filtered) return filtered;
+      }
+      return patternEntities[0]!;
+    }
+
+    // 3. Try suffix match for partial names (e.g., "methodName" -> "ClassName.methodName")
+    // 2D: Moved after pattern match — suffix scan loads all entities (expensive fallback)
     if (!name.includes(".")) {
       const suffixPattern = `.${name}`;
       const allEntities = await this.storage.searchEntities({});
 
-      // Filter to suffix matches, excluding external/import stubs
-      const REAL_CODE_TYPES = new Set(["method", "function", "async_function", "class", "interface", "property"]);
-      const suffixMatches = allEntities.filter((e) => {
-        if (!e.name.endsWith(suffixPattern)) return false;
-        // Exclude external placeholders and imports
-        if (e.id.startsWith("external:")) return false;
-        if (e.filePath?.includes("external://")) return false;
-        if (e.type === "import") return false;
-        return true;
-      });
+      const suffixMatches = allEntities.filter((e) => e.name.endsWith(suffixPattern) && isRealEntity(e));
 
-      // Prioritize real code entities over other types
+      // Prioritize real code entity types
       const prioritized = suffixMatches.sort((a, b) => {
         const aReal = REAL_CODE_TYPES.has(a.type) ? 0 : 1;
         const bReal = REAL_CODE_TYPES.has(b.type) ? 0 : 1;
@@ -589,16 +631,10 @@ export class TraceEngine {
 
       if (prioritized.length === 1) {
         return prioritized[0]!;
-      } else if (prioritized.length > 1 && filePath) {
-        // Multiple matches - filter by file
-        const normalizedFilter = filePath.replace(/\\/g, "/").toLowerCase();
-        const filtered = prioritized.filter((e) => {
-          const entityPath = (e.filePath || "").replace(/\\/g, "/").toLowerCase();
-          return entityPath.includes(normalizedFilter) || entityPath.endsWith(normalizedFilter);
-        });
-        if (filtered.length > 0) return filtered[0]!;
+      } else if (prioritized.length > 1 && normalizedFilter) {
+        const filtered = filterByFile(prioritized);
+        if (filtered) return filtered;
       } else if (prioritized.length > 1) {
-        // Multiple matches, no file filter - return first real code entity
         log.d("TRACEENGINE", "multiple_suffix_matches", {
           name,
           count: prioritized.length,
@@ -608,40 +644,18 @@ export class TraceEngine {
       }
     }
 
-    // 3. Try partial name match
-    const entities = await this.storage.searchEntities({
-      namePattern: name,
-    });
-    if (entities.length > 0) {
-      // If filePath filter provided, apply it
-      if (filePath) {
-        const normalizedFilter = filePath.replace(/\\/g, "/").toLowerCase();
-        const filtered = entities.filter((e) => {
-          const entityPath = (e.filePath || "").replace(/\\/g, "/").toLowerCase();
-          return entityPath.includes(normalizedFilter) || entityPath.endsWith(normalizedFilter);
-        });
-        if (filtered.length > 0) {
-          return filtered[0]!;
-        }
-      }
-      return entities[0]!;
-    }
-
-    // 3. Use semantic search if available (decomposed query)
+    // 4. Use semantic search if available (decomposed query)
     if (this.semanticSearch) {
       try {
         const results = await this.semanticSearch.search(name, {
-          limit: filePath ? 10 : 1, // Get more results if we need to filter by file
+          limit: filePath ? 10 : 1,
           minSimilarity: 0.6,
         });
         if (results.length > 0) {
-          // Batch fetch all candidate entities at once
           const candidateIds = results.map((r) => r.entityId);
           const candidateMap = await this.storage.getEntitiesBatch(candidateIds);
 
-          // Filter by filePath if provided
-          if (filePath) {
-            const normalizedFilter = filePath.replace(/\\/g, "/").toLowerCase();
+          if (normalizedFilter) {
             for (const result of results) {
               const entity = candidateMap.get(result.entityId);
               if (entity) {
@@ -1036,6 +1050,7 @@ export class TraceEngine {
   clearCache(): void {
     this.pathBuilder.clearCache();
     this.graphologyBuilder.clear();
+    this.resolveEntityCache.clear();
   }
 }
 

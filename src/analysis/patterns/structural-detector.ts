@@ -121,7 +121,18 @@ function getMeta(entity: Entity): EntityMeta {
 
 // ─── Structural Detector ───────────────────────────────────────────
 
+type EvalResult = { confidence: number; matchedCriteria: string[] };
+const EVAL_ZERO: EvalResult = { confidence: 0, matchedCriteria: [] };
+
 export class StructuralDetector {
+  // Cache: entityId:patternId -> evaluation result (3B)
+  private evalCache = new Map<string, EvalResult>();
+
+  /** Clear evaluation cache (call when entities or patterns change) */
+  clearEvalCache(): void {
+    this.evalCache.clear();
+  }
+
   async detect(
     entities: Entity[],
     patterns: PatternDefinition[],
@@ -266,238 +277,266 @@ export class StructuralDetector {
 
   // ─── Metadata Evaluation (hot path — optimized) ─────────────────
 
-  private evaluateMetadataCriteria(
+  private evaluateMetadataCriteria(entity: Entity, pattern: PatternDefinition, compiled: CompiledCriteria): EvalResult {
+    // 3B: Check cache first
+    const cacheKey = `${entity.id}::${pattern.id}`;
+    const cached = this.evalCache.get(cacheKey);
+    if (cached) return cached;
+
+    const result = this.evaluateMetadataUncached(entity, pattern, compiled);
+    this.evalCache.set(cacheKey, result);
+    return result;
+  }
+
+  // 3A: Mandatory checks separated for fast bail-out
+  private evaluateRequired(
     entity: Entity,
-    pattern: PatternDefinition,
     compiled: CompiledCriteria,
-  ): { confidence: number; matchedCriteria: string[] } {
+    criteria: StructuralCriteria,
+    em: EntityMeta,
+  ): string[] | null {
+    const matched: string[] = [];
+
+    if (compiled.entityTypeSet) {
+      matched.push(`entityType:${entity.type}`);
+    }
+
+    if (criteria.requiredModifiers) {
+      for (const req of criteria.requiredModifiers) {
+        if (!em.modifiers.includes(req)) return null; // bail-out
+      }
+      matched.push(`modifiers:${criteria.requiredModifiers.join(",")}`);
+    }
+
+    if (criteria.forbiddenModifiers) {
+      for (const f of criteria.forbiddenModifiers) {
+        if (em.modifiers.includes(f)) return null; // bail-out
+      }
+      matched.push("no-forbidden-modifiers");
+    }
+
+    return matched;
+  }
+
+  // 3A: Optional checks separated from mandatory
+  private evaluateOptional(
+    entity: Entity,
+    compiled: CompiledCriteria,
+    criteria: StructuralCriteria,
+    em: EntityMeta,
+    matched: string[],
+  ): { optionalTotal: number; optionalPassed: number } {
+    let optionalTotal = 0;
+    let optionalPassed = 0;
+
+    // Return type
+    if (compiled.returnTypeMatchRe) {
+      optionalTotal++;
+      if (typeof em.returnType === "string" && compiled.returnTypeMatchRe.test(em.returnType)) {
+        optionalPassed++;
+        matched.push(`returnType:~/${criteria.returnTypeMatch}/`);
+      }
+    }
+    if (compiled.returnTypeNotMatchRe) {
+      optionalTotal++;
+      if (typeof em.returnType === "string" && !compiled.returnTypeNotMatchRe.test(em.returnType)) {
+        optionalPassed++;
+        matched.push(`returnType:!~/${criteria.returnTypeNotMatch}/`);
+      }
+    }
+
+    // Parameters
+    if (criteria.minParams != null) {
+      optionalTotal++;
+      if (em.params.length >= criteria.minParams) {
+        optionalPassed++;
+        matched.push(`params>=${criteria.minParams}`);
+      }
+    }
+    if (criteria.maxParams != null) {
+      optionalTotal++;
+      if (em.params.length <= criteria.maxParams) {
+        optionalPassed++;
+        matched.push(`params<=${criteria.maxParams}`);
+      }
+    }
+    if (compiled.paramTypeRequiredRe) {
+      optionalTotal++;
+      if (em.params.some((p) => p.type && compiled.paramTypeRequiredRe!.test(p.type))) {
+        optionalPassed++;
+        matched.push(`paramType:${criteria.paramTypeRequired}`);
+      }
+    }
+    if (compiled.paramTypeAbsentRe) {
+      optionalTotal++;
+      if (!em.params.some((p) => p.type && compiled.paramTypeAbsentRe!.test(p.type))) {
+        optionalPassed++;
+        matched.push(`paramType:!${criteria.paramTypeAbsent}`);
+      }
+    }
+
+    // Metrics
+    if (criteria.minCyclomatic != null) {
+      optionalTotal++;
+      if (em.metrics.cyclomaticComplexity >= criteria.minCyclomatic) {
+        optionalPassed++;
+        matched.push(`cyclomatic>=${criteria.minCyclomatic}`);
+      }
+    }
+    if (criteria.maxCyclomatic != null) {
+      optionalTotal++;
+      if (em.metrics.cyclomaticComplexity <= criteria.maxCyclomatic) {
+        optionalPassed++;
+        matched.push(`cyclomatic<=${criteria.maxCyclomatic}`);
+      }
+    }
+    if (criteria.minCognitive != null) {
+      optionalTotal++;
+      if (em.metrics.cognitiveComplexity >= criteria.minCognitive) {
+        optionalPassed++;
+        matched.push(`cognitive>=${criteria.minCognitive}`);
+      }
+    }
+    if (criteria.minNesting != null) {
+      optionalTotal++;
+      if (em.metrics.nestingDepth >= criteria.minNesting) {
+        optionalPassed++;
+        matched.push(`nesting>=${criteria.minNesting}`);
+      }
+    }
+    if (criteria.minLOC != null) {
+      optionalTotal++;
+      if (em.metrics.linesOfCode >= criteria.minLOC) {
+        optionalPassed++;
+        matched.push(`LOC>=${criteria.minLOC}`);
+      }
+    }
+    if (criteria.maxLOC != null) {
+      optionalTotal++;
+      if (em.metrics.linesOfCode <= criteria.maxLOC) {
+        optionalPassed++;
+        matched.push(`LOC<=${criteria.maxLOC}`);
+      }
+    }
+
+    // ControlFlow
+    if (criteria.hasLoops != null) {
+      optionalTotal++;
+      if (em.cf.loops > 0 === criteria.hasLoops) {
+        optionalPassed++;
+        matched.push(criteria.hasLoops ? "hasLoops" : "noLoops");
+      }
+    }
+    if (criteria.hasExceptions != null) {
+      optionalTotal++;
+      if (em.cf.exceptions > 0 === criteria.hasExceptions) {
+        optionalPassed++;
+        matched.push(criteria.hasExceptions ? "hasExceptions" : "noExceptions");
+      }
+    }
+    if (criteria.hasAwaits != null) {
+      optionalTotal++;
+      if (em.cf.awaits > 0 === criteria.hasAwaits) {
+        optionalPassed++;
+        matched.push(criteria.hasAwaits ? "hasAwaits" : "noAwaits");
+      }
+    }
+    if (criteria.minBranches != null) {
+      optionalTotal++;
+      if (em.cf.branches >= criteria.minBranches) {
+        optionalPassed++;
+        matched.push(`branches>=${criteria.minBranches}`);
+      }
+    }
+
+    // Calls
+    if (criteria.minCallCount != null) {
+      optionalTotal++;
+      if (em.callNames.length >= criteria.minCallCount) {
+        optionalPassed++;
+        matched.push(`calls>=${criteria.minCallCount}`);
+      }
+    }
+    if (compiled.callsIncludeRe) {
+      for (let i = 0; i < compiled.callsIncludeRe.length; i++) {
+        optionalTotal++;
+        if (em.callNames.some((c) => compiled.callsIncludeRe![i]!.test(c))) {
+          optionalPassed++;
+          matched.push(`calls:~/${criteria.callsInclude![i]}/`);
+        }
+      }
+    }
+    if (compiled.callsExcludeRe) {
+      for (let i = 0; i < compiled.callsExcludeRe.length; i++) {
+        optionalTotal++;
+        if (!em.callNames.some((c) => compiled.callsExcludeRe![i]!.test(c))) {
+          optionalPassed++;
+          matched.push(`calls:!~/${criteria.callsExclude![i]}/`);
+        }
+      }
+    }
+
+    // Decorators
+    if (compiled.decoratorMatchRe) {
+      for (let i = 0; i < compiled.decoratorMatchRe.length; i++) {
+        optionalTotal++;
+        if (em.decoratorNames.some((d) => compiled.decoratorMatchRe![i]!.test(d))) {
+          optionalPassed++;
+          matched.push(`decorator:~/${criteria.decoratorMatch![i]}/`);
+        }
+      }
+    }
+
+    // Name
+    if (compiled.nameMatchRe) {
+      optionalTotal++;
+      if (compiled.nameMatchRe.test(entity.name)) {
+        optionalPassed++;
+        matched.push(`name:~/${criteria.nameMatch}/`);
+      }
+    }
+    if (compiled.nameNotMatchRe) {
+      optionalTotal++;
+      if (!compiled.nameNotMatchRe.test(entity.name)) {
+        optionalPassed++;
+        matched.push(`name:!~/${criteria.nameNotMatch}/`);
+      }
+    }
+
+    return { optionalTotal, optionalPassed };
+  }
+
+  private evaluateMetadataUncached(entity: Entity, pattern: PatternDefinition, compiled: CompiledCriteria): EvalResult {
     const criteria = pattern.structural;
 
     if (!criteria && !pattern.customDetector) {
-      return { confidence: 0, matchedCriteria: [] };
+      return EVAL_ZERO;
     }
 
     const matched: string[] = [];
     const em = getMeta(entity);
 
     if (criteria) {
-      // === Mandatory checks (fast bail-out) ===
+      // 3A: Fast bail-out on mandatory checks
+      const requiredMatched = this.evaluateRequired(entity, compiled, criteria, em);
+      if (requiredMatched === null) return EVAL_ZERO;
+      matched.push(...requiredMatched);
 
-      // Entity type — already filtered by caller, but add to matched
-      if (compiled.entityTypeSet) {
-        matched.push(`entityType:${entity.type}`);
-      }
-
-      // Required modifiers
-      if (criteria.requiredModifiers) {
-        for (const req of criteria.requiredModifiers) {
-          if (!em.modifiers.includes(req)) return { confidence: 0, matchedCriteria: [] };
-        }
-        matched.push(`modifiers:${criteria.requiredModifiers.join(",")}`);
-      }
-
-      // Forbidden modifiers
-      if (criteria.forbiddenModifiers) {
-        for (const f of criteria.forbiddenModifiers) {
-          if (em.modifiers.includes(f)) return { confidence: 0, matchedCriteria: [] };
-        }
-        matched.push("no-forbidden-modifiers");
-      }
-
-      // === Optional checks (inline, no closures) ===
-      let optionalTotal = 0;
-      let optionalPassed = 0;
-
-      // Return type
-      if (compiled.returnTypeMatchRe) {
-        optionalTotal++;
-        if (typeof em.returnType === "string" && compiled.returnTypeMatchRe.test(em.returnType)) {
-          optionalPassed++;
-          matched.push(`returnType:~/${criteria.returnTypeMatch}/`);
-        }
-      }
-      if (compiled.returnTypeNotMatchRe) {
-        optionalTotal++;
-        if (typeof em.returnType === "string" && !compiled.returnTypeNotMatchRe.test(em.returnType)) {
-          optionalPassed++;
-          matched.push(`returnType:!~/${criteria.returnTypeNotMatch}/`);
-        }
-      }
-
-      // Parameters
-      if (criteria.minParams != null) {
-        optionalTotal++;
-        if (em.params.length >= criteria.minParams) {
-          optionalPassed++;
-          matched.push(`params>=${criteria.minParams}`);
-        }
-      }
-      if (criteria.maxParams != null) {
-        optionalTotal++;
-        if (em.params.length <= criteria.maxParams) {
-          optionalPassed++;
-          matched.push(`params<=${criteria.maxParams}`);
-        }
-      }
-      if (compiled.paramTypeRequiredRe) {
-        optionalTotal++;
-        if (em.params.some((p) => p.type && compiled.paramTypeRequiredRe!.test(p.type))) {
-          optionalPassed++;
-          matched.push(`paramType:${criteria.paramTypeRequired}`);
-        }
-      }
-      if (compiled.paramTypeAbsentRe) {
-        optionalTotal++;
-        if (!em.params.some((p) => p.type && compiled.paramTypeAbsentRe!.test(p.type))) {
-          optionalPassed++;
-          matched.push(`paramType:!${criteria.paramTypeAbsent}`);
-        }
-      }
-
-      // Metrics
-      if (criteria.minCyclomatic != null) {
-        optionalTotal++;
-        if (em.metrics.cyclomaticComplexity >= criteria.minCyclomatic) {
-          optionalPassed++;
-          matched.push(`cyclomatic>=${criteria.minCyclomatic}`);
-        }
-      }
-      if (criteria.maxCyclomatic != null) {
-        optionalTotal++;
-        if (em.metrics.cyclomaticComplexity <= criteria.maxCyclomatic) {
-          optionalPassed++;
-          matched.push(`cyclomatic<=${criteria.maxCyclomatic}`);
-        }
-      }
-      if (criteria.minCognitive != null) {
-        optionalTotal++;
-        if (em.metrics.cognitiveComplexity >= criteria.minCognitive) {
-          optionalPassed++;
-          matched.push(`cognitive>=${criteria.minCognitive}`);
-        }
-      }
-      if (criteria.minNesting != null) {
-        optionalTotal++;
-        if (em.metrics.nestingDepth >= criteria.minNesting) {
-          optionalPassed++;
-          matched.push(`nesting>=${criteria.minNesting}`);
-        }
-      }
-      if (criteria.minLOC != null) {
-        optionalTotal++;
-        if (em.metrics.linesOfCode >= criteria.minLOC) {
-          optionalPassed++;
-          matched.push(`LOC>=${criteria.minLOC}`);
-        }
-      }
-      if (criteria.maxLOC != null) {
-        optionalTotal++;
-        if (em.metrics.linesOfCode <= criteria.maxLOC) {
-          optionalPassed++;
-          matched.push(`LOC<=${criteria.maxLOC}`);
-        }
-      }
-
-      // ControlFlow
-      if (criteria.hasLoops != null) {
-        optionalTotal++;
-        if (em.cf.loops > 0 === criteria.hasLoops) {
-          optionalPassed++;
-          matched.push(criteria.hasLoops ? "hasLoops" : "noLoops");
-        }
-      }
-      if (criteria.hasExceptions != null) {
-        optionalTotal++;
-        if (em.cf.exceptions > 0 === criteria.hasExceptions) {
-          optionalPassed++;
-          matched.push(criteria.hasExceptions ? "hasExceptions" : "noExceptions");
-        }
-      }
-      if (criteria.hasAwaits != null) {
-        optionalTotal++;
-        if (em.cf.awaits > 0 === criteria.hasAwaits) {
-          optionalPassed++;
-          matched.push(criteria.hasAwaits ? "hasAwaits" : "noAwaits");
-        }
-      }
-      if (criteria.minBranches != null) {
-        optionalTotal++;
-        if (em.cf.branches >= criteria.minBranches) {
-          optionalPassed++;
-          matched.push(`branches>=${criteria.minBranches}`);
-        }
-      }
-
-      // Calls
-      if (criteria.minCallCount != null) {
-        optionalTotal++;
-        if (em.callNames.length >= criteria.minCallCount) {
-          optionalPassed++;
-          matched.push(`calls>=${criteria.minCallCount}`);
-        }
-      }
-      if (compiled.callsIncludeRe) {
-        for (let i = 0; i < compiled.callsIncludeRe.length; i++) {
-          optionalTotal++;
-          if (em.callNames.some((c) => compiled.callsIncludeRe![i]!.test(c))) {
-            optionalPassed++;
-            matched.push(`calls:~/${criteria.callsInclude![i]}/`);
-          }
-        }
-      }
-      if (compiled.callsExcludeRe) {
-        for (let i = 0; i < compiled.callsExcludeRe.length; i++) {
-          optionalTotal++;
-          if (!em.callNames.some((c) => compiled.callsExcludeRe![i]!.test(c))) {
-            optionalPassed++;
-            matched.push(`calls:!~/${criteria.callsExclude![i]}/`);
-          }
-        }
-      }
-
-      // Decorators
-      if (compiled.decoratorMatchRe) {
-        for (let i = 0; i < compiled.decoratorMatchRe.length; i++) {
-          optionalTotal++;
-          if (em.decoratorNames.some((d) => compiled.decoratorMatchRe![i]!.test(d))) {
-            optionalPassed++;
-            matched.push(`decorator:~/${criteria.decoratorMatch![i]}/`);
-          }
-        }
-      }
-
-      // Name
-      if (compiled.nameMatchRe) {
-        optionalTotal++;
-        if (compiled.nameMatchRe.test(entity.name)) {
-          optionalPassed++;
-          matched.push(`name:~/${criteria.nameMatch}/`);
-        }
-      }
-      if (compiled.nameNotMatchRe) {
-        optionalTotal++;
-        if (!compiled.nameNotMatchRe.test(entity.name)) {
-          optionalPassed++;
-          matched.push(`name:!~/${criteria.nameNotMatch}/`);
-        }
-      }
+      // 3A: Optional checks
+      const { optionalTotal, optionalPassed } = this.evaluateOptional(entity, compiled, criteria, em, matched);
 
       // Confidence calculation
-      const mandatoryCount = matched.filter(
-        (m) => m.startsWith("entityType:") || m.startsWith("modifiers:") || m === "no-forbidden-modifiers",
-      ).length;
+      const mandatoryCount = requiredMatched.length;
 
       if (optionalTotal === 0) {
         if (matched.length > 0 && !pattern.customDetector) {
           return { confidence: 1.0, matchedCriteria: matched };
         }
-        // Defer to custom detector below
       } else {
         const conf = optionalPassed / optionalTotal;
         if ((conf > 0 || matched.length > mandatoryCount) && !pattern.customDetector) {
           return { confidence: conf, matchedCriteria: matched };
         }
-        // Defer to custom detector below
       }
     }
 
@@ -522,16 +561,16 @@ export class StructuralDetector {
 
             return { confidence: blended, matchedCriteria: allMatched };
           }
-          return { confidence: 0, matchedCriteria: [] };
+          return EVAL_ZERO;
         } catch (err) {
           log.w("STRUCTURAL_DETECTOR", "custom_detector_error", {
             detector: pattern.customDetector,
             error: String(err),
           });
-          return { confidence: 0, matchedCriteria: [] };
+          return EVAL_ZERO;
         }
       }
-      return { confidence: 0, matchedCriteria: [] };
+      return EVAL_ZERO;
     }
 
     if (matched.length > 0 && !criteria) {
