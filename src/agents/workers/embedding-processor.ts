@@ -94,6 +94,9 @@ let embeddingClientInitPromise: Promise<void> | null = null;
 /** Worker embedding configuration received from main process */
 let embeddingConfig: WorkerEmbeddingConfig | null = null;
 
+/** Global pre-built embedding cache — avoids TEI calls for known stdlib/framework patterns */
+let workerGlobalCache: import("./worker-global-cache.js").WorkerGlobalCache | null = null;
+
 /** Local deduplication: track entity IDs already processed in this worker session */
 const generatedEntityIds = new Set<string>();
 
@@ -183,10 +186,17 @@ export async function initEmbeddingClient(config: WorkerEmbeddingConfig): Promis
   }
 
   // Centralized mode: don't initialize HTTP client, texts will be sent to Main
+  // But still load global cache so known patterns are skipped before going to Main
   if (config.centralizedEmbeddings) {
     workerLog("INFO", "Centralized embedding mode - skipping WorkerEmbeddingClient init", {
       provider: config.provider,
     });
+    const { getWorkerGlobalCache } = await import("./worker-global-cache.js");
+    workerGlobalCache = getWorkerGlobalCache();
+    await workerGlobalCache.load(config.modelName, config.dimensions ?? 384);
+    if (workerGlobalCache.size > 0) {
+      workerLog("INFO", `WorkerGlobalCache loaded: ${workerGlobalCache.size} pre-built embeddings`);
+    }
     return;
   }
 
@@ -198,6 +208,14 @@ export async function initEmbeddingClient(config: WorkerEmbeddingConfig): Promis
   embeddingClientInitPromise = (async () => {
     try {
       workerLog("INFO", `Initializing WorkerEmbeddingClient`, { provider: config.provider, model: config.modelName });
+
+      // Load pre-built global cache (fast binary lookup, avoids TEI for known patterns)
+      const { getWorkerGlobalCache } = await import("./worker-global-cache.js");
+      workerGlobalCache = getWorkerGlobalCache();
+      await workerGlobalCache.load(config.modelName, config.dimensions ?? 384);
+      if (workerGlobalCache.size > 0) {
+        workerLog("INFO", `WorkerGlobalCache loaded: ${workerGlobalCache.size} pre-built embeddings`);
+      }
 
       // Use lightweight HTTP-only client (no heavy dependencies)
       const { WorkerEmbeddingClient } = await import("./worker-embedding-client.js");
@@ -382,52 +400,70 @@ export async function generateEmbeddingsForEntities(
   // Process batches in waves of 'concurrency' size
   // Each wave runs in parallel, then we start next wave
   const processBatch = async (batch: typeof entityTexts, idx: number): Promise<void> => {
-    const texts = batch.map((et) => et.text);
-    try {
-      const embeddings = await embeddingClient!.generateBatch(texts);
+    // Check global cache first — skip TEI for known stdlib/framework patterns
+    const cacheHits = new Map<number, Float32Array>(); // batch index → embedding
+    const missIndices: number[] = [];
+    const missTexts: string[] = [];
 
-      // Process embeddings - collect for IPC transfer
-      for (let j = 0; j < batch.length; j++) {
-        const et = batch[j]!;
-        const embedding = embeddings[j];
-        if (embedding) {
-          // Use pre-computed entityId from deduplication phase
-          const { entityId } = et;
-
-          // Mark as generated for local deduplication
-          generatedEntityIds.add(entityId);
-
-          // Collect for IPC transfer to main process
-          const vectorBuffer = embedding.buffer.slice(
-            embedding.byteOffset,
-            embedding.byteOffset + embedding.byteLength,
-          ) as ArrayBuffer;
-
-          const rawEntityId = et.entity.id || `${filePath}:${et.entity.type}:${et.entity.name}`;
-          collectedEmbeddings.push({
-            id: entityId,
-            vectorBuffer,
-            content: et.text.slice(0, 500),
-            metadata: {
-              entityId: rawEntityId,
-              entityType: et.entity.type,
-              entityName: et.entity.name,
-              path: filePath,
-              filePath,
-              line: et.entity.location?.start?.line,
-              start: et.entity.location?.start?.index,
-              end: et.entity.location?.end?.index,
-            },
-          });
-
-          // Store embedding text for search result display
-          et.entity.embeddingText = et.text.slice(0, 200);
-
-          generatedCount++;
-        }
+    for (let j = 0; j < batch.length; j++) {
+      const cached = workerGlobalCache?.get(batch[j]!.text);
+      if (cached) {
+        cacheHits.set(j, cached);
+      } else {
+        missIndices.push(j);
+        missTexts.push(batch[j]!.text);
       }
-    } catch (error) {
-      workerLog("WARN", `Embedding batch failed: ${(error as Error).message}`, { batchIdx: idx });
+    }
+
+    // Generate only cache misses
+    let generatedEmbeddings: Float32Array[] = [];
+    if (missTexts.length > 0) {
+      try {
+        generatedEmbeddings = await embeddingClient!.generateBatch(missTexts);
+      } catch (error) {
+        workerLog("WARN", `Embedding batch failed: ${(error as Error).message}`, { batchIdx: idx });
+        return;
+      }
+    }
+
+    // Merge: cache hits + generated
+    const embeddings: (Float32Array | undefined)[] = new Array(batch.length);
+    for (const [j, emb] of cacheHits) embeddings[j] = emb;
+    for (let k = 0; k < missIndices.length; k++) embeddings[missIndices[k]!] = generatedEmbeddings[k];
+
+    // Process embeddings - collect for IPC transfer
+    for (let j = 0; j < batch.length; j++) {
+      const et = batch[j]!;
+      const embedding = embeddings[j];
+      if (embedding) {
+        const { entityId } = et;
+        generatedEntityIds.add(entityId);
+
+        const vectorBuffer = embedding.buffer.slice(
+          embedding.byteOffset,
+          embedding.byteOffset + embedding.byteLength,
+        ) as ArrayBuffer;
+
+        const rawEntityId = et.entity.id || `${filePath}:${et.entity.type}:${et.entity.name}`;
+        collectedEmbeddings.push({
+          id: entityId,
+          vectorBuffer,
+          content: et.text.slice(0, 500),
+          metadata: {
+            entityId: rawEntityId,
+            entityType: et.entity.type,
+            entityName: et.entity.name,
+            path: filePath,
+            filePath,
+            line: et.entity.location?.start?.line,
+            start: et.entity.location?.start?.index,
+            end: et.entity.location?.end?.index,
+          },
+        });
+
+        et.entity.embeddingText = et.text.slice(0, 200);
+        generatedCount++;
+      }
     }
   };
 
@@ -507,6 +543,30 @@ function collectTextsForCentralizedEmbedding(entities: ParsedEntity[], fileConte
 
     const text = buildEmbeddingText(entity, fileContent, contextTokens);
     if (text.length === 0) continue;
+
+    // Check global cache — if hit, add embedding directly without going to Main
+    const cached = workerGlobalCache?.get(text);
+    if (cached) {
+      generatedEntityIds.add(entityId);
+      const vectorBuffer = cached.buffer.slice(cached.byteOffset, cached.byteOffset + cached.byteLength) as ArrayBuffer;
+      collectedEmbeddings.push({
+        id: entityId,
+        vectorBuffer,
+        content: text.slice(0, 500),
+        metadata: {
+          entityId: rawEntityId,
+          entityType: entity.type,
+          entityName: entity.name,
+          path: filePath,
+          filePath,
+          line: entity.location?.start?.line,
+          start: entity.location?.start?.index,
+          end: entity.location?.end?.index,
+        },
+      });
+      collectedCount++;
+      continue;
+    }
 
     // Mark as processed
     generatedEntityIds.add(entityId);

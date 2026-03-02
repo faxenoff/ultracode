@@ -41,7 +41,7 @@ export async function initHasher(): Promise<void> {
     try {
       hasher = await xxhash();
       initialized = true;
-      console.error("[FastHash] xxHash WASM initialized");
+      console.log("[FastHash] xxHash WASM initialized");
     } catch (error) {
       console.error("[FastHash] CRITICAL: xxHash initialization failed:", error);
       throw new Error("xxHash initialization failed - cannot continue without deterministic hashing");

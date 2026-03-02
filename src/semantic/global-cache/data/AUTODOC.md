@@ -81,8 +81,11 @@ No runtime errors possible; all data is statically defined constant arrays.
 - `JAVA_BUILTINS`
 - `KOTLIN_BUILTINS`
 - `JAVASCRIPT_BUILTINS`
+- `JAVASCRIPT_ENTITY_PATTERNS`
 - `TYPESCRIPT_BUILTINS`
+- `NODEJS_BUILTINS`
 - `PYTHON_BUILTINS`
+- `TESTING_PATTERNS`
 - `getAllGlobalEntries`
 
 ## Files

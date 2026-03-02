@@ -60,12 +60,50 @@ export const JAVA_BUILTINS: GlobalCacheEntry[] = [
   { text: "@SuppressWarnings", category: "pattern", language: "java" },
   { text: "@FunctionalInterface", category: "pattern", language: "java" },
 
-  // Patterns
-  { text: "public static void main", category: "pattern", language: "java" },
+  // Patterns — including entity-level with embeddingText
+  {
+    text: "public static void main",
+    embeddingText: "main method\ndescription: java application entry point\nparams: args:String[]",
+    category: "pattern",
+    language: "java",
+  },
   { text: "try catch finally", category: "pattern", language: "java" },
   { text: "throws Exception", category: "pattern", language: "java" },
   { text: "implements", category: "pattern", language: "java" },
   { text: "extends", category: "pattern", language: "java" },
+  {
+    text: "toString",
+    embeddingText: "toString method\ndescription: java string representation of the object\nreturns: String",
+    category: "pattern",
+    language: "java",
+  },
+  {
+    text: "equals",
+    embeddingText:
+      "equals method\ndescription: java equality comparison with another object\nparams: obj:Object\nreturns: boolean",
+    category: "pattern",
+    language: "java",
+  },
+  {
+    text: "hashCode",
+    embeddingText:
+      "hashCode method\ndescription: java hash code for the object used in hash-based collections\nreturns: int",
+    category: "pattern",
+    language: "java",
+  },
+  {
+    text: "compareTo",
+    embeddingText:
+      "compareTo method\ndescription: java comparable interface compares objects for ordering\nreturns: int",
+    category: "pattern",
+    language: "java",
+  },
+  {
+    text: "close",
+    embeddingText: "close method\ndescription: java closeable interface releases resources\nreturns: void",
+    category: "pattern",
+    language: "java",
+  },
 ];
 
 /**

@@ -72,7 +72,17 @@ export class TEIProvider implements EmbeddingProvider {
     }
 
     // Wait for TEI to be ready (model loading can take time)
-    await this.waitForReady();
+    try {
+      await this.waitForReady();
+    } catch (err) {
+      if (!this.checkServer) throw err;
+      // Container not responding — try docker restart and wait again
+      this.log?.warn("TEI not responding, attempting docker restart...", { err: (err as Error).message });
+      const restarted = await this.restartContainer();
+      if (!restarted) throw err; // container doesn't exist, give up now
+      this.log?.info("Waiting for TEI after restart (up to 90s)...");
+      await this.waitForReady(90_000, false); // don't fast-fail after restart — Docker needs time to bind port
+    }
 
     // Get model info including max_input_length and max_client_batch_size
     try {
@@ -185,9 +195,10 @@ export class TEIProvider implements EmbeddingProvider {
 
   /**
    * Wait for TEI server to be fully ready (model loaded)
-   * This is important on first start when model needs to download
+   * @param failFastOnRefused - throw immediately on ECONNREFUSED (default true).
+   *   Set to false after docker restart when port may not be bound yet.
    */
-  private async waitForReady(maxWaitMs = 300_000): Promise<void> {
+  private async waitForReady(maxWaitMs = 300_000, failFastOnRefused = true): Promise<void> {
     const startTime = Date.now();
     const checkInterval = 3000; // Check every 3 seconds
     let lastStatus = "";
@@ -214,9 +225,13 @@ export class TEIProvider implements EmbeddingProvider {
           lastStatus = status;
         }
       } catch (error: unknown) {
-        // Connection refused means server not ready yet
         const err = toError(error);
-        if (!err.message.includes("ECONNREFUSED")) {
+        if (err.message.includes("ECONNREFUSED") || err.message.includes("Connection refused")) {
+          if (failFastOnRefused) {
+            throw new Error(`TEI server not running at ${this.baseUrl} (connection refused)`);
+          }
+          // After restart: port not bound yet, keep retrying silently
+        } else {
           this.log?.debug("TEI health check error", { error: err.message });
         }
       }
@@ -228,6 +243,24 @@ export class TEIProvider implements EmbeddingProvider {
       `TEI did not become ready within ${maxWaitMs / 1000} seconds.\n` +
         `Model may still be downloading. Check: docker logs tei-server`,
     );
+  }
+
+  /**
+   * Restart TEI Docker container (used when container is hung/unresponsive).
+   * Returns true if restart command succeeded, false if container not found or Docker unavailable.
+   */
+  private async restartContainer(): Promise<boolean> {
+    try {
+      const { exec } = await import("node:child_process");
+      const { promisify } = await import("node:util");
+      const execPromise = promisify(exec);
+      await execPromise("docker restart tei-server", { windowsHide: true });
+      this.log?.info("TEI container restarted via docker restart");
+      return true;
+    } catch (e) {
+      this.log?.warn("docker restart tei-server failed", { err: (e as Error).message });
+      return false;
+    }
   }
 
   getDimension(): number | undefined {

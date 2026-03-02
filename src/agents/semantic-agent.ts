@@ -95,6 +95,7 @@ import { processStandaloneComments as processStandaloneCommentsExtracted } from 
 import {
   EMBEDDING_EXCLUDE_PATTERNS,
   type EmbeddingProcessorContext,
+  isTrivialEntity,
   processPreGeneratedEmbeddings,
   shouldExcludeFromEmbedding,
 } from "./semantic/embedding-processor.js";
@@ -217,9 +218,16 @@ export class SemanticAgent extends BaseAgent implements SemanticOperations, Reso
       return warmupDims;
     }
 
-    // Fallback: detect dimensions via test embedding
+    // Fallback: detect dimensions via test embedding with timeout to avoid blocking auto_index
+    // if TEI is not yet available (waitForReady can block up to 5 minutes)
     try {
-      const testEmbedding = await this.embeddingGen.generateEmbedding("dimension detection test");
+      const timeoutMs = 5000;
+      const testEmbedding = await Promise.race([
+        this.embeddingGen.generateEmbedding("dimension detection test"),
+        new Promise<never>((_, reject) =>
+          setTimeout(() => reject(new Error(`dim detection timeout after ${timeoutMs}ms`)), timeoutMs),
+        ),
+      ]);
       const dimensions = testEmbedding.length;
       this.embeddingDim = dimensions;
       log.i("SEMANTIC", "dims_detected", { dims: dimensions });
@@ -1627,12 +1635,19 @@ export class SemanticAgent extends BaseAgent implements SemanticOperations, Reso
     const needGenerationEntities: ParsedEntity[] = [];
     let filteredCount = 0;
 
+    let trivialSkipped = 0;
     for (const entity of expandedEntities) {
       const filePath = entity.filePath || "";
 
       // Use extracted helper for exclude pattern check
       if (shouldExcludeFromEmbedding(filePath)) {
         filteredCount++;
+        continue;
+      }
+
+      // Skip trivial entities (bare getters/setters, single-return bodies)
+      if (!entity.embeddingBase64 && isTrivialEntity(entity)) {
+        trivialSkipped++;
         continue;
       }
 
@@ -1644,11 +1659,12 @@ export class SemanticAgent extends BaseAgent implements SemanticOperations, Reso
       }
     }
 
-    if (filteredCount > 0) {
-      log.i("EMBEDDING", `Filtered out machine-generated code during indexing`, {
+    if (filteredCount > 0 || trivialSkipped > 0) {
+      log.i("EMBEDDING", `Filtered out machine-generated and trivial entities`, {
         before: beforeFilter,
-        after: beforeFilter - filteredCount,
-        skipped: filteredCount,
+        after: beforeFilter - filteredCount - trivialSkipped,
+        skipped_patterns: filteredCount,
+        skipped_trivial: trivialSkipped,
         patterns: EMBEDDING_EXCLUDE_PATTERNS,
       });
     }
@@ -2023,42 +2039,8 @@ export class SemanticAgent extends BaseAgent implements SemanticOperations, Reso
       this.globalCache = GlobalEmbeddingCache.getInstance();
       await this.globalCache.initialize(modelName, dimension);
 
-      // Check if we need to populate the cache
-      const entriesNeeded = this.globalCache.getEntriesNeedingEmbeddings();
-      if (entriesNeeded.length > 0) {
-        log.i("CACHE", "Populating cache", {
-          entriesNeeded: entriesNeeded.length,
-          model: modelName,
-          dimension,
-        });
-
-        // Generate embeddings in batches
-        const batchSize = this.embeddingBatchSize;
-        let generated = 0;
-
-        for (let i = 0; i < entriesNeeded.length; i += batchSize) {
-          const batch = entriesNeeded.slice(i, i + batchSize);
-          const texts = batch.map((e) => e.text);
-
-          try {
-            const embeddings = await this.embeddingGen.generateBatch(texts);
-
-            for (let j = 0; j < batch.length; j++) {
-              this.globalCache.set(batch[j]!.text, embeddings[j]!);
-              generated++;
-            }
-          } catch (err) {
-            log.w("CACHE", "Batch generation failed", { error: (err as Error).message });
-          }
-        }
-
-        // Save to disk
-        await this.globalCache.saveCache();
-        log.i("CACHE", "Cache populated", { generated, model: modelName });
-      } else {
-        const stats = this.globalCache.getStats();
-        log.i("CACHE", "Cache loaded", { total: stats.total, model: modelName });
-      }
+      const stats = this.globalCache.getStats();
+      log.i("CACHE", "Global cache ready", { total: stats.total, model: modelName });
     } catch (err) {
       log.w("CACHE", "Init failed (non-fatal)", { error: (err as Error).message });
       // Non-fatal - continue without global cache

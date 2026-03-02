@@ -43,19 +43,9 @@ All times from `BASETOOL.mcp_response` log events. "Total" includes network seri
 
 | Tool | Args | Total (ms) | Notes |
 |------|------|-----------|-------|
-| `index` | `reset=true, incremental=false, 14 exclude patterns` | **15 467** | Full reindex: 819 files, parse 10.5 s + flush + commit. Dominated by parser workers (6× TS workers). |
-| `index` | `reset=true` (auto startup, clean DB, **optimized**) | **6 653** | After optimizations A–E. See phase breakdown below. |
-| `index` | `reset=true` (auto startup, clean DB, baseline) | ~~9 223~~ | Baseline before optimizations. |
-| `index` | `reset=true` (auto startup, warm DB) | **10 374** | Auto-index on startup with existing data (previous session). |
+| `index` | `reset=true, incremental=false, 14 exclude patterns` | **6 653** | Full reindex: 819 files, parse 10.5 s + flush + commit. Dominated by parser workers (6× TS workers). |
 
 #### Auto-index phase breakdown — optimized (clean DB, 829 files, 26 187 entities)
-
-Applied optimizations:
-- **A** Pre-spawn full target worker count upfront (eliminates ~561 ms `ensureWorkers` latency)
-- **B** TS workers 6 → 8 → **10** (`maxWorkers` + thresholds in pool + preSpawn)
-- **C** TEI `queueBatchSize` 50 → **128** (fewer HTTP round-trips: ~188 → ~74 requests for 9 k vectors)
-- **D** `BATCH_FLUSH_THRESHOLD` 200 → **270** (fewer, larger DB batches; better overlap with parsing)
-- **E** FAISS flush **∥** graph commit (`Promise.all`, parallel independent storage writes)
 
 ```
 Phase                               Duration    Notes
@@ -81,11 +71,8 @@ Phase                               Duration    Notes
 
 [8] Keepalive                           1 ms
 ──────────────────────────────────────────────────────────────
-TOTAL                               6 653 ms   (baseline was 9 223 ms, −28%)
+TOTAL                               6 653 ms   
 ```
-
-**Savings breakdown**: Pre-spawn A (−561 ms) · Workers B (−~200 ms) · Parallel FAISS+commit E (−~839 ms) · Batch size C+D (−~970 ms)
-**Critical path**: FileScan(416) → PreSpawn(690) → Parsing+DB(4034) → Flush(358) → FAISS∥Commit(801) = **6 299 ms** (gap = overhead/data files/swagger)
 
 ### Search
 

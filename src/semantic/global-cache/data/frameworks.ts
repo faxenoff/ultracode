@@ -44,6 +44,62 @@ export const REACT_PATTERNS: GlobalCacheEntry[] = [
   { text: "import { useState } from 'react'", category: "framework", language: "typescript", framework: "react" },
   { text: "import { useEffect } from 'react'", category: "framework", language: "typescript", framework: "react" },
 
+  // React class lifecycle methods — real entity methods
+  {
+    text: "componentDidMount",
+    embeddingText: "componentDidMount method\ndescription: react lifecycle called after component mounts into the dom",
+    category: "framework",
+    language: "typescript",
+    framework: "react",
+  },
+  {
+    text: "componentWillUnmount",
+    embeddingText:
+      "componentWillUnmount method\ndescription: react lifecycle called before component is removed from the dom",
+    category: "framework",
+    language: "typescript",
+    framework: "react",
+  },
+  {
+    text: "componentDidUpdate",
+    embeddingText:
+      "componentDidUpdate method\ndescription: react lifecycle called after component updates\nparams: prevProps:object, prevState:object",
+    category: "framework",
+    language: "typescript",
+    framework: "react",
+  },
+  {
+    text: "shouldComponentUpdate",
+    embeddingText:
+      "shouldComponentUpdate method\ndescription: react lifecycle to optimize re-renders\nreturns: boolean",
+    category: "framework",
+    language: "typescript",
+    framework: "react",
+  },
+  {
+    text: "render",
+    embeddingText:
+      "render method\ndescription: react class component render method returns jsx element\nreturns: JSX.Element",
+    category: "framework",
+    language: "typescript",
+    framework: "react",
+  },
+  {
+    text: "getSnapshotBeforeUpdate",
+    embeddingText: "getSnapshotBeforeUpdate method\ndescription: react lifecycle captures snapshot before dom update",
+    category: "framework",
+    language: "typescript",
+    framework: "react",
+  },
+  {
+    text: "getDerivedStateFromProps",
+    embeddingText:
+      "getDerivedStateFromProps method\ndescription: react static lifecycle to sync state from props\nreturns: object|null",
+    category: "framework",
+    language: "typescript",
+    framework: "react",
+  },
+
   // JSX patterns
   { text: "return (<div>", category: "pattern", language: "typescript", framework: "react" },
   { text: "className=", category: "pattern", language: "typescript", framework: "react" },
@@ -73,13 +129,52 @@ export const ANGULAR_PATTERNS: GlobalCacheEntry[] = [
   { text: "@HostListener", category: "framework", language: "typescript", framework: "angular" },
   { text: "@HostBinding", category: "framework", language: "typescript", framework: "angular" },
 
-  // Lifecycle hooks
-  { text: "ngOnInit", category: "framework", language: "typescript", framework: "angular" },
-  { text: "ngOnDestroy", category: "framework", language: "typescript", framework: "angular" },
-  { text: "ngOnChanges", category: "framework", language: "typescript", framework: "angular" },
-  { text: "ngAfterViewInit", category: "framework", language: "typescript", framework: "angular" },
-  { text: "ngAfterContentInit", category: "framework", language: "typescript", framework: "angular" },
-  { text: "ngDoCheck", category: "framework", language: "typescript", framework: "angular" },
+  // Lifecycle hooks — real entity methods with predictable embeddingText
+  {
+    text: "ngOnInit",
+    embeddingText: "ngOnInit method\ndescription: angular lifecycle hook called on component initialization",
+    category: "framework",
+    language: "typescript",
+    framework: "angular",
+  },
+  {
+    text: "ngOnDestroy",
+    embeddingText: "ngOnDestroy method\ndescription: angular lifecycle hook called before component is destroyed",
+    category: "framework",
+    language: "typescript",
+    framework: "angular",
+  },
+  {
+    text: "ngOnChanges",
+    embeddingText:
+      "ngOnChanges method\ndescription: angular lifecycle hook called when input properties change\nparams: changes:SimpleChanges",
+    category: "framework",
+    language: "typescript",
+    framework: "angular",
+  },
+  {
+    text: "ngAfterViewInit",
+    embeddingText:
+      "ngAfterViewInit method\ndescription: angular lifecycle hook called after component view is initialized",
+    category: "framework",
+    language: "typescript",
+    framework: "angular",
+  },
+  {
+    text: "ngAfterContentInit",
+    embeddingText:
+      "ngAfterContentInit method\ndescription: angular lifecycle hook called after content is projected into the component",
+    category: "framework",
+    language: "typescript",
+    framework: "angular",
+  },
+  {
+    text: "ngDoCheck",
+    embeddingText: "ngDoCheck method\ndescription: angular lifecycle hook for custom change detection",
+    category: "framework",
+    language: "typescript",
+    framework: "angular",
+  },
 
   // DI
   { text: "constructor(private", category: "pattern", language: "typescript", framework: "angular" },

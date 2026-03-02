@@ -575,7 +575,26 @@ export class DevAgent extends BaseAgent implements ResourceAdjustmentCapable {
         );
 
         const embeddingGenerator = new EmbeddingGenerator(generatorOptions);
-        await embeddingGenerator.initialize();
+
+        // Initialize with timeout so TEI unavailability doesn't block indexing.
+        // 90s gives enough time for docker restart + model reload if container was hung.
+        const initTimeoutMs = 90_000;
+        try {
+          await Promise.race([
+            embeddingGenerator.initialize(),
+            new Promise<never>((_, reject) =>
+              setTimeout(() => reject(new Error(`TEI init timeout after ${initTimeoutMs}ms`)), initTimeoutMs),
+            ),
+          ]);
+        } catch (initErr) {
+          log.w(
+            "DEVAGENT",
+            "Centralized EmbeddingGenerator init timeout/fail, indexing will proceed without embeddings",
+            {
+              err: (initErr as Error).message,
+            },
+          );
+        }
 
         await this.parserAgent.setEmbeddingGenerator(embeddingGenerator);
         log.i("DEVAGENT", "Centralized EmbeddingGenerator configured", {

@@ -444,6 +444,23 @@ if defined CUDA_BUILD_SUCCESS (
     )
 )
 
+REM ============================================================================
+REM STEP 5: Build global embedding cache (pre-compute embeddings for builtins)
+REM ============================================================================
+echo [5/5] Building global embedding cache...
+echo       Generating pre-computed embeddings for stdlib/framework patterns...
+
+bun run build:global-cache
+if errorlevel 1 (
+    echo [WARNING] Global embedding cache build failed.
+    echo          This is non-fatal - embeddings will be generated on first use.
+    echo          To generate pre-built cache, start TEI server and run:
+    echo            bun run build:global-cache
+) else (
+    echo [OK] Global embedding cache built successfully!
+)
+echo.
+
 REM Show colored build summary
 powershell -ExecutionPolicy Bypass -File "%PROJECT_ROOT%\scripts\show-build-summary.ps1" -ProjectRoot "%PROJECT_ROOT%"
 

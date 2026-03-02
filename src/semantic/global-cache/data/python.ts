@@ -65,10 +65,100 @@ export const PYTHON_BUILTINS: GlobalCacheEntry[] = [
   { text: "from enum import Enum", category: "stdlib", language: "python" },
   { text: "from abc import ABC, abstractmethod", category: "stdlib", language: "python" },
 
-  // Patterns
-  { text: "def __init__(self)", category: "pattern", language: "python" },
-  { text: "def __str__(self)", category: "pattern", language: "python" },
-  { text: "def __repr__(self)", category: "pattern", language: "python" },
+  // Patterns — special methods with embeddingText for pipeline hits
+  {
+    text: "def __init__(self)",
+    embeddingText: "__init__ method\ndescription: python class constructor initializes instance attributes",
+    category: "pattern",
+    language: "python",
+  },
+  {
+    text: "def __str__(self)",
+    embeddingText: "__str__ method\ndescription: python string representation of the object\nreturns: str",
+    category: "pattern",
+    language: "python",
+  },
+  {
+    text: "def __repr__(self)",
+    embeddingText: "__repr__ method\ndescription: python developer representation of the object\nreturns: str",
+    category: "pattern",
+    language: "python",
+  },
+  {
+    text: "def __len__(self)",
+    embeddingText: "__len__ method\ndescription: python length of the object\nreturns: int",
+    category: "pattern",
+    language: "python",
+  },
+  {
+    text: "def __eq__(self, other)",
+    embeddingText: "__eq__ method\ndescription: python equality comparison\nparams: other:object\nreturns: bool",
+    category: "pattern",
+    language: "python",
+  },
+  {
+    text: "def __lt__(self, other)",
+    embeddingText: "__lt__ method\ndescription: python less-than comparison\nparams: other:object\nreturns: bool",
+    category: "pattern",
+    language: "python",
+  },
+  {
+    text: "def __hash__(self)",
+    embeddingText: "__hash__ method\ndescription: python hash value for the object\nreturns: int",
+    category: "pattern",
+    language: "python",
+  },
+  {
+    text: "def __contains__(self, item)",
+    embeddingText:
+      "__contains__ method\ndescription: python membership test operator\nparams: item:object\nreturns: bool",
+    category: "pattern",
+    language: "python",
+  },
+  {
+    text: "def __iter__(self)",
+    embeddingText: "__iter__ method\ndescription: python iterator protocol returns iterator object",
+    category: "pattern",
+    language: "python",
+  },
+  {
+    text: "def __next__(self)",
+    embeddingText: "__next__ method\ndescription: python iterator returns next value\nreturns: object",
+    category: "pattern",
+    language: "python",
+  },
+  {
+    text: "def __enter__(self)",
+    embeddingText: "__enter__ method\ndescription: python context manager enter returns context object",
+    category: "pattern",
+    language: "python",
+  },
+  {
+    text: "def __exit__(self, exc_type, exc_val, exc_tb)",
+    embeddingText:
+      "__exit__ method\ndescription: python context manager exit handles cleanup and exception suppression\nreturns: bool",
+    category: "pattern",
+    language: "python",
+  },
+  {
+    text: "def __getitem__(self, key)",
+    embeddingText: "__getitem__ method\ndescription: python subscript access operator\nparams: key:object",
+    category: "pattern",
+    language: "python",
+  },
+  {
+    text: "def __setitem__(self, key, value)",
+    embeddingText:
+      "__setitem__ method\ndescription: python subscript assignment operator\nparams: key:object, value:object",
+    category: "pattern",
+    language: "python",
+  },
+  {
+    text: "def __call__(self)",
+    embeddingText: "__call__ method\ndescription: python callable object invocation",
+    category: "pattern",
+    language: "python",
+  },
   { text: "@property", category: "pattern", language: "python" },
   { text: "@staticmethod", category: "pattern", language: "python" },
   { text: "@classmethod", category: "pattern", language: "python" },

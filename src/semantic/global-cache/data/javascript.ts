@@ -117,6 +117,95 @@ export const JAVASCRIPT_BUILTINS: GlobalCacheEntry[] = [
 ];
 
 /**
+ * Common JavaScript/TypeScript entity-level patterns.
+ * These appear as real parsed entities and have predictable embeddingText.
+ */
+export const JAVASCRIPT_ENTITY_PATTERNS: GlobalCacheEntry[] = [
+  // Class members — appear as real parsed entities
+  {
+    text: "constructor",
+    embeddingText: "constructor function\ndescription: class constructor initializes instance",
+    category: "pattern",
+    language: "javascript",
+  },
+  {
+    text: "toString",
+    embeddingText: "toString method\ndescription: returns string representation of the object\nreturns: string",
+    category: "pattern",
+    language: "javascript",
+  },
+  {
+    text: "valueOf",
+    embeddingText: "valueOf method\ndescription: returns primitive value of the object",
+    category: "pattern",
+    language: "javascript",
+  },
+  {
+    text: "toJSON",
+    embeddingText:
+      "toJSON method\ndescription: returns json-serializable representation of the object\nreturns: object",
+    category: "pattern",
+    language: "javascript",
+  },
+  {
+    text: "fromJSON",
+    embeddingText: "fromJSON function\ndescription: deserializes object from json representation\nreturns: object",
+    category: "pattern",
+    language: "javascript",
+  },
+  {
+    text: "clone",
+    embeddingText: "clone method\ndescription: creates a deep copy of the object",
+    category: "pattern",
+    language: "javascript",
+  },
+  {
+    text: "equals",
+    embeddingText: "equals method\ndescription: compares equality with another object\nreturns: boolean",
+    category: "pattern",
+    language: "javascript",
+  },
+  // Entry points
+  {
+    text: "main",
+    embeddingText: "main function\ndescription: application entry point",
+    category: "pattern",
+    language: "javascript",
+  },
+  // Common lifecycle/setup patterns
+  {
+    text: "init",
+    embeddingText: "init function\ndescription: initializes module or service",
+    category: "pattern",
+    language: "javascript",
+  },
+  {
+    text: "setup",
+    embeddingText: "setup function\ndescription: sets up configuration or dependencies",
+    category: "pattern",
+    language: "javascript",
+  },
+  {
+    text: "teardown",
+    embeddingText: "teardown function\ndescription: cleans up resources and state",
+    category: "pattern",
+    language: "javascript",
+  },
+  {
+    text: "destroy",
+    embeddingText: "destroy method\ndescription: cleans up resources and event listeners",
+    category: "pattern",
+    language: "javascript",
+  },
+  {
+    text: "dispose",
+    embeddingText: "dispose method\ndescription: releases managed resources",
+    category: "pattern",
+    language: "javascript",
+  },
+];
+
+/**
  * TypeScript-specific built-ins and utility types
  */
 export const TYPESCRIPT_BUILTINS: GlobalCacheEntry[] = [

@@ -2,27 +2,16 @@
  * Global Embedding Cache
  *
  * Pre-computed embeddings for language built-ins, stdlib, and framework patterns.
- * These are shared across all projects to avoid redundant embedding generation.
- *
- * Structure (centralized storage):
- * - Windows: %LOCALAPPDATA%/UltraCode/global-embeddings/
- * - macOS: ~/Library/Application Support/UltraCode/global-embeddings/
- * - Linux: ~/.local/share/UltraCode/global-embeddings/
- *   - metadata.json (model version, last update)
- *   - javascript.bin (binary embeddings)
- *   - typescript.bin
- *   - python.bin
- *   - react.bin (framework)
- *   - angular.bin
- *   - ...
+ * Loaded directly from pre-built files shipped with the package (dist/semantic/global-cache-prebuilt/).
+ * Pure in-memory — no AppData persistence, no generation at startup.
  */
 
-import { existsSync, mkdirSync, readFileSync, writeFileSync } from "node:fs";
-import { join } from "node:path";
+import { existsSync, readFileSync } from "node:fs";
+import { dirname, join } from "node:path";
+import { fileURLToPath } from "node:url";
 import { log, logMemory } from "../logging/index.js";
-import { getDataDir } from "../utils/config-paths.js";
 import { hashText } from "../utils/fast-hash.js";
-import { type GlobalCacheEntry, type GlobalCacheMetadata, getAllGlobalEntries } from "./global-cache/index.js";
+import { type GlobalCacheEntry, getAllGlobalEntries } from "./global-cache/index.js";
 
 // Re-export types and data for backwards compatibility
 export type { GlobalCacheEntry, GlobalCacheMetadata } from "./global-cache/index.js";
@@ -33,11 +22,14 @@ export {
   getAllGlobalEntries,
   JAVA_BUILTINS,
   JAVASCRIPT_BUILTINS,
+  JAVASCRIPT_ENTITY_PATTERNS,
   KOTLIN_BUILTINS,
   NESTJS_PATTERNS,
+  NODEJS_BUILTINS,
   PYTHON_BUILTINS,
   REACT_PATTERNS,
   RUST_BUILTINS,
+  TESTING_PATTERNS,
   TYPESCRIPT_BUILTINS,
   VUE_PATTERNS,
 } from "./global-cache/index.js";
@@ -48,18 +40,14 @@ export {
 
 export class GlobalEmbeddingCache {
   private static instance: GlobalEmbeddingCache | null = null;
-  private cacheDir: string;
   private cache: Map<string, Float32Array> = new Map();
   private textToHash: Map<string, string> = new Map();
-  private metadata: GlobalCacheMetadata | null = null;
   private initialized = false;
 
   /** Maximum cache size to prevent memory leaks (~75MB for 384-dim embeddings) */
   private static readonly MAX_CACHE_SIZE = 50000;
 
-  private constructor() {
-    this.cacheDir = join(getDataDir(), "global-embeddings");
-  }
+  private constructor() {}
 
   static getInstance(): GlobalEmbeddingCache {
     if (!GlobalEmbeddingCache.instance) {
@@ -69,132 +57,71 @@ export class GlobalEmbeddingCache {
   }
 
   /**
-   * Initialize the global cache
-   * @param model - Model name (e.g., "all-MiniLM-L6-v2")
-   * @param dimension - Embedding dimension (e.g., 384)
+   * Initialize the global cache by loading pre-built embeddings from dist/.
+   * If no pre-built files exist (e.g. dev build without running build:global-cache),
+   * starts with an empty cache — no runtime generation.
    */
   async initialize(model: string, dimension: number): Promise<void> {
     if (this.initialized) return;
-
-    // Ensure cache directory exists
-    if (!existsSync(this.cacheDir)) {
-      mkdirSync(this.cacheDir, { recursive: true });
-    }
-
-    // Try to load existing cache
-    const metadataPath = join(this.cacheDir, "metadata.json");
-    if (existsSync(metadataPath)) {
-      try {
-        const raw = readFileSync(metadataPath, "utf-8");
-        this.metadata = JSON.parse(raw) as GlobalCacheMetadata;
-
-        // Check if cache is compatible
-        if (this.metadata.model === model && this.metadata.dimension === dimension) {
-          await this.loadCache();
-          log.d("GLOBALCACHE", "Loaded pre-computed embeddings", { count: this.cache.size });
-        } else {
-          log.d("GLOBALCACHE", "Model mismatch, will regenerate", {
-            cached: this.metadata.model,
-            current: model,
-          });
-          this.metadata = null;
-        }
-      } catch (e) {
-        log.w("GLOBALCACHE", "Failed to load metadata", { error: (e as Error).message });
-      }
-    }
-
-    // Initialize metadata if not loaded
-    if (!this.metadata) {
-      this.metadata = {
-        version: "1.0",
-        model,
-        dimension,
-        lastUpdated: new Date().toISOString(),
-        entryCounts: {},
-      };
-    }
-
     this.initialized = true;
-  }
-
-  /**
-   * Load cache from disk
-   */
-  private async loadCache(): Promise<void> {
-    const embeddingsPath = join(this.cacheDir, "embeddings.bin");
-    const textsPath = join(this.cacheDir, "texts.json");
-
-    if (!existsSync(embeddingsPath) || !existsSync(textsPath)) {
-      return;
-    }
 
     try {
+      // The compiled file lands in dist/chunks/, but prebuilt files are in dist/semantic/
+      const selfDir = dirname(fileURLToPath(import.meta.url));
+      const modelSlug = model.replace(/\//g, "_");
+      const prebuiltDir = join(selfDir, "..", "semantic", "global-cache-prebuilt", modelSlug);
+      const metaPath = join(prebuiltDir, "metadata.json");
+
+      if (!existsSync(metaPath)) {
+        log.d("GLOBALCACHE", "No pre-built embeddings found, starting empty", { model });
+        return;
+      }
+
+      const meta = JSON.parse(readFileSync(metaPath, "utf-8")) as {
+        model: string;
+        dimension: number;
+      };
+
+      if (meta.model !== model || meta.dimension !== dimension) {
+        log.d("GLOBALCACHE", "Pre-built model/dim mismatch, starting empty", {
+          prebuilt: `${meta.model}/${meta.dimension}`,
+          current: `${model}/${dimension}`,
+        });
+        return;
+      }
+
+      const embeddingsPath = join(prebuiltDir, "embeddings.bin");
+      const textsPath = join(prebuiltDir, "texts.json");
+
+      if (!existsSync(embeddingsPath) || !existsSync(textsPath)) {
+        log.d("GLOBALCACHE", "Pre-built files incomplete, starting empty");
+        return;
+      }
+
       // Load text -> hash mapping
-      const textsRaw = readFileSync(textsPath, "utf-8");
-      const texts = JSON.parse(textsRaw) as Record<string, string>;
+      const texts = JSON.parse(readFileSync(textsPath, "utf-8")) as Record<string, string>;
       for (const [hash, text] of Object.entries(texts)) {
         this.textToHash.set(text, hash);
       }
 
       // Load binary embeddings
       const buffer = readFileSync(embeddingsPath);
-      const dimension = this.metadata!.dimension;
-      const numEmbeddings = buffer.length / (dimension * 4); // 4 bytes per float
-
       const hashes = Object.keys(texts);
-      for (let i = 0; i < numEmbeddings && i < hashes.length; i++) {
+      const numEmbeddings = Math.min(hashes.length, buffer.length / (dimension * 4));
+
+      for (let i = 0; i < numEmbeddings; i++) {
         const start = i * dimension * 4;
         const floatArray = new Float32Array(buffer.buffer, buffer.byteOffset + start, dimension);
         this.cache.set(hashes[i]!, new Float32Array(floatArray));
       }
-      // Log memory after loading cache
+
+      log.i("GLOBALCACHE", "Loaded pre-built embeddings", { count: this.cache.size, model });
       logMemory("GLOBALCACHE", { cacheSize: this.cache.size, textToHashSize: this.textToHash.size });
     } catch (e) {
-      log.w("GLOBALCACHE", "Failed to load cache", { error: (e as Error).message });
+      log.w("GLOBALCACHE", "Failed to load pre-built embeddings (non-fatal)", {
+        error: (e as Error).message,
+      });
     }
-  }
-
-  /**
-   * Save cache to disk
-   */
-  async saveCache(): Promise<void> {
-    if (!this.metadata) return;
-
-    const metadataPath = join(this.cacheDir, "metadata.json");
-    const embeddingsPath = join(this.cacheDir, "embeddings.bin");
-    const textsPath = join(this.cacheDir, "texts.json");
-
-    // Save metadata
-    this.metadata.lastUpdated = new Date().toISOString();
-    writeFileSync(metadataPath, JSON.stringify(this.metadata, null, 2));
-
-    // Save texts (hash -> text)
-    const texts: Record<string, string> = {};
-    for (const [text, hash] of this.textToHash) {
-      texts[hash] = text;
-    }
-    writeFileSync(textsPath, JSON.stringify(texts));
-
-    // Save binary embeddings
-    const dimension = this.metadata.dimension;
-    const buffer = Buffer.alloc(this.cache.size * dimension * 4);
-    let offset = 0;
-    for (const [hash] of this.textToHash) {
-      const embedding = this.cache.get(hash);
-      if (embedding) {
-        for (let i = 0; i < dimension; i++) {
-          buffer.writeFloatLE(embedding[i]!, offset);
-          offset += 4;
-        }
-      }
-    }
-    writeFileSync(embeddingsPath, buffer);
-
-    log.d("GLOBALCACHE", "Saved embeddings to disk", { count: this.cache.size });
-
-    // Log memory after saving
-    logMemory("GLOBALCACHE", { cacheSize: this.cache.size, textToHashSize: this.textToHash.size });
   }
 
   /**
@@ -216,56 +143,41 @@ export class GlobalEmbeddingCache {
   }
 
   /**
-   * Add embedding to global cache
+   * Add embedding to cache (used as runtime LRU for project-specific lookups)
    */
   set(text: string, embedding: Float32Array): void {
     const normalized = text.trim().toLowerCase();
     const hash = hashText(normalized).slice(0, 16);
     this.textToHash.set(normalized, hash);
     this.cache.set(hash, embedding);
-
-    // Evict oldest entries if cache exceeds limit
     this.evictOldest();
   }
 
   /**
-   * Evict oldest entries when cache exceeds MAX_CACHE_SIZE.
-   * Uses FIFO ordering (Map insertion order) for simplicity.
+   * Add embedding for a GlobalCacheEntry, registering both the short `text`
+   * key and the full `embeddingText` key (if present).
+   *
+   * The full embeddingText key enables pipeline cache hits in
+   * deduplicateAndCheckCaches() because that function checks the full
+   * buildEmbeddingText() output, not the short name.
    */
-  private evictOldest(): void {
-    if (this.cache.size <= GlobalEmbeddingCache.MAX_CACHE_SIZE) {
-      return;
-    }
-
-    const keysToDelete = this.cache.size - GlobalEmbeddingCache.MAX_CACHE_SIZE;
-    const iterator = this.cache.keys();
-    const deletedHashes = new Set<string>();
-
-    for (let i = 0; i < keysToDelete; i++) {
-      const result = iterator.next();
-      if (result.done) break;
-      const key = result.value;
-      this.cache.delete(key);
-      deletedHashes.add(key);
-    }
-
-    // Clean up textToHash for deleted entries
-    if (deletedHashes.size > 0) {
-      for (const [text, hash] of this.textToHash) {
-        if (deletedHashes.has(hash)) {
-          this.textToHash.delete(text);
-        }
-      }
-      log.d("GLOBALCACHE", "evicted_oldest", { evicted: deletedHashes.size, remaining: this.cache.size });
+  setEntry(entry: GlobalCacheEntry, embedding: Float32Array): void {
+    this.set(entry.text, embedding);
+    if (entry.embeddingText && entry.embeddingText !== entry.text) {
+      const normalized = entry.embeddingText.trim().toLowerCase();
+      const hash = hashText(normalized).slice(0, 16);
+      this.textToHash.set(normalized, hash);
+      this.cache.set(hash, new Float32Array(embedding));
+      this.evictOldest();
     }
   }
 
   /**
-   * Get all entries that need embeddings
+   * Get all global entries not yet in cache (for fallback runtime generation).
    */
   getEntriesNeedingEmbeddings(): GlobalCacheEntry[] {
     const all = getAllGlobalEntries();
-    return all.filter((entry) => !this.has(entry.text));
+    return all.filter((entry) => !this.has(entry.embeddingText ?? entry.text));
   }
 
   /**
@@ -281,11 +193,7 @@ export class GlobalEmbeddingCache {
       byLanguage[entry.language] = (byLanguage[entry.language] ?? 0) + 1;
     }
 
-    return {
-      total: this.cache.size,
-      byCategory,
-      byLanguage,
-    };
+    return { total: this.cache.size, byCategory, byLanguage };
   }
 
   /**
@@ -294,5 +202,28 @@ export class GlobalEmbeddingCache {
   clear(): void {
     this.cache.clear();
     this.textToHash.clear();
+  }
+
+  private evictOldest(): void {
+    if (this.cache.size <= GlobalEmbeddingCache.MAX_CACHE_SIZE) return;
+
+    const keysToDelete = this.cache.size - GlobalEmbeddingCache.MAX_CACHE_SIZE;
+    const iterator = this.cache.keys();
+    const deletedHashes = new Set<string>();
+
+    for (let i = 0; i < keysToDelete; i++) {
+      const result = iterator.next();
+      if (result.done) break;
+      const key = result.value;
+      this.cache.delete(key);
+      deletedHashes.add(key);
+    }
+
+    if (deletedHashes.size > 0) {
+      for (const [text, hash] of this.textToHash) {
+        if (deletedHashes.has(hash)) this.textToHash.delete(text);
+      }
+      log.d("GLOBALCACHE", "evicted_oldest", { evicted: deletedHashes.size, remaining: this.cache.size });
+    }
   }
 }
