@@ -128,7 +128,7 @@ export class IndexerAgent extends BaseAgent {
 
   // Batch accumulator for streaming indexing optimization
   // Accumulates entities/relationships and flushes in batches to reduce DB operations
-  private readonly BATCH_FLUSH_THRESHOLD = 200; // Flush every 200 files (was 50)
+  private readonly BATCH_FLUSH_THRESHOLD = 270; // Flush every 270 files (was 200→50); 3 batches overlaps better with parsing
   private pendingStorageEntities: Entity[] = [];
   private pendingRelationships: Relationship[] = [];
   private pendingParsedEntities: Array<{ entities: ParsedEntity[]; filePath: string }> = [];

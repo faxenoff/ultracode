@@ -1067,17 +1067,33 @@ export class ParserAgent extends BaseAgent {
       skipped: skippedLanguages.length > 0 ? skippedLanguages.join(",") : "none",
     });
 
-    // Create all pools in parallel
+    // Create all pools in parallel, pre-spawning the full target worker count.
+    // This eliminates the ensureWorkers() latency (~560 ms for TS) that would otherwise
+    // occur at the start of actual parsing. Thresholds mirror getOptimalWorkerCount()
+    // in ParsingSubprocessPool — keep in sync if those change.
+    const maxWorkers = this.embeddingConfig ? 10 : 10;
+    const computeTargetWorkers = (fileCount: number): number => {
+      if (fileCount < 10) return 1;
+      if (fileCount < 30) return 2;
+      if (fileCount < 60) return Math.min(3, maxWorkers);
+      if (fileCount < 100) return Math.min(4, maxWorkers);
+      if (fileCount < 150) return Math.min(6, maxWorkers);
+      if (fileCount < 250) return Math.min(8, maxWorkers);
+      if (fileCount < 400) return Math.min(9, maxWorkers);
+      return maxWorkers;
+    };
+
     const poolPromises = languages.map(async (language) => {
       const fileCount = languageGroups.get(language)?.length ?? 0;
+      const targetCount = computeTargetWorkers(fileCount);
       try {
-        const pool = await this.getOrCreateLanguagePool(language);
-        return { language, fileCount, success: !!pool };
+        const pool = await this.getOrCreateLanguagePool(language, targetCount);
+        return { language, fileCount, targetCount, success: !!pool };
       } catch (error) {
         log.w("PARSER", `preSpawnPools failed for ${language}`, {
           error: (error as Error).message,
         });
-        return { language, fileCount, success: false };
+        return { language, fileCount, targetCount: 1, success: false };
       }
     });
 
@@ -1089,6 +1105,7 @@ export class ParserAgent extends BaseAgent {
       elapsed: `${elapsed}ms`,
       poolsCreated: successCount,
       poolsFailed: results.length - successCount,
+      workerCounts: results.map((r) => `${r.language}:${r.targetCount}`).join(","),
     });
   }
 
@@ -1139,7 +1156,7 @@ export class ParserAgent extends BaseAgent {
    * - Visible in Task Manager
    * - Workers restart automatically when memory exceeds limit
    */
-  private async getOrCreateLanguagePool(language: string): Promise<WorkerPool | null> {
+  private async getOrCreateLanguagePool(language: string, preSpawnCount = 1): Promise<WorkerPool | null> {
     // Use universal pool if enabled (incremental mode)
     if (this.useUniversalPool && this.universalPool) {
       return this.universalPool;
@@ -1154,11 +1171,13 @@ export class ParserAgent extends BaseAgent {
     try {
       log.i("PARSER", `Creating subprocess pool for ${language}`, {
         hasEmbeddingConfig: !!this.embeddingConfig,
+        preSpawnCount,
       });
 
       // Per-language fallback pools should ALWAYS terminate after batch
       // Only universal pool stays alive for incremental parsing
       const pool: WorkerPool = new ParsingSubprocessPool(language, {
+        poolSize: preSpawnCount, // Pre-spawn target workers to eliminate ensureWorkers latency at parse time
         killAfterBatch: true, // Always kill per-language pools after batch
         memoryLimitMB: 500, // Restart if memory exceeds 500MB
         ...(this.embeddingConfig && { embeddingConfig: this.embeddingConfig }),

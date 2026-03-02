@@ -676,52 +676,57 @@ export class DevAgent extends BaseAgent implements ResourceAdjustmentCapable {
     _effectiveBatchSize: number,
     _dataFiles: string[],
   ): Promise<void> {
-    // Flush any pending embeddings to FAISS
+    // Flush embeddings to FAISS and create graph commit in parallel (independent storage)
     perfTimings["embFlush_start"] = Date.now() - perfStart;
-    if (this.parserAgent) {
-      const accumulator = this.parserAgent.getAccumulator();
-      if (accumulator) {
-        const pendingCount = accumulator.getPendingCount();
-        if (pendingCount > 0) {
-          log.i("DEVAGENT", "Flushing pending embeddings to FAISS", { pending: pendingCount });
-          try {
-            const flushed = await accumulator.flush();
-            log.i("DEVAGENT", "Embeddings flushed to FAISS", { flushed });
-          } catch (err) {
-            log.e("DEVAGENT", "Failed to flush embeddings", { error: (err as Error).message });
-          }
-        }
-        const stats = accumulator.getStats();
-        log.i("DEVAGENT", "Embedding accumulator stats", {
-          accumulated: stats.accumulated,
-          flushed: stats.flushed,
-          flushCount: stats.flushCount,
-          totalBytes: stats.totalBytes,
-        });
-      }
-    }
-    perfTimings["embFlush_end"] = Date.now() - perfStart;
-
-    // Create graph commit after indexing (Prolly Tree versioning)
     perfTimings["commit_start"] = Date.now() - perfStart;
-    try {
-      const storage = await getGraphStorage();
-      const adapter = (storage as any).getLibSQLAdapter?.();
-      if (adapter?.createGraphCommit) {
-        const commitHash = await adapter.createGraphCommit(`Index: ${filesProcessed} files`);
-        if (commitHash) {
-          log.i("DEVAGENT", "graph_commit_created", {
-            commit: commitHash.slice(0, 8),
-            files: filesProcessed,
-            entities: totalEntities,
-          });
+
+    const faissFlushPromise = (async () => {
+      if (!this.parserAgent) return;
+      const accumulator = this.parserAgent.getAccumulator();
+      if (!accumulator) return;
+      const pendingCount = accumulator.getPendingCount();
+      if (pendingCount > 0) {
+        log.i("DEVAGENT", "Flushing pending embeddings to FAISS", { pending: pendingCount });
+        try {
+          const flushed = await accumulator.flush();
+          log.i("DEVAGENT", "Embeddings flushed to FAISS", { flushed });
+        } catch (err) {
+          log.e("DEVAGENT", "Failed to flush embeddings", { error: (err as Error).message });
         }
-        // GC: keep last 20 commits per branch, clean orphaned Prolly nodes
-        adapter.pruneAndGC?.(20)?.catch?.((err: unknown) => log.w("DEVAGENT", "prune_gc_fail", { err: String(err) }));
       }
-    } catch (err) {
-      log.w("DEVAGENT", "graph_commit_failed", { error: (err as Error).message });
-    }
+      const stats = accumulator.getStats();
+      log.i("DEVAGENT", "Embedding accumulator stats", {
+        accumulated: stats.accumulated,
+        flushed: stats.flushed,
+        flushCount: stats.flushCount,
+        totalBytes: stats.totalBytes,
+      });
+    })();
+
+    const graphCommitPromise = (async () => {
+      try {
+        const storage = await getGraphStorage();
+        const adapter = (storage as any).getLibSQLAdapter?.();
+        if (adapter?.createGraphCommit) {
+          const commitHash = await adapter.createGraphCommit(`Index: ${filesProcessed} files`);
+          if (commitHash) {
+            log.i("DEVAGENT", "graph_commit_created", {
+              commit: commitHash.slice(0, 8),
+              files: filesProcessed,
+              entities: totalEntities,
+            });
+          }
+          // GC: keep last 20 commits per branch, clean orphaned Prolly nodes
+          adapter.pruneAndGC?.(20)?.catch?.((err: unknown) => log.w("DEVAGENT", "prune_gc_fail", { err: String(err) }));
+        }
+      } catch (err) {
+        log.w("DEVAGENT", "graph_commit_failed", { error: (err as Error).message });
+      }
+    })();
+
+    await Promise.all([faissFlushPromise, graphCommitPromise]);
+
+    perfTimings["embFlush_end"] = Date.now() - perfStart;
     perfTimings["commit_end"] = Date.now() - perfStart;
 
     // Switch to keepalive mode

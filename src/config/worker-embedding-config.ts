@@ -404,7 +404,7 @@ function computeQueueBatchSize(
         : providerKind === "ovms"
           ? 200
           : providerKind === "tei"
-            ? 50
+            ? 128 // was 50; larger batches reduce HTTP round-trips to TEI (~188→74 requests for 9k vectors)
             : undefined;
   // Ensure queue batch doesn't exceed server's max_client_batch_size
   const maxBatchFromProvider = providerOptions?.maxBatchSize as number | undefined;
