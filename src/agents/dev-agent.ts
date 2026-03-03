@@ -967,6 +967,14 @@ export class DevAgent extends BaseAgent implements ResourceAdjustmentCapable {
       // llamacpp server start + centralized EmbeddingGenerator run in parallel
       const pipelinePromise = this.initEmbeddingPipeline(embeddingConfig, payload);
 
+      // Enable streaming mode BEFORE preSpawnPools — pools read this.streamingMode at construction time.
+      // If setStreamingMode(false) was called at the end of a previous indexing run, pools
+      // pre-spawned here would inherit streamingMode=false, disabling IPC streaming and
+      // forcing all files through the slow post-batch indexing path (mainIndexMs 56x slower).
+      if (this.parserAgent) {
+        this.parserAgent.setStreamingMode(true);
+      }
+
       if (!isIncremental && codeFiles.length > 0) {
         perfTimings["preSpawn_start"] = Date.now() - perfStart;
         preSpawnPromise = this.parserAgent.preSpawnPools(codeFiles);
@@ -988,7 +996,8 @@ export class DevAgent extends BaseAgent implements ResourceAdjustmentCapable {
     let streamingCallbackCount = 0;
 
     if (this.parserAgent && this.indexerAgent) {
-      // Streaming callback - queues for batch indexing (instant, non-blocking)
+      // Set the streaming callback — pools already have streamingMode=true from above,
+      // the wrapper callback delegates to this.onStreamingResult via closure
       this.parserAgent.setStreamingMode(true, (result, _taskId, _fileIndex, _totalFiles) => {
         if (!result.filePath || !result.entities || result.entities.length === 0) {
           return;

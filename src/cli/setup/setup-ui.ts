@@ -31,9 +31,9 @@ export function printBanner(): void {
   console.error(`${c.cyan}        ██  ██  ██      ██   ██▄▄██▄ ██▄▄██${c.reset}`);
   console.error(`${c.cyan}        ██  ██  ██      ██   ██   ██ ██  ██${c.reset}`);
   console.error(`${c.cyan}        ██  ██  ██████  ██   ██   ██ ██  ██${c.reset}`);
-  console.error(`${c.cyan}        ▀████▀            ▄▄▄▄  ▄▄▄▄ ▄▄▄▄  ▄▄ ▄▄▄▄ ▄▄▄▄▄▄${c.reset}`);
-  console.error(`${c.cyan}                         ███▄▄ ██▀▀▀ ██▄█▄ ██ ██▄█▀  ██${c.reset}`);
-  console.error(`${c.cyan}                         ▄▄██▀ ▀████ ██ ██ ██ ██     ██${c.reset}`);
+  console.error(`${c.cyan}        ▀████▀          ▄████ ▄████▄ █████▄ █████${c.reset}`);
+  console.error(`${c.cyan}                        ██    ██  ██ ██  ██ ██▄▄▄${c.reset}`);
+  console.error(`${c.cyan}                        ▀████ ▀████▀ █████▀ ██▄▄▄${c.reset}`);
   console.error("");
   console.error(`${c.bright}     ╔═════════════════════════════════════════════════════╗${c.reset}`);
   console.error(`${c.bright}     ║              SEMANTIC EMBEDDING SETUP               ║${c.reset}`);

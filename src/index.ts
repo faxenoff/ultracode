@@ -901,6 +901,7 @@ async function executeToolCall(
       getServiceContainer: () => getOrInitServiceContainer(),
       normalizeInputPath,
       withTimeout,
+      createAutoIndexContext,
     };
 
     if (toolRegistry.has(name)) {

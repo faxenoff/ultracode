@@ -243,9 +243,10 @@ export class CooccurrenceOperations {
 
   /**
    * Recalculate PMI (Pointwise Mutual Information) for all co-occurrence pairs.
-   * PMI = log(P(x,y) / (P(x) * P(y)))
+   * PMI = log2(P(x,y) / (P(x) * P(y)))
    *
-   * Should be called periodically or after full reindexing.
+   * Uses batched approach: preloads term frequencies, calculates PMI in JS,
+   * then updates in batches with event loop yields to prevent CPU blocking.
    */
   async recalculatePMI(): Promise<void> {
     const client = this.getClient();
@@ -254,52 +255,83 @@ export class CooccurrenceOperations {
     const { projectHash, branchName } = this.getContext();
     const startTime = Date.now();
 
-    // Get total document count (approximate from term_frequency)
-    const totalDocsResult = await client.execute({
-      sql: `SELECT MAX(doc_count) as max_docs FROM term_frequency WHERE project_hash = ? AND branch_name = ?`,
+    // Step 1: Preload all term frequencies into a Map for O(1) lookups
+    const tfResult = await client.execute({
+      sql: `SELECT term, total_count, doc_count FROM term_frequency WHERE project_hash = ? AND branch_name = ?`,
       args: [projectHash, branchName],
     });
-    const totalDocs = (totalDocsResult.rows[0]?.["max_docs"] as number) || 1;
 
-    // Get total co-occurrence count
+    const termFreqs = new Map<string, number>();
+    let maxDocCount = 1;
+    for (const row of tfResult.rows) {
+      const term = row["term"] as string;
+      const totalCount = row["total_count"] as number;
+      const docCount = row["doc_count"] as number;
+      termFreqs.set(term, totalCount);
+      if (docCount > maxDocCount) maxDocCount = docCount;
+    }
+    const totalDocs = maxDocCount;
+
+    // Step 2: Read all co-occurrence pairs
+    const coocResult = await client.execute({
+      sql: `SELECT term1, term2, count FROM cooccurrence WHERE project_hash = ? AND branch_name = ?`,
+      args: [projectHash, branchName],
+    });
+
     const totalPairsResult = await client.execute({
       sql: `SELECT SUM(count) as total FROM cooccurrence WHERE project_hash = ? AND branch_name = ?`,
       args: [projectHash, branchName],
     });
     const totalPairs = (totalPairsResult.rows[0]?.["total"] as number) || 1;
 
-    // Update PMI for all pairs using a single UPDATE with subqueries
-    // PMI = log2(P(x,y) / (P(x) * P(y)))
-    // P(x,y) = count / totalPairs
-    // P(x) = term_freq(x) / totalDocs
-    await client.execute({
-      sql: `
-        UPDATE cooccurrence
-        SET pmi = (
-          SELECT
-            CASE
-              WHEN tf1.total_count > 0 AND tf2.total_count > 0 THEN
-                LOG(
-                  (cooccurrence.count * 1.0 / ?) /
-                  ((tf1.total_count * 1.0 / ?) * (tf2.total_count * 1.0 / ?))
-                ) / LOG(2)
-              ELSE 0
-            END
-          FROM term_frequency tf1, term_frequency tf2
-          WHERE tf1.term = cooccurrence.term1
-            AND tf1.project_hash = cooccurrence.project_hash
-            AND tf1.branch_name = cooccurrence.branch_name
-            AND tf2.term = cooccurrence.term2
-            AND tf2.project_hash = cooccurrence.project_hash
-            AND tf2.branch_name = cooccurrence.branch_name
-        )
-        WHERE project_hash = ? AND branch_name = ?
-      `,
-      args: [totalPairs, totalDocs, totalDocs, projectHash, branchName],
-    });
+    if (coocResult.rows.length === 0) {
+      log.i("COOCOPS", "pmi_skip", { reason: "no_pairs" });
+      return;
+    }
+
+    log.i("COOCOPS", "pmi_start", { pairs: coocResult.rows.length, terms: termFreqs.size, totalDocs, totalPairs });
+
+    // Step 3: Calculate PMI in JS and batch update
+    const BATCH_SIZE = 500;
+    let updated = 0;
+
+    for (let i = 0; i < coocResult.rows.length; i += BATCH_SIZE) {
+      const batch = coocResult.rows.slice(i, i + BATCH_SIZE);
+      const statements = [];
+
+      for (const row of batch) {
+        const term1 = row["term1"] as string;
+        const term2 = row["term2"] as string;
+        const count = row["count"] as number;
+
+        const tf1 = termFreqs.get(term1) || 0;
+        const tf2 = termFreqs.get(term2) || 0;
+
+        let pmi = 0;
+        if (tf1 > 0 && tf2 > 0) {
+          const pXY = count / totalPairs;
+          const pX = tf1 / totalDocs;
+          const pY = tf2 / totalDocs;
+          pmi = Math.log2(pXY / (pX * pY));
+        }
+
+        statements.push({
+          sql: `UPDATE cooccurrence SET pmi = ? WHERE term1 = ? AND term2 = ? AND project_hash = ? AND branch_name = ?`,
+          args: [pmi, term1, term2, projectHash, branchName] as (string | number)[],
+        });
+      }
+
+      await client.batch(statements, "write");
+      updated += batch.length;
+
+      // Yield to event loop every batch to prevent CPU blocking
+      if (i + BATCH_SIZE < coocResult.rows.length) {
+        await new Promise<void>((resolve) => setTimeout(resolve, 0));
+      }
+    }
 
     const elapsed = Date.now() - startTime;
-    log.i("COOCOPS", "pmi_recalculated", { ms: elapsed, totalPairs, totalDocs });
+    log.i("COOCOPS", "pmi_recalculated", { ms: elapsed, pairs: updated, terms: termFreqs.size, totalDocs });
   }
 
   // ===========================================================================

@@ -417,7 +417,9 @@ export class MetadataOperations {
   // ===========================================================================
 
   /**
-   * Clear all data for current project/branch
+   * Clear all data for current project/branch.
+   * Auto-detects single-project DB and uses fast truncation path (clearAll)
+   * to avoid SQLite B-tree fragmentation that causes 56x slower INSERTs.
    */
   async clear(): Promise<void> {
     const client = this.getClient();
@@ -425,6 +427,27 @@ export class MetadataOperations {
 
     const { projectHash, branchName } = this.getContext();
 
+    // Check if this is the only project — use fast truncation path if so
+    const otherProjects = await client.execute({
+      sql: "SELECT 1 FROM entities WHERE project_hash != ? LIMIT 1",
+      args: [projectHash],
+    });
+
+    if (otherProjects.rows.length === 0) {
+      // Single project — use clearAll() which includes WAL checkpoint
+      await this.clearAll();
+      // VACUUM reclaims freelist pages so INSERTs don't trigger slow page reuse.
+      // On empty DB this is fast (~100ms).
+      try {
+        await client.execute({ sql: "VACUUM", args: [] });
+      } catch {
+        // Non-critical
+      }
+      log.i("METADATAOPS", "data_cleared_fast", { ctx: `${projectHash}/${branchName}`, mode: "truncate+vacuum" });
+      return;
+    }
+
+    // Multi-project — row-by-row delete + VACUUM to defragment B-trees
     await client.batch(
       [
         // NOTE: embeddings table removed in v5 - FAISS handles vector storage
@@ -439,11 +462,31 @@ export class MetadataOperations {
           sql: "DELETE FROM project_metadata WHERE project_hash = ? AND branch_name = ?",
           args: [projectHash, branchName],
         },
+        {
+          sql: "DELETE FROM name_tokens WHERE project_hash = ? AND branch_name = ?",
+          args: [projectHash, branchName],
+        },
+        {
+          sql: "DELETE FROM cooccurrence WHERE project_hash = ? AND branch_name = ?",
+          args: [projectHash, branchName],
+        },
+        {
+          sql: "DELETE FROM term_frequency WHERE project_hash = ? AND branch_name = ?",
+          args: [projectHash, branchName],
+        },
       ],
       "write",
     );
 
-    log.i("METADATAOPS", "data_cleared", { ctx: `${projectHash}/${branchName}` });
+    // VACUUM defragments B-trees after mass DELETE, preventing 56x slower INSERTs
+    try {
+      await client.execute({ sql: "VACUUM", args: [] });
+      log.i("METADATAOPS", "data_cleared", { ctx: `${projectHash}/${branchName}`, mode: "delete+vacuum" });
+    } catch (error) {
+      // VACUUM can fail under concurrent access — non-critical
+      log.w("METADATAOPS", "vacuum_fail", { err: (error as Error).message });
+      log.i("METADATAOPS", "data_cleared", { ctx: `${projectHash}/${branchName}`, mode: "delete" });
+    }
   }
 
   /**
@@ -461,9 +504,21 @@ export class MetadataOperations {
         { sql: "DELETE FROM files", args: [] },
         { sql: "DELETE FROM query_cache", args: [] },
         { sql: "DELETE FROM project_metadata", args: [] },
+        { sql: "DELETE FROM name_tokens", args: [] },
+        { sql: "DELETE FROM cooccurrence", args: [] },
+        { sql: "DELETE FROM term_frequency", args: [] },
       ],
       "write",
     );
+
+    // Flush and truncate WAL after mass DELETE to prevent slow INSERTs.
+    // Without this, accumulated WAL pages from prior writes cause
+    // automatic checkpoints during INSERT, adding ~12s overhead.
+    try {
+      await client.execute({ sql: "PRAGMA wal_checkpoint(TRUNCATE)", args: [] });
+    } catch {
+      // Non-critical — checkpoint may fail under concurrent access
+    }
 
     log.i("METADATAOPS", "all_data_cleared");
   }

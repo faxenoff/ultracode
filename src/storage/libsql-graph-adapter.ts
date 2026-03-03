@@ -599,6 +599,15 @@ export class LibSQLGraphAdapter {
         deleted_at INTEGER NOT NULL,
         PRIMARY KEY (entity_id, project_hash, branch_name, entity_type)
       )`,
+        // Name tokens table — enables fast B-tree token lookup instead of LIKE '%pattern%'
+        // splitToTokens("getAuthToken") → ["get", "auth", "token"]
+        `CREATE TABLE IF NOT EXISTS name_tokens (
+        token TEXT NOT NULL,
+        entity_id TEXT NOT NULL,
+        project_hash TEXT NOT NULL,
+        branch_name TEXT NOT NULL,
+        PRIMARY KEY (token, entity_id, project_hash, branch_name)
+      )`,
         // NOTE: embeddings table REMOVED in v5 - FAISS is used for all vector operations
         // See: src/semantic/vector-store.ts (v5: Faiss-only backend)
         // === INDEXES (batched for speed) ===
@@ -615,6 +624,7 @@ export class LibSQLGraphAdapter {
         `CREATE INDEX IF NOT EXISTS idx_files_project_branch ON files(project_hash, branch_name)`,
         // Tombstones index
         `CREATE INDEX IF NOT EXISTS idx_tombstones_lookup ON tombstones(project_hash, branch_name, entity_type)`,
+        `CREATE INDEX IF NOT EXISTS idx_name_tokens_lookup ON name_tokens(token, project_hash, branch_name)`,
         // Co-occurrence table for query expansion
         // Stores term pairs that frequently appear together in comments/docs
         `CREATE TABLE IF NOT EXISTS cooccurrence (

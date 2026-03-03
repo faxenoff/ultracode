@@ -1582,11 +1582,15 @@ export class ParserAgent extends BaseAgent {
    */
   setStreamingMode(enabled: boolean, callback?: StreamingResultCallback): void {
     this.streamingMode = enabled;
-    this.onStreamingResult = callback ?? null;
+    // Only update callback when explicitly provided (avoids clearing it on mode-only calls)
+    if (callback !== undefined) {
+      this.onStreamingResult = callback ?? null;
+    }
 
-    if (enabled && callback) {
-      log.i("PARSER", "Streaming mode enabled");
+    if (enabled) {
+      log.i("PARSER", "Streaming mode enabled", { hasCallback: !!this.onStreamingResult });
     } else {
+      this.onStreamingResult = null;
       log.i("PARSER", "Streaming mode disabled");
     }
   }

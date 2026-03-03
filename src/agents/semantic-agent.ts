@@ -934,23 +934,28 @@ export class SemanticAgent extends BaseAgent implements SemanticOperations, Reso
     });
 
     // Subscribe to full index completion to recalculate PMI for co-occurrence
-    knowledgeBus.subscribe(this.id, "index:completed", async (entry: KnowledgeEntry) => {
+    // Handler is synchronous — returns immediately so KnowledgeBus proceeds to next subscriber.
+    // PMI runs as fire-and-forget async (yields at first DB query).
+    // Tools work immediately with count-based fallback while PMI recalculates in background.
+    knowledgeBus.subscribe(this.id, "index:completed", (entry: KnowledgeEntry) => {
       const data = entry.data as { incremental?: boolean } | undefined;
       if (data?.incremental) {
-        return; // Skip PMI recalculation for incremental updates
+        return;
       }
 
-      // Recalculate PMI after full indexing for better query expansion
-      if (this.cooccurrenceIndex) {
+      if (!this.cooccurrenceIndex) return;
+
+      const coocIndex = this.cooccurrenceIndex;
+      void (async () => {
         try {
-          log.i("COOC", "recalculating_pmi");
-          await this.cooccurrenceIndex.recalculatePMI();
-          const stats = await this.cooccurrenceIndex.getStats();
+          log.i("COOC", "recalculating_pmi_async");
+          await coocIndex.recalculatePMI();
+          const stats = await coocIndex.getStats();
           log.i("COOC", "pmi_done", { pairs: stats.totalPairs, terms: stats.totalTerms });
         } catch (error) {
           log.w("COOC", "pmi_fail", { err: (error as Error).message });
         }
-      }
+      })();
     });
   }
 

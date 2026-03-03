@@ -14,6 +14,7 @@
 
 import type { ConductorOrchestrator } from "../agents/conductor-orchestrator.js";
 import type { SemanticAgent } from "../agents/semantic-agent.js";
+import type { AutoIndexContext } from "../core/auto-indexer.js";
 import type { BranchManager } from "../core/branch-manager.js";
 import type { ClientSession } from "../core/client-session.js";
 import type { KnowledgeBus } from "../core/knowledge-bus.js";
@@ -58,6 +59,7 @@ export interface ToolContext {
   getServiceContainer?: () => unknown; // DI Container for services
   normalizeInputPath: (path?: string) => string | undefined;
   withTimeout: <T>(promise: Promise<T>, ms: number, operation: string, reqId: string) => Promise<T>;
+  createAutoIndexContext?: () => AutoIndexContext;
 }
 
 export abstract class BaseToolHandler<TArgs = unknown> {
