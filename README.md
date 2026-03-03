@@ -207,6 +207,16 @@ MCP server provides **72 tools** for code analysis and modification.
 - **Metrics** — cyclomatic, cognitive complexity, control flow, documentation
 - **Types** — type inference, type references, generics
 
+### Low-Resource Languages Initiative
+
+> **0b00000001 lives matter!**
+
+We deliberately invest in first-class support for lesser-known yet promising languages and frameworks — so their communities get the same powerful code intelligence that mainstream ecosystems enjoy.
+
+**Currently supported:** Zig — full entity extraction, relationships, and complexity metrics.
+
+More languages coming. If your favorite niche language deserves better tooling — [open an issue](https://github.com/faxenoff/ultracode/issues).
+
 ### Frameworks
 
 | Framework | Additional Capabilities |
