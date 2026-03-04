@@ -7,7 +7,7 @@ debug: true
 mcp:
   embedding:
     model: "all-MiniLM-L6-v2"
-    provider: "ovms"
+    provider: "tei"
     enabled: true
     fallbackToMemory: false
     apiKey: ""
