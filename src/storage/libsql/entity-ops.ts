@@ -448,7 +448,7 @@ export class EntityOperations {
           if (p.includes("\\")) normalized.push(p.replace(/\\/g, "/"));
         }
         const unique = [...new Set(normalized)];
-        sql += ` AND file_path IN (${unique.map(() => "?").join(",")})`;
+        sql += ` AND e.file_path IN (${unique.map(() => "?").join(",")})`;
         args.push(...unique);
       }
 
@@ -634,7 +634,7 @@ export class EntityOperations {
       // Support partial path matching (e.g., "src/index.ts" matches "D:\...\src\index.ts")
       // Handle both / and \ path separators
       const normalizedPath = options.filePath.replace(/\\/g, "/");
-      sql += " AND (file_path LIKE ? OR file_path LIKE ?)";
+      sql += " AND (e.file_path LIKE ? OR e.file_path LIKE ?)";
       args.push(`%${normalizedPath}`, `%${normalizedPath.replace(/\//g, "\\")}`);
     }
 

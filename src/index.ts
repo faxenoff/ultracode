@@ -161,6 +161,8 @@ import {
   initializeGraphStorage,
   resetGraphStorage,
 } from "./storage/graph-storage-factory.js";
+import { createProjectContext } from "./storage/graph-storage-libsql.js";
+import { runWithRequestContext } from "./storage/libsql/request-context.js";
 import type { ToolContext } from "./tools/base-tool-handler.js";
 import { MAX_RESPONSE_SIZE_BYTES, truncateResponse } from "./tools/response-limits.js";
 import { getToolsList } from "./tools/tool-definitions.js";
@@ -905,15 +907,25 @@ async function executeToolCall(
     };
 
     if (toolRegistry.has(name)) {
+      // v7: Wrap tool execution in request-scoped project context
+      // This prevents race conditions when multiple MCP clients share
+      // the global GraphStorage singleton — each tool call gets its own
+      // immutable project context via AsyncLocalStorage.
+      const requestCtx = createProjectContext(projectPath);
+
       if (HEAVY_ANALYSIS_TOOLS.has(name)) {
-        return await analysisQueue(async () => {
-          const handler = await toolRegistry.getHandler(name, toolContext);
-          const result = await handler.handle(args);
-          return enforceResponseLimit(name, result);
-        });
+        return await analysisQueue(() =>
+          runWithRequestContext(requestCtx, async () => {
+            const handler = await toolRegistry.getHandler(name, toolContext);
+            const result = await handler.handle(args);
+            return enforceResponseLimit(name, result);
+          }),
+        );
       }
-      const handler = await toolRegistry.getHandler(name, toolContext);
-      return handler.handle(args);
+      return runWithRequestContext(requestCtx, async () => {
+        const handler = await toolRegistry.getHandler(name, toolContext);
+        return handler.handle(args);
+      });
     }
 
     throw new Error(`Unknown tool: ${name}. Available tools: ${toolRegistry.getRegisteredTools().join(", ")}`);

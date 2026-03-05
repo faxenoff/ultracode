@@ -40,6 +40,7 @@ import { EntityOperations } from "./libsql/entity-ops.js";
 import { GenerationManager } from "./libsql/generation-ops.js";
 import { MetadataOperations } from "./libsql/metadata-ops.js";
 import { RelationshipOperations } from "./libsql/relationship-ops.js";
+import { getRequestContext } from "./libsql/request-context.js";
 // Import shared types and operation classes from libsql/ modules
 import {
   CACHE_CONFIG,
@@ -146,7 +147,7 @@ export class LibSQLGraphAdapter {
 
     // Initialize operation delegates
     const getClient = () => this.client;
-    const getContext = () => this.currentContext;
+    const getContext = () => getRequestContext() ?? this.currentContext;
 
     this.generationManager = new GenerationManager(getClient, getContext);
     this.entityOps = new EntityOperations(
