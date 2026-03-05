@@ -109,14 +109,14 @@ const CSHARP_TYPE_MAP = {
   class: "class",
   method: "method",
   property: "property",
-  field: "field",
+  field: "variable",
   enum: "enum",
   struct: "struct",
   interface: "interface",
   namespace: "namespace",
   delegate: "delegate",
   record: "record",
-  constructor: "constructor",
+  constructor: "method",
   event: "event",
   indexer: "property",
 } as const satisfies Record<string, ParsedEntity["type"]>;
@@ -140,6 +140,11 @@ function convertCSharpResult(filePath: string, entities: CSharpParsedEntity[]): 
     if (meta?.isStatic) modifiers.push("static");
     if (meta?.isAsync) modifiers.push("async");
     if (meta?.isAbstract) modifiers.push("abstract");
+    if (meta?.isReadonly) modifiers.push("readonly");
+    if (meta?.isConst) modifiers.push("const");
+    if (meta?.isVirtual) modifiers.push("virtual");
+    if (meta?.isOverride) modifiers.push("override");
+    if (meta?.isSealed) modifiers.push("sealed");
 
     const parsed: ParsedEntity = {
       id: entity.id,
@@ -215,6 +220,21 @@ function convertCSharpResult(filePath: string, entities: CSharpParsedEntity[]): 
       parsed.typeParameters = meta.typeParameters.map((tp) => ({
         name: tp,
       }));
+    }
+
+    // Control flow (basic mapping from Roslyn metadata)
+    if (mappedType === "method" || mappedType === "function") {
+      const loc = (line: number) => ({
+        start: { line, column: 0, index: 0 },
+        end: { line, column: 0, index: 0 },
+      });
+      parsed.controlFlow = {
+        branches: [],
+        loops: [],
+        exceptions: [],
+        returns: [],
+        awaits: meta?.isAsync ? [{ expression: "await", location: loc(entity.startLine) }] : [],
+      };
     }
 
     // NOTE: Don't set parsed.children here — we flatten manually below

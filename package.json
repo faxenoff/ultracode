@@ -1,6 +1,6 @@
 {
   "name": "ultracode",
-  "version": "5.2.2",
+  "version": "5.2.3",
   "description": "Codebase RAG MCP server for code understanding - semantic search, duplicate detection, impact analysis for TS/JS/Python/C#/Go/Rust/Java/C++/Kotlin/Swift/Zig/Bash",
   "license": "AGPL-3.0-only OR Commercial",
   "author": "faxenoff",

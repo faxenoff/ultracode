@@ -49,9 +49,9 @@ export class SemanticValidator {
       for (const c of needsSemantic) {
         const entityEmbedding = await this.getEntityEmbedding(c);
         if (!entityEmbedding) {
-          // Can't get embedding — skip semantic, use structural only
+          // Can't get embedding — use structural confidence without semantic penalty
           if (c.confidence >= c.pattern.minStructuralConfidence) {
-            results.push(this.createMatch(c, 0, undefined));
+            results.push(this.createMatch(c, -1, undefined));
           }
           continue;
         }
@@ -85,10 +85,10 @@ export class SemanticValidator {
     closestExemplar?: { id: string; similarity: number; description: string },
   ): PatternMatch {
     const isStructuralOnly = candidate.pattern.minSemanticSimilarity === 0;
+    const noSemanticData = semanticSimilarity < 0;
 
-    const combinedScore = isStructuralOnly
-      ? candidate.confidence
-      : candidate.confidence * 0.4 + semanticSimilarity * 0.6;
+    const combinedScore =
+      isStructuralOnly || noSemanticData ? candidate.confidence : candidate.confidence * 0.4 + semanticSimilarity * 0.6;
 
     return {
       patternId: candidate.pattern.id,
@@ -99,7 +99,7 @@ export class SemanticValidator {
       filePath: candidate.entity.filePath,
       line: candidate.entity.location?.start?.line ?? 0,
       structuralConfidence: candidate.confidence,
-      semanticSimilarity: isStructuralOnly ? 1.0 : semanticSimilarity,
+      semanticSimilarity: isStructuralOnly ? 1.0 : noSemanticData ? 0 : semanticSimilarity,
       combinedScore,
       matchedCriteria: candidate.matchedCriteria,
       closestExemplar: closestExemplar

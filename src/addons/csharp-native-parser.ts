@@ -37,6 +37,11 @@ export interface CSharpEntityMetadata {
   isStatic?: boolean;
   isAsync?: boolean;
   isAbstract?: boolean;
+  isReadonly?: boolean;
+  isConst?: boolean;
+  isVirtual?: boolean;
+  isOverride?: boolean;
+  isSealed?: boolean;
   returnType?: string;
   parameters?: Array<{ name: string; type: string; isOptional?: boolean; defaultValue?: string }>;
   baseTypes?: string[];
