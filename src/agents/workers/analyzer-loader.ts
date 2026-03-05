@@ -158,7 +158,9 @@ async function createAnalyzer(language: string): Promise<BaseParser> {
     }
 
     case "typescript":
-    case "javascript": {
+    case "tsx":
+    case "javascript":
+    case "jsx": {
       // Use UnifiedParser for TS/JS (TypeScript Compiler API)
       const { workerLog } = await import("./worker-logging.js");
       workerLog("INFO", `Loading UnifiedParser for ${language}`);
@@ -289,7 +291,9 @@ export const SUPPORTED_WORKER_LANGUAGES = [
   "bash",
   "powershell",
   "typescript",
+  "tsx",
   "javascript",
+  "jsx",
   "json",
   "zig",
   "helm",
