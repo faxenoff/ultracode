@@ -253,9 +253,52 @@ Models benchmarked for documentation generation with AutoDoc module.
 
 Speedup: 9x faster with parallel reads (concurrency 8-16).
 
+## Storage Architecture
+
+### Multi-DB Split (v6, 2026-03-06)
+
+Unified `unified-storage.db` replaced with 4 independent databases for parallel I/O.
+Index writes to `graph.db` no longer block reads from `semantic.db`/`cache.db`.
+
+| Database | Tables | Size | Purpose |
+|----------|--------|------|---------|
+| **graph.db** | entities, relationships, files, file_generations, tombstones, name_tokens, project_metadata | 64 MB | Write-heavy during indexing |
+| **semantic.db** | cooccurrence, term_frequency | 12 MB | Query expansion (read-heavy) |
+| **versioning.db** | prolly_nodes, graph_commits, branch_heads | 277 MB | Content-addressed versioning |
+| **cache.db** | embedding_cache, query_cache, performance_metrics | 28 KB | Global caches, TTL-based |
+| **Total** | | **353 MB** | 26.7K entities, 68.9K rels, 841 files |
+
+**Initialization timings (cold start):**
+
+| Stage | Time |
+|-------|------|
+| MultiDbManager.initialize() (4 clients parallel) | 15 ms |
+| createTables() (4 DBs parallel) | 3 ms |
+| Prolly components init | 5 ms |
+| **Total storage init** | **25 ms** |
+| flush() (all 4 DBs) | 4 ms |
+
+All DBs: `journal_mode=OFF`, `synchronous=OFF`, `cache_size=-8192` (8 MB per DB).
+
 ## Indexing Performance
 
-UltraCode project indexing benchmarks (523 TS files).
+UltraCode project indexing benchmarks.
+
+### Current (v6, 841 files, 26.7K entities)
+
+| Metric | Value |
+|--------|-------|
+| **Total indexing time** | 11.4 sec |
+| **Collect files** | 350 ms |
+| **Pre-spawn parsers** | 1136 ms |
+| **Parsing** | 7176 ms (~117 files/sec) |
+| **DB flush (entities+rels)** | 594 ms |
+| **Data files + swagger** | 1234 ms |
+| **Embedding flush (FAISS)** | 875 ms (10,814 emb/s) |
+| **Prolly commit** | ~800 ms |
+| **Incremental (1-3 files)** | 48-115 ms |
+
+### Previous (v5, 523 TS files)
 
 | Metric | Value |
 |--------|-------|

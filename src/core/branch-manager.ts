@@ -210,8 +210,8 @@ export class BranchManager {
    * Returns the unified storage database path (same for all branches)
    */
   getBranchDbPath(_branch: string, _repoPath?: string): string {
-    // Unified storage: single database for all projects/branches
-    return join(this.config.dataDir, "unified-storage.db");
+    // Multi-db storage: graph.db is the primary database
+    return join(this.config.dataDir, "graph.db");
   }
 
   /**

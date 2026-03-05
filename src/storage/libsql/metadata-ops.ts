@@ -17,6 +17,7 @@ export class MetadataOperations {
   constructor(
     private getClient: ClientGetter,
     private getContext: ContextGetter,
+    private getCacheClient?: ClientGetter,
   ) {}
 
   // ===========================================================================
@@ -448,16 +449,15 @@ export class MetadataOperations {
     }
 
     // Multi-project — row-by-row delete + VACUUM to defragment B-trees
+    // Graph tables (entities, relationships, files, project_metadata, name_tokens)
     await client.batch(
       [
-        // NOTE: embeddings table removed in v5 - FAISS handles vector storage
         {
           sql: "DELETE FROM relationships WHERE project_hash = ? AND branch_name = ?",
           args: [projectHash, branchName],
         },
         { sql: "DELETE FROM entities WHERE project_hash = ? AND branch_name = ?", args: [projectHash, branchName] },
         { sql: "DELETE FROM files WHERE project_hash = ? AND branch_name = ?", args: [projectHash, branchName] },
-        { sql: "DELETE FROM query_cache WHERE project_hash = ? AND branch_name = ?", args: [projectHash, branchName] },
         {
           sql: "DELETE FROM project_metadata WHERE project_hash = ? AND branch_name = ?",
           args: [projectHash, branchName],
@@ -466,17 +466,38 @@ export class MetadataOperations {
           sql: "DELETE FROM name_tokens WHERE project_hash = ? AND branch_name = ?",
           args: [projectHash, branchName],
         },
-        {
-          sql: "DELETE FROM cooccurrence WHERE project_hash = ? AND branch_name = ?",
-          args: [projectHash, branchName],
-        },
-        {
-          sql: "DELETE FROM term_frequency WHERE project_hash = ? AND branch_name = ?",
-          args: [projectHash, branchName],
-        },
       ],
       "write",
     );
+
+    // Cache tables (query_cache) — may be on separate DB
+    const cacheClient = this.getCacheClient?.() ?? client;
+    if (cacheClient) {
+      await cacheClient.execute({
+        sql: "DELETE FROM query_cache WHERE project_hash = ? AND branch_name = ?",
+        args: [projectHash, branchName],
+      });
+    }
+
+    // Semantic tables (cooccurrence, term_frequency) — may be on separate DB
+    // Try on the main client first; if table doesn't exist there (multi-db), it's in semantic.db
+    try {
+      await client.batch(
+        [
+          {
+            sql: "DELETE FROM cooccurrence WHERE project_hash = ? AND branch_name = ?",
+            args: [projectHash, branchName],
+          },
+          {
+            sql: "DELETE FROM term_frequency WHERE project_hash = ? AND branch_name = ?",
+            args: [projectHash, branchName],
+          },
+        ],
+        "write",
+      );
+    } catch {
+      // In multi-db mode, these tables are not on the graph client — that's OK
+    }
 
     // VACUUM defragments B-trees after mass DELETE, preventing 56x slower INSERTs
     try {
@@ -496,20 +517,40 @@ export class MetadataOperations {
     const client = this.getClient();
     if (!client) throw new Error("Client not initialized");
 
+    // Graph tables
     await client.batch(
       [
-        // NOTE: embeddings table removed in v5 - FAISS handles vector storage
         { sql: "DELETE FROM relationships", args: [] },
         { sql: "DELETE FROM entities", args: [] },
         { sql: "DELETE FROM files", args: [] },
-        { sql: "DELETE FROM query_cache", args: [] },
         { sql: "DELETE FROM project_metadata", args: [] },
         { sql: "DELETE FROM name_tokens", args: [] },
-        { sql: "DELETE FROM cooccurrence", args: [] },
-        { sql: "DELETE FROM term_frequency", args: [] },
       ],
       "write",
     );
+
+    // Cache tables — may be on separate DB
+    const cacheClient = this.getCacheClient?.() ?? client;
+    if (cacheClient) {
+      try {
+        await cacheClient.execute({ sql: "DELETE FROM query_cache", args: [] });
+      } catch {
+        // Table may not exist yet
+      }
+    }
+
+    // Semantic tables — may be on separate DB
+    try {
+      await client.batch(
+        [
+          { sql: "DELETE FROM cooccurrence", args: [] },
+          { sql: "DELETE FROM term_frequency", args: [] },
+        ],
+        "write",
+      );
+    } catch {
+      // In multi-db mode, these tables are not on the graph client
+    }
 
     // Flush and truncate WAL after mass DELETE to prevent slow INSERTs.
     // Without this, accumulated WAL pages from prior writes cause

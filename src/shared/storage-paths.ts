@@ -188,8 +188,8 @@ export function getProjectPaths(projectPath: string) {
  * Get paths for the global unified database
  * All projects share the same database files with project_hash partitioning
  *
- * Current architecture (v5+):
- * - unifiedDbPath: Single libsql database for graph (entities, relationships)
+ * Current architecture (v6+):
+ * - 4 split databases: graph.db, semantic.db, versioning.db, cache.db
  * - FAISS indexes: Per-project at projects/{hash}/faiss-{branch}.bin
  */
 export function getGlobalDbPaths() {
@@ -197,15 +197,29 @@ export function getGlobalDbPaths() {
 
   return {
     dir: dataDir,
-    /** @deprecated Use unifiedDbPath instead */
-    graphDbPath: join(dataDir, "unified-storage.db"),
-    /** @deprecated FAISS is used for vectors, not SQLite. Use getProjectDir() + faiss-{branch}.bin */
-    vectorsDbPath: join(dataDir, "unified-storage.db"), // Kept for compatibility, points to unified DB
-    /** Unified libsql database for all graph data */
-    unifiedDbPath: join(dataDir, "unified-storage.db"),
+    /** @deprecated Use multi-db paths instead */
+    graphDbPath: join(dataDir, "graph.db"),
+    /** @deprecated FAISS is used for vectors, not SQLite */
+    vectorsDbPath: join(dataDir, "graph.db"),
+    /** @deprecated Use getMultiDbPaths() instead */
+    unifiedDbPath: join(dataDir, "graph.db"),
     metaPath: join(dataDir, "global-meta.json"),
     cacheDir: getCacheDir(),
     projectsDir: getProjectsDir(),
+  };
+}
+
+/**
+ * Get paths for the 4 split databases.
+ * Each database handles independent data groups for parallel I/O.
+ */
+export function getMultiDbPaths(basePath?: string) {
+  const dir = basePath ?? getDataDir();
+  return {
+    graph: join(dir, "graph.db"),
+    semantic: join(dir, "semantic.db"),
+    versioning: join(dir, "versioning.db"),
+    cache: join(dir, "cache.db"),
   };
 }
 

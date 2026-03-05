@@ -11,6 +11,7 @@ import { log } from "../logging/index.js";
 import { getCurrentGitBranchOrDefault, getGlobalDbPaths } from "../shared/storage-paths.js";
 import { GraphStorageLibSQL } from "./graph-storage-libsql.js";
 import { DatabaseCorruptionError, LibSQLGraphAdapter, type LibSQLGraphConfig } from "./libsql-graph-adapter.js";
+import { MultiDbManager } from "./multi-db-manager.js";
 
 // Re-export types and helpers for compatibility
 export type { ProjectContext } from "./libsql-graph-adapter.js";
@@ -25,6 +26,7 @@ export {
 // Singleton instances
 let graphStorage: GraphStorageLibSQL | null = null;
 let libsqlAdapter: LibSQLGraphAdapter | null = null;
+let multiDbManager: MultiDbManager | null = null;
 let initializationPromise: Promise<GraphStorageLibSQL> | null = null;
 
 // Configuration from yaml-config
@@ -73,19 +75,42 @@ export async function getGraphStorage(): Promise<GraphStorageLibSQL> {
 
       // Get global database path
       const paths = getGlobalDbPaths();
-      const unifiedDbPath = join(dirname(paths.graphDbPath), "unified-storage.db");
+      const basePath = dirname(paths.graphDbPath);
 
       // Ensure directory exists
-      const dbDir = dirname(unifiedDbPath);
-      if (!existsSync(dbDir)) {
-        log.i("STORAGEFACT", "creating_dir", { dir: dbDir });
-        mkdirSync(dbDir, { recursive: true });
+      if (!existsSync(basePath)) {
+        log.i("STORAGEFACT", "creating_dir", { dir: basePath });
+        mkdirSync(basePath, { recursive: true });
       }
 
-      // Create adapter
-      libsqlAdapter = new LibSQLGraphAdapter(globalConfig);
+      // Delete legacy unified-storage.db if it exists (migration to multi-db)
+      const legacyDbPath = join(basePath, "unified-storage.db");
+      if (existsSync(legacyDbPath)) {
+        log.i("STORAGEFACT", "migrating_to_multi_db", { legacy: legacyDbPath });
+        try {
+          unlinkSync(legacyDbPath);
+          for (const suffix of ["-wal", "-shm", "-journal"]) {
+            const auxPath = legacyDbPath + suffix;
+            if (existsSync(auxPath)) unlinkSync(auxPath);
+          }
+          log.i("STORAGEFACT", "legacy_db_deleted");
+        } catch (deleteError) {
+          log.w("STORAGEFACT", "legacy_db_delete_fail", {
+            error: (deleteError as Error).message,
+          });
+        }
+      }
 
-      const initialized = await libsqlAdapter.initialize(unifiedDbPath);
+      // Initialize MultiDbManager with 4 separate databases
+      multiDbManager = new MultiDbManager();
+      await multiDbManager.initialize(basePath);
+
+      // Create adapter with multi-db manager
+      libsqlAdapter = new LibSQLGraphAdapter(globalConfig, multiDbManager);
+
+      // Use graph.db path as the "primary" path for adapter
+      const graphDbPath = join(basePath, "graph.db");
+      const initialized = await libsqlAdapter.initialize(graphDbPath);
       if (!initialized) {
         throw new Error("Failed to initialize LibSQL adapter");
       }
@@ -94,7 +119,10 @@ export async function getGraphStorage(): Promise<GraphStorageLibSQL> {
       graphStorage = new GraphStorageLibSQL(libsqlAdapter);
       await graphStorage.initialize();
 
-      log.i("STORAGEFACT", "init_complete", { path: unifiedDbPath });
+      log.i("STORAGEFACT", "init_complete", {
+        mode: "multi-db",
+        dbs: "graph, semantic, versioning, cache",
+      });
       return graphStorage;
     } catch (error) {
       // Reset on failure so next call can retry
@@ -104,34 +132,27 @@ export async function getGraphStorage(): Promise<GraphStorageLibSQL> {
       const isBusy = errMsg.includes("SQLITE_BUSY") || errMsg.includes("database is locked");
 
       if (isBusy) {
-        // Don't delete the DB on SQLITE_BUSY - it's not corrupt, just locked
         log.w("STORAGE", `Initialization failed due to database lock (will retry on next access)`, {
           error: errMsg,
         });
         throw error;
       }
 
-      // Auto-recovery: if initialization fails due to corruption, delete and retry
-      const paths = getGlobalDbPaths();
-      const unifiedDbPath = join(dirname(paths.graphDbPath), "unified-storage.db");
-      if (existsSync(unifiedDbPath)) {
-        log.w("STORAGE", `Initialization failed, attempting auto-recovery by deleting corrupt DB`, {
-          path: unifiedDbPath,
+      // Auto-recovery: delete all DB files and retry on next access
+      if (multiDbManager) {
+        log.w("STORAGE", `Initialization failed, attempting auto-recovery by deleting corrupt DBs`, {
           error: errMsg,
         });
         try {
-          unlinkSync(unifiedDbPath);
-          // Also delete WAL and SHM files if they exist
-          const walPath = unifiedDbPath + "-wal";
-          const shmPath = unifiedDbPath + "-shm";
-          if (existsSync(walPath)) unlinkSync(walPath);
-          if (existsSync(shmPath)) unlinkSync(shmPath);
-          log.i("STORAGE", `Deleted corrupt DB, will recreate on next access`);
+          await multiDbManager.close();
+          await multiDbManager.deleteAll();
+          log.i("STORAGE", `Deleted corrupt DBs, will recreate on next access`);
         } catch (deleteError) {
-          log.e("STORAGE", `Failed to delete corrupt DB`, {
+          log.e("STORAGE", `Failed to delete corrupt DBs`, {
             error: (deleteError as Error).message,
           });
         }
+        multiDbManager = null;
       }
       throw error;
     }
@@ -161,6 +182,10 @@ export async function resetGraphStorage(): Promise<void> {
   if (libsqlAdapter) {
     await libsqlAdapter.close();
     libsqlAdapter = null;
+  }
+  if (multiDbManager) {
+    await multiDbManager.close();
+    multiDbManager = null;
   }
   graphStorage = null;
   initializationPromise = null;
@@ -198,11 +223,7 @@ export function isStorageReady(): boolean {
 export async function handleDatabaseCorruption(): Promise<boolean> {
   log.e("STORAGEFACT", "corruption_handler_start");
 
-  // Get database path
-  const paths = getGlobalDbPaths();
-  const unifiedDbPath = join(dirname(paths.graphDbPath), "unified-storage.db");
-
-  // Close existing adapter
+  // Close existing adapter and multi-db manager
   if (libsqlAdapter) {
     try {
       await libsqlAdapter.close();
@@ -211,26 +232,55 @@ export async function handleDatabaseCorruption(): Promise<boolean> {
     }
     libsqlAdapter = null;
   }
-  graphStorage = null;
-  initializationPromise = null;
 
-  // Delete corrupt database files
-  const filesToDelete = [unifiedDbPath, `${unifiedDbPath}-journal`, `${unifiedDbPath}-wal`, `${unifiedDbPath}-shm`];
+  // Delete all database files
+  if (multiDbManager) {
+    try {
+      await multiDbManager.close();
+      await multiDbManager.deleteAll();
+    } catch {
+      // Ignore errors
+    }
+    multiDbManager = null;
+  }
 
-  for (const file of filesToDelete) {
+  // Also clean up any legacy unified-storage.db
+  const paths = getGlobalDbPaths();
+  const legacyDbPath = join(dirname(paths.graphDbPath), "unified-storage.db");
+  for (const file of [legacyDbPath, `${legacyDbPath}-journal`, `${legacyDbPath}-wal`, `${legacyDbPath}-shm`]) {
     try {
       if (existsSync(file)) {
-        const size = statSync(file).size;
-        const sizeMB = (size / 1024 / 1024).toFixed(1);
         unlinkSync(file);
-        log.i("STORAGEFACT", "file_deleted", { file, sizeMB });
+        log.i("STORAGEFACT", "file_deleted", { file });
       }
     } catch (error) {
       log.w("STORAGEFACT", "file_delete_fail", { file, err: (error as Error).message });
     }
   }
 
-  // Reinitialize with fresh database
+  // Delete multi-db files
+  const basePath = dirname(paths.graphDbPath);
+  for (const dbName of ["graph.db", "semantic.db", "versioning.db", "cache.db"]) {
+    const dbPath = join(basePath, dbName);
+    for (const suffix of ["", "-journal", "-wal", "-shm"]) {
+      try {
+        const file = dbPath + suffix;
+        if (existsSync(file)) {
+          const size = statSync(file).size;
+          const sizeMB = (size / 1024 / 1024).toFixed(1);
+          unlinkSync(file);
+          log.i("STORAGEFACT", "file_deleted", { file, sizeMB });
+        }
+      } catch (error) {
+        log.w("STORAGEFACT", "file_delete_fail", { err: (error as Error).message });
+      }
+    }
+  }
+
+  graphStorage = null;
+  initializationPromise = null;
+
+  // Reinitialize with fresh databases
   try {
     log.i("STORAGEFACT", "reinit_start");
     await getGraphStorage();

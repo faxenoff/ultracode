@@ -54,6 +54,7 @@ import {
   type SupportedDimension,
 } from "./libsql/types.js";
 import { VectorOperations, type VectorOpsContext } from "./libsql/vector-ops.js";
+import type { MultiDbManager } from "./multi-db-manager.js";
 // Prolly Tree components for versioned storage
 import { BranchDiffCache, CommitManager, ProllyNodeStore, ProllyTree, serializeEntity } from "./prolly/index.js";
 
@@ -107,6 +108,7 @@ interface RelationshipRow {
 
 export class LibSQLGraphAdapter {
   private client: Client | null = null;
+  private dbManager: MultiDbManager | null = null;
   private config: Required<LibSQLGraphConfig>;
   private isInitialized = false;
   private dbPath: string = "";
@@ -137,8 +139,9 @@ export class LibSQLGraphAdapter {
   private commitManager: CommitManager | null = null;
   private branchDiffCache: BranchDiffCache | null = null;
 
-  constructor(config: LibSQLGraphConfig = {}) {
+  constructor(config: LibSQLGraphConfig = {}, dbManager?: MultiDbManager) {
     this.config = { ...DEFAULT_CONFIG, ...config };
+    this.dbManager = dbManager ?? null;
 
     // Initialize caches
     this.embeddingCache = new LRUCache<string, VectorEmbedding>(CACHE_CONFIG.embeddingCache);
@@ -146,22 +149,25 @@ export class LibSQLGraphAdapter {
     this.metadataCache = new LRUCache<string, Record<string, unknown>>(CACHE_CONFIG.metadataCache);
 
     // Initialize operation delegates
-    const getClient = () => this.client;
+    // When multi-db is active, each ops class gets its own DB client
+    const getGraphClient = () => this.dbManager?.getGraphClient() ?? this.client;
+    const getSemanticClient = () => this.dbManager?.getSemanticClient() ?? this.client;
+    const getCacheClient = () => this.dbManager?.getCacheClient() ?? this.client;
     const getContext = () => getRequestContext() ?? this.currentContext;
 
-    this.generationManager = new GenerationManager(getClient, getContext);
+    this.generationManager = new GenerationManager(getGraphClient, getContext);
     this.entityOps = new EntityOperations(
-      getClient,
+      getGraphClient,
       getContext,
       (row) => this.rowToEntity(row as EntityRow),
       this.generationManager,
     );
-    this.relationshipOps = new RelationshipOperations(getClient, getContext, (row) =>
+    this.relationshipOps = new RelationshipOperations(getGraphClient, getContext, (row) =>
       this.rowToRelationship(row as RelationshipRow),
     );
 
     const vectorOpsContext: VectorOpsContext = {
-      getClient,
+      getClient: getGraphClient,
       getContext,
       config: this.config,
       getEffectiveDimensions: () => this.getEffectiveDimensions(),
@@ -176,9 +182,9 @@ export class LibSQLGraphAdapter {
     };
     this.vectorOps = new VectorOperations(vectorOpsContext);
 
-    this.cacheOps = new CacheOperations(getClient, (v) => this.vectorToString(v));
-    this.metadataOps = new MetadataOperations(getClient, getContext);
-    this.cooccurrenceOps = new CooccurrenceOperations(getClient, getContext);
+    this.cacheOps = new CacheOperations(getCacheClient, (v) => this.vectorToString(v));
+    this.metadataOps = new MetadataOperations(getGraphClient, getContext, getCacheClient);
+    this.cooccurrenceOps = new CooccurrenceOperations(getSemanticClient, getContext);
   }
 
   // ===========================================================================
@@ -238,51 +244,50 @@ export class LibSQLGraphAdapter {
 
   async initialize(dbPath: string, retryAfterCorruption = true): Promise<boolean> {
     const startTime = Date.now();
-    log.t("STORAGE", `[LibSQLGraphAdapter] ▶ initialize() START at ${dbPath}`);
+    const useMultiDb = this.dbManager?.isInitialized === true;
+    log.t("STORAGE", `[LibSQLGraphAdapter] ▶ initialize() START at ${dbPath} (multiDb=${useMultiDb})`);
     try {
       this.dbPath = dbPath;
 
-      // Remove stale lock files (single-user mode - we're the only consumer)
-      log.t("STORAGE", `[LibSQLGraphAdapter] ▶ cleanupStaleLocks`);
-      await this.cleanupStaleLocks(dbPath);
-      log.t("STORAGE", `[LibSQLGraphAdapter] ◀ cleanupStaleLocks (${Date.now() - startTime}ms)`);
+      if (useMultiDb) {
+        // Multi-DB mode: clients already created by MultiDbManager
+        // Use graph client as the "primary" for legacy code paths
+        this.client = this.dbManager!.getGraphClient();
+      } else {
+        // Legacy single-DB mode
+        log.t("STORAGE", `[LibSQLGraphAdapter] ▶ cleanupStaleLocks`);
+        await this.cleanupStaleLocks(dbPath);
+        log.t("STORAGE", `[LibSQLGraphAdapter] ◀ cleanupStaleLocks (${Date.now() - startTime}ms)`);
 
-      log.t("STORAGE", `[LibSQLGraphAdapter] ▶ import @libsql/client`);
-      const importStart = Date.now();
-      const { createClient } = await import("@libsql/client");
-      log.t("STORAGE", `[LibSQLGraphAdapter] ◀ import @libsql/client (${Date.now() - importStart}ms)`);
+        log.t("STORAGE", `[LibSQLGraphAdapter] ▶ import @libsql/client`);
+        const importStart = Date.now();
+        const { createClient } = await import("@libsql/client");
+        log.t("STORAGE", `[LibSQLGraphAdapter] ◀ import @libsql/client (${Date.now() - importStart}ms)`);
 
-      log.t("STORAGE", `[LibSQLGraphAdapter] ▶ createClient`);
-      const clientStart = Date.now();
-      this.client = createClient({
-        url: `file:${dbPath}`,
-      });
+        log.t("STORAGE", `[LibSQLGraphAdapter] ▶ createClient`);
+        const clientStart = Date.now();
+        this.client = createClient({
+          url: `file:${dbPath}`,
+        });
 
-      // Verify connection
-      await this.client.execute("SELECT 1");
-      log.t("STORAGE", `[LibSQLGraphAdapter] ◀ createClient + verify (${Date.now() - clientStart}ms)`);
+        // Verify connection
+        await this.client.execute("SELECT 1");
+        log.t("STORAGE", `[LibSQLGraphAdapter] ◀ createClient + verify (${Date.now() - clientStart}ms)`);
 
-      // busy_timeout: wait up to 5s for lock release instead of immediate SQLITE_BUSY
-      // Prevents crashes when previous process hasn't released the lock yet (e.g. during restart)
-      await this.client.execute("PRAGMA busy_timeout = 5000");
-      // Performance optimization PRAGMAs (aggressive - data is regeneratable)
-      // cache_size: negative = KB, -8192 = 8MB page cache (smaller = less RSS)
-      await this.client.execute("PRAGMA cache_size = -8192");
-      await this.client.execute("PRAGMA temp_store = MEMORY");
-      // mmap_size = 0 disables memory-mapped I/O (forces regular reads, may reduce RSS)
-      await this.client.execute("PRAGMA mmap_size = 0");
-      // AGGRESSIVE: No journaling, no fsync - maximum write speed
-      // Safe for index data that can be regenerated on corruption
-      await this.client.execute("PRAGMA journal_mode = OFF");
-      await this.client.execute("PRAGMA synchronous = OFF");
+        await this.client.execute("PRAGMA busy_timeout = 5000");
+        await this.client.execute("PRAGMA cache_size = -8192");
+        await this.client.execute("PRAGMA temp_store = MEMORY");
+        await this.client.execute("PRAGMA mmap_size = 0");
+        await this.client.execute("PRAGMA journal_mode = OFF");
+        await this.client.execute("PRAGMA synchronous = OFF");
+      }
 
-      // Async integrity check - runs in background, doesn't block startup
-      // Logs error if corruption detected, but doesn't stop initialization
+      // Async integrity check on graph client
       this.quickIntegrityCheck()
         .then(() => log.i("LIBSQLADAPT", "integrity_passed"))
         .catch((err) => log.e("LIBSQLADAPT", "integrity_error", { err: (err as Error).message }));
 
-      // Create all tables
+      // Create tables (split across DBs in multi-db mode)
       log.t("STORAGE", `[LibSQLGraphAdapter] ▶ createTables`);
       const tablesStart = Date.now();
       await this.createTables();
@@ -309,7 +314,10 @@ export class LibSQLGraphAdapter {
 
       this.isInitialized = true;
       log.t("STORAGE", `[LibSQLGraphAdapter] ◀ initialize() END (${Date.now() - startTime}ms)`);
-      log.i("LIBSQLADAPT", "init_complete", { path: dbPath });
+      log.i("LIBSQLADAPT", "init_complete", {
+        path: dbPath,
+        mode: useMultiDb ? "multi-db" : "single-db",
+      });
       return true;
     } catch (error) {
       const errorMessage = (error as Error).message || String(error);
@@ -325,8 +333,8 @@ export class LibSQLGraphAdapter {
         log.e("LIBSQLADAPT", "corruption_detected", { err: errorMessage });
         log.i("LIBSQLADAPT", "recreating_db");
 
-        // Close any existing client
-        if (this.client) {
+        // Close any existing client (in single-db mode)
+        if (!useMultiDb && this.client) {
           try {
             this.client.close();
           } catch {
@@ -336,15 +344,30 @@ export class LibSQLGraphAdapter {
         }
 
         // Delete corrupt database and auxiliary files
-        const deleted = await this.deleteCorruptDatabase(dbPath);
-        if (deleted) {
-          log.i("LIBSQLADAPT", "corrupt_db_deleted");
-          // Retry once without recursion
-          return this.initialize(dbPath, false);
+        if (useMultiDb && this.dbManager) {
+          await this.dbManager.close();
+          const deleted = await this.dbManager.deleteAll();
+          if (deleted) {
+            log.i("LIBSQLADAPT", "corrupt_dbs_deleted");
+            // Re-initialize MultiDbManager
+            const paths = this.dbManager.getPaths();
+            if (paths) {
+              const { dirname } = await import("node:path");
+              await this.dbManager.initialize(dirname(paths.graph));
+              this.client = this.dbManager.getGraphClient();
+            }
+            return this.initialize(dbPath, false);
+          }
         } else {
-          log.e("LIBSQLADAPT", "corrupt_db_delete_fail");
-          return false;
+          const deleted = await this.deleteCorruptDatabase(dbPath);
+          if (deleted) {
+            log.i("LIBSQLADAPT", "corrupt_db_deleted");
+            return this.initialize(dbPath, false);
+          }
         }
+
+        log.e("LIBSQLADAPT", "corrupt_db_delete_fail");
+        return false;
       }
 
       // Retry on SQLITE_BUSY (database locked by another process during restart)
@@ -353,8 +376,7 @@ export class LibSQLGraphAdapter {
       if (isBusy && retryAfterCorruption) {
         log.w("LIBSQLADAPT", "busy_retry", { err: errorMessage });
 
-        // Close client before retry
-        if (this.client) {
+        if (!useMultiDb && this.client) {
           try {
             this.client.close();
           } catch {
@@ -363,9 +385,8 @@ export class LibSQLGraphAdapter {
           this.client = null;
         }
 
-        // Wait for lock to be released (3 retries with exponential backoff)
         for (let attempt = 1; attempt <= 3; attempt++) {
-          const delay = attempt * 2000; // 2s, 4s, 6s
+          const delay = attempt * 2000;
           log.i("LIBSQLADAPT", "busy_wait", { attempt, delay });
           await new Promise((r) => setTimeout(r, delay));
 
@@ -374,7 +395,7 @@ export class LibSQLGraphAdapter {
           } catch (retryErr) {
             const retryMsg = (retryErr as Error).message || "";
             if (!retryMsg.includes("SQLITE_BUSY") && !retryMsg.includes("database is locked")) {
-              throw retryErr; // Different error, don't retry
+              throw retryErr;
             }
             log.w("LIBSQLADAPT", "busy_retry_fail", { attempt, err: retryMsg });
           }
@@ -513,15 +534,47 @@ export class LibSQLGraphAdapter {
   }
 
   private async createTables(): Promise<void> {
-    if (!this.client) throw new Error("Client not initialized");
-
-    // Use batch to execute all DDL statements in one round-trip
-    // This significantly reduces startup time (from ~7s to ~1s)
+    const useMultiDb = this.dbManager?.isInitialized === true;
     const startTime = Date.now();
 
-    await this.client.batch(
+    if (useMultiDb) {
+      // Multi-DB mode: create tables in parallel across 4 databases
+      await Promise.all([
+        this.createGraphTables(this.dbManager!.getGraphClient()!),
+        this.createSemanticTables(this.dbManager!.getSemanticClient()!),
+        this.createVersioningTables(this.dbManager!.getVersioningClient()!),
+        this.createCacheTables(this.dbManager!.getCacheClient()!),
+      ]);
+    } else {
+      // Legacy single-DB mode: all tables in one client
+      if (!this.client) throw new Error("Client not initialized");
+      await this.createGraphTables(this.client);
+      await this.createSemanticTables(this.client);
+      // Versioning tables are created by ProllyNodeStore/CommitManager in initializeProllyComponents
+      await this.createCacheTables(this.client);
+    }
+
+    const batchElapsed = Date.now() - startTime;
+    log.i("STORAGE", `Tables and basic indexes created`, {
+      ms: batchElapsed,
+      mode: useMultiDb ? "multi-db" : "single-db",
+    });
+    log.i("STORAGE", `Skipping global DiskANN index (using partial indexes per project)`);
+
+    const totalElapsed = Date.now() - startTime;
+    log.i("STORAGE", `Total initialization complete`, { ms: totalElapsed });
+
+    // Log memory and libsql stats after init
+    await this.logDatabaseStats("after_init");
+  }
+
+  /**
+   * Create graph tables: entities, relationships, files, file_generations,
+   * tombstones, name_tokens, project_metadata + indexes
+   */
+  private async createGraphTables(client: Client): Promise<void> {
+    await client.batch(
       [
-        // Entities table - composite PK ensures isolation between projects/branches
         `CREATE TABLE IF NOT EXISTS entities (
         id TEXT NOT NULL,
         project_hash TEXT NOT NULL DEFAULT 'legacy',
@@ -542,7 +595,6 @@ export class LibSQLGraphAdapter {
         file_gen INTEGER NOT NULL DEFAULT 1,
         PRIMARY KEY (id, project_hash, branch_name)
       )`,
-        // Relationships table - composite PK ensures isolation between projects/branches
         `CREATE TABLE IF NOT EXISTS relationships (
         id TEXT NOT NULL,
         project_hash TEXT NOT NULL DEFAULT 'legacy',
@@ -555,7 +607,6 @@ export class LibSQLGraphAdapter {
         created_at INTEGER NOT NULL,
         PRIMARY KEY (id, project_hash, branch_name)
       )`,
-        // Files table
         `CREATE TABLE IF NOT EXISTS files (
         path TEXT NOT NULL,
         project_hash TEXT NOT NULL DEFAULT 'legacy',
@@ -565,7 +616,6 @@ export class LibSQLGraphAdapter {
         entity_count INTEGER DEFAULT 0,
         PRIMARY KEY (path, project_hash, branch_name)
       )`,
-        // Project metadata table
         `CREATE TABLE IF NOT EXISTS project_metadata (
         project_hash TEXT NOT NULL,
         branch_name TEXT NOT NULL DEFAULT 'main',
@@ -579,7 +629,110 @@ export class LibSQLGraphAdapter {
         incremental_changes_count INTEGER DEFAULT 0,
         PRIMARY KEY (project_hash, branch_name)
       )`,
-        // Query cache table - composite PK for project isolation
+        `CREATE TABLE IF NOT EXISTS tombstones (
+        entity_id TEXT NOT NULL,
+        project_hash TEXT NOT NULL,
+        branch_name TEXT NOT NULL,
+        entity_type TEXT NOT NULL DEFAULT 'entity',
+        deleted_at INTEGER NOT NULL,
+        PRIMARY KEY (entity_id, project_hash, branch_name, entity_type)
+      )`,
+        `CREATE TABLE IF NOT EXISTS file_generations (
+        file_path TEXT NOT NULL,
+        project_hash TEXT NOT NULL,
+        branch_name TEXT NOT NULL,
+        active_gen INTEGER NOT NULL DEFAULT 1,
+        updated_at INTEGER NOT NULL,
+        PRIMARY KEY (file_path, project_hash, branch_name)
+      )`,
+        `CREATE TABLE IF NOT EXISTS name_tokens (
+        token TEXT NOT NULL,
+        entity_id TEXT NOT NULL,
+        project_hash TEXT NOT NULL,
+        branch_name TEXT NOT NULL,
+        PRIMARY KEY (token, entity_id, project_hash, branch_name)
+      )`,
+        // Indexes
+        `CREATE INDEX IF NOT EXISTS idx_entities_project_branch ON entities(project_hash, branch_name)`,
+        `CREATE INDEX IF NOT EXISTS idx_entities_file_path ON entities(file_path, project_hash, branch_name)`,
+        `CREATE INDEX IF NOT EXISTS idx_entities_type ON entities(type, project_hash, branch_name)`,
+        `CREATE INDEX IF NOT EXISTS idx_entities_name ON entities(name, project_hash, branch_name)`,
+        `CREATE INDEX IF NOT EXISTS idx_relationships_project_branch ON relationships(project_hash, branch_name)`,
+        `CREATE INDEX IF NOT EXISTS idx_relationships_from ON relationships(from_id, project_hash, branch_name)`,
+        `CREATE INDEX IF NOT EXISTS idx_relationships_to ON relationships(to_id, project_hash, branch_name)`,
+        `CREATE INDEX IF NOT EXISTS idx_files_project_branch ON files(project_hash, branch_name)`,
+        `CREATE INDEX IF NOT EXISTS idx_tombstones_lookup ON tombstones(project_hash, branch_name, entity_type)`,
+        `CREATE INDEX IF NOT EXISTS idx_name_tokens_lookup ON name_tokens(token, project_hash, branch_name)`,
+        `CREATE INDEX IF NOT EXISTS idx_entities_file_gen ON entities(file_path, project_hash, branch_name, file_gen)`,
+      ],
+      "write",
+    );
+  }
+
+  /**
+   * Create semantic tables: cooccurrence, term_frequency + indexes
+   */
+  private async createSemanticTables(client: Client): Promise<void> {
+    await client.batch(
+      [
+        `CREATE TABLE IF NOT EXISTS cooccurrence (
+          term1 TEXT NOT NULL,
+          term2 TEXT NOT NULL,
+          count INTEGER NOT NULL DEFAULT 1,
+          pmi REAL,
+          project_hash TEXT NOT NULL,
+          branch_name TEXT NOT NULL DEFAULT 'main',
+          updated_at INTEGER NOT NULL,
+          PRIMARY KEY (term1, term2, project_hash, branch_name)
+        )`,
+        `CREATE TABLE IF NOT EXISTS term_frequency (
+          term TEXT NOT NULL,
+          doc_count INTEGER NOT NULL DEFAULT 1,
+          total_count INTEGER NOT NULL DEFAULT 1,
+          project_hash TEXT NOT NULL,
+          branch_name TEXT NOT NULL DEFAULT 'main',
+          PRIMARY KEY (term, project_hash, branch_name)
+        )`,
+        `CREATE INDEX IF NOT EXISTS idx_cooc_term1 ON cooccurrence(term1, project_hash, branch_name)`,
+        `CREATE INDEX IF NOT EXISTS idx_cooc_pmi ON cooccurrence(pmi DESC, project_hash, branch_name)`,
+        `CREATE INDEX IF NOT EXISTS idx_term_freq_project ON term_frequency(project_hash, branch_name)`,
+      ],
+      "write",
+    );
+  }
+
+  /**
+   * Create versioning tables: prolly_nodes, graph_commits, branch_heads
+   * Note: In multi-db mode these are created on the versioning client.
+   * In single-db mode, ProllyNodeStore/CommitManager create them on the shared client.
+   */
+  /**
+   * Create versioning tables on the versioning client.
+   * In multi-db mode, called here so tables exist before ProllyNodeStore/CommitManager
+   * call their own createTable() with IF NOT EXISTS (idempotent).
+   * We use the exact same schemas as ProllyNodeStore and CommitManager.
+   */
+  private async createVersioningTables(_client: Client): Promise<void> {
+    // Tables are created by ProllyNodeStore.initialize() and CommitManager.initialize()
+    // which are called in initializeProllyComponents() with the correct client.
+    // No need to duplicate DDL here — just a no-op placeholder for the parallel call.
+  }
+
+  /**
+   * Create cache tables: embedding_cache, query_cache, performance_metrics
+   */
+  private async createCacheTables(client: Client): Promise<void> {
+    await client.batch(
+      [
+        `CREATE TABLE IF NOT EXISTS embedding_cache (
+          content_hash TEXT PRIMARY KEY,
+          model TEXT NOT NULL,
+          embedding BLOB NOT NULL,
+          text_preview TEXT,
+          created_at INTEGER NOT NULL,
+          last_used_at INTEGER NOT NULL,
+          hit_count INTEGER DEFAULT 0
+        )`,
         `CREATE TABLE IF NOT EXISTS query_cache (
         id TEXT NOT NULL,
         project_hash TEXT NOT NULL DEFAULT 'legacy',
@@ -592,7 +745,6 @@ export class LibSQLGraphAdapter {
         expires_at INTEGER NOT NULL,
         PRIMARY KEY (id, project_hash, branch_name)
       )`,
-        // Performance metrics table
         `CREATE TABLE IF NOT EXISTS performance_metrics (
         id TEXT PRIMARY KEY,
         operation TEXT NOT NULL,
@@ -601,96 +753,9 @@ export class LibSQLGraphAdapter {
         memory_usage INTEGER DEFAULT 0,
         created_at INTEGER NOT NULL
       )`,
-        // Tombstones table - tracks deleted entities/relationships on feature branches
-        // When on feature branch, DELETE adds tombstone instead of removing from base
-        // Layered reads exclude tombstoned IDs from base branch results
-        `CREATE TABLE IF NOT EXISTS tombstones (
-        entity_id TEXT NOT NULL,
-        project_hash TEXT NOT NULL,
-        branch_name TEXT NOT NULL,
-        entity_type TEXT NOT NULL DEFAULT 'entity',
-        deleted_at INTEGER NOT NULL,
-        PRIMARY KEY (entity_id, project_hash, branch_name, entity_type)
-      )`,
-        // File generations table — tracks active generation per file for copy-on-write reindex
-        `CREATE TABLE IF NOT EXISTS file_generations (
-        file_path TEXT NOT NULL,
-        project_hash TEXT NOT NULL,
-        branch_name TEXT NOT NULL,
-        active_gen INTEGER NOT NULL DEFAULT 1,
-        updated_at INTEGER NOT NULL,
-        PRIMARY KEY (file_path, project_hash, branch_name)
-      )`,
-        // Name tokens table — enables fast B-tree token lookup instead of LIKE '%pattern%'
-        // splitToTokens("getAuthToken") → ["get", "auth", "token"]
-        `CREATE TABLE IF NOT EXISTS name_tokens (
-        token TEXT NOT NULL,
-        entity_id TEXT NOT NULL,
-        project_hash TEXT NOT NULL,
-        branch_name TEXT NOT NULL,
-        PRIMARY KEY (token, entity_id, project_hash, branch_name)
-      )`,
-        // NOTE: embeddings table REMOVED in v5 - FAISS is used for all vector operations
-        // See: src/semantic/vector-store.ts (v5: Faiss-only backend)
-        // === INDEXES (batched for speed) ===
-        // Entity indexes
-        `CREATE INDEX IF NOT EXISTS idx_entities_project_branch ON entities(project_hash, branch_name)`,
-        `CREATE INDEX IF NOT EXISTS idx_entities_file_path ON entities(file_path, project_hash, branch_name)`,
-        `CREATE INDEX IF NOT EXISTS idx_entities_type ON entities(type, project_hash, branch_name)`,
-        `CREATE INDEX IF NOT EXISTS idx_entities_name ON entities(name, project_hash, branch_name)`,
-        // Relationship indexes
-        `CREATE INDEX IF NOT EXISTS idx_relationships_project_branch ON relationships(project_hash, branch_name)`,
-        `CREATE INDEX IF NOT EXISTS idx_relationships_from ON relationships(from_id, project_hash, branch_name)`,
-        `CREATE INDEX IF NOT EXISTS idx_relationships_to ON relationships(to_id, project_hash, branch_name)`,
-        // Files index
-        `CREATE INDEX IF NOT EXISTS idx_files_project_branch ON files(project_hash, branch_name)`,
-        // Tombstones index
-        `CREATE INDEX IF NOT EXISTS idx_tombstones_lookup ON tombstones(project_hash, branch_name, entity_type)`,
-        `CREATE INDEX IF NOT EXISTS idx_name_tokens_lookup ON name_tokens(token, project_hash, branch_name)`,
-        // Generation index for efficient filtering by active generation
-        `CREATE INDEX IF NOT EXISTS idx_entities_file_gen ON entities(file_path, project_hash, branch_name, file_gen)`,
-        // Co-occurrence table for query expansion
-        // Stores term pairs that frequently appear together in comments/docs
-        `CREATE TABLE IF NOT EXISTS cooccurrence (
-          term1 TEXT NOT NULL,
-          term2 TEXT NOT NULL,
-          count INTEGER NOT NULL DEFAULT 1,
-          pmi REAL,
-          project_hash TEXT NOT NULL,
-          branch_name TEXT NOT NULL DEFAULT 'main',
-          updated_at INTEGER NOT NULL,
-          PRIMARY KEY (term1, term2, project_hash, branch_name)
-        )`,
-        // Term frequency table for PMI calculation
-        `CREATE TABLE IF NOT EXISTS term_frequency (
-          term TEXT NOT NULL,
-          doc_count INTEGER NOT NULL DEFAULT 1,
-          total_count INTEGER NOT NULL DEFAULT 1,
-          project_hash TEXT NOT NULL,
-          branch_name TEXT NOT NULL DEFAULT 'main',
-          PRIMARY KEY (term, project_hash, branch_name)
-        )`,
-        // Co-occurrence indexes
-        `CREATE INDEX IF NOT EXISTS idx_cooc_term1 ON cooccurrence(term1, project_hash, branch_name)`,
-        `CREATE INDEX IF NOT EXISTS idx_cooc_pmi ON cooccurrence(pmi DESC, project_hash, branch_name)`,
-        `CREATE INDEX IF NOT EXISTS idx_term_freq_project ON term_frequency(project_hash, branch_name)`,
       ],
       "write",
     );
-
-    const batchElapsed = Date.now() - startTime;
-    log.i("STORAGE", `Tables and basic indexes created`, { ms: batchElapsed });
-
-    // DiskANN vector index - DISABLED global index
-    // Using project-specific partial indexes instead (ensureProjectVectorIndex)
-    // Global index was causing 2+ GB overhead duplicating the data
-    log.i("STORAGE", `Skipping global DiskANN index (using partial indexes per project)`);
-
-    const totalElapsed = Date.now() - startTime;
-    log.i("STORAGE", `Total initialization complete`, { ms: totalElapsed });
-
-    // Log memory and libsql stats after init
-    await this.logDatabaseStats("after_init");
   }
 
   /**
@@ -1128,30 +1193,47 @@ export class LibSQLGraphAdapter {
    * to ensure OS buffers are flushed.
    */
   async flush(): Promise<void> {
+    const startTime = Date.now();
+
+    if (this.dbManager?.isInitialized) {
+      // Multi-DB mode: flush all databases
+      log.d("LIBSQLADAPT", "flush_start_multidb");
+      await this.dbManager.flushAll();
+      this.client = this.dbManager.getGraphClient();
+
+      // Update client references in Prolly components
+      const versioningClient = this.dbManager.getVersioningClient();
+      if (this.prollyNodeStore && versioningClient) {
+        this.prollyNodeStore.updateClient(versioningClient);
+      }
+      if (this.commitManager && versioningClient) {
+        this.commitManager.updateClient(versioningClient);
+      }
+
+      log.i("LIBSQLADAPT", "flush_complete", { ms: Date.now() - startTime, mode: "multi-db" });
+      return;
+    }
+
+    // Legacy single-DB flush
     if (!this.client || !this.dbPath) {
       log.w("LIBSQLADAPT", "flush_skipped", { hasClient: !!this.client, hasDbPath: !!this.dbPath });
       return;
     }
 
-    const startTime = Date.now();
     log.d("LIBSQLADAPT", "flush_start");
 
-    // Close current connection (flushes all buffers)
     this.client.close();
     this.client = null;
 
-    // Reopen with same path
     const { createClient } = await import("@libsql/client");
     this.client = createClient({ url: `file:${this.dbPath}` });
 
-    // Re-apply performance PRAGMAs
     await this.client!.execute("PRAGMA cache_size = -8192");
     await this.client!.execute("PRAGMA temp_store = MEMORY");
     await this.client!.execute("PRAGMA mmap_size = 0");
     await this.client!.execute("PRAGMA journal_mode = OFF");
     await this.client!.execute("PRAGMA synchronous = OFF");
 
-    // Update client references in Prolly components
     if (this.prollyNodeStore) {
       this.prollyNodeStore.updateClient(this.client!);
     }
@@ -1159,7 +1241,6 @@ export class LibSQLGraphAdapter {
       this.commitManager.updateClient(this.client!);
     }
 
-    // Log file size for diagnostics
     try {
       const { statSync } = await import("node:fs");
       const stats = statSync(this.dbPath!);
@@ -1170,7 +1251,12 @@ export class LibSQLGraphAdapter {
   }
 
   async close(): Promise<void> {
-    if (this.client) {
+    if (this.dbManager?.isInitialized) {
+      await this.dbManager.close();
+      this.client = null;
+      this.isInitialized = false;
+      log.i("LIBSQLADAPT", "connection_closed", { mode: "multi-db" });
+    } else if (this.client) {
       this.client.close();
       this.client = null;
       this.isInitialized = false;
@@ -1282,15 +1368,17 @@ export class LibSQLGraphAdapter {
    * Called during adapter initialization.
    */
   private async initializeProllyComponents(): Promise<void> {
-    if (!this.client) throw new Error("Client not initialized");
+    // Use versioning client in multi-db mode, otherwise the shared client
+    const versioningClient = this.dbManager?.isInitialized ? this.dbManager.getVersioningClient() : this.client;
+    if (!versioningClient) throw new Error("Client not initialized");
 
     // Initialize node store (content-addressed storage)
     this.prollyNodeStore = new ProllyNodeStore();
-    await this.prollyNodeStore.initialize(this.client);
+    await this.prollyNodeStore.initialize(versioningClient);
 
     // Initialize commit manager (versioning)
     this.commitManager = new CommitManager();
-    await this.commitManager.initialize(this.client);
+    await this.commitManager.initialize(versioningClient);
 
     // Initialize Prolly tree (built on top of node store)
     this.prollyTree = new ProllyTree(this.prollyNodeStore);
