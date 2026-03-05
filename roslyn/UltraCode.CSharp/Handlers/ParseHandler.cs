@@ -169,6 +169,8 @@ public sealed class ParseHandler
                 Accessibility = GetAccessibility(typeDecl.Modifiers),
                 IsStatic = typeDecl.Modifiers.Any(SyntaxKind.StaticKeyword),
                 IsAbstract = typeDecl.Modifiers.Any(SyntaxKind.AbstractKeyword),
+                IsSealed = typeDecl.Modifiers.Any(SyntaxKind.SealedKeyword),
+                IsPartial = typeDecl.Modifiers.Any(SyntaxKind.PartialKeyword),
                 Usings = usings?.Count > 0 ? usings : null,
                 BaseTypes = typeDecl.BaseList?.Types.Select(t => t.ToString()).ToList(),
                 TypeParameters = typeDecl.TypeParameterList?.Parameters.Select(p => p.Identifier.Text).ToList(),
@@ -234,6 +236,10 @@ public sealed class ParseHandler
                 IsStatic = method.Modifiers.Any(SyntaxKind.StaticKeyword),
                 IsAsync = method.Modifiers.Any(SyntaxKind.AsyncKeyword),
                 IsAbstract = method.Modifiers.Any(SyntaxKind.AbstractKeyword),
+                IsVirtual = method.Modifiers.Any(SyntaxKind.VirtualKeyword),
+                IsOverride = method.Modifiers.Any(SyntaxKind.OverrideKeyword),
+                IsSealed = method.Modifiers.Any(SyntaxKind.SealedKeyword),
+                IsPartial = method.Modifiers.Any(SyntaxKind.PartialKeyword),
                 ReturnType = method.ReturnType.ToString(),
                 Parameters = method.ParameterList.Parameters.Select(p => new ParameterDto
                 {
@@ -305,6 +311,9 @@ public sealed class ParseHandler
                 Fqn = fqn,
                 Accessibility = GetAccessibility(prop.Modifiers),
                 IsStatic = prop.Modifiers.Any(SyntaxKind.StaticKeyword),
+                IsVirtual = prop.Modifiers.Any(SyntaxKind.VirtualKeyword),
+                IsOverride = prop.Modifiers.Any(SyntaxKind.OverrideKeyword),
+                IsSealed = prop.Modifiers.Any(SyntaxKind.SealedKeyword),
                 PropertyType = prop.Type.ToString(),
                 Attributes = prop.AttributeLists.SelectMany(a => a.Attributes.Select(attr => attr.ToString())).ToList() is { Count: > 0 } attrs ? attrs : null,
             },
@@ -332,6 +341,8 @@ public sealed class ParseHandler
                 Fqn = fqn,
                 Accessibility = GetAccessibility(field.Modifiers),
                 IsStatic = field.Modifiers.Any(SyntaxKind.StaticKeyword),
+                IsReadonly = field.Modifiers.Any(SyntaxKind.ReadOnlyKeyword),
+                IsConst = field.Modifiers.Any(SyntaxKind.ConstKeyword),
                 FieldType = field.Declaration.Type.ToString(),
             },
         };

@@ -113,6 +113,7 @@ export class PatternEngine {
       offset = 0,
       limit = 50,
       entityLimit = 10_000,
+      suppressPatterns,
     } = options;
 
     // 1. Get entities
@@ -141,12 +142,18 @@ export class PatternEngine {
     await this.ensureDetectorsForLanguage(detectedLanguage);
 
     // 4. Get applicable patterns
-    const patterns = this.registry.getPatterns({
+    let patterns = this.registry.getPatterns({
       language: detectedLanguage,
       category: category as PatternCategory | "all",
       tags,
       enabledOnly: true,
     });
+
+    // 4b. Apply suppressions
+    if (suppressPatterns?.length) {
+      const suppressSet = new Set(suppressPatterns);
+      patterns = patterns.filter((p) => !suppressSet.has(p.id));
+    }
 
     if (patterns.length === 0) {
       return this.emptyResult(entities.length);

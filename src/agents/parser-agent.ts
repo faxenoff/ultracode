@@ -145,6 +145,11 @@ function convertCSharpResult(filePath: string, entities: CSharpParsedEntity[]): 
     if (meta?.isVirtual) modifiers.push("virtual");
     if (meta?.isOverride) modifiers.push("override");
     if (meta?.isSealed) modifiers.push("sealed");
+    // isPartial from DLL metadata, or fallback: parse "partial" from entity content
+    if (meta?.isPartial || (!meta?.isPartial && entity.content && /\bpartial\b/.test(entity.content))) {
+      modifiers.push("partial");
+    }
+    if (entity.type === "constructor") modifiers.push("constructor");
 
     const parsed: ParsedEntity = {
       id: entity.id,

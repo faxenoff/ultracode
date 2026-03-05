@@ -45,6 +45,7 @@ interface CompiledCriteria {
   decoratorMatchRe: RegExp[] | null;
   nameMatchRe: RegExp | null;
   nameNotMatchRe: RegExp | null;
+  filePathNotMatchRe: RegExp | null;
   totalCriteriaCount: number;
 }
 
@@ -66,6 +67,7 @@ function getCompiled(pattern: PatternDefinition): CompiledCriteria {
     decoratorMatchRe: c?.decoratorMatch ? c.decoratorMatch.map((p) => new RegExp(p, "i")) : null,
     nameMatchRe: c?.nameMatch ? new RegExp(c.nameMatch, "i") : null,
     nameNotMatchRe: c?.nameNotMatch ? new RegExp(c.nameNotMatch, "i") : null,
+    filePathNotMatchRe: c?.filePathNotMatch ? new RegExp(c.filePathNotMatch, "i") : null,
     totalCriteriaCount: countTotalCriteria(c ?? {}),
   };
   compiledCache.set(pattern, compiled);
@@ -82,6 +84,7 @@ interface EntityMeta {
   cf: { branches: number; loops: number; exceptions: number; awaits: number };
   callNames: string[];
   decoratorNames: string[];
+  hasInheritance: boolean;
 }
 
 const metaCache = new WeakMap<Entity, EntityMeta>();
@@ -95,6 +98,7 @@ function getMeta(entity: Entity): EntityMeta {
   const cfRaw = md?.["controlFlow"] as Record<string, Array<unknown>> | undefined;
   const callsRaw = (md?.["calls"] ?? []) as Array<{ target?: string; name?: string }>;
   const decsRaw = (md?.decorators ?? []) as Array<{ name: string }>;
+  const inheritanceRaw = md?.["inheritance"] as { baseClasses?: string[]; interfaces?: string[] } | undefined;
 
   meta = {
     modifiers: (md?.modifiers ?? []) as string[],
@@ -114,6 +118,7 @@ function getMeta(entity: Entity): EntityMeta {
     },
     callNames: callsRaw.map((c) => `${c.target ?? ""}.${c.name ?? ""}`),
     decoratorNames: decsRaw.map((d) => d.name),
+    hasInheritance: (inheritanceRaw?.baseClasses?.length ?? 0) > 0 || (inheritanceRaw?.interfaces?.length ?? 0) > 0,
   };
   metaCache.set(entity, meta);
   return meta;
@@ -315,6 +320,20 @@ export class StructuralDetector {
       matched.push("no-forbidden-modifiers");
     }
 
+    if (criteria.hasNoInheritance) {
+      if (em.hasInheritance) return null; // bail-out: has base types
+      matched.push("no-inheritance");
+    }
+
+    if (compiled.filePathNotMatchRe) {
+      if (entity.filePath && compiled.filePathNotMatchRe.test(entity.filePath)) return null; // bail-out
+    }
+
+    // nameNotMatch is mandatory: if entity name matches exclusion, bail out (blocks custom detectors too)
+    if (compiled.nameNotMatchRe) {
+      if (compiled.nameNotMatchRe.test(entity.name)) return null; // bail-out
+    }
+
     return matched;
   }
 
@@ -495,12 +514,10 @@ export class StructuralDetector {
         matched.push(`name:~/${criteria.nameMatch}/`);
       }
     }
+    // nameNotMatch is handled in evaluateRequired as mandatory bail-out
     if (compiled.nameNotMatchRe) {
-      optionalTotal++;
-      if (!compiled.nameNotMatchRe.test(entity.name)) {
-        optionalPassed++;
-        matched.push(`name:!~/${criteria.nameNotMatch}/`);
-      }
+      // Already passed mandatory check — count as matched
+      matched.push(`name:!~/${criteria.nameNotMatch}/`);
     }
 
     return { optionalTotal, optionalPassed };
@@ -658,6 +675,8 @@ function countTotalCriteria(criteria: StructuralCriteria): number {
   if (criteria.callsInclude) count += criteria.callsInclude.length;
   if (criteria.callsExclude) count += criteria.callsExclude.length;
   if (criteria.decoratorMatch) count += criteria.decoratorMatch.length;
+  if (criteria.hasNoInheritance) count++;
+  if (criteria.filePathNotMatch) count++;
   if (criteria.nameMatch) count++;
   if (criteria.nameNotMatch) count++;
   if (criteria.relationships) count += criteria.relationships.length;

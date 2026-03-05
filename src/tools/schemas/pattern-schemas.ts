@@ -34,6 +34,12 @@ export const DetectPatternsSchema = z.object({
   offset: z.number().optional().default(0).describe("Pagination offset"),
   limit: z.number().optional().default(50).describe("Maximum results per category"),
   entityLimit: z.number().optional().default(10000).describe("Max entities to scan from DB (default: 10000)"),
+  suppressPatterns: z
+    .array(z.string())
+    .optional()
+    .describe(
+      "Pattern IDs to suppress (skip). Use for known false positives, e.g. ['cs:empty-interface', 'cs:no-asnotracking']",
+    ),
 });
 
 export const CheckEntityPatternsSchema = z.object({

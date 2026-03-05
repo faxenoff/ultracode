@@ -9,6 +9,10 @@ import type { CustomDetectorResult } from "../types.js";
  * God function: cyclomatic > 20 OR LOC > 200 (disjunction — either triggers)
  */
 export function checkGodFunction(entity: Entity): CustomDetectorResult {
+  // Skip partial methods — source-generated code (e.g. [LoggerMessage])
+  const mods = (entity.metadata?.modifiers ?? []) as string[];
+  if (mods.includes("partial")) return { match: false, confidence: 0 };
+
   const metrics = entity.metadata?.["metrics"] as { cyclomaticComplexity?: number; linesOfCode?: number } | undefined;
 
   const cyclomatic = metrics?.cyclomaticComplexity ?? 0;
@@ -43,10 +47,25 @@ export function checkDeepNesting(entity: Entity): CustomDetectorResult {
 
 /**
  * Too many parameters: > 7
+ * Skips DI constructors: constructor modifier or most params are interface types (I[A-Z]...)
  */
 export function checkTooManyParams(entity: Entity): CustomDetectorResult {
-  const params = (entity.metadata?.parameters as Array<unknown>) ?? [];
+  const params = (entity.metadata?.parameters as Array<{ name?: string; type?: string }>) ?? [];
   if (params.length <= 7) return { match: false, confidence: 0 };
+
+  const mods = (entity.metadata?.modifiers ?? []) as string[];
+
+  // Skip constructors — DI constructors with many deps are standard in ASP.NET
+  // Skip partial methods — source-generated (e.g. [LoggerMessage])
+  if (mods.includes("constructor") || mods.includes("partial")) {
+    return { match: false, confidence: 0 };
+  }
+
+  // Skip DI-style functions: ≥70% of params are interface types (IService, ILogger, etc.)
+  const interfaceParams = params.filter((p) => p.type && /^I[A-Z]/.test(p.type)).length;
+  if (params.length > 0 && interfaceParams / params.length >= 0.7) {
+    return { match: false, confidence: 0 };
+  }
 
   return {
     match: true,
@@ -59,10 +78,13 @@ export function checkTooManyParams(entity: Entity): CustomDetectorResult {
  * No documentation on public entity
  */
 export function checkNoDocumentation(entity: Entity): CustomDetectorResult {
-  const mods = entity.metadata?.modifiers ?? [];
+  const mods = (entity.metadata?.modifiers ?? []) as string[];
   const isPublic = mods.includes("public") || mods.includes("export") || mods.includes("exported");
 
   if (!isPublic) return { match: false, confidence: 0 };
+
+  // Skip partial methods — source-generated, docs are pointless
+  if (mods.includes("partial")) return { match: false, confidence: 0 };
 
   // Check for docs in metadata
   const signature = entity.metadata?.signature as string | undefined;

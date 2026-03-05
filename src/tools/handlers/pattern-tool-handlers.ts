@@ -56,6 +56,7 @@ export class DetectPatternsToolHandler extends BaseToolHandler<z.infer<typeof De
         offset: args.offset,
         limit: args.limit,
         entityLimit: args.entityLimit,
+        suppressPatterns: args.suppressPatterns,
       };
 
       const result = await engine.scan(options, storage);

@@ -54,6 +54,8 @@ const StructuralCriteriaSchema = z.object({
   callsInclude: z.array(z.string()).optional(),
   callsExclude: z.array(z.string()).optional(),
   decoratorMatch: z.array(z.string()).optional(),
+  hasNoInheritance: z.boolean().optional(),
+  filePathNotMatch: z.string().optional(),
   nameMatch: z.string().optional(),
   nameNotMatch: z.string().optional(),
   relationships: z.array(RelationshipCriteriaSchema).optional(),

@@ -10,6 +10,7 @@ patterns:
     enabled: true
     structural:
       entityTypes: ["method", "function", "async_function"]
+      nameNotMatch: "^(Map\\w*Endpoints|Add\\w*Services|Configure\\w*|Use\\w*Middleware)$"
     customDetector: "checkGodFunction"
     minSemanticSimilarity: 0
     minStructuralConfidence: 0.7
@@ -53,6 +54,7 @@ patterns:
     structural:
       entityTypes: ["method", "function", "async_function", "class", "interface"]
       requiredModifiers: ["public"]
+      filePathNotMatch: "\\.(SDK|WebCommons|Infrastructure|Shared|Commons|Internal|Implementation)[\\\\/]"
     customDetector: "checkNoDocumentation"
     minSemanticSimilarity: 0
     minStructuralConfidence: 0.5

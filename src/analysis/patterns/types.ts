@@ -61,6 +61,12 @@ export interface StructuralCriteria {
   // Decorators/attributes
   decoratorMatch?: string[]; // regex patterns
 
+  // Inheritance
+  hasNoInheritance?: boolean; // Must NOT have base classes/interfaces
+
+  // File path filter (regex)
+  filePathNotMatch?: string; // Skip entities whose filePath matches this regex
+
   // Name (regex)
   nameMatch?: string;
   nameNotMatch?: string;
@@ -161,6 +167,8 @@ export interface PatternScanOptions {
   limit?: number;
   /** Max entities to fetch from DB. Default: 10000. */
   entityLimit?: number;
+  /** Pattern IDs to suppress (skip). For known false positives. */
+  suppressPatterns?: string[];
 }
 
 // ─── Custom Detector ───────────────────────────────────────────────
