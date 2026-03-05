@@ -1,6 +1,6 @@
 # Detectors
 
-Language-specific anti-pattern detectors for code quality analysis across multiple programming languages.
+Multi-language code anti-pattern detector with confidence-based severity scoring.
 
 ## Exports
 

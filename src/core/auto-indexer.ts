@@ -17,6 +17,8 @@ import { knowledgeBus } from "./knowledge-bus.js";
  */
 interface TaskProcessingResult {
   success?: boolean;
+  entitiesExtracted?: number;
+  filesProcessed?: number;
   data?: {
     entityCount?: number;
     entities?: unknown[];
@@ -392,7 +394,7 @@ export async function performAutoIndex(
     const duration = ((Date.now() - startTime) / 1000).toFixed(1);
 
     if (result?.success !== false) {
-      const entityCount = result?.data?.entityCount ?? result?.data?.entities ?? result?.entities?.length ?? 0;
+      const entityCount = result?.entitiesExtracted ?? result?.data?.entityCount ?? result?.data?.entities ?? 0;
       resultEntityCount = typeof entityCount === "number" ? entityCount : parseInt(String(entityCount), 10) || 0;
       log.i("INDEXER", "auto_index_done", { entities: resultEntityCount, dur: Date.now() - startTime, req: requestId });
 
