@@ -116,12 +116,8 @@ export async function processStandaloneComments(
   await prevMutex;
 
   try {
-    // Parallel entity insert with concurrency limit
-    const INSERT_CONCURRENCY = 50;
-    for (let i = 0; i < allCommentEntities.length; i += INSERT_CONCURRENCY) {
-      const batch = allCommentEntities.slice(i, i + INSERT_CONCURRENCY);
-      await Promise.all(batch.map((entity) => storage.insertEntity(entity).catch(() => {})));
-    }
+    // Batch insert all entities in one DB operation
+    await storage.insertEntities(allCommentEntities);
     pLog("P4_INSERT_ENTITIES");
 
     // Phase 4: Generate embeddings in one big batch
@@ -148,11 +144,8 @@ export async function processStandaloneComments(
     await ctx.vectorStore.adaptiveBulkInsert(vectorEmbeddings);
     pLog("P6_VECTOR_INSERT");
 
-    // Phase 6: Parallel relationship insert
-    for (let i = 0; i < allRelationships.length; i += INSERT_CONCURRENCY) {
-      const batch = allRelationships.slice(i, i + INSERT_CONCURRENCY);
-      await Promise.all(batch.map((rel) => storage.insertRelationship(rel).catch(() => {})));
-    }
+    // Batch insert all relationships in one DB operation
+    await storage.insertRelationships(allRelationships);
     pLog("P7_INSERT_RELATIONSHIPS");
 
     log.d("COMMENT", "indexed_batch", { entities: allCommentEntities.length, rels: allRelationships.length });

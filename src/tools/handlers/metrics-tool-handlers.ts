@@ -93,9 +93,9 @@ interface WatcherStatusResult {
  */
 interface IndexerAgent {
   getFileWatcherStatus?: () => { exists: boolean; reason?: string };
-  getGitWatcher?: () => {
+  getGitWatcher?: (projectPath?: string) => {
     isWatching?: () => boolean;
-    getCurrentBranch?: () => string;
+    getBranch?: () => string | null;
   } | null;
   getBranchManager?: () => unknown | null;
   currentRepositoryPath?: string;
@@ -447,7 +447,7 @@ export class GetWatcherStatusToolHandler extends BaseToolHandler<z.infer<typeof 
           result.gitWatcher = {
             exists: true,
             isWatching: gitWatcher.isWatching?.() ?? false,
-            currentBranch: gitWatcher.getCurrentBranch?.() ?? "unknown",
+            currentBranch: gitWatcher.getBranch?.() ?? "unknown",
           };
         } else {
           result.gitWatcher = { exists: false };

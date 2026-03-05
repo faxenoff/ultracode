@@ -98,6 +98,10 @@ export class GraphStorageLibSQL implements GraphStorage {
       base: ctx.baseBranch || "none",
     });
     this.adapter.setProjectContext(ctx);
+    // Load generation cache asynchronously (non-blocking)
+    this.adapter.loadGenerationCache().catch((err) => {
+      log.w("STORAGE", "gen_cache_load_fail", { error: (err as Error).message });
+    });
   }
 
   getProjectContext(): ProjectContext {
@@ -508,6 +512,22 @@ export class GraphStorageLibSQL implements GraphStorage {
 
   async deleteEntitiesByFilePath(filePath: string): Promise<string[]> {
     return await this.adapter.deleteEntitiesByFilePath(filePath);
+  }
+
+  /**
+   * Invalidate file generation (for deleted files).
+   * Marks all entities for this file as stale without blocking DELETE.
+   */
+  async invalidateFileGeneration(filePath: string): Promise<void> {
+    await this.adapter.getGenerationManager().invalidateFileGeneration(filePath);
+  }
+
+  /**
+   * Run generation-based GC: clean stale entities and orphan name_tokens.
+   * Call after incremental reindex completes.
+   */
+  async runGenerationGC(): Promise<{ entities: number; tokens: number }> {
+    return await this.adapter.getGenerationManager().runFullGC();
   }
 
   // ===========================================================================

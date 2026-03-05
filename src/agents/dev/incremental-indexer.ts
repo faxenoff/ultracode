@@ -52,6 +52,8 @@ const SUPPORTED_EXTENSIONS = [
   ".java",
   ".kt",
   ".kts",
+  ".cs",
+  ".csx",
   ".c",
   ".cpp",
   ".cc",
@@ -260,7 +262,7 @@ export async function processSupportedFiles(
     for (const parseResult of parseResults) {
       if (parseResult.entities && parseResult.entities.length > 0) {
         try {
-          await indexerAgent.indexEntities(parseResult.entities, parseResult.filePath, parseResult.relationships);
+          indexerAgent.queueForIndexing(parseResult.entities, parseResult.filePath, parseResult.relationships);
           successCount++;
         } catch (error: unknown) {
           const err = toError(error);
@@ -273,6 +275,9 @@ export async function processSupportedFiles(
         }
       }
     }
+
+    // Flush all accumulated entities/relationships in one batch DB operation
+    await indexerAgent.flushPendingBatch();
   } catch (error: unknown) {
     const err = toError(error);
     log.e("DEVAGENT", "batch_parse_fail", {
@@ -306,7 +311,7 @@ export async function processHeuristicFiles(
     try {
       const heuristicResult = createHeuristicEntities(filePath);
       if (heuristicResult.entities.length > 0) {
-        await indexerAgent.indexEntities(heuristicResult.entities, filePath, heuristicResult.relationships);
+        indexerAgent.queueForIndexing(heuristicResult.entities, filePath, heuristicResult.relationships);
         successCount++;
       }
     } catch (error: unknown) {
@@ -319,6 +324,9 @@ export async function processHeuristicFiles(
       errorCount++;
     }
   }
+
+  // Flush all accumulated heuristic entities in one batch
+  await indexerAgent.flushPendingBatch();
 
   return { successCount, errorCount };
 }

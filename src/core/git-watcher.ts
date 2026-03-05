@@ -139,6 +139,12 @@ export class GitWatcher {
     // Reset stop flag for new watching session
     this.stopped = false;
 
+    // Close existing watcher to prevent leaks on repeated startWatching calls
+    if (this.watcher) {
+      this.watcher.close();
+      this.watcher = null;
+    }
+
     // Watch .git/HEAD for branch changes
     this.watcher = watch(gitHeadPath, (eventType) => {
       if (eventType === "change") {
@@ -241,6 +247,13 @@ export class GitWatcher {
         }
       }, this.config.uncommittedPollIntervalMs!);
     }
+  }
+
+  /**
+   * Get the current tracked branch name
+   */
+  getBranch(): string | null {
+    return this.currentBranch;
   }
 
   /**
@@ -585,10 +598,15 @@ export class GitWatcher {
       this.currentBranch = newBranch;
       this.currentCommit = this.getCurrentCommit();
 
-      // Trigger callbacks
+      // Trigger callbacks (handle async rejections properly)
       for (const callback of this.branchChangeCallbacks) {
         try {
-          callback(newBranch, oldBranch);
+          const result: unknown = callback(newBranch, oldBranch);
+          if (result && typeof (result as Promise<void>).catch === "function") {
+            (result as Promise<void>).catch((error) => {
+              log.e("GITWATCHER", "branch_cb_async_err", { err: String(error) });
+            });
+          }
         } catch (error) {
           log.w("GITWATCHER", "branch_cb_err", { err: String(error) });
         }

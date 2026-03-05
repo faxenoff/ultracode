@@ -1065,8 +1065,10 @@ export class ParserAgent extends BaseAgent {
     // OPTIMIZATION: Only spawn pools for languages with enough files
     // Languages with few files (< 10) are skipped - they use slow ANTLR parsers
     // and their pool spawn time exceeds parsing benefit
+    // C# is excluded because it's parsed via Roslyn addon, not worker pools
     const MIN_FILES_FOR_POOL = 10;
     const languages = Array.from(languageGroups.keys()).filter((lang) => {
+      if (lang === "csharp") return false; // Roslyn handles C#
       const count = languageGroups.get(lang)?.length ?? 0;
       return count >= MIN_FILES_FOR_POOL;
     });

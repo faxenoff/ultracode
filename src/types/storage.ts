@@ -306,6 +306,8 @@ export interface GraphStorage {
 
   getEntityIdsByFilePath(filePath: string): Promise<string[]>;
   deleteEntitiesByFilePath(filePath: string): Promise<string[]>;
+  invalidateFileGeneration?(filePath: string): Promise<void>;
+  runGenerationGC?(): Promise<{ entities: number; tokens: number }>;
 
   executeQuery(query: GraphQuery): Promise<GraphQueryResult>;
   getSubgraph(entityId: string, depth: number): Promise<GraphQueryResult>;

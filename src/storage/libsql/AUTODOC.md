@@ -76,6 +76,7 @@ DatabaseCorruptionError is thrown on SQLITE_CORRUPT or malformed database errors
 - `CacheOperations`
 - `CooccurrenceOperations`
 - `EntityOperations`
+- `GenerationManager`
 - `MetadataOperations`
 - `RelationshipOperations`
 - `VectorOperations`

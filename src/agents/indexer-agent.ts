@@ -107,7 +107,8 @@ export class IndexerAgent extends BaseAgent {
   private batchOps!: BatchOperationsLibSQL;
   private cacheManager!: QueryCacheManager;
   private branchManager: BranchManager | null = null;
-  private gitWatcher: GitWatcher | null = null;
+  /** Per-project GitWatchers — each project gets its own watcher */
+  private gitWatchers = new Map<string, GitWatcher>();
   private fileWatcher: FileWatcher | null = null;
 
   // Debounced embedding generation
@@ -179,37 +180,9 @@ export class IndexerAgent extends BaseAgent {
 
       await this.branchManager.initialize();
 
-      // Initialize GitWatcher if Git integration is enabled
+      // GitWatcher creation is deferred to getOrCreateWatcher() per-project
       if (appConfig.git?.enabled && appConfig.git.watchBranchChanges) {
         log.i("INDEXER", "git_watch_enabled");
-
-        this.gitWatcher = new GitWatcher({
-          enabled: true,
-          pollIntervalMs: appConfig.git.pollIntervalMs || 5000,
-          autoReindex: appConfig.git.autoReindex ?? true,
-          watchUncommitted: appConfig.git.watchUncommitted ?? true,
-          uncommittedPollIntervalMs: appConfig.git.uncommittedPollIntervalMs || 10000,
-          includeUntracked: appConfig.git.includeUntracked ?? true,
-          // Debounce for embedding generation
-          debounceMs: appConfig.git.debounceMs ?? 60_000,
-          bulkModeThreshold: appConfig.git.bulkModeThreshold ?? 1000,
-        });
-
-        // Setup branch change handler
-        this.gitWatcher.onBranchChange(async (newBranch, oldBranch) => {
-          await this.handleBranchChange(newBranch, oldBranch);
-        });
-
-        // Setup uncommitted file change handler for incremental reindexing
-        this.gitWatcher.onUncommittedChange(async (files) => {
-          await this.handleUncommittedChanges(files);
-        });
-
-        // Setup debounced callback for embedding generation
-        // This waits for user to stop editing (60s debounce) then generates embeddings
-        this.gitWatcher.onDebouncedChange(async (files, bulkMode) => {
-          await this.handleDebouncedEmbeddingGeneration(files, bulkMode);
-        });
       }
     }
 
@@ -275,12 +248,10 @@ export class IndexerAgent extends BaseAgent {
       log.w("INDEXER", "batch_ctx_not_ready");
     }
 
-    // Start GitWatcher for branch/commit monitoring (if not already watching this path)
-    if (this.gitWatcher && this.currentRepositoryPath !== projectPath) {
-      this.currentRepositoryPath = projectPath;
-      this.gitWatcher.startWatching(projectPath);
-      log.i("INDEXER", "git_watcher_started", { repository: projectPath });
-    }
+    this.currentRepositoryPath = projectPath;
+
+    // Start per-project GitWatcher (creates new watcher if not yet watching this path)
+    this.getOrCreateWatcher(projectPath);
   }
 
   /**
@@ -1279,37 +1250,70 @@ export class IndexerAgent extends BaseAgent {
   }
 
   /**
-   * Get Git event context for extracted handlers
+   * Get Git event context for a specific project path
    */
-  private getGitEventContext(): GitEventContext {
+  private getGitEventContextForProject(projectPath: string): GitEventContext {
     return {
       agentId: this.id,
-      currentRepositoryPath: this.currentRepositoryPath,
+      currentRepositoryPath: projectPath,
       branchManager: this.branchManager,
     };
   }
 
   /**
-   * Handle uncommitted file changes detected by GitWatcher
-   * Triggers incremental reindexing for changed files
+   * Get Git event context for extracted handlers (uses current project)
    */
-  private async handleUncommittedChanges(files: string[]): Promise<void> {
-    await handleUncommittedChangesEvent(files, this.getGitEventContext());
+  private getGitEventContext(): GitEventContext {
+    return this.getGitEventContextForProject(this.currentRepositoryPath!);
   }
 
   /**
-   * Handle debounced file changes for embedding generation.
-   * Called after user stops editing (debounce period elapsed).
+   * Get or create a GitWatcher for a specific project path.
+   * Each project gets its own independent watcher so multi-session doesn't interfere.
    */
-  private async handleDebouncedEmbeddingGeneration(files: string[], bulkMode: boolean): Promise<void> {
-    await handleDebouncedEmbeddingEvent(files, bulkMode, this.getGitEventContext());
-  }
+  private getOrCreateWatcher(projectPath: string): GitWatcher | null {
+    const appConfig = getConfig();
+    if (!appConfig.git?.enabled || !appConfig.git.watchBranchChanges || !this.branchManager) {
+      return null;
+    }
 
-  /**
-   * Handle branch change event
-   */
-  private async handleBranchChange(newBranch: string, oldBranch: string): Promise<void> {
-    await handleBranchChangeEvent(newBranch, oldBranch, this.getGitEventContext());
+    const existing = this.gitWatchers.get(projectPath);
+    if (existing) {
+      // Already watching this project
+      return existing;
+    }
+
+    const watcher = new GitWatcher({
+      enabled: true,
+      pollIntervalMs: appConfig.git.pollIntervalMs || 5000,
+      autoReindex: appConfig.git.autoReindex ?? true,
+      watchUncommitted: appConfig.git.watchUncommitted ?? true,
+      uncommittedPollIntervalMs: appConfig.git.uncommittedPollIntervalMs || 10000,
+      includeUntracked: appConfig.git.includeUntracked ?? true,
+      debounceMs: appConfig.git.debounceMs ?? 60_000,
+      bulkModeThreshold: appConfig.git.bulkModeThreshold ?? 1000,
+    });
+
+    // Close over projectPath so callbacks always use the correct context
+    const ctx = () => this.getGitEventContextForProject(projectPath);
+
+    watcher.onBranchChange(async (newBranch, oldBranch) => {
+      await handleBranchChangeEvent(newBranch, oldBranch, ctx());
+    });
+
+    watcher.onUncommittedChange(async (files) => {
+      await handleUncommittedChangesEvent(files, ctx());
+    });
+
+    watcher.onDebouncedChange(async (files, bulkMode) => {
+      await handleDebouncedEmbeddingEvent(files, bulkMode, ctx());
+    });
+
+    this.gitWatchers.set(projectPath, watcher);
+    watcher.startWatching(projectPath);
+    log.i("INDEXER", "git_watcher_started", { repository: projectPath, totalWatchers: this.gitWatchers.size });
+
+    return watcher;
   }
 
   /**
@@ -1320,10 +1324,11 @@ export class IndexerAgent extends BaseAgent {
   }
 
   /**
-   * Get GitWatcher instance
+   * Get GitWatcher instance for current or specific project
    */
-  getGitWatcher(): GitWatcher | null {
-    return this.gitWatcher;
+  getGitWatcher(projectPath?: string): GitWatcher | null {
+    const path = projectPath || this.currentRepositoryPath;
+    return path ? (this.gitWatchers.get(path) ?? null) : null;
   }
 
   /**
@@ -1346,11 +1351,8 @@ export class IndexerAgent extends BaseAgent {
   async setRepositoryPath(path: string): Promise<void> {
     this.currentRepositoryPath = path;
 
-    // Start GitWatcher for branch/commit monitoring
-    if (this.gitWatcher && this.branchManager) {
-      this.gitWatcher.startWatching(path);
-      log.i("INDEXER", "Started GitWatcher", { repository: path });
-    }
+    // Start per-project GitWatcher (reuses existing if already watching)
+    this.getOrCreateWatcher(path);
 
     // Start FileWatcher for efficient file change detection
     // Uses glob-watch (fast-glob + fs.watch) with Watchman fallback
@@ -1490,10 +1492,12 @@ export class IndexerAgent extends BaseAgent {
       }
     }
 
-    // Stop GitWatcher
-    if (this.gitWatcher) {
-      this.gitWatcher.stopWatching();
+    // Stop all per-project GitWatchers
+    for (const [path, watcher] of this.gitWatchers) {
+      watcher.stopWatching();
+      log.d("INDEXER", "git_watcher_stopped", { repository: path });
     }
+    this.gitWatchers.clear();
 
     // Unsubscribe from knowledge bus
     try {

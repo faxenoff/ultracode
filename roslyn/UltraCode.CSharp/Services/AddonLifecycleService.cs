@@ -1,124 +1,35 @@
 using UltraCode.CSharp.Handlers;
 using UltraCode.CSharp.Ipc;
-using UltraCode.CSharp.Models;
-using UltraCode.CSharp.Tools.Infrastructure;
-using UltraCode.CSharp.Tools.Interfaces;
 
 namespace UltraCode.CSharp.Services;
 
 /// <summary>
-/// Manages Addon lifecycle phases:
-///   Phase 1 (instant): Pipe server ready, syntax parsing available
-///   Phase 2 (background, 5-30s): Solution loaded, semantic analysis available
-///   Phase 3 (background): Background validation with debounce
+/// Manages Addon lifecycle — Phase 1 only (syntax parsing via Roslyn).
+/// Solution loading and semantic analysis are handled by the TS side.
 /// </summary>
 public sealed class AddonLifecycleService
 {
     private readonly IServiceProvider _services;
-    private readonly PipeServer _pipeServer;
     private readonly ILogger<AddonLifecycleService> _logger;
-    private int _phase;
 
-    public int Phase => _phase;
-    public string? LoadedSolutionPath { get; private set; }
+    public int Phase { get; private set; }
 
     public AddonLifecycleService(
         IServiceProvider services,
-        PipeServer pipeServer,
         ILogger<AddonLifecycleService> logger)
     {
         _services = services;
-        _pipeServer = pipeServer;
         _logger = logger;
     }
 
-    /// <summary>
-    /// Start Phase 1 (immediate) and optionally begin Phase 2 in background.
-    /// </summary>
-    public async Task StartAsync(string? slnPath, CancellationToken ct)
+    public Task StartAsync(string? slnPath, CancellationToken ct)
     {
-        // Initialize handler routes
         var initializer = _services.GetRequiredService<IHandlerInitializer>();
         initializer.Initialize();
 
-        // Phase 1: Pipe ready, syntax parsing available
-        _phase = 1;
-        _logger.LogInformation("[Lifecycle] Phase 1 reached — pipe ready, syntax parsing available.");
+        Phase = 1;
+        _logger.LogInformation("[Lifecycle] Phase 1 — pipe ready, syntax parsing available.");
 
-        // If solution path provided, start Phase 2 in background
-        if (!string.IsNullOrEmpty(slnPath))
-        {
-            _ = Task.Run(async () =>
-            {
-                try
-                {
-                    await LoadSolutionAsync(slnPath, ct);
-                }
-                catch (Exception ex)
-                {
-                    _logger.LogError(ex, "[Lifecycle] Phase 2 failed for: {Path}", slnPath);
-                }
-            }, ct);
-        }
-    }
-
-    /// <summary>
-    /// Load a solution (Phase 2). Can be called from handler or startup.
-    /// </summary>
-    public async Task<bool> LoadSolutionAsync(string slnPath, CancellationToken ct)
-    {
-        _logger.LogInformation("[Lifecycle] Phase 2 starting — loading solution: {Path}", slnPath);
-
-        var orchestrator = _services.GetRequiredService<ILoadingOrchestrator>();
-        var result = await orchestrator.RequestLoadingAsync(slnPath, LoadingSource.BackgroundStartup, ct);
-
-        if (result.Success)
-        {
-            _phase = 2;
-            LoadedSolutionPath = result.SolutionPath;
-
-            _logger.LogInformation(
-                "[Lifecycle] Phase 2 reached — solution loaded: {Path} ({ProjectCount} projects)",
-                result.SolutionPath, result.ProjectCount);
-
-            // Compact memory after indexing: clear compilation/semantic caches and reflection type cache.
-            // The Roslyn workspace stays loaded for on-demand queries (findReferences, etc.)
-            // but cached Compilations/SemanticModels are rebuilt on demand.
-            // Reflection type cache (200-500 MB) is not needed in addon mode.
-            var solutionManager = _services.GetRequiredService<ISolutionManager>();
-            solutionManager.CompactMemory(clearReflectionCache: true);
-            _logger.LogInformation("[Lifecycle] Post-indexing memory compacted.");
-
-            // Notify TS via event
-            await SendPhaseEventAsync(2);
-            return true;
-        }
-
-        _logger.LogError("[Lifecycle] Solution load failed: {Error}", result.ErrorMessage);
-        return false;
-    }
-
-    /// <summary>
-    /// Unload current solution.
-    /// </summary>
-    public void UnloadSolution()
-    {
-        var solutionManager = _services.GetRequiredService<ISolutionManager>();
-        solutionManager.UnloadSolution();
-        LoadedSolutionPath = null;
-        _phase = 1;
-        _logger.LogInformation("[Lifecycle] Solution unloaded, back to Phase 1.");
-    }
-
-    private async ValueTask SendPhaseEventAsync(int phase)
-    {
-        if (_pipeServer.SendEvent != null)
-        {
-            await _pipeServer.SendEvent(new AddonEvent
-            {
-                Event = "phaseChanged",
-                Data = new { phase },
-            });
-        }
+        return Task.CompletedTask;
     }
 }

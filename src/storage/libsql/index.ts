@@ -9,6 +9,7 @@ export { CooccurrenceOperations, type CooccurrenceStats, type RelatedTerm } from
 
 // Operation classes
 export { EntityOperations, type RowToEntityMapper } from "./entity-ops.js";
+export { GenerationManager } from "./generation-ops.js";
 export { MetadataOperations } from "./metadata-ops.js";
 export { RelationshipOperations, type RowToRelationshipMapper } from "./relationship-ops.js";
 // Types and configuration

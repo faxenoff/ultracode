@@ -4,9 +4,10 @@
  * that are delegated by the Conductor orchestrator
  */
 
-import { readFileSync, statSync } from "node:fs";
+import { existsSync, readFileSync, statSync } from "node:fs";
 import { cpus } from "node:os";
-import { basename, extname } from "node:path";
+import { basename, dirname, extname } from "node:path";
+import { ensureRoslynStarted, findSolutionFile } from "../addons/index.js";
 import { buildWorkerEmbeddingConfig } from "../config/worker-embedding-config.js";
 import { ConfigLoader, getConfig } from "../config/yaml-config.js";
 import { type KnowledgeEntry, knowledgeBus } from "../core/knowledge-bus.js";
@@ -21,6 +22,7 @@ import { hashText } from "../utils/fast-hash.js";
 import { tryGarbageCollect } from "../utils/runtime-detection.js";
 import { BaseAgent } from "./base.js";
 import { createHeuristicEntities } from "./dev/heuristic-parser.js";
+import { separateFilesBySupport } from "./dev/incremental-indexer.js";
 import { collectFilesAsync, isCodeExtension, isDataExtension } from "./dev/index.js";
 import { IndexerAgent } from "./indexer-agent.js";
 // Temporarily disable ParserAgent due to web-tree-sitter ESM issues
@@ -144,6 +146,10 @@ export class DevAgent extends BaseAgent implements ResourceAdjustmentCapable {
       setGlobalProjectContext(currentDir, branch);
       log.i("DEVAGENT", "global_ctx_set", { dir: currentDir, branch });
       log.i("DEVAGENT", "indexer_init_ok");
+
+      // Eager-start Roslyn addon if project has .sln/.slnx
+      // Keeps dotnet process alive for fast incremental reindex on branch switch
+      this.tryEagerRoslynStart(currentDir);
     } catch (error) {
       log.e("DEVAGENT", "subagent_init_fail", { err: String(error) });
       throw error;
@@ -431,30 +437,30 @@ export class DevAgent extends BaseAgent implements ResourceAdjustmentCapable {
       }
     }
 
-    // Delete entities for changed and deleted files (before reindexing)
-    const filesToClean = [...changedFiles, ...deletedFiles];
-    if (filesToClean.length > 0) {
-      log.i("DEVAGENT", "Cleaning entities for changed/deleted files", {
-        changed: changedFiles.length,
-        deleted: deletedFiles.length,
-      });
-
-      for (const file of filesToClean) {
+    // Handle deleted files: invalidate their generation and clean file info
+    // Changed files don't need deletion — generation bump on INSERT handles them (copy-on-write)
+    if (deletedFiles.length > 0) {
+      log.i("DEVAGENT", "Invalidating deleted files", { deleted: deletedFiles.length });
+      for (const file of deletedFiles) {
         try {
           const ids = await storage.deleteEntitiesByFilePath(file);
           deletedEntityIds.push(...ids);
           await storage.deleteFileInfo(file);
         } catch (error) {
-          log.w("DEVAGENT", "Failed to clean entities for file", {
+          log.w("DEVAGENT", "Failed to invalidate file", {
             file,
             error: (error as Error).message,
           });
         }
       }
-
-      log.i("DEVAGENT", "Entities cleaned", {
-        entityCount: deletedEntityIds.length,
-      });
+    }
+    // Clean file info for changed files (will be re-created after parse)
+    for (const file of changedFiles) {
+      try {
+        await storage.deleteFileInfo(file);
+      } catch {
+        // Non-critical
+      }
     }
 
     const filesToProcess = [...changedFiles, ...newFiles];
@@ -1579,10 +1585,43 @@ export class DevAgent extends BaseAgent implements ResourceAdjustmentCapable {
   }
 
   /**
+   * Eager-start Roslyn addon if project directory contains .sln/.slnx.
+   * Walks up to 5 levels from projectDir looking for solution file.
+   * Non-blocking — fires and logs, does not delay init.
+   */
+  private tryEagerRoslynStart(projectDir: string): void {
+    // Walk up from project dir to find .sln/.slnx
+    let dir = projectDir;
+    let slnPath: string | null = null;
+    for (let i = 0; i < 5; i++) {
+      slnPath = findSolutionFile(dir);
+      if (slnPath) break;
+      const parent = dirname(dir);
+      if (parent === dir) break;
+      dir = parent;
+    }
+
+    if (!slnPath) return;
+
+    log.i("DEVAGENT", "roslyn_eager_start", { sln: slnPath });
+    ensureRoslynStarted(slnPath)
+      .then((parser) => {
+        if (parser) {
+          log.i("DEVAGENT", "roslyn_eager_ready", { sln: slnPath });
+        } else {
+          log.w("DEVAGENT", "roslyn_eager_fail", { sln: slnPath });
+        }
+      })
+      .catch((err) => {
+        log.w("DEVAGENT", "roslyn_eager_error", { sln: slnPath, err: String(err) });
+      });
+  }
+
+  /**
    * Handle incremental reindexing for changed files
    * Called when GitWatcher detects uncommitted file changes
    */
-  private async handleIncrementalReindex(files: string[], _repositoryPath?: string): Promise<void> {
+  private async handleIncrementalReindex(files: string[], repositoryPath?: string): Promise<void> {
     if (!this.parserAgent || !this.indexerAgent) {
       log.w("DEVAGENT", "skip_reindex_no_agents");
       return;
@@ -1592,42 +1631,49 @@ export class DevAgent extends BaseAgent implements ResourceAdjustmentCapable {
     log.i("DEVAGENT", "incr_reindex_start", { files: files.length });
 
     // Separate files into supported (full parsing) and other (heuristic entities)
-    const supportedExtensions = [
-      ".ts",
-      ".tsx",
-      ".js",
-      ".jsx",
-      ".mjs",
-      ".cjs",
-      ".py",
-      ".go",
-      ".rs",
-      ".java",
-      ".kt",
-      ".tpl",
-    ];
-    const supportedFiles: string[] = [];
-    const otherFiles: string[] = [];
-
-    for (const f of files) {
-      const ext = f.slice(f.lastIndexOf(".")).toLowerCase();
-      if (supportedExtensions.includes(ext)) {
-        supportedFiles.push(f);
-      } else {
-        otherFiles.push(f);
-      }
-    }
+    const { supportedFiles, otherFiles } = separateFilesBySupport(files);
 
     if (supportedFiles.length === 0 && otherFiles.length === 0) {
       log.i("DEVAGENT", "no_files_to_reindex");
       return;
     }
 
-    log.i("DEVAGENT", "reindex_breakdown", {
-      supported: supportedFiles.length,
-      heuristic: otherFiles.length,
-      supportedSample: supportedFiles.slice(0, 3).map((f) => f.split(/[\\/]/).pop()),
-    });
+    // Clean up old entities for all files before re-indexing.
+    // Without this, branch switches leave stale entities from the old branch.
+    // Also separate files into existing (to reindex) and deleted (to clean only).
+    const existingFiles: string[] = [];
+    const deletedFiles: string[] = [];
+    for (const f of files) {
+      if (existsSync(f)) {
+        existingFiles.push(f);
+      } else {
+        deletedFiles.push(f);
+      }
+    }
+
+    // Invalidate deleted files only — changed files use copy-on-write (generation bump on INSERT)
+    try {
+      if (deletedFiles.length > 0) {
+        const storage = await getGraphStorage();
+        for (const filePath of deletedFiles) {
+          try {
+            await storage.deleteEntitiesByFilePath(filePath);
+            await storage.deleteFileInfo(filePath);
+          } catch {
+            // Non-critical
+          }
+        }
+        log.i("DEVAGENT", "incr_cleanup", {
+          deleted: deletedFiles.length,
+          existing: existingFiles.length,
+        });
+      }
+    } catch (err) {
+      log.w("DEVAGENT", "incr_cleanup_fail", { error: (err as Error).message });
+    }
+
+    // Re-separate only existing files for parsing
+    const { supportedFiles: supportedExisting, otherFiles: otherExisting } = separateFilesBySupport(existingFiles);
 
     let successCount = 0;
     let errorCount = 0;
@@ -1639,10 +1685,11 @@ export class DevAgent extends BaseAgent implements ResourceAdjustmentCapable {
       log.d("DEVAGENT", "incr_embedding_config", { provider: embeddingConfig.provider });
 
       // Configure vector provider for incremental indexing
+      // Use repositoryPath from the event (correct project), not getCurrentIndexingDirectory() (last indexed project)
       const configLoader = ConfigLoader.getInstance();
       const embConfig = configLoader.getEmbeddingConfig();
       const useLayeredIndex = embConfig.useLayeredIndex;
-      const currentDir = getCurrentIndexingDirectory() || process.cwd();
+      const currentDir = repositoryPath || getCurrentIndexingDirectory() || process.cwd();
       const { getProjectHash, getCurrentGitBranchOrDefault } = await import("../shared/storage-paths.js");
       const projectHash = getProjectHash(currentDir);
       const currentBranch = getCurrentGitBranchOrDefault(currentDir);
@@ -1713,41 +1760,39 @@ export class DevAgent extends BaseAgent implements ResourceAdjustmentCapable {
     }
 
     // Process all supported files in one batch for efficiency
-    if (supportedFiles.length > 0) {
+    if (supportedExisting.length > 0) {
       try {
         // Parse all files in a single batch
-        log.i("DEVAGENT", "incr_parseBatch_start", { files: supportedFiles.length });
-        const parseResults = await this.parserAgent.parseBatch(supportedFiles, {});
-        log.i("DEVAGENT", "incr_parseBatch_done", { files: supportedFiles.length, results: parseResults.length });
+        log.i("DEVAGENT", "incr_parseBatch_start", { files: supportedExisting.length });
+        const parseResults = await this.parserAgent.parseBatch(supportedExisting, {});
+        log.i("DEVAGENT", "incr_parseBatch_done", { files: supportedExisting.length, results: parseResults.length });
 
-        // Index each result
+        // Queue all results into batch accumulator (in-memory, fast)
+        // then flush once — avoids 243 individual DB round-trips
         for (const parseResult of parseResults) {
           if (parseResult.entities && parseResult.entities.length > 0) {
             try {
-              await this.indexerAgent.indexEntities(
-                parseResult.entities,
-                parseResult.filePath,
-                parseResult.relationships,
-              );
+              this.indexerAgent.queueForIndexing(parseResult.entities, parseResult.filePath, parseResult.relationships);
               successCount++;
-            } catch (indexError) {
-              log.e("DEVAGENT", "index_fail", { file: parseResult.filePath, err: String(indexError) });
+            } catch (queueError) {
+              log.e("DEVAGENT", "queue_fail", { file: parseResult.filePath, err: String(queueError) });
               errorCount++;
             }
           }
         }
       } catch (error) {
-        log.e("DEVAGENT", "batch_parse_fail", { files: supportedFiles.length, err: String(error) });
-        errorCount += supportedFiles.length;
+        log.e("DEVAGENT", "batch_parse_fail", { files: supportedExisting.length, err: String(error) });
+        errorCount += supportedExisting.length;
       }
     }
 
     // Process non-supported files with heuristic entities (lightweight, no parser needed)
-    for (const filePath of otherFiles) {
+    // Also queue into batch accumulator instead of individual inserts
+    for (const filePath of otherExisting) {
       try {
         const heuristicResult = createHeuristicEntities(filePath);
         if (heuristicResult.entities.length > 0) {
-          await this.indexerAgent.indexEntities(heuristicResult.entities, filePath, heuristicResult.relationships);
+          this.indexerAgent.queueForIndexing(heuristicResult.entities, filePath, heuristicResult.relationships);
           successCount++;
         }
       } catch (error) {
@@ -1756,8 +1801,25 @@ export class DevAgent extends BaseAgent implements ResourceAdjustmentCapable {
       }
     }
 
+    // Flush all accumulated entities/relationships in one batch DB operation
+    try {
+      const flushResult = await this.indexerAgent.flushPendingBatch();
+      log.i("DEVAGENT", "incr_batch_flush", {
+        entities: flushResult.entities,
+        relationships: flushResult.relationships,
+        files: flushResult.files,
+      });
+    } catch (flushError) {
+      log.e("DEVAGENT", "incr_flush_fail", { err: String(flushError) });
+    }
+
     const elapsed = Date.now() - startTime;
-    log.i("DEVAGENT", "incr_reindex_done", { success: successCount, errors: errorCount, ms: elapsed });
+    log.i("DEVAGENT", "incr_reindex_done", {
+      success: successCount,
+      errors: errorCount,
+      deleted: deletedFiles.length,
+      ms: elapsed,
+    });
 
     // Flush any pending embeddings to FAISS
     if (this.parserAgent) {
@@ -1846,6 +1908,16 @@ export class DevAgent extends BaseAgent implements ResourceAdjustmentCapable {
       },
       this.id,
     );
+
+    // Run generation-based GC in background (clean stale entities from previous generations)
+    getGraphStorage()
+      .then((storage) => storage.runGenerationGC())
+      .then((gc) => {
+        if (gc.entities > 0 || gc.tokens > 0) {
+          log.i("DEVAGENT", "gen_gc_complete", gc);
+        }
+      })
+      .catch((err) => log.w("DEVAGENT", "gen_gc_fail", { error: (err as Error).message }));
   }
 
   /**

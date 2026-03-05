@@ -199,17 +199,18 @@ export async function detectChangedFiles(context: IndexingContext): Promise<Chan
 // =============================================================================
 
 /**
- * Delete entities for changed and deleted files
+ * Clean stale entities for deleted files only.
+ * Changed files use copy-on-write (generation bump on INSERT) — no pre-delete needed.
  *
- * @param filesToClean - List of files to clean
- * @returns Array of deleted entity IDs
+ * @param filesToClean - List of DELETED files to invalidate
+ * @returns Array of deleted entity IDs (for FAISS cleanup)
  */
 export async function cleanStaleEntities(filesToClean: string[]): Promise<string[]> {
   if (filesToClean.length === 0) {
     return [];
   }
 
-  log.i("DEVAGENT", "Cleaning stale entities", {
+  log.i("DEVAGENT", "Invalidating deleted files", {
     fileCount: filesToClean.length,
   });
 
@@ -223,7 +224,7 @@ export async function cleanStaleEntities(filesToClean: string[]): Promise<string
       await storage.deleteFileInfo(file);
     } catch (error: unknown) {
       const err = toError(error);
-      log.w("DEVAGENT", "Failed to clean entities for file", {
+      log.w("DEVAGENT", "Failed to invalidate file", {
         file,
         error: err.message,
         stack: err.stack,
@@ -231,7 +232,7 @@ export async function cleanStaleEntities(filesToClean: string[]): Promise<string
     }
   }
 
-  log.i("DEVAGENT", "Entities cleaned", {
+  log.i("DEVAGENT", "Files invalidated", {
     entityCount: deletedEntityIds.length,
   });
 

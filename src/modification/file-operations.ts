@@ -396,9 +396,7 @@ export class FileOperations {
       filters: { filePath: oldPath },
     });
 
-    for (const entity of entities) {
-      await this.graphStorage.updateEntity(entity.id, { filePath: newPath });
-    }
+    await Promise.all(entities.map((entity) => this.graphStorage.updateEntity(entity.id, { filePath: newPath })));
 
     return entities.length;
   }
@@ -408,17 +406,18 @@ export class FileOperations {
       filters: { filePath: source },
     });
 
-    for (const entity of entities) {
-      const newEntity: Entity = {
-        ...entity,
-        id: nanoid(), // Generate new ID for duplicate
-        filePath: target,
-        createdAt: Date.now(),
-        updatedAt: Date.now(),
-      };
+    if (entities.length === 0) return 0;
 
-      await this.graphStorage.insertEntity(newEntity);
-    }
+    const now = Date.now();
+    const newEntities = entities.map((entity) => ({
+      ...entity,
+      id: nanoid(),
+      filePath: target,
+      createdAt: now,
+      updatedAt: now,
+    }));
+
+    await this.graphStorage.insertEntities(newEntities);
 
     return entities.length;
   }
@@ -431,9 +430,7 @@ export class FileOperations {
         filters: { filePath: file },
       });
 
-      for (const entity of entities) {
-        await this.graphStorage.updateEntity(entity.id, { filePath: targetPath });
-      }
+      await Promise.all(entities.map((entity) => this.graphStorage.updateEntity(entity.id, { filePath: targetPath })));
 
       totalEntities += entities.length;
     }

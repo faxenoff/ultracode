@@ -37,6 +37,7 @@ import type {
 import { CacheOperations } from "./libsql/cache-ops.js";
 import { CooccurrenceOperations } from "./libsql/cooccurrence-ops.js";
 import { EntityOperations } from "./libsql/entity-ops.js";
+import { GenerationManager } from "./libsql/generation-ops.js";
 import { MetadataOperations } from "./libsql/metadata-ops.js";
 import { RelationshipOperations } from "./libsql/relationship-ops.js";
 // Import shared types and operation classes from libsql/ modules
@@ -127,6 +128,7 @@ export class LibSQLGraphAdapter {
   private cacheOps: CacheOperations;
   private metadataOps: MetadataOperations;
   private cooccurrenceOps: CooccurrenceOperations;
+  private generationManager: GenerationManager;
 
   // Prolly Tree components for versioned graph storage
   private prollyNodeStore: ProllyNodeStore | null = null;
@@ -146,7 +148,13 @@ export class LibSQLGraphAdapter {
     const getClient = () => this.client;
     const getContext = () => this.currentContext;
 
-    this.entityOps = new EntityOperations(getClient, getContext, (row) => this.rowToEntity(row as EntityRow));
+    this.generationManager = new GenerationManager(getClient, getContext);
+    this.entityOps = new EntityOperations(
+      getClient,
+      getContext,
+      (row) => this.rowToEntity(row as EntityRow),
+      this.generationManager,
+    );
     this.relationshipOps = new RelationshipOperations(getClient, getContext, (row) =>
       this.rowToRelationship(row as RelationshipRow),
     );
@@ -278,6 +286,9 @@ export class LibSQLGraphAdapter {
       const tablesStart = Date.now();
       await this.createTables();
       log.t("STORAGE", `[LibSQLGraphAdapter] ◀ createTables (${Date.now() - tablesStart}ms)`);
+
+      // Migration: add file_gen column to entities if missing
+      await this.migrateFileGen();
 
       // Wire up tombstone delegates for layered branch support
       this.entityOps.setTombstoneDelegates(
@@ -527,6 +538,7 @@ export class LibSQLGraphAdapter {
         size_bytes INTEGER DEFAULT 0,
         embedding_base64 TEXT,
         embedding_text TEXT,
+        file_gen INTEGER NOT NULL DEFAULT 1,
         PRIMARY KEY (id, project_hash, branch_name)
       )`,
         // Relationships table - composite PK ensures isolation between projects/branches
@@ -599,6 +611,15 @@ export class LibSQLGraphAdapter {
         deleted_at INTEGER NOT NULL,
         PRIMARY KEY (entity_id, project_hash, branch_name, entity_type)
       )`,
+        // File generations table — tracks active generation per file for copy-on-write reindex
+        `CREATE TABLE IF NOT EXISTS file_generations (
+        file_path TEXT NOT NULL,
+        project_hash TEXT NOT NULL,
+        branch_name TEXT NOT NULL,
+        active_gen INTEGER NOT NULL DEFAULT 1,
+        updated_at INTEGER NOT NULL,
+        PRIMARY KEY (file_path, project_hash, branch_name)
+      )`,
         // Name tokens table — enables fast B-tree token lookup instead of LIKE '%pattern%'
         // splitToTokens("getAuthToken") → ["get", "auth", "token"]
         `CREATE TABLE IF NOT EXISTS name_tokens (
@@ -625,6 +646,8 @@ export class LibSQLGraphAdapter {
         // Tombstones index
         `CREATE INDEX IF NOT EXISTS idx_tombstones_lookup ON tombstones(project_hash, branch_name, entity_type)`,
         `CREATE INDEX IF NOT EXISTS idx_name_tokens_lookup ON name_tokens(token, project_hash, branch_name)`,
+        // Generation index for efficient filtering by active generation
+        `CREATE INDEX IF NOT EXISTS idx_entities_file_gen ON entities(file_path, project_hash, branch_name, file_gen)`,
         // Co-occurrence table for query expansion
         // Stores term pairs that frequently appear together in comments/docs
         `CREATE TABLE IF NOT EXISTS cooccurrence (
@@ -711,6 +734,36 @@ export class LibSQLGraphAdapter {
     }
   }
 
+  /**
+   * Migration: Add file_gen column to entities table if missing.
+   * Also backfills file_generations for existing data.
+   */
+  private async migrateFileGen(): Promise<void> {
+    if (!this.client) return;
+
+    // Check if column already exists
+    try {
+      await this.client.execute("SELECT file_gen FROM entities LIMIT 0");
+      return; // Column exists, skip migration
+    } catch {
+      // Column doesn't exist, add it
+    }
+
+    log.i("LIBSQLADAPT", "migrate_file_gen_start");
+    const start = Date.now();
+
+    await this.client.execute("ALTER TABLE entities ADD COLUMN file_gen INTEGER NOT NULL DEFAULT 1");
+
+    // Backfill file_generations from existing entities
+    await this.client.execute(`
+      INSERT OR IGNORE INTO file_generations (file_path, project_hash, branch_name, active_gen, updated_at)
+      SELECT DISTINCT file_path, project_hash, branch_name, 1, ${Date.now()}
+      FROM entities
+    `);
+
+    log.i("LIBSQLADAPT", "migrate_file_gen_done", { ms: Date.now() - start });
+  }
+
   isReady(): boolean {
     return this.isInitialized && this.client !== null;
   }
@@ -730,6 +783,8 @@ export class LibSQLGraphAdapter {
       baseBranch: context.baseBranch, // For layered reads on feature branches
       dimensions: context.dimensions,
     };
+    // Clear generation cache on context switch — will be lazy-loaded on first use
+    this.generationManager.clearCache();
     log.d("LIBSQLADAPT", "setProjectContext", {
       branch: this.currentContext.branchName,
       base: context.baseBranch || "none",
@@ -817,6 +872,16 @@ export class LibSQLGraphAdapter {
   getAllEntities = (): Promise<Entity[]> => this.entityOps.getAllEntities();
 
   countByLanguage = (): Promise<Map<string, { count: number; fileCount: number }>> => this.entityOps.countByLanguage();
+
+  /** Get GenerationManager for GC scheduling */
+  getGenerationManager(): GenerationManager {
+    return this.generationManager;
+  }
+
+  /** Load generation cache (call after setProjectContext) */
+  async loadGenerationCache(): Promise<void> {
+    await this.generationManager.loadCache();
+  }
 
   // ===========================================================================
   // RELATIONSHIP OPERATIONS (delegated to RelationshipOperations)

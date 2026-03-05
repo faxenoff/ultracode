@@ -1,18 +1,16 @@
 using System.CommandLine;
 using System.CommandLine.Parsing;
 using System.Diagnostics;
-using System.Reflection;
 using Microsoft.Extensions.Hosting;
 using UltraCode.CSharp.Ipc;
 using UltraCode.CSharp.Services;
-using UltraCode.CSharp.Tools.Logging;
 
 namespace UltraCode.CSharp;
 
 public static class Program
 {
     public const string ApplicationName = "UltraCode.CSharp";
-    public const string ApplicationVersion = "3.7.2";
+    public const string ApplicationVersion = "3.8.0";
 
     private const int ParentCheckIntervalMs = 3000;
 
@@ -20,23 +18,18 @@ public static class Program
     {
         var pipeOption = new Option<string>("--pipe")
         {
-            Description = "Named Pipe name for IPC communication with ultrascript-tools-mcp.",
+            Description = "Named Pipe name for IPC communication.",
             Required = true,
         };
 
         var parentPidOption = new Option<int?>("--parent-pid")
         {
-            Description = "Parent process PID for orphan detection. Addon shuts down when parent dies.",
-        };
-
-        var logDirectoryOption = new Option<string?>("--log-directory")
-        {
-            Description = "Directory for file-based logging. If not specified, logs to stderr.",
+            Description = "Parent process PID for orphan detection.",
         };
 
         var slnOption = new Option<string?>("--sln")
         {
-            Description = "Path to .sln file for eager loading on startup (Phase 2).",
+            Description = "Path to .sln file (reserved for future use).",
         };
 
         var logLevelOption = new Option<LogLevel>("--log-level")
@@ -45,61 +38,33 @@ public static class Program
             DefaultValueFactory = _ => LogLevel.Information,
         };
 
-        var rootCommand = new RootCommand("UltraCode.CSharp — Roslyn service for ultrascript-tools-mcp")
+        var rootCommand = new RootCommand("UltraCode.CSharp — Roslyn syntax parser addon")
         {
             pipeOption,
             parentPidOption,
-            logDirectoryOption,
             slnOption,
             logLevelOption,
         };
 
         var parseResult = rootCommand.Parse(args);
 
-        string pipeName = parseResult.GetValue(pipeOption) ?? "UltraScript_Roslyn_default";
+        string pipeName = parseResult.GetValue(pipeOption) ?? "UltraCode_Roslyn_default";
         int? parentPid = parseResult.GetValue(parentPidOption);
-        string? logDirectory = parseResult.GetValue(logDirectoryOption);
-        string? slnPath = parseResult.GetValue(slnOption);
         LogLevel logLevel = parseResult.GetValue(logLevelOption);
 
-        // Build host with DI
         var builder = Host.CreateApplicationBuilder(new HostApplicationBuilderSettings
         {
             Args = args,
             DisableDefaults = true,
         });
 
-        // Set content root to exe directory
-        var exeDirectory = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
-        if (!string.IsNullOrEmpty(exeDirectory))
-        {
-            builder.Environment.ContentRootPath = exeDirectory;
-        }
-
-        // Configure logging — file only (stdout/stderr reserved for IPC diagnostics)
         builder.Logging.ClearProviders();
         builder.Logging.SetMinimumLevel(logLevel);
-
-        if (!string.IsNullOrEmpty(logDirectory))
+        builder.Logging.AddConsole(opts =>
         {
-            Directory.CreateDirectory(logDirectory);
-            string logFilePath = Path.Combine(logDirectory, $"{ApplicationName}-{{Date:yyyyMMdd}}.log");
-            builder.Logging.AddFile(logFilePath, logLevel);
-        }
-        else
-        {
-            // Fallback: log to stderr via console (not stdout — that's for IPC)
-            builder.Logging.AddConsole(opts =>
-            {
-                opts.LogToStandardErrorThreshold = LogLevel.Trace;
-            });
-        }
-
+            opts.LogToStandardErrorThreshold = LogLevel.Trace;
+        });
         builder.Logging.AddFilter("Microsoft", LogLevel.Warning);
-        builder.Logging.AddFilter("Microsoft.CodeAnalysis", LogLevel.Warning);
-
-        // Register Roslyn services (subset — no MCP, no SQLite, no VectorDB)
-        AddonServiceRegistration.RegisterServices(builder.Services);
 
         // Register IPC infrastructure
         builder.Services.AddSingleton(new PipeServerOptions { PipeName = pipeName });
@@ -116,33 +81,27 @@ public static class Program
         var logger = loggerFactory.CreateLogger(ApplicationName);
 
         logger.LogInformation("[Addon] Starting {Name} v{Version}", ApplicationName, ApplicationVersion);
-        logger.LogInformation("[Addon] Pipe: {PipeName}, ParentPID: {ParentPid}, Sln: {SlnPath}",
-            pipeName, parentPid?.ToString() ?? "none", slnPath ?? "none");
+        logger.LogInformation("[Addon] Pipe: {PipeName}, ParentPID: {ParentPid}",
+            pipeName, parentPid?.ToString() ?? "none");
 
         using var cts = new CancellationTokenSource();
 
-        // Monitor parent process
         if (parentPid.HasValue)
         {
             _ = MonitorParentProcessAsync(parentPid.Value, cts, logger);
-            logger.LogInformation("[Addon] Monitoring parent process PID: {Pid}", parentPid.Value);
         }
 
-        // Handle SIGTERM / Ctrl+C
         Console.CancelKeyPress += (_, e) =>
         {
             e.Cancel = true;
-            logger.LogInformation("[Addon] Ctrl+C received, shutting down...");
             cts.Cancel();
         };
 
         try
         {
-            // Phase 1: Start pipe server (immediate)
             var lifecycle = host.Services.GetRequiredService<AddonLifecycleService>();
-            await lifecycle.StartAsync(slnPath, cts.Token);
+            await lifecycle.StartAsync(null, cts.Token);
 
-            // Run pipe server loop
             var pipeServer = host.Services.GetRequiredService<PipeServer>();
             await pipeServer.RunAsync(cts.Token);
         }
@@ -154,10 +113,6 @@ public static class Program
         {
             logger.LogError(ex, "[Addon] Fatal error");
             return 1;
-        }
-        finally
-        {
-            logger.LogInformation("[Addon] Exiting.");
         }
 
         return 0;
@@ -173,17 +128,13 @@ public static class Program
 
                 if (!IsProcessRunning(parentPid))
                 {
-                    logger.LogWarning("[Addon] Parent process (PID: {Pid}) has exited. Initiating shutdown.", parentPid);
+                    logger.LogWarning("[Addon] Parent process (PID: {Pid}) exited. Shutting down.", parentPid);
                     await cts.CancelAsync();
                     return;
                 }
             }
         }
         catch (OperationCanceledException) { }
-        catch (Exception ex)
-        {
-            logger.LogError(ex, "[Addon] Error monitoring parent process.");
-        }
     }
 
     private static bool IsProcessRunning(int pid)

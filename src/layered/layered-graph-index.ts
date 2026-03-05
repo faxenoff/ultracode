@@ -419,15 +419,9 @@ export class LayeredGraphIndex implements ILayeredIndex {
         if (typeof ext.upsertEntities === "function") {
           await ext.upsertEntities(entities);
         } else {
-          // Fallback: delete old entities and add new ones
-          for (const entity of entities) {
-            try {
-              await this.baseIndex.deleteEntity(entity.id);
-            } catch {
-              // Entity might not exist, ignore
-            }
-            await this.baseIndex.insertEntity(entity);
-          }
+          // Fallback: batch delete + batch insert
+          await Promise.all(entities.map((entity) => this.baseIndex.deleteEntity(entity.id).catch(() => {})));
+          await this.baseIndex.insertEntities(entities);
         }
       }
 

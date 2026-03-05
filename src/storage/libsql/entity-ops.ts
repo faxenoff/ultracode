@@ -10,6 +10,7 @@
 
 import { log } from "../../logging/index.js";
 import type { BatchResult, Entity, EntityType } from "../../types/storage.js";
+import type { GenerationManager } from "./generation-ops.js";
 import type { ClientGetter, ContextGetter } from "./types.js";
 
 // =============================================================================
@@ -69,6 +70,7 @@ export class EntityOperations {
     private getClient: ClientGetter,
     private getContext: ContextGetter,
     private rowToEntity: RowToEntityMapper,
+    private genManager: GenerationManager,
   ) {}
 
   /**
@@ -90,12 +92,20 @@ export class EntityOperations {
     const { projectHash, branchName } = this.getContext();
     const now = Date.now();
 
+    // Ensure generation cache is loaded
+    if (!this.genManager.isCacheLoaded) {
+      await this.genManager.loadCache();
+    }
+
+    // Bump generation for this file (append-only model)
+    const newGen = await this.genManager.bumpGeneration(entity.filePath);
+
     await client.execute({
       sql: `
         INSERT OR REPLACE INTO entities
         (id, project_hash, branch_name, name, type, file_path, location, metadata, hash,
-         created_at, updated_at, complexity_score, language, size_bytes, embedding_base64, embedding_text)
-        VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+         created_at, updated_at, complexity_score, language, size_bytes, embedding_base64, embedding_text, file_gen)
+        VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
       `,
       args: [
         entity.id,
@@ -114,6 +124,7 @@ export class EntityOperations {
         entity.sizeBytes || 0,
         entity.embeddingBase64 || null,
         entity.embeddingText || null,
+        newGen,
       ],
     });
 
@@ -169,10 +180,19 @@ export class EntityOperations {
       }
     }
 
+    // Ensure generation cache is loaded
+    if (!this.genManager.isCacheLoaded) {
+      await this.genManager.loadCache();
+    }
+
+    // Collect unique file paths and bump generations in batch
+    const filePaths = [...new Set(unique.map((e) => e.filePath))];
+    const genMap = await this.genManager.bumpGenerationBatch(filePaths);
+
     // OPTIMIZATION: Multi-row INSERT - single SQL statement with multiple VALUES
     // Much faster than N separate INSERT statements (reduces parsing overhead)
-    // SQLite limit: ~32767 params, 16 fields per entity → batch 1000 = 16000 params (safe)
-    const batchSize = 1000;
+    // SQLite limit: ~32767 params, 17 fields per entity → batch 900 = 15300 params (safe)
+    const batchSize = 900;
 
     let processed = 0;
 
@@ -180,11 +200,12 @@ export class EntityOperations {
       const batch = unique.slice(i, i + batchSize);
 
       // Build multi-row VALUES clause
-      const valuePlaceholders = batch.map(() => "(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)").join(", ");
+      const valuePlaceholders = batch.map(() => "(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)").join(", ");
 
       // Flatten all args into single array
       const args: (string | number | null)[] = [];
       for (const entity of batch) {
+        const fileGen = genMap.get(entity.filePath) ?? 1;
         args.push(
           entity.id,
           projectHash,
@@ -202,13 +223,14 @@ export class EntityOperations {
           entity.sizeBytes || 0,
           entity.embeddingBase64 || null,
           entity.embeddingText || null,
+          fileGen,
         );
       }
 
       const sql = `
         INSERT OR REPLACE INTO entities
         (id, project_hash, branch_name, name, type, file_path, location, metadata, hash,
-         created_at, updated_at, complexity_score, language, size_bytes, embedding_base64, embedding_text)
+         created_at, updated_at, complexity_score, language, size_bytes, embedding_base64, embedding_text, file_gen)
         VALUES ${valuePlaceholders}
       `;
 
@@ -287,9 +309,13 @@ export class EntityOperations {
       }
     }
 
-    // 2. Try to find in current branch (delta)
+    // 2. Try to find in current branch (delta) — only active generation
     const result = await client.execute({
-      sql: `SELECT * FROM entities WHERE id = ? AND project_hash = ? AND branch_name = ?`,
+      sql: `SELECT e.* FROM entities e
+            JOIN file_generations fg
+              ON e.file_path = fg.file_path AND e.project_hash = fg.project_hash AND e.branch_name = fg.branch_name
+            WHERE e.id = ? AND e.project_hash = ? AND e.branch_name = ?
+              AND e.file_gen = fg.active_gen`,
       args: [id, projectHash, branchName],
     });
 
@@ -300,7 +326,11 @@ export class EntityOperations {
     // 3. If on feature branch and not found in delta, check base
     if (baseBranch) {
       const baseResult = await client.execute({
-        sql: `SELECT * FROM entities WHERE id = ? AND project_hash = ? AND branch_name = ?`,
+        sql: `SELECT e.* FROM entities e
+              JOIN file_generations fg
+                ON e.file_path = fg.file_path AND e.project_hash = fg.project_hash AND e.branch_name = fg.branch_name
+              WHERE e.id = ? AND e.project_hash = ? AND e.branch_name = ?
+                AND e.file_gen = fg.active_gen`,
         args: [id, projectHash, baseBranch],
       });
 
@@ -343,9 +373,13 @@ export class EntityOperations {
       const chunk = uniqueIds.slice(i, i + CHUNK_SIZE);
       const placeholders = chunk.map(() => "?").join(",");
 
-      // 1. Fetch from current branch
+      // 1. Fetch from current branch (active generation only)
       const rows = await client.execute({
-        sql: `SELECT * FROM entities WHERE id IN (${placeholders}) AND project_hash = ? AND branch_name = ?`,
+        sql: `SELECT e.* FROM entities e
+              JOIN file_generations fg
+                ON e.file_path = fg.file_path AND e.project_hash = fg.project_hash AND e.branch_name = fg.branch_name
+              WHERE e.id IN (${placeholders}) AND e.project_hash = ? AND e.branch_name = ?
+                AND e.file_gen = fg.active_gen`,
         args: [...chunk, projectHash, branchName],
       });
 
@@ -360,7 +394,11 @@ export class EntityOperations {
         if (missingIds.length > 0) {
           const missingPlaceholders = missingIds.map(() => "?").join(",");
           const baseRows = await client.execute({
-            sql: `SELECT * FROM entities WHERE id IN (${missingPlaceholders}) AND project_hash = ? AND branch_name = ?`,
+            sql: `SELECT e.* FROM entities e
+                  JOIN file_generations fg
+                    ON e.file_path = fg.file_path AND e.project_hash = fg.project_hash AND e.branch_name = fg.branch_name
+                  WHERE e.id IN (${missingPlaceholders}) AND e.project_hash = ? AND e.branch_name = ?
+                    AND e.file_gen = fg.active_gen`,
             args: [...missingIds, projectHash, baseBranch],
           });
 
@@ -487,7 +525,10 @@ export class EntityOperations {
     // Simple case: no base branch
     if (!baseBranch) {
       const args: (string | number)[] = [projectHash, branchName];
-      let sql = "SELECT * FROM entities WHERE project_hash = ? AND branch_name = ?";
+      let sql = `SELECT e.* FROM entities e
+                 JOIN file_generations fg
+                   ON e.file_path = fg.file_path AND e.project_hash = fg.project_hash AND e.branch_name = fg.branch_name
+                 WHERE e.project_hash = ? AND e.branch_name = ? AND e.file_gen = fg.active_gen`;
       sql += this.buildFilterClause(query.filters, args, { projectHash, branchName });
       sql += " LIMIT ? OFFSET ?";
       args.push(limit, offset);
@@ -503,9 +544,12 @@ export class EntityOperations {
     // Layered case: delta + base - tombstones
     const tombstones = this.tombstoneGetter ? await this.tombstoneGetter("entity") : new Set<string>();
 
-    // Get from delta
+    // Get from delta (active gen only)
     const deltaArgs: (string | number)[] = [projectHash, branchName];
-    let deltaSql = "SELECT * FROM entities WHERE project_hash = ? AND branch_name = ?";
+    let deltaSql = `SELECT e.* FROM entities e
+                    JOIN file_generations fg
+                      ON e.file_path = fg.file_path AND e.project_hash = fg.project_hash AND e.branch_name = fg.branch_name
+                    WHERE e.project_hash = ? AND e.branch_name = ? AND e.file_gen = fg.active_gen`;
     deltaSql += this.buildFilterClause(query.filters, deltaArgs, { projectHash, branchName });
 
     const deltaResult = await client.execute({ sql: deltaSql, args: deltaArgs });
@@ -515,9 +559,12 @@ export class EntityOperations {
     const deltaEntities = deltaResult.rows.map((row) => this.rowToEntity(row));
     const deltaIds = new Set(deltaEntities.map((e) => e.id));
 
-    // Get from base
+    // Get from base (active gen only)
     const baseArgs: (string | number)[] = [projectHash, baseBranch];
-    let baseSql = "SELECT * FROM entities WHERE project_hash = ? AND branch_name = ?";
+    let baseSql = `SELECT e.* FROM entities e
+                   JOIN file_generations fg
+                     ON e.file_path = fg.file_path AND e.project_hash = fg.project_hash AND e.branch_name = fg.branch_name
+                   WHERE e.project_hash = ? AND e.branch_name = ? AND e.file_gen = fg.active_gen`;
     baseSql += this.buildFilterClause(query.filters, baseArgs, { projectHash, branchName: baseBranch });
 
     const baseResult = await client.execute({ sql: baseSql, args: baseArgs });
@@ -612,7 +659,10 @@ export class EntityOperations {
     // Simple case: no base branch
     if (!baseBranch) {
       const args: (string | number)[] = [projectHash, branchName];
-      let sql = "SELECT * FROM entities WHERE project_hash = ? AND branch_name = ?";
+      let sql = `SELECT e.* FROM entities e
+                 JOIN file_generations fg
+                   ON e.file_path = fg.file_path AND e.project_hash = fg.project_hash AND e.branch_name = fg.branch_name
+                 WHERE e.project_hash = ? AND e.branch_name = ? AND e.file_gen = fg.active_gen`;
       sql += this.buildSearchClause(options, args, { projectHash, branchName });
       sql += " LIMIT ?";
       args.push(limit);
@@ -624,18 +674,24 @@ export class EntityOperations {
     // Layered case
     const tombstones = this.tombstoneGetter ? await this.tombstoneGetter("entity") : new Set<string>();
 
-    // Get from delta
+    // Get from delta (active gen only)
     const deltaArgs: (string | number)[] = [projectHash, branchName];
-    let deltaSql = "SELECT * FROM entities WHERE project_hash = ? AND branch_name = ?";
+    let deltaSql = `SELECT e.* FROM entities e
+                    JOIN file_generations fg
+                      ON e.file_path = fg.file_path AND e.project_hash = fg.project_hash AND e.branch_name = fg.branch_name
+                    WHERE e.project_hash = ? AND e.branch_name = ? AND e.file_gen = fg.active_gen`;
     deltaSql += this.buildSearchClause(options, deltaArgs, { projectHash, branchName });
 
     const deltaResult = await client.execute({ sql: deltaSql, args: deltaArgs });
     const deltaEntities = deltaResult.rows.map((row) => this.rowToEntity(row));
     const deltaIds = new Set(deltaEntities.map((e) => e.id));
 
-    // Get from base
+    // Get from base (active gen only)
     const baseArgs: (string | number)[] = [projectHash, baseBranch];
-    let baseSql = "SELECT * FROM entities WHERE project_hash = ? AND branch_name = ?";
+    let baseSql = `SELECT e.* FROM entities e
+                   JOIN file_generations fg
+                     ON e.file_path = fg.file_path AND e.project_hash = fg.project_hash AND e.branch_name = fg.branch_name
+                   WHERE e.project_hash = ? AND e.branch_name = ? AND e.file_gen = fg.active_gen`;
     baseSql += this.buildSearchClause(options, baseArgs, { projectHash, branchName: baseBranch });
 
     const baseResult = await client.execute({ sql: baseSql, args: baseArgs });
@@ -663,9 +719,12 @@ export class EntityOperations {
     // Simple case: no base branch
     if (!baseBranch) {
       const sql = `
-        SELECT * FROM entities
-        WHERE project_hash = ? AND branch_name = ?
-        AND (file_path LIKE ? OR file_path LIKE ?)
+        SELECT e.* FROM entities e
+        JOIN file_generations fg
+          ON e.file_path = fg.file_path AND e.project_hash = fg.project_hash AND e.branch_name = fg.branch_name
+        WHERE e.project_hash = ? AND e.branch_name = ?
+        AND (e.file_path LIKE ? OR e.file_path LIKE ?)
+        AND e.file_gen = fg.active_gen
       `;
       const args = [projectHash, branchName, `${forwardPath}%`, `${backPath}%`];
 
@@ -676,11 +735,14 @@ export class EntityOperations {
     // Layered case
     const tombstones = this.tombstoneGetter ? await this.tombstoneGetter("entity") : new Set<string>();
 
-    // Get from delta
+    // Get from delta (active gen only)
     const deltaSql = `
-      SELECT * FROM entities
-      WHERE project_hash = ? AND branch_name = ?
-      AND (file_path LIKE ? OR file_path LIKE ?)
+      SELECT e.* FROM entities e
+      JOIN file_generations fg
+        ON e.file_path = fg.file_path AND e.project_hash = fg.project_hash AND e.branch_name = fg.branch_name
+      WHERE e.project_hash = ? AND e.branch_name = ?
+      AND (e.file_path LIKE ? OR e.file_path LIKE ?)
+      AND e.file_gen = fg.active_gen
     `;
     const deltaResult = await client.execute({
       sql: deltaSql,
@@ -689,11 +751,14 @@ export class EntityOperations {
     const deltaEntities = deltaResult.rows.map((row) => this.rowToEntity(row));
     const deltaIds = new Set(deltaEntities.map((e) => e.id));
 
-    // Get from base
+    // Get from base (active gen only)
     const baseSql = `
-      SELECT * FROM entities
-      WHERE project_hash = ? AND branch_name = ?
-      AND (file_path LIKE ? OR file_path LIKE ?)
+      SELECT e.* FROM entities e
+      JOIN file_generations fg
+        ON e.file_path = fg.file_path AND e.project_hash = fg.project_hash AND e.branch_name = fg.branch_name
+      WHERE e.project_hash = ? AND e.branch_name = ?
+      AND (e.file_path LIKE ? OR e.file_path LIKE ?)
+      AND e.file_gen = fg.active_gen
     `;
     const baseResult = await client.execute({
       sql: baseSql,
@@ -747,13 +812,16 @@ export class EntityOperations {
     const forwardPath = filePath.replace(/\\/g, "/");
     const backPath = filePath.replace(/\//g, "\\");
 
-    // Simple case: no base branch
+    // Simple case: no base branch — only active generation
     if (!baseBranch) {
       const result = await client.execute({
         sql: `
-          SELECT id FROM entities
-          WHERE project_hash = ? AND branch_name = ?
-          AND (file_path = ? OR file_path = ?)
+          SELECT e.id FROM entities e
+          JOIN file_generations fg
+            ON e.file_path = fg.file_path AND e.project_hash = fg.project_hash AND e.branch_name = fg.branch_name
+          WHERE e.project_hash = ? AND e.branch_name = ?
+          AND (e.file_path = ? OR e.file_path = ?)
+          AND e.file_gen = fg.active_gen
         `,
         args: [projectHash, branchName, forwardPath, backPath],
       });
@@ -764,23 +832,29 @@ export class EntityOperations {
     // Layered case
     const tombstones = this.tombstoneGetter ? await this.tombstoneGetter("entity") : new Set<string>();
 
-    // Get from delta
+    // Get from delta (active gen only)
     const deltaResult = await client.execute({
       sql: `
-        SELECT id FROM entities
-        WHERE project_hash = ? AND branch_name = ?
-        AND (file_path = ? OR file_path = ?)
+        SELECT e.id FROM entities e
+        JOIN file_generations fg
+          ON e.file_path = fg.file_path AND e.project_hash = fg.project_hash AND e.branch_name = fg.branch_name
+        WHERE e.project_hash = ? AND e.branch_name = ?
+        AND (e.file_path = ? OR e.file_path = ?)
+        AND e.file_gen = fg.active_gen
       `,
       args: [projectHash, branchName, forwardPath, backPath],
     });
     const deltaIds = new Set(deltaResult.rows.map((row) => row["id"] as string));
 
-    // Get from base
+    // Get from base (active gen only)
     const baseResult = await client.execute({
       sql: `
-        SELECT id FROM entities
-        WHERE project_hash = ? AND branch_name = ?
-        AND (file_path = ? OR file_path = ?)
+        SELECT e.id FROM entities e
+        JOIN file_generations fg
+          ON e.file_path = fg.file_path AND e.project_hash = fg.project_hash AND e.branch_name = fg.branch_name
+        WHERE e.project_hash = ? AND e.branch_name = ?
+        AND (e.file_path = ? OR e.file_path = ?)
+        AND e.file_gen = fg.active_gen
       `,
       args: [projectHash, baseBranch, forwardPath, backPath],
     });
@@ -796,38 +870,12 @@ export class EntityOperations {
    * Returns the IDs of deleted entities (for FAISS cleanup)
    */
   async deleteEntitiesByFilePath(filePath: string): Promise<string[]> {
-    const client = this.getClient();
-    if (!client) throw new Error("Client not initialized");
-
-    // First get IDs for FAISS cleanup
+    // Get IDs of active entities for FAISS cleanup before invalidation
     const ids = await this.getEntityIdsByFilePath(filePath);
     if (ids.length === 0) return [];
 
-    const { projectHash, branchName } = this.getContext();
-
-    // Normalize path separators
-    const forwardPath = filePath.replace(/\\/g, "/");
-    const backPath = filePath.replace(/\//g, "\\");
-
-    await client.execute({
-      sql: `
-        DELETE FROM entities
-        WHERE project_hash = ? AND branch_name = ?
-        AND (file_path = ? OR file_path = ?)
-      `,
-      args: [projectHash, branchName, forwardPath, backPath],
-    });
-
-    // Remove name tokens for deleted entities
-    const CHUNK_SIZE = 400;
-    for (let i = 0; i < ids.length; i += CHUNK_SIZE) {
-      const chunk = ids.slice(i, i + CHUNK_SIZE);
-      const placeholders = chunk.map(() => "?").join(",");
-      await client.execute({
-        sql: `DELETE FROM name_tokens WHERE entity_id IN (${placeholders}) AND project_hash = ? AND branch_name = ?`,
-        args: [...chunk, projectHash, branchName],
-      });
-    }
+    // Invalidate the file generation — all entities become stale (GC will clean them)
+    await this.genManager.invalidateFileGeneration(filePath);
 
     return ids;
   }
@@ -841,10 +889,13 @@ export class EntityOperations {
 
     const { projectHash, branchName, baseBranch } = this.getContext();
 
-    // Simple case: no base branch (on base or no layering)
+    // Simple case: no base branch (on base or no layering) — active generation only
     if (!baseBranch) {
       const result = await client.execute({
-        sql: "SELECT * FROM entities WHERE project_hash = ? AND branch_name = ?",
+        sql: `SELECT e.* FROM entities e
+              JOIN file_generations fg
+                ON e.file_path = fg.file_path AND e.project_hash = fg.project_hash AND e.branch_name = fg.branch_name
+              WHERE e.project_hash = ? AND e.branch_name = ? AND e.file_gen = fg.active_gen`,
         args: [projectHash, branchName],
       });
       return result.rows.map((row) => this.rowToEntity(row));
@@ -854,17 +905,23 @@ export class EntityOperations {
     // 1. Get tombstones for current branch
     const tombstones = this.tombstoneGetter ? await this.tombstoneGetter("entity") : new Set<string>();
 
-    // 2. Get entities from delta (current branch)
+    // 2. Get entities from delta (current branch, active gen only)
     const deltaResult = await client.execute({
-      sql: "SELECT * FROM entities WHERE project_hash = ? AND branch_name = ?",
+      sql: `SELECT e.* FROM entities e
+            JOIN file_generations fg
+              ON e.file_path = fg.file_path AND e.project_hash = fg.project_hash AND e.branch_name = fg.branch_name
+            WHERE e.project_hash = ? AND e.branch_name = ? AND e.file_gen = fg.active_gen`,
       args: [projectHash, branchName],
     });
     const deltaEntities = deltaResult.rows.map((row) => this.rowToEntity(row));
     const deltaIds = new Set(deltaEntities.map((e) => e.id));
 
-    // 3. Get entities from base, excluding those overridden in delta or tombstoned
+    // 3. Get entities from base (active gen only), excluding overridden or tombstoned
     const baseResult = await client.execute({
-      sql: "SELECT * FROM entities WHERE project_hash = ? AND branch_name = ?",
+      sql: `SELECT e.* FROM entities e
+            JOIN file_generations fg
+              ON e.file_path = fg.file_path AND e.project_hash = fg.project_hash AND e.branch_name = fg.branch_name
+            WHERE e.project_hash = ? AND e.branch_name = ? AND e.file_gen = fg.active_gen`,
       args: [projectHash, baseBranch],
     });
 
@@ -887,18 +944,21 @@ export class EntityOperations {
 
     const { projectHash, branchName, baseBranch } = this.getContext();
 
-    // Simple case: no base branch
+    // Simple case: no base branch — active generation only
     if (!baseBranch) {
       const result = await client.execute({
         sql: `
           SELECT
-            COALESCE(language, 'unknown') as lang,
+            COALESCE(e.language, 'unknown') as lang,
             COUNT(*) as cnt,
-            COUNT(DISTINCT file_path) as file_cnt
-          FROM entities
-          WHERE project_hash = ? AND branch_name = ?
-            AND file_path NOT LIKE 'external://%'
-          GROUP BY COALESCE(language, 'unknown')
+            COUNT(DISTINCT e.file_path) as file_cnt
+          FROM entities e
+          JOIN file_generations fg
+            ON e.file_path = fg.file_path AND e.project_hash = fg.project_hash AND e.branch_name = fg.branch_name
+          WHERE e.project_hash = ? AND e.branch_name = ?
+            AND e.file_path NOT LIKE 'external://%'
+            AND e.file_gen = fg.active_gen
+          GROUP BY COALESCE(e.language, 'unknown')
         `,
         args: [projectHash, branchName],
       });
@@ -917,9 +977,13 @@ export class EntityOperations {
     // Layered case: get from delta + base, excluding tombstones
     const tombstones = this.tombstoneGetter ? await this.tombstoneGetter("entity") : new Set<string>();
 
-    // Get all entities (need to filter by tombstones in memory)
+    // Get all entities (need to filter by tombstones in memory) — active gen only
     const deltaResult = await client.execute({
-      sql: `SELECT id, language, file_path FROM entities WHERE project_hash = ? AND branch_name = ? AND file_path NOT LIKE 'external://%'`,
+      sql: `SELECT e.id, e.language, e.file_path FROM entities e
+            JOIN file_generations fg
+              ON e.file_path = fg.file_path AND e.project_hash = fg.project_hash AND e.branch_name = fg.branch_name
+            WHERE e.project_hash = ? AND e.branch_name = ? AND e.file_path NOT LIKE 'external://%'
+              AND e.file_gen = fg.active_gen`,
       args: [projectHash, branchName],
     });
     const deltaEntities = deltaResult.rows.map((row) => ({
@@ -930,7 +994,11 @@ export class EntityOperations {
     const deltaIds = new Set(deltaEntities.map((e) => e.id));
 
     const baseResult = await client.execute({
-      sql: `SELECT id, language, file_path FROM entities WHERE project_hash = ? AND branch_name = ? AND file_path NOT LIKE 'external://%'`,
+      sql: `SELECT e.id, e.language, e.file_path FROM entities e
+            JOIN file_generations fg
+              ON e.file_path = fg.file_path AND e.project_hash = fg.project_hash AND e.branch_name = fg.branch_name
+            WHERE e.project_hash = ? AND e.branch_name = ? AND e.file_path NOT LIKE 'external://%'
+              AND e.file_gen = fg.active_gen`,
       args: [projectHash, baseBranch],
     });
     const baseEntities = baseResult.rows
