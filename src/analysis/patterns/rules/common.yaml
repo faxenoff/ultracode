@@ -54,7 +54,7 @@ patterns:
     structural:
       entityTypes: ["method", "function", "async_function", "class", "interface"]
       requiredModifiers: ["public"]
-      filePathNotMatch: "\\.(SDK|WebCommons|Infrastructure|Shared|Commons|Internal|Implementation)[\\\\/]"
+      filePathNotMatch: "\\.(SDK|WebCommons|Infrastructure|Shared|Commons|Internal|Implementation)[\\\\/]|[\\\\/](Minimal|Kestrel|Hosting|Middleware|Extensions)\\b"
     customDetector: "checkNoDocumentation"
     minSemanticSimilarity: 0
     minStructuralConfidence: 0.5

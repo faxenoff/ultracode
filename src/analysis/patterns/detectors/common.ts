@@ -86,6 +86,15 @@ export function checkNoDocumentation(entity: Entity): CustomDetectorResult {
   // Skip partial methods — source-generated, docs are pointless
   if (mods.includes("partial")) return { match: false, confidence: 0 };
 
+  // Skip C# internal types — not a public API surface
+  if (mods.includes("internal")) return { match: false, confidence: 0 };
+
+  // Skip entities in internal/infrastructure library projects (not consumer-facing)
+  const fp = entity.filePath;
+  if (/[\\/](Minimal|Internal|Hosting|Kestrel|Middleware|Extensions)\b/i.test(fp)) {
+    return { match: false, confidence: 0 };
+  }
+
   // Check for docs in metadata
   const signature = entity.metadata?.signature as string | undefined;
   const hasJsdoc = signature?.includes("/**") ?? false;

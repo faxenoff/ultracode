@@ -85,36 +85,54 @@ export function isCSharpStateIdentifier(entity: Entity): boolean {
   const name = entity.name.toLowerCase();
   const modifiers = entity.metadata?.modifiers || [];
 
+  // Readonly fields are set once in constructor (DI injection) and never mutated — not state chaos
+  if (modifiers.includes("readonly")) {
+    return false;
+  }
+
+  // Skip common DI-injected service fields (readonly by convention even if parser misses modifier)
+  const diServicePatterns = [
+    /^_log(ger)?$/i,
+    /^_(http)?client$/i,
+    /^_mediator$/i,
+    /^_mapper$/i,
+    /^_sender$/i,
+    /^_(message|event)?bus$/i,
+    /^_publisher$/i,
+    /^_inner$/i,
+    /^_next$/i,
+    /^_handler$/i,
+    /^_service$/i,
+    /^_provider$/i,
+    /^_factory$/i,
+    /^_repository$/i,
+    /^_config(uration)?$/i,
+    /^_options$/i,
+    /^_settings$/i,
+    /^_env(ironment)?$/i,
+  ];
+  if (diServicePatterns.some((p) => p.test(entity.name))) {
+    return false;
+  }
+
   // Static fields/properties are always state candidates
-  if (modifiers.includes("static") && !modifiers.includes("const") && !modifiers.includes("readonly")) {
+  if (modifiers.includes("static") && !modifiers.includes("const")) {
     return true;
   }
 
-  // Common C# state naming patterns
-  const stateKeywords = [
-    "state",
-    "config",
-    "configuration",
-    "settings",
-    "options",
-    "cache",
-    "connection",
-    "context",
-    "session",
-    "token",
-    "instance",
-    "current",
-    "singleton",
-    "shared",
-    "global",
-  ];
+  // Common C# state naming patterns (only for non-readonly, non-DI fields)
+  const stateKeywords = ["state", "cache", "connection", "session", "current", "singleton", "shared", "global"];
 
   if (stateKeywords.some((kw) => name.includes(kw))) {
     return true;
   }
 
-  // Private backing fields (_fieldName pattern)
-  // C# entities from Roslyn use "field"/"property" types
+  // Config/options/context/token — only flag if not a private backing field (likely mutable static or property)
+  const weakStateKeywords = ["config", "configuration", "settings", "options", "context", "token", "instance"];
+  if (weakStateKeywords.some((kw) => name.includes(kw)) && !/^_[a-z]/.test(entity.name)) {
+    return true;
+  }
+
   const typeStr = entity.type as string;
   if (
     /^_[a-z]/.test(entity.name) &&
