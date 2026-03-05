@@ -1,3 +1,4 @@
+using UltraCode.CSharp.Gpu;
 using UltraCode.CSharp.Ipc;
 
 namespace UltraCode.CSharp.Handlers;
@@ -6,6 +7,8 @@ public static class HandlerRegistration
 {
     public static void RegisterHandlers(IServiceCollection services)
     {
+        services.AddSingleton<GpuAccelerator>();
+        services.AddSingleton<GpuMetricsKernel>();
         services.AddSingleton<ParseHandler>();
         services.AddSingleton<StatusHandler>();
 

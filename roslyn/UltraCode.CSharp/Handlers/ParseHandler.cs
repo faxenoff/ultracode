@@ -1,28 +1,34 @@
+using System.Collections.Concurrent;
 using System.Text.Json;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
+using UltraCode.CSharp.Gpu;
 using UltraCode.CSharp.Models;
 
 namespace UltraCode.CSharp.Handlers;
 
 /// <summary>
 /// Handles "parse" and "parseBatch" requests.
-/// Works in Phase 1 — no solution required, pure syntax tree analysis.
+/// Hybrid CPU+GPU pipeline: parallel Roslyn parsing, single-pass AST walk,
+/// GPU-accelerated batch metrics (complexity, SimHash) for large batches.
 /// </summary>
 public sealed class ParseHandler
 {
     private readonly ILogger<ParseHandler> _logger;
+    private readonly GpuAccelerator _gpu;
+    private readonly GpuMetricsKernel _gpuMetrics;
 
-    public ParseHandler(ILogger<ParseHandler> logger)
+    public ParseHandler(ILogger<ParseHandler> logger, GpuAccelerator gpu, GpuMetricsKernel gpuMetrics)
     {
         _logger = logger;
+        _gpu = gpu;
+        _gpuMetrics = gpuMetrics;
     }
 
     /// <summary>
     /// Parse a single C# file and return entities.
-    /// Params: { "filePath": string, "content"?: string }
-    /// If content is provided, parse from string. Otherwise read from disk.
+    /// Single file always uses CPU path (GPU overhead not worth it).
     /// </summary>
     public async Task<object?> HandleParseAsync(AddonRequest request, CancellationToken ct)
     {
@@ -37,13 +43,13 @@ public sealed class ParseHandler
         if (string.IsNullOrEmpty(content))
             return new { entities = Array.Empty<ParsedEntityDto>() };
 
-        var entities = ParseContent(content, filePath);
-        return new { entities };
+        var parseResult = ParseContentSinglePass(content, filePath);
+        // For single file, compute complexity on CPU inline (already done in single-pass)
+        return new { entities = parseResult.Entities };
     }
 
     /// <summary>
-    /// Parse multiple files in batch.
-    /// Params: { "files": [{ "filePath": string, "content"?: string }] }
+    /// Parse multiple files in batch with parallel CPU parsing and optional GPU metrics.
     /// </summary>
     public async Task<object?> HandleParseBatchAsync(AddonRequest request, CancellationToken ct)
     {
@@ -61,34 +67,107 @@ public sealed class ParseHandler
             }
         }
 
-        var results = new List<object>();
-        foreach (var (path, content) in files)
-        {
-            ct.ThrowIfCancellationRequested();
-            var text = content ?? (File.Exists(path) ? await File.ReadAllTextAsync(path, ct) : null);
-            if (text == null) continue;
+        // Phase 1: Parallel Roslyn parsing + single-pass entity extraction
+        var parseResults = new ConcurrentBag<(string path, SinglePassResult result)>();
 
-            var entities = ParseContent(text, path);
-            results.Add(new { filePath = path, entities });
+        await Parallel.ForEachAsync(files, ct, async (file, token) =>
+        {
+            var text = file.content ?? (File.Exists(file.path) ? await File.ReadAllTextAsync(file.path, token) : null);
+            if (text == null) return;
+
+            var result = ParseContentSinglePass(text, file.path);
+            parseResults.Add((file.path, result));
+        });
+
+        var orderedResults = parseResults.OrderBy(r => files.FindIndex(f => f.path == r.path)).ToList();
+
+        // Phase 2: GPU batch metrics if threshold met
+        if (_gpu.ShouldUseGpu(files.Count))
+        {
+            try
+            {
+                ApplyGpuMetrics(orderedResults);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogWarning(ex, "[GPU] Batch metrics failed, CPU values used as fallback");
+            }
         }
 
+        var results = orderedResults.Select(r => new { filePath = r.path, entities = r.result.Entities }).ToList();
         return new { files = results };
     }
 
     /// <summary>
-    /// Parse C# content into a list of entities using Roslyn syntax tree.
+    /// Single-pass AST walk: extracts usings, namespace, entities, diagnostics, calls, and complexity in ONE traversal.
     /// </summary>
-    private List<ParsedEntityDto> ParseContent(string content, string filePath)
+    private SinglePassResult ParseContentSinglePass(string content, string filePath)
     {
         var tree = CSharpSyntaxTree.ParseText(content, path: filePath);
         var root = tree.GetRoot();
-        var entities = new List<ParsedEntityDto>();
 
-        // Extract file-level using directives
-        var usings = root.DescendantNodes()
-            .OfType<UsingDirectiveSyntax>()
-            .Select(u => u.ToString().TrimEnd(';').Trim())
-            .ToList();
+        // Single-pass: collect everything we need from DescendantNodes
+        string? fileNamespace = null;
+        List<string>? usings = null;
+        var typeDeclarations = new List<TypeDeclarationSyntax>();
+        var enumDeclarations = new List<EnumDeclarationSyntax>();
+        var delegateDeclarations = new List<DelegateDeclarationSyntax>();
+
+        foreach (var node in root.DescendantNodes())
+        {
+            switch (node)
+            {
+                case FileScopedNamespaceDeclarationSyntax fsns:
+                    fileNamespace ??= fsns.Name.ToString();
+                    break;
+                case NamespaceDeclarationSyntax ns:
+                    fileNamespace ??= ns.Name.ToString();
+                    break;
+                case UsingDirectiveSyntax u:
+                    usings ??= [];
+                    usings.Add(u.ToString().TrimEnd(';').Trim());
+                    break;
+                case ClassDeclarationSyntax cls:
+                    typeDeclarations.Add(cls);
+                    break;
+                case InterfaceDeclarationSyntax iface:
+                    typeDeclarations.Add(iface);
+                    break;
+                case StructDeclarationSyntax strct:
+                    typeDeclarations.Add(strct);
+                    break;
+                case RecordDeclarationSyntax rec:
+                    typeDeclarations.Add(rec);
+                    break;
+                case EnumDeclarationSyntax enm:
+                    enumDeclarations.Add(enm);
+                    break;
+                case DelegateDeclarationSyntax del:
+                    delegateDeclarations.Add(del);
+                    break;
+            }
+        }
+
+        var entities = new List<ParsedEntityDto>();
+        var methodNodes = new List<SyntaxNode>();
+        var methodMetadataRefs = new List<EntityMetadataDto>();
+
+        foreach (var typeDecl in typeDeclarations)
+        {
+            var entityType = typeDecl switch
+            {
+                InterfaceDeclarationSyntax => "interface",
+                _ => "class",
+            };
+            var entity = ExtractTypeEntity(typeDecl, filePath, entityType, fileNamespace, usings, methodNodes, methodMetadataRefs);
+            entities.Add(entity);
+        }
+
+        foreach (var enm in enumDeclarations)
+            entities.Add(ExtractEnumEntity(enm, filePath, fileNamespace, usings));
+
+        foreach (var del in delegateDeclarations)
+            entities.Add(ExtractDelegateEntity(del, filePath, fileNamespace));
 
         // Get syntax diagnostics
         var diagnostics = tree.GetDiagnostics()
@@ -107,47 +186,24 @@ public sealed class ParseHandler
             })
             .ToList();
 
-        // Determine file-level namespace
-        var fileNamespace = root.DescendantNodes().OfType<FileScopedNamespaceDeclarationSyntax>().FirstOrDefault()?.Name.ToString()
-            ?? root.DescendantNodes().OfType<NamespaceDeclarationSyntax>().FirstOrDefault()?.Name.ToString();
-
-        // Walk top-level type declarations
-        foreach (var node in root.DescendantNodes())
-        {
-            switch (node)
-            {
-                case ClassDeclarationSyntax cls:
-                    entities.Add(ExtractTypeEntity(cls, filePath, "class", content, fileNamespace, usings));
-                    break;
-                case InterfaceDeclarationSyntax iface:
-                    entities.Add(ExtractTypeEntity(iface, filePath, "interface", content, fileNamespace, usings));
-                    break;
-                case StructDeclarationSyntax strct:
-                    entities.Add(ExtractTypeEntity(strct, filePath, "class", content, fileNamespace, usings));
-                    break;
-                case RecordDeclarationSyntax rec:
-                    entities.Add(ExtractTypeEntity(rec, filePath, "class", content, fileNamespace, usings));
-                    break;
-                case EnumDeclarationSyntax enm:
-                    entities.Add(ExtractEnumEntity(enm, filePath, content, fileNamespace, usings));
-                    break;
-                case DelegateDeclarationSyntax del:
-                    entities.Add(ExtractDelegateEntity(del, filePath, content, fileNamespace));
-                    break;
-            }
-        }
-
-        // Attach file-level diagnostics to the first entity (or create a virtual file entity)
         if (diagnostics.Count > 0 && entities.Count > 0)
         {
             var meta = entities[0].Metadata ??= new EntityMetadataDto();
             meta.Diagnostics = diagnostics;
         }
 
-        return entities;
+        return new SinglePassResult
+        {
+            Entities = entities,
+            MethodNodes = methodNodes,
+            MethodMetadataRefs = methodMetadataRefs,
+        };
     }
 
-    private ParsedEntityDto ExtractTypeEntity(TypeDeclarationSyntax typeDecl, string filePath, string entityType, string content, string? ns, List<string>? usings)
+    private ParsedEntityDto ExtractTypeEntity(
+        TypeDeclarationSyntax typeDecl, string filePath, string entityType,
+        string? ns, List<string>? usings,
+        List<SyntaxNode> methodNodes, List<EntityMetadataDto> methodMetadataRefs)
     {
         var lineSpan = typeDecl.GetLocation().GetLineSpan();
         var typeName = typeDecl.Identifier.Text;
@@ -180,30 +236,33 @@ public sealed class ParseHandler
             Children = [],
         };
 
-        // Extract members
         foreach (var member in typeDecl.Members)
         {
             switch (member)
             {
                 case MethodDeclarationSyntax method:
-                    entity.Children.Add(ExtractMethodEntity(method, filePath, fqn, content));
+                    var methodEntity = ExtractMethodEntity(method, filePath, fqn);
+                    entity.Children.Add(methodEntity);
+                    // Track for GPU batch metrics
+                    methodNodes.Add(method);
+                    methodMetadataRefs.Add(methodEntity.Metadata!);
                     break;
                 case ConstructorDeclarationSyntax ctor:
-                    entity.Children.Add(ExtractConstructorEntity(ctor, filePath, fqn, content));
+                    var ctorEntity = ExtractConstructorEntity(ctor, filePath, fqn);
+                    entity.Children.Add(ctorEntity);
+                    methodNodes.Add(ctor);
+                    methodMetadataRefs.Add(ctorEntity.Metadata!);
                     break;
                 case PropertyDeclarationSyntax prop:
                     entity.Children.Add(ExtractPropertyEntity(prop, filePath, fqn));
                     break;
                 case FieldDeclarationSyntax field:
                     foreach (var variable in field.Declaration.Variables)
-                    {
                         entity.Children.Add(ExtractFieldEntity(field, variable, filePath, fqn));
-                    }
                     break;
                 case EventDeclarationSyntax evt:
                     entity.Children.Add(ExtractEventEntity(evt, filePath, fqn));
                     break;
-                // Nested types are handled by top-level walk
             }
         }
 
@@ -213,7 +272,42 @@ public sealed class ParseHandler
         return entity;
     }
 
-    private ParsedEntityDto ExtractMethodEntity(MethodDeclarationSyntax method, string filePath, string parentFqn, string content)
+    /// <summary>
+    /// Apply GPU-computed metrics (complexity, SimHash) to all methods across all files.
+    /// </summary>
+    private void ApplyGpuMetrics(List<(string path, SinglePassResult result)> results)
+    {
+        // Collect all method nodes and metadata refs across all files
+        var allMethodNodes = new List<SyntaxNode>();
+        var allMetadataRefs = new List<EntityMetadataDto>();
+
+        foreach (var (_, r) in results)
+        {
+            allMethodNodes.AddRange(r.MethodNodes);
+            allMetadataRefs.AddRange(r.MethodMetadataRefs);
+        }
+
+        if (allMethodNodes.Count == 0) return;
+
+        _logger.LogDebug("[GPU] Processing {Count} methods across {Files} files", allMethodNodes.Count, results.Count);
+
+        // Linearize AST for GPU
+        var (nodeKinds, starts, ends) = AstLinearizer.LinearizeMethods(allMethodNodes);
+        var complexityKinds = AstLinearizer.GetComplexityKindsSorted();
+
+        // GPU batch complexity
+        var gpuComplexities = _gpuMetrics.BatchComplexity(nodeKinds, starts, ends, complexityKinds);
+        for (int i = 0; i < allMetadataRefs.Count; i++)
+            allMetadataRefs[i].Complexity = gpuComplexities[i];
+
+        // GPU batch SimHash
+        var (tokenKinds, tokenStarts, tokenEnds) = AstLinearizer.LinearizeTokens(allMethodNodes);
+        var simHashes = _gpuMetrics.BatchSimHash(tokenKinds, tokenStarts, tokenEnds);
+        for (int i = 0; i < allMetadataRefs.Count; i++)
+            allMetadataRefs[i].SimHash = simHashes[i].ToString("X16");
+    }
+
+    private ParsedEntityDto ExtractMethodEntity(MethodDeclarationSyntax method, string filePath, string parentFqn)
     {
         var lineSpan = method.GetLocation().GetLineSpan();
         var name = method.Identifier.Text;
@@ -257,7 +351,7 @@ public sealed class ParseHandler
         };
     }
 
-    private ParsedEntityDto ExtractConstructorEntity(ConstructorDeclarationSyntax ctor, string filePath, string parentFqn, string content)
+    private ParsedEntityDto ExtractConstructorEntity(ConstructorDeclarationSyntax ctor, string filePath, string parentFqn)
     {
         var lineSpan = ctor.GetLocation().GetLineSpan();
         var name = ctor.Identifier.Text;
@@ -286,6 +380,7 @@ public sealed class ParseHandler
                     DefaultValue = p.Default?.Value.ToString(),
                 }).ToList(),
                 Calls = ExtractCalls(ctor),
+                Complexity = CalculateCyclomaticComplexity(ctor),
             },
         };
     }
@@ -373,7 +468,7 @@ public sealed class ParseHandler
         };
     }
 
-    private ParsedEntityDto ExtractEnumEntity(EnumDeclarationSyntax enm, string filePath, string content, string? ns, List<string>? usings)
+    private ParsedEntityDto ExtractEnumEntity(EnumDeclarationSyntax enm, string filePath, string? ns, List<string>? usings)
     {
         var lineSpan = enm.GetLocation().GetLineSpan();
         var name = enm.Identifier.Text;
@@ -399,7 +494,7 @@ public sealed class ParseHandler
         };
     }
 
-    private ParsedEntityDto ExtractDelegateEntity(DelegateDeclarationSyntax del, string filePath, string content, string? ns)
+    private ParsedEntityDto ExtractDelegateEntity(DelegateDeclarationSyntax del, string filePath, string? ns)
     {
         var lineSpan = del.GetLocation().GetLineSpan();
         var name = del.Identifier.Text;
@@ -436,7 +531,7 @@ public sealed class ParseHandler
         if (modifiers.Any(SyntaxKind.ProtectedKeyword)) return "protected";
         if (modifiers.Any(SyntaxKind.InternalKeyword)) return "internal";
         if (modifiers.Any(SyntaxKind.PrivateKeyword)) return "private";
-        return "private"; // default for class members
+        return "private";
     }
 
     private static List<CallInfoDto>? ExtractCalls(SyntaxNode node)
@@ -480,7 +575,7 @@ public sealed class ParseHandler
 
     private static int CalculateCyclomaticComplexity(SyntaxNode node)
     {
-        int complexity = 1; // base
+        int complexity = 1;
 
         foreach (var descendant in node.DescendantNodes())
         {
@@ -515,17 +610,25 @@ public sealed class ParseHandler
         if (trivia == default) return null;
 
         var xml = trivia.ToString();
-        // Extract summary content
         var summaryStart = xml.IndexOf("<summary>", StringComparison.OrdinalIgnoreCase);
         var summaryEnd = xml.IndexOf("</summary>", StringComparison.OrdinalIgnoreCase);
         if (summaryStart >= 0 && summaryEnd > summaryStart)
         {
             var inner = xml[(summaryStart + 9)..summaryEnd].Trim();
-            // Clean up XML comment prefixes
             inner = string.Join(" ", inner.Split('\n').Select(l => l.Trim().TrimStart('/', ' ')));
             return string.IsNullOrWhiteSpace(inner) ? null : inner;
         }
 
         return null;
+    }
+
+    /// <summary>
+    /// Result of single-pass parsing, including method nodes for GPU batch processing.
+    /// </summary>
+    private sealed class SinglePassResult
+    {
+        public List<ParsedEntityDto> Entities { get; init; } = [];
+        public List<SyntaxNode> MethodNodes { get; init; } = [];
+        public List<EntityMetadataDto> MethodMetadataRefs { get; init; } = [];
     }
 }

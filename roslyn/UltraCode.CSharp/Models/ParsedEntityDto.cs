@@ -146,6 +146,10 @@ public sealed class EntityMetadataDto
     [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingDefault)]
     public int Complexity { get; set; }
 
+    [JsonPropertyName("simHash")]
+    [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
+    public string? SimHash { get; set; }
+
     [JsonPropertyName("docComment")]
     [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
     public string? DocComment { get; set; }

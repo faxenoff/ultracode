@@ -1,6 +1,6 @@
 # Tools
 
-Module for tools functionality.
+Provides factory functions for creating fully-mocked test dependencies.
 
 ## Exports
 
@@ -13,10 +13,11 @@ Module for tools functionality.
 | `createMockSemanticAgent` | function | [→ _test-helpers.ts:37] |
 | `createMockSnapshotManager` | function | [→ _test-helpers.ts:69] |
 | `createMockToolContext` | function | [→ _test-helpers.ts:105] |
-| `expectError` | function | [→ _test-helpers.ts:155-165] |
+| `expectError` | function | [→ _test-helpers.ts:156-160] |
 | `expectSuccess` | function | [→ _test-helpers.ts:141-152] |
 | `parseJsonResult` | function | [→ _test-helpers.ts:134-138] |
 
 ## Files
 
 - `_test-helpers.ts`
+
