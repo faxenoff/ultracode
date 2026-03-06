@@ -1,6 +1,6 @@
 # Detectors
 
-Language-agnostic code smell detectors identifying anti-patterns across TypeScript, C#, Go, Java, and Python.
+Language-specific code quality detectors identifying anti-patterns and code smells
 
 ## Exports
 
