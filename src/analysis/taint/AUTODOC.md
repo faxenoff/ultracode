@@ -1,6 +1,6 @@
 # Taint
 
-Security taint analysis system detecting injection vulnerabilities through untrusted data flow tracking.
+Detects and tracks data taint flows from untrusted sources through sinks in code.
 
 ## Response Handling
 

@@ -193,3 +193,305 @@ describe("diff3Merge", () => {
     expect(result.mergedContent).toBe("A\nb\nc\nd\nE");
   });
 });
+
+// =============================================================================
+// INTEGRATION: Real-world TypeScript merge scenarios
+// =============================================================================
+
+describe("diff3Merge — real-world TypeScript scenarios", () => {
+  it("should auto-merge: one branch adds import, another adds method", () => {
+    const base = [
+      'import { log } from "./log.js";',
+      "",
+      "export class UserService {",
+      "  getUser(id: string) {",
+      '    return this.db.find("users", id);',
+      "  }",
+      "}",
+    ].join("\n");
+
+    const branchA = [
+      'import { log } from "./log.js";',
+      'import { validate } from "./validate.js";',
+      "",
+      "export class UserService {",
+      "  getUser(id: string) {",
+      '    return this.db.find("users", id);',
+      "  }",
+      "}",
+    ].join("\n");
+
+    const branchB = [
+      'import { log } from "./log.js";',
+      "",
+      "export class UserService {",
+      "  getUser(id: string) {",
+      '    return this.db.find("users", id);',
+      "  }",
+      "",
+      "  deleteUser(id: string) {",
+      '    return this.db.delete("users", id);',
+      "  }",
+      "}",
+    ].join("\n");
+
+    const result = diff3Merge(base, branchA, branchB);
+
+    expect(result.hasConflicts).toBe(false);
+    expect(result.mergedContent).toContain('import { validate } from "./validate.js";');
+    expect(result.mergedContent).toContain("deleteUser(id: string)");
+  });
+
+  it("should auto-merge: both branches add different methods at different positions", () => {
+    const base = [
+      "export class Cache {",
+      "  private store = new Map<string, unknown>();",
+      "",
+      "  get(key: string): unknown {",
+      "    return this.store.get(key);",
+      "  }",
+      "",
+      "  set(key: string, value: unknown): void {",
+      "    this.store.set(key, value);",
+      "  }",
+      "}",
+    ].join("\n");
+
+    // branchA: adds has() before get()
+    const branchA = [
+      "export class Cache {",
+      "  private store = new Map<string, unknown>();",
+      "",
+      "  has(key: string): boolean {",
+      "    return this.store.has(key);",
+      "  }",
+      "",
+      "  get(key: string): unknown {",
+      "    return this.store.get(key);",
+      "  }",
+      "",
+      "  set(key: string, value: unknown): void {",
+      "    this.store.set(key, value);",
+      "  }",
+      "}",
+    ].join("\n");
+
+    // branchB: adds clear() after set()
+    const branchB = [
+      "export class Cache {",
+      "  private store = new Map<string, unknown>();",
+      "",
+      "  get(key: string): unknown {",
+      "    return this.store.get(key);",
+      "  }",
+      "",
+      "  set(key: string, value: unknown): void {",
+      "    this.store.set(key, value);",
+      "  }",
+      "",
+      "  clear(): void {",
+      "    this.store.clear();",
+      "  }",
+      "}",
+    ].join("\n");
+
+    const result = diff3Merge(base, branchA, branchB);
+
+    expect(result.hasConflicts).toBe(false);
+    expect(result.mergedContent).toContain("has(key: string): boolean");
+    expect(result.mergedContent).toContain("clear(): void");
+  });
+
+  it("should conflict: both branches modify the same function body differently", () => {
+    const base = [
+      "function processOrder(order: Order): Result {",
+      "  const total = order.items.reduce((sum, i) => sum + i.price, 0);",
+      "  return { success: true, total };",
+      "}",
+    ].join("\n");
+
+    // branchA: adds tax calculation
+    const branchA = [
+      "function processOrder(order: Order): Result {",
+      "  const subtotal = order.items.reduce((sum, i) => sum + i.price, 0);",
+      "  const tax = subtotal * 0.1;",
+      "  const total = subtotal + tax;",
+      "  return { success: true, total, tax };",
+      "}",
+    ].join("\n");
+
+    // branchB: adds discount logic
+    const branchB = [
+      "function processOrder(order: Order): Result {",
+      "  const subtotal = order.items.reduce((sum, i) => sum + i.price, 0);",
+      "  const discount = order.coupon ? subtotal * 0.15 : 0;",
+      "  const total = subtotal - discount;",
+      "  return { success: true, total, discount };",
+      "}",
+    ].join("\n");
+
+    const result = diff3Merge(base, branchA, branchB, {
+      labelA: "feature/tax",
+      labelB: "feature/discount",
+    });
+
+    expect(result.hasConflicts).toBe(true);
+    expect(result.conflictCount).toBe(1);
+    expect(result.mergedContent).toContain("<<<<<<< feature/tax");
+    expect(result.mergedContent).toContain("tax = subtotal * 0.1");
+    expect(result.mergedContent).toContain("=======");
+    expect(result.mergedContent).toContain("discount = order.coupon");
+    expect(result.mergedContent).toContain(">>>>>>> feature/discount");
+  });
+
+  it("should auto-merge: one branch changes interface, another changes implementation", () => {
+    const base = [
+      "export interface Config {",
+      "  host: string;",
+      "  port: number;",
+      "}",
+      "",
+      "export function createServer(config: Config) {",
+      "  const server = new Server();",
+      "  server.listen(config.port);",
+      "  return server;",
+      "}",
+    ].join("\n");
+
+    // branchA: adds timeout to interface
+    const branchA = [
+      "export interface Config {",
+      "  host: string;",
+      "  port: number;",
+      "  timeout?: number;",
+      "}",
+      "",
+      "export function createServer(config: Config) {",
+      "  const server = new Server();",
+      "  server.listen(config.port);",
+      "  return server;",
+      "}",
+    ].join("\n");
+
+    // branchB: adds logging to implementation
+    const branchB = [
+      "export interface Config {",
+      "  host: string;",
+      "  port: number;",
+      "}",
+      "",
+      "export function createServer(config: Config) {",
+      "  const server = new Server();",
+      "  console.log(`Starting server on ${config.host}:${config.port}`);",
+      "  server.listen(config.port);",
+      "  return server;",
+      "}",
+    ].join("\n");
+
+    const result = diff3Merge(base, branchA, branchB);
+
+    expect(result.hasConflicts).toBe(false);
+    expect(result.mergedContent).toContain("timeout?: number;");
+    expect(result.mergedContent).toContain("console.log(");
+  });
+
+  it("should auto-merge: one branch deletes deprecated method, another adds new one", () => {
+    const base = [
+      "export class Logger {",
+      "  /** @deprecated use info() */",
+      "  log(msg: string) {",
+      "    console.log(msg);",
+      "  }",
+      "",
+      "  info(msg: string) {",
+      '    console.log("[INFO]", msg);',
+      "  }",
+      "}",
+    ].join("\n");
+
+    // branchA: removes deprecated log()
+    const branchA = [
+      "export class Logger {",
+      "  info(msg: string) {",
+      '    console.log("[INFO]", msg);',
+      "  }",
+      "}",
+    ].join("\n");
+
+    // branchB: adds warn()
+    const branchB = [
+      "export class Logger {",
+      "  /** @deprecated use info() */",
+      "  log(msg: string) {",
+      "    console.log(msg);",
+      "  }",
+      "",
+      "  info(msg: string) {",
+      '    console.log("[INFO]", msg);',
+      "  }",
+      "",
+      "  warn(msg: string) {",
+      '    console.warn("[WARN]", msg);',
+      "  }",
+      "}",
+    ].join("\n");
+
+    const result = diff3Merge(base, branchA, branchB);
+
+    expect(result.hasConflicts).toBe(false);
+    // Deprecated method should be removed (branchA's change)
+    expect(result.mergedContent).not.toContain("@deprecated");
+    // New method should be added (branchB's change)
+    expect(result.mergedContent).toContain("warn(msg: string)");
+  });
+
+  it("should handle multiple conflicts in one file", () => {
+    const base = [
+      "const API_URL = 'https://api.example.com';",
+      "const TIMEOUT = 5000;",
+      "",
+      "export function fetchData() {",
+      "  return fetch(API_URL);",
+      "}",
+    ].join("\n");
+
+    // branchA: changes URL and function body
+    const branchA = [
+      "const API_URL = 'https://api-v2.example.com';",
+      "const TIMEOUT = 5000;",
+      "",
+      "export async function fetchData() {",
+      "  const res = await fetch(API_URL);",
+      "  if (!res.ok) return fetch(API_URL); // retry",
+      "  return res;",
+      "}",
+    ].join("\n");
+
+    // branchB: changes URL differently and timeout
+    const branchB = [
+      "const API_URL = 'https://staging.example.com';",
+      "const TIMEOUT = 10000;",
+      "",
+      "export function fetchData() {",
+      "  return fetch(API_URL, { signal: AbortSignal.timeout(TIMEOUT) });",
+      "}",
+    ].join("\n");
+
+    const result = diff3Merge(base, branchA, branchB);
+
+    expect(result.hasConflicts).toBe(true);
+    expect(result.conflictCount).toBeGreaterThanOrEqual(1);
+  });
+
+  it("should auto-merge: both branches apply same formatting fix", () => {
+    const base = ["export function   add(a:number,b:number):number{", "return a+b", "}"].join("\n");
+
+    const formatted = ["export function add(a: number, b: number): number {", "  return a + b;", "}"].join("\n");
+
+    // Both branches ran the same formatter
+    const result = diff3Merge(base, formatted, formatted);
+
+    expect(result.hasConflicts).toBe(false);
+    expect(result.mergedContent).toBe(formatted);
+  });
+});
