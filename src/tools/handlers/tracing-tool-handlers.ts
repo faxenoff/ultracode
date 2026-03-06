@@ -331,7 +331,7 @@ export class TraceDataFlowToolHandler extends BaseToolHandler<z.infer<typeof Tra
     const params: TraceDataFlowParams = {
       entryPoint: args.entryPoint,
       targetState: args.targetState,
-      dataSources: args.dataSources,
+      ...(args.dataSources != null ? { dataSources: args.dataSources } : {}),
       trackTransformations: args.trackTransformations,
     };
 

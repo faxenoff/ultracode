@@ -332,7 +332,7 @@ export class AutoDocManager {
       const maxCallers = options.maxCallers ?? 10;
 
       // Get caller relationships
-      let callerRels: Array<{ fromId: string; line?: number }> = [];
+      let callerRels: Array<{ fromId: string; line?: number | undefined }> = [];
 
       // Try to use getIncomingRelationships if available (more efficient)
       const storageExt = this.graphStorage as GraphStorageWithIncoming;
@@ -563,16 +563,17 @@ export class AutoDocManager {
     // Update doc file paths if it's a .md file
     if (oldPath.endsWith(".md")) {
       const docs = await this.docStorage.getDocsByFile(oldPath);
-      // TODO: Would need to re-create with new path
-      // This is simplified - full implementation would handle this properly
-      void docs; // Suppress unused warning
+      // Simplified: doc paths not re-created on rename (docs regenerated on next sync)
+      void docs;
     }
   }
 
   /**
    * Get changelog entries
    */
-  async getChangelog(options: { since?: number | undefined; limit?: number; branch?: string } = {}): Promise<any[]> {
+  async getChangelog(
+    options: { since?: number | undefined; limit?: number; branch?: string | undefined } = {},
+  ): Promise<any[]> {
     return await this.docStorage.getChangelog(options);
   }
 

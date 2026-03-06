@@ -31,7 +31,7 @@ export interface VectorEmbedding {
   vector: Float32Array;
   content: string;
   createdAt: number;
-  metadata?: Record<string, unknown>;
+  metadata?: Record<string, unknown> | undefined;
 }
 
 // ---------------------------------------------------------------------------
@@ -43,7 +43,7 @@ export interface SimilarityResult {
   id: string;
   similarity: number;
   content: string;
-  metadata?: Record<string, unknown>;
+  metadata?: Record<string, unknown> | undefined;
 }
 
 /** Combined result from both structural graph and semantic search. */
@@ -51,7 +51,7 @@ export interface HybridResult {
   id: string;
   score: number;
   source: "structural" | "semantic" | "hybrid";
-  metadata?: Record<string, unknown>;
+  metadata?: Record<string, unknown> | undefined;
   content?: string | undefined;
 }
 
@@ -87,11 +87,11 @@ export interface SimilarCode {
   content: string;
   type: "exact" | "near" | "semantic";
   /** Entity name when available */
-  name?: string;
+  name?: string | undefined;
   /** First line of the matching fragment */
-  startLine?: number;
+  startLine?: number | undefined;
   /** Last line of the matching fragment */
-  endLine?: number;
+  endLine?: number | undefined;
 }
 
 /** Group of code fragments that are clones of each other. */
@@ -114,11 +114,11 @@ export interface CrossLangResult {
   path: string;
   content: string;
   /** Entity name when available */
-  name?: string;
+  name?: string | undefined;
   /** First line of the matching fragment */
-  startLine?: number;
+  startLine?: number | undefined;
   /** Last line of the matching fragment */
-  endLine?: number;
+  endLine?: number | undefined;
 }
 
 // ---------------------------------------------------------------------------
@@ -131,7 +131,7 @@ export interface RefactoringSuggestion {
   impact: "low" | "medium" | "high";
   confidence: number;
   description: string;
-  code?: string;
+  code?: string | undefined;
 }
 
 // ---------------------------------------------------------------------------
@@ -159,20 +159,22 @@ export type VectorBackend = "libsql";
 export interface VectorStoreConfig {
   dimensions: number;
   dbPath: string;
-  walMode?: boolean;
+  walMode?: boolean | undefined;
   cacheSize?: number | undefined;
   workingDirectory?: string | undefined;
 
   /** Enable layered FAISS index (base + delta + tombstones) */
-  useLayeredIndex?: boolean;
+  useLayeredIndex?: boolean | undefined;
 
   /** LibSQL DiskANN-specific overrides */
-  libsql?: {
-    metric?: "cosine" | "l2"; // Default: cosine
-    compression?: "float8" | "float16" | "float32"; // Default: float32
-    insertL?: number | undefined; // Neighbors visited during insert (default: 70)
-    searchL?: number | undefined; // Neighbors visited during search (default: 200)
-  };
+  libsql?:
+    | {
+        metric?: "cosine" | "l2" | undefined; // Default: cosine
+        compression?: "float8" | "float16" | "float32" | undefined; // Default: float32
+        insertL?: number | undefined; // Neighbors visited during insert (default: 70)
+        searchL?: number | undefined; // Neighbors visited during search (default: 200)
+      }
+    | undefined;
 }
 
 // ---------------------------------------------------------------------------
@@ -214,32 +216,34 @@ export interface WorkerEmbeddingConfig {
   /** How many items per batch when generating embeddings */
   batchSize: number;
   /** Texts per HTTP request in centralized mode (default 128) */
-  queueBatchSize?: number;
+  queueBatchSize?: number | undefined;
   /** Output vector dimensionality (e.g. 384 for e5-small) */
-  dimensions?: number;
+  dimensions?: number | undefined;
   /** 0-based index used for endpoint assignment across workers */
-  workerIndex?: number;
+  workerIndex?: number | undefined;
   /**
    * When true, workers delegate embedding generation to the main process
    * via centralized queue (useful for OVMS gRPC throughput).
    */
-  centralizedEmbeddings?: boolean;
+  centralizedEmbeddings?: boolean | undefined;
   /** Provider-level transport and auth options (must be serializable) */
-  providerOptions?: {
-    baseUrl?: string | undefined;
-    apiKey?: string | undefined;
-    timeoutMs?: number | undefined;
-    concurrency?: number | undefined;
-    maxBatchSize?: number | undefined;
-    useEmbeddingsApi?: boolean;
-    encodingFormat?: "float" | "base64";
-    protocol?: "rest" | "grpc";
-    grpcPort?: number;
-    /** Endpoints available for round-robin load balancing */
-    endpoints?: string[];
-    contextSize?: number | undefined;
-    nGpuLayers?: number | undefined;
-  };
+  providerOptions?:
+    | {
+        baseUrl?: string | undefined;
+        apiKey?: string | undefined;
+        timeoutMs?: number | undefined;
+        concurrency?: number | undefined;
+        maxBatchSize?: number | undefined;
+        useEmbeddingsApi?: boolean | undefined;
+        encodingFormat?: "float" | "base64" | undefined;
+        protocol?: "rest" | "grpc" | undefined;
+        grpcPort?: number | undefined;
+        /** Endpoints available for round-robin load balancing */
+        endpoints?: string[] | undefined;
+        contextSize?: number | undefined;
+        nGpuLayers?: number | undefined;
+      }
+    | undefined;
 }
 
 // ---------------------------------------------------------------------------
@@ -259,7 +263,7 @@ export interface EmbeddingPoolStats {
   /** Total HTTP/gRPC batch requests sent */
   batches: number;
   /** Name of the provider that was used */
-  provider?: string;
+  provider?: string | undefined;
 }
 
 // ---------------------------------------------------------------------------
@@ -271,95 +275,113 @@ export interface EmbeddingConfig {
   modelName: string;
   batchSize: number;
   quantized: boolean;
-  localPath?: string;
+  localPath?: string | undefined;
   /** Texts per HTTP request in centralized mode (default 128) */
-  queueBatchSize?: number;
+  queueBatchSize?: number | undefined;
 
-  provider?: EmbeddingProviderKind; // default: 'memory'
+  provider?: EmbeddingProviderKind | undefined; // default: 'memory'
 
-  ollama?: {
-    baseUrl?: string | undefined;
-    timeoutMs?: number | undefined;
-    concurrency?: number | undefined;
-    headers?: Record<string, string>;
-    autoPull?: boolean;
-    checkServer?: boolean;
-    warmupText?: string;
-    pullTimeoutMs?: number;
-  };
+  ollama?:
+    | {
+        baseUrl?: string | undefined;
+        timeoutMs?: number | undefined;
+        concurrency?: number | undefined;
+        headers?: Record<string, string> | undefined;
+        autoPull?: boolean | undefined;
+        checkServer?: boolean | undefined;
+        warmupText?: string | undefined;
+        pullTimeoutMs?: number | undefined;
+      }
+    | undefined;
 
-  openai?: {
-    baseUrl?: string | undefined;
-    apiKey?: string | undefined;
-    timeoutMs?: number | undefined;
-    maxBatchSize?: number | undefined;
-    concurrency?: number | undefined;
-  };
+  openai?:
+    | {
+        baseUrl?: string | undefined;
+        apiKey?: string | undefined;
+        timeoutMs?: number | undefined;
+        maxBatchSize?: number | undefined;
+        concurrency?: number | undefined;
+      }
+    | undefined;
 
-  cloudru?: {
-    baseUrl?: string | undefined;
-    apiKey?: string | undefined;
-    timeoutMs?: number | undefined;
-    maxBatchSize?: number | undefined;
-    concurrency?: number | undefined;
-  };
+  cloudru?:
+    | {
+        baseUrl?: string | undefined;
+        apiKey?: string | undefined;
+        timeoutMs?: number | undefined;
+        maxBatchSize?: number | undefined;
+        concurrency?: number | undefined;
+      }
+    | undefined;
 
-  huggingface?: {
-    apiKey?: string | undefined;
-    baseUrl?: string | undefined;
-    timeoutMs?: number | undefined;
-    concurrency?: number | undefined;
-    warmupText?: string;
-  };
+  huggingface?:
+    | {
+        apiKey?: string | undefined;
+        baseUrl?: string | undefined;
+        timeoutMs?: number | undefined;
+        concurrency?: number | undefined;
+        warmupText?: string | undefined;
+      }
+    | undefined;
 
-  tei?: {
-    baseUrl?: string | undefined;
-    timeoutMs?: number | undefined;
-    concurrency?: number | undefined;
-    checkServer?: boolean;
-  };
+  tei?:
+    | {
+        baseUrl?: string | undefined;
+        timeoutMs?: number | undefined;
+        concurrency?: number | undefined;
+        checkServer?: boolean | undefined;
+      }
+    | undefined;
 
-  ovms?: {
-    baseUrl?: string | undefined;
-    timeoutMs?: number | undefined;
-    concurrency?: number | undefined;
-    checkServer?: boolean;
-    miniBatchSize?: number; // Internal batch size for OVMS server (default: 8)
-    useEmbeddingsApi?: boolean; // /v3/embeddings OpenAI-compatible endpoint (default: true)
-    encodingFormat?: "float" | "base64"; // Response encoding for embeddings API (default: base64)
-    protocol?: "rest" | "grpc"; // "rest" = HTTP/JSON, "grpc" = binary protobuf (~30 % faster)
-    grpcPort?: number; // gRPC port (default: 9000)
-    endpoints?: string[]; // Round-robin targets: ["embeddings-cpu", "embeddings-gpu"]
-  };
+  ovms?:
+    | {
+        baseUrl?: string | undefined;
+        timeoutMs?: number | undefined;
+        concurrency?: number | undefined;
+        checkServer?: boolean | undefined;
+        miniBatchSize?: number | undefined; // Internal batch size for OVMS server (default: 8)
+        useEmbeddingsApi?: boolean | undefined; // /v3/embeddings OpenAI-compatible endpoint (default: true)
+        encodingFormat?: "float" | "base64" | undefined; // Response encoding for embeddings API (default: base64)
+        protocol?: "rest" | "grpc" | undefined; // "rest" = HTTP/JSON, "grpc" = binary protobuf (~30 % faster)
+        grpcPort?: number | undefined; // gRPC port (default: 9000)
+        endpoints?: string[] | undefined; // Round-robin targets: ["embeddings-cpu", "embeddings-gpu"]
+      }
+    | undefined;
 
-  vllm?: {
-    baseUrl?: string | undefined;
-    timeoutMs?: number | undefined;
-    concurrency?: number | undefined;
-    maxBatchSize?: number | undefined;
-    encodingFormat?: "float" | "base64";
-  };
+  vllm?:
+    | {
+        baseUrl?: string | undefined;
+        timeoutMs?: number | undefined;
+        concurrency?: number | undefined;
+        maxBatchSize?: number | undefined;
+        encodingFormat?: "float" | "base64" | undefined;
+      }
+    | undefined;
 
-  llamacpp?: {
-    baseUrl?: string | undefined;
-    timeoutMs?: number | undefined;
-    concurrency?: number | undefined;
-    maxBatchSize?: number | undefined;
-    nGpuLayers?: number | undefined;
-    contextSize?: number | undefined;
-    checkServer?: boolean;
-    /** Spawn llama-server automatically when not running (default: true) */
-    autoStart?: boolean;
-  };
+  llamacpp?:
+    | {
+        baseUrl?: string | undefined;
+        timeoutMs?: number | undefined;
+        concurrency?: number | undefined;
+        maxBatchSize?: number | undefined;
+        nGpuLayers?: number | undefined;
+        contextSize?: number | undefined;
+        checkServer?: boolean | undefined;
+        /** Spawn llama-server automatically when not running (default: true) */
+        autoStart?: boolean | undefined;
+      }
+    | undefined;
 
-  mlx?: {
-    baseUrl?: string | undefined;
-    timeoutMs?: number | undefined;
-    concurrency?: number | undefined;
-    maxBatchSize?: number | undefined;
-    checkServer?: boolean;
-    autoStart?: boolean;
-  };
+  mlx?:
+    | {
+        baseUrl?: string | undefined;
+        timeoutMs?: number | undefined;
+        concurrency?: number | undefined;
+        maxBatchSize?: number | undefined;
+        checkServer?: boolean | undefined;
+        autoStart?: boolean | undefined;
+      }
+    | undefined;
 }
 
 // ---------------------------------------------------------------------------

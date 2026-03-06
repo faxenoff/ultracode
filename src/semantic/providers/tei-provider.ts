@@ -17,8 +17,8 @@ export interface TEIOptions {
   baseUrl?: string | undefined;
   timeoutMs?: number | undefined;
   concurrency?: number | undefined;
-  checkServer?: boolean;
-  logger?: ProviderLogger;
+  checkServer?: boolean | undefined;
+  logger?: ProviderLogger | undefined;
   maxBatchSize?: number | undefined; // Max texts per request (TEI max_client_batch_size)
 }
 
@@ -443,7 +443,7 @@ export class TEIProvider implements EmbeddingProvider {
           texts: documents.map((d) => d.text),
           truncate: true,
         }),
-        signal: opts?.signal,
+        ...(opts?.signal ? { signal: opts.signal } : {}),
       });
 
       if (!res.ok) {

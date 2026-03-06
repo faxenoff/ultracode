@@ -33,13 +33,15 @@ export interface GraphNodeAttributes {
   type: string;
   file: string;
   line: number;
-  metadata?: Record<string, unknown>;
-  controlFlow?: {
-    branches?: Array<{ condition: string; target?: string }>;
-    loops?: Array<{ type: string; condition?: string }>;
-    awaits?: Array<{ target?: string }>;
-    exceptions?: Array<{ type: string }>;
-  };
+  metadata?: Record<string, unknown> | undefined;
+  controlFlow?:
+    | {
+        branches?: Array<{ condition: string; target?: string | undefined }> | undefined;
+        loops?: Array<{ type: string; condition?: string | undefined }> | undefined;
+        awaits?: Array<{ target?: string | undefined }> | undefined;
+        exceptions?: Array<{ type: string }> | undefined;
+      }
+    | undefined;
 }
 
 /**
@@ -48,7 +50,7 @@ export interface GraphNodeAttributes {
 export interface GraphEdgeAttributes {
   type: string;
   weight: number;
-  metadata?: Record<string, unknown>;
+  metadata?: Record<string, unknown> | undefined;
 }
 
 /**
@@ -62,16 +64,20 @@ export interface LinearTraceStep {
   line: number;
   action: TraceActionType;
   /** Conditions that may change flow */
-  branches?: Array<{
-    condition: string;
-    target: string;
-    probability: "likely" | "unlikely" | "unknown";
-  }>;
+  branches?:
+    | Array<{
+        condition: string;
+        target: string;
+        probability: "likely" | "unlikely" | "unknown";
+      }>
+    | undefined;
   /** External influences (state, effects) */
-  sideEffects?: Array<{
-    type: "state_read" | "state_write" | "effect_trigger";
-    description: string;
-  }>;
+  sideEffects?:
+    | Array<{
+        type: "state_read" | "state_write" | "effect_trigger";
+        description: string;
+      }>
+    | undefined;
 }
 
 /**

@@ -53,7 +53,7 @@ export class DocstringParser {
     const examples: string[] = [];
     // biome-ignore lint/style/useConst: reassigned later
     let description: string | undefined;
-    let returns: { type?: string | undefined; description?: string } | undefined;
+    let returns: { type?: string | undefined; description?: string | undefined } | undefined;
     let deprecated: string | boolean | undefined;
     let since: string | undefined;
     let author: string | undefined;
@@ -97,7 +97,10 @@ export class DocstringParser {
         const returnMatch = trimmedLine.match(/^(?:(\w+(?:\[[\w,\s[\]]+\])?)\s*[:-]?\s*)?(.*)$/);
         if (returnMatch) {
           if (!returns) {
-            returns = { type: returnMatch[1], description: returnMatch[2] };
+            returns = {
+              ...(returnMatch[1] != null ? { type: returnMatch[1] } : {}),
+              ...(returnMatch[2] != null ? { description: returnMatch[2] } : {}),
+            };
           } else if (returnMatch[2]) {
             returns.description = (returns.description || "") + " " + returnMatch[2];
           }
@@ -146,7 +149,7 @@ export class DocstringParser {
 
         const rstReturnMatch = trimmedLine.match(/^:returns?:\s*(.*)$/);
         if (rstReturnMatch) {
-          returns = { description: rstReturnMatch[1] };
+          returns = { ...(rstReturnMatch[1] != null ? { description: rstReturnMatch[1] } : {}) };
           continue;
         }
 

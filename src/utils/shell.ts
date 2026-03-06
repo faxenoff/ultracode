@@ -26,12 +26,12 @@ import { runtime } from "./runtime.js";
  * Bun.spawn options interface
  */
 interface BunSpawnOptions {
-  cwd?: string;
-  env?: Record<string, string>;
-  stdout?: "pipe" | "inherit" | "ignore";
-  stderr?: "pipe" | "inherit" | "ignore";
-  stdin?: "pipe" | "inherit" | "ignore";
-  windowsHide?: boolean;
+  cwd?: string | undefined;
+  env?: Record<string, string> | undefined;
+  stdout?: "pipe" | "inherit" | "ignore" | undefined;
+  stderr?: "pipe" | "inherit" | "ignore" | undefined;
+  stdin?: "pipe" | "inherit" | "ignore" | undefined;
+  windowsHide?: boolean | undefined;
   [key: string]: unknown;
 }
 
@@ -101,7 +101,12 @@ export async function exec(command: string, options: ShellOptions = {}): Promise
  */
 async function execBun(
   command: string,
-  options: { cwd: string; env?: Record<string, string>; timeout?: number | undefined; quiet?: boolean },
+  options: {
+    cwd: string;
+    env?: Record<string, string> | undefined;
+    timeout?: number | undefined;
+    quiet?: boolean | undefined;
+  },
 ): Promise<ShellResult> {
   try {
     // On Windows, use cmd.exe to execute the command
@@ -176,7 +181,7 @@ async function execBun(
  */
 async function execNode(
   command: string,
-  options: { cwd: string; env?: Record<string, string>; timeout?: number },
+  options: { cwd: string; env?: Record<string, string> | undefined; timeout?: number | undefined },
 ): Promise<ShellResult> {
   const { exec: nodeExec } = await import("node:child_process");
   const { promisify } = await import("node:util");

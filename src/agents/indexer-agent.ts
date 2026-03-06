@@ -80,9 +80,9 @@ interface ProvidedRelationship {
   from: string;
   to: string;
   type: RelationType | string;
-  sourceFile?: string;
-  targetFile?: string;
-  metadata?: { line?: number | undefined; [k: string]: unknown };
+  sourceFile?: string | undefined;
+  targetFile?: string | undefined;
+  metadata?: { line?: number | undefined; [k: string]: unknown } | undefined;
 }
 
 export interface IndexerTask extends AgentTask {
@@ -301,7 +301,7 @@ export class IndexerAgent extends BaseAgent {
         return await this.indexEntities(
           indexerTask.payload.entities!,
           indexerTask.payload.filePath!,
-          indexerTask.payload.relationships,
+          indexerTask.payload.relationships as any,
         );
 
       case "index:incremental":
@@ -1441,8 +1441,7 @@ export class IndexerAgent extends BaseAgent {
       await handleUncommittedChangesEvent(changedFiles, this.getGitEventContext());
     }
 
-    // Handle deleted files - log for now (entities cleaned up on next full reindex)
-    // TODO: Add deleteEntitiesForFile method to GraphStorage for immediate cleanup
+    // Deleted files — entities cleaned up on next full reindex via file_generations
     if (deletedFiles.length > 0) {
       log.d("INDEXER", "Detected deleted files (cleaned on reindex)", {
         count: deletedFiles.length,

@@ -41,7 +41,7 @@ export interface ToolContext {
    *
    * If undefined (legacy mode), falls back to global singleton.
    */
-  session?: ClientSession;
+  session?: ClientSession | undefined;
 
   /**
    * v5: Project path for this request (from session or args).
@@ -56,10 +56,10 @@ export interface ToolContext {
   getBranchManager: () => Promise<BranchManager>;
   getSnapshotManager: () => Promise<VersionManager>;
   getKnowledgeBus: () => KnowledgeBus;
-  getServiceContainer?: () => unknown; // DI Container for services
+  getServiceContainer?: (() => unknown) | undefined; // DI Container for services
   normalizeInputPath: (path?: string) => string | undefined;
   withTimeout: <T>(promise: Promise<T>, ms: number, operation: string, reqId: string) => Promise<T>;
-  createAutoIndexContext?: () => AutoIndexContext;
+  createAutoIndexContext?: (() => AutoIndexContext) | undefined;
 }
 
 export abstract class BaseToolHandler<TArgs = unknown> {
@@ -88,7 +88,7 @@ export abstract class BaseToolHandler<TArgs = unknown> {
    * 2. context.projectPath (set from session or startup)
    * 3. Fallback to global singleton (legacy mode)
    */
-  protected resolveProjectPath(args: { projectPath?: string; directory?: string }): string {
+  protected resolveProjectPath(args: { projectPath?: string | undefined; directory?: string | undefined }): string {
     // Check for explicit path in args
     if (args.projectPath) {
       return this.context.session?.resolvePath(args.projectPath) ?? args.projectPath;

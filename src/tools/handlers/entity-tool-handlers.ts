@@ -22,9 +22,9 @@ import { DEFAULT_PAGE_SIZE, MAX_PAGE_SIZE, type PaginationMeta, paginate, SAFE_L
  * Filters for entity queries
  */
 interface EntityFilters {
-  filePath?: string;
-  entityType?: EntityType[];
-  name?: string;
+  filePath?: string | undefined;
+  entityType?: EntityType[] | undefined;
+  name?: string | undefined;
 }
 
 /**

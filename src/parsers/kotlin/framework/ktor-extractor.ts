@@ -216,7 +216,7 @@ export function extractRouteHandlers(code: string): Array<{
         route: { path, method: httpMethod },
         hasCallReceive,
         hasCallRespond,
-        responseType,
+        ...(responseType != null ? { responseType } : {}),
       });
     }
   }
@@ -390,13 +390,12 @@ export function enrichEntityWithKtor(
  */
 export function extractHttpClientConfig(code: string): {
   hasClient: boolean;
-  engine?: string;
+  engine?: string | undefined;
   plugins: string[];
 } {
-  const result = {
+  const result: { hasClient: boolean; engine?: string | undefined; plugins: string[] } = {
     hasClient: false,
-    engine: undefined as string | undefined,
-    plugins: [] as string[],
+    plugins: [],
   };
 
   // Check for HttpClient creation

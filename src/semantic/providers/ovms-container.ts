@@ -11,7 +11,7 @@ import { sleep } from "./ovms-utils.js";
 export interface ContainerConfig {
   baseUrl: string;
   isNative: boolean;
-  log?: ProviderLogger;
+  log?: ProviderLogger | undefined;
 }
 
 /**

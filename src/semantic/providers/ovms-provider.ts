@@ -78,19 +78,19 @@ export interface OVMSOptions {
   baseUrl?: string | undefined;
   timeoutMs?: number | undefined;
   concurrency?: number | undefined;
-  checkServer?: boolean;
-  miniBatchSize?: number; // Internal batch size for OVMS server (default: 8)
-  useEmbeddingsApi?: boolean; // Use /v3/embeddings OpenAI-compatible API (default: true)
-  encodingFormat?: "float" | "base64"; // Response format for embeddings API (default: base64)
+  checkServer?: boolean | undefined;
+  miniBatchSize?: number | undefined; // Internal batch size for OVMS server (default: 8)
+  useEmbeddingsApi?: boolean | undefined; // Use /v3/embeddings OpenAI-compatible API (default: true)
+  encodingFormat?: "float" | "base64" | undefined; // Response format for embeddings API (default: base64)
   /** Protocol: "rest" (HTTP/JSON) or "grpc" (binary protobuf). Default: "rest" */
-  protocol?: "rest" | "grpc";
+  protocol?: "rest" | "grpc" | undefined;
   /** gRPC port (default: 9000). Only used when protocol="grpc" */
-  grpcPort?: number;
+  grpcPort?: number | undefined;
   /** Native mode: OVMS is managed by ovms-native-manager, not Docker. Skips Docker auto-start. */
-  isNative?: boolean;
+  isNative?: boolean | undefined;
   /** Multi-device endpoints for round-robin load balancing. */
-  endpoints?: string[];
-  logger?: ProviderLogger;
+  endpoints?: string[] | undefined;
+  logger?: ProviderLogger | undefined;
 }
 
 /**

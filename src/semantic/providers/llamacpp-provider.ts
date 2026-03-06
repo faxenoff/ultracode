@@ -12,15 +12,15 @@ export interface LlamaCppOptions {
   baseUrl?: string | undefined;
   timeoutMs?: number | undefined;
   concurrency?: number | undefined;
-  checkServer?: boolean;
-  logger?: ProviderLogger;
+  checkServer?: boolean | undefined;
+  logger?: ProviderLogger | undefined;
   maxBatchSize?: number | undefined;
   /** Context size for the model (default: 2048 = 512 tokens * 4 parallel slots) */
   contextSize?: number | undefined;
   /** Number of GPU layers to offload (-1 for all, 0 for CPU only) */
   nGpuLayers?: number | undefined;
   /** Auto-start llama-server if not running (default: true) */
-  autoStart?: boolean;
+  autoStart?: boolean | undefined;
   /** Number of parallel request slots on server (default: 4) */
   parallelSlots?: number | undefined;
   /** Micro-batch size for embedding processing (default: 512) */

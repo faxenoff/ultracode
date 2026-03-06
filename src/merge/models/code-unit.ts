@@ -25,13 +25,13 @@ export interface CodeUnit {
   signature?: string | undefined; // FQN + params for functions (Fast Path Level 3)
 
   // Semantic (lazy-loaded)
-  embedding?: Float32Array; // Vector embedding, generated on-demand (Slow Path)
+  embedding?: Float32Array | undefined; // Vector embedding, generated on-demand (Slow Path)
 
   // Structure
-  structure?: CodeStructure; // AST metadata and metrics
+  structure?: CodeStructure | undefined; // AST metadata and metrics
 
   // Hierarchy
-  parentId?: string; // Parent unit ID (e.g., class for method)
+  parentId?: string | undefined; // Parent unit ID (e.g., class for method)
   childIds: string[]; // Child unit IDs (e.g., methods in class)
 
   // Metadata

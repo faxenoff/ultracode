@@ -153,21 +153,21 @@ export interface LlamaCppServerConfig {
   enabled: boolean;
   mode: LlamaCppServerMode;
   modelPath: string; // Path to GGUF model file
-  port?: number;
-  contextSize?: number;
-  nGpuLayers?: number; // -1 = auto, 0 = CPU only, >0 = specific layers
-  ubatchSize?: number; // Micro-batch size for embeddings (default: 2048)
-  batchSize?: number; // Batch size (default: 4096)
-  autoStart?: boolean;
-  healthCheckIntervalMs?: number;
-  startupTimeoutMs?: number;
+  port?: number | undefined;
+  contextSize?: number | undefined;
+  nGpuLayers?: number | undefined; // -1 = auto, 0 = CPU only, >0 = specific layers
+  ubatchSize?: number | undefined; // Micro-batch size for embeddings (default: 2048)
+  batchSize?: number | undefined; // Batch size (default: 4096)
+  autoStart?: boolean | undefined;
+  healthCheckIntervalMs?: number | undefined;
+  startupTimeoutMs?: number | undefined;
   // Performance optimizations
-  flashAttn?: boolean; // Enable Flash Attention (default: true)
-  parallelSlots?: number; // Number of parallel slots for concurrent requests (default: 4)
-  mlock?: boolean; // Lock model in RAM to prevent swapping (default: true)
-  noKvOffload?: boolean; // Don't offload KV cache to GPU (for low VRAM) (default: false)
-  threads?: number; // Number of CPU threads (default: auto)
-  threadsBatch?: number; // Number of threads for batch processing (default: auto)
+  flashAttn?: boolean | undefined; // Enable Flash Attention (default: true)
+  parallelSlots?: number | undefined; // Number of parallel slots for concurrent requests (default: 4)
+  mlock?: boolean | undefined; // Lock model in RAM to prevent swapping (default: true)
+  noKvOffload?: boolean | undefined; // Don't offload KV cache to GPU (for low VRAM) (default: false)
+  threads?: number | undefined; // Number of CPU threads (default: auto)
+  threadsBatch?: number | undefined; // Number of threads for batch processing (default: auto)
 }
 
 interface LlamaCppServerState {

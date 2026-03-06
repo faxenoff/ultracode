@@ -680,7 +680,7 @@ export class DocStorage {
    * Get changelog entries
    */
   async getChangelog(
-    options: { since?: number | undefined; limit?: number; branch?: string } = {},
+    options: { since?: number | undefined; limit?: number; branch?: string | undefined } = {},
   ): Promise<ChangeLogEntry[]> {
     this.ensureReady();
 

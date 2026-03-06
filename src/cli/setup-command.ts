@@ -148,9 +148,9 @@ function getDefaultEndpoint(provider: string): string {
 // ═══════════════════════════════════════════════════════════════
 
 interface SetupArgs {
-  providerArg?: string;
-  modelArg?: string;
-  langArg?: string;
+  providerArg?: string | undefined;
+  modelArg?: string | undefined;
+  langArg?: string | undefined;
   llmOnly: boolean;
 }
 

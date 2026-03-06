@@ -156,188 +156,228 @@ export interface ParsedEntity {
   type: EntityKind;
   location: SourceSpan;
 
-  id?: string;
-  path?: string;
-  signature?: string;
-  filePath?: string;
-  language?: string;
-  children?: ParsedEntity[];
+  id?: string | undefined;
+  path?: string | undefined;
+  signature?: string | undefined;
+  filePath?: string | undefined;
+  language?: string | undefined;
+  children?: ParsedEntity[] | undefined;
 
-  references?: string[];
-  relationships?: Array<{
-    type: RelationshipKind;
-    target: string;
-    targetFile?: string;
-    metadata?: Record<string, any>;
-  }>;
+  references?: string[] | undefined;
+  relationships?:
+    | Array<{
+        type: RelationshipKind;
+        target: string;
+        targetFile?: string | undefined;
+        metadata?: Record<string, any> | undefined;
+      }>
+    | undefined;
 
-  modifiers?: string[];
-  decorators?: Array<{
-    name: string;
-    arguments?: string[];
-    isBuiltin?: boolean;
-  }>;
+  modifiers?: string[] | undefined;
+  decorators?:
+    | Array<{
+        name: string;
+        arguments?: string[] | undefined;
+        isBuiltin?: boolean | undefined;
+      }>
+    | undefined;
 
-  returnType?: string;
-  parameters?: Array<{
-    name: string;
-    type?: string;
-    optional?: boolean;
-    defaultValue?: string;
-  }>;
-  methodType?: "instance" | "class" | "static" | "property" | "abstract" | "magic";
+  returnType?: string | undefined;
+  parameters?:
+    | Array<{
+        name: string;
+        type?: string | undefined;
+        optional?: boolean | undefined;
+        defaultValue?: string | undefined;
+      }>
+    | undefined;
+  methodType?: "instance" | "class" | "static" | "property" | "abstract" | "magic" | undefined;
 
-  inheritance?: {
-    baseClasses: string[];
-    interfaces?: string[];
-    mro?: string[];
-    isAbstract?: boolean;
-  };
+  inheritance?:
+    | {
+        baseClasses: string[];
+        interfaces?: string[] | undefined;
+        mro?: string[] | undefined;
+        isAbstract?: boolean | undefined;
+      }
+    | undefined;
 
-  asyncInfo?: {
-    isAsync?: boolean;
-    isGenerator?: boolean;
-    isAsyncGenerator?: boolean;
-    yieldsFrom?: string[];
-    awaitCount?: number;
-    yieldCount?: number;
-    generatorType?: "simple" | "delegating";
-    asyncPatterns?: string[];
-  };
+  asyncInfo?:
+    | {
+        isAsync?: boolean | undefined;
+        isGenerator?: boolean | undefined;
+        isAsyncGenerator?: boolean | undefined;
+        yieldsFrom?: string[] | undefined;
+        awaitCount?: number | undefined;
+        yieldCount?: number | undefined;
+        generatorType?: "simple" | "delegating" | undefined;
+        asyncPatterns?: string[] | undefined;
+      }
+    | undefined;
 
-  importData?: {
-    source: string;
-    specifiers: Array<{
-      local: string;
-      imported?: string;
-      alias?: string;
-    }>;
-    isDefault?: boolean;
-    isNamespace?: boolean;
-    isRelative?: boolean;
-    fromModule?: string;
-  };
+  importData?:
+    | {
+        source: string;
+        specifiers: Array<{
+          local: string;
+          imported?: string | undefined;
+          alias?: string | undefined;
+        }>;
+        isDefault?: boolean | undefined;
+        isNamespace?: boolean | undefined;
+        isRelative?: boolean | undefined;
+        fromModule?: string | undefined;
+      }
+    | undefined;
 
-  pythonInfo?: {
-    magicMethodType?: MagicType | "other";
-    decorators?: Array<{
-      name: string;
-      module?: string;
-      arguments?: string[];
-      line?: number;
-    }>;
-    isProperty?: boolean;
-    hasGetter?: boolean;
-    hasSetter?: boolean;
-    isDataclass?: boolean;
-    specialClassType?: "dataclass" | "enum" | "namedtuple" | "protocol" | "abstract";
-  };
+  pythonInfo?:
+    | {
+        magicMethodType?: MagicType | "other" | undefined;
+        decorators?:
+          | Array<{
+              name: string;
+              module?: string | undefined;
+              arguments?: string[] | undefined;
+              line?: number | undefined;
+            }>
+          | undefined;
+        isProperty?: boolean | undefined;
+        hasGetter?: boolean | undefined;
+        hasSetter?: boolean | undefined;
+        isDataclass?: boolean | undefined;
+        specialClassType?: "dataclass" | "enum" | "namedtuple" | "protocol" | "abstract" | undefined;
+      }
+    | undefined;
 
-  patterns?: {
-    isContextManager?: boolean;
-    exceptionHandling?: {
-      hasTryExcept?: boolean;
-      exceptTypes?: string[];
-      hasFinally?: boolean;
-    };
-    designPatterns?: string[];
-    pythonIdioms?: string[];
-  };
+  patterns?:
+    | {
+        isContextManager?: boolean | undefined;
+        exceptionHandling?:
+          | {
+              hasTryExcept?: boolean | undefined;
+              exceptTypes?: string[] | undefined;
+              hasFinally?: boolean | undefined;
+            }
+          | undefined;
+        designPatterns?: string[] | undefined;
+        pythonIdioms?: string[] | undefined;
+      }
+    | undefined;
 
-  calls?: Array<{
-    name: string;
-    argumentCount: number;
-    location: SourceSpan;
-    target?: string;
-    isAwait?: boolean;
-    isOptional?: boolean;
-    isNew?: boolean;
-    typeArguments?: string[];
-  }>;
+  calls?:
+    | Array<{
+        name: string;
+        argumentCount: number;
+        location: SourceSpan;
+        target?: string | undefined;
+        isAwait?: boolean | undefined;
+        isOptional?: boolean | undefined;
+        isNew?: boolean | undefined;
+        typeArguments?: string[] | undefined;
+      }>
+    | undefined;
 
-  controlFlow?: {
-    branches: Array<{
-      type: "if" | "else" | "else-if" | "switch" | "case" | "default" | "ternary";
-      condition?: string;
-      location: SourceSpan;
-    }>;
-    loops: Array<{
-      type: "for" | "for-of" | "for-in" | "while" | "do-while";
-      location: SourceSpan;
-    }>;
-    exceptions: Array<{
-      type: "try" | "catch" | "finally" | "throw";
-      catchType?: string;
-      location: SourceSpan;
-    }>;
-    returns: Array<{
-      hasValue: boolean;
-      location: SourceSpan;
-    }>;
-    awaits: Array<{
-      expression: string;
-      location: SourceSpan;
-    }>;
-  };
+  controlFlow?:
+    | {
+        branches: Array<{
+          type: "if" | "else" | "else-if" | "switch" | "case" | "default" | "ternary";
+          condition?: string | undefined;
+          location: SourceSpan;
+        }>;
+        loops: Array<{
+          type: "for" | "for-of" | "for-in" | "while" | "do-while";
+          location: SourceSpan;
+        }>;
+        exceptions: Array<{
+          type: "try" | "catch" | "finally" | "throw";
+          catchType?: string | undefined;
+          location: SourceSpan;
+        }>;
+        returns: Array<{
+          hasValue: boolean;
+          location: SourceSpan;
+        }>;
+        awaits: Array<{
+          expression: string;
+          location: SourceSpan;
+        }>;
+      }
+    | undefined;
 
-  documentation?: {
-    description?: string;
-    params?: Array<{
-      name: string;
-      type?: string;
-      description?: string;
-      optional?: boolean;
-    }>;
-    returns?: {
-      type?: string;
-      description?: string;
-    };
-    throws?: Array<{
-      type?: string;
-      description?: string;
-    }>;
-    examples?: string[];
-    deprecated?: string | boolean;
-    see?: string[];
-    since?: string;
-    author?: string;
-  };
+  documentation?:
+    | {
+        description?: string | undefined;
+        params?:
+          | Array<{
+              name: string;
+              type?: string | undefined;
+              description?: string | undefined;
+              optional?: boolean | undefined;
+            }>
+          | undefined;
+        returns?:
+          | {
+              type?: string | undefined;
+              description?: string | undefined;
+            }
+          | undefined;
+        throws?:
+          | Array<{
+              type?: string | undefined;
+              description?: string | undefined;
+            }>
+          | undefined;
+        examples?: string[] | undefined;
+        deprecated?: string | boolean | undefined;
+        see?: string[] | undefined;
+        since?: string | undefined;
+        author?: string | undefined;
+      }
+    | undefined;
 
-  typeReferences?: Array<{
-    name: string;
-    kind: "parameter" | "return" | "variable" | "property" | "generic" | "extends" | "implements";
-    location: SourceSpan;
-  }>;
+  typeReferences?:
+    | Array<{
+        name: string;
+        kind: "parameter" | "return" | "variable" | "property" | "generic" | "extends" | "implements";
+        location: SourceSpan;
+      }>
+    | undefined;
 
-  complexity?: {
-    cyclomatic: number;
-    cognitive: number;
-    linesOfCode: number;
-    linesOfLogic: number;
-    nestingDepth: number;
-    parameterCount: number;
-    returnCount: number;
-  };
+  complexity?:
+    | {
+        cyclomatic: number;
+        cognitive: number;
+        linesOfCode: number;
+        linesOfLogic: number;
+        nestingDepth: number;
+        parameterCount: number;
+        returnCount: number;
+      }
+    | undefined;
 
-  typeParameters?: Array<{
-    name: string;
-    constraint?: string;
-    default?: string;
-  }>;
+  typeParameters?:
+    | Array<{
+        name: string;
+        constraint?: string | undefined;
+        default?: string | undefined;
+      }>
+    | undefined;
 
-  sideEffects?: {
-    hasSideEffects: boolean;
-    types: SideEffectCategory[];
-    details: Array<{
-      type: SideEffectCategory;
-      expression: string;
-      location: SourceSpan;
-    }>;
-  };
+  sideEffects?:
+    | {
+        hasSideEffects: boolean;
+        types: SideEffectCategory[];
+        details: Array<{
+          type: SideEffectCategory;
+          expression: string;
+          location: SourceSpan;
+        }>;
+      }
+    | undefined;
 
-  embeddingBase64?: string;
-  embeddingText?: string;
-  metadata?: Record<string, any>;
+  embeddingBase64?: string | undefined;
+  embeddingText?: string | undefined;
+  metadata?: Record<string, any> | undefined;
 }
 
 // -- Parse results ----------------------------------------------------------
@@ -349,13 +389,15 @@ export interface ParseResult {
   contentHash: string;
   timestamp: number;
   parseTimeMs: number;
-  fromCache?: boolean;
-  relationships?: EntityRelationship[];
-  patterns?: PatternAnalysis;
-  errors?: Array<{
-    message: string;
-    location?: { line: number; column: number };
-  }>;
+  fromCache?: boolean | undefined;
+  relationships?: EntityRelationship[] | undefined;
+  patterns?: PatternAnalysis | undefined;
+  errors?:
+    | Array<{
+        message: string;
+        location?: { line: number; column: number } | undefined;
+      }>
+    | undefined;
 }
 
 export interface CacheEntry {
@@ -370,16 +412,18 @@ export interface CacheEntry {
 export interface FileChange {
   filePath: string;
   changeType: "created" | "modified" | "deleted";
-  content?: string;
-  previousHash?: string;
-  edits?: Array<{
-    startIndex: number;
-    oldEndIndex: number;
-    newEndIndex: number;
-    startPosition: { row: number; column: number };
-    oldEndPosition: { row: number; column: number };
-    newEndPosition: { row: number; column: number };
-  }>;
+  content?: string | undefined;
+  previousHash?: string | undefined;
+  edits?:
+    | Array<{
+        startIndex: number;
+        oldEndIndex: number;
+        newEndIndex: number;
+        startPosition: { row: number; column: number };
+        oldEndPosition: { row: number; column: number };
+        newEndPosition: { row: number; column: number };
+      }>
+    | undefined;
 }
 
 // -- Parser task & options --------------------------------------------------
@@ -387,24 +431,24 @@ export interface FileChange {
 export interface ParserTask extends AgentTask {
   type: "parse:file" | "parse:batch" | "parse:incremental";
   payload: {
-    files?: string[];
-    changes?: FileChange[];
-    options?: ParserOptions;
+    files?: string[] | undefined;
+    changes?: FileChange[] | undefined;
+    options?: ParserOptions | undefined;
   };
 }
 
 export interface ParserOptions {
-  useCache?: boolean;
-  extractReferences?: boolean;
-  extractInheritance?: boolean;
-  extractOverrides?: boolean;
-  detectPatterns?: boolean;
-  analyzeAsync?: boolean;
-  extractMagicMethods?: boolean;
-  includeSourceSnippets?: boolean;
-  maxDepth?: number;
-  batchSize?: number;
-  timeoutMs?: number;
+  useCache?: boolean | undefined;
+  extractReferences?: boolean | undefined;
+  extractInheritance?: boolean | undefined;
+  extractOverrides?: boolean | undefined;
+  detectPatterns?: boolean | undefined;
+  analyzeAsync?: boolean | undefined;
+  extractMagicMethods?: boolean | undefined;
+  includeSourceSnippets?: boolean | undefined;
+  maxDepth?: number | undefined;
+  batchSize?: number | undefined;
+  timeoutMs?: number | undefined;
 }
 
 // -- Performance stats ------------------------------------------------------
@@ -426,15 +470,17 @@ export interface EntityRelationship {
   from: string;
   to: string;
   type: ExtendedRelationshipKind;
-  sourceFile?: string;
-  targetFile?: string;
-  metadata?: {
-    line?: number;
-    confidence?: number;
-    isDirectRelation?: boolean;
-    mroPosition?: number;
-    [key: string]: any;
-  };
+  sourceFile?: string | undefined;
+  targetFile?: string | undefined;
+  metadata?:
+    | {
+        line?: number | undefined;
+        confidence?: number | undefined;
+        isDirectRelation?: boolean | undefined;
+        mroPosition?: number | undefined;
+        [key: string]: any;
+      }
+    | undefined;
 }
 
 // -- Pattern analysis -------------------------------------------------------
@@ -450,8 +496,8 @@ export interface PatternAnalysis {
     type: "try_except" | "try_finally" | "try_except_finally";
     exceptTypes: string[];
     location: { line: number; column: number };
-    hasElse?: boolean;
-    hasFinally?: boolean;
+    hasElse?: boolean | undefined;
+    hasFinally?: boolean | undefined;
   }>;
 
   designPatterns: Array<{
@@ -473,12 +519,14 @@ export interface PatternAnalysis {
     severity: "warning" | "error";
   }>;
 
-  otherPatterns?: Array<{
-    kind: string;
-    entities?: string[];
-    confidence?: number;
-    description?: string;
-    locations?: Array<{ line: number; column: number }>;
-    metadata?: Record<string, any>;
-  }>;
+  otherPatterns?:
+    | Array<{
+        kind: string;
+        entities?: string[] | undefined;
+        confidence?: number | undefined;
+        description?: string | undefined;
+        locations?: Array<{ line: number; column: number }> | undefined;
+        metadata?: Record<string, any> | undefined;
+      }>
+    | undefined;
 }

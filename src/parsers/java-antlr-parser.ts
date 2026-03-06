@@ -696,9 +696,10 @@ function processRecordComponent(
   const unannType = component.unannType();
 
   if (identifier) {
+    const typeText = unannType?.getText();
     params.push({
       name: identifier.getText(),
-      type: unannType?.getText() || undefined,
+      ...(typeText ? { type: typeText } : {}),
     });
   }
 }

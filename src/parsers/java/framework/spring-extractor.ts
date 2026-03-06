@@ -92,7 +92,7 @@ export function extractSpringInfo(
   annotations: AnnotationInfo[],
   _location: LocationInfo,
 ): {
-  springInfo?: SpringAnnotationInfo;
+  springInfo?: SpringAnnotationInfo | undefined;
   relationships: EntityRelationship[];
 } {
   const relationships: EntityRelationship[] = [];
@@ -119,8 +119,8 @@ export function extractSpringInfo(
       springInfo = {
         ...springInfo,
         type: springInfo?.type || "controller",
-        path,
-        method,
+        ...(path != null ? { path } : {}),
+        ...(method != null ? { method } : {}),
       };
     }
 

@@ -68,12 +68,14 @@ export interface ImpactAnalyzerOptions {
 
 export class ImpactAnalyzer {
   private storage: GraphStorage;
-  private semanticSearch?: {
-    search(
-      query: string,
-      options: { limit: number; minSimilarity: number },
-    ): Promise<Array<{ entityId: string; similarity: number }>>;
-  };
+  private semanticSearch?:
+    | {
+        search(
+          query: string,
+          options: { limit: number; minSimilarity: number },
+        ): Promise<Array<{ entityId: string; similarity: number }>>;
+      }
+    | undefined;
 
   constructor(
     storage: GraphStorage,

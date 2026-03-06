@@ -421,9 +421,9 @@ export class EntityOperations {
   private buildFilterClause(
     filters:
       | {
-          entityType?: EntityType | EntityType[];
-          filePath?: string | string[];
-          name?: string | RegExp;
+          entityType?: EntityType | EntityType[] | undefined;
+          filePath?: string | string[] | undefined;
+          name?: string | RegExp | undefined;
         }
       | undefined,
     args: (string | number)[],
@@ -506,13 +506,15 @@ export class EntityOperations {
    * Find entities with complex filters (layered: delta + base - tombstones)
    */
   async findEntities(query: {
-    filters?: {
-      entityType?: EntityType | EntityType[];
-      filePath?: string | string[];
-      name?: string | RegExp;
-    };
-    limit?: number;
-    offset?: number;
+    filters?:
+      | {
+          entityType?: EntityType | EntityType[] | undefined;
+          filePath?: string | string[] | undefined;
+          name?: string | RegExp | undefined;
+        }
+      | undefined;
+    limit?: number | undefined;
+    offset?: number | undefined;
   }): Promise<Entity[]> {
     const client = this.getClient();
     if (!client) throw new Error("Client not initialized");
@@ -594,9 +596,9 @@ export class EntityOperations {
    */
   private buildSearchClause(
     options: {
-      namePattern?: string;
-      types?: EntityType[];
-      filePath?: string;
+      namePattern?: string | undefined;
+      types?: EntityType[] | undefined;
+      filePath?: string | undefined;
     },
     args: (string | number)[],
     ctx?: { projectHash: string; branchName: string },

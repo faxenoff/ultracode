@@ -168,12 +168,12 @@ export interface CallInfo {
   target?: string;
   location: LocationInfo;
   argumentCount: number;
-  isNew?: boolean;
-  isStatic?: boolean;
-  isSuper?: boolean;
-  isSafeCall?: boolean;
-  isExtensionCall?: boolean;
-  typeArguments?: string[];
+  isNew?: boolean | undefined;
+  isStatic?: boolean | undefined;
+  isSuper?: boolean | undefined;
+  isSafeCall?: boolean | undefined;
+  isExtensionCall?: boolean | undefined;
+  typeArguments?: string[] | undefined;
 }
 
 /**
@@ -184,7 +184,7 @@ export interface ControlFlowInfo {
   loops: LoopInfo[];
   exceptions: ExceptionInfo[];
   returns: ReturnInfo[];
-  awaits?: AwaitInfo[];
+  awaits?: AwaitInfo[] | undefined;
 }
 
 /**
@@ -192,7 +192,7 @@ export interface ControlFlowInfo {
  */
 export interface BranchInfo {
   type: "if" | "else-if" | "else" | "switch" | "case" | "default" | "ternary" | "when" | "when-entry" | "elvis";
-  condition?: string;
+  condition?: string | undefined;
   location: LocationInfo;
 }
 
@@ -209,7 +209,7 @@ export interface LoopInfo {
  */
 export interface ExceptionInfo {
   type: "try" | "catch" | "finally" | "throw";
-  catchType?: string;
+  catchType?: string | undefined;
   location: LocationInfo;
 }
 
@@ -219,7 +219,7 @@ export interface ExceptionInfo {
 export interface ReturnInfo {
   location: LocationInfo;
   hasValue: boolean;
-  label?: string;
+  label?: string | undefined;
 }
 
 /**
@@ -227,7 +227,7 @@ export interface ReturnInfo {
  */
 export interface AwaitInfo {
   location: LocationInfo;
-  expression?: string;
+  expression?: string | undefined;
 }
 
 /**

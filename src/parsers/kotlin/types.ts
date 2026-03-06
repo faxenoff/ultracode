@@ -74,7 +74,8 @@ export interface CallInfo {
  */
 export interface AnnotationInfo {
   name: string;
-  arguments?: string[];
+  arguments?: string[] | undefined;
+  isBuiltin?: boolean | undefined;
 }
 
 // =============================================================================
@@ -98,10 +99,10 @@ export interface InheritanceInfo {
  */
 export interface ParameterInfo {
   name: string;
-  type?: string;
-  optional?: boolean;
-  defaultValue?: string;
-  isVararg?: boolean;
+  type?: string | undefined;
+  optional?: boolean | undefined;
+  defaultValue?: string | undefined;
+  isVararg?: boolean | undefined;
 }
 
 // =============================================================================
@@ -113,7 +114,7 @@ export interface ParameterInfo {
  */
 export interface BranchInfo {
   type: "if" | "else" | "else-if" | "when" | "when-entry" | "elvis" | "ternary";
-  condition?: string;
+  condition?: string | undefined;
   location: LocationInfo;
 }
 
@@ -130,7 +131,7 @@ export interface LoopInfo {
  */
 export interface ExceptionInfo {
   type: "try" | "catch" | "finally" | "throw";
-  catchType?: string;
+  catchType?: string | undefined;
   location: LocationInfo;
 }
 
@@ -140,7 +141,7 @@ export interface ExceptionInfo {
 export interface ReturnInfo {
   location: LocationInfo;
   hasValue: boolean;
-  label?: string; // For labeled returns
+  label?: string | undefined; // For labeled returns
 }
 
 /**
@@ -166,35 +167,41 @@ export interface ControlFlowInfo {
  */
 export interface KDocParam {
   name: string;
-  type?: string;
-  description?: string;
+  type?: string | undefined;
+  description?: string | undefined;
 }
 
 /**
  * Parsed KDoc documentation
  */
 export interface KDocInfo {
-  description?: string;
-  params?: KDocParam[];
-  returns?: {
-    type?: string;
-    description?: string;
-  };
-  throws?: Array<{
-    type?: string;
-    description?: string;
-  }>;
-  property?: Array<{
-    name: string;
-    description?: string;
-  }>;
-  receiver?: string;
-  sample?: string[];
-  see?: string[];
-  since?: string;
-  author?: string;
-  deprecated?: string | boolean;
-  suppress?: string[];
+  description?: string | undefined;
+  params?: KDocParam[] | undefined;
+  returns?:
+    | {
+        type?: string | undefined;
+        description?: string | undefined;
+      }
+    | undefined;
+  throws?:
+    | Array<{
+        type?: string | undefined;
+        description?: string | undefined;
+      }>
+    | undefined;
+  property?:
+    | Array<{
+        name: string;
+        description?: string | undefined;
+      }>
+    | undefined;
+  receiver?: string | undefined;
+  sample?: string[] | undefined;
+  see?: string[] | undefined;
+  since?: string | undefined;
+  author?: string | undefined;
+  deprecated?: string | boolean | undefined;
+  suppress?: string[] | undefined;
 }
 
 // =============================================================================
@@ -206,12 +213,12 @@ export interface KDocInfo {
  */
 export interface CoroutineInfo {
   isSuspend: boolean;
-  hasLaunch?: boolean;
-  hasAsync?: boolean;
-  hasFlow?: boolean;
-  hasWithContext?: boolean;
-  dispatcherUsed?: string;
-  scopeType?: "CoroutineScope" | "GlobalScope" | "viewModelScope" | "lifecycleScope" | "other";
+  hasLaunch?: boolean | undefined;
+  hasAsync?: boolean | undefined;
+  hasFlow?: boolean | undefined;
+  hasWithContext?: boolean | undefined;
+  dispatcherUsed?: string | undefined;
+  scopeType?: "CoroutineScope" | "GlobalScope" | "viewModelScope" | "lifecycleScope" | "other" | undefined;
 }
 
 // =============================================================================
@@ -241,7 +248,7 @@ export interface ComplexityMetrics {
 export interface ViewModelInfo {
   stateFlows: string[];
   liveData: string[];
-  savedStateHandle?: boolean;
+  savedStateHandle?: boolean | undefined;
 }
 
 /**

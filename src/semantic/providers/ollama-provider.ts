@@ -12,12 +12,12 @@ export interface OllamaOptions {
   baseUrl?: string | undefined;
   timeoutMs?: number | undefined;
   concurrency?: number | undefined;
-  headers?: Record<string, string>;
-  autoPull?: boolean;
-  warmupText?: string;
-  checkServer?: boolean;
-  pullTimeoutMs?: number;
-  logger?: ProviderLogger;
+  headers?: Record<string, string> | undefined;
+  autoPull?: boolean | undefined;
+  warmupText?: string | undefined;
+  checkServer?: boolean | undefined;
+  pullTimeoutMs?: number | undefined;
+  logger?: ProviderLogger | undefined;
 }
 
 function maxTokensFor(model: string): number {

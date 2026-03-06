@@ -143,9 +143,9 @@ export class PatternEngine {
 
     // 4. Get applicable patterns
     let patterns = this.registry.getPatterns({
-      language: detectedLanguage,
+      ...(detectedLanguage != null ? { language: detectedLanguage } : {}),
       category: category as PatternCategory | "all",
-      tags,
+      ...(tags != null ? { tags } : {}),
       enabledOnly: true,
     });
 
@@ -248,7 +248,11 @@ export class PatternEngine {
 
     const language = entity.language ?? (entity.metadata?.language as string | undefined);
     await this.ensureDetectorsForLanguage(language);
-    const patterns = this.registry.getPatterns({ language, category, enabledOnly: true });
+    const patterns = this.registry.getPatterns({
+      ...(language != null ? { language } : {}),
+      category,
+      enabledOnly: true,
+    });
 
     const candidates = await this.structuralDetector.detect([entity], patterns, storage);
     const patternMap = new Map(patterns.map((p) => [p.id, p]));

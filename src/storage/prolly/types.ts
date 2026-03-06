@@ -31,19 +31,19 @@ export interface ProllyNode {
   type: ProllyNodeType;
 
   /** For leaf nodes: serialized data (CBOR encoded) */
-  data?: Uint8Array;
+  data?: Uint8Array | undefined;
 
   /** For internal nodes: ordered list of child content hashes */
-  childrenHashes?: string[];
+  childrenHashes?: string[] | undefined;
 
   /** B-tree key range: start key (inclusive) */
-  keyRangeStart?: string;
+  keyRangeStart?: string | undefined;
 
   /** B-tree key range: end key (inclusive) */
-  keyRangeEnd?: string;
+  keyRangeEnd?: string | undefined;
 
   /** Number of entries in this subtree (for statistics) */
-  entryCount?: number;
+  entryCount?: number | undefined;
 
   /** Timestamp when node was created */
   createdAt: number;
@@ -109,7 +109,7 @@ export interface GraphCommit {
   fileTreeHash: string | null;
 
   /** Optional commit message */
-  message?: string;
+  message?: string | undefined;
 
   /** Number of entities in this commit */
   entityCount: number;
@@ -140,10 +140,10 @@ export interface BranchHead {
  */
 export interface EntryChange {
   key: string;
-  oldValue?: Uint8Array;
-  newValue?: Uint8Array;
-  oldHash?: string;
-  newHash?: string;
+  oldValue?: Uint8Array | undefined;
+  newValue?: Uint8Array | undefined;
+  oldHash?: string | undefined;
+  newHash?: string | undefined;
 }
 
 /**

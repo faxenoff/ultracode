@@ -44,7 +44,6 @@ export class ConductorOrchestrator extends BaseAgent {
   private pendingTasks: Map<string, AgentTask> = new Map();
   private directImplementationAttempts = 0;
 
-  // TASK-004B: Performance optimization features
   private agentLoadCache: Map<string, { load: number; timestamp: number }> = new Map();
   private readonly LOAD_CACHE_TTL = 5000; // 5 seconds
   private performanceMetrics = {
@@ -361,8 +360,6 @@ export class ConductorOrchestrator extends BaseAgent {
     log.e("CONDUCTOR", "task_failed", { task: data.task.id, agent: data.agentId, err: String(data.error) });
     this.emit("task:routed:failed", data);
   }
-
-  // TASK-004B: Performance optimization methods
 
   private initializePerformanceOptimizations(): void {
     log.t("CONDUCTOR", "perf_init_start", {});

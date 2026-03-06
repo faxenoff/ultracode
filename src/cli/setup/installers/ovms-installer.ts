@@ -341,7 +341,7 @@ function detectModelDimensions(modelsDir: string, modelDirName: string): { dimen
       } else if (configData.hidden_size === 1024) {
         modelId = "multilingual-e5-large";
       }
-      return { dimensions, modelId };
+      return { dimensions, ...(modelId != null ? { modelId } : {}) };
     }
   } catch {
     /* ignore parse errors */

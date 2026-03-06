@@ -100,12 +100,16 @@ export async function warmupSemanticCache(ctx: CacheWarmupContext): Promise<void
         } else if (data && typeof data === "object") {
           const objData = data as Record<string, unknown>;
           id = (objData["id"] ?? objData["entityId"] ?? objData["name"]) as string | undefined;
+          const name = objData["name"] as string | undefined;
+          const type = objData["type"] as EntityType | undefined;
+          const filePath = (objData["filePath"] ?? objData["path"]) as string | undefined;
+          const metadata = objData["metadata"] as Record<string, unknown> | undefined;
           candidate = {
-            id,
-            name: objData["name"] as string | undefined,
-            type: objData["type"] as EntityType | undefined,
-            filePath: (objData["filePath"] ?? objData["path"]) as string | undefined,
-            metadata: objData["metadata"] as Record<string, unknown> | undefined,
+            ...(id != null ? { id } : {}),
+            ...(name != null ? { name } : {}),
+            ...(type != null ? { type } : {}),
+            ...(filePath != null ? { filePath } : {}),
+            ...(metadata != null ? { metadata } : {}),
           };
         }
 

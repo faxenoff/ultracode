@@ -23,10 +23,10 @@ import { ValidateDirectorySchema, ValidateFileSchema } from "../schemas/validati
  * Single validation issue from linter/validator
  */
 interface ValidationIssue {
-  line?: number;
-  column?: number;
+  line?: number | undefined;
+  column?: number | undefined;
   message: string;
-  rule?: string;
+  rule?: string | undefined;
   severity: "error" | "warning" | "info";
 }
 
@@ -201,8 +201,7 @@ export class ValidateFileToolHandler extends BaseToolHandler<z.infer<typeof Vali
           config: ".eslintrc",
           note: "ESLint not implemented, falling back to oxlint",
         });
-        // TODO: Implement ESLint support
-        // Fallback to oxlint
+        // See .autodoc/todo/BACKLOG.md#5
       }
     }
 

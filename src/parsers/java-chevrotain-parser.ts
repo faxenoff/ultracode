@@ -241,10 +241,10 @@ function extractTypeText(typeNode: TypedCstNode): string {
 
 function extractParameters(
   formalParamList: TypedCstNode | undefined,
-): Array<{ name: string; type?: string; optional?: boolean }> {
+): Array<{ name: string; type?: string | undefined; optional?: boolean | undefined }> {
   if (!formalParamList) return [];
 
-  const params: Array<{ name: string; type?: string; optional?: boolean }> = [];
+  const params: Array<{ name: string; type?: string | undefined; optional?: boolean | undefined }> = [];
   const formalParams = getNodes(formalParamList.children, "formalParameter");
 
   for (const paramNode of formalParams) {
@@ -257,7 +257,7 @@ function extractParameters(
     const unannType = getFirstNode(paramNode.children, "unannType");
     const type = unannType ? extractTypeText(unannType) : undefined;
 
-    params.push({ name: identifier.image, type });
+    params.push({ name: identifier.image, ...(type != null ? { type } : {}) });
   }
 
   // Check for variableArityParameter (varargs)
@@ -269,7 +269,7 @@ function extractParameters(
       if (identifier) {
         const unannType = getFirstNode(varArgsParam.children, "unannType");
         const type = unannType ? extractTypeText(unannType) + "..." : undefined;
-        params.push({ name: identifier.image, type });
+        params.push({ name: identifier.image, ...(type != null ? { type } : {}) });
       }
     }
   }
@@ -778,7 +778,7 @@ function processRecordDeclaration(recordDecl: TypedCstNode, classDecl: TypedCstN
   const annotations = extractAnnotations(modifierNodes);
 
   // Extract record components
-  const params: Array<{ name: string; type?: string }> = [];
+  const params: Array<{ name: string; type?: string | undefined }> = [];
   const recordHeader = getFirstNode(recordDecl.children, "recordHeader");
   if (recordHeader) {
     const recordComponentList = getFirstNode(recordHeader.children, "recordComponentList");

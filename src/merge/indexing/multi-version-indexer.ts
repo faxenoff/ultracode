@@ -495,7 +495,7 @@ export class MultiVersionIndexer {
         lastIndexedAt: Date.now(),
         fileCount: index.stats.byFile?.size || 0,
         entityCount: index.stats.totalUnits,
-        relationshipCount: 0, // TODO: Track relationships
+        relationshipCount: 0,
         indexVersion: "1.0.0",
         accessedAt: Date.now(),
       });

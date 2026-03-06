@@ -439,10 +439,11 @@ export class JsonParser {
       const schema =
         (jsonContent?.["schema"] as Record<string, string>) || (resp["schema"] as Record<string, string> | undefined);
 
+      const schemaRef = schema?.["$ref"] ? this.extractRefName(schema["$ref"]) : undefined;
       result.push({
         code,
         description: String(resp["description"] || ""),
-        schema: schema?.["$ref"] ? this.extractRefName(schema["$ref"]) : undefined,
+        ...(schemaRef != null ? { schema: schemaRef } : {}),
       });
     }
 

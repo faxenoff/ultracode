@@ -121,7 +121,9 @@ export function analyzeSwaggerCodeLinks(entities: Entity[]): SwaggerAnalysis {
       swaggerEndpoints.push({
         httpMethod: (entity.metadata?.["httpMethod"] as string) || "",
         path: (entity.metadata?.["path"] as string) || "",
-        operationId: (entity.metadata?.["operationId"] as string) || undefined,
+        ...((entity.metadata?.["operationId"] as string)
+          ? { operationId: entity.metadata["operationId"] as string }
+          : {}),
         entityName: entity.name,
         filePath: entity.filePath,
       });

@@ -13,9 +13,9 @@ import type { GraphCommit } from "./types.js";
 
 export interface RecentChangeFilter {
   /** Take last N commits */
-  lastCommits?: number;
+  lastCommits?: number | undefined;
   /** Commits since this Unix timestamp (epoch ms) */
-  sinceTimestamp?: number;
+  sinceTimestamp?: number | undefined;
 }
 
 export interface RecentChangeResult {

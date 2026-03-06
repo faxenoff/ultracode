@@ -121,10 +121,13 @@ export class PatternRegistry {
         const raw = YAML.parse(content);
         const parsed = PatternFileSchema.parse(raw);
 
-        const definitions: PatternDefinition[] = parsed.patterns.map((p) => ({
-          ...p,
-          language: p.language ?? language,
-        }));
+        const definitions = parsed.patterns.map(
+          (p) =>
+            ({
+              ...p,
+              language: p.language ?? language,
+            }) as PatternDefinition,
+        );
 
         const existing = this.patterns.get(language) ?? [];
         this.patterns.set(language, [...existing, ...definitions]);

@@ -280,7 +280,7 @@ export interface EmbeddingSession {
   speedPerSec: number;
   workers: number;
   batches: number;
-  provider?: string;
+  provider?: string | undefined;
 }
 
 /**

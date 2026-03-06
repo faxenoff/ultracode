@@ -126,7 +126,7 @@ export interface ILayeredIndex {
   /**
    * Get working delta for a client
    *
-   * TODO: Layer 2 implementation
+   * Layer 2 — see .autodoc/todo/BACKLOG.md#6
    * @future Phase 5+
    *
    * @param clientId - Client ID
@@ -138,7 +138,7 @@ export interface ILayeredIndex {
   /**
    * Update working delta for a client
    *
-   * TODO: Layer 2 implementation
+   * Layer 2 — see .autodoc/todo/BACKLOG.md#6
    * @future Phase 5+
    *
    * @param clientId - Client ID
@@ -150,7 +150,7 @@ export interface ILayeredIndex {
   /**
    * Clear working delta for a client
    *
-   * TODO: Layer 2 implementation
+   * Layer 2 — see .autodoc/todo/BACKLOG.md#6
    * @future Phase 5+
    *
    * @param clientId - Client ID
@@ -161,7 +161,7 @@ export interface ILayeredIndex {
   /**
    * Check if client has uncommitted changes
    *
-   * TODO: Layer 2 implementation
+   * Layer 2 — see .autodoc/todo/BACKLOG.md#6
    * @future Phase 5+
    *
    * @param clientId - Client ID

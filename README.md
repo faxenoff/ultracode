@@ -21,16 +21,26 @@
 
 ---
 
-Reduces time and token costs by up to 90% when working with code through AI agents. Code search, analysis, and modification operate on a complete code structure graph database. Local embedding models enable flexible queries with immediate verification and refinement.
+MCP server for AI coding agents. Builds a complete code structure graph (entities, relationships, control flow, complexity) and a semantic vector index. AI agents query the graph instead of reading files — and get precise, exhaustive answers with line references.
 
-**Full indexing of a medium-sized project takes 3 seconds**. Incremental indexing of changes happens on the fly.
+### Why this matters
 
-| | ❌ Regular AI Agent Work | ✅ Work via UltraCode |
+Without a structural index, an AI agent exploring a codebase has to **grep → read file → follow imports → grep again → read more files**. Each step costs tokens and time. Missed connections lead to incomplete fixes. The agent breaks code, checks, fixes, breaks again — a cycle that can repeat 10-20 times for a single task.
+
+With UltraCode, the same agent makes **one MCP call** and gets back all affected entities, their relationships, callers, and impact — in a single response. No file-reading loop, no missed connections.
+
+### What changes in practice
+
+| | Without UltraCode | With UltraCode |
 |---|---|---|
-| **Search** | AI agent uses grep/replace for full-text keyword search. Reads and analyzes found files entirely, then follows file chains. <br />A simple task in a large project takes **30 minutes and 1M+ tokens**. And it won't find everything. | AI agent queries UltraCode and instantly receives complete and accurate information with line-of-code references. Semantics find even non-obvious connections. <br />Query executes in **100ms and returns 5K tokens** (18,000x faster, 200x cheaper). |
-| **Editing** | AI agent edits files "blindly". Instead of careful modification, it goes through 10-20 iterations: breaks → checks → fixes → breaks. Plus dozens of requests to find bash/pwsh commands. <br />Takes **up to 1 hour and 2M+ tokens**. | UltraCode precisely modifies code at the structure level + linting + formatting + impact analysis with local tracing. If something breaks — reports it in the same response. <br />**18,000x faster, 200x cheaper.** |
-| **Memory** | AI agent forgets what it did and recreates the same functionality next to existing code. Or debugs a function for hours that it disabled itself. <br />Takes **many hours and 10M+ tokens**. | Through UltraCode, the agent gets the complete code structure in compact form. AutoDoc automatically maintains documentation. Agent won't fall into the forgetfulness trap. <br />Everything correct immediately. |
-| **Git** | When switching branches or making changes — agent won't detect this and will continue working with outdated code representation. <br />Need to forcefully trigger re-analysis. | All queries work with current code. Switch branches, modify files — incremental indexing of graph and semantics happens instantly. <br />Nothing additional needed, not even thinking about it. |
+| **Search** | Agent greps for keywords, reads files one by one, follows import chains manually. On a large project, finding all usages of a pattern takes **dozens of agent turns** and **1M+ tokens**. Indirect references are often missed. | Agent calls `semantic_search` or `query` — gets all matches (including semantic: similar logic, related concepts) in **one response, ~100ms, ~5K tokens**. Graph traversal finds what grep cannot: indirect callers, interface implementors, data flow paths. |
+| **Editing** | Agent modifies files without knowing the full dependency tree. Typical cycle: edit → build fails → read error → fix → new error → fix → ... This "fix loop" takes **10-20 iterations, up to 1 hour and 2M+ tokens** for a cross-cutting change. | Agent calls `analyze_code_impact` before editing to see what will break. `modify_code` applies changes at entity level with auto-validation (lint before/after). Impact analysis + tracing catch breakage **before** compilation. Large refactors compile correctly on the first try in most cases. |
+| **Memory** | Agent forgets prior context and recreates functionality that already exists. Or spends hours debugging a function it accidentally disabled. Token waste grows with session length. | Graph provides complete structural context on every call. `AutoDoc` maintains up-to-date documentation automatically. Agent always sees the current state — no "amnesia" problems. |
+| **Git** | Branch switches and external file changes invalidate the agent's mental model. Stale data causes silent errors. Agent must be explicitly told to re-analyze. | `GitWatcher` detects file changes and branch switches in real-time. Incremental re-indexing of graph and embeddings happens automatically. Every query returns current data — zero manual intervention. |
+
+### Indexing speed
+
+Full indexing of a medium project (~500 files) completes in **3-5 seconds** (parallel parsing + batch SQL + streaming embeddings). After that, `GitWatcher` indexes only changed files — typically **under 200ms** per change.
 
 # Features
 
@@ -186,19 +196,19 @@ MCP server provides **72 tools** for code analysis and modification.
 
 | Language | Parser | Entities | Relationships | Metrics | Types |
 |----------|--------|----------|--------------|---------|-------|
-| **TypeScript** | TS Compiler API | ⭐⭐⭐⭐⭐ | ⭐⭐⭐⭐⭐ | ⭐⭐⭐⭐⭐ | ⭐⭐⭐⭐⭐ |
-| **JavaScript** | TS Compiler API | ⭐⭐⭐⭐⭐ | ⭐⭐⭐⭐⭐ | ⭐⭐⭐⭐⭐ | ⭐⭐⭐ |
-| **Python** | ast + Pyright | ⭐⭐⭐⭐⭐ | ⭐⭐⭐⭐ | ⭐⭐⭐⭐⭐ | ⭐⭐⭐⭐ |
-| **Kotlin** | kotlin-compiler | ⭐⭐⭐⭐⭐ | ⭐⭐⭐⭐ | ⭐⭐⭐⭐ | ⭐⭐⭐⭐ |
-| **Java** | JavaParser | ⭐⭐⭐⭐⭐ | ⭐⭐⭐⭐ | ⭐⭐⭐⭐ | ⭐⭐⭐⭐ |
-| **Go** | go/parser | ⭐⭐⭐⭐ | ⭐⭐⭐ | ⭐⭐⭐ | ⭐⭐⭐ |
-| **Rust** | syn + ANTLR | ⭐⭐⭐⭐ | ⭐⭐⭐ | ⭐⭐⭐ | ⭐⭐⭐ |
-| **Swift** | SwiftSyntax | ⭐⭐⭐⭐ | ⭐⭐⭐ | ⭐⭐⭐ | ⭐⭐⭐ |
-| **C#** | Roslyn Compiler | ⭐⭐⭐⭐ | ⭐⭐⭐⭐ | ⭐⭐⭐⭐ | ⭐⭐⭐⭐ |
-| **C/C++** | clang AST | ⭐⭐⭐⭐ | ⭐⭐⭐ | ⭐⭐⭐ | ⭐⭐⭐ |
-| **Zig** | regex + heuristics | ⭐⭐⭐ | ⭐⭐ | ⭐⭐⭐ | ⭐⭐ |
-| **Bash** | regex + heuristics | ⭐⭐⭐ | ⭐⭐ | ⭐⭐ | — |
-| **PowerShell** | regex + heuristics | ⭐⭐⭐ | ⭐⭐ | ⭐⭐ | — |
+| **TypeScript** | TS Compiler + OXC | ⭐⭐⭐⭐⭐ | ⭐⭐⭐⭐⭐ | ⭐⭐⭐⭐⭐ | ⭐⭐⭐⭐⭐ |
+| **JavaScript** | TS Compiler + OXC | ⭐⭐⭐⭐⭐ | ⭐⭐⭐⭐⭐ | ⭐⭐⭐⭐⭐ | ⭐⭐⭐ |
+| **C#** | Roslyn Compiler | ⭐⭐⭐⭐⭐ | ⭐⭐⭐⭐⭐ | ⭐⭐⭐⭐⭐ | ⭐⭐⭐⭐⭐ |
+| **Python** | Regex + Pyright | ⭐⭐⭐⭐⭐ | ⭐⭐⭐⭐ | ⭐⭐⭐⭐⭐ | ⭐⭐⭐⭐ |
+| **Kotlin** | ANTLR4 | ⭐⭐⭐⭐⭐ | ⭐⭐⭐⭐ | ⭐⭐⭐⭐ | ⭐⭐⭐⭐ |
+| **Java** | ANTLR4 | ⭐⭐⭐⭐⭐ | ⭐⭐⭐⭐ | ⭐⭐⭐⭐ | ⭐⭐⭐⭐ |
+| **Swift** | Regex (1342 LOC) | ⭐⭐⭐⭐⭐ | ⭐⭐⭐⭐ | ⭐⭐⭐⭐ | ⭐⭐⭐ |
+| **Zig** | Regex (1154 LOC) | ⭐⭐⭐⭐⭐ | ⭐⭐⭐ | ⭐⭐⭐⭐ | ⭐⭐⭐ |
+| **Go** | go/parser (native) | ⭐⭐⭐⭐ | ⭐⭐⭐⭐ | ⭐⭐⭐⭐ | ⭐⭐⭐ |
+| **Rust** | Regex + ANTLR | ⭐⭐⭐⭐ | ⭐⭐⭐ | ⭐⭐⭐ | ⭐⭐⭐ |
+| **C/C++** | Regex + clang | ⭐⭐⭐⭐ | ⭐⭐⭐ | ⭐⭐⭐ | ⭐⭐⭐ |
+| **Bash** | shfmt + tree-sitter | ⭐⭐⭐ | ⭐⭐⭐ | ⭐⭐ | — |
+| **PowerShell** | tree-sitter | ⭐⭐⭐ | ⭐⭐⭐ | ⭐⭐ | — |
 | **JSON/YAML** | native + OpenAPI | ⭐⭐⭐ | ⭐⭐⭐ | — | — |
 
 **Legend:**
@@ -207,13 +217,15 @@ MCP server provides **72 tools** for code analysis and modification.
 - **Metrics** — cyclomatic, cognitive complexity, control flow, documentation
 - **Types** — type inference, type references, generics
 
+> Full details per language: [.autodoc/features/language-parsers.md](.autodoc/features/language-parsers.md)
+
 ### Low-Resource Languages Initiative
 
 > **0b00000001 lives matter!**
 
 We deliberately invest in first-class support for lesser-known yet promising languages and frameworks — so their communities get the same powerful code intelligence that mainstream ecosystems enjoy.
 
-**Currently supported:** Zig — full entity extraction, relationships, and complexity metrics.
+**Currently supported:** Zig — full entity extraction, relationships, control flow, and complexity metrics. Swift — full entities including SwiftUI property wrappers, inheritance/protocol conformance split, control flow.
 
 More languages coming. If your favorite niche language deserves better tooling — [open an issue](https://github.com/faxenoff/ultracode/issues).
 

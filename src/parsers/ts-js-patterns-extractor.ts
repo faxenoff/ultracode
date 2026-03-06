@@ -515,8 +515,8 @@ export function extractCommonJSRequire(node: ts.VariableStatement, ctx: JSPatter
 
           specifiers.push({
             local,
-            imported,
-            alias: imported ? local : undefined,
+            ...(imported != null ? { imported } : {}),
+            ...(imported ? { alias: local } : {}),
           });
 
           relationships.push({

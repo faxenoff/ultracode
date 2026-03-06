@@ -25,12 +25,12 @@ import { BaseAgent } from "./base.js";
 export interface MergeAgentConfig {
   repoPath: string;
   fastPathEnabled?: boolean | undefined;
-  semanticMatchingEnabled?: boolean;
-  semanticThreshold?: number;
-  autoResolveConflicts?: boolean;
+  semanticMatchingEnabled?: boolean | undefined;
+  semanticThreshold?: number | undefined;
+  autoResolveConflicts?: boolean | undefined;
   maxConcurrency?: number | undefined;
-  branchManager?: BranchManager;
-  gitIntegration?: GitIntegration;
+  branchManager?: BranchManager | undefined;
+  gitIntegration?: GitIntegration | undefined;
 }
 
 export interface SemanticMergeOptions {
@@ -38,7 +38,7 @@ export interface SemanticMergeOptions {
   branchB: string;
   dryRun?: boolean | undefined; // Preview only, don't apply changes
   autoResolve?: boolean | undefined; // Auto-resolve compatible conflicts
-  includeAISuggestions?: boolean; // Generate AI suggestions for conflicts
+  includeAISuggestions?: boolean | undefined; // Generate AI suggestions for conflicts
 }
 
 export interface MergeAgentResult {
@@ -159,10 +159,12 @@ export class MergeAgent extends BaseAgent {
 
     // Initialize ThreeWayMerger if we have required dependencies
     const mergerConfig: Partial<ThreeWayMergerConfig> = {
-      fastPathEnabled: this.config.fastPathEnabled,
-      semanticMatchingEnabled: this.config.semanticMatchingEnabled,
-      semanticThreshold: this.config.semanticThreshold,
-      autoResolveConflicts: this.config.autoResolveConflicts,
+      ...(this.config.fastPathEnabled != null ? { fastPathEnabled: this.config.fastPathEnabled } : {}),
+      ...(this.config.semanticMatchingEnabled != null
+        ? { semanticMatchingEnabled: this.config.semanticMatchingEnabled }
+        : {}),
+      ...(this.config.semanticThreshold != null ? { semanticThreshold: this.config.semanticThreshold } : {}),
+      ...(this.config.autoResolveConflicts != null ? { autoResolveConflicts: this.config.autoResolveConflicts } : {}),
     };
 
     if (this.branchManager && this.gitIntegration) {

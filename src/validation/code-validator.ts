@@ -41,7 +41,7 @@ export interface ValidationProblem {
   message: string;
   line: number;
   column: number;
-  ruleId?: string;
+  ruleId?: string | undefined;
   source?: string | undefined; // linter name
 }
 

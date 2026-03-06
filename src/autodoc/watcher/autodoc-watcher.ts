@@ -48,11 +48,11 @@ interface ModuleInfoWithLLM extends ModuleInfo {
 
 export interface AutoDocWatcherConfig {
   /** Debounce delay in milliseconds (default: 45000 = 45 seconds) */
-  debounceMs?: number;
+  debounceMs?: number | undefined;
   /** Minimum debounce delay (default: 30000 = 30 seconds) */
-  minDebounceMs?: number;
+  minDebounceMs?: number | undefined;
   /** Maximum debounce delay (default: 60000 = 60 seconds) */
-  maxDebounceMs?: number;
+  maxDebounceMs?: number | undefined;
   /** Root directory to watch */
   rootDir: string;
   /** Enable/disable watcher */
@@ -60,11 +60,13 @@ export interface AutoDocWatcherConfig {
   /** Use LLM for description generation */
   useLlm?: boolean | undefined;
   /** LLM provider config */
-  llmConfig?: {
-    provider: "ollama" | "openai" | "tgi";
-    model?: string | undefined;
-    endpoint?: string;
-  };
+  llmConfig?:
+    | {
+        provider: "ollama" | "openai" | "tgi";
+        model?: string | undefined;
+        endpoint?: string | undefined;
+      }
+    | undefined;
 }
 
 interface PendingUpdate {
@@ -77,7 +79,15 @@ interface PendingUpdate {
 const MODULE_DOC_FILENAME = "AUTODOC.md";
 
 export class AutoDocWatcher {
-  private config: Required<Omit<AutoDocWatcherConfig, "useLlm">> & { useLlm: boolean | undefined };
+  private config: {
+    debounceMs: number;
+    minDebounceMs: number;
+    maxDebounceMs: number;
+    rootDir: string;
+    enabled: boolean;
+    useLlm: boolean | undefined;
+    llmConfig: AutoDocWatcherConfig["llmConfig"];
+  };
   private pendingUpdates: Map<string, PendingUpdate> = new Map();
   private debounceControllers: Map<string, AbortController> = new Map();
   private subscriptionId: string | null = null;
@@ -249,12 +259,14 @@ export class AutoDocWatcher {
           log.i("AUTODOCWATCH", "creating_missing_autodoc", { module: mod.name, path: mod.path, useLlm });
 
           // Generate LLM descriptions first (includes export/file descriptions)
-          let llmDescriptions: { exportDescs?: Record<string, string>; fileDescs?: Record<string, string> } | undefined;
+          let llmDescriptions:
+            | { exportDescs?: Record<string, string> | undefined; fileDescs?: Record<string, string> | undefined }
+            | undefined;
           if (useLlm) {
             const { generateModuleDescriptionLLM } = await import("./autodoc-updater.js");
             const desc = await generateModuleDescriptionLLM(mod, {
               useLlm,
-              llmConfig: this.config.llmConfig,
+              ...(this.config.llmConfig != null ? { llmConfig: this.config.llmConfig } : {}),
             });
             if (desc) {
               mod.description = desc;
@@ -515,12 +527,14 @@ export class AutoDocWatcher {
           const moduleInfo = await this.getModuleInfo(modulePath);
 
           // Generate LLM descriptions first (includes export/file descriptions)
-          let llmDescriptions: { exportDescs?: Record<string, string>; fileDescs?: Record<string, string> } | undefined;
+          let llmDescriptions:
+            | { exportDescs?: Record<string, string> | undefined; fileDescs?: Record<string, string> | undefined }
+            | undefined;
           if (useLlm) {
             const { generateModuleDescriptionLLM } = await import("./autodoc-updater.js");
             const desc = await generateModuleDescriptionLLM(moduleInfo, {
               useLlm,
-              llmConfig: this.config.llmConfig,
+              ...(this.config.llmConfig != null ? { llmConfig: this.config.llmConfig } : {}),
             });
             if (desc) {
               moduleInfo.description = desc;
@@ -585,7 +599,7 @@ export class AutoDocWatcher {
       const useLlmForUpdate = await this.shouldUseLlm();
       const updatedContent = await updateAutodocContent(currentContent, moduleInfo, Array.from(pending.changedFiles), {
         useLlm: useLlmForUpdate,
-        llmConfig: this.config.llmConfig,
+        ...(this.config.llmConfig != null ? { llmConfig: this.config.llmConfig } : {}),
       });
 
       if (updatedContent !== currentContent) {
@@ -650,12 +664,14 @@ export class AutoDocWatcher {
           log.i("AUTODOCWATCH", "creating_autodoc_for_new_module", { module: mod.name, useLlm });
 
           // Generate LLM descriptions first (includes export/file descriptions)
-          let llmDescriptions: { exportDescs?: Record<string, string>; fileDescs?: Record<string, string> } | undefined;
+          let llmDescriptions:
+            | { exportDescs?: Record<string, string> | undefined; fileDescs?: Record<string, string> | undefined }
+            | undefined;
           if (useLlm) {
             const { generateModuleDescriptionLLM } = await import("./autodoc-updater.js");
             const desc = await generateModuleDescriptionLLM(mod, {
               useLlm,
-              llmConfig: this.config.llmConfig,
+              ...(this.config.llmConfig != null ? { llmConfig: this.config.llmConfig } : {}),
             });
             if (desc) {
               mod.description = desc;
@@ -797,7 +813,7 @@ export class AutoDocWatcher {
     config: AutoDocWatcherConfig;
   } {
     return {
-      enabled: this.config.enabled,
+      enabled: this.config.enabled ?? true,
       running: this.subscriptionId !== null,
       pendingUpdates: this.pendingUpdates.size,
       config: this.config,

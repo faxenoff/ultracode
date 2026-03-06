@@ -288,13 +288,15 @@ export class RelationshipOperations {
    * Uses CTE for efficient layered queries with proper LIMIT/OFFSET at SQL level
    */
   async findRelationships(query: {
-    filters?: {
-      relationshipType?: RelationType | RelationType[];
-      fromId?: string | string[];
-      toId?: string | string[];
-    };
-    limit?: number;
-    offset?: number;
+    filters?:
+      | {
+          relationshipType?: RelationType | RelationType[] | undefined;
+          fromId?: string | string[] | undefined;
+          toId?: string | string[] | undefined;
+        }
+      | undefined;
+    limit?: number | undefined;
+    offset?: number | undefined;
   }): Promise<Relationship[]> {
     const client = this.getClient();
     if (!client) throw new Error("Client not initialized");

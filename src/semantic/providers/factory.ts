@@ -117,91 +117,109 @@ async function detectAvailableProvider(): Promise<{ provider: ProviderKind; mode
 export interface ProviderFactoryOptions {
   provider: ProviderKind;
   modelName: string;
-  openai?: {
-    baseUrl?: string | undefined;
-    apiKey?: string | undefined;
-    timeoutMs?: number | undefined;
-    concurrency?: number | undefined;
-    dimensions?: number;
-    maxBatchSize?: number | undefined;
-  };
-  cloudru?: {
-    baseUrl?: string | undefined;
-    apiKey?: string | undefined;
-    timeoutMs?: number | undefined;
-    concurrency?: number | undefined;
-    maxBatchSize?: number | undefined;
-  };
-  huggingface?: {
-    apiKey?: string | undefined;
-    baseUrl?: string | undefined;
-    timeoutMs?: number | undefined;
-    concurrency?: number | undefined;
-    warmupText?: string;
-  };
-  tei?: {
-    baseUrl?: string | undefined;
-    timeoutMs?: number | undefined;
-    concurrency?: number | undefined;
-    checkServer?: boolean;
-    maxBatchSize?: number | undefined; // Max texts per request (TEI max_client_batch_size)
-  };
-  ollama?: {
-    baseUrl?: string | undefined;
-    timeoutMs?: number | undefined;
-    concurrency?: number | undefined;
-    headers?: Record<string, string>;
-    autoPull?: boolean;
-    warmupText?: string;
-    checkServer?: boolean;
-    pullTimeoutMs?: number;
-  };
-  ovms?: {
-    baseUrl?: string | undefined;
-    timeoutMs?: number | undefined;
-    concurrency?: number | undefined;
-    checkServer?: boolean;
-    miniBatchSize?: number; // Internal batch size for OVMS server (default: 4)
-    useEmbeddingsApi?: boolean; // Use /v3/embeddings OpenAI-compatible API (default: true)
-    encodingFormat?: "float" | "base64"; // Response format for embeddings API (default: base64)
-    protocol?: "rest" | "grpc"; // Protocol: rest (HTTP/JSON) or grpc (binary protobuf)
-    grpcPort?: number; // gRPC port (default: 9000)
-    endpoints?: string[]; // Multi-device endpoints for round-robin: ["embeddings-cpu", "embeddings-gpu"]
-  };
-  vllm?: {
-    baseUrl?: string | undefined;
-    timeoutMs?: number | undefined;
-    concurrency?: number | undefined;
-    checkServer?: boolean;
-    maxBatchSize?: number | undefined;
-    encodingFormat?: "float" | "base64";
-  };
-  llamacpp?: {
-    baseUrl?: string | undefined;
-    timeoutMs?: number | undefined;
-    concurrency?: number | undefined;
-    checkServer?: boolean;
-    maxBatchSize?: number | undefined;
-    contextSize?: number | undefined;
-    nGpuLayers?: number | undefined;
-    /** Auto-start llama-server if not running (default: true) */
-    autoStart?: boolean;
-    /** Number of parallel request slots on server (default: 4) */
-    parallelSlots?: number | undefined;
-    /** Micro-batch size for embedding processing (default: 512) */
-    ubatchSize?: number | undefined;
-    /** Batch size for prompt processing (default: 1024) */
-    batchSize?: number | undefined;
-  };
-  mlx?: {
-    baseUrl?: string | undefined;
-    timeoutMs?: number | undefined;
-    concurrency?: number | undefined;
-    checkServer?: boolean;
-    maxBatchSize?: number | undefined;
-    /** Auto-start MLX server if not running (default: true) */
-    autoStart?: boolean;
-  };
+  openai?:
+    | {
+        baseUrl?: string | undefined;
+        apiKey?: string | undefined;
+        timeoutMs?: number | undefined;
+        concurrency?: number | undefined;
+        dimensions?: number | undefined;
+        maxBatchSize?: number | undefined;
+      }
+    | undefined;
+  cloudru?:
+    | {
+        baseUrl?: string | undefined;
+        apiKey?: string | undefined;
+        timeoutMs?: number | undefined;
+        concurrency?: number | undefined;
+        maxBatchSize?: number | undefined;
+      }
+    | undefined;
+  huggingface?:
+    | {
+        apiKey?: string | undefined;
+        baseUrl?: string | undefined;
+        timeoutMs?: number | undefined;
+        concurrency?: number | undefined;
+        warmupText?: string | undefined;
+      }
+    | undefined;
+  tei?:
+    | {
+        baseUrl?: string | undefined;
+        timeoutMs?: number | undefined;
+        concurrency?: number | undefined;
+        checkServer?: boolean | undefined;
+        maxBatchSize?: number | undefined; // Max texts per request (TEI max_client_batch_size)
+      }
+    | undefined;
+  ollama?:
+    | {
+        baseUrl?: string | undefined;
+        timeoutMs?: number | undefined;
+        concurrency?: number | undefined;
+        headers?: Record<string, string> | undefined;
+        autoPull?: boolean | undefined;
+        warmupText?: string | undefined;
+        checkServer?: boolean | undefined;
+        pullTimeoutMs?: number | undefined;
+      }
+    | undefined;
+  ovms?:
+    | {
+        baseUrl?: string | undefined;
+        timeoutMs?: number | undefined;
+        concurrency?: number | undefined;
+        checkServer?: boolean | undefined;
+        miniBatchSize?: number | undefined; // Internal batch size for OVMS server (default: 4)
+        useEmbeddingsApi?: boolean | undefined; // Use /v3/embeddings OpenAI-compatible API (default: true)
+        encodingFormat?: "float" | "base64" | undefined; // Response format for embeddings API (default: base64)
+        protocol?: "rest" | "grpc" | undefined; // Protocol: rest (HTTP/JSON) or grpc (binary protobuf)
+        grpcPort?: number | undefined; // gRPC port (default: 9000)
+        endpoints?: string[] | undefined; // Multi-device endpoints for round-robin: ["embeddings-cpu", "embeddings-gpu"]
+      }
+    | undefined;
+  vllm?:
+    | {
+        baseUrl?: string | undefined;
+        timeoutMs?: number | undefined;
+        concurrency?: number | undefined;
+        checkServer?: boolean | undefined;
+        maxBatchSize?: number | undefined;
+        encodingFormat?: "float" | "base64" | undefined;
+      }
+    | undefined;
+  llamacpp?:
+    | {
+        baseUrl?: string | undefined;
+        timeoutMs?: number | undefined;
+        concurrency?: number | undefined;
+        checkServer?: boolean | undefined;
+        maxBatchSize?: number | undefined;
+        contextSize?: number | undefined;
+        nGpuLayers?: number | undefined;
+        /** Auto-start llama-server if not running (default: true) */
+        autoStart?: boolean | undefined;
+        /** Number of parallel request slots on server (default: 4) */
+        parallelSlots?: number | undefined;
+        /** Micro-batch size for embedding processing (default: 512) */
+        ubatchSize?: number | undefined;
+        /** Batch size for prompt processing (default: 1024) */
+        batchSize?: number | undefined;
+      }
+    | undefined;
+  mlx?:
+    | {
+        baseUrl?: string | undefined;
+        timeoutMs?: number | undefined;
+        concurrency?: number | undefined;
+        checkServer?: boolean | undefined;
+        maxBatchSize?: number | undefined;
+        /** Auto-start MLX server if not running (default: true) */
+        autoStart?: boolean | undefined;
+      }
+    | undefined;
 }
 
 //Provider builder registry (Map-based dispatch)

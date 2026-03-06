@@ -23,7 +23,7 @@ import type { AIConflictResolver } from "./ai-conflict-resolver.js";
 export interface ConflictResolverConfig {
   // AI integration (optional)
   aiEnabled: boolean; // default: false
-  aiResolver?: AIConflictResolver; // AI resolver for semantic analysis
+  aiResolver?: AIConflictResolver | undefined; // AI resolver for semantic analysis
 
   // Resolution preferences
   preferBranchA: boolean; // default: false - prioritize branchA when conditions are equal
@@ -33,7 +33,7 @@ export interface ConflictResolverConfig {
 
 export class ConflictResolver {
   private config: ConflictResolverConfig;
-  private aiResolver?: AIConflictResolver;
+  private aiResolver?: AIConflictResolver | undefined;
 
   constructor(_config: Partial<ConflictResolverConfig> = {}) {
     this.config = {
@@ -294,7 +294,7 @@ export class ConflictResolver {
     }
 
     // For simplicity return null (a more advanced diff3 is needed)
-    // TODO: implement proper 3-way merge algorithm
+    // See .autodoc/todo/BACKLOG.md#1
     return null;
   }
 

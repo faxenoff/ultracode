@@ -617,8 +617,8 @@ export class PathBuilder {
     // If filePath provided, search with higher limit and filter at SQL level
     const entities = await this.storage.searchEntities({
       namePattern: name,
-      types: type ? [type as EntityType] : undefined,
-      filePath: filePath, // Pass to SQL for efficient filtering
+      ...(type ? { types: [type as EntityType] } : {}),
+      ...(filePath != null ? { filePath } : {}),
       limit: filePath ? 1000 : 100, // Higher limit when filtering by file
     });
 

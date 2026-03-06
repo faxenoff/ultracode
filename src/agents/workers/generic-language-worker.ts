@@ -208,7 +208,7 @@ interface WorkerTask {
   files: string[];
   language: string; // Language identifier (e.g., "python", "rust", "typescript")
   options?: ParserOptions | undefined;
-  streamingMode?: boolean; // If true, send results as they become ready (streaming_result messages)
+  streamingMode?: boolean | undefined; // If true, send results as they become ready (streaming_result messages)
 }
 
 interface WorkerResult {

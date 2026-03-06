@@ -256,12 +256,8 @@ export class AIConflictResolver {
       return branchAUnit.content;
     }
 
-    // TODO: More advanced heuristics:
-    // - AST-based merge for structural changes
-    // - Line-by-line diff with semantic scoring
-    // - ML-based code generation for merge
-
-    return null; // Cannot safely merge
+    // See .autodoc/todo/BACKLOG.md#2
+    return null;
   }
 
   /**

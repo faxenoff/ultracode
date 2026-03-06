@@ -127,7 +127,7 @@ export class ResourceManager extends EventEmitter {
   // Monitoring
   private snapshots: SnapshotRing;
   private monitoring = false;
-  private tickTimer?: ReturnType<typeof setInterval>;
+  private tickTimer?: ReturnType<typeof setInterval> | undefined;
 
   // Adaptive polling
   private pollingIntervalMs = 1000;

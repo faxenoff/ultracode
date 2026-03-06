@@ -35,9 +35,9 @@ interface RefactoringSuggestionOutput {
   impact: string;
   confidence: number;
   description: string;
-  entityId?: string;
-  filePath?: string;
-  suggestedCode?: string;
+  entityId?: string | undefined;
+  filePath?: string | undefined;
+  suggestedCode?: string | undefined;
 }
 
 /**
@@ -416,7 +416,9 @@ export class AnalyzeHotspotsToolHandler extends BaseToolHandler<z.infer<typeof A
     includeHistoricalMetrics: boolean,
   ): {
     score: number;
-    changeMetrics?: { changeFrequency: number; changeFrequencyScore: number; changeSource: "prolly" | "git" | "none" };
+    changeMetrics?:
+      | { changeFrequency: number; changeFrequencyScore: number; changeSource: "prolly" | "git" | "none" }
+      | undefined;
   } {
     const metrics = entity.metadata?.["metrics"] || {};
     let score = 0;
@@ -813,7 +815,7 @@ export class AnalyzeCodeImpactToolHandler extends BaseToolHandler<z.infer<typeof
     if (!entityId && args.filePath) {
       const normalizedPath = this.context.normalizeInputPath(args.filePath);
       const entities = await storage.findEntities({
-        filters: { filePath: normalizedPath },
+        filters: { ...(normalizedPath != null ? { filePath: normalizedPath } : {}) },
         limit: 1,
       });
       if (entities.length > 0 && entities[0]) {

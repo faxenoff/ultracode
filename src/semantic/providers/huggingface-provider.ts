@@ -14,8 +14,8 @@ export interface HuggingFaceOptions {
   baseUrl?: string | undefined;
   timeoutMs?: number | undefined;
   concurrency?: number | undefined;
-  warmupText?: string;
-  logger?: ProviderLogger;
+  warmupText?: string | undefined;
+  logger?: ProviderLogger | undefined;
 }
 
 export class HuggingFaceProvider implements EmbeddingProvider {

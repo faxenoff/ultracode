@@ -72,12 +72,12 @@ type NavigatorWithGPU = Navigator & {
 export interface GPUInfo {
   vendor: "nvidia" | "amd" | "intel" | "unknown";
   model: string;
-  computeCapability?: number; // NVIDIA only (e.g. 7.5 for GTX 1650 Ti)
+  computeCapability?: number | undefined; // NVIDIA only (e.g. 7.5 for GTX 1650 Ti)
   memoryMB: number;
   cudaAvailable: boolean;
   webgpuAvailable: boolean;
-  webgpuSkipped?: boolean; // True if WebGPU was skipped due to unstable architecture
-  webgpuSkipReason?: string; // Reason why WebGPU was skipped
+  webgpuSkipped?: boolean | undefined; // True if WebGPU was skipped due to unstable architecture
+  webgpuSkipReason?: string | undefined; // Reason why WebGPU was skipped
 }
 
 export class GPUDetector {
@@ -374,8 +374,8 @@ export class GPUDetector {
     }
 
     const partialInfo: Partial<GPUInfo> = {
-      model: cudaInfo?.name,
-      computeCapability: cudaInfo?.computeCapability,
+      ...(cudaInfo?.name != null ? { model: cudaInfo.name } : {}),
+      ...(cudaInfo?.computeCapability != null ? { computeCapability: cudaInfo.computeCapability } : {}),
     };
 
     const safetyCheck = GPUDetector.isWebGPUSafe(partialInfo);

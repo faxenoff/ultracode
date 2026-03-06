@@ -323,13 +323,13 @@ export interface ChaosAnalysisResult {
  */
 export interface ChaosAnalysisOptions {
   scope: "file" | "module" | "project";
-  stateIdentifiers?: string[]; // Specific identifiers to analyze
+  stateIdentifiers?: string[] | undefined; // Specific identifiers to analyze
   autoDetect?: boolean; // Auto-detect state patterns
   includeVisualization?: boolean; // Generate graph visualization
   generateRefactoringPlan?: boolean;
   useEmbeddings?: boolean; // Use semantic similarity for grouping
   maxDepth?: number | undefined; // Maximum trace depth (default: 10)
-  excludePatterns?: string[]; // Files to exclude
+  excludePatterns?: string[] | undefined; // Files to exclude
   technology?: TechnologyContext; // Override auto-detection
 }
 

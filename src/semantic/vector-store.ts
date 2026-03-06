@@ -1198,7 +1198,7 @@ export class VectorStore {
    * v5: Note - this only clears Faiss, not graph data
    */
   async clear(): Promise<void> {
-    // TODO: Implement clear in FaissProvider
+    // See .autodoc/todo/BACKLOG.md#4
     log.w("VECTOR", "clear() not fully implemented for Faiss-only mode");
   }
 

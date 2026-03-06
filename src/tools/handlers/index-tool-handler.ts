@@ -97,10 +97,11 @@ export class IndexToolHandler extends BaseToolHandler<IndexToolArgs> {
     const ctx = this.context.createAutoIndexContext!();
     const extensions = this.getExtensions();
 
+    const excludePatterns = args.excludePatterns?.length ? args.excludePatterns : undefined;
     const result = await performAutoIndex(targetDir, extensions, ctx, {
       incremental: args.incremental,
       reset: args.reset,
-      extraExcludePatterns: args.excludePatterns?.length ? args.excludePatterns : undefined,
+      ...(excludePatterns != null ? { extraExcludePatterns: excludePatterns } : {}),
       fullScan: args.fullScan,
     });
 

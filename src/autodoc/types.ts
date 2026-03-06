@@ -194,7 +194,7 @@ export interface Reference {
   /** Target line start */
   targetLineStart?: number | undefined;
   /** Target line end */
-  targetLineEnd?: number;
+  targetLineEnd?: number | undefined;
 }
 
 /**

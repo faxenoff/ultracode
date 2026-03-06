@@ -561,7 +561,7 @@ class GpuSubprocessClient implements IGpuClient {
 
     // Timeout promise - uses Bun-compatible async sleep instead of setTimeout
     const timeoutPromise = (async (): Promise<GpuWorkerResponse> => {
-      await sleep(this.config.timeout);
+      await sleep(this.config.timeout ?? 30000);
       if (abortController.signal.aborted) {
         // Response already received, return never-resolving promise
         return new Promise(() => {});

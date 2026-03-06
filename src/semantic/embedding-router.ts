@@ -162,7 +162,7 @@ export class EmbeddingRouter {
     });
 
     // Check if we should flush
-    if (this.pendingItems.length >= this.config.batchSize) {
+    if (this.pendingItems.length >= (this.config.batchSize ?? 100)) {
       // Non-blocking flush (fire and forget)
       this.triggerFlush();
     }

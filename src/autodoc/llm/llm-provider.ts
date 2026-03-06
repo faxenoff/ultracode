@@ -22,15 +22,17 @@ export interface LLMConfig {
   maxTokens?: number | undefined;
   temperature?: number;
   /** For llamacpp: GPU layers. 0=CPU, 99=full GPU. Auto-detected from VRAM if not set. */
-  nGpuLayers?: number;
+  nGpuLayers?: number | undefined;
 }
 
 export interface LLMResponse {
   text: string;
-  usage?: {
-    promptTokens: number;
-    completionTokens: number;
-  };
+  usage?:
+    | {
+        promptTokens: number;
+        completionTokens: number;
+      }
+    | undefined;
 }
 
 export interface LLMProvider {
@@ -76,7 +78,7 @@ export class OllamaProvider implements LLMProvider {
   private baseUrl: string;
   private model: string;
 
-  constructor(config: { baseUrl?: string | undefined; model?: string }) {
+  constructor(config: { baseUrl?: string | undefined; model?: string | undefined }) {
     this.baseUrl = config.baseUrl || "http://localhost:11434";
     this.model = config.model || ""; // Will be auto-selected in checkHealth
   }
@@ -191,7 +193,7 @@ export class TGIProvider implements LLMProvider {
   private _isAvailable = false;
   private baseUrl: string;
 
-  constructor(config: { baseUrl?: string }) {
+  constructor(config: { baseUrl?: string | undefined }) {
     this.baseUrl = config.baseUrl || "http://localhost:8081";
   }
 
@@ -264,7 +266,7 @@ export class OpenAIProvider implements LLMProvider {
   private model: string;
   private apiKey: string;
 
-  constructor(config: { baseUrl?: string | undefined; model?: string | undefined; apiKey?: string }) {
+  constructor(config: { baseUrl?: string | undefined; model?: string | undefined; apiKey?: string | undefined }) {
     this.baseUrl = config.baseUrl || "http://localhost:8000/v1";
     this.model = config.model || "gpt-3.5-turbo";
     this.apiKey = config.apiKey || "not-needed";
@@ -435,7 +437,7 @@ export class DockerModelRunnerProvider implements LLMProvider {
   private baseUrl: string;
   private model: string;
 
-  constructor(config: { baseUrl?: string | undefined; model?: string }) {
+  constructor(config: { baseUrl?: string | undefined; model?: string | undefined }) {
     // Docker Model Runner API endpoint (from host)
     this.baseUrl = config.baseUrl || "http://localhost:12434/engines/llama.cpp/v1";
     this.model = config.model || "";
@@ -552,7 +554,12 @@ export class LlamaCppLLMProvider implements LLMProvider {
   private autoStartAttempted = false;
   private autoStartEnabled: boolean;
 
-  constructor(config: { baseUrl?: string | undefined; model?: string; nGpuLayers?: number; autoStart?: boolean }) {
+  constructor(config: {
+    baseUrl?: string | undefined;
+    model?: string | undefined;
+    nGpuLayers?: number | undefined;
+    autoStart?: boolean | undefined;
+  }) {
     // llama.cpp LLM port (separate from embedding port 8085)
     this.baseUrl = config.baseUrl || "http://127.0.0.1:8086";
     this.model = config.model || "gguf";
@@ -820,7 +827,7 @@ export class ClaudeCodeProvider implements LLMProvider {
     requests: 0,
   };
 
-  constructor(config: { model?: string }) {
+  constructor(config: { model?: string | undefined }) {
     // Default to haiku for speed and cost efficiency
     this.model = config.model || "haiku";
     // Find CLI path once at construction
@@ -1161,10 +1168,10 @@ function calculateLLMGpuLayers(vramMB: number): number {
  * Load LLM config from semantic-config.json
  */
 async function loadLLMConfig(): Promise<{
-  provider?: string;
+  provider?: string | undefined;
   model?: string | undefined;
-  endpoint?: string;
-  nGpuLayers?: number;
+  endpoint?: string | undefined;
+  nGpuLayers?: number | undefined;
 } | null> {
   try {
     const { readFile } = await import("node:fs/promises");

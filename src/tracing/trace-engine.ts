@@ -58,7 +58,7 @@ function isRealEntity(entity: Entity): boolean {
 
 export class TraceEngine {
   private storage: GraphStorage;
-  private semanticSearch?: SemanticSearchService;
+  private semanticSearch?: SemanticSearchService | undefined;
   private pathBuilder: PathBuilder;
   private graphologyBuilder: GraphologyPathBuilder;
   private useOptimized: boolean;

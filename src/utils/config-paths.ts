@@ -120,107 +120,139 @@ export interface SemanticConfig {
   embedding: {
     platform: "tei" | "ovms" | "ovms-native" | "vllm" | "llamacpp" | "mlx";
     architecture: string;
-    ovms?: {
-      endpoint: string;
-      batch_size?: number;
-      ovms_mini_batch?: number;
-      selected_model: string | null;
-      target_device?: string; // NPU, GPU, NVIDIA, AUTO, MULTI:NPU,GPU,CPU
-      /** Multi-device endpoints for round-robin load balancing (e.g., ["embeddings-gpu", "embeddings-gpu", "embeddings-cpu"]) */
-      endpoints?: string[];
-      models?: Array<{
-        id: string;
-        languages: string[];
-        vector_size: number;
-      }>;
-      // OVMS v3 API options
-      useEmbeddingsApi?: boolean; // Use /v3/embeddings OpenAI-compatible API (default: true)
-      encodingFormat?: "float" | "base64"; // Response format (default: base64)
-    };
-    tei?: {
-      endpoint: string;
-      max_batch_tokens?: number;
-      max_client_batch_size?: number;
-      concurrency?: number; // Client-side concurrent requests (default 16)
-      selected_model: string | null;
-      models?: Array<{
-        id: string;
-        languages: string[];
-        vector_size: number;
-      }>;
-    };
-    vllm?: {
-      endpoint: string;
-      max_batch_size?: number;
-      encoding_format?: "float" | "base64";
-      selected_model: string | null;
-      models?: Array<{
-        id: string;
-        languages: string[];
-        vector_size: number;
-      }>;
-    };
-    llamacpp?: {
-      endpoint: string;
-      context_size?: number;
-      n_gpu_layers?: number;
-      // Performance tuning
-      parallel_slots?: number; // Number of parallel request slots (default: 4)
-      ubatch_size?: number; // Micro-batch size (default: 1536)
-      batch_size?: number; // Batch size for prompt processing (default: 3072)
-      // Client settings
-      max_batch_size?: number; // Max texts per HTTP request (default: 256)
-      concurrency?: number; // Parallel HTTP requests (default: 4)
-      auto_start?: boolean; // Auto-start llama-server (default: true)
-      selected_model: string | null;
-      models?: Array<{
-        id: string;
-        languages: string[];
-        vector_size: number;
-      }>;
-    };
-    mlx?: {
-      endpoint: string;
-      max_batch_size?: number;
-      concurrency?: number;
-      auto_start?: boolean;
-      selected_model: string | null;
-      models?: Array<{
-        id: string;
-        languages: string[];
-        vector_size: number;
-      }>;
-    };
+    ovms?:
+      | {
+          endpoint: string;
+          batch_size?: number | undefined;
+          ovms_mini_batch?: number | undefined;
+          selected_model: string | null;
+          target_device?: string | undefined; // NPU, GPU, NVIDIA, AUTO, MULTI:NPU,GPU,CPU
+          /** Multi-device endpoints for round-robin load balancing (e.g., ["embeddings-gpu", "embeddings-gpu", "embeddings-cpu"]) */
+          endpoints?: string[] | undefined;
+          models?:
+            | Array<{
+                id: string;
+                languages: string[];
+                vector_size: number;
+              }>
+            | undefined;
+          // OVMS v3 API options
+          useEmbeddingsApi?: boolean | undefined; // Use /v3/embeddings OpenAI-compatible API (default: true)
+          encodingFormat?: "float" | "base64" | undefined; // Response format (default: base64)
+        }
+      | undefined;
+    tei?:
+      | {
+          endpoint: string;
+          max_batch_tokens?: number | undefined;
+          max_client_batch_size?: number | undefined;
+          concurrency?: number | undefined; // Client-side concurrent requests (default 16)
+          selected_model: string | null;
+          models?:
+            | Array<{
+                id: string;
+                languages: string[];
+                vector_size: number;
+              }>
+            | undefined;
+        }
+      | undefined;
+    vllm?:
+      | {
+          endpoint: string;
+          max_batch_size?: number | undefined;
+          encoding_format?: "float" | "base64" | undefined;
+          selected_model: string | null;
+          models?:
+            | Array<{
+                id: string;
+                languages: string[];
+                vector_size: number;
+              }>
+            | undefined;
+        }
+      | undefined;
+    llamacpp?:
+      | {
+          endpoint: string;
+          context_size?: number | undefined;
+          n_gpu_layers?: number | undefined;
+          // Performance tuning
+          parallel_slots?: number | undefined; // Number of parallel request slots (default: 4)
+          ubatch_size?: number | undefined; // Micro-batch size (default: 1536)
+          batch_size?: number | undefined; // Batch size for prompt processing (default: 3072)
+          // Client settings
+          max_batch_size?: number | undefined; // Max texts per HTTP request (default: 256)
+          concurrency?: number | undefined; // Parallel HTTP requests (default: 4)
+          auto_start?: boolean | undefined; // Auto-start llama-server (default: true)
+          selected_model: string | null;
+          models?:
+            | Array<{
+                id: string;
+                languages: string[];
+                vector_size: number;
+              }>
+            | undefined;
+        }
+      | undefined;
+    mlx?:
+      | {
+          endpoint: string;
+          max_batch_size?: number | undefined;
+          concurrency?: number | undefined;
+          auto_start?: boolean | undefined;
+          selected_model: string | null;
+          models?:
+            | Array<{
+                id: string;
+                languages: string[];
+                vector_size: number;
+              }>
+            | undefined;
+        }
+      | undefined;
   };
-  auto_detection?: {
-    gpu_architecture: boolean;
-    codebase_size: boolean;
-    language: boolean;
-  };
-  llm?: {
-    enabled: boolean;
-    platform: "ollama" | "tgi" | "llamacpp" | "claude-code" | "docker-model-runner";
-    claude?: {
-      model_id: string;
-      context_tokens: number;
-    };
-    ollama?: {
-      endpoint: string;
-      model_id: string;
-      context_tokens: number;
-    };
-    tgi?: {
-      endpoint: string;
-      model_id: string;
-      context_tokens: number;
-      container_name: string;
-    };
-    docker_model_runner?: {
-      endpoint: string;
-      model_id: string;
-      context_tokens: number;
-    };
-  };
+  auto_detection?:
+    | undefined
+    | {
+        gpu_architecture: boolean;
+        codebase_size: boolean;
+        language: boolean;
+      };
+  llm?:
+    | undefined
+    | {
+        enabled: boolean;
+        platform: "ollama" | "tgi" | "llamacpp" | "claude-code" | "docker-model-runner";
+        claude?:
+          | {
+              model_id: string;
+              context_tokens: number;
+            }
+          | undefined;
+        ollama?:
+          | {
+              endpoint: string;
+              model_id: string;
+              context_tokens: number;
+            }
+          | undefined;
+        tgi?:
+          | {
+              endpoint: string;
+              model_id: string;
+              context_tokens: number;
+              container_name: string;
+            }
+          | undefined;
+        docker_model_runner?:
+          | {
+              endpoint: string;
+              model_id: string;
+              context_tokens: number;
+            }
+          | undefined;
+      };
 }
 
 /**

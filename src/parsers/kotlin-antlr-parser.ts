@@ -821,7 +821,7 @@ function extractModifiers(modifiersCtx: ModifiersContext | null): {
           const args = unescaped.constructorInvocation?.()?.valueArguments?.();
           result.annotations.push({
             name,
-            arguments: args ? [args.getText()] : undefined,
+            ...(args ? { arguments: [args.getText()] } : {}),
           });
         }
       }

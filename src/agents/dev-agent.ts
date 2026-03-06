@@ -1992,7 +1992,7 @@ export class DevAgent extends BaseAgent implements ResourceAdjustmentCapable {
           const indexResult = await this.indexerAgent!.indexEntities(
             result.entities,
             result.filePath,
-            result.relationships,
+            result.relationships as any,
           );
           return { entities: indexResult.entitiesIndexed, success: true };
         } catch {

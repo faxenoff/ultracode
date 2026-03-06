@@ -248,7 +248,7 @@ function syncLegacyState(state: GpuWorkerState, entry: IndexEntry, projectKey: s
 // =============================================================================
 
 export async function handleFaissInit(
-  request: { projectKey: string; config: FaissIndexConfig; loadPath?: string },
+  request: { projectKey: string; config: FaissIndexConfig; loadPath?: string | undefined },
   ctx: FaissHandlerContext,
 ): Promise<void> {
   const { nativeFaiss, state, log, sendResponse, sendError, setContentCachePath, loadContentCache } = ctx;

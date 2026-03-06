@@ -303,7 +303,7 @@ export function collectFiles(directory: string, options: CollectFilesOptions): C
   // Try Bun.Glob first (async, but we need sync interface)
   // For now, use sync Node.js approach but with withFileTypes optimization
   // Bun.Glob will be used when we can make collectFiles async
-  const useBunGlob = false; // TODO: Enable when collectFiles can be async
+  const useBunGlob = false; // See .autodoc/todo/BACKLOG.md#3
 
   let files: string[];
   let dirsScanned = 0;

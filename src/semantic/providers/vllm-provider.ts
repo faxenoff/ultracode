@@ -19,10 +19,10 @@ export interface VLLMOptions {
   baseUrl?: string | undefined;
   timeoutMs?: number | undefined;
   concurrency?: number | undefined;
-  checkServer?: boolean;
-  logger?: ProviderLogger;
+  checkServer?: boolean | undefined;
+  logger?: ProviderLogger | undefined;
   maxBatchSize?: number | undefined;
-  encodingFormat?: "float" | "base64";
+  encodingFormat?: "float" | "base64" | undefined;
 }
 
 /**
@@ -403,7 +403,7 @@ export class VLLMProvider implements EmbeddingProvider {
           documents: documents.map((d) => d.text),
           top_n: opts?.topK,
         }),
-        signal: opts?.signal,
+        ...(opts?.signal ? { signal: opts.signal } : {}),
       });
 
       if (!res.ok) {
@@ -464,7 +464,7 @@ export class VLLMProvider implements EmbeddingProvider {
           text_1: query,
           text_2: documents,
         }),
-        signal: opts?.signal,
+        ...(opts?.signal ? { signal: opts.signal } : {}),
       });
 
       if (!res.ok) {

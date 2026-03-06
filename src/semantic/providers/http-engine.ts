@@ -18,9 +18,9 @@ export interface HttpEngineOptions {
   baseUrl: string;
   timeoutMs?: number | undefined;
   concurrency?: number | undefined;
-  maxRetries?: number;
-  backoffMs?: number;
-  defaultHeaders?: Record<string, string>;
+  maxRetries?: number | undefined;
+  backoffMs?: number | undefined;
+  defaultHeaders?: Record<string, string> | undefined;
 }
 
 export interface RequestConfig<TBody = unknown> {
@@ -51,7 +51,7 @@ export class HttpEngine {
     cfg: RequestConfig,
     input: unknown,
     parse: (json: unknown) => R,
-    opts?: { signal?: AbortSignal },
+    opts?: { signal?: AbortSignal | undefined },
   ): Promise<R> {
     return this.gate(async () => {
       const body = cfg.buildBody ? cfg.buildBody(input) : input;
@@ -60,7 +60,7 @@ export class HttpEngine {
         method: cfg.method ?? "POST",
         headers,
         body: body !== undefined ? JSON.stringify(body) : undefined,
-        signal: opts?.signal,
+        ...(opts?.signal ? { signal: opts.signal } : {}),
       });
       const raw = await res.text();
       return parse(raw ? JSON.parse(raw) : null);
@@ -71,7 +71,7 @@ export class HttpEngine {
     cfg: RequestConfig,
     inputs: unknown[],
     parseSingle: (json: unknown) => R,
-    opts?: { signal?: AbortSignal },
+    opts?: { signal?: AbortSignal | undefined },
   ): Promise<R[]> {
     return Promise.all(inputs.map((item) => this.callSingle(cfg, item, parseSingle, opts)));
   }

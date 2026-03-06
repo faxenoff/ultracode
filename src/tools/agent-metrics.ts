@@ -31,7 +31,7 @@ interface AgentSummary {
   cpuUsagePercent: number;
   capabilities: { maxConcurrency: number; memoryLimitMB: number; priority: number };
   metrics: AgentMetrics;
-  currentTaskType?: string;
+  currentTaskType?: string | undefined;
   lastActivity: number;
 }
 

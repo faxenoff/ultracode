@@ -12,17 +12,17 @@ export type ProviderKind =
   | "auto";
 
 export interface ProviderLogger {
-  debug(msg: string, data?: unknown, requestId?: string): void;
-  info(msg: string, data?: unknown, requestId?: string): void;
-  warn(msg: string, data?: unknown, requestId?: string): void;
-  error(msg: string, data?: unknown, requestId?: string | undefined, err?: Error): void;
+  debug(msg: string, data?: unknown, requestId?: string | undefined): void;
+  info(msg: string, data?: unknown, requestId?: string | undefined): void;
+  warn(msg: string, data?: unknown, requestId?: string | undefined): void;
+  error(msg: string, data?: unknown, requestId?: string | undefined, err?: Error | undefined): void;
 }
 
 export interface ProviderInfo {
   name: ProviderKind | string;
   model: string;
   supportsBatch: boolean;
-  dimension?: number;
+  dimension?: number | undefined;
   maxBatchSize?: number | undefined;
   maxTokens?: number | undefined;
 }
@@ -52,7 +52,7 @@ export interface RerankResult {
 }
 
 export interface RerankOptions extends EmbedOptions {
-  topK?: number;
+  topK?: number | undefined;
   threshold?: number | undefined;
 }
 

@@ -13,7 +13,7 @@
  */
 
 import type { CommonTokenStream } from "antlr4ng";
-import type { JavaDocInfo } from "../types.js";
+import type { JavaDocInfo, JavaDocParam } from "../types.js";
 
 // =============================================================================
 // MAIN EXTRACTION FUNCTION
@@ -197,10 +197,9 @@ function parseParamTag(content: string, result: JavaDocInfo): void {
     const descPart = match[2]?.split(/(?=@\w+)/)[0];
     const description = descPart ? descPart.trim() : undefined;
 
-    result.params.push({
-      name,
-      description: description || undefined,
-    });
+    const paramEntry: JavaDocParam = { name };
+    if (description) paramEntry.description = description;
+    result.params.push(paramEntry);
   }
 }
 
@@ -211,7 +210,7 @@ function parseReturnTag(content: string, result: JavaDocInfo): void {
   const descPart = content.split(/(?=@\w+)/)[0];
   const description = descPart ? descPart.trim() : undefined;
   result.returns = {
-    description: description || undefined,
+    ...(description ? { description } : {}),
   };
 }
 
@@ -232,7 +231,7 @@ function parseThrowsTag(content: string, result: JavaDocInfo): void {
 
     result.throws.push({
       type,
-      description: description || undefined,
+      ...(description ? { description } : {}),
     });
   }
 }

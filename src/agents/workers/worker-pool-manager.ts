@@ -329,8 +329,6 @@ export class WorkerPoolManager {
 
     // Mark worker as not busy
     state.busy = false;
-
-    // TODO: Restart worker if needed
   }
 
   /**

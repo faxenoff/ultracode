@@ -54,10 +54,10 @@ UltraCode — MCP-сервер для RAG-поиска по кодовой ба�
 | Rust | syn + rust-analyzer | Хорошо |
 | C/C++ | clang -ast-dump | Хорошо |
 | C# | Roslyn (.NET addon) | Отлично — полный semantic model |
-| Swift | SwiftSyntax | Базовый |
-| Bash | tree-sitter | Базовый |
-| Zig | Нативный | Базовый |
-| PowerShell | Нативный | Базовый |
+| Swift | Regex (1342 LOC) | Полный — entities, inheritance/protocol split, control flow, SwiftUI wrappers |
+| Bash | shfmt + tree-sitter | Хорошо — entities, relationships, control flow через analyzer |
+| Zig | Regex (1154 LOC) | Полный — entities, test/comptime blocks, control flow, complexity |
+| PowerShell | tree-sitter | Хорошо — entities, cmdlets, security validation |
 
 **Особенно впечатляет:**
 - Roslyn-аддон как отдельный daemon с Named Pipe IPC и фазовой инициализацией (syntax → semantic → validation)
@@ -192,7 +192,7 @@ UltraCode — MCP-сервер для RAG-поиска по кодовой ба�
 
 **Оценка: Подтверждено (8/10)**
 
-Парсеры существуют для всех заявленных языков. Глубина поддержки различается: TypeScript/C# имеют полный semantic analysis, а Swift/Bash/Zig — базовый AST-парсинг.
+Парсеры существуют для всех заявленных языков. TypeScript/C# имеют полный semantic analysis с type inference. Swift (1342 LOC) и Zig (1154 LOC) имеют полное извлечение сущностей, связей, control flow и complexity — единственное отличие от Tier 1 — отсутствие cross-file type resolution. Bash и PowerShell извлекают entities и relationships, control flow через tree-sitter analyzer. Подробности: [.autodoc/features/language-parsers.md](features/language-parsers.md).
 
 ### Заявлено: "Работа на commodity hardware"
 

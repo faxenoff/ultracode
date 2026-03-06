@@ -658,10 +658,10 @@ export class KotlinNativeParser {
       description?: string | undefined;
       optional?: boolean;
     }> = [];
-    const throws: Array<{ type?: string | undefined; description?: string }> = [];
+    const throws: Array<{ type?: string | undefined; description?: string | undefined }> = [];
     // biome-ignore lint/style/useConst: reassigned later in the function
     let description: string | undefined;
-    let returns: { type?: string | undefined; description?: string } | undefined;
+    let returns: { type?: string | undefined; description?: string | undefined } | undefined;
     let since: string | undefined;
     let author: string | undefined;
     let deprecated: string | boolean | undefined;
@@ -688,7 +688,7 @@ export class KotlinNativeParser {
       const returnMatch = line.match(/^@returns?\s+(.*)/);
       if (returnMatch) {
         inDescription = false;
-        returns = { description: returnMatch[1] };
+        returns = { ...(returnMatch[1] != null ? { description: returnMatch[1] } : {}) };
         continue;
       }
 
@@ -697,8 +697,8 @@ export class KotlinNativeParser {
       if (throwsMatch) {
         inDescription = false;
         throws.push({
-          type: throwsMatch[1],
-          description: throwsMatch[2] || undefined,
+          ...(throwsMatch[1] != null ? { type: throwsMatch[1] } : {}),
+          ...(throwsMatch[2] ? { description: throwsMatch[2] } : {}),
         });
         continue;
       }

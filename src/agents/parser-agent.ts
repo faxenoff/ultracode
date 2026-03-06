@@ -482,7 +482,6 @@ export class ParserAgent extends BaseAgent {
   constructor(knowledgeBus?: EventEmitter) {
     const config = getParserConfig();
 
-    // TASK-001: Initialize with optimized configuration
     super(AgentType.PARSER, {
       maxConcurrency: config.maxConcurrency,
       memoryLimit: config.memoryLimit,

@@ -272,7 +272,7 @@ export async function batchGenerateDocs(
     const batchResults = await Promise.all(
       batch.map(async (mod) => {
         try {
-          const doc = await generateModuleDoc(llm, mod, undefined, { language });
+          const doc = await generateModuleDoc(llm, mod, undefined, language != null ? { language } : {});
           return { path: mod.path, doc };
         } catch (_error) {
           // Fallback to basic template on error

@@ -263,7 +263,7 @@ export function extractAnnotations(modifiersCtx: ClassModifierContext[] | unknow
         }
 
         if (name) {
-          annotations.push({ name, arguments: args });
+          annotations.push({ name, ...(args != null ? { arguments: args } : {}) });
         }
       }
     }

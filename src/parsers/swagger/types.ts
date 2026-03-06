@@ -112,7 +112,7 @@ export interface SwaggerEndpoint {
   /** Path from swagger */
   path: string;
   /** Operation ID */
-  operationId?: string;
+  operationId?: string | undefined;
   /** Entity name in graph */
   entityName: string;
   /** Swagger file path */

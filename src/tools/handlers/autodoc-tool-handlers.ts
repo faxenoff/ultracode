@@ -143,7 +143,7 @@ interface DebugInfo {
   skipped?: boolean;
   reason?: string;
   error?: string;
-  stack?: string;
+  stack?: string | undefined;
 }
 
 /**

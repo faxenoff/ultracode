@@ -85,7 +85,7 @@ export interface FaissSearchRequest {
   /** Number of results */
   k: number;
   /** Optional: filter by IDs */
-  filterIds?: string[];
+  filterIds?: string[] | undefined;
 }
 
 export interface FaissBatchSearchRequest {
