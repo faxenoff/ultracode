@@ -496,6 +496,25 @@ export class VectorStore {
    * v6: Uses Faiss HNSW search or LayeredFaissProvider, enriches results from LibSQL
    */
   async search(queryVector: Float32Array, limit = 10): Promise<SimilarityResult[]> {
+    const rawResults = await this.searchRaw(queryVector, limit);
+
+    // Enrich results with entity data from LibSQL
+    const enriched = await this.enrichResultsFromLibSQL(rawResults);
+
+    log.i("VECTOR", "search_enriched_results", {
+      beforeCount: rawResults.length,
+      afterCount: enriched.length,
+      filtered: rawResults.length - enriched.length,
+    });
+
+    return enriched;
+  }
+
+  /**
+   * Search without enrichment — returns raw FAISS results with vector IDs only.
+   * Use when caller handles entity resolution itself (e.g. pattern_search).
+   */
+  async searchRaw(queryVector: Float32Array, limit = 10): Promise<SimilarityResult[]> {
     let rawResults: SimilarityResult[];
 
     if (this.useLayeredIndex) {
@@ -511,16 +530,7 @@ export class VectorStore {
       ids: rawResults.map((r) => r.id).slice(0, 10),
     });
 
-    // Enrich results with entity data from LibSQL
-    const enriched = await this.enrichResultsFromLibSQL(rawResults);
-
-    log.i("VECTOR", "search_enriched_results", {
-      beforeCount: rawResults.length,
-      afterCount: enriched.length,
-      filtered: rawResults.length - enriched.length,
-    });
-
-    return enriched;
+    return rawResults;
   }
 
   /**
@@ -548,39 +558,59 @@ export class VectorStore {
       // Extract entity IDs from result IDs (format: "ent:{entityId}" or "ent:{filePath}:{type}:{name}")
       const entityIds = entityResults.map((r) => (r.id.startsWith("ent:") ? r.id.slice(4) : r.id));
 
-      // Batch fetch entities from LibSQL (parallel getEntity calls)
-      // Try direct ID lookup first, then fallback to filePath:type:name parsing
-      const entityMap = new Map<string, NonNullable<Awaited<ReturnType<typeof storage.getEntity>>>>();
+      // Split IDs into hash-based (direct lookup) and composite (filePath:type:name)
+      const hashIds: string[] = [];
+      const compositeIds: Array<{ idx: number; id: string; filePath: string; type: string; name: string }> = [];
 
-      await Promise.all(
-        entityIds.map(async (id, i) => {
-          // Try direct ID lookup first (for hash-based IDs)
-          let entity = await storage.getEntity(id);
+      for (let i = 0; i < entityIds.length; i++) {
+        const id = entityIds[i]!;
+        const lastColonIdx = id.lastIndexOf(":");
+        const secondLastColonIdx = id.lastIndexOf(":", lastColonIdx - 1);
+        if (secondLastColonIdx > 0) {
+          compositeIds.push({
+            idx: i,
+            id,
+            filePath: id.slice(0, secondLastColonIdx),
+            type: id.slice(secondLastColonIdx + 1, lastColonIdx),
+            name: id.slice(lastColonIdx + 1),
+          });
+        } else {
+          hashIds.push(id);
+        }
+      }
 
-          // If not found, try parsing as filePath:type:name format
-          if (!entity && id.includes(":")) {
-            const lastColonIdx = id.lastIndexOf(":");
-            const secondLastColonIdx = id.lastIndexOf(":", lastColonIdx - 1);
-            if (secondLastColonIdx > 0) {
-              const filePath = id.slice(0, secondLastColonIdx);
-              const type = id.slice(secondLastColonIdx + 1, lastColonIdx);
-              const name = id.slice(lastColonIdx + 1);
+      // Batch resolve: 1 query for hash IDs, 1 query for composite IDs (by filePaths)
+      const entityMap = new Map<string, Entity>();
 
-              const found = await storage.findEntities({
-                filters: { filePath, name, entityType: type as any },
-                limit: 1,
-              });
-              if (found.length > 0) {
-                entity = found[0]!;
-              }
-            }
-          }
+      // Batch 1: hash-based IDs via getEntitiesBatch (single SQL with IN clause)
+      if (hashIds.length > 0) {
+        const batchResult = await storage.getEntitiesBatch(hashIds);
+        for (const [id, entity] of batchResult) {
+          entityMap.set(id, entity);
+        }
+      }
 
+      // Batch 2: composite IDs via single findEntities with all filePaths
+      if (compositeIds.length > 0) {
+        const allFilePaths = [...new Set(compositeIds.map((c) => c.filePath))];
+        const allEntities = await storage.findEntities({
+          filters: { filePath: allFilePaths },
+          limit: allFilePaths.length * 50,
+        });
+
+        // Build lookup by filePath:type:name
+        const lookup = new Map<string, Entity>();
+        for (const entity of allEntities) {
+          lookup.set(`${entity.filePath}:${entity.type}:${entity.name}`, entity);
+        }
+
+        for (const comp of compositeIds) {
+          const entity = lookup.get(`${comp.filePath}:${comp.type}:${comp.name}`);
           if (entity) {
-            entityMap.set(entityIds[i]!, entity);
+            entityMap.set(comp.id, entity);
           }
-        }),
-      );
+        }
+      }
 
       // Enrich entity results
       const enrichedEntities = entityResults.map((r) => {

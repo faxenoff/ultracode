@@ -220,91 +220,72 @@ export class PatternSearch {
 
       const queryEmbedding = await this.embeddingGenerator.generateEmbedding(query.pattern);
 
-      // Search vector store for similar entities
-      // vectorStore.search() already enriches results with entity metadata from LibSQL
-      const similarResults = await this.vectorStore.search(queryEmbedding, query.limit || 10);
+      // Use searchRaw() to skip double enrichment — we resolve entities ourselves
+      const rawResults = await this.vectorStore.searchRaw(queryEmbedding, query.limit || 10);
 
-      const results: PatternSearchResult[] = [];
-
-      // Pre-convert arrays to Sets for O(1) lookups instead of O(n)
+      // Pre-convert scope filters to Sets for O(1) lookups
       const entityTypesSet = query.scope?.entityTypes ? new Set(query.scope.entityTypes) : null;
       const filesSet = query.scope?.files ? new Set(query.scope.files) : null;
 
-      // Batch-resolve entities: group by filePath for efficient DB queries
-      const resultsByFile = new Map<
-        string,
-        Array<{ result: (typeof similarResults)[0]; name: string; type: string }>
-      >();
-      const directMeta: Array<{
-        result: (typeof similarResults)[0];
-        meta: { filePath: string; name: string; type: string; startLine?: number; endLine?: number };
+      // Parse entity metadata from vector IDs (format: "ent:filePath:type:name")
+      const parsed: Array<{
+        similarity: number;
+        filePath: string;
+        type: string;
+        name: string;
       }> = [];
+      const allFilePaths = new Set<string>();
 
-      for (const result of similarResults) {
-        const meta = result.metadata as
-          | { entityId?: string; type?: string; filePath?: string; name?: string; startLine?: number; endLine?: number }
-          | undefined;
+      for (const result of rawResults) {
+        const rawId = result.id.startsWith("ent:") ? result.id.slice(4) : result.id;
+        if (!rawId.includes(":")) continue;
 
-        if (meta?.filePath && meta?.name && meta?.type) {
-          directMeta.push({
-            result,
-            meta: meta as { filePath: string; name: string; type: string; startLine?: number; endLine?: number },
-          });
-          const group = resultsByFile.get(meta.filePath) || [];
-          group.push({ result, name: meta.name, type: meta.type });
-          resultsByFile.set(meta.filePath, group);
-        } else {
-          // No enriched metadata — try parsing from vector ID
-          const rawId = result.id.startsWith("ent:") ? result.id.slice(4) : result.id;
-          if (rawId.includes(":")) {
-            const lastColonIdx = rawId.lastIndexOf(":");
-            const secondLastColonIdx = rawId.lastIndexOf(":", lastColonIdx - 1);
-            if (secondLastColonIdx > 0) {
-              const filePath = rawId.slice(0, secondLastColonIdx);
-              const type = rawId.slice(secondLastColonIdx + 1, lastColonIdx);
-              const name = rawId.slice(lastColonIdx + 1);
-              directMeta.push({ result, meta: { filePath, name, type } });
-              const group = resultsByFile.get(filePath) || [];
-              group.push({ result, name, type });
-              resultsByFile.set(filePath, group);
-            }
-          }
+        const lastColonIdx = rawId.lastIndexOf(":");
+        const secondLastColonIdx = rawId.lastIndexOf(":", lastColonIdx - 1);
+        if (secondLastColonIdx <= 0) continue;
+
+        const filePath = rawId.slice(0, secondLastColonIdx);
+        const type = rawId.slice(secondLastColonIdx + 1, lastColonIdx);
+        const name = rawId.slice(lastColonIdx + 1);
+
+        // Apply scope filters early (before DB query)
+        if (entityTypesSet && !entityTypesSet.has(type as EntityType)) continue;
+        if (filesSet && !filesSet.has(filePath)) continue;
+
+        parsed.push({ similarity: result.similarity, filePath, type, name });
+        allFilePaths.add(filePath);
+      }
+
+      // Single batch SQL: fetch all entities for all matched filePaths at once
+      const entityLookup = new Map<string, Entity>(); // key: "filePath:type:name"
+      if (allFilePaths.size > 0) {
+        const allEntities = await this.graphStorage.findEntities({
+          filters: { filePath: [...allFilePaths] },
+          limit: allFilePaths.size * 50, // generous limit for multi-file batch
+        });
+        for (const entity of allEntities) {
+          entityLookup.set(`${entity.filePath}:${entity.type}:${entity.name}`, entity);
         }
       }
 
-      // Fetch all entities per file in parallel (1 query per unique file, not per result)
-      const entityLookup = new Map<string, Entity>(); // key: "filePath:type:name"
-      await Promise.all(
-        Array.from(resultsByFile.keys()).map(async (filePath) => {
-          const entities = await this.graphStorage.findEntities({
-            filters: { filePath },
-            limit: 500,
-          });
-          for (const entity of entities) {
-            entityLookup.set(`${entity.filePath}:${entity.type}:${entity.name}`, entity);
-          }
-        }),
-      );
-
-      for (const { result, meta } of directMeta) {
-        const entity = entityLookup.get(`${meta.filePath}:${meta.type}:${meta.name}`);
+      // Resolve parsed results against DB entities
+      const results: PatternSearchResult[] = [];
+      for (const { similarity, filePath, type, name } of parsed) {
+        const entity = entityLookup.get(`${filePath}:${type}:${name}`);
         if (!entity) continue;
-
-        // Apply scope filters with O(1) Set lookups
-        if (entityTypesSet && !entityTypesSet.has(entity.type)) continue;
-        if (filesSet && !filesSet.has(entity.filePath)) continue;
 
         results.push({
           entity,
           matchType: "semantic",
-          score: result.similarity,
+          score: similarity,
         });
       }
 
       log.i("PATTERNSEARCH", "semantic_results", {
-        vectorStoreHits: similarResults.length,
-        resolvedEntities: results.length,
-        missed: similarResults.length - results.length,
+        rawHits: rawResults.length,
+        parsed: parsed.length,
+        resolved: results.length,
+        batchFiles: allFilePaths.size,
       });
 
       return results;
