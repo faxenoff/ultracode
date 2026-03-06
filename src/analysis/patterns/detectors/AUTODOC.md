@@ -1,6 +1,6 @@
 # Detectors
 
-Language-specific code quality detector functions identifying architectural and performance issues
+Language-agnostic code smell detectors identifying anti-patterns across TypeScript, C#, Go, Java, and Python.
 
 ## Exports
 

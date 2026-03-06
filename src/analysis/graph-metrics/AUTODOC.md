@@ -1,6 +1,6 @@
 # Graph Metrics
 
-Analyzes code dependency graphs using graph algorithms to identify critical components and knowledge concentration risks.
+Analyzes code dependency graphs using PageRank, Louvain clustering, centrality, and bus factor metrics.
 
 ## Exports
 

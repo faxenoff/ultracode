@@ -1,0 +1,30 @@
+# UltraScript indexing ignore patterns
+# Syntax: gitignore-style
+
+# Parser CLI utilities (they parse themselves causing slow indexing)
+**/lib/java/**
+**/go-ast-cli.go
+**/python-ast-cli.py
+kotlin-k2-cli/**
+
+# Test fixtures (sample files for testing parsers)
+**/test-fixtures/**
+**/tests/fixtures/**
+
+# Build artifacts (FAISS source build, CMake temp files)
+build/faiss-gpu/**
+external-tools/native/cuda/build/**
+
+# Third-party native headers & deps (not our code)
+external-libs/**/include/**
+external-tools/native/cuda/node_modules/**
+
+# Utility scripts (not part of main codebase)
+scripts/cutensor_compat.h
+scripts/convert_tome_model.py
+scripts/convert-model-for-npu.py
+scripts/convert-tokenizer-to-fast.py
+scripts/reshape-model-for-npu.py
+
+# External tool servers (standalone, not our code graph)
+external-tools/mlx-embedding-server/**

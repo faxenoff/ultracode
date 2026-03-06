@@ -1,6 +1,6 @@
 # Taint
 
-Static taint analysis engine detecting security vulnerabilities from sources to sinks.
+Pattern-based taint flow analysis engine for detecting security vulnerabilities
 
 ## Response Handling
 
