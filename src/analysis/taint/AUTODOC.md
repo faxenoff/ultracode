@@ -1,6 +1,6 @@
 # Taint
 
-Analyzes taint flows from untrusted sources to dangerous sinks.
+Static taint analysis engine detecting security vulnerabilities from sources to sinks.
 
 ## Response Handling
 

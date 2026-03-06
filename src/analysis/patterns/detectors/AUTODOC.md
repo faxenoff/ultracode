@@ -1,6 +1,6 @@
 # Detectors
 
-Language-specific pattern detectors for identifying code quality and design antipatterns.
+Language-specific code quality detector functions identifying architectural and performance issues
 
 ## Exports
 

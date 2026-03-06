@@ -282,21 +282,42 @@ All DBs: `journal_mode=OFF`, `synchronous=OFF`, `cache_size=-8192` (8 MB per DB)
 
 ## Indexing Performance
 
-UltraCode project indexing benchmarks.
+UltraCode project indexing benchmarks (self-indexing: 844 files, 27K entities, 69K relationships).
 
-### Current (v6, 841 files, 26.7K entities)
+### Current (v6.1, 844 files, 27.0K entities, IVF,SQ8)
 
 | Metric | Value |
 |--------|-------|
-| **Total indexing time** | 11.4 sec |
-| **Collect files** | 350 ms |
-| **Pre-spawn parsers** | 1136 ms |
-| **Parsing** | 7176 ms (~117 files/sec) |
-| **DB flush (entities+rels)** | 594 ms |
-| **Data files + swagger** | 1234 ms |
-| **Embedding flush (FAISS)** | 875 ms (10,814 emb/s) |
-| **Prolly commit** | ~800 ms |
+| **Total index_done** | **8.1 sec** |
+| **Collect files** | 401 ms (857 files, bun_glob) |
+| **Pre-spawn parsers** | 783 ms (4 pools: TS×10, JS×2, PS×2, Bash×2) |
+| **Parsing (code)** | 5815 ms (695 files, 120 files/sec) |
+| **Streaming coverage** | 94% (642/682 files indexed during parsing) |
+| **Post-batch index** | 167 ms (40 remaining files) |
+| **Data files** | 82 ms (162 files, **parallel with parsing**) |
+| **DB flush (entities+rels)** | 610 ms |
+| **Embedding generation** | ~5s (9494 vectors, 1949/s TEI, overlaps parsing) |
+| **FAISS flush** | 848 ms (9494 vectors, 11199/s) |
+| **FAISS save (IVF,SQ8)** | 5.4 sec (4.0 MB file, background) |
+| **Prolly commit** | ~800 ms (parallel with FAISS flush) |
+| **PMI recalculation** | 3.7 sec (63K pairs, background) |
+| **Watcher ready** | +11.2s (parallel with FAISS save) |
 | **Incremental (1-3 files)** | 48-115 ms |
+
+**Pipeline parallelization:**
+- Data files run in parallel with code parsing (hidden behind 5.8s parse)
+- FAISS save runs in background — watcher/PMI don't wait for it
+- Embedding generation overlaps with parsing via streaming mode
+- FAISS flush + Prolly commit run in parallel (`Promise.all`)
+
+### Previous (v6.0, 841 files)
+
+| Metric | Value |
+|--------|-------|
+| **Total index_done** | 8.8 sec |
+| **Data files** | 726 ms (sequential, after parsing) |
+| **Watcher ready** | +16.5s (blocked by FAISS save) |
+| **FAISS save** | 5.2 sec (blocking) |
 
 ### Previous (v5, 523 TS files)
 
@@ -304,12 +325,77 @@ UltraCode project indexing benchmarks.
 |--------|-------|
 | **Total indexing time** | 3.1 sec |
 | **Parsing speed** | ~169 files/sec |
-| **TS parsing speed** | 130-140 files/sec (8x improvement with centralized embeddings) |
 | **Data files (JSON/YAML)** | 892 files/sec (34x speedup: 6.7s to 195ms) |
-| **DB write speed** | 11,300 entities/sec |
-| **Worker load balance** | 0% deviation |
-| **I/O overlap ratio** | 96-100% |
 | **Streaming coverage** | 91-95% of files |
+
+## MCP Tool Performance
+
+Benchmarked on self-project (27K entities, 69K relationships, 9494 FAISS vectors, IVF,SQ8).
+Timings are server-side `durationms` from `BASETOOL.mcp_response` log. 30 tools total.
+
+### Search Tools
+
+| Tool | Mode | Time | Notes |
+|------|------|------|-------|
+| `find_similar_code` | vector similarity | **66 ms** | Code snippet → FAISS search |
+| `get_members` | file entities (AST) | **79 ms** | Single file, function filter |
+| `cross_language_search` | multi-lang vector | **80 ms** | FAISS search across all languages |
+| `query` | graph NL query | **90 ms** | LibSQL relationship lookup |
+| `get_graph` | entity listing | **152 ms** | With query filter |
+| `pattern_search` | entity (regex) | **174 ms** | SIMD-accelerated regex on entity names |
+| `semantic_search` | FAISS IVF,SQ8 + expansion | **298 ms** | TEI embedding + FAISS search + enrichment |
+| `pattern_search` | semantic (vector) | **1255 ms** | TEI embed + FAISS + entity resolution |
+
+### Analysis Tools
+
+| Tool | Time | Scope | Notes |
+|------|------|-------|-------|
+| `get_metrics` | **50 ms** | system | Memory, uptime, graph stats |
+| `check_entity_patterns` | **85 ms** | single entity | Anti-patterns, optimizations per entity |
+| `suggest_refactoring` | **98 ms** | single file | Extract/simplify/rename suggestions |
+| `find_related_concepts` | **104 ms** | entity graph | Conceptually related code discovery |
+| `detect_technology_stack` | **122 ms** | project | Languages, frameworks, deps |
+| `analyze_hotspots` | **139 ms** | top-5 complexity | Cyclomatic + cognitive metrics |
+| `detect_patterns` | **171 ms** | 5K entities | Anti-patterns scan (228 found, minConf=0.7) |
+| `find_duplicates` | **211 ms** | all files | Semantic clone detection (0.85 threshold) |
+| `analyze_swagger_impact` | **515 ms** | API spec | Swagger/OpenAPI breaking changes (no spec here) |
+| `analyze_code_impact` | **550 ms** | depth=2 | 2089 impacted entities from 44 direct rels |
+
+### Tracing Tools
+
+| Tool | Time | Scope | Notes |
+|------|------|-------|-------|
+| `list_entity_relationships` | **95 ms** | depth=2 | Entity imports/calls/references |
+| `trace_data_flow` | **109 ms** | entry→state | Data flow analysis |
+| `get_entity_history` | **179 ms** | Prolly Tree | Change history across commits |
+| `find_decision_points` | **204 ms** | scenario | Validation, guards, state mutations |
+| `trace_backwards` | **597 ms** | 27K nodes | what_affects: callers, call chains |
+| `analyze_state_impact` | **618 ms** | 2 scenarios | Reachable/blocked paths per scenario |
+| `trace_flow` | **639 ms** | 27K/25K | A→B path search (graph load 553ms) |
+
+### Security & Quality
+
+| Tool | Time | Scope | Notes |
+|------|------|-------|-------|
+| `taint_analysis` | **1110 ms** | all categories | Sources→sinks, 15 sources, 28 sanitizers, 0 vulns |
+| `jscpd_detect_clones` | **1632 ms** | src/semantic/ | Token-based clone detection (minLines=5) |
+| `analyze_state_chaos` | **21127 ms** | project-wide | Race conditions, chaos scoring, 20 state vars |
+
+### Graph Metrics
+
+| Tool | Metric | Time | Scope | Notes |
+|------|--------|------|-------|-------|
+| `graph_metrics` | PageRank | **708 ms** | 27258 nodes | Top-5 by importance |
+| `graph_metrics` | Louvain | **828 ms** | 27328 nodes | 75 communities, modularity=0.891 |
+
+### Performance Tiers
+
+| Tier | Time | Tools |
+|------|------|-------|
+| **Instant** (<100 ms) | 50-98 ms | `get_metrics`, `find_similar_code`, `get_members`, `cross_language_search`, `check_entity_patterns`, `query`, `suggest_refactoring`, `list_entity_relationships` |
+| **Fast** (100-300 ms) | 104-298 ms | `find_related_concepts`, `trace_data_flow`, `detect_technology_stack`, `analyze_hotspots`, `get_graph`, `detect_patterns`, `pattern_search(entity)`, `get_entity_history`, `find_decision_points`, `find_duplicates`, `semantic_search` |
+| **Medium** (300-700 ms) | 515-639 ms | `analyze_swagger_impact`, `analyze_code_impact`, `trace_backwards`, `analyze_state_impact`, `trace_flow` |
+| **Heavy** (700+ ms) | 708-21127 ms | `graph_metrics(pagerank/louvain)`, `taint_analysis`, `pattern_search(semantic)`, `jscpd_detect_clones`, `analyze_state_chaos` |
 
 ## Historical Results
 

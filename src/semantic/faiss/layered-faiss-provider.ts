@@ -769,7 +769,13 @@ export class LayeredFaissProvider {
       const existingMeta = loadBaseMetadata(this.projectPath);
       if (!existingMeta) {
         // First time saving - create base metadata file
-        createInitialBaseMetadata(this.projectPath, this.currentBranch!, this.config.dimensions, this.baseIdSet.size, this.config.indexType);
+        createInitialBaseMetadata(
+          this.projectPath,
+          this.currentBranch!,
+          this.config.dimensions,
+          this.baseIdSet.size,
+          this.config.indexType,
+        );
         this.baseBranch = this.currentBranch;
         log.i("LAYERED_FAISS", "base_meta_created", { branch: this.currentBranch });
       } else {
