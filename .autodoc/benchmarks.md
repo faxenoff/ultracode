@@ -339,10 +339,10 @@ UltraCode project indexing benchmarks (self-indexing).
 
 ## MCP Tool Performance
 
-### Current (v6.3, batch SQL, 25K entities, IVF,SQ8)
+### Current (v6.3, batch SQL, 27K entities, IVF,SQ8)
 
 Server build `501d51a` with batch SQL optimizations. All 30 MCP tools tested.
-Graph: 11086 active entities (25372 total incl. old generations), 68653 rels, 842 files.
+Graph: ~27K entities (~12K real + ~15K external placeholders), ~68K rels, ~830 files.
 `.ultracodeignore` applied: 19859 files excluded, 16 patterns loaded.
 
 Timings: server-side `durationms` where available, `_debug.timeMs` for tracing tools, client round-trip (~50ms overhead) for tools without server timing.
