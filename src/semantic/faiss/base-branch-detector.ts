@@ -261,6 +261,7 @@ export function createInitialBaseMetadata(
   branchName: string,
   dimensions: number,
   vectorCount = 0,
+  indexType: "flat" | "hnsw" | "ivf" | "ivfpq" | "ivfsq" = "ivfsq",
 ): BaseIndexMetadata {
   const metadata: BaseIndexMetadata = {
     baseBranch: branchName,
@@ -268,7 +269,7 @@ export function createInitialBaseMetadata(
     createdAt: Date.now(),
     updatedAt: Date.now(),
     dimensions,
-    indexType: "hnsw",
+    indexType,
   };
 
   // Try to get current commit hash

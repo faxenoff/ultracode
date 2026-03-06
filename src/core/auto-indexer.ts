@@ -446,54 +446,66 @@ export async function performAutoIndex(
       const postIndexEntityCount = resultEntityCount;
       const postIndexStart = startTime;
       void (async () => {
-        // 1. Finalize embeddings (flush FAISS to disk)
-        if (process.env["MCP_DEBUG_DISABLE_SEMANTIC"] !== "1") {
-          try {
-            const semanticAgent = await postIndexCtx.getSemanticAgent();
-            const embResult = await semanticAgent.generateEmbeddingsFromStorage();
-            if (embResult) {
-              log.i("INDEXER", "embed_finalize_bg", { generated: embResult.generated, skipped: embResult.skipped });
+        // OPTIMIZATION: Run FAISS save in parallel with watcher/tracking/PMI.
+        // FAISS save (~5s) is I/O-bound and independent from graph operations.
+        // Watcher + PMI don't need FAISS to be persisted — they work with in-memory data.
+
+        // 1. FAISS save — fire-and-forget, runs in parallel with everything below
+        const faissSavePromise = (async () => {
+          if (process.env["MCP_DEBUG_DISABLE_SEMANTIC"] !== "1") {
+            try {
+              const semanticAgent = await postIndexCtx.getSemanticAgent();
+              const embResult = await semanticAgent.generateEmbeddingsFromStorage();
+              if (embResult) {
+                log.i("INDEXER", "embed_finalize_bg", { generated: embResult.generated, skipped: embResult.skipped });
+              }
+            } catch (error) {
+              log.w("INDEXER", "embed_finalize_fail", { err: (error as Error).message });
             }
-          } catch (error) {
-            log.w("INDEXER", "embed_finalize_fail", { err: (error as Error).message });
           }
-        }
+        })();
 
-        // 2. Update incremental tracking
-        try {
-          const graphStorage = await postIndexCtx.getGraphStorage();
-          if (postIndexIncremental) {
-            const estimatedFiles = Math.max(1, Math.ceil(postIndexEntityCount / 3));
-            await graphStorage.recordIncrementalChanges(estimatedFiles);
-            log.i("INDEXER", "tracking_recorded", { files: estimatedFiles });
-          } else {
-            await graphStorage.resetIncrementalTracking();
-            log.i("INDEXER", "tracking_reset", { reason: "full_rebuild" });
-          }
-        } catch (error) {
-          log.w("INDEXER", "tracking_fail", { err: (error as Error).message });
-        }
+        // 2-3. Tracking + Watcher — run in parallel (independent of each other and FAISS)
+        await Promise.all([
+          // 2. Update incremental tracking
+          (async () => {
+            try {
+              const graphStorage = await postIndexCtx.getGraphStorage();
+              if (postIndexIncremental) {
+                const estimatedFiles = Math.max(1, Math.ceil(postIndexEntityCount / 3));
+                await graphStorage.recordIncrementalChanges(estimatedFiles);
+                log.i("INDEXER", "tracking_recorded", { files: estimatedFiles });
+              } else {
+                await graphStorage.resetIncrementalTracking();
+                log.i("INDEXER", "tracking_reset", { reason: "full_rebuild" });
+              }
+            } catch (error) {
+              log.w("INDEXER", "tracking_fail", { err: (error as Error).message });
+            }
+          })(),
+          // 3. Start FileWatcher/GitWatcher for incremental updates
+          (async () => {
+            try {
+              const cond = postIndexCtx.getConductor();
+              const devAgent = cond.getAgentByType(AgentType.DEV) as
+                | { getIndexerAgent?: () => AgentWithRepositoryPath | null }
+                | undefined;
+              const indexerAgent = devAgent?.getIndexerAgent?.() ?? undefined;
+              if (indexerAgent?.setRepositoryPath) {
+                await indexerAgent.setRepositoryPath(postIndexDir);
+                log.i("INDEXER", "watcher_started", { dir: postIndexDir });
+              } else {
+                log.w("INDEXER", "watcher_skip", {
+                  reason: !devAgent ? "no DevAgent" : !indexerAgent ? "no IndexerAgent" : "no setRepositoryPath",
+                });
+              }
+            } catch (error) {
+              log.w("INDEXER", "watcher_fail", { err: (error as Error).message });
+            }
+          })(),
+        ]);
 
-        // 3. Start FileWatcher/GitWatcher for incremental updates
-        try {
-          const cond = postIndexCtx.getConductor();
-          const devAgent = cond.getAgentByType(AgentType.DEV) as
-            | { getIndexerAgent?: () => AgentWithRepositoryPath | null }
-            | undefined;
-          const indexerAgent = devAgent?.getIndexerAgent?.() ?? undefined;
-          if (indexerAgent?.setRepositoryPath) {
-            await indexerAgent.setRepositoryPath(postIndexDir);
-            log.i("INDEXER", "watcher_started", { dir: postIndexDir });
-          } else {
-            log.w("INDEXER", "watcher_skip", {
-              reason: !devAgent ? "no DevAgent" : !indexerAgent ? "no IndexerAgent" : "no setRepositoryPath",
-            });
-          }
-        } catch (error) {
-          log.w("INDEXER", "watcher_fail", { err: (error as Error).message });
-        }
-
-        // 4. Flush LibSQL storage to disk
+        // 4. Flush LibSQL storage to disk (after tracking is updated)
         try {
           const graphStorage = await postIndexCtx.getGraphStorage();
           await graphStorage.flush();
@@ -503,6 +515,7 @@ export async function performAutoIndex(
         }
 
         // 5. Publish index:completed event (triggers PMI, AutoDoc, etc.)
+        // Don't wait for FAISS save — PMI and AutoDoc work with graph data, not vectors
         knowledgeBus.publish(
           "index:completed",
           {
@@ -514,6 +527,10 @@ export async function performAutoIndex(
           "auto-indexer",
         );
         log.d("INDEXER", "post_index_bg_done", { elapsed: Date.now() - postIndexStart });
+
+        // 6. Await FAISS save completion (don't orphan the promise)
+        await faissSavePromise;
+        log.d("INDEXER", "faiss_save_bg_done", { elapsed: Date.now() - postIndexStart });
       })();
     } else {
       resultSuccess = false;

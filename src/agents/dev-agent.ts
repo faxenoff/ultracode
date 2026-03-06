@@ -1027,6 +1027,16 @@ export class DevAgent extends BaseAgent implements ResourceAdjustmentCapable {
       perfTimings["preSpawn_end"] = Date.now() - perfStart;
     }
 
+    // OPTIMIZATION: Start data files processing in PARALLEL with code parsing.
+    // Data files (JSON, YAML, .env) don't use AST parser — only indexerAgent.indexEntities().
+    // This is independent from streaming code indexing (queueForIndexing path).
+    let dataFilesPromise: Promise<{ entities: number; files: number }> | null = null;
+    if (dataFiles.length > 0 && this.indexerAgent) {
+      perfTimings["dataFiles_start"] = Date.now() - perfStart;
+      dataFilesPromise = this.processDataFilesParallel(dataFiles);
+      log.i("DEVAGENT", "data_files_parallel_start", { count: dataFiles.length });
+    }
+
     // Process CODE files through ParserAgent (AST parsing with worker pools)
     perfTimings["parsing_start"] = Date.now() - perfStart;
     let totalWorkerParseMs = 0; // Time workers spend parsing (wall-clock from main's perspective)
@@ -1485,15 +1495,18 @@ export class DevAgent extends BaseAgent implements ResourceAdjustmentCapable {
     totalRelationships = streamingRelationships;
     filesProcessed += streamingIndexedFiles.size;
 
-    // Process DATA files with heuristic entities (no AST, just file-level indexing)
-    // Use parallel processing for better performance
+    // Await data files that were started in parallel with code parsing
     perfTimings["flush_end"] = Date.now() - perfStart;
-    if (dataFiles.length > 0) {
-      perfTimings["dataFiles_start"] = Date.now() - perfStart;
-      const dataResult = await this.processDataFilesParallel(dataFiles);
+    if (dataFilesPromise) {
+      const dataResult = await dataFilesPromise;
       totalEntities += dataResult.entities;
       filesProcessed += dataResult.files;
       perfTimings["dataFiles_end"] = Date.now() - perfStart;
+      log.i("DEVAGENT", "data_files_parallel_done", {
+        files: dataResult.files,
+        entities: dataResult.entities,
+        hiddenBehindParsing: true,
+      });
     }
 
     // Post-indexing: Resolve Swagger ↔ Code links (only if swagger entities exist)
