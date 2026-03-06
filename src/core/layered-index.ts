@@ -161,14 +161,29 @@ export interface ILayeredIndex {
   /**
    * Check if client has uncommitted changes
    *
-   * Layer 2 — see .autodoc/todo/BACKLOG.md#6
-   * @future Phase 5+
-   *
    * @param clientId - Client ID
    * @param branch - Branch name
    * @returns True if has uncommitted changes
    */
   hasUncommittedChanges(clientId: string, branch: string): Promise<boolean>;
+
+  /**
+   * Promote working delta to branch delta (Layer 2 → Layer 1)
+   *
+   * Merges uncommitted client changes into the shared branch delta,
+   * then clears the working delta.
+   *
+   * @param clientId - Client ID
+   * @param branch - Branch name
+   */
+  promoteWorkingDelta(clientId: string, branch: string): Promise<void>;
+
+  /**
+   * Clear all working deltas for a client (cleanup on disconnect)
+   *
+   * @param clientId - Client ID
+   */
+  clearAllWorkingDeltasForClient(clientId: string): Promise<void>;
 
   // =========================================================================
   // Incremental Updates

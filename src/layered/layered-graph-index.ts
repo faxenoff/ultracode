@@ -73,8 +73,8 @@ export class LayeredGraphIndex implements ILayeredIndex {
   // Layer 1: Branch deltas (per-branch, shared)
   private branchDeltaCache: LRUCache<string, BranchDelta>;
 
-  // Layer 2: Working deltas (per-client, mutable) [FUTURE]
-  private workingDeltas: Map<string, WorkingDelta> = new Map();
+  // Layer 2: Working deltas (per-client, mutable)
+  private workingDeltaCache: LRUCache<string, WorkingDelta>;
 
   // Configuration
   private config: LayeredIndexConfig;
@@ -102,6 +102,14 @@ export class LayeredGraphIndex implements ILayeredIndex {
       dispose: (value, key) => {
         // Auto-save on eviction (if persistence enabled)
         this.onBranchDeltaEvicted(key, value);
+      },
+    });
+
+    // Initialize LRU cache for working deltas (Layer 2)
+    this.workingDeltaCache = new LRUCache<string, WorkingDelta>({
+      max: this.config.maxWorkingDeltas || 10,
+      dispose: (_value, key) => {
+        log.w("LAYEREDIDX", "working_delta_evicted", { key });
       },
     });
 
@@ -371,22 +379,44 @@ export class LayeredGraphIndex implements ILayeredIndex {
 
   async getWorkingDelta(clientId: string, branch: string): Promise<WorkingDelta | null> {
     const key = this.getWorkingDeltaKey(clientId, branch);
-    return this.workingDeltas.get(key) || null;
+    return this.workingDeltaCache.get(key) || null;
   }
 
   async setWorkingDelta(clientId: string, branch: string, delta: WorkingDelta): Promise<void> {
     const key = this.getWorkingDeltaKey(clientId, branch);
-    this.workingDeltas.set(key, delta);
+    this.workingDeltaCache.set(key, delta);
   }
 
   async clearWorkingDelta(clientId: string, branch: string): Promise<void> {
     const key = this.getWorkingDeltaKey(clientId, branch);
-    this.workingDeltas.delete(key);
+    this.workingDeltaCache.delete(key);
   }
 
   async hasUncommittedChanges(clientId: string, branch: string): Promise<boolean> {
     const delta = await this.getWorkingDelta(clientId, branch);
     return delta ? delta.totalChanges > 0 : false;
+  }
+
+  async promoteWorkingDelta(clientId: string, branch: string): Promise<void> {
+    const delta = await this.getWorkingDelta(clientId, branch);
+    if (!delta || delta.totalChanges === 0) return;
+
+    const branchDelta = await this.ensureBranchDelta(branch);
+    // ensureBranchDelta returns IBranchDelta but cache stores BranchDelta class instances
+    (branchDelta as BranchDelta).mergeWith(delta);
+
+    await this.clearWorkingDelta(clientId, branch);
+    log.i("LAYEREDIDX", "working_delta_promoted", { clientId, branch, changes: delta.totalChanges });
+  }
+
+  async clearAllWorkingDeltasForClient(clientId: string): Promise<void> {
+    const prefix = `${clientId}:`;
+    for (const key of [...this.workingDeltaCache.keys()]) {
+      if (key.startsWith(prefix)) {
+        this.workingDeltaCache.delete(key);
+      }
+    }
+    log.i("LAYEREDIDX", "client_working_deltas_cleared", { clientId });
   }
 
   private getWorkingDeltaKey(clientId: string, branch: string): string {
@@ -522,7 +552,7 @@ export class LayeredGraphIndex implements ILayeredIndex {
 
     // Clear caches
     this.branchDeltaCache.clear();
-    this.workingDeltas.clear();
+    this.workingDeltaCache.clear();
 
     log.i("LAYEREDIDX", "[LayeredGraphIndex] Shutdown complete");
   }

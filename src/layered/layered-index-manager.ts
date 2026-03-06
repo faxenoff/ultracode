@@ -375,6 +375,31 @@ export class LayeredIndexManager {
   }
 
   // =========================================================================
+  // LAYER 2: WORKING DELTA API
+  // =========================================================================
+
+  /**
+   * Promote working delta to branch delta (Layer 2 → Layer 1)
+   */
+  async promoteWorkingDelta(clientId: string, branch: string): Promise<void> {
+    return this.layeredIndex.promoteWorkingDelta(clientId, branch);
+  }
+
+  /**
+   * Clear all working deltas for a disconnected client
+   */
+  async clearAllWorkingDeltasForClient(clientId: string): Promise<void> {
+    return this.layeredIndex.clearAllWorkingDeltasForClient(clientId);
+  }
+
+  /**
+   * Check if client has uncommitted changes
+   */
+  async hasUncommittedChanges(clientId: string, branch: string): Promise<boolean> {
+    return this.layeredIndex.hasUncommittedChanges(clientId, branch);
+  }
+
+  // =========================================================================
   // STATUS & STATISTICS
   // =========================================================================
 

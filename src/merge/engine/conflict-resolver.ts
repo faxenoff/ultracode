@@ -9,6 +9,7 @@ import {
   type SemanticConflict,
 } from "../models/semantic-conflict.js";
 import type { AIConflictResolver } from "./ai-conflict-resolver.js";
+import { diff3Merge } from "./diff3.js";
 
 /**
  * Conflict Resolver - Resolves conflicts during merge
@@ -274,28 +275,20 @@ export class ConflictResolver {
    * Returns null if automatic merge is not possible.
    */
   private attemptSimpleMerge(baseContent: string, branchAContent: string, branchBContent: string): string | null {
-    // If base is empty - choose the longer version
+    // Without base, diff3 is impossible
     if (!baseContent) {
-      return branchAContent.length > branchBContent.length ? branchAContent : branchBContent;
-    }
-
-    // Simple heuristic: if changes don't overlap by lines
-    const baseLines = baseContent.split("\n");
-    const branchALines = branchAContent.split("\n");
-    const branchBLines = branchBContent.split("\n");
-
-    // If sizes differ significantly - cannot automatically merge
-    const maxLen = Math.max(baseLines.length, branchALines.length, branchBLines.length);
-    const minLen = Math.min(baseLines.length, branchALines.length, branchBLines.length);
-
-    if (maxLen > minLen * 1.5) {
-      // Too different - manual review
+      if (branchAContent === branchBContent) return branchAContent;
       return null;
     }
 
-    // For simplicity return null (a more advanced diff3 is needed)
-    // See .autodoc/todo/BACKLOG.md#1
-    return null;
+    // Trivial cases: one branch unchanged
+    if (baseContent === branchAContent) return branchBContent;
+    if (baseContent === branchBContent) return branchAContent;
+    if (branchAContent === branchBContent) return branchAContent;
+
+    // Full diff3 merge
+    const result = diff3Merge(baseContent, branchAContent, branchBContent);
+    return result.hasConflicts ? null : result.mergedContent;
   }
 
   /**
