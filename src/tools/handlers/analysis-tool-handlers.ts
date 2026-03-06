@@ -17,6 +17,7 @@ import { log } from "../../logging/index.js";
 import type { GraphStorageLibSQL } from "../../storage/graph-storage-libsql.js";
 import { TimeTravelManager } from "../../storage/prolly/index.js";
 import type { RefactoringSuggestion } from "../../types/semantic.js";
+import type { Entity } from "../../types/storage.js";
 import { toError } from "../../utils/error-handling.js";
 import { projectPathParam } from "../base-schemas.js";
 import { BaseToolHandler, type ToolResult } from "../base-tool-handler.js";
@@ -519,60 +520,95 @@ export class FindRelatedConceptsToolHandler extends BaseToolHandler<z.infer<type
     const paginatedResult = paginate(allRelated, args.offset, safeLimit);
 
     // Enrich with graph metrics from entity metadata in storage
-    // Vector store IDs can be hash-based (ent:HASH) or composite (ent:path:type:name)
-    const enrichedRelated = await Promise.all(
-      paginatedResult.data.map(async (r) => {
-        try {
-          let ent: Awaited<ReturnType<typeof storage.getEntity>> = null;
-          const meta = r.metadata as Record<string, unknown> | undefined;
+    // Batch strategy: collect all hash IDs and composite IDs, resolve in 1-2 queries
+    const hashIds: string[] = [];
+    const compositeNames: Array<{ idx: number; name: string }> = [];
+    const resultIdToIdx = new Map<number, string>(); // idx → resolved entity key
 
-          // Strategy 1: direct hash ID from metadata or r.id
-          const metaEntityId = meta?.["entityId"] as string | undefined;
-          if (metaEntityId && /^[0-9a-f]{12}$/.test(metaEntityId)) {
-            ent = await storage.getEntity(metaEntityId);
-          }
-          if (!ent && typeof r.id === "string" && r.id.startsWith("ent:")) {
-            const idPart = r.id.slice(4);
-            if (/^[0-9a-f]{12}$/.test(idPart)) {
-              ent = await storage.getEntity(idPart);
-            }
-          }
+    for (let i = 0; i < paginatedResult.data.length; i++) {
+      const r = paginatedResult.data[i]!;
+      const meta = r.metadata as Record<string, unknown> | undefined;
+      const metaEntityId = meta?.["entityId"] as string | undefined;
 
-          // Strategy 2: parse composite ID → search by name, prefer entity with graph metrics
-          if (!ent) {
-            const compositeId =
-              metaEntityId ?? (typeof r.id === "string" && r.id.startsWith("ent:") ? r.id.slice(4) : undefined);
-            if (compositeId && compositeId.includes(":")) {
-              const lastColon = compositeId.lastIndexOf(":");
-              const entityName = compositeId.slice(lastColon + 1);
-              if (entityName) {
-                const found = await storage.searchEntities({ namePattern: entityName });
-                // Prefer entity that has graph metrics in metadata
-                ent =
-                  found.find((e) => e.metadata?.["communityId"] != null || e.metadata?.["pageRank"] != null) ??
-                  found[0] ??
-                  null;
-              }
-            }
-          }
-
-          if (!ent) return r;
-          const entMeta = ent.metadata ?? {};
-          const communityId = entMeta["communityId"];
-          const pageRank = entMeta["pageRank"];
-          if (communityId != null || pageRank != null) {
-            return {
-              ...r,
-              ...(communityId != null ? { communityId } : {}),
-              ...(typeof pageRank === "number" ? { pageRank: Math.round(pageRank * 10000) / 10000 } : {}),
-            };
-          }
-        } catch {
-          // Skip entities that can't be fetched
+      // Strategy 1: direct hash ID from metadata or r.id
+      if (metaEntityId && /^[0-9a-f]{12}$/.test(metaEntityId)) {
+        hashIds.push(metaEntityId);
+        resultIdToIdx.set(i, metaEntityId);
+        continue;
+      }
+      if (typeof r.id === "string" && r.id.startsWith("ent:")) {
+        const idPart = r.id.slice(4);
+        if (/^[0-9a-f]{12}$/.test(idPart)) {
+          hashIds.push(idPart);
+          resultIdToIdx.set(i, idPart);
+          continue;
         }
-        return r;
-      }),
-    );
+      }
+
+      // Strategy 2: parse composite ID → extract entity name for batch search
+      const compositeId =
+        metaEntityId ?? (typeof r.id === "string" && r.id.startsWith("ent:") ? r.id.slice(4) : undefined);
+      if (compositeId && compositeId.includes(":")) {
+        const lastColon = compositeId.lastIndexOf(":");
+        const entityName = compositeId.slice(lastColon + 1);
+        if (entityName) {
+          compositeNames.push({ idx: i, name: entityName });
+        }
+      }
+    }
+
+    // Batch 1: resolve all hash IDs in single query
+    const entityMap = hashIds.length > 0 ? await storage.getEntitiesBatch(hashIds) : new Map();
+
+    // Batch 2: resolve composite names — collect unique names, one searchEntities per unique name
+    // (searchEntities doesn't support multi-name batch, but we can deduplicate)
+    const nameToEntity = new Map<string, Entity | null>();
+    const uniqueNames = [...new Set(compositeNames.map((c) => c.name))];
+    if (uniqueNames.length > 0) {
+      // Batch: find all entities whose names match any of our targets
+      // Use findEntities with name regex matching all unique names
+      const namePattern = uniqueNames.map((n) => n.replace(/[.*+?^${}()|[\]\\]/g, "\\$&")).join("|");
+      const found = await storage.searchEntities({ namePattern, limit: uniqueNames.length * 5 });
+      // Group by name, prefer entities with graph metrics
+      for (const e of found) {
+        const existing = nameToEntity.get(e.name);
+        if (!existing || e.metadata?.["communityId"] != null || e.metadata?.["pageRank"] != null) {
+          nameToEntity.set(e.name, e);
+        }
+      }
+    }
+
+    // Build final enriched results
+    const enrichedRelated = paginatedResult.data.map((r, i) => {
+      let ent: Entity | null | undefined = null;
+
+      // Check hash batch
+      const hashKey = resultIdToIdx.get(i);
+      if (hashKey) {
+        ent = entityMap.get(hashKey);
+      }
+
+      // Check composite name batch
+      if (!ent) {
+        const comp = compositeNames.find((c) => c.idx === i);
+        if (comp) {
+          ent = nameToEntity.get(comp.name);
+        }
+      }
+
+      if (!ent) return r;
+      const entMeta = ent.metadata ?? {};
+      const communityId = entMeta["communityId"];
+      const pageRank = entMeta["pageRank"];
+      if (communityId != null || pageRank != null) {
+        return {
+          ...r,
+          ...(communityId != null ? { communityId } : {}),
+          ...(typeof pageRank === "number" ? { pageRank: Math.round(pageRank * 10000) / 10000 } : {}),
+        };
+      }
+      return r;
+    });
 
     return {
       content: [

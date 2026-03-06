@@ -251,11 +251,28 @@ export class ImpactAnalyzer {
 
     const relationships = await this.storage.getRelationshipsForEntity(entityId);
 
+    // Collect all related entity IDs we need to resolve
+    const relatedIds = new Set<string>();
     for (const rel of relationships) {
-      // Check if entity produces API (is a controller/route handler)
-      if (rel.type === RelationType.PRODUCES_API && rel.fromId === entityId) {
+      if (
+        (rel.type === RelationType.PRODUCES_API ||
+          rel.type === RelationType.GENERATED_FROM ||
+          rel.type === RelationType.CONSUMES_API) &&
+        rel.fromId === entityId
+      ) {
+        relatedIds.add(rel.toId);
+      }
+    }
+
+    // Batch resolve all swagger-related entities at once
+    const relatedEntities = relatedIds.size > 0 ? await this.storage.getEntitiesBatch([...relatedIds]) : new Map();
+
+    for (const rel of relationships) {
+      if (rel.fromId !== entityId) continue;
+
+      if (rel.type === RelationType.PRODUCES_API) {
         result.affectsContract = true;
-        const swaggerEntity = await this.storage.getEntity(rel.toId);
+        const swaggerEntity = relatedEntities.get(rel.toId);
         if (swaggerEntity) {
           const endpoint =
             `${swaggerEntity.metadata?.["httpMethod"] || ""} ${swaggerEntity.metadata?.["path"] || ""}`.trim();
@@ -268,17 +285,15 @@ export class ImpactAnalyzer {
         }
       }
 
-      // Check if entity is generated from swagger (generated code)
-      if (rel.type === RelationType.GENERATED_FROM && rel.fromId === entityId) {
+      if (rel.type === RelationType.GENERATED_FROM) {
         result.isGeneratedCode = true;
-        const swaggerEntity = await this.storage.getEntity(rel.toId);
+        const swaggerEntity = relatedEntities.get(rel.toId);
         result.generatedFromSwagger = swaggerEntity?.filePath || null;
       }
 
-      // Check if entity consumes API (is a generated client)
-      if (rel.type === RelationType.CONSUMES_API && rel.fromId === entityId) {
+      if (rel.type === RelationType.CONSUMES_API) {
         result.isGeneratedCode = true;
-        const swaggerEntity = await this.storage.getEntity(rel.toId);
+        const swaggerEntity = relatedEntities.get(rel.toId);
         result.generatedFromSwagger = swaggerEntity?.filePath || null;
       }
     }
@@ -292,53 +307,73 @@ export class ImpactAnalyzer {
 
   private async findDirectCallers(entityId: string, maxDepth: number): Promise<ImpactAnalysisResult["directCallers"]> {
     const callers: ImpactAnalysisResult["directCallers"] = [];
-    const visited = new Set<string>();
+    const visited = new Set<string>([entityId]);
 
-    const findCallers = async (id: string, depth: number) => {
-      if (depth > maxDepth || visited.has(id)) return;
-      visited.add(id);
+    // BFS with batch entity resolution per level
+    let frontier = [entityId];
+    let depth = 0;
 
-      const rels = await this.storage.getRelationshipsForEntity(id, RelationType.CALLS);
+    while (frontier.length > 0 && depth <= maxDepth) {
+      // Get all CALLS relationships for current frontier in parallel
+      const allRels = await Promise.all(
+        frontier.map((id) => this.storage.getRelationshipsForEntity(id, RelationType.CALLS)),
+      );
 
-      for (const rel of rels) {
-        // We want callers, so look for relationships where this entity is the target
-        if (rel.toId === id && !visited.has(rel.fromId)) {
-          const caller = await this.storage.getEntity(rel.fromId);
-          if (caller) {
-            callers.push({
-              name: caller.name,
-              file: caller.filePath,
-              line: caller.location.start.line,
-            });
-
-            // Recursively find callers of callers
-            if (depth < maxDepth) {
-              await findCallers(rel.fromId, depth + 1);
-            }
+      // Collect all caller IDs from this level
+      const callerIds: string[] = [];
+      const callerToTarget = new Map<string, string>(); // for tracking which target each caller calls
+      for (let i = 0; i < frontier.length; i++) {
+        const id = frontier[i]!;
+        for (const rel of allRels[i]!) {
+          if (rel.toId === id && !visited.has(rel.fromId)) {
+            visited.add(rel.fromId);
+            callerIds.push(rel.fromId);
+            callerToTarget.set(rel.fromId, id);
           }
         }
       }
-    };
 
-    await findCallers(entityId, 0);
+      if (callerIds.length === 0) break;
+
+      // Batch resolve all callers at this level
+      const callerEntities = await this.storage.getEntitiesBatch(callerIds);
+      const nextFrontier: string[] = [];
+
+      for (const callerId of callerIds) {
+        const caller = callerEntities.get(callerId);
+        if (caller) {
+          callers.push({
+            name: caller.name,
+            file: caller.filePath,
+            line: caller.location.start.line,
+          });
+          nextFrontier.push(callerId);
+        }
+      }
+
+      frontier = nextFrontier;
+      depth++;
+    }
+
     return callers;
   }
 
   private async findAllReferences(entityId: string): Promise<Array<{ name: string; file: string; line: number }>> {
-    const refs: Array<{ name: string; file: string; line: number }> = [];
-
     const rels = await this.storage.getRelationshipsForEntity(entityId);
 
-    for (const rel of rels) {
-      const otherId = rel.fromId === entityId ? rel.toId : rel.fromId;
-      const other = await this.storage.getEntity(otherId);
-      if (other) {
-        refs.push({
-          name: other.name,
-          file: other.filePath,
-          line: other.location.start.line,
-        });
-      }
+    // Batch: collect all related IDs, resolve in single query
+    const otherIds = rels.map((rel) => (rel.fromId === entityId ? rel.toId : rel.fromId));
+    if (otherIds.length === 0) return [];
+
+    const entityMap = await this.storage.getEntitiesBatch(otherIds);
+
+    const refs: Array<{ name: string; file: string; line: number }> = [];
+    for (const [, entity] of entityMap) {
+      refs.push({
+        name: entity.name,
+        file: entity.filePath,
+        line: entity.location.start.line,
+      });
     }
 
     return refs;

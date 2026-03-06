@@ -596,10 +596,14 @@ export class RenameSymbolToolHandler extends BaseToolHandler<z.infer<typeof Rena
     const filesToUpdate = new Set<string>();
     filesToUpdate.add(entity.filePath);
 
-    for (const ref of references) {
-      const refEntity = await storage.getEntity(ref.fromId === entity.id ? ref.toId : ref.fromId);
-      if (refEntity?.filePath) {
-        filesToUpdate.add(refEntity.filePath);
+    // Batch resolve all referenced entities at once
+    const refIds = references.map((ref) => (ref.fromId === entity.id ? ref.toId : ref.fromId));
+    if (refIds.length > 0) {
+      const refEntities = await storage.getEntitiesBatch(refIds);
+      for (const [, refEntity] of refEntities) {
+        if (refEntity.filePath) {
+          filesToUpdate.add(refEntity.filePath);
+        }
       }
     }
 

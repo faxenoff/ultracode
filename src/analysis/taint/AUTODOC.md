@@ -1,6 +1,6 @@
 # Taint
 
-Pattern-based taint flow analysis engine for detecting security vulnerabilities
+Security vulnerability detection module performing taint flow analysis
 
 ## Response Handling
 

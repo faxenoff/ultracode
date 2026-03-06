@@ -572,107 +572,164 @@ export class SemanticSearchToolHandler extends BaseToolHandler<z.infer<typeof Se
     const seen = new Set<string>(results.map((r) => r.id));
     const neighbors: SemanticSearchResult[] = [];
 
-    // Process each result to find neighbors
-    for (const result of results.slice(0, 20)) {
-      // Limit expansion to top 20 results
-      // Try to find entity ID - vector store uses different IDs than graph storage
-      let entityId = result.metadata?.entityId;
+    // Phase 1: Resolve entity IDs for all results (batch by name+path)
+    const resultEntityIds: Array<string | null> = new Array(Math.min(results.length, 20)).fill(null);
+    const needsLookup: Array<{ idx: number; name: string; path: string }> = [];
 
-      // If no entityId, try to find entity by name and path in graph storage
-      if (!entityId && result.metadata?.name && result.metadata?.path) {
+    for (let i = 0; i < Math.min(results.length, 20); i++) {
+      const result = results[i]!;
+      if (result.metadata?.entityId) {
+        resultEntityIds[i] = result.metadata.entityId;
+      } else if (result.metadata?.name && result.metadata?.path) {
+        needsLookup.push({ idx: i, name: result.metadata.name, path: result.metadata.path });
+      }
+    }
+
+    // Batch resolve name+path lookups: single findEntities with all filePaths
+    if (needsLookup.length > 0) {
+      try {
+        const allPaths = [...new Set(needsLookup.map((l) => l.path))];
+        const found = await storage.findEntities({
+          filters: { filePath: allPaths },
+          limit: allPaths.length * 50,
+        });
+        const lookup = new Map<string, string>(); // "name:path" → entityId
+        for (const e of found) {
+          lookup.set(`${e.name}:${e.filePath}`, e.id);
+        }
+        for (const { idx, name, path } of needsLookup) {
+          resultEntityIds[idx] = lookup.get(`${name}:${path}`) ?? null;
+        }
+      } catch {
+        // Ignore batch lookup failure
+      }
+    }
+
+    // Phase 2: Get all relationships in parallel for resolved entities
+    const validEntityIds = resultEntityIds.filter((id): id is string => id != null);
+    const allRelsByEntity = new Map<string, Awaited<ReturnType<typeof storage.getRelationshipsForEntity>>>();
+
+    await Promise.all(
+      validEntityIds.map(async (entityId) => {
         try {
-          const found = await storage.findEntities({
-            filters: {
-              name: result.metadata.name,
-              filePath: result.metadata.path,
-            },
-            limit: 1,
-          });
-          if (found.length > 0) {
-            entityId = found[0]?.id;
-          }
+          const rels = await storage.getRelationshipsForEntity(entityId);
+          allRelsByEntity.set(entityId, rels);
         } catch {
-          // Ignore lookup failures
+          // Skip
+        }
+      }),
+    );
+
+    // Phase 3: Collect all 1-hop neighbor IDs, batch resolve entities
+    const hop1Candidates: Array<{
+      relatedId: string;
+      similarity: number;
+      relType: string;
+    }> = [];
+
+    for (let i = 0; i < Math.min(results.length, 20); i++) {
+      const entityId = resultEntityIds[i];
+      if (!entityId) continue;
+      const rels = allRelsByEntity.get(entityId);
+      if (!rels) continue;
+
+      for (const rel of rels) {
+        const relatedId = rel.fromId === entityId ? rel.toId : rel.fromId;
+        if (seen.has(relatedId) || seen.has(`ent:${relatedId}`)) continue;
+        seen.add(relatedId);
+
+        const neighborSimilarity = results[i]!.similarity * 0.7;
+        if (neighborSimilarity < minSimilarity) continue;
+
+        hop1Candidates.push({ relatedId, similarity: neighborSimilarity, relType: rel.type });
+      }
+    }
+
+    // Batch resolve all 1-hop entities
+    if (hop1Candidates.length > 0) {
+      const hop1Entities = await storage.getEntitiesBatch(hop1Candidates.map((c) => c.relatedId));
+
+      for (const { relatedId, similarity, relType } of hop1Candidates) {
+        const entity = hop1Entities.get(relatedId);
+        if (!entity) continue;
+
+        neighbors.push({
+          id: `ent:${relatedId}`,
+          name: entity.name,
+          type: entity.type,
+          similarity,
+          filePath: entity.filePath,
+          content: entity.metadata?.["content"] as string | undefined,
+          isExpanded: true,
+          relationshipType: relType,
+          metadata: { entityId: relatedId },
+        });
+      }
+    }
+
+    // Phase 4: 2-hop expansion if requested
+    if (depth >= 2 && neighbors.length < 50) {
+      const hop2Sources = neighbors.slice(-10);
+      const hop2SourceIds = hop2Sources.map((n) => n.id?.replace(/^ent:/, "")).filter((id): id is string => !!id);
+
+      // Get all 2-hop relationships in parallel
+      const hop2RelsByEntity = new Map<string, Awaited<ReturnType<typeof storage.getRelationshipsForEntity>>>();
+      await Promise.all(
+        hop2SourceIds.map(async (id) => {
+          try {
+            const rels = await storage.getRelationshipsForEntity(id);
+            hop2RelsByEntity.set(id, rels);
+          } catch {
+            // Skip
+          }
+        }),
+      );
+
+      // Collect 2-hop candidate IDs
+      const hop2Candidates: Array<{
+        hop2Id: string;
+        similarity: number;
+        relType: string;
+      }> = [];
+
+      for (const neighbor of hop2Sources) {
+        const neighborEntityId = neighbor.id?.replace(/^ent:/, "");
+        if (!neighborEntityId) continue;
+        const rels = hop2RelsByEntity.get(neighborEntityId);
+        if (!rels) continue;
+
+        for (const rel of rels.slice(0, 5)) {
+          const hop2Id = rel.fromId === neighborEntityId ? rel.toId : rel.fromId;
+          if (seen.has(hop2Id) || seen.has(`ent:${hop2Id}`)) continue;
+          seen.add(hop2Id);
+
+          const hop2Similarity = neighbor.similarity * 0.7;
+          if (hop2Similarity < minSimilarity) continue;
+
+          hop2Candidates.push({ hop2Id, similarity: hop2Similarity, relType: `${rel.type} (2-hop)` });
         }
       }
 
-      if (!entityId) continue;
+      // Batch resolve all 2-hop entities
+      if (hop2Candidates.length > 0) {
+        const hop2Entities = await storage.getEntitiesBatch(hop2Candidates.map((c) => c.hop2Id));
 
-      try {
-        // Get relationships for this entity
-        const relationships = await storage.getRelationshipsForEntity(entityId);
-
-        for (const rel of relationships) {
-          // Get the related entity ID (could be fromId or toId)
-          const relatedId = rel.fromId === entityId ? rel.toId : rel.fromId;
-
-          if (seen.has(relatedId) || seen.has(`ent:${relatedId}`)) continue;
-          seen.add(relatedId);
-
-          // Fetch the related entity
-          const relatedEntity = await storage.getEntity(relatedId);
-          if (!relatedEntity) continue;
-
-          // Calculate reduced similarity score for neighbors
-          const neighborSimilarity = result.similarity * 0.7; // 30% reduction for 1-hop
-          if (neighborSimilarity < minSimilarity) continue;
+        for (const { hop2Id, similarity, relType } of hop2Candidates) {
+          const entity = hop2Entities.get(hop2Id);
+          if (!entity) continue;
 
           neighbors.push({
-            id: `ent:${relatedId}`,
-            name: relatedEntity.name,
-            type: relatedEntity.type,
-            similarity: neighborSimilarity,
-            filePath: relatedEntity.filePath,
-            content: relatedEntity.metadata?.["content"] as string | undefined,
+            id: `ent:${hop2Id}`,
+            name: entity.name,
+            type: entity.type,
+            similarity,
+            filePath: entity.filePath,
+            content: entity.metadata?.["content"] as string | undefined,
             isExpanded: true,
-            relationshipType: rel.type,
-            metadata: { entityId: relatedId },
+            relationshipType: relType,
+            metadata: { entityId: hop2Id },
           });
         }
-
-        // 2-hop expansion if requested
-        if (depth >= 2 && neighbors.length < 50) {
-          for (const neighbor of neighbors.slice(-10)) {
-            // Last 10 neighbors for 2-hop
-            const neighborEntityId = neighbor.id?.replace(/^ent:/, "");
-            if (!neighborEntityId) continue;
-
-            try {
-              const hop2Rels = await storage.getRelationshipsForEntity(neighborEntityId);
-
-              for (const rel of hop2Rels.slice(0, 5)) {
-                // Limit 2-hop to 5 per neighbor
-                const hop2Id = rel.fromId === neighborEntityId ? rel.toId : rel.fromId;
-
-                if (seen.has(hop2Id) || seen.has(`ent:${hop2Id}`)) continue;
-                seen.add(hop2Id);
-
-                const hop2Entity = await storage.getEntity(hop2Id);
-                if (!hop2Entity) continue;
-
-                // Further reduced similarity for 2-hop
-                const hop2Similarity = neighbor.similarity * 0.7;
-                if (hop2Similarity < minSimilarity) continue;
-
-                neighbors.push({
-                  id: `ent:${hop2Id}`,
-                  name: hop2Entity.name,
-                  type: hop2Entity.type,
-                  similarity: hop2Similarity,
-                  filePath: hop2Entity.filePath,
-                  content: hop2Entity.metadata?.["content"] as string | undefined,
-                  isExpanded: true,
-                  relationshipType: `${rel.type} (2-hop)`,
-                  metadata: { entityId: hop2Id },
-                });
-              }
-            } catch {
-              // Skip failed 2-hop lookups
-            }
-          }
-        }
-      } catch {
-        // Skip failed relationship lookups
       }
     }
 
