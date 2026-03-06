@@ -26,7 +26,6 @@
         "graphology-metrics": "^2.4.0",
         "graphology-operators": "^1.6.1",
         "graphology-shortest-path": "^2.1.0",
-        "graphology-traversal": "^0.3.1",
         "graphology-types": "^0.24.8",
         "java-parser": "^3.0.1",
         "lru-cache": "^11.2.6",
@@ -34,7 +33,6 @@
         "oxc-parser": "^0.116.0",
         "oxlint": "^1.51.0",
         "p-limit": "^7.3.0",
-        "p-map": "^7.0.4",
         "protobufjs": "^8.0.0",
         "tslib": "^2.8.1",
         "xxhash-wasm": "^1.1.0",
@@ -594,8 +592,6 @@
     "graphology-operators": ["graphology-operators@1.6.1", "", { "dependencies": { "graphology-utils": "^2.0.0" }, "peerDependencies": { "graphology-types": ">=0.20.0" } }, "sha512-ZKGcaN+6L5hv0VelrDgkZ2IQL1c7nrqkTRiHDwBCjmbkS56vWh/iQNDnvd/c9YIpoygtEK0mgGOr/m4i7BOYrw=="],
 
     "graphology-shortest-path": ["graphology-shortest-path@2.1.0", "", { "dependencies": { "@yomguithereal/helpers": "^1.1.1", "graphology-indices": "^0.17.0", "graphology-utils": "^2.4.3", "mnemonist": "^0.39.0" }, "peerDependencies": { "graphology-types": ">=0.20.0" } }, "sha512-KbT9CTkP/u72vGEJzyRr24xFC7usI9Es3LMmCPHGwQ1KTsoZjxwA9lMKxfU0syvT/w+7fZUdB/Hu2wWYcJBm6Q=="],
-
-    "graphology-traversal": ["graphology-traversal@0.3.1", "", { "dependencies": { "graphology-indices": "^0.17.0", "graphology-utils": "^2.0.0" }, "peerDependencies": { "graphology-types": ">=0.20.0" } }, "sha512-lGLrLKEDKtNgAKgHVhVftKf3cb/nuWwuVPQZHXRnN90JWn0RSjco/s+NB2ARSlMapEMlbnPgv6j++427yTnU3Q=="],
 
     "graphology-types": ["graphology-types@0.24.8", "", {}, "sha512-hDRKYXa8TsoZHjgEaysSRyPdT6uB78Ci8WnjgbStlQysz7xR52PInxNsmnB7IBOM1BhikxkNyCVEFgmPKnpx3Q=="],
 
