@@ -14,7 +14,7 @@
         "@biomejs/cli-win32-x64": "^2.4.6",
         "@grpc/grpc-js": "^1.14.3",
         "@grpc/proto-loader": "^0.8.0",
-        "@huggingface/inference": "^4.13.14",
+        "@huggingface/inference": "^4.13.15",
         "@lenml/tokenizers": "^3.7.2",
         "@libsql/client": "^0.17.0",
         "@modelcontextprotocol/sdk": "^1.27.1",
@@ -177,11 +177,11 @@
 
     "@hono/node-server": ["@hono/node-server@1.19.9", "", { "peerDependencies": { "hono": "^4" } }, "sha512-vHL6w3ecZsky+8P5MD+eFfaGTyCeOHUIFYMGpQGbrBTSmNNoxv0if69rEZ5giu36weC5saFuznL411gRX7bJDw=="],
 
-    "@huggingface/inference": ["@huggingface/inference@4.13.14", "", { "dependencies": { "@huggingface/jinja": "^0.5.5", "@huggingface/tasks": "^0.19.88" } }, "sha512-1HgrmRig7zixBEfR50KBnKddko36q7kU9WxAIksMHgm4BV7HQ0y8sqfixgMUXvVrPmaaX8HaBrZ0Wsi2ulWeog=="],
+    "@huggingface/inference": ["@huggingface/inference@4.13.15", "", { "dependencies": { "@huggingface/jinja": "^0.5.5", "@huggingface/tasks": "^0.19.90" } }, "sha512-V7B13KFDVhYkQqgx8vpMcmtEG+PoePlh65IUvpphTTItHAq6zRLcsS4torh1QavUaT+6nEwho4wFXzBQNGBwKQ=="],
 
     "@huggingface/jinja": ["@huggingface/jinja@0.5.5", "", {}, "sha512-xRlzazC+QZwr6z4ixEqYHo9fgwhTZ3xNSdljlKfUFGZSdlvt166DljRELFUfFytlYOYvo3vTisA/AFOuOAzFQQ=="],
 
-    "@huggingface/tasks": ["@huggingface/tasks@0.19.88", "", {}, "sha512-9dMxcn9Bc7xAYtG3ZHxTrD1J9KskxR7oI3vQq+8PIm9z1NizoIIM5oOTbpxp845Lk8IXccQW2FuXyAKwgKPa7A=="],
+    "@huggingface/tasks": ["@huggingface/tasks@0.19.90", "", {}, "sha512-nfV9luJbvwGQ/5oKXkKhCV9h4X7mwh1YaGG3ORd6UMLDSwr1OFSSatcBX0O9OtBtmNK19aGSjbLFqqgcIR6+IA=="],
 
     "@isaacs/balanced-match": ["@isaacs/balanced-match@4.0.1", "", {}, "sha512-yzMTt9lEb8Gv7zRioUilSglI0c0smZ9k5D65677DLWLtWJaXIS3CqcGyUFByYKlnUj6TkjLVs54fBl6+TiGQDQ=="],
 

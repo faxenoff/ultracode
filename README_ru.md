@@ -44,7 +44,7 @@ MCP-сервер для ИИ-агентов, работающих с кодом.
 
 # Возможности
 
-MCP-сервер предоставляет **72 инструмента** для анализа и модификации кода.
+MCP-сервер предоставляет **77 инструментов** для анализа и модификации кода.
 
 ## Поиск и навигация
 
@@ -182,6 +182,8 @@ MCP-сервер предоставляет **72 инструмента** для
 | [**get_bus_stats**](.autodoc/features/metrics_ru.md#get_bus_stats) | Статистика шины знаний |
 | [**clear_bus_topic**](.autodoc/features/metrics_ru.md#clear_bus_topic) | Очистка кешированных записей топика |
 | [**get_watcher_status**](.autodoc/features/metrics_ru.md#get_watcher_status) | Статус фоновых наблюдателей |
+| [**get_help**](.autodoc/features/metrics_ru.md#get_help) | Документация и руководства (quick-start, workflows, tracing и др.) |
+| [**get_tools_for_task**](.autodoc/features/metrics_ru.md#get_tools_for_task) | Рекомендации инструментов для задачи |
 
 ---
 
@@ -291,18 +293,16 @@ bun pm -g trust ultracode
 npm install -g ultracode
 ```
 
-> **Почему два шага для Bun?** 
-> Для достижения ultra-скорости UltraCode использует нативные компоненты:
+> **Почему два шага для Bun?**
+> Некоторые зависимости используют postinstall-скрипты для сборки нативных аддонов:
 >
-> - **faiss-napi** — HNSW/IVF индексы для векторного поиска (100x ускорение)
-> - **cbor-extract** — быстрая нативная сериализация метаданных
-> - **webgpu** — Dawn GPU backend для AMD/Intel
+> - **cbor-extract** — быстрая нативная сериализация метаданных (через cbor-x)
 > - **protobufjs** — бинарный протокол для IPC
-> - **xxhash-wasm** — SIMD-ускоренное хеширование файлов
-> - **libSQL** — нативные SQLite bindings с векторным расширением
-> - **oxc-parser** — Rust-парсер для TS/JS (в 10x быстрее tsc)
+> - **webgpu** — Dawn GPU backend для AMD/Intel
 >
 > Bun блокирует postinstall скрипты по умолчанию. Команда `bun pm trust` разрешает их выполнение — повторная установка не нужна.
+>
+> Остальные нативные компоненты (oxc-parser, xxhash-wasm, @libsql/client) поставляются с готовыми бинарниками и работают без trust.
 
 > **Примечание**: Для полноценного анализа кода на разных языках требуются runtime:
 > 
@@ -420,19 +420,28 @@ bunx ultracode setup
 ```
 UltraCode/
 ├── config/
-│   ├── semantic-config.json    # Embedding/LLM провайдеры (setup wizard)
-│   └── parser-config.json      # Пути к runtime (Java, Kotlin)
+│   ├── semantic-config.json      # Embedding/LLM провайдеры (setup wizard)
+│   └── parser-config.json        # Пути к runtime (Java, Kotlin)
+├── config.yaml                   # Расширенная конфигурация
+├── graph.db                      # Сущности, связи (составные ключи)
+├── semantic.db                   # Метаданные эмбеддингов
+├── versioning.db                 # История веток, снапшоты
+├── cache.db                      # Кеш парсера и запросов
+├── autodoc.db                    # База AutoDoc документации
 ├── projects/
-│   └── {hash}/                 # Данные проекта (hash от пути)
-│       ├── faiss-*.bin         # FAISS индекс для векторного поиска
-│       └── *.json              # Метаданные индекса
-├── logs/                       # Логи сервера (ротация по дням)
-├── models/                     # Скачанные embedding модели
-├── llamacpp/                   # llama.cpp бинарники и модели
-├── ovms/                       # OpenVINO Model Server модели
-├── hf-cache/                   # Кеш HuggingFace моделей
-├── autodoc.db                  # База AutoDoc документации
-└── unified-storage.db          # Единое хранилище графов и сущностей
+│   └── {hash}/                   # Данные проекта (xxHash от пути)
+│       ├── faiss-{branch}.bin    # FAISS векторный индекс по веткам
+│       ├── faiss-{branch}.idmap.json  # FAISS ID → entity ID маппинг
+│       ├── faiss-{branch}-hot.bin     # Hot buffer (дельта до merge)
+│       └── layered/
+│           ├── deltas.db         # Персистенция branch delta (Layer 1)
+│           └── vector-deltas.db  # Персистенция vector delta
+├── logs/                         # Логи сервера (ротация по дням)
+├── models/                       # Скачанные embedding модели
+├── hf-cache/                     # GGUF модели для llama.cpp / TEI / vLLM
+└── cache/
+    ├── tree-sitter/              # Кеш грамматик Tree-sitter
+    └── ast/                      # Кеш AST-парсинга
 ```
 
 ## Параметры конфигурации

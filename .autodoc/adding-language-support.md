@@ -1,6 +1,6 @@
 # Adding New Language Support
 
-This guide describes every step required to add support for a new programming language (parser) to UltraCode. The system has **15+ files** with language-specific registrations, all of which must be updated.
+This guide describes every step required to add support for a new programming language (parser) to UltraCode. The system has **10+ files** with language-specific registrations, all of which must be updated.
 
 > **Example language used throughout**: `elixir` (files: `.ex`, `.exs`; project indicator: `mix.exs`).
 
@@ -61,7 +61,7 @@ The parser can be invoked in two contexts:
 
 ## Step 1: Register the Language Type
 
-### File: `src/types/parser.ts` (line ~44)
+### File: `src/types/parser.ts` (line ~28)
 
 Add the language identifier to `SUPPORTED_LANGUAGES`:
 
@@ -69,8 +69,9 @@ Add the language identifier to `SUPPORTED_LANGUAGES`:
 export const SUPPORTED_LANGUAGES = [
   "javascript",
   "typescript",
-  // ... existing languages ...
+  // ... existing 22 languages ...
   "zig",
+  "helm",
   "elixir",  // ← ADD HERE
 ] as const;
 ```
@@ -85,9 +86,9 @@ export type SupportedLanguage = (typeof SUPPORTED_LANGUAGES)[number];
 
 ## Step 2: Add File Extension Mappings
 
-There are **4 files** that map file extensions to language identifiers. All must be updated.
+There are **5 files** that map file extensions to language identifiers. All must be updated.
 
-> **Note**: `src/agents/parser-agent.ts` previously had its own duplicated `detectLanguage()` function, but it now imports from `src/agents/workers/language-detection.ts` (single source of truth). No changes needed in parser-agent.ts.
+> **Note**: `src/agents/parser-agent.ts` imports `detectLanguage` from `src/agents/workers/language-detection.ts` (single source of truth). No changes needed in parser-agent.ts.
 
 ### 2.1 `src/parsers/language-configs/shared/keywords.ts` (line ~12)
 
@@ -101,7 +102,7 @@ export const FILE_EXTENSIONS: Record<string, SupportedLanguage> = {
 
 > Note: Extensions here are **without the dot**.
 
-### 2.2 `src/agents/workers/language-detection.ts` (line ~12)
+### 2.2 `src/agents/workers/language-detection.ts` (line ~12, ~65)
 
 ```typescript
 export const LANGUAGE_MAP: Record<string, string> = {
@@ -111,7 +112,7 @@ export const LANGUAGE_MAP: Record<string, string> = {
 };
 ```
 
-Also add `"elixir"` to the `SUPPORTED_LANGUAGES` array in the same file (line ~58).
+Also add `"elixir"` to the `SUPPORTED_LANGUAGES` array in the same file (line ~65).
 
 > Note: Extensions here are **with the dot**.
 
@@ -164,6 +165,7 @@ Place your config in the appropriate subfolder under `src/parsers/language-confi
 | `javascript-family/` | JavaScript, JSX, TypeScript, TSX |
 | `scripting-languages/` | Bash, Batch, PowerShell, Python |
 | `markup-languages/` | CSS, HTML, JSON, XML |
+| `infrastructure/` | Helm |
 
 For Elixir → `scripting-languages/elixir.ts`.
 
@@ -216,7 +218,7 @@ export const ELIXIR_CONFIG: LanguageConfig = {
 
 ### 3.3 Add keywords
 
-In `src/parsers/language-configs/shared/keywords.ts` (line ~105), add an entry to `LANGUAGE_KEYWORDS`:
+In `src/parsers/language-configs/shared/keywords.ts` (line ~108), add an entry to `LANGUAGE_KEYWORDS`:
 
 ```typescript
 export const LANGUAGE_KEYWORDS: Record<SupportedLanguage, { ... }> = {
@@ -491,7 +493,7 @@ this.elixirParser?.clearCache();
 
 File: `src/agents/workers/analyzer-loader.ts`
 
-### 6.1 Add case to `createAnalyzer()` (line ~62)
+### 6.1 Add case to `createAnalyzer()` (line ~59)
 
 ```typescript
 case "elixir": {
@@ -505,7 +507,7 @@ case "elixir": {
 }
 ```
 
-### 6.2 Add to `SUPPORTED_WORKER_LANGUAGES` (line ~270)
+### 6.2 Add to `SUPPORTED_WORKER_LANGUAGES` (line ~282)
 
 ```typescript
 export const SUPPORTED_WORKER_LANGUAGES = [
@@ -593,7 +595,7 @@ Use this checklist when adding a new language. Replace `<lang>` with your langua
 ### Type Registration
 - [ ] Add `"<lang>"` to `SUPPORTED_LANGUAGES` in `src/types/parser.ts`
 
-### Extension Mappings (4 files)
+### Extension Mappings (5 files)
 - [ ] `src/parsers/language-configs/shared/keywords.ts` → `FILE_EXTENSIONS` (without dot)
 - [ ] `src/agents/workers/language-detection.ts` → `LANGUAGE_MAP` (with dot) + `SUPPORTED_LANGUAGES`
 - [ ] `src/agents/dev/file-extensions.ts` → `SUPPORTED_CODE_EXTENSIONS`
@@ -638,7 +640,7 @@ Use this checklist when adding a new language. Replace `<lang>` with your langua
 - [ ] Integration test with sample files
 - [ ] Verify indexing works end-to-end
 
-**Total: ~19 registration points across 10+ files.**
+**Total: ~20 registration points across 10+ files.**
 
 ---
 
@@ -649,7 +651,7 @@ Use this checklist when adding a new language. Replace `<lang>` with your langua
 Create `tests/parsers/elixir-native-parser.test.ts`:
 
 ```typescript
-import { describe, it, expect } from "vitest";
+import { describe, it, expect, beforeAll } from "bun:test";
 import { ElixirNativeParser } from "../../src/parsers/elixir-native-parser.js";
 
 describe("ElixirNativeParser", () => {

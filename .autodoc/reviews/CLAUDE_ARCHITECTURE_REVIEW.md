@@ -2,9 +2,9 @@
 
 ## Резюме
 
-UltraCode — MCP-сервер для RAG-поиска по кодовой базе с семантическим пониманием кода. Проект реализует **72 MCP-инструмента** для анализа, поиска, модификации и документирования кода на **12 языках программирования**. Архитектура построена на мульти-агентной системе с pub/sub коммуникацией, слоёной индексацией по git-веткам и векторным поиском через embedding-модели.
+UltraCode — MCP-сервер для RAG-поиска по кодовой базе с семантическим пониманием кода. Проект реализует **77 MCP-инструментов** для анализа, поиска, модификации и документирования кода на **22 языках** (12 языков программирования + markup/config/infrastructure). Архитектура построена на мульти-агентной системе с pub/sub коммуникацией, слоёной индексацией по git-веткам и векторным поиском через embedding-модели.
 
-**Масштаб**: ~274K строк TypeScript в 613 файлах, 44 теста, 50 коммитов.
+**Масштаб**: ~274K строк TypeScript в 613 файлах, 68 тестов, 50+ коммитов.
 
 ---
 
@@ -30,6 +30,7 @@ UltraCode — MCP-сервер для RAG-поиска по кодовой ба�
 ### 1.2. Хранилище данных (8/10)
 
 - **LibSQL (SQLite)** как основное хранилище — отличный выбор для локального MCP-сервера: нет внешних зависимостей, портативность, хорошая производительность
+- **4-базовая split-архитектура** (с v6+): `graph.db` (entities, relationships), `semantic.db` (embeddings, vectors), `versioning.db` (prolly tree, snapshots), `cache.db` (LRU, промежуточные результаты) — изоляция нагрузки, независимые WAL, параллельные записи
 - **Layered storage** для git-веток — элегантное решение с дельтами вместо полного копирования:
   - Tombstone-маркеры удалений
   - CTE-запросы для агрегации по слоям
@@ -38,11 +39,21 @@ UltraCode — MCP-сервер для RAG-поиска по кодовой ба�
 - **Prolly Tree** для версионирования графа — продвинутое решение с O(log n) diff, structural sharing между версиями, content-addressed storage через xxHash64
 - **Адаптивный выбор vector backend**: <10K файлов in-memory, 10K-50K sqlite-vec, >50K vectorlite
 
-**Замечание:** Три слоя хранения (main storage, layered deltas, prolly tree) создают существенную сложность. Это оправдано функционалом, но увеличивает порог входа для контрибьюторов.
+**Merge engine (diff3):**
+- Полноценный 3-way merge алгоритм в `src/merge/engine/diff3.ts` (~350 LOC)
+- Основан на LCS (Longest Common Subsequence) с DP O(n*m)
+- Вычисляет hunks base→A и base→B, объединяет по оси base-строк
+- Классификация регионов: Unchanged / BranchAOnly / BranchBOnly / Conflict
+- Git-style conflict markers с поддержкой `||||||| base` секции
+- Интегрирован в `conflict-resolver.ts` (attemptSimpleMerge) и `ai-conflict-resolver.ts` (attemptIntelligentMerge)
+
+**Замечание:** Четыре слоя хранения (4 SQLite БД, layered deltas, prolly tree, FAISS indexes) создают существенную сложность. Это оправдано функционалом, но увеличивает порог входа для контрибьюторов.
 
 ### 1.3. Парсинг (9/10)
 
-Поддержка **12 языков** через нативные парсеры — серьёзное достижение:
+Поддержка **22 языков** через нативные парсеры и regex-экстракторы — серьёзное достижение:
+
+**Языки программирования (12):**
 
 | Язык | Парсер | Оценка |
 |------|--------|--------|
@@ -58,6 +69,21 @@ UltraCode — MCP-сервер для RAG-поиска по кодовой ба�
 | Bash | tree-sitter + bash-analyzer (384+420 строк) | Хорошо — entities, relationships, control flow через shfmt AST analyzer |
 | Zig | Нативный (1154 строк) | Полный — entities (structs/enums/unions/errorsets/comptime), relationships, control flow, complexity |
 | PowerShell | Нативный | Базовый |
+
+**Markup, Config и Infrastructure (10):**
+
+| Язык | Парсер | Оценка |
+|------|--------|--------|
+| CSS/SCSS/LESS | regex-экстрактор | Хорошо — selectors, variables, mixins, keyframes |
+| HTML | regex-экстрактор | Хорошо — tags, attributes, scripts |
+| XML | regex-экстрактор | Хорошо — elements, attributes, namespaces |
+| JSON/JSONC | JSON.parse + regex | Хорошо — keys, nested structures |
+| YAML | regex-экстрактор | Хорошо — keys, anchors, references |
+| TOML | regex-экстрактор | Базовый — tables, keys |
+| Markdown | regex-экстрактор | Базовый — headings, links, code blocks |
+| Dockerfile | regex-экстрактор | Базовый — stages, instructions |
+| Helm | regex-экстрактор | Базовый — templates, values |
+| Batch (.bat/.cmd) | regex-экстрактор | Базовый — labels, variables, calls |
 
 **Особенно впечатляет:**
 - Roslyn-аддон как отдельный daemon с Named Pipe IPC и фазовой инициализацией (syntax → semantic → validation)
@@ -120,7 +146,14 @@ UltraCode — MCP-сервер для RAG-поиска по кодовой ба�
 
 **Безопасность**: автоматический skip WebGPU на Blackwell (RTX 50xx, CC 12.0+) — Dawn crashes; override через `WEBGPU_FORCE_ENABLE=1`
 
-**Ключевые файлы:** `src/gpu/backend-selector.ts`, `src/gpu/backends/`, `src/gpu/detection/gpu-detector.ts`, `external-tools/native/cuda/src/vector_ops.cu`
+**Native FAISS addon** (`ultracode_cuda.node`):
+- Полностью заменил faiss-napi — IVF,SQ8 индексы через собственный C++ N-API addon
+- Поддерживает все типы индексов: Flat, HNSW, IVF, SQ, PQ через `faissIndexCreate(projectKey, dims, factoryString)`
+- Мульти-индексный пул: GPU worker держит несколько FAISS-индексов в памяти (per `projectKey = hash:branch`)
+- Автоматическая тренировка IVF буферов на лету
+- Все FAISS exceptions перехватываются → JS errors (не process abort)
+
+**Ключевые файлы:** `src/gpu/backend-selector.ts`, `src/gpu/backends/`, `src/gpu/detection/gpu-detector.ts`, `external-tools/native/cuda/src/vector_ops.cu`, `external-tools/native/cuda/src/cpu_ivf_ops.cpp`
 
 ### 1.6. Архитектура индексации (9/10)
 
@@ -145,7 +178,7 @@ UltraCode — MCP-сервер для RAG-поиска по кодовой ба�
 **Три слоя индексации** (`layered-index-manager.ts`, 502 LOC):
 - Layer 0 (Base): main branch, shared read-only
 - Layer 1 (Branch Deltas): per-branch добавления/изменения/удаления, persistent SQLite cache
-- Layer 2 (Working Directory): per-client uncommitted [FUTURE]
+- Layer 2 (Working Deltas): per-client uncommitted изменения с LRU-кэшем, promotion path (working→branch delta) и client cleanup
 - Переключение ветки: **<100ms** vs 10-30s full rebuild = **100-300x быстрее**
 
 **Адаптивный vector backend**: <10K файлов → in-memory FAISS, 10K-50K → sqlite-vec, >50K → vectorlite (линейное масштабирование)
@@ -191,7 +224,7 @@ UltraCode — MCP-сервер для RAG-поиска по кодовой ба�
 ### 1.8. MCP Tools (8/10)
 
 
-- **72 инструмента** — впечатляющий набор, покрывающий поиск, анализ, трассировку, модификацию, документацию, git, merge, snapshots
+- **77 инструментов** — впечатляющий набор, покрывающий поиск, анализ, трассировку, модификацию, документацию, git, merge, snapshots, а также утилиты навигации (get_help, get_tools_for_task)
 - **Lazy loading** в `ToolRegistry` — загружаются только при первом использовании, что снижает cold start с ~2s до <500ms
 - **BaseToolHandler** — унифицированный паттерн для всех обработчиков
 - **Zod-валидация** входных параметров через `base-schemas.ts`
@@ -241,19 +274,20 @@ UltraCode — MCP-сервер для RAG-поиска по кодовой ба�
 
 ### 2.4. Области для улучшения
 
-- **188 TODO/FIXME/HACK** в 32 файлах — значительный технический долг, включая:
-  - **Layer 2 (Working Deltas)** — 7 TODO в `layered-index.ts`: multi-client isolation полностью не реализован
-  - **Merge engine** — `conflict-resolver.ts`: "TODO: implement proper 3-way merge algorithm"
+- **TODO/FIXME/HACK** в исходном коде — технический долг, включая:
+  - ~~**Layer 2 (Working Deltas)** — реализован: LRU-кэш, promotion path, client cleanup~~
+  - ~~**Merge engine** — реализован: полноценный diff3 алгоритм на базе LCS с 24 тестами~~
   - **Git delta system** — 3 блокирующих issue в `src/layered/` (missing methods, incomplete rebuild triggers)
   - **TypeScript strictness** — `exactOptionalPropertyTypes` отключён, ~214 оставшихся type errors
   - Интеграция с .NET UltraSharp использовалась только для парсинга (Roslyn); остальная функциональность реализована нативно
-- **Тестирование** — 43 тестовых файла, ~8.9K LOC тестов. Формально ~7% по LOC (8.9K/192K src), но стратегия осмысленная:
+- **Тестирование** — 45+ тестовых файлов, ~10K LOC тестов. Формально ~7% по LOC, но стратегия осмысленная:
   - **Все 16 tool handler групп покрыты на 100%** (23 файла, 2802 LOC) — вся API-поверхность MCP-сервера
   - Парсеры: 7 файлов (2933 LOC) — ключевые языки (C, C++, Go, Python, Rust, native)
   - Агенты: 4 файла (1160 LOC) — core lifecycle (base, parser, semantic, resource)
   - Autodoc: 4 файла (563 LOC), Config: 2 файла (376 LOC), Tracing: 598 LOC, Integration: 2 файла (267 LOC)
   - Непокрытое: `src/generated/` (~50K LOC ANTLR — тестировать бессмысленно), storage (косвенно через tool handlers), semantic pipeline (требует модель)
-  - **Зоны для усиления**: regex-парсеры Swift/Zig (хрупкий regex-код), storage layer (SQL с layered reads), merge engine
+  - **diff3 merge engine**: 24 теста (17 unit + 7 integration с реальными TypeScript-сценариями) — edge cases (conflicting edits, partial overlap, identical changes, empty base)
+  - **Зоны для усиления**: regex-парсеры Swift/Zig (хрупкий regex-код), storage layer (SQL с layered reads)
 - **CI/CD** — проект разрабатывается одним разработчиком, тесты запускаются локально (`bun test`), публикация под ручным контролем. Единственный workflow (`build-k2-cli.yml`) собирает Kotlin JAR. Для solo-разработки это нормальный подход; CI станет актуален при появлении контрибьюторов или переходе к автоматизированным релизам
 - **50 коммитов** в git-истории — либо squash-стратегия, либо относительно молодой проект
 - Комментарии вида `// TASK-001`, `// TASK-002`, `// TASK-004B` — следы AI-driven разработки
@@ -268,7 +302,7 @@ UltraCode — MCP-сервер для RAG-поиска по кодовой ба�
 | Аспект | UltraCode | Sourcegraph Cody | Cursor/Continue | Aider | Codeium |
 |--------|-----------|-------------------|-----------------|-------|---------|
 | **Тип** | MCP-сервер (локальный) | Cloud + Local | IDE Plugin | CLI | Cloud |
-| **Языки** | 12 | ~15 | ~10 | ~10 | ~15 |
+| **Языки** | 22 | ~15 | ~10 | ~10 | ~15 |
 | **Семантический поиск** | Да (5 провайдеров) | Да (cloud) | Да (cloud) | Нет | Да (cloud) |
 | **Граф кода** | Полный (entities + relationships) | Частичный | Нет | Нет | Нет |
 | **Impact analysis** | Да | Нет | Нет | Нет | Нет |
@@ -288,9 +322,11 @@ UltraCode — MCP-сервер для RAG-поиска по кодовой ба�
 3. **Layered indexing** по git-веткам — переключение ветки за <100ms vs полная переиндексация
 4. **GPU multi-backend** — 6-уровневая цепочка (CUDA→Metal→WebGPU→WASM SIMD→JS) с адаптивными порогами; ни один конкурент не реализует GPU-ускорение vector operations локально
 5. **Bun runtime-адаптация** — прозрачная оптимизация 38-400% через нативные Bun API
-6. **72 специализированных инструмента** — самый широкий набор среди MCP-серверов для кода
+6. **77 специализированных инструментов** — самый широкий набор среди MCP-серверов для кода
 7. **Мульти-агентная архитектура** — масштабируемость и чёткое разделение ответственности
 8. **Taint analysis** — уникальная фича для security-анализа потоков данных
+9. **diff3 merge engine** — автоматическое 3-way слияние кода с LCS-алгоритмом
+10. **Native FAISS addon** — собственный C++ N-API addon заменил faiss-napi, поддержка IVF,SQ8 без внешних зависимостей
 
 ### 3.3. Слабые стороны относительно конкурентов
 
@@ -318,11 +354,11 @@ UltraCode — MCP-сервер для RAG-поиска по кодовой ба�
 - Воспроизводимые скрипты в `benchmarks/` с reference-проектом для автоматической валидации claims
 - End-to-end демо: одна задача двумя способами (агент + grep vs агент + UltraCode) с замером токенов, времени, ошибок компиляции
 
-### Заявлено: "72 инструмента для анализа и модификации кода"
+### Заявлено: "77 инструментов для анализа и модификации кода"
 
 **Оценка: Подтверждено (9/10)**
 
-Все 72 инструмента задокументированы в README, имеют схемы валидации, обработчики в `src/tools/handlers/`. Покрытие функциональности:
+Все 77 инструментов задокументированы в README, имеют схемы валидации, обработчики в `src/tools/handlers/`. Покрытие функциональности:
 - Поиск: 6 инструментов
 - Анализ: 12 инструментов
 - Трассировка: 5 инструментов
@@ -330,12 +366,13 @@ UltraCode — MCP-сервер для RAG-поиска по кодовой ба�
 - Документация: 11 инструментов
 - Git/History/Merge/Snapshots: ~20 инструментов
 - Валидация, метрики, граф: ~10 инструментов
+- Утилиты и навигация: 5 инструментов (get_help, get_tools_for_task, get_version, и др.)
 
-### Заявлено: "Поддержка 12 языков"
+### Заявлено: "Поддержка 22 языков"
 
-**Оценка: Подтверждено (8/10)**
+**Оценка: Подтверждено (8.5/10)**
 
-Парсеры существуют для всех заявленных языков. TypeScript/C# имеют полный semantic analysis. Swift (1342 строк) и Zig (1154 строк) имеют полноценные парсеры с извлечением entities, relationships, control flow и complexity — даже более детальные, чем typescript-parser.ts (который делегирует отдельным экстракторам). Bash покрывает entities и relationships через tree-sitter + shfmt-based analyzer (384+420 строк). PowerShell — базовый.
+Парсеры существуют для всех заявленных языков. **12 языков программирования**: TypeScript/C# имеют полный semantic analysis. Swift (1342 строк) и Zig (1154 строк) имеют полноценные парсеры с извлечением entities, relationships, control flow и complexity. Bash покрывает entities и relationships через tree-sitter + shfmt-based analyzer (384+420 строк). PowerShell — базовый. **10 дополнительных языков** (CSS/HTML/XML/JSON/YAML/TOML/Markdown/Dockerfile/Helm/Batch) обрабатываются regex-экстракторами с извлечением entities и relationships.
 
 ### Заявлено: "Работа на commodity hardware"
 
@@ -353,27 +390,27 @@ UltraCode — MCP-сервер для RAG-поиска по кодовой ба�
 
 | Категория | Оценка | Комментарий |
 |-----------|--------|-------------|
-| **Архитектура** | 9/10 | Зрелая мульти-агентная система + layered indexing + GPU multi-backend |
+| **Архитектура** | 9.5/10 | Зрелая мульти-агентная система + полный 3-layer indexing (включая Layer 2) + GPU multi-backend + diff3 merge |
 | **Semantic Layer** | 9/10 | 5 провайдеров, глубокая оптимизация pipeline (OVMS 28→500, TEI/vLLM 400→2400 chunks/s) |
-| **GPU-акселерация** | 9/10 | 6-уровневая цепочка (CUDA→Metal→WebGPU→WASM→JS), адаптивные пороги, runtime-адаптация |
-| **Архитектура индексации** | 9/10 | Centralized embedding pipeline (8x), streaming coverage 94%, batch SQL (-43%), 3-layer indexing |
+| **GPU-акселерация** | 9/10 | 6-уровневая цепочка (CUDA→Metal→WebGPU→WASM→JS), адаптивные пороги, runtime-адаптация, native FAISS addon |
+| **Архитектура индексации** | 9.5/10 | Centralized embedding pipeline (8x), streaming coverage 94%, batch SQL (-43%), полный 3-layer indexing с LRU и promotion |
 | **Bun-оптимизация** | 8/10 | Прозрачная адаптация к Bun с ускорением 38-400%, подтверждено бенчмарками |
-| **Качество кода** | 7.5/10 | Хорошие паттерны, но 188 TODO/FIXME — технический долг |
-| **Функциональность** | 9/10 | 72 инструмента — самый полный набор в категории |
+| **Качество кода** | 7.5/10 | Хорошие паттерны, TODO/FIXME — технический долг (ключевые stub-заглушки устранены) |
+| **Функциональность** | 9/10 | 77 инструментов — самый полный набор в категории |
 | **Производительность** | 9/10 | GPU hotpath, SIMD, Bun-адаптация, batch SQL, streaming coverage — оптимизация на всех уровнях |
-| **Инновационность** | 10/10 | Prolly Tree, layered indexing, GPU multi-backend, Roslyn addon — уникальные решения без аналогов |
+| **Инновационность** | 10/10 | Prolly Tree, layered indexing, GPU multi-backend, Roslyn addon, native FAISS addon — уникальные решения без аналогов |
 | **Юзабилити** | 8/10 | Интерактивный setup упрощает onboarding, AUTODOC-цепочка связывает код с документацией |
-| **Тестирование** | 7/10 | 100% покрытие API-поверхности (tool handlers), осмысленная стратегия; усилить regex-парсеры и storage |
+| **Тестирование** | 7.5/10 | 100% покрытие API-поверхности (tool handlers), diff3 покрыт 24 тестами; усилить regex-парсеры и storage |
 | **CI/CD** | 6/10 | Solo-разработка с локальными тестами и ручной публикацией — адекватно для текущего этапа |
 | **Документация** | 8/10 | Обширная, с автосинхронизацией AUTODOC → код; иерархическая структура от кода до верхнего уровня |
-| **Общая оценка** | **8.6/10** | Технически глубокий проект с уникальной архитектурой, GPU-акселерацией, оптимизированным embedding pipeline и runtime-адаптацией |
+| **Общая оценка** | **8.8/10** | Технически глубокий проект с уникальной архитектурой, GPU-акселерацией, оптимизированным embedding pipeline, полным 3-layer indexing и diff3 merge |
 
 ### Путь к 10/10 по каждой категории
 
-#### Архитектура (9 → 10)
-- **Реализовать Layer 2 (Working Deltas)** — multi-client isolation заявлен, но не завершён (7 TODO в `layered-index.ts`). Для 10/10 layered storage должен работать полностью
-- **Завершить merge engine** — `conflict-resolver.ts` содержит stub 3-way merge. Полноценный 3-way merge с автоматическим разрешением конфликтов — это уровень 10/10
-- **Устранить 188 TODO/FIXME** — зрелая архитектура не должна содержать stub-заглушки в ключевых путях
+#### Архитектура (9.5 → 10)
+- ~~**Layer 2 (Working Deltas)** — реализован: LRU-кэш с эвикцией, promotion path (working→branch delta), client cleanup~~
+- ~~**Merge engine** — реализован: полноценный diff3 алгоритм на базе LCS с поддержкой git-style conflict markers~~
+- **Устранить оставшиеся TODO/FIXME** — ключевые stub-заглушки (diff3, Layer 2) устранены; осталось: git delta system (3 issue в `src/layered/`), мелкие TODO
 
 #### Качество кода (7.5 → 10)
 - **Включить `exactOptionalPropertyTypes`** и устранить ~214 оставшихся type errors — строгая типизация должна быть полной, а не частичной
@@ -381,8 +418,8 @@ UltraCode — MCP-сервер для RAG-поиска по кодовой ба�
 - **Убрать следы AI-driven разработки** — комментарии `// TASK-001`, `// TASK-002` не несут смысла для читателя кода
 
 #### Функциональность (9 → 10)
-- **72 инструмента уже покрывают все ключевые сценарии.** Интеграция с .NET UltraSharp была только для парсинга (Roslyn), остальная функциональность реализована нативно. PowerShell и Bash парсеры достаточно полные для своих доменов
-- **Оценка фактически 9.5+** — для 10/10 нужно определить, какие конкретные user-сценарии не покрыты существующими 72 инструментами, а не портировать то, что уже есть
+- **77 инструментов уже покрывают все ключевые сценарии.** Интеграция с .NET UltraSharp была только для парсинга (Roslyn), остальная функциональность реализована нативно. PowerShell и Bash парсеры достаточно полные для своих доменов
+- **Оценка фактически 9.5+** — для 10/10 нужно определить, какие конкретные user-сценарии не покрыты существующими 77 инструментами
 
 #### Производительность (9 → 10)
 - **Уже сильная оптимизация** — GPU multi-backend, SIMD vector ops, Bun runtime адаптация, batch SQL, streaming coverage, адаптивные пороги. Архитектура не деградирует при масштабировании
@@ -394,25 +431,25 @@ UltraCode — MCP-сервер для RAG-поиска по кодовой ба�
 - **CUDA kernels уже оптимизированы** (warp shuffle, shared memory reduction). Для 10/10: benchmark suite для всех бэкендов, документированные результаты на разных GPU (RTX 3060/4060/5060, M1/M2/M3)
 - **WebGPU Blackwell workaround** — временное решение; отслеживать fix в Dawn/wgpu для полной поддержки RTX 50xx
 
-#### Архитектура индексации (9 → 10)
-- **Реализовать Layer 2 (Working Deltas)** — multi-client isolation. Layer 0 и Layer 1 уже работают и дают <100ms переключение веток
+#### Архитектура индексации (9.5 → 10)
+- ~~**Layer 2 (Working Deltas)** — реализован: LRU-кэш, promotion, cleanup. Все три слоя полностью функциональны~~
 - **Compaction-стратегия** — документировать пороги и результаты автоматической компакции
 
 #### Bun-оптимизация (8 → 10)
 - **Уже реализована прозрачная адаптация** с бенчмарк-скриптом. Для 10/10: tracking Bun API changes, CI-тесты на обоих рантаймах
 - **GPU Worker IPC** через subprocess — необходимость из-за отсутствия N-API в Bun. Отслеживать progress Bun FFI/N-API
 
-#### Инновационность (9 → 10)
-- **Текущая оценка 9/10 занижена.** Prolly Tree для версионирования графа кода, layered indexing по git-веткам, Roslyn addon с Named Pipe IPC, WASM-accelerated diff, 9-фазный pipeline модификации с auto-rollback, мульти-агентная система с bloom-фильтром в pub/sub — ни одно существующее решение (ни SaaS, ни локальное) не реализует эту комбинацию. Аргумент для 10/10 прост: **назовите аналог**. Sourcegraph Cody, Cursor, Continue, Aider, Codeium — ни один не имеет полного графа кода с версионированием, layered indexing, AST-модификации и impact analysis одновременно. Если аналога нет — это 10/10 инновационности. **Оценка пересмотрена на 10/10.**
+#### Инновационность (10/10)
+- **Оценка обоснована.** Prolly Tree для версионирования графа кода, layered indexing по git-веткам, Roslyn addon с Named Pipe IPC, WASM-accelerated diff, 9-фазный pipeline модификации с auto-rollback, мульти-агентная система с bloom-фильтром в pub/sub — ни одно существующее решение (ни SaaS, ни локальное) не реализует эту комбинацию. Аргумент для 10/10 прост: **назовите аналог**. Sourcegraph Cody, Cursor, Continue, Aider, Codeium — ни один не имеет полного графа кода с версионированием, layered indexing, AST-модификации и impact analysis одновременно. Если аналога нет — это 10/10 инновационности. **Оценка пересмотрена на 10/10.**
 
 #### Юзабилити (8 → 10)
 - **Добавить end-to-end демо** — видео или скрипт, показывающий полный цикл: установка → индексация реального проекта → поиск → модификация → rollback. Сейчас onboarding через `setup` хорош, но нет наглядного showcase
 - **Error messages и troubleshooting** — при сбое парсера (Go/Rust/Java runtime не установлен) сообщения должны быть actionable: что именно установить и как
 
-#### Тестирование (7 → 10)
+#### Тестирование (7.5 → 10)
 - **Тесты для regex-парсеров** — Swift (1342 LOC) и Zig (1154 LOC) парсеры на regex без тестов — хрупкий код с высоким риском регрессий
 - **Storage layer тесты** — SQL с layered reads, CTE-запросы, tombstone-маркеры — сложная логика, покрытая только косвенно через tool handlers
-- **Merge engine тесты** — когда 3-way merge будет реализован, он должен быть покрыт тестами с edge cases (conflicting edits, rename + modify, delete + modify)
+- ~~**Merge engine тесты** — diff3 покрыт 24 тестами (17 unit + 7 integration): идентичные версии, однобранчевые изменения, неперекрывающиеся правки, одинаковые изменения, конфликты, пустой base, большие файлы, реальные TypeScript-сценарии~~
 - **Довести покрытие до 60-70%** по LOC (исключая `src/generated/`)
 
 #### CI/CD (6 → 10)
@@ -422,13 +459,13 @@ UltraCode — MCP-сервер для RAG-поиска по кодовой ба�
 
 #### Документация (8 → 10)
 - **Contributing guide** — порог входа для контрибьюторов высок из-за трёх слоёв хранения. Нужен документ с архитектурными диаграммами, описанием data flow и точками расширения
-- **API reference** — автогенерация из TypeDoc или аналога для 72 MCP-инструментов с примерами вызовов
+- **API reference** — автогенерация из TypeDoc или аналога для 77 MCP-инструментов с примерами вызовов
 - **Troubleshooting guide** — типичные проблемы при установке и использовании (отсутствие runtime, нехватка VRAM, медленная индексация)
 
 ### Рекомендации (по приоритету)
 
 1. **CI/CD pipeline (при масштабировании)** — при появлении контрибьюторов или автоматических релизов: GitHub Actions для тестов, typecheck, lint. Сейчас Husky + lint-staged + локальный `bun test` достаточны
-2. **Расширить тестовое покрытие** — API-поверхность покрыта на 100%, приоритет: regex-парсеры Swift/Zig, storage layer (SQL с layered reads), merge engine
-3. **Реализовать заявленные, но stub-функции** — 3-way merge, Layer 2 working deltas
-4. **Снизить технический долг** — обработать 188 TODO/FIXME, включить `exactOptionalPropertyTypes`
+2. **Расширить тестовое покрытие** — API-поверхность покрыта на 100%, приоритет: regex-парсеры Swift/Zig, storage layer (SQL с layered reads)
+3. ~~**Реализовать заявленные, но stub-функции** — 3-way merge и Layer 2 working deltas реализованы~~
+4. **Снизить технический долг** — обработать оставшиеся TODO/FIXME, включить `exactOptionalPropertyTypes`
 5. **Добавить benchmark CI** — автоматическое отслеживание регрессий производительности

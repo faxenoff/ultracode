@@ -44,7 +44,7 @@ Full indexing of a medium project (~500 files) completes in **3-5 seconds** (par
 
 # Features
 
-MCP server provides **72 tools** for code analysis and modification.
+MCP server provides **77 tools** for code analysis and modification.
 
 ## Search and Navigation
 
@@ -180,6 +180,8 @@ MCP server provides **72 tools** for code analysis and modification.
 | [**get_bus_stats**](.autodoc/features/metrics.md#get_bus_stats) | Knowledge bus statistics |
 | [**clear_bus_topic**](.autodoc/features/metrics.md#clear_bus_topic) | Clear cached topic entries |
 | [**get_watcher_status**](.autodoc/features/metrics.md#get_watcher_status) | Background watcher status |
+| [**get_help**](.autodoc/features/metrics.md#get_help) | Documentation and guides (quick-start, workflows, tracing, etc.) |
+| [**get_tools_for_task**](.autodoc/features/metrics.md#get_tools_for_task) | Tool recommendations for a specific task |
 
 ---
 
@@ -290,17 +292,15 @@ npm install -g ultracode
 ```
 
 > **Why two steps for Bun?**
-> To achieve ultra-speed, UltraCode uses native components:
+> Some dependencies use postinstall scripts to build native addons:
 >
-> - **faiss-napi** — HNSW/IVF indexes for vector search (100x speedup)
-> - **cbor-extract** — fast native metadata serialization
-> - **webgpu** — Dawn GPU backend for AMD/Intel
+> - **cbor-extract** — fast native metadata serialization (via cbor-x)
 > - **protobufjs** — binary protocol for IPC
-> - **xxhash-wasm** — SIMD-accelerated file hashing
-> - **libSQL** — native SQLite bindings with vector extension
-> - **oxc-parser** — Rust parser for TS/JS (10x faster than tsc)
+> - **webgpu** — Dawn GPU backend for AMD/Intel
 >
 > Bun blocks postinstall scripts by default. The `bun pm trust` command allows their execution — no reinstall needed.
+>
+> Other native components (oxc-parser, xxhash-wasm, @libsql/client) ship prebuilt binaries and work without trust.
 
 > **Note**: For full code analysis on different languages, runtimes are required:
 >
@@ -418,19 +418,28 @@ All UltraCode data is stored in system directory:
 ```
 UltraCode/
 ├── config/
-│   ├── semantic-config.json    # Embedding/LLM providers (setup wizard)
-│   └── parser-config.json      # Runtime paths (Java, Kotlin)
+│   ├── semantic-config.json      # Embedding/LLM providers (setup wizard)
+│   └── parser-config.json        # Runtime paths (Java, Kotlin)
+├── config.yaml                   # Advanced configuration
+├── graph.db                      # Entities, relationships (composite keys)
+├── semantic.db                   # Embeddings metadata
+├── versioning.db                 # Branch history, snapshots
+├── cache.db                      # Parser and query cache
+├── autodoc.db                    # AutoDoc documentation database
 ├── projects/
-│   └── {hash}/                 # Project data (hash from path)
-│       ├── faiss-*.bin         # FAISS index for vector search
-│       └── *.json              # Index metadata
-├── logs/                       # Server logs (daily rotation)
-├── models/                     # Downloaded embedding models
-├── llamacpp/                   # llama.cpp binaries and models
-├── ovms/                       # OpenVINO Model Server models
-├── hf-cache/                   # HuggingFace model cache
-├── autodoc.db                  # AutoDoc documentation database
-└── unified-storage.db          # Unified storage for graphs and entities
+│   └── {hash}/                   # Per-project data (xxHash of path)
+│       ├── faiss-{branch}.bin    # FAISS vector index per branch
+│       ├── faiss-{branch}.idmap.json  # FAISS ID → entity ID mapping
+│       ├── faiss-{branch}-hot.bin     # Hot buffer (delta before merge)
+│       └── layered/
+│           ├── deltas.db         # Branch delta persistence (Layer 1)
+│           └── vector-deltas.db  # Vector delta persistence
+├── logs/                         # Server logs (daily rotation)
+├── models/                       # Downloaded embedding models
+├── hf-cache/                     # GGUF models for llama.cpp / TEI / vLLM
+└── cache/
+    ├── tree-sitter/              # Tree-sitter grammar cache
+    └── ast/                      # AST parse cache
 ```
 
 ## Configuration Parameters
