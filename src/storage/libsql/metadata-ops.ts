@@ -172,9 +172,12 @@ export class MetadataOperations {
     const { projectHash, branchName } = this.getContext();
     const now = Date.now();
 
-    // Count entities and files
+    // Count entities (active generation only) and files
     const entityCount = await client.execute({
-      sql: "SELECT COUNT(*) as count FROM entities WHERE project_hash = ? AND branch_name = ?",
+      sql: `SELECT COUNT(*) as count FROM entities e
+            JOIN file_generations fg
+              ON e.file_path = fg.file_path AND e.project_hash = fg.project_hash AND e.branch_name = fg.branch_name
+            WHERE e.project_hash = ? AND e.branch_name = ? AND e.file_gen = fg.active_gen`,
       args: [projectHash, branchName],
     });
     const fileCount = await client.execute({
@@ -366,7 +369,10 @@ export class MetadataOperations {
 
     const [entities, relationships, files] = await Promise.all([
       client.execute({
-        sql: `SELECT COUNT(*) as cnt FROM entities WHERE project_hash = ? AND ${branchFilter}`,
+        sql: `SELECT COUNT(*) as cnt FROM entities e
+              JOIN file_generations fg
+                ON e.file_path = fg.file_path AND e.project_hash = fg.project_hash AND e.branch_name = fg.branch_name
+              WHERE e.project_hash = ? AND e.file_gen = fg.active_gen AND e.${branchFilter}`,
         args: [projectHash, ...branchArgs],
       }),
       client.execute({
