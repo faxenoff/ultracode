@@ -22,7 +22,7 @@ import { getGpuClient, type IGpuClient } from "../gpu/gpu-client.js";
 import { getBaseMetaPathByHash } from "./base-branch-detector.js";
 import type { IFaissClient } from "./faiss-client.js";
 import type { BaseIndexMetadata } from "./layered-types.js";
-import type { FaissIndexConfig, FaissSearchResult } from "./types.js";
+import type { FaissIndexConfig, FaissIndexType, FaissSearchResult } from "./types.js";
 
 // =============================================================================
 // Configuration
@@ -32,13 +32,19 @@ export interface FaissProviderConfig {
   /** Vector dimensions (must match embedding model) */
   dimensions: number;
   /** Faiss index type */
-  indexType: "flat" | "hnsw" | "ivf" | "ivfpq";
+  indexType: "flat" | "hnsw" | "ivf" | "ivfpq" | "ivfsq";
   /** HNSW M parameter */
   hnswM?: number;
   /** HNSW efConstruction */
   hnswEfConstruction?: number;
   /** HNSW efSearch */
   hnswEfSearch?: number;
+  /** IVF nlist */
+  ivfNlist?: number;
+  /** IVF nprobe */
+  ivfNprobe?: number;
+  /** SQ bits for IVF,SQ quantization */
+  sqBits?: number;
   /** Auto-save after N embeddings added */
   autoSaveThreshold?: number;
   /** Path to persist Faiss index */
@@ -47,11 +53,14 @@ export interface FaissProviderConfig {
 
 const DEFAULT_CONFIG: Required<FaissProviderConfig> = {
   dimensions: 768,
-  indexType: "hnsw",
+  indexType: "ivfsq",
   hnswM: 32,
   hnswEfConstruction: 200,
   hnswEfSearch: 64,
-  autoSaveThreshold: 5000, // Save after 5000 new embeddings
+  ivfNlist: 256,
+  ivfNprobe: 32,
+  sqBits: 8,
+  autoSaveThreshold: 5000,
   persistPath: "",
 };
 
@@ -87,8 +96,15 @@ class FaissProvider {
   }
 
   /**
-   * Set project context for per-project FAISS index
-   * If context changes while initialized, saves current index and loads new one
+   * Get project key for multi-index pool: "projectHash:branchName"
+   */
+  private getProjectKey(): string {
+    return `${this.projectHash}:${this.branchName}`;
+  }
+
+  /**
+   * Set project context for per-project FAISS index.
+   * With multi-index pool, no save/load cycle needed — worker keeps all indexes in memory.
    */
   async setProjectContext(projectHash: string, branchName: string = "main"): Promise<void> {
     const normalizedBranch = normalizeBranchName(branchName);
@@ -99,65 +115,71 @@ class FaissProvider {
       return; // No change
     }
 
-    // If already initialized with different context, save and switch
-    if (this.isInitialized && this.client) {
-      log.i("FAISS", "Switching project context", {
-        from: { projectHash: this.projectHash, branchName: this.branchName },
-        to: { projectHash, branchName: normalizedBranch },
-      });
+    const oldProjectKey = this.getProjectKey();
 
-      // Save current index
-      if (this.unsavedCount > 0) {
-        await this.save();
-      }
+    // Save ID set for old context if needed
+    if (this.isInitialized && this.unsavedCount > 0) {
+      await this.save();
+    }
+    if (this.isInitialized) {
       this.saveIdSet();
+    }
 
-      // Update context
-      this.projectHash = projectHash;
-      this.branchName = normalizedBranch;
-      this.config.persistPath = newPersistPath;
+    // Update context
+    this.projectHash = projectHash;
+    this.branchName = normalizedBranch;
+    this.config.persistPath = newPersistPath;
 
-      // Clear ID set
-      this.idSet.clear();
-      this.unsavedCount = 0;
+    log.i("FAISS", "Switching project context", {
+      from: oldProjectKey,
+      to: this.getProjectKey(),
+    });
 
-      // Load new index if exists
+    // Clear ID set for new context
+    this.idSet.clear();
+    this.unsavedCount = 0;
+
+    // If already initialized, initialize index for new project in worker
+    if (this.isInitialized && this.client) {
       const loadPath = existsSync(newPersistPath) ? newPersistPath : undefined;
-      const indexConfig: FaissIndexConfig = {
-        dimensions: this.config.dimensions,
-        indexType: this.config.indexType,
-        metric: "l2",
-        hnswM: this.config.hnswM,
-        hnswEfConstruction: this.config.hnswEfConstruction,
-        hnswEfSearch: this.config.hnswEfSearch,
-      };
+      const indexConfig = this.buildIndexConfig();
 
-      await this.client.faissInitialize(indexConfig, loadPath);
+      await this.client.faissInitialize(this.getProjectKey(), indexConfig, loadPath);
 
       // Load ID set for new context
       if (loadPath) {
         this.loadIdSet();
       }
 
-      const stats = await this.client.faissGetStats();
+      const stats = await this.client.faissGetStats(this.getProjectKey());
       log.i("FAISS", "Switched to new context", {
-        projectHash,
-        branchName: normalizedBranch,
+        projectKey: this.getProjectKey(),
         vectors: stats.totalVectors,
         idSetSize: this.idSet.size,
       });
     } else {
-      // Not initialized yet, just set context
-      this.projectHash = projectHash;
-      this.branchName = normalizedBranch;
-      this.config.persistPath = newPersistPath;
-
-      log.d("FAISS", "Project context set", {
-        projectHash: this.projectHash,
-        branchName: this.branchName,
+      log.d("FAISS", "Project context set (not yet initialized)", {
+        projectKey: this.getProjectKey(),
         persistPath: this.config.persistPath,
       });
     }
+  }
+
+  /**
+   * Build FaissIndexConfig from current provider config
+   */
+  private buildIndexConfig(): FaissIndexConfig {
+    return {
+      dimensions: this.config.dimensions,
+      indexType: this.config.indexType as FaissIndexType,
+      metric: "l2",
+      hnswM: this.config.hnswM,
+      hnswEfConstruction: this.config.hnswEfConstruction,
+      hnswEfSearch: this.config.hnswEfSearch,
+      ivfNlist: this.config.ivfNlist,
+      ivfNprobe: this.config.ivfNprobe,
+      sqBits: this.config.sqBits,
+    };
   }
 
   // ===========================================================================
@@ -189,14 +211,7 @@ class FaissProvider {
       }
 
       // Build Faiss index config
-      const indexConfig: FaissIndexConfig = {
-        dimensions: this.config.dimensions,
-        indexType: this.config.indexType,
-        metric: "l2",
-        hnswM: this.config.hnswM,
-        hnswEfConstruction: this.config.hnswEfConstruction,
-        hnswEfSearch: this.config.hnswEfSearch,
-      };
+      const indexConfig = this.buildIndexConfig();
 
       // Check if existing index has compatible dimensions
       let loadPath = existsSync(this.config.persistPath) ? this.config.persistPath : undefined;
@@ -215,7 +230,7 @@ class FaissProvider {
         }
       }
 
-      await this.client.faissInitialize(indexConfig, loadPath);
+      await this.client.faissInitialize(this.getProjectKey(), indexConfig, loadPath);
 
       // Load ID set if index was loaded
       if (loadPath) {
@@ -225,7 +240,7 @@ class FaissProvider {
       this.isInitialized = true;
       this.lastSaveTime = Date.now();
 
-      const stats = await this.client.faissGetStats();
+      const stats = await this.client.faissGetStats(this.getProjectKey());
       log.i("FAISS", "Initialized", {
         indexType: this.config.indexType,
         dimensions: this.config.dimensions,
@@ -268,7 +283,7 @@ class FaissProvider {
     }
 
     // Add to Faiss
-    await this.client.faissAdd([embedding.id], Array.from(embedding.vector));
+    await this.client.faissAdd(this.getProjectKey(), [embedding.id], Array.from(embedding.vector));
 
     // Track ID for existence checks (content stored in LibSQL)
     this.idSet.add(embedding.id);
@@ -321,7 +336,7 @@ class FaissProvider {
     pLog("F1_PREPARE_VECTORS");
 
     // Add to Faiss (pass Float32Array directly - gpu-client will handle)
-    await this.client.faissAdd(ids, vectors);
+    await this.client.faissAdd(this.getProjectKey(), ids, vectors);
     pLog("F2_FAISS_ADD");
 
     this.unsavedCount += count;
@@ -368,7 +383,7 @@ class FaissProvider {
 
     // Normalize query for cosine similarity (must match indexed vectors)
     const normalizedQuery = simdL2Normalize(queryVector);
-    const faissResults = await this.client.faissSearch(normalizedQuery, limit);
+    const faissResults = await this.client.faissSearch(this.getProjectKey(), normalizedQuery, limit);
 
     // Convert to SimilarityResult format (content fetched from LibSQL by caller)
     return faissResults.map((r: FaissSearchResult) => ({
@@ -397,7 +412,7 @@ class FaissProvider {
       flatVectors.set(normalized, i * dim);
     }
 
-    const faissResults = await this.client.faissBatchSearch(flatVectors, count, limit);
+    const faissResults = await this.client.faissBatchSearch(this.getProjectKey(), flatVectors, count, limit);
 
     // Convert results (content fetched from LibSQL by caller)
     return faissResults.map((queryResults: FaissSearchResult[]) =>
@@ -430,7 +445,7 @@ class FaissProvider {
         mkdirSync(dir, { recursive: true });
       }
 
-      await this.client.faissSave(this.config.persistPath);
+      await this.client.faissSave(this.getProjectKey(), this.config.persistPath);
 
       // Save ID set alongside index
       this.saveIdSet();
@@ -670,7 +685,7 @@ class FaissProvider {
       flatVectors.push(...Array.from(v));
     }
 
-    await this.client.faissTrain(new Float32Array(flatVectors), trainingVectors.length);
+    await this.client.faissTrain(this.getProjectKey(), new Float32Array(flatVectors), trainingVectors.length);
     log.i("FAISS", "Trained index", { vectorCount: trainingVectors.length });
   }
 
@@ -738,7 +753,7 @@ class FaissProvider {
     }
 
     // Remove from Faiss
-    await this.client.faissRemove(ids);
+    await this.client.faissRemove(this.getProjectKey(), ids);
 
     // Remove from ID set
     for (const id of ids) {

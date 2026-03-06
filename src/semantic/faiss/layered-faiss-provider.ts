@@ -44,7 +44,7 @@ export interface LayeredFaissConfig {
   /** Vector dimensions (must match embedding model) */
   dimensions: number;
   /** Faiss index type */
-  indexType: "flat" | "hnsw" | "ivf";
+  indexType: "flat" | "hnsw" | "ivf" | "ivfsq";
   /** HNSW M parameter */
   hnswM?: number;
   /** HNSW efConstruction */
@@ -57,11 +57,11 @@ export interface LayeredFaissConfig {
 
 const DEFAULT_CONFIG: Required<LayeredFaissConfig> = {
   dimensions: 384,
-  indexType: "hnsw",
+  indexType: "ivfsq",
   hnswM: 32,
   hnswEfConstruction: 200,
   hnswEfSearch: 64,
-  autoSaveThreshold: 50000, // Increased to reduce blocking during indexing
+  autoSaveThreshold: 50000,
 };
 
 // =============================================================================
@@ -117,6 +117,13 @@ export class LayeredFaissProvider {
 
   constructor(config: Partial<LayeredFaissConfig> = {}) {
     this.config = { ...DEFAULT_CONFIG, ...config };
+  }
+
+  /**
+   * Get project key for multi-index pool
+   */
+  private getProjectKey(): string {
+    return `${this.projectHash}:${this.currentBranch ?? "main"}`;
   }
 
   // ===========================================================================
@@ -280,6 +287,9 @@ export class LayeredFaissProvider {
       hnswM: this.config.hnswM,
       hnswEfConstruction: this.config.hnswEfConstruction,
       hnswEfSearch: this.config.hnswEfSearch,
+      ivfNlist: 256,
+      ivfNprobe: 32,
+      sqBits: 8,
     };
 
     const baseIndexExists = existsSync(paths.baseIndex);
@@ -288,7 +298,7 @@ export class LayeredFaissProvider {
     // v6.2: CRITICAL - Always reinitialize FAISS index!
     // When loadPath is undefined, this creates a fresh empty index.
     // This is essential when switching projects - we can't reuse the old index.
-    await this.client!.faissInitialize(indexConfig, loadPath);
+    await this.client!.faissInitialize(this.getProjectKey(), indexConfig, loadPath);
 
     // Load base ID set (only if index file existed)
     if (baseIndexExists && existsSync(paths.baseIds)) {
@@ -302,7 +312,7 @@ export class LayeredFaissProvider {
       }
     }
 
-    const stats = await this.client!.faissGetStats();
+    const stats = await this.client!.faissGetStats(this.getProjectKey());
     log.i("LAYERED_FAISS", "base_loaded", {
       vectors: stats.totalVectors,
       ids: this.baseIdSet.size,
@@ -437,7 +447,7 @@ export class LayeredFaissProvider {
       vectorType: normalizedQuery.constructor.name,
       searchLimit,
     });
-    const baseResults = await this.client.faissSearch(normalizedQuery, searchLimit);
+    const baseResults = await this.client.faissSearch(this.getProjectKey(), normalizedQuery, searchLimit);
 
     for (const result of baseResults) {
       // Skip if already seen (from delta)
@@ -510,7 +520,7 @@ export class LayeredFaissProvider {
 
     if (this.isOnBaseBranch) {
       // On base branch - add directly to base
-      await this.client.faissAdd([embedding.id], normalizedVector);
+      await this.client.faissAdd(this.getProjectKey(), [embedding.id], normalizedVector);
       this.baseIdSet.add(embedding.id);
       this.baseUnsavedCount++;
 
@@ -537,7 +547,7 @@ export class LayeredFaissProvider {
 
       // Also add to base index (simplified approach - overwrites existing)
       // In full implementation, would use separate delta FAISS index
-      await this.client.faissAdd([embedding.id], normalizedVector);
+      await this.client.faissAdd(this.getProjectKey(), [embedding.id], normalizedVector);
 
       // Auto-save check
       if (this.deltaUnsavedCount >= this.config.autoSaveThreshold) {
@@ -590,7 +600,7 @@ export class LayeredFaissProvider {
     }
 
     // Single faissAdd call for all embeddings
-    await this.client.faissAdd(allIds, allVectors);
+    await this.client.faissAdd(this.getProjectKey(), allIds, allVectors);
 
     // Update counters
     if (this.isOnBaseBranch) {
@@ -659,7 +669,7 @@ export class LayeredFaissProvider {
       // On base branch - remove from base
       const existed = this.baseIdSet.has(id);
       if (existed) {
-        await this.client.faissRemove([id]);
+        await this.client.faissRemove(this.getProjectKey(), [id]);
         this.baseIdSet.delete(id);
         this.baseUnsavedCount++;
         return { success: true, action: "removed_from_base" };
@@ -750,7 +760,7 @@ export class LayeredFaissProvider {
       }
 
       // Save FAISS index
-      await this.client.faissSave(paths.baseIndex);
+      await this.client.faissSave(this.getProjectKey(), paths.baseIndex);
 
       // Save ID set
       writeFileSync(paths.baseIds, JSON.stringify([...this.baseIdSet]), "utf-8");
@@ -791,7 +801,7 @@ export class LayeredFaissProvider {
 
       // Save FAISS index (delta vectors are added to the same index in simplified approach)
       // This is critical - without this, vectors added on feature branch are lost!
-      await this.client.faissSave(paths.deltaIndex || paths.baseIndex);
+      await this.client.faissSave(this.getProjectKey(), paths.deltaIndex || paths.baseIndex);
 
       // Save delta IDs
       writeFileSync(paths.deltaIds, JSON.stringify([...this.deltaIdSet]), "utf-8");

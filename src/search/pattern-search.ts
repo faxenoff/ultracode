@@ -221,6 +221,7 @@ export class PatternSearch {
       const queryEmbedding = await this.embeddingGenerator.generateEmbedding(query.pattern);
 
       // Search vector store for similar entities
+      // vectorStore.search() already enriches results with entity metadata from LibSQL
       const similarResults = await this.vectorStore.search(queryEmbedding, query.limit || 10);
 
       const results: PatternSearchResult[] = [];
@@ -229,9 +230,64 @@ export class PatternSearch {
       const entityTypesSet = query.scope?.entityTypes ? new Set(query.scope.entityTypes) : null;
       const filesSet = query.scope?.files ? new Set(query.scope.files) : null;
 
+      // Batch-resolve entities: group by filePath for efficient DB queries
+      const resultsByFile = new Map<
+        string,
+        Array<{ result: (typeof similarResults)[0]; name: string; type: string }>
+      >();
+      const directMeta: Array<{
+        result: (typeof similarResults)[0];
+        meta: { filePath: string; name: string; type: string; startLine?: number; endLine?: number };
+      }> = [];
+
       for (const result of similarResults) {
-        // Get entity from graph storage
-        const entity = await this.graphStorage.getEntity(result.id);
+        const meta = result.metadata as
+          | { entityId?: string; type?: string; filePath?: string; name?: string; startLine?: number; endLine?: number }
+          | undefined;
+
+        if (meta?.filePath && meta?.name && meta?.type) {
+          directMeta.push({
+            result,
+            meta: meta as { filePath: string; name: string; type: string; startLine?: number; endLine?: number },
+          });
+          const group = resultsByFile.get(meta.filePath) || [];
+          group.push({ result, name: meta.name, type: meta.type });
+          resultsByFile.set(meta.filePath, group);
+        } else {
+          // No enriched metadata — try parsing from vector ID
+          const rawId = result.id.startsWith("ent:") ? result.id.slice(4) : result.id;
+          if (rawId.includes(":")) {
+            const lastColonIdx = rawId.lastIndexOf(":");
+            const secondLastColonIdx = rawId.lastIndexOf(":", lastColonIdx - 1);
+            if (secondLastColonIdx > 0) {
+              const filePath = rawId.slice(0, secondLastColonIdx);
+              const type = rawId.slice(secondLastColonIdx + 1, lastColonIdx);
+              const name = rawId.slice(lastColonIdx + 1);
+              directMeta.push({ result, meta: { filePath, name, type } });
+              const group = resultsByFile.get(filePath) || [];
+              group.push({ result, name, type });
+              resultsByFile.set(filePath, group);
+            }
+          }
+        }
+      }
+
+      // Fetch all entities per file in parallel (1 query per unique file, not per result)
+      const entityLookup = new Map<string, Entity>(); // key: "filePath:type:name"
+      await Promise.all(
+        Array.from(resultsByFile.keys()).map(async (filePath) => {
+          const entities = await this.graphStorage.findEntities({
+            filters: { filePath },
+            limit: 500,
+          });
+          for (const entity of entities) {
+            entityLookup.set(`${entity.filePath}:${entity.type}:${entity.name}`, entity);
+          }
+        }),
+      );
+
+      for (const { result, meta } of directMeta) {
+        const entity = entityLookup.get(`${meta.filePath}:${meta.type}:${meta.name}`);
         if (!entity) continue;
 
         // Apply scope filters with O(1) Set lookups
@@ -244,6 +300,12 @@ export class PatternSearch {
           score: result.similarity,
         });
       }
+
+      log.i("PATTERNSEARCH", "semantic_results", {
+        vectorStoreHits: similarResults.length,
+        resolvedEntities: results.length,
+        missed: similarResults.length - results.length,
+      });
 
       return results;
     } catch (error) {

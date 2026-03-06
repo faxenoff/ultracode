@@ -27,8 +27,8 @@ export interface EmbeddingRouterConfig {
   flushIntervalMs?: number;
   /** Dimensions for index initialization (default: 384) */
   dimensions?: number;
-  /** Index type (default: "hnsw") */
-  indexType?: "flat" | "hnsw" | "ivf" | "ivfpq";
+  /** Index type (default: "ivfsq") */
+  indexType?: "flat" | "hnsw" | "ivf" | "ivfpq" | "ivfsq";
   /** HNSW M parameter (default: 32) */
   hnswM?: number;
   /** Path to persist index */
@@ -39,7 +39,7 @@ const DEFAULT_CONFIG: Required<EmbeddingRouterConfig> = {
   batchSize: 500,
   flushIntervalMs: 5000,
   dimensions: 384,
-  indexType: "hnsw",
+  indexType: "ivfsq",
   hnswM: 32,
   persistPath: "",
 };
@@ -94,6 +94,7 @@ export class EmbeddingRouter {
 
       // Initialize Faiss index
       await this.gpuClient.faissInitialize(
+        "_router",
         {
           dimensions: this.config.dimensions,
           indexType: this.config.indexType,
@@ -223,7 +224,7 @@ export class EmbeddingRouter {
       }
 
       // Add to Faiss via GPU client
-      await this.gpuClient.faissAdd(ids, vectors);
+      await this.gpuClient.faissAdd("_router", ids, vectors);
 
       const flushTime = performance.now() - startTime;
       this.stats.totalFlushed += itemsToFlush.length;
@@ -279,7 +280,7 @@ export class EmbeddingRouter {
       await this.flush();
     }
 
-    const results = await this.gpuClient.faissSearch(vector, k);
+    const results = await this.gpuClient.faissSearch("_router", vector, k);
 
     return results.map((r) => ({
       id: r.id,
@@ -310,7 +311,7 @@ export class EmbeddingRouter {
       flatVectors.push(...arr);
     }
 
-    const results = await this.gpuClient.faissBatchSearch(flatVectors, vectors.length, k);
+    const results = await this.gpuClient.faissBatchSearch("_router", flatVectors, vectors.length, k);
 
     return results.map((queryResults) =>
       queryResults.map((r) => ({
@@ -337,7 +338,7 @@ export class EmbeddingRouter {
 
     const savePath = path || this.config.persistPath;
     if (savePath) {
-      await this.gpuClient.faissSave(savePath);
+      await this.gpuClient.faissSave("_router", savePath);
       log.i("ROUTER", "Index saved", { path: savePath });
     }
   }
@@ -350,7 +351,7 @@ export class EmbeddingRouter {
       throw new Error("GPU client not available");
     }
 
-    await this.gpuClient.faissLoad(path);
+    await this.gpuClient.faissLoad("_router", path);
     log.i("ROUTER", "Index loaded", { path });
   }
 

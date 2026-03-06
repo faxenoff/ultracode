@@ -107,3 +107,157 @@ export function normalizeVectors(vectors: number[][]): number[][];
  * ```
  */
 export function getDeviceInfo(): CUDADeviceInfo;
+
+// =============================================================================
+// GPU FAISS IVF Operations
+// Available when compiled with ENABLE_FAISS_GPU=ON
+// =============================================================================
+
+/** Whether GPU FAISS support is compiled in */
+export const hasGpuFaiss: boolean;
+
+/** Whether native CPU FAISS support is compiled in (replaces faiss-napi) */
+export const hasNativeFaiss: boolean;
+
+/** Create a GPU IVF,SQ index */
+export function gpuIvfCreate(
+  projectKey: string,
+  dims: number,
+  nlist: number,
+  sqBits: number,
+  metric?: string,
+): { success: boolean; projectKey: string; dims: number; nlist: number; sqBits: number };
+
+/** Train the GPU IVF index */
+export function gpuIvfTrain(
+  projectKey: string,
+  vectors: Float32Array,
+  count: number,
+): { success: boolean; trainedOn: number };
+
+/** Add vectors to the GPU IVF index */
+export function gpuIvfAdd(
+  projectKey: string,
+  vectors: Float32Array,
+  count: number,
+): { success: boolean; addedCount: number; totalVectors: number };
+
+/** Search the GPU IVF index (single query) */
+export function gpuIvfSearch(
+  projectKey: string,
+  query: Float32Array,
+  k: number,
+): { labels: BigInt64Array; distances: Float32Array };
+
+/** Batch search the GPU IVF index (multiple queries) */
+export function gpuIvfBatchSearch(
+  projectKey: string,
+  queries: Float32Array,
+  nQueries: number,
+  k: number,
+): { labels: BigInt64Array; distances: Float32Array; nQueries: number; k: number };
+
+/** Save GPU index to disk (GPU→CPU transfer + write) */
+export function gpuIvfSave(
+  projectKey: string,
+  path: string,
+): { success: boolean; path: string };
+
+/** Load index from disk to GPU (read + CPU→GPU transfer) */
+export function gpuIvfLoad(
+  projectKey: string,
+  path: string,
+): { success: boolean; path: string; loadedVectors: number };
+
+/** Remove index from GPU memory */
+export function gpuIvfRemove(projectKey: string): { success: boolean };
+
+/** Get stats for GPU indexes */
+export function gpuIvfStats(
+  projectKey?: string,
+): Array<{
+  projectKey: string;
+  ntotal: number;
+  dims: number;
+  nlist: number;
+  gpuMemoryMB: number;
+  isTrained: boolean;
+}>;
+
+// =============================================================================
+// Native FAISS CPU Operations — full faiss-napi replacement
+// Available when compiled with ENABLE_FAISS_CPU=ON
+// Supports: Flat, HNSW, IVF, IVF+SQ, IVF+PQ via factory strings
+// =============================================================================
+
+/** Create a FAISS index using factory string */
+export function faissIndexCreate(
+  projectKey: string,
+  dims: number,
+  factoryString: string,
+  metric?: string,
+): { success: boolean; projectKey: string; dims: number; factory: string; indexType: string; isTrained: boolean };
+
+/** Train index (required for IVF-based indexes) */
+export function faissIndexTrain(
+  projectKey: string,
+  vectors: Float32Array | number[],
+  count: number,
+): { success: boolean; trainedOn: number; isTrained: boolean };
+
+/** Add vectors to index */
+export function faissIndexAdd(
+  projectKey: string,
+  vectors: Float32Array | number[],
+  count: number,
+): { success: boolean; addedCount: number; totalVectors: number };
+
+/** Search index (single query) */
+export function faissIndexSearch(
+  projectKey: string,
+  query: Float32Array | number[],
+  k: number,
+  nprobe?: number,
+): { labels: BigInt64Array; distances: Float32Array };
+
+/** Batch search index (multiple queries) */
+export function faissIndexBatchSearch(
+  projectKey: string,
+  queries: Float32Array,
+  nQueries: number,
+  k: number,
+  nprobe?: number,
+): { labels: BigInt64Array; distances: Float32Array; nQueries: number; k: number };
+
+/** Save index to disk */
+export function faissIndexSave(
+  projectKey: string,
+  path: string,
+): { success: boolean; path: string };
+
+/** Load index from disk */
+export function faissIndexLoad(
+  projectKey: string,
+  path: string,
+): { success: boolean; path: string; loadedVectors: number; isTrained: boolean; dims: number; indexType: string };
+
+/** Remove index from memory */
+export function faissIndexRemove(projectKey: string): { success: boolean };
+
+/** Reset index (remove all vectors, keep trained state) */
+export function faissIndexReset(projectKey: string): { success: boolean };
+
+/** Get stats for indexes */
+export function faissIndexStats(
+  projectKey?: string,
+): Array<{
+  projectKey: string;
+  ntotal: number;
+  dims: number;
+  indexType: string;
+  factory: string;
+  memoryMB: number;
+  isTrained: boolean;
+  nlist: number;
+  nprobe: number;
+}>;

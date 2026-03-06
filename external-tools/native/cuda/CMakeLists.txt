@@ -103,7 +103,7 @@ project(ultrascript_cuda_addon LANGUAGES CXX CUDA)
 # CUDA configuration
 set(CMAKE_CUDA_STANDARD 17)
 set(CMAKE_CXX_STANDARD 17)
-set(CMAKE_CUDA_ARCHITECTURES 75 80 86 89 90 100 120)  # Added Blackwell  # GTX 1650 Ti (7.5) to RTX 5060 (9.0)
+set(CMAKE_CUDA_ARCHITECTURES 89 120)  # Ada(89)=RTX 4060+, Blackwell(120)=RTX 5060+
 
 # Find packages
 find_package(CUDAToolkit REQUIRED)
@@ -121,6 +121,10 @@ execute_process(
 string(REPLACE "\"" "" NODE_ADDON_API_DIR ${NODE_ADDON_API_DIR})
 include_directories(${NODE_ADDON_API_DIR})
 
+# === FAISS options ===
+option(ENABLE_FAISS_GPU "Enable FAISS GPU operations (IVF,SQ on GPU)" OFF)
+option(ENABLE_FAISS_CPU "Enable native FAISS CPU operations (replaces faiss-napi)" OFF)
+
 # Source files
 set(CUDA_SOURCES
     src/vector_ops.cu
@@ -132,6 +136,14 @@ set(CPP_SOURCES
     src/binding.cpp
 )
 
+if(ENABLE_FAISS_GPU)
+    list(APPEND CPP_SOURCES src/gpu_ivf_ops.cpp)
+endif()
+
+if(ENABLE_FAISS_CPU)
+    list(APPEND CPP_SOURCES src/cpu_ivf_ops.cpp)
+endif()
+
 # Build CUDA addon as shared library
 add_library(${PROJECT_NAME} SHARED ${CUDA_SOURCES} ${CPP_SOURCES})
 
@@ -139,7 +151,7 @@ add_library(${PROJECT_NAME} SHARED ${CUDA_SOURCES} ${CPP_SOURCES})
 set_target_properties(${PROJECT_NAME} PROPERTIES
     PREFIX ""
     SUFFIX ".node"
-    OUTPUT_NAME "ultrascript_cuda"
+    OUTPUT_NAME "ultracode_cuda"
 )
 
 # Link libraries
@@ -167,6 +179,112 @@ if(WIN32)
     )
     # Add delayimp.lib for delay load helper
     target_link_libraries(${PROJECT_NAME} PRIVATE delayimp)
+endif()
+
+# === FAISS library linking ===
+# Shared FAISS lib discovery (used by both GPU and CPU modes)
+if(ENABLE_FAISS_GPU OR ENABLE_FAISS_CPU)
+    # Determine platform-specific library directory
+    if(WIN32)
+        set(FAISS_GPU_PLATFORM "win32")
+    else()
+        set(FAISS_GPU_PLATFORM "linux")
+    endif()
+
+    # CMAKE_CURRENT_SOURCE_DIR = external-tools/native/cuda
+    # Project root = 3 levels up
+    get_filename_component(_PROJECT_ROOT "${CMAKE_CURRENT_SOURCE_DIR}/../../.." ABSOLUTE)
+    set(FAISS_LIB_DIR "${_PROJECT_ROOT}/external-libs/faiss-gpu-${FAISS_GPU_PLATFORM}-x64")
+    message(STATUS "FAISS lib dir: ${FAISS_LIB_DIR}")
+
+    # User-specified FAISS_ROOT takes priority
+    if(DEFINED FAISS_ROOT AND EXISTS "${FAISS_ROOT}")
+        set(FAISS_LIB_DIR "${FAISS_ROOT}")
+        message(STATUS "Using user-specified FAISS_ROOT: ${FAISS_ROOT}")
+    endif()
+
+    set(_FAISS_FOUND FALSE)
+
+    # Path 1: Project-local FAISS (external-libs/ or FAISS_ROOT)
+    if(EXISTS "${FAISS_LIB_DIR}")
+        # Headers
+        if(EXISTS "${FAISS_LIB_DIR}/include")
+            target_include_directories(${PROJECT_NAME} PRIVATE "${FAISS_LIB_DIR}/include")
+        endif()
+
+        # Libraries
+        find_library(FAISS_LIB faiss PATHS "${FAISS_LIB_DIR}/lib" NO_DEFAULT_PATH)
+        find_library(FAISS_GPU_LIB faiss_gpu PATHS "${FAISS_LIB_DIR}/lib" NO_DEFAULT_PATH)
+
+        if(FAISS_LIB)
+            set(_FAISS_FOUND TRUE)
+            message(STATUS "Found FAISS in project libs: ${FAISS_LIB}")
+        endif()
+    endif()
+
+    # Path 2: System FAISS (apt install libfaiss-dev on Linux)
+    if(NOT _FAISS_FOUND)
+        find_library(FAISS_LIB faiss)
+        if(FAISS_LIB)
+            # System headers (e.g. /usr/include/faiss/)
+            find_path(FAISS_INCLUDE_DIR faiss/Index.h)
+            if(FAISS_INCLUDE_DIR)
+                target_include_directories(${PROJECT_NAME} PRIVATE "${FAISS_INCLUDE_DIR}")
+            endif()
+            set(_FAISS_FOUND TRUE)
+            message(STATUS "Found system FAISS: ${FAISS_LIB}")
+        endif()
+    endif()
+
+    if(_FAISS_FOUND)
+        target_link_libraries(${PROJECT_NAME} PRIVATE ${FAISS_LIB})
+
+        # On Linux, static libfaiss.a needs OpenMP + BLAS/LAPACK
+        if(NOT WIN32)
+            find_package(OpenMP)
+            if(OpenMP_CXX_FOUND)
+                target_link_libraries(${PROJECT_NAME} PRIVATE OpenMP::OpenMP_CXX)
+                message(STATUS "Linked OpenMP for FAISS")
+            endif()
+
+            # BLAS (required by FAISS for sgemm, etc.)
+            find_package(BLAS)
+            if(BLAS_FOUND)
+                target_link_libraries(${PROJECT_NAME} PRIVATE ${BLAS_LIBRARIES})
+                message(STATUS "Linked BLAS: ${BLAS_LIBRARIES}")
+            endif()
+
+            # LAPACK
+            find_package(LAPACK)
+            if(LAPACK_FOUND)
+                target_link_libraries(${PROJECT_NAME} PRIVATE ${LAPACK_LIBRARIES})
+                message(STATUS "Linked LAPACK: ${LAPACK_LIBRARIES}")
+            endif()
+        endif()
+
+        # CPU FAISS (always when FAISS_LIB found and ENABLE_FAISS_CPU)
+        if(ENABLE_FAISS_CPU)
+            target_compile_definitions(${PROJECT_NAME} PRIVATE ULTRACODE_FAISS_CPU=1)
+            message(STATUS "FAISS CPU (native) enabled: ${FAISS_LIB}")
+        endif()
+
+        # GPU FAISS (additionally links faiss_gpu if available)
+        if(ENABLE_FAISS_GPU)
+            if(NOT FAISS_GPU_LIB)
+                find_library(FAISS_GPU_LIB faiss_gpu)
+            endif()
+            if(FAISS_GPU_LIB)
+                target_link_libraries(${PROJECT_NAME} PRIVATE ${FAISS_GPU_LIB})
+            endif()
+            target_compile_definitions(${PROJECT_NAME} PRIVATE ULTRACODE_FAISS_GPU=1)
+            message(STATUS "FAISS GPU enabled")
+        endif()
+    else()
+        message(WARNING "FAISS libraries not found!")
+        message(WARNING "  Option 1: Run scripts/build-faiss-gpu.ps1 (builds FAISS from source)")
+        message(WARNING "  Option 2: apt install libfaiss-dev (Linux system package)")
+        message(WARNING "  Option 3: Pass -DFAISS_ROOT=/path/to/faiss")
+    endif()
 endif()
 
 # Install target

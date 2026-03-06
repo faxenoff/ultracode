@@ -9,7 +9,7 @@
 // Index Configuration
 // =============================================================================
 
-export type FaissIndexType = "flat" | "hnsw" | "ivf" | "ivfpq";
+export type FaissIndexType = "flat" | "hnsw" | "ivf" | "ivfpq" | "ivfsq";
 
 // =============================================================================
 // Common Provider Interface (used by EmbeddingAccumulator)
@@ -53,6 +53,8 @@ export interface FaissIndexConfig {
   pqM?: number;
   /** IVFPQ: bits per subquantizer (default: 8) */
   pqNbits?: number;
+  /** IVF,SQ: scalar quantization bits (default: 8) */
+  sqBits?: number;
   /** OpenMP threads (default: all cores) */
   numThreads?: number;
 }

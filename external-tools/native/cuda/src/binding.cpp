@@ -251,6 +251,41 @@ Napi::Value GetDeviceInfo(const Napi::CallbackInfo& info) {
 }
 
 // =============================================================================
+// GPU FAISS IVF Operations (optional, requires ENABLE_FAISS_GPU)
+// =============================================================================
+
+#ifdef ULTRACODE_FAISS_GPU
+// Forward declarations from gpu_ivf_ops.cpp
+Napi::Value GpuIvfCreate(const Napi::CallbackInfo& info);
+Napi::Value GpuIvfTrain(const Napi::CallbackInfo& info);
+Napi::Value GpuIvfAdd(const Napi::CallbackInfo& info);
+Napi::Value GpuIvfSearch(const Napi::CallbackInfo& info);
+Napi::Value GpuIvfBatchSearch(const Napi::CallbackInfo& info);
+Napi::Value GpuIvfSave(const Napi::CallbackInfo& info);
+Napi::Value GpuIvfLoad(const Napi::CallbackInfo& info);
+Napi::Value GpuIvfRemove(const Napi::CallbackInfo& info);
+Napi::Value GpuIvfStats(const Napi::CallbackInfo& info);
+#endif
+
+// =============================================================================
+// CPU FAISS Operations — full faiss-napi replacement (HNSW, Flat, IVF, SQ, PQ)
+// =============================================================================
+
+#ifdef ULTRACODE_FAISS_CPU
+// Forward declarations from cpu_ivf_ops.cpp
+Napi::Value FaissIndexCreate(const Napi::CallbackInfo& info);
+Napi::Value FaissIndexTrain(const Napi::CallbackInfo& info);
+Napi::Value FaissIndexAdd(const Napi::CallbackInfo& info);
+Napi::Value FaissIndexSearch(const Napi::CallbackInfo& info);
+Napi::Value FaissIndexBatchSearch(const Napi::CallbackInfo& info);
+Napi::Value FaissIndexSave(const Napi::CallbackInfo& info);
+Napi::Value FaissIndexLoad(const Napi::CallbackInfo& info);
+Napi::Value FaissIndexRemove(const Napi::CallbackInfo& info);
+Napi::Value FaissIndexReset(const Napi::CallbackInfo& info);
+Napi::Value FaissIndexStats(const Napi::CallbackInfo& info);
+#endif
+
+// =============================================================================
 // Module initialization
 // =============================================================================
 
@@ -260,6 +295,37 @@ Napi::Object Init(Napi::Env env, Napi::Object exports) {
     exports.Set("euclideanDistance", Napi::Function::New(env, EuclideanDistance));
     exports.Set("normalizeVectors", Napi::Function::New(env, NormalizeVectors));
     exports.Set("getDeviceInfo", Napi::Function::New(env, GetDeviceInfo));
+
+#ifdef ULTRACODE_FAISS_GPU
+    exports.Set("gpuIvfCreate", Napi::Function::New(env, GpuIvfCreate));
+    exports.Set("gpuIvfTrain", Napi::Function::New(env, GpuIvfTrain));
+    exports.Set("gpuIvfAdd", Napi::Function::New(env, GpuIvfAdd));
+    exports.Set("gpuIvfSearch", Napi::Function::New(env, GpuIvfSearch));
+    exports.Set("gpuIvfBatchSearch", Napi::Function::New(env, GpuIvfBatchSearch));
+    exports.Set("gpuIvfSave", Napi::Function::New(env, GpuIvfSave));
+    exports.Set("gpuIvfLoad", Napi::Function::New(env, GpuIvfLoad));
+    exports.Set("gpuIvfRemove", Napi::Function::New(env, GpuIvfRemove));
+    exports.Set("gpuIvfStats", Napi::Function::New(env, GpuIvfStats));
+    exports.Set("hasGpuFaiss", Napi::Boolean::New(env, true));
+#else
+    exports.Set("hasGpuFaiss", Napi::Boolean::New(env, false));
+#endif
+
+#ifdef ULTRACODE_FAISS_CPU
+    exports.Set("faissIndexCreate", Napi::Function::New(env, FaissIndexCreate));
+    exports.Set("faissIndexTrain", Napi::Function::New(env, FaissIndexTrain));
+    exports.Set("faissIndexAdd", Napi::Function::New(env, FaissIndexAdd));
+    exports.Set("faissIndexSearch", Napi::Function::New(env, FaissIndexSearch));
+    exports.Set("faissIndexBatchSearch", Napi::Function::New(env, FaissIndexBatchSearch));
+    exports.Set("faissIndexSave", Napi::Function::New(env, FaissIndexSave));
+    exports.Set("faissIndexLoad", Napi::Function::New(env, FaissIndexLoad));
+    exports.Set("faissIndexRemove", Napi::Function::New(env, FaissIndexRemove));
+    exports.Set("faissIndexReset", Napi::Function::New(env, FaissIndexReset));
+    exports.Set("faissIndexStats", Napi::Function::New(env, FaissIndexStats));
+    exports.Set("hasNativeFaiss", Napi::Boolean::New(env, true));
+#else
+    exports.Set("hasNativeFaiss", Napi::Boolean::New(env, false));
+#endif
 
     return exports;
 }

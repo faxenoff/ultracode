@@ -11,7 +11,7 @@ language: typescript
 
 ## Overview
 
-The faiss module implements vector indexing for the semantic search pipeline. FaissNapiClient wraps the faiss-napi NAPI bindings, working directly under both Node.js and Bun runtimes without subprocess overhead. FaissProvider manages a single in-memory FAISS index with auto-save, L2 normalization, and per-project/branch context switching. LayeredFaissProvider extends this with a two-layer architecture: a full base index for the main branch and small delta indexes for feature branches, achieving ~90% storage reduction. Base branch detection automatically identifies the primary branch from git metadata.
+The faiss module implements vector indexing for the semantic search pipeline. **Primary path**: the GPU worker uses the native FAISS addon (`ultracode_cuda.node` with `ENABLE_FAISS_CPU`) — see `src/semantic/gpu/` for details. **Legacy fallback**: `FaissNapiClient` wraps the `faiss-napi` NAPI bindings for the in-process path (`faiss-client.ts`), working directly under both Node.js and Bun runtimes without subprocess overhead. FaissProvider manages a single in-memory FAISS index with auto-save, L2 normalization, and per-project/branch context switching. LayeredFaissProvider extends this with a two-layer architecture: a full base index for the main branch and small delta indexes for feature branches, achieving ~90% storage reduction. Base branch detection automatically identifies the primary branch from git metadata.
 
 ## Data Flow
 
@@ -52,7 +52,7 @@ The faiss module implements vector indexing for the semantic search pipeline. Fa
 
 | Package | Purpose |
 |---------|---------|
-| `faiss-napi` | NAPI bindings for FAISS C++ library (optional dependency) |
+| `faiss-napi` | **Legacy** NAPI bindings for FAISS C++ library (used only in `faiss-client.ts` in-process fallback). GPU worker pipeline uses native FAISS addon instead. |
 
 ## Behavioral Properties
 
@@ -137,7 +137,7 @@ Search = merge(Faiss results, DiskANN results) by score
 | File | Description |
 |------|-------------|
 | `base-branch-detector.ts` | Detects the base branch for layered index from git metadata and config |
-| `faiss-client.ts` | Unified FaissNapiClient with ID mapping, batch operations, and singleton factory |
+| `faiss-client.ts` | **Legacy** FaissNapiClient with ID mapping, batch operations, and singleton factory. GPU worker pipeline uses native FAISS addon instead. |
 | `faiss-provider.ts` | In-memory FAISS provider with auto-save, project context, and ID set tracking |
 | `IMPLEMENTATION_PLAN.md` | Implementation plan and stage status documentation |
 | `index.ts` | Re-exports faiss-client, faiss-provider, and types |

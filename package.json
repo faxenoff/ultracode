@@ -1,6 +1,6 @@
 {
   "name": "ultracode",
-  "version": "5.6.0",
+  "version": "5.7.0",
   "description": "Codebase RAG MCP server for code understanding - semantic search, duplicate detection, impact analysis for TS/JS/Python/C#/Go/Rust/Java/C++/Kotlin/Swift/Zig/Bash",
   "license": "AGPL-3.0-only OR Commercial",
   "author": "faxenoff",
@@ -41,7 +41,9 @@
     "dist/**/*.proto",
     "dist/ultracode.com",
     "external-libs/cuda-win32-x64/*.node",
+    "external-libs/cuda-win32-x64/*.dll",
     "external-libs/cuda-linux-x64/*.node",
+    "external-libs/cuda-linux-x64/*.so*",
     "scripts/postinstall.js",
     "scripts/build-native-libs-macos.sh",
     "scripts/setup.cmd",
@@ -171,7 +173,6 @@
   "optionalDependencies": {
     "@webgpu/node": "npm:null@^2.0.0",
     "@webgpu/types": "^0.1.69",
-    "faiss-napi": "^0.10.3",
     "webgpu": "^0.3.8"
   },
   "overrides": {
@@ -186,12 +187,11 @@
   "notes": {
     "boolean@3.2.0": "Deprecated transitive dependency. Package is unmaintained but functional.",
     "lenml-tokenizers": "@lenml/tokenizers - lightweight tokenizer (~2MB) without ONNX runtime. Inference is done by external services (OVMS, TEI, vLLM).",
-    "faiss-napi": "High-performance vector indexing with NAPI bindings. Works directly under Bun (no subprocess needed). 32 prebuilt binaries for Windows/Linux/macOS (x64/ARM64). Uses HNSW/IVF indexes."
+    "faiss-napi": "REMOVED — replaced by native FAISS addon in ultracode_cuda.node (ENABLE_FAISS_CPU). faiss-napi v0.10.3 train() crashes on IVF indexes."
   },
   "trustedDependencies": [
     "@biomejs/biome",
     "cbor-extract",
-    "faiss-napi",
     "protobufjs",
     "webgpu"
   ]

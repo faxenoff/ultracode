@@ -112,9 +112,26 @@ The module provides four search modes through a single `PatternSearch` class: **
 | `PATTERNSEARCH.embgen_init_fail` | warn | Embedding generator failed to initialize |
 | `PATTERNSEARCH.vectorstore_unavail` | warn | Semantic search called without VectorStore |
 | `PATTERNSEARCH.embgen_unavail_fallback` | warn | Falling back to entity search (no embeddings) |
+| `PATTERNSEARCH.semantic_results` | info | Semantic search completed: vectorStoreHits, resolvedEntities, missed |
 | `PATTERNSEARCH.semantic_fail` | error | Semantic search threw an exception |
 | `PATTERNSEARCH.entity_read_fail` | warn | Failed to read entity content from file |
 | `PATTERNSEARCH.sim_compute_fail` | error | Cosine similarity computation failed |
+
+## Implementation Notes
+
+### Semantic Search — Batch Entity Resolution
+`searchSemantic()` receives `SimilarityResult[]` from `VectorStore.search()`, which are already enriched with entity metadata (`filePath`, `name`, `type`) from LibSQL. However, vector store IDs use `"ent:filePath:type:name"` format while GraphStorage expects 16-char hash IDs.
+
+**Resolution strategy** (avoids 200+ individual `getEntity()` calls):
+1. Extract `filePath`/`name`/`type` from enriched metadata (or parse from vector ID as fallback)
+2. Group results by `filePath` — typically 30-50 unique files out of 200 results
+3. Batch-fetch all entities per file via `findEntities({filePath})` in parallel
+4. Build `entityLookup` Map keyed by `"filePath:type:name"` for O(1) resolution
+5. Match each vector result to its entity via the lookup
+
+This approach reduced entity resolution from O(N) DB queries to O(unique_files) queries.
+
+**Observability**: `PATTERNSEARCH.semantic_results` log entry shows `vectorStoreHits`, `resolvedEntities`, and `missed` counts for debugging.
 
 ## Known Limitations
 

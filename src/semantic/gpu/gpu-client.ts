@@ -73,16 +73,21 @@ export interface IGpuClient {
   stop(): Promise<void>;
   isRunning(): boolean;
 
-  // Faiss operations
-  faissInitialize(config: FaissIndexConfig, loadPath?: string): Promise<FaissInitResponse>;
-  faissAdd(ids: string[], vectors: Float32Array | number[]): Promise<FaissAddResponse>;
-  faissSearch(vector: Float32Array | number[], k: number): Promise<FaissSearchResult[]>;
-  faissBatchSearch(vectors: Float32Array | number[], nQueries: number, k: number): Promise<FaissSearchResult[][]>;
-  faissTrain(vectors: Float32Array | number[], nVectors: number): Promise<FaissTrainResponse>;
-  faissSave(path?: string): Promise<FaissSaveResponse>;
-  faissLoad(path: string): Promise<FaissLoadResponse>;
-  faissRemove(ids: string[]): Promise<void>;
-  faissGetStats(): Promise<FaissStatsResponse["stats"]>;
+  // Faiss operations (projectKey identifies which index to operate on)
+  faissInitialize(projectKey: string, config: FaissIndexConfig, loadPath?: string): Promise<FaissInitResponse>;
+  faissAdd(projectKey: string, ids: string[], vectors: Float32Array | number[]): Promise<FaissAddResponse>;
+  faissSearch(projectKey: string, vector: Float32Array | number[], k: number): Promise<FaissSearchResult[]>;
+  faissBatchSearch(
+    projectKey: string,
+    vectors: Float32Array | number[],
+    nQueries: number,
+    k: number,
+  ): Promise<FaissSearchResult[][]>;
+  faissTrain(projectKey: string, vectors: Float32Array | number[], nVectors: number): Promise<FaissTrainResponse>;
+  faissSave(projectKey: string, path?: string): Promise<FaissSaveResponse>;
+  faissLoad(projectKey: string, path: string): Promise<FaissLoadResponse>;
+  faissRemove(projectKey: string, ids: string[]): Promise<void>;
+  faissGetStats(projectKey: string): Promise<FaissStatsResponse["stats"]>;
 
   // CUDA operations (raw - always use CUDA if available)
   cudaInfo(): Promise<CudaInfoResponse>;
@@ -486,7 +491,7 @@ class GpuSubprocessClient implements IGpuClient {
       this.restartCount++;
       const started = await this.start();
       if (started && this.faissInitConfig) {
-        await this.faissInitialize(this.faissInitConfig);
+        await this.faissInitialize("_recovered", this.faissInitConfig);
       }
     }
   }
@@ -607,81 +612,88 @@ class GpuSubprocessClient implements IGpuClient {
   // Faiss Operations
   // =========================================================================
 
-  async faissInitialize(config: FaissIndexConfig, loadPath?: string): Promise<FaissInitResponse> {
+  async faissInitialize(projectKey: string, config: FaissIndexConfig, loadPath?: string): Promise<FaissInitResponse> {
     this.faissInitConfig = config;
 
     if (!this.worker) {
       await this.start();
     }
 
-    const response = await this.sendRequest({ type: "faiss.init", config, loadPath });
+    const response = await this.sendRequest({ type: "faiss.init", projectKey, config, loadPath });
     if (!response.success) throw new Error(extractGpuError(response));
     return response as FaissInitResponse;
   }
 
-  async faissAdd(ids: string[], vectors: Float32Array | number[]): Promise<FaissAddResponse> {
+  async faissAdd(projectKey: string, ids: string[], vectors: Float32Array | number[]): Promise<FaissAddResponse> {
     const vectorArray = vectors instanceof Float32Array ? Array.from(vectors) : vectors;
-    const response = await this.sendRequest({ type: "faiss.add", ids, vectors: vectorArray });
+    const response = await this.sendRequest({ type: "faiss.add", projectKey, ids, vectors: vectorArray });
     if (!response.success) throw new Error(extractGpuError(response));
     return response as FaissAddResponse;
   }
 
-  async faissSearch(vector: Float32Array | number[], k: number): Promise<FaissSearchResult[]> {
+  async faissSearch(projectKey: string, vector: Float32Array | number[], k: number): Promise<FaissSearchResult[]> {
     const vectorArray = vector instanceof Float32Array ? Array.from(vector) : vector;
     log.i("GPU", "faissSearch input", {
+      projectKey,
       vectorLen: vectorArray?.length,
       k,
       isArray: Array.isArray(vectorArray),
     });
-    const request: FaissSearchRequest = { type: "faiss.search", vector: vectorArray, k };
-    log.i("GPU", "faissSearch request", {
-      hasVector: !!request.vector,
-      vectorLen: request.vector?.length,
-      keys: Object.keys(request),
-    });
+    const request: FaissSearchRequest = { type: "faiss.search", projectKey, vector: vectorArray, k };
     const response = await this.sendRequest(request);
     if (!response.success) throw new Error(extractGpuError(response));
     return (response as FaissSearchResponse).results;
   }
 
   async faissBatchSearch(
+    projectKey: string,
     vectors: Float32Array | number[],
     nQueries: number,
     k: number,
   ): Promise<FaissSearchResult[][]> {
     const vectorArray = vectors instanceof Float32Array ? Array.from(vectors) : vectors;
-    const response = await this.sendRequest({ type: "faiss.batchSearch", vectors: vectorArray, nQueries, k });
+    const response = await this.sendRequest({
+      type: "faiss.batchSearch",
+      projectKey,
+      vectors: vectorArray,
+      nQueries,
+      k,
+    });
     if (!response.success) throw new Error(extractGpuError(response));
     return (response as FaissBatchSearchResponse).results;
   }
 
-  async faissTrain(vectors: Float32Array | number[], nVectors: number): Promise<FaissTrainResponse> {
+  async faissTrain(
+    projectKey: string,
+    vectors: Float32Array | number[],
+    nVectors: number,
+  ): Promise<FaissTrainResponse> {
     const vectorArray = vectors instanceof Float32Array ? Array.from(vectors) : vectors;
-    const response = await this.sendRequest({ type: "faiss.train", vectors: vectorArray, nVectors });
+    const response = await this.sendRequest({ type: "faiss.train", projectKey, vectors: vectorArray, nVectors });
     if (!response.success) throw new Error(extractGpuError(response));
     return response as FaissTrainResponse;
   }
 
-  async faissSave(path?: string): Promise<FaissSaveResponse> {
+  async faissSave(projectKey: string, path?: string): Promise<FaissSaveResponse> {
     const savePath = path || join(getDataDir(), "faiss-index.bin");
-    const response = await this.sendRequest({ type: "faiss.save", path: savePath });
+    const response = await this.sendRequest({ type: "faiss.save", projectKey, path: savePath });
     if (!response.success) throw new Error(extractGpuError(response));
     return response as FaissSaveResponse;
   }
 
-  async faissLoad(path: string): Promise<FaissLoadResponse> {
-    const response = await this.sendRequest({ type: "faiss.load", path });
+  async faissLoad(projectKey: string, path: string): Promise<FaissLoadResponse> {
+    const response = await this.sendRequest({ type: "faiss.load", projectKey, path });
     if (!response.success) throw new Error(extractGpuError(response));
     return response as FaissLoadResponse;
   }
 
-  async faissRemove(ids: string[]): Promise<void> {
-    const response = await this.sendRequest({ type: "faiss.remove", ids });
+  async faissRemove(projectKey: string, ids: string[]): Promise<void> {
+    const response = await this.sendRequest({ type: "faiss.remove", projectKey, ids });
     if (!response.success) throw new Error(extractGpuError(response));
   }
 
-  async faissGetStats(): Promise<FaissStatsResponse["stats"]> {
-    const response = await this.sendRequest({ type: "faiss.stats" });
+  async faissGetStats(projectKey: string): Promise<FaissStatsResponse["stats"]> {
+    const response = await this.sendRequest({ type: "faiss.stats", projectKey });
     if (!response.success) throw new Error(extractGpuError(response));
     return (response as FaissStatsResponse).stats;
   }

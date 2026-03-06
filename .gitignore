@@ -86,6 +86,11 @@ output.txt
 build.ps1
 Dev.Scripts/errors.txt
 
+# External libs — heavy build artifacts (CUDA addon, FAISS GPU headers/DLLs)
+# Keep faiss-{platform}-x64/ (small DLL deps for faiss-napi legacy) and tar.gz archives
+/external-libs/cuda-*/
+/external-libs/faiss-gpu-*/
+
 # External tools & dependencies (downloaded during setup)
 /external-tools/emsdk/
 /external-tools/nodejs/

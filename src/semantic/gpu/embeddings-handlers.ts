@@ -7,11 +7,10 @@
  * - Flush (persist to disk)
  * - Stats and remove
  *
- * Extracted from gpu-worker.ts for better modularity.
+ * Uses native FAISS addon (ultracode_cuda.node) via activeProjectKey.
  */
 
 import { writeFileSync } from "node:fs";
-import type { FaissIndex } from "faiss-napi";
 
 import type {
   ContentCacheEntry,
@@ -24,6 +23,7 @@ import type {
   EmbeddingsStatsResponse,
   GpuWorkerResponse,
   GpuWorkerState,
+  NativeFaissAddon,
 } from "./types.js";
 
 // =============================================================================
@@ -31,7 +31,7 @@ import type {
 // =============================================================================
 
 export interface EmbeddingsHandlerContext {
-  faissIndex: FaissIndex | null;
+  nativeFaiss: NativeFaissAddon | null;
   state: GpuWorkerState;
   contentCachePath: string | null;
   log: (message: string) => void;
@@ -46,9 +46,9 @@ export interface EmbeddingsHandlerContext {
 // =============================================================================
 
 export function handleEmbeddingsAddBatch(request: EmbeddingsAddBatchRequest, ctx: EmbeddingsHandlerContext): void {
-  const { faissIndex, state, log, sendResponse, sendError } = ctx;
+  const { nativeFaiss, state, log, sendResponse, sendError } = ctx;
 
-  if (!faissIndex || !state.faissInitialized) {
+  if (!nativeFaiss || !state.faissInitialized || !state.activeProjectKey) {
     sendError("Index not initialized");
     return;
   }
@@ -73,7 +73,6 @@ export function handleEmbeddingsAddBatch(request: EmbeddingsAddBatchRequest, ctx
     return;
   }
 
-  // Validate dimensions
   const dim = state.faissDimensions;
   for (const item of items) {
     if (item.vector.length !== dim) {
@@ -83,8 +82,6 @@ export function handleEmbeddingsAddBatch(request: EmbeddingsAddBatchRequest, ctx
   }
 
   try {
-    // Prepare vectors for Faiss using Float32Array for fast bulk copy
-    // faiss-napi expects number[], but we use typed array internally for performance
     const totalSize = items.length * dim;
     const vectorBuffer = new Float32Array(totalSize);
 
@@ -93,22 +90,17 @@ export function handleEmbeddingsAddBatch(request: EmbeddingsAddBatchRequest, ctx
       const offset = i * dim;
       const vec = item.vector;
 
-      // Fast path: use .set() if vector is already Float32Array
       if (vec instanceof Float32Array) {
         vectorBuffer.set(vec, offset);
       } else {
-        // Fallback for number[] input
         for (let j = 0; j < dim; j++) {
           vectorBuffer[offset + j] = vec[j]!;
         }
       }
     }
 
-    // Convert to number[] for faiss-napi (optimized Array.from)
-    const vectorArray = Array.from(vectorBuffer);
-
-    // Add to Faiss index
-    faissIndex.add(vectorArray);
+    // Add to native FAISS index
+    nativeFaiss.faissIndexAdd(state.activeProjectKey, vectorBuffer, items.length);
 
     // Update ID mappings and content cache
     const startId = state.faissTotalVectors;
@@ -118,7 +110,6 @@ export function handleEmbeddingsAddBatch(request: EmbeddingsAddBatchRequest, ctx
       state.faissIdMap.set(item.id, internalId);
       state.faissReverseIdMap.set(internalId, item.id);
 
-      // Store content/metadata in cache
       if (item.content || item.metadata) {
         state.contentCache.set(item.id, {
           content: item.content,
@@ -130,12 +121,15 @@ export function handleEmbeddingsAddBatch(request: EmbeddingsAddBatchRequest, ctx
 
     state.faissTotalVectors += items.length;
 
+    // Update IndexEntry in pool
+    const entry = state.indexPool.get(state.activeProjectKey);
+    if (entry) {
+      entry.totalVectors = state.faissTotalVectors;
+      entry.isDirty = true;
+    }
+
     const addTimeMs = performance.now() - startTime;
     log(`[embeddings] Added ${items.length} vectors in ${addTimeMs.toFixed(1)}ms (total: ${state.faissTotalVectors})`);
-
-    // Help GC - clear large temporary arrays
-    vectorBuffer.fill(0);
-    vectorArray.length = 0;
 
     const response: EmbeddingsAddBatchResponse = {
       success: true,
@@ -151,9 +145,9 @@ export function handleEmbeddingsAddBatch(request: EmbeddingsAddBatchRequest, ctx
 }
 
 export function handleEmbeddingsSearch(request: EmbeddingsSearchRequest, ctx: EmbeddingsHandlerContext): void {
-  const { faissIndex, state, sendResponse, sendError } = ctx;
+  const { nativeFaiss, state, sendResponse, sendError } = ctx;
 
-  if (!faissIndex || !state.faissInitialized) {
+  if (!nativeFaiss || !state.faissInitialized || !state.activeProjectKey) {
     sendError("Index not initialized");
     return;
   }
@@ -172,8 +166,6 @@ export function handleEmbeddingsSearch(request: EmbeddingsSearchRequest, ctx: Em
   }
 
   try {
-    // faiss-napi expects number[], not Float32Array
-    const queryArray = Array.isArray(vector) ? (vector as number[]) : Array.from(vector as Float32Array);
     const actualK = Math.min(k, state.faissTotalVectors);
 
     if (actualK === 0) {
@@ -187,7 +179,8 @@ export function handleEmbeddingsSearch(request: EmbeddingsSearchRequest, ctx: Em
       return;
     }
 
-    const result = faissIndex.search(queryArray, actualK);
+    const float32Query = new Float32Array(vector);
+    const result = nativeFaiss.faissIndexSearch(state.activeProjectKey, float32Query, actualK);
     const { distances, labels } = result;
 
     const results: Array<{
@@ -197,7 +190,7 @@ export function handleEmbeddingsSearch(request: EmbeddingsSearchRequest, ctx: Em
       metadata?: Record<string, unknown>;
     }> = [];
     for (let i = 0; i < actualK; i++) {
-      const internalId = labels[i]!;
+      const internalId = Number(labels[i]!);
       if (internalId === -1) continue;
 
       const externalId = state.faissReverseIdMap.get(internalId);
@@ -211,7 +204,6 @@ export function handleEmbeddingsSearch(request: EmbeddingsSearchRequest, ctx: Em
         score,
       };
 
-      // Include content/metadata if requested
       if (includeContent) {
         const cached = state.contentCache.get(externalId);
         if (cached) {
@@ -238,15 +230,15 @@ export function handleEmbeddingsSearch(request: EmbeddingsSearchRequest, ctx: Em
 }
 
 export function handleEmbeddingsFlush(ctx: EmbeddingsHandlerContext): void {
-  const { faissIndex, state, contentCachePath, log, logError, sendResponse, saveContentCache } = ctx;
+  const { nativeFaiss, state, contentCachePath, log, logError, sendResponse, saveContentCache } = ctx;
   const startTime = performance.now();
   let flushedCount = 0;
 
-  // Save Faiss index
-  if (faissIndex && state.faissInitialized && contentCachePath) {
+  // Save Faiss index via native addon
+  if (nativeFaiss && state.faissInitialized && state.activeProjectKey && contentCachePath) {
     const indexPath = contentCachePath.replace(".content.json", "");
     try {
-      faissIndex.write(indexPath);
+      nativeFaiss.faissIndexSave(state.activeProjectKey, indexPath);
       const idMapPath = `${indexPath}.idmap.json`;
       const idMapData = {
         idMap: Object.fromEntries(state.faissIdMap),
@@ -280,10 +272,9 @@ export function handleEmbeddingsFlush(ctx: EmbeddingsHandlerContext): void {
 export function handleEmbeddingsStats(ctx: EmbeddingsHandlerContext): void {
   const { state, sendResponse } = ctx;
 
-  // Calculate content cache memory (rough estimate)
   let cacheMemoryBytes = 0;
   for (const [id, entry] of state.contentCache) {
-    cacheMemoryBytes += id.length * 2; // string overhead
+    cacheMemoryBytes += id.length * 2;
     if (entry.content) cacheMemoryBytes += entry.content.length * 2;
     if (entry.metadata) cacheMemoryBytes += JSON.stringify(entry.metadata).length * 2;
   }
@@ -314,7 +305,6 @@ export function handleEmbeddingsRemove(request: { ids: string[] }, ctx: Embeddin
       state.faissReverseIdMap.delete(internalId);
       removedCount++;
     }
-    // Also remove from content cache
     if (state.contentCache.has(id)) {
       state.contentCache.delete(id);
       state.contentCacheDirty = true;

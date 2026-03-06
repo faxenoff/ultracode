@@ -69,7 +69,7 @@ export default defineConfig([
       "bun:sqlite",
 
       // Native modules with dynamic requires - must not be bundled
-      "faiss-napi", // FAISS vector search - native NAPI bindings
+      "faiss-napi", // Legacy fallback (faiss-client.ts) - main path uses native addon
       "@lenml/tokenizers", // Lightweight tokenizer for OVMS provider
     ],
 
@@ -151,9 +151,33 @@ export default defineConfig([
         console.warn("[tsup] Prompts copy warning:", e.message);
       }
 
-      // Copy Roslyn addon if available (built by scripts/build-roslyn)
-      const { cpSync, existsSync } = await import("node:fs");
+      // Copy CUDA addon + DLLs from external-libs/ to dist/native/cuda/
+      const { cpSync, existsSync, readdirSync } = await import("node:fs");
       const { resolve } = await import("node:path");
+
+      const plat = process.platform === "win32" ? "win32" : "linux";
+      const cudaSrc = resolve("external-libs", `cuda-${plat}-x64`);
+      const cudaDst = join("dist", "native", "cuda");
+      const cudaNode = join(cudaSrc, "ultracode_cuda.node");
+
+      if (existsSync(cudaNode)) {
+        try {
+          await mkdir(cudaDst, { recursive: true });
+          const files = readdirSync(cudaSrc).filter(
+            (f) => f.endsWith(".node") || f.endsWith(".dll") || f.includes(".so"),
+          );
+          for (const f of files) {
+            await copyFile(join(cudaSrc, f), join(cudaDst, f));
+          }
+          console.log(`[tsup] Copied CUDA addon + ${files.length - 1} libs to dist/native/cuda/`);
+        } catch (e: any) {
+          console.warn("[tsup] CUDA addon copy warning:", e.message);
+        }
+      } else {
+        console.log("[tsup] CUDA addon not found (optional — run scripts/build-cuda.ps1 to build)");
+      }
+
+      // Copy Roslyn addon if available (built by scripts/build-roslyn)
       const addonDst = join("dist", "roslyn-addon");
       const addonDll = join(addonDst, "UltraCode.CSharp.dll");
 
@@ -253,8 +277,8 @@ export default defineConfig([
     },
 
     external: [
-      "faiss-napi", // Must be external - native module
-      // CUDA addon is loaded via require() at runtime, not bundled
+      "faiss-napi", // Legacy fallback - main path uses native FAISS addon
+      // CUDA addon (ultracode_cuda.node) is loaded via require() at runtime, not bundled
     ],
 
     dts: false,

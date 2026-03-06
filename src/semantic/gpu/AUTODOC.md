@@ -11,7 +11,7 @@ language: typescript
 
 ## Overview
 
-The gpu module implements a unified GPU worker architecture that combines FAISS (vector indexing) and CUDA (similarity computation) operations in a single interface. Under Node.js, faiss-napi is used directly; under Bun, a Node.js subprocess handles NAPI-dependent operations via Named Pipe IPC. The module includes adaptive thresholds that dynamically choose between CPU and GPU execution based on vector count and dimensions. CUDA operations include cosine similarity, batch cosine similarity, Euclidean distance, and vector normalization. The module also supports an embeddings pipeline for unified vector + content storage.
+The gpu module implements a unified GPU worker architecture that combines FAISS (vector indexing) and CUDA (similarity computation) operations in a single interface. The native FAISS addon (`ultracode_cuda.node` compiled with `ENABLE_FAISS_CPU`) replaces `faiss-napi` entirely in the GPU worker pipeline. FAISS indexes are managed internally by C++ (keyed by `projectKey`) — TypeScript only tracks metadata and ID maps via `IndexEntry`. Under Bun, a Node.js subprocess handles NAPI-dependent operations via Named Pipe IPC. The module includes adaptive thresholds that dynamically choose between CPU and GPU execution based on vector count and dimensions. CUDA operations include cosine similarity, batch cosine similarity, Euclidean distance, and vector normalization. The module also supports an embeddings pipeline for unified vector + content storage.
 
 ## Data Flow
 
@@ -49,8 +49,7 @@ The gpu module implements a unified GPU worker architecture that combines FAISS 
 
 | Package | Purpose |
 |---------|---------|
-| `faiss-napi` | FAISS NAPI bindings (loaded in worker or direct client) |
-| CUDA addon | Optional native CUDA module for GPU-accelerated similarity |
+| `ultracode_cuda.node` | Native CUDA addon with optional FAISS CPU (`ENABLE_FAISS_CPU`) and GPU (`ENABLE_FAISS_GPU`) support. Replaces `faiss-napi` in the GPU worker pipeline. |
 
 ## Behavioral Properties
 
@@ -79,15 +78,22 @@ GPU client gracefully degrades to CPU when CUDA is unavailable or fails to initi
                               │ IPC (stdin/stdout JSON)
 ┌─────────────────────────────▼───────────────────────────────────┐
 │                  Node.js GPU Worker                             │
-│  ┌─────────────────────┐  ┌─────────────────────┐              │
-│  │ CUDA Module         │  │ faiss-node          │              │
-│  │ (similarity ops)    │  │ (vector indexing)   │              │
-│  │                     │  │                     │              │
-│  │ - cosineSimilarity  │  │ - init/add/search   │              │
-│  │ - batchCosine       │  │ - batchSearch       │              │
-│  │ - euclidean         │  │ - train/save/load   │              │
-│  │ - normalize         │  │                     │              │
-│  └─────────────────────┘  └─────────────────────┘              │
+│  ┌──────────────────────────────────────────────────────┐      │
+│  │        ultracode_cuda.node (native addon)            │      │
+│  │                                                      │      │
+│  │  CUDA ops          Native FAISS (CPU)  FAISS GPU     │      │
+│  │  - cosineSimilarity  - faissIndexCreate  - gpuIvf*   │      │
+│  │  - batchCosine       - faissIndexTrain               │      │
+│  │  - euclidean         - faissIndexAdd/Search           │      │
+│  │  - normalize         - faissIndexSave/Load            │      │
+│  │                      - faissIndexBatchSearch           │      │
+│  │                      - faissIndexRemove/Reset/Stats    │      │
+│  │  hasNativeFaiss=true when ENABLE_FAISS_CPU compiled  │      │
+│  └──────────────────────────────────────────────────────┘      │
+│                                                                 │
+│  Multi-Index Pool: indexes keyed by projectKey (hash:branch)   │
+│  LRU eviction when pool > MAX_LOADED_INDEXES (default 10)      │
+│  IVF auto-training: buffer vectors until nlist*39, then train  │
 └─────────────────────────────────────────────────────────────────┘
 ```
 
@@ -103,25 +109,44 @@ type CudaCommands =
   | { type: "cuda.normalize"; vectors: number[][] };
 ```
 
-### Faiss commands
+### Faiss commands (via native addon)
 ```typescript
+// All faiss.* IPC messages carry projectKey field
 type FaissCommands =
-  | { type: "faiss.init"; config: FaissIndexConfig; loadPath?: string }
-  | { type: "faiss.add"; ids: string[]; vectors: number[] }
-  | { type: "faiss.search"; vector: number[]; k: number }
-  | { type: "faiss.batchSearch"; vectors: number[]; nQueries: number; k: number }
-  | { type: "faiss.train"; vectors: number[]; nVectors: number }
-  | { type: "faiss.save"; path: string }
-  | { type: "faiss.load"; path: string }
-  | { type: "faiss.remove"; ids: string[] }
-  | { type: "faiss.stats" };
+  | { type: "faiss.init"; config: FaissIndexConfig; projectKey: string; loadPath?: string }
+  | { type: "faiss.add"; ids: string[]; vectors: number[]; projectKey: string }
+  | { type: "faiss.search"; vector: number[]; k: number; projectKey: string }
+  | { type: "faiss.batchSearch"; vectors: number[]; nQueries: number; k: number; projectKey: string }
+  | { type: "faiss.train"; vectors: number[]; nVectors: number; projectKey: string }
+  | { type: "faiss.save"; path: string; projectKey: string }
+  | { type: "faiss.load"; path: string; projectKey: string }
+  | { type: "faiss.remove"; ids: string[]; projectKey: string }
+  | { type: "faiss.stats"; projectKey?: string };
 ```
+
+## Implementation Notes
+
+### Native FAISS Addon Integration
+- `gpu-worker.ts` loads `ultracode_cuda.node` and checks `hasNativeFaiss` flag. If true, the addon is cast to `NativeFaissAddon` (defined in `types.ts`).
+- `faiss-handlers.ts` uses `nativeFaiss.faissIndexCreate/Train/Add/Search/Save/Load` instead of `faiss-napi` methods. `IndexEntry` no longer holds a `FaissIndex` object — the C++ addon manages index state internally by `projectKey`.
+- `embeddings-handlers.ts` uses `nativeFaiss` + `state.activeProjectKey` for all FAISS operations.
+- IVF auto-training: vectors are buffered in TypeScript (`trainingBuffer` in `IndexEntry`) until `nlist * 39` threshold, then `faissIndexTrain()` + `faissIndexAdd()` are called to train and bulk-add.
+- LRU eviction: when pool exceeds `MAX_LOADED_INDEXES=10`, oldest index is saved to disk (`faissIndexSave`) and removed from memory (`faissIndexRemove`).
+
+### Addon Loading Path
+Worker searches for `ultracode_cuda.node` in order:
+1. `external-libs/cuda-{platform}-x64/` (canonical build output)
+2. `dist/native/cuda/` (copied during `npm run build` via tsup)
+3. `build/Release/` (raw cmake-js output)
+
+### CPU-Only Mode
+When `deviceCount === 0` (no NVIDIA GPU) but `hasNativeFaiss === true`, the worker still initializes successfully with CPU-only FAISS. All vector operations fall back to SIMD-accelerated CPU implementations.
 
 ## Known Limitations
 
-- CUDA addon is not compatible with NVIDIA Blackwell architecture (compute capability >= 12.0).
 - Named Pipe IPC adds serialization overhead for large vector batches compared to direct calls.
 - Single GPU worker process may become a bottleneck under very high concurrency.
+- `faiss-napi` is still used as legacy fallback in `faiss-client.ts` (in-process path). The GPU worker pipeline no longer uses it.
 
 ## Exports
 
@@ -132,13 +157,13 @@ type FaissCommands =
 | File | Description |
 |------|-------------|
 | `adaptive-thresholds.ts` | Dynamic CPU vs GPU threshold selection based on vector dimensions and batch size |
-| `cuda-handlers.ts` | CUDA operation handlers for cosine, euclidean, normalization, and batch operations |
-| `embeddings-handlers.ts` | Embeddings pipeline handlers for unified vector + content storage |
-| `faiss-handlers.ts` | FAISS operation handlers for init, add, search, save, load, and remove |
+| `cuda-handlers.ts` | CUDA operation handlers for cosine, euclidean, normalization, and batch operations. `CUDAAddon` interface extended with optional `NativeFaissAddon` methods. |
+| `embeddings-handlers.ts` | Embeddings pipeline handlers for unified vector + content storage. Uses `nativeFaiss` + `activeProjectKey` instead of faiss-napi. |
+| `faiss-handlers.ts` | FAISS operation handlers via native addon multi-index pool. Manages `IndexEntry` per projectKey, IVF auto-training buffer, LRU eviction. No faiss-napi dependency. |
 | `gpu-client.ts` | Runtime-aware IGpuClient with direct (Node.js) and subprocess (Bun) modes |
-| `gpu-worker.ts` | Node.js subprocess entry point combining FAISS and CUDA modules |
+| `gpu-worker.ts` | Node.js subprocess entry point. Loads `ultracode_cuda.node`, detects `hasNativeFaiss`, casts to `NativeFaissAddon`. Falls back to CPU-only FAISS when no GPU. |
 | `index.ts` | Re-exports gpu-client and types |
 | `named-pipe-transport.ts` | Named Pipe / Unix socket IPC transport with packet framing |
 | `request-helpers.ts` | Request serialization helpers for Float32Array and batch vectors |
 | `type-guards.ts` | Type guard utilities for GPU response types |
-| `types.ts` | Complete IPC protocol types for FAISS, CUDA, embeddings, and lifecycle operations |
+| `types.ts` | Complete IPC protocol types for FAISS, CUDA, embeddings, and lifecycle operations. Defines `NativeFaissAddon` interface and `IndexEntry` (no `index` field — C++ manages indexes internally). |

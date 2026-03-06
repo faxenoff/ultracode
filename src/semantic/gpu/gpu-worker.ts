@@ -4,7 +4,7 @@
  *
  * Runs as a standalone Node.js process, communicates with Bun parent via stdin/stdout JSON.
  * Combines:
- * - faiss-napi: Native Faiss bindings with OpenMP parallelization
+ * - Native FAISS addon: FAISS C++ API compiled into ultracode_cuda.node (ENABLE_FAISS_CPU)
  * - CUDA addon: Native NVIDIA GPU operations (similarity, normalization)
  *
  * Usage: node gpu-worker.js
@@ -18,7 +18,6 @@
 import { existsSync, readFileSync, writeFileSync } from "node:fs";
 import { dirname, join } from "node:path";
 import { createInterface } from "node:readline";
-import type { FaissIndex } from "faiss-napi";
 
 import {
   type CUDAAddon,
@@ -40,7 +39,6 @@ import {
 // Import handlers from extracted modules
 import {
   type FaissHandlerContext,
-  type FaissNapiModule,
   handleFaissAdd,
   handleFaissBatchSearch,
   handleFaissInit,
@@ -60,30 +58,15 @@ import type {
   GpuWorkerRequest,
   GpuWorkerResponse,
   GpuWorkerState,
+  NativeFaissAddon,
 } from "./types.js";
 
 // =============================================================================
 // Dynamic Imports (handle missing dependencies)
 // =============================================================================
 
-// faiss-napi module (optional dependency)
-type FaissModule = FaissNapiModule;
-
-let faiss: FaissModule | null = null;
 let cudaAddon: CUDAAddon | null = null;
-
-async function loadFaiss(): Promise<boolean> {
-  try {
-    const mod = await import("faiss-napi");
-    // Handle ESM/CJS wrapper: faiss-napi exports default which contains Index
-    faiss = (mod.default ?? mod) as unknown as FaissModule;
-    log("Faiss loaded successfully (faiss-napi)");
-    return true;
-  } catch (error) {
-    logError(`Failed to load faiss-napi: ${(error as Error).message}`);
-    return false;
-  }
-}
+let nativeFaiss: NativeFaissAddon | null = null;
 
 async function loadCuda(): Promise<boolean> {
   // Check environment override
@@ -92,9 +75,6 @@ async function loadCuda(): Promise<boolean> {
     return false;
   }
 
-  // Note: Blackwell (CC 12.0) support added to CMakeLists.txt
-  // Try loading addon directly - it's compiled for CC 120
-
   // Create require function for ESM compatibility (native modules need require())
   const { createRequire } = await import("node:module");
   const require = createRequire(import.meta.url);
@@ -102,13 +82,14 @@ async function loadCuda(): Promise<boolean> {
   // Try to load CUDA addon from multiple locations
   const plat = process.platform === "win32" ? "win32" : "linux";
   const possiblePaths = [
-    // When running from dist/
+    // Canonical location (build-cuda.ps1 copies here)
+    join(process.cwd(), "external-libs/cuda-" + plat + "-x64/ultracode_cuda.node"),
+    // When running from dist/ (relative to worker script)
     join(
       dirname(import.meta.url.replace("file://", "").replace(/^\/([A-Za-z]:)/, "$1")),
       "../../../external-libs/cuda-" + plat + "-x64/ultracode_cuda.node",
     ),
-    // Direct paths
-    join(process.cwd(), "external-libs/cuda-" + plat + "-x64/ultracode_cuda.node"),
+    // Fallback: dist/ and build/ locations
     join(process.cwd(), "dist/native/cuda/ultracode_cuda.node"),
     join(process.cwd(), "build/Release/ultracode_cuda.node"),
   ];
@@ -126,9 +107,22 @@ async function loadCuda(): Promise<boolean> {
         log(`CUDA loaded: ${info.deviceName} (CC ${info.computeCapability}, ${info.totalMemoryMB}MB)`);
         state.cudaAvailable = true;
         state.cudaDeviceInfo = info;
+
+        // Check for native FAISS support
+        if (cudaAddon!.hasNativeFaiss) {
+          nativeFaiss = cudaAddon as unknown as NativeFaissAddon;
+          log("Native FAISS available in CUDA addon (replaces faiss-napi)");
+        }
+
         return true;
       } else {
-        log(`CUDA loaded but no devices found`);
+        log(`CUDA loaded but no GPU devices found`);
+        // Still check for native FAISS (CPU-only mode)
+        if (cudaAddon!.hasNativeFaiss) {
+          nativeFaiss = cudaAddon as unknown as NativeFaissAddon;
+          log("Native FAISS available (CPU mode, no GPU)");
+          return true;
+        }
       }
     } catch (error) {
       log(`CUDA load error at ${addonPath}: ${(error as Error).message}`);
@@ -155,8 +149,13 @@ function logError(message: string): void {
 // Worker State
 // =============================================================================
 
+const MAX_LOADED_INDEXES = 10;
+
 const state: GpuWorkerState = {
-  // Faiss state
+  // Multi-index pool
+  indexPool: new Map(),
+  maxLoadedIndexes: MAX_LOADED_INDEXES,
+  // Legacy single-index state (backward compat)
   faissInitialized: false,
   faissIndexType: null,
   faissDimensions: 0,
@@ -164,27 +163,22 @@ const state: GpuWorkerState = {
   faissIsTrained: false,
   faissIdMap: new Map(),
   faissReverseIdMap: new Map(),
+  activeProjectKey: null,
   // Content cache (id → content/metadata)
   contentCache: new Map(),
   contentCacheDirty: false,
   // CUDA state
   cudaAvailable: false,
   cudaDeviceInfo: null,
+  gpuFaissAvailable: false,
   // Worker state
   startTime: Date.now(),
 };
-
-// Faiss index instance
-let faissIndex: FaissIndex | null = null;
 
 // =============================================================================
 // Global Response Capture (for Named Pipe binary IPC)
 // =============================================================================
 
-/**
- * Global interface for Named Pipe response capturing
- * Used by handleNamedPipeRequest to capture responses synchronously
- */
 interface GlobalWithCapture {
   _captureResponse?: (response: GpuWorkerResponse) => void;
 }
@@ -194,7 +188,6 @@ interface GlobalWithCapture {
 // =============================================================================
 
 function sendResponse(response: GpuWorkerResponse): void {
-  // Check if we're capturing response for Named Pipe
   const globalWithCapture = global as unknown as GlobalWithCapture;
   if (globalWithCapture._captureResponse) {
     globalWithCapture._captureResponse(response);
@@ -216,7 +209,6 @@ function sendError(error: string, requestId?: string): void {
 // Content Cache Persistence
 // =============================================================================
 
-/** Path for content cache file (relative to index) */
 let contentCachePath: string | null = null;
 
 function setContentCachePath(indexPath: string): void {
@@ -260,16 +252,12 @@ function loadContentCache(): void {
 
 function getFaissContext(): FaissHandlerContext {
   return {
-    faiss,
-    faissIndex,
+    nativeFaiss,
     state,
     log,
     logError,
     sendResponse,
     sendError,
-    setFaissIndex: (index: FaissIndex | null) => {
-      faissIndex = index;
-    },
     setContentCachePath,
     loadContentCache,
     saveContentCache,
@@ -287,7 +275,7 @@ function getCudaContext(): CudaHandlerContext {
 
 function getEmbeddingsContext(): EmbeddingsHandlerContext {
   return {
-    faissIndex,
+    nativeFaiss,
     state,
     contentCachePath,
     log,
@@ -304,25 +292,40 @@ function getEmbeddingsContext(): EmbeddingsHandlerContext {
 
 function handleStats(): void {
   let faissMemoryMB = 0;
-  if (state.faissTotalVectors > 0) {
+  let totalVectors = 0;
+
+  for (const [, entry] of state.indexPool) {
+    if (entry.totalVectors > 0) {
+      const vectorMemory = entry.totalVectors * entry.dimensions * 4;
+      const graphMemory = entry.indexType === "hnsw" ? entry.totalVectors * 32 * 2 : 0;
+      faissMemoryMB += (vectorMemory + graphMemory) / 1024 / 1024;
+      totalVectors += entry.totalVectors;
+    }
+  }
+
+  if (state.indexPool.size === 0 && state.faissTotalVectors > 0) {
     const vectorMemory = state.faissTotalVectors * state.faissDimensions * 4;
     const graphMemory = state.faissIndexType === "hnsw" ? state.faissTotalVectors * 32 * 2 : 0;
     faissMemoryMB = (vectorMemory + graphMemory) / 1024 / 1024;
+    totalVectors = state.faissTotalVectors;
   }
 
   const response: GpuStatsResponse = {
     success: true,
     type: "stats",
     faiss: {
-      initialized: state.faissInitialized,
+      initialized: state.faissInitialized || state.indexPool.size > 0,
       indexType: state.faissIndexType,
       dimensions: state.faissDimensions,
-      totalVectors: state.faissTotalVectors,
+      totalVectors,
       memoryUsageMB: faissMemoryMB,
+      loadedIndexes: state.indexPool.size,
+      indexPoolKeys: Array.from(state.indexPool.keys()),
     },
     cuda: {
       available: state.cudaAvailable,
       deviceInfo: state.cudaDeviceInfo,
+      gpuFaissAvailable: state.gpuFaissAvailable,
     },
     uptime: Date.now() - state.startTime,
   };
@@ -341,15 +344,14 @@ function handleShutdown(): void {
 
 async function handleRequest(request: GpuWorkerRequest): Promise<void> {
   try {
-    // Handle shutdown even if modules not available
     if (request.type === "shutdown") {
       handleShutdown();
       return;
     }
 
-    // Check faiss availability for faiss.* operations
-    if (request.type.startsWith("faiss.") && !faiss) {
-      sendError("Faiss native module not available (DLL dependencies missing)");
+    // Check native FAISS availability for faiss.* operations
+    if (request.type.startsWith("faiss.") && !nativeFaiss) {
+      sendError("Native FAISS addon not available (compile with ENABLE_FAISS_CPU)");
       return;
     }
 
@@ -359,9 +361,9 @@ async function handleRequest(request: GpuWorkerRequest): Promise<void> {
       return;
     }
 
-    // Check faiss availability for embeddings.* operations (uses Faiss internally)
-    if (request.type.startsWith("embeddings.") && !faiss) {
-      sendError("Faiss native module not available (required for embeddings)");
+    // Check FAISS availability for embeddings.* operations
+    if (request.type.startsWith("embeddings.") && !nativeFaiss) {
+      sendError("Native FAISS addon not available (required for embeddings)");
       return;
     }
 
@@ -396,7 +398,7 @@ async function handleRequest(request: GpuWorkerRequest): Promise<void> {
         handleFaissTrain(request, faissCtx);
         break;
       case "faiss.stats":
-        handleFaissStats(faissCtx);
+        handleFaissStats(faissCtx, (request as { projectKey?: string }).projectKey);
         break;
 
       // CUDA operations
@@ -442,7 +444,6 @@ async function handleRequest(request: GpuWorkerRequest): Promise<void> {
       case "stats":
         handleStats();
         break;
-      // shutdown handled above before faiss/cuda checks
 
       default:
         sendError(`Unknown request type: ${(request as { type: string }).type}`);
@@ -456,27 +457,19 @@ async function handleRequest(request: GpuWorkerRequest): Promise<void> {
 // IPC Setup
 // =============================================================================
 
-// Named Pipe server instance (for Bun→Node binary IPC)
 let namedPipeServer: NamedPipeServer | null = null;
 
-/**
- * Header metadata for binary packet reconstruction
- */
 interface BinaryPacketHeader {
   dimensions?: number;
   queryCount?: number;
   items?: Array<{ id: string; content?: string; metadata?: Record<string, unknown> }>;
 }
 
-/**
- * Reconstruct request with vectors from binary packet
- */
 function reconstructRequestWithVectors(
   request: GpuWorkerRequest,
   header: BinaryPacketHeader,
   vectors: Float32Array,
 ): GpuWorkerRequest {
-  // Create mutable copy for reconstruction
   const reconstructed = { ...request } as Record<string, unknown>;
 
   switch (request.type) {
@@ -533,10 +526,6 @@ function reconstructRequestWithVectors(
   return reconstructed as unknown as GpuWorkerRequest;
 }
 
-/**
- * Handle Named Pipe binary request
- * Converts binary packet to JSON request, processes, and returns binary response
- */
 async function handleNamedPipeRequest(packet: Buffer): Promise<Buffer> {
   try {
     const { header, vectors } = parsePacket(packet);
@@ -544,35 +533,28 @@ async function handleNamedPipeRequest(packet: Buffer): Promise<Buffer> {
 
     log(`[NamedPipe] Received: type=${request.type}, packetLen=${packet.length}, vectorsLen=${vectors?.length ?? 0}`);
 
-    // If vectors are present, reconstruct request with typed vectors
     if (vectors && vectors.length > 0) {
       const headerMetadata = header as unknown as BinaryPacketHeader;
       request = reconstructRequestWithVectors(request, headerMetadata, vectors);
     }
 
-    // Capture response by temporarily replacing sendResponse
     let capturedResponse: GpuWorkerResponse | null = null;
 
-    // Override sendResponse to capture the response
     const globalWithCapture = global as unknown as GlobalWithCapture;
     globalWithCapture._captureResponse = (response: GpuWorkerResponse) => {
       capturedResponse = response;
     };
 
-    // Process the request
     await handleRequest(request);
 
-    // Restore and get response
     delete globalWithCapture._captureResponse;
 
     if (capturedResponse) {
-      // Check if response contains vectors (for future optimization)
       type ResponseWithVectors = GpuWorkerResponse & {
         vectors?: number[][];
       };
       const responseWithVectors = capturedResponse as ResponseWithVectors;
       if (responseWithVectors.vectors && Array.isArray(responseWithVectors.vectors)) {
-        // Return binary response with vectors
         const vectorData = new Float32Array(responseWithVectors.vectors.flat());
         delete responseWithVectors.vectors;
         return createPacket(capturedResponse, vectorData);
@@ -589,17 +571,21 @@ async function handleNamedPipeRequest(packet: Buffer): Promise<Buffer> {
 async function main(): Promise<void> {
   log("Starting GPU worker...");
 
-  // Load modules in parallel
-  const [faissLoaded, cudaLoaded] = await Promise.all([loadFaiss(), loadCuda()]);
+  // Load CUDA addon (includes native FAISS if compiled with ENABLE_FAISS_CPU)
+  const cudaLoaded = await loadCuda();
+  const faissAvailable = nativeFaiss !== null;
 
-  if (!faissLoaded && !cudaLoaded) {
-    logError("Neither Faiss nor CUDA available, worker has limited functionality");
+  if (!faissAvailable && !cudaLoaded) {
+    logError("Neither Native FAISS nor CUDA available, worker has limited functionality");
   }
 
-  log(`Capabilities: Faiss=${faissLoaded}, CUDA=${cudaLoaded}`);
+  // Check for GPU FAISS support in CUDA addon
+  const hasGpuFaiss = cudaAddon?.hasGpuFaiss ?? false;
+  state.gpuFaissAvailable = hasGpuFaiss;
+
+  log(`Capabilities: NativeFaiss=${faissAvailable}, CUDA=${cudaLoaded}, GPU-FAISS=${hasGpuFaiss}`);
 
   // Start Named Pipe server for binary IPC (parallel with stdin)
-  // Use worker's own PID for unique pipe name (not parent PID - multiple workers may share same parent)
   const parentPid = process.ppid;
   const pipeId = `${process.pid}`;
 
@@ -609,7 +595,6 @@ async function main(): Promise<void> {
       onRequest: handleNamedPipeRequest,
       onReady: () => {
         log(`Named Pipe server ready: ${namedPipeServer!.path}`);
-        // Send pipe path to parent via stdout (special message)
         process.stdout.write(`${JSON.stringify({ type: "pipe.ready", path: namedPipeServer!.path })}\n`);
       },
       onError: (err) => {
@@ -621,7 +606,7 @@ async function main(): Promise<void> {
     log(`Named Pipe server failed to start: ${(error as Error).message}, using stdin only`);
   }
 
-  // Setup stdin reading (fallback and primary for JSON messages)
+  // Setup stdin reading
   const rl = createInterface({
     input: process.stdin,
     output: process.stdout,
@@ -635,7 +620,6 @@ async function main(): Promise<void> {
 
     try {
       const request = JSON.parse(line) as GpuWorkerRequest;
-      // Debug logging: check if request has vector field
       const requestWithVector = request as Partial<{ vector?: number[] } & { vectors?: number[] } & GpuWorkerRequest>;
       const vec = requestWithVector.vector ?? requestWithVector.vectors;
       log(
@@ -653,7 +637,6 @@ async function main(): Promise<void> {
     process.exit(0);
   });
 
-  // Additional stdin handlers for orphan detection
   process.stdin.on("end", () => {
     log("stdin end, shutting down");
     namedPipeServer?.stop();
@@ -694,27 +677,25 @@ async function main(): Promise<void> {
     process.exit(0);
   });
 
-  // Handle parent disconnect (IPC channel closed)
   process.on("disconnect", () => {
     log("Disconnected from parent, shutting down");
     namedPipeServer?.stop();
     process.exit(0);
   });
 
-  // Orphan detection: check if parent is still alive (Windows pipes don't close reliably)
-  // This runs in Node.js (not Bun), so setInterval is safe
+  // Orphan detection
   if (parentPid && parentPid > 1) {
     const checkParent = setInterval(() => {
       try {
-        process.kill(parentPid, 0); // Throws if process doesn't exist
+        process.kill(parentPid, 0);
       } catch {
         log(`Parent process ${parentPid} died, exiting`);
         clearInterval(checkParent);
         namedPipeServer?.stop();
         process.exit(0);
       }
-    }, 30000); // Check every 30 seconds
-    checkParent.unref(); // Don't keep process alive just for this timer
+    }, 30000);
+    checkParent.unref();
   }
 
   log("Ready, waiting for commands on stdin and Named Pipe");

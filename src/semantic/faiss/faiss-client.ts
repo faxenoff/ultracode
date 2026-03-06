@@ -255,6 +255,13 @@ class FaissNapiClient implements IFaissClient {
         break;
       }
 
+      case "ivfsq": {
+        const nlist = config.ivfNlist ?? 256;
+        const bits = (config as { sqBits?: number }).sqBits ?? 8;
+        factoryString = `IVF${nlist},SQ${bits}`;
+        break;
+      }
+
       default:
         throw new Error(`Unknown index type: ${indexType}`);
     }

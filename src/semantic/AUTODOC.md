@@ -121,7 +121,8 @@ Full pipeline for semantic code analysis: embedding generation via pluggable pro
 
 | Package | Usage |
 |---------|-------|
-| `faiss-napi` | NAPI bindings for Faiss vector indexing (HNSW, IVF, Flat) |
+| `ultracode_cuda.node` | Native FAISS addon (CPU + optional GPU). Primary FAISS backend in GPU worker pipeline. Replaces `faiss-napi`. |
+| `faiss-napi` | **Legacy** NAPI bindings for Faiss (used only in `faiss-client.ts` in-process fallback) |
 | `lru-cache` | LRU cache with TTL for `SemanticCache` |
 | gRPC (runtime) | OVMS Native provider communication |
 

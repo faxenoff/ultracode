@@ -31,7 +31,7 @@ export interface LayeredIndexConfig {
   /** Index dimensions (e.g., 384 for all-MiniLM-L6-v2) */
   dimensions: number;
   /** Index type (hnsw, flat, etc.) */
-  indexType: "hnsw" | "flat" | "ivf" | "ivfpq";
+  indexType: "hnsw" | "flat" | "ivf" | "ivfpq" | "ivfsq";
 }
 
 /**
@@ -85,7 +85,7 @@ export interface BaseIndexMetadata {
   /** Embedding dimensions */
   dimensions: number;
   /** Index type */
-  indexType: "hnsw" | "flat" | "ivf" | "ivfpq";
+  indexType: "hnsw" | "flat" | "ivf" | "ivfpq" | "ivfsq";
   /** Git commit hash when base was created (optional) */
   baseCommit?: string;
 }

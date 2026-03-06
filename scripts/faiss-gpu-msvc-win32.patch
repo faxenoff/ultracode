@@ -1,0 +1,97 @@
+diff --git a/faiss/gpu/impl/PQCodeDistances-inl.cuh b/faiss/gpu/impl/PQCodeDistances-inl.cuh
+index e2e66f3..309187e 100644
+--- a/faiss/gpu/impl/PQCodeDistances-inl.cuh
++++ b/faiss/gpu/impl/PQCodeDistances-inl.cuh
+@@ -544,7 +544,7 @@ void runPQCodeDistancesMM(
+ 
+         // View output as (q * c)(sub q * code), and add centroid norm to
+         // each row
+-        auto outDistancesCodeViewCols = outCodeDistancesView.view<2>(
++        auto outDistancesCodeViewCols = outCodeDistancesView.template view<2>(
+                 {coarseIndices.getSize(0) * coarseIndices.getSize(1),
+                  outCodeDistances.getSize(2) * outCodeDistances.getSize(3)});
+ 
+diff --git a/faiss/gpu/utils/MergeNetworkWarp.cuh b/faiss/gpu/utils/MergeNetworkWarp.cuh
+index 39b3008..0acacaf 100644
+--- a/faiss/gpu/utils/MergeNetworkWarp.cuh
++++ b/faiss/gpu/utils/MergeNetworkWarp.cuh
+@@ -105,18 +105,18 @@ inline __device__ void warpBitonicMergeLE16(K& k, V& v) {
+         V otherV = shfl_xor(v, 2 * L - 1);
+ 
+         // Whether we are the lesser thread in the exchange
+-        bool small = !(laneId & L);
++        bool isSmall = !(laneId & L);
+ 
+         if (Dir) {
+             // See the comment above how performing both of these
+             // comparisons in the warp seems to win out over the
+             // alternatives in practice
+-            bool s = small ? Comp::gt(k, otherK) : Comp::lt(k, otherK);
++            bool s = isSmall ? Comp::gt(k, otherK) : Comp::lt(k, otherK);
+             assign(s, k, otherK);
+             assign(s, v, otherV);
+ 
+         } else {
+-            bool s = small ? Comp::lt(k, otherK) : Comp::gt(k, otherK);
++            bool s = isSmall ? Comp::lt(k, otherK) : Comp::gt(k, otherK);
+             assign(s, k, otherK);
+             assign(s, v, otherV);
+         }
+@@ -128,15 +128,15 @@ inline __device__ void warpBitonicMergeLE16(K& k, V& v) {
+         V otherV = shfl_xor(v, stride);
+ 
+         // Whether we are the lesser thread in the exchange
+-        bool small = !(laneId & stride);
++        bool isSmall = !(laneId & stride);
+ 
+         if (Dir) {
+-            bool s = small ? Comp::gt(k, otherK) : Comp::lt(k, otherK);
++            bool s = isSmall ? Comp::gt(k, otherK) : Comp::lt(k, otherK);
+             assign(s, k, otherK);
+             assign(s, v, otherV);
+ 
+         } else {
+-            bool s = small ? Comp::lt(k, otherK) : Comp::gt(k, otherK);
++            bool s = isSmall ? Comp::lt(k, otherK) : Comp::gt(k, otherK);
+             assign(s, k, otherK);
+             assign(s, v, otherV);
+         }
+diff --git a/faiss/invlists/OnDiskInvertedLists.cpp b/faiss/invlists/OnDiskInvertedLists.cpp
+index 331712c..8c6fc31 100644
+--- a/faiss/invlists/OnDiskInvertedLists.cpp
++++ b/faiss/invlists/OnDiskInvertedLists.cpp
+@@ -607,7 +607,7 @@ size_t OnDiskInvertedLists::merge_from_multiple(
+     double t0 = getmillisecs(), last_t = t0;
+ 
+ #pragma omp parallel for
+-    for (size_t j = 0; j < nlist; j++) {
++    for (int64_t j = 0; j < nlist; j++) {
+         List& l = lists[j];
+         for (int i = 0; i < n_il; i++) {
+             const InvertedLists* il = ils[i];
+diff --git a/faiss/utils/distances_fused/avx512.cpp b/faiss/utils/distances_fused/avx512.cpp
+index be792b9..6823507 100644
+--- a/faiss/utils/distances_fused/avx512.cpp
++++ b/faiss/utils/distances_fused/avx512.cpp
+@@ -265,7 +265,7 @@ void exhaustive_L2sqr_fused_cmax(
+     const size_t nx_p = (nx / NX_POINTS_PER_LOOP) * NX_POINTS_PER_LOOP;
+     // the main loop.
+ #pragma omp parallel for schedule(dynamic)
+-    for (size_t i = 0; i < nx_p; i += NX_POINTS_PER_LOOP) {
++    for (int64_t i = 0; i < nx_p; i += NX_POINTS_PER_LOOP) {
+         kernel<DIM, NX_POINTS_PER_LOOP, NY_POINTS_PER_LOOP>(
+                 x, y, y_transposed.data(), ny, res, y_norms, i);
+     }
+diff --git a/faiss/utils/sorting.cpp b/faiss/utils/sorting.cpp
+index 17811b3..c8f62ed 100644
+--- a/faiss/utils/sorting.cpp
++++ b/faiss/utils/sorting.cpp
+@@ -149,7 +149,7 @@ void fvec_argsort_parallel(size_t n, const float* vals, size_t* perm) {
+     }
+ 
+ #pragma omp parallel
+-    for (size_t i = 0; i < n; i++) {
++    for (int64_t i = 0; i < n; i++) {
+         permA[i] = i;
+     }
+ 

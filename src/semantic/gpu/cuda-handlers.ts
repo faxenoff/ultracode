@@ -35,6 +35,101 @@ export interface CUDAAddon {
     computeCapability?: string;
     totalMemoryMB?: number;
   };
+  // GPU FAISS (optional, available when compiled with ENABLE_FAISS_GPU)
+  hasGpuFaiss?: boolean;
+  gpuIvfCreate?(projectKey: string, dims: number, nlist: number, sqBits: number, metric?: string): unknown;
+  gpuIvfTrain?(projectKey: string, vectors: Float32Array, count: number): unknown;
+  gpuIvfAdd?(projectKey: string, vectors: Float32Array, count: number): unknown;
+  gpuIvfSearch?(projectKey: string, query: Float32Array, k: number): { labels: BigInt64Array; distances: Float32Array };
+  gpuIvfBatchSearch?(
+    projectKey: string,
+    queries: Float32Array,
+    nQueries: number,
+    k: number,
+  ): { labels: BigInt64Array; distances: Float32Array };
+  gpuIvfSave?(projectKey: string, path: string): unknown;
+  gpuIvfLoad?(projectKey: string, path: string): unknown;
+  gpuIvfRemove?(projectKey: string): unknown;
+  gpuIvfStats?(projectKey?: string): Array<{ projectKey: string; ntotal: number; dims: number; gpuMemoryMB: number }>;
+  // Native FAISS CPU (optional, available when compiled with ENABLE_FAISS_CPU)
+  hasNativeFaiss?: boolean;
+  faissIndexCreate?(
+    projectKey: string,
+    dims: number,
+    factoryString: string,
+    metric?: string,
+  ): {
+    success: boolean;
+    projectKey: string;
+    dims: number;
+    factory: string;
+    indexType: string;
+    isTrained: boolean;
+  };
+  faissIndexTrain?(
+    projectKey: string,
+    vectors: Float32Array | number[],
+    count: number,
+  ): {
+    success: boolean;
+    trainedOn: number;
+    isTrained: boolean;
+  };
+  faissIndexAdd?(
+    projectKey: string,
+    vectors: Float32Array | number[],
+    count: number,
+  ): {
+    success: boolean;
+    addedCount: number;
+    totalVectors: number;
+  };
+  faissIndexSearch?(
+    projectKey: string,
+    query: Float32Array | number[],
+    k: number,
+    nprobe?: number,
+  ): {
+    labels: BigInt64Array;
+    distances: Float32Array;
+  };
+  faissIndexBatchSearch?(
+    projectKey: string,
+    queries: Float32Array,
+    nQueries: number,
+    k: number,
+    nprobe?: number,
+  ): {
+    labels: BigInt64Array;
+    distances: Float32Array;
+    nQueries: number;
+    k: number;
+  };
+  faissIndexSave?(projectKey: string, path: string): { success: boolean; path: string };
+  faissIndexLoad?(
+    projectKey: string,
+    path: string,
+  ): {
+    success: boolean;
+    path: string;
+    loadedVectors: number;
+    isTrained: boolean;
+    dims: number;
+    indexType: string;
+  };
+  faissIndexRemove?(projectKey: string): { success: boolean };
+  faissIndexReset?(projectKey: string): { success: boolean };
+  faissIndexStats?(projectKey?: string): Array<{
+    projectKey: string;
+    ntotal: number;
+    dims: number;
+    indexType: string;
+    factory: string;
+    memoryMB: number;
+    isTrained: boolean;
+    nlist: number;
+    nprobe: number;
+  }>;
 }
 
 export interface CudaHandlerContext {

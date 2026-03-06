@@ -1,6 +1,6 @@
 # Tools
 
-Provides factory functions for creating fully-mocked test dependencies.
+Provides mock factory functions for MCP tool handler unit tests.
 
 ## Exports
 

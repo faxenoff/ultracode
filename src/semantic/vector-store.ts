@@ -237,10 +237,13 @@ export class VectorStore {
         // v5: Initialize standard Faiss provider
         const provider = await initializeFaissProvider({
           dimensions: this.config.dimensions,
-          indexType: "hnsw",
+          indexType: "ivfsq",
           hnswM: 32,
           hnswEfConstruction: 200,
           hnswEfSearch: 64,
+          ivfNlist: 256,
+          ivfNprobe: 32,
+          sqBits: 8,
         });
 
         if (!provider) {
@@ -256,7 +259,7 @@ export class VectorStore {
 
         log.i("VECTOR", "Initialized with Faiss backend", {
           dimensions: this.config.dimensions,
-          mode: "faiss-hnsw",
+          mode: "faiss-ivfsq",
         });
       }
     } catch (error) {

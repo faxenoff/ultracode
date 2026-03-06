@@ -9,7 +9,7 @@
 // Faiss Index Configuration (from faiss/types.ts)
 // =============================================================================
 
-export type FaissIndexType = "flat" | "hnsw" | "ivf" | "ivfpq";
+export type FaissIndexType = "flat" | "hnsw" | "ivf" | "ivfpq" | "ivfsq";
 
 export interface FaissIndexConfig {
   dimensions: number;
@@ -22,6 +22,7 @@ export interface FaissIndexConfig {
   ivfNprobe?: number;
   pqM?: number;
   pqNbits?: number;
+  sqBits?: number;
   numThreads?: number;
 }
 
@@ -43,18 +44,21 @@ export interface CudaDeviceInfo {
 
 export interface FaissInitRequest {
   type: "faiss.init";
+  projectKey: string;
   config: FaissIndexConfig;
   loadPath?: string | undefined;
 }
 
 export interface FaissAddRequest {
   type: "faiss.add";
+  projectKey: string;
   ids: string[];
   vectors: number[];
 }
 
 export interface FaissSearchRequest {
   type: "faiss.search";
+  projectKey: string;
   vector: number[];
   k: number;
   filterIds?: string[];
@@ -62,6 +66,7 @@ export interface FaissSearchRequest {
 
 export interface FaissBatchSearchRequest {
   type: "faiss.batchSearch";
+  projectKey: string;
   vectors: number[];
   nQueries: number;
   k: number;
@@ -69,27 +74,32 @@ export interface FaissBatchSearchRequest {
 
 export interface FaissRemoveRequest {
   type: "faiss.remove";
+  projectKey: string;
   ids: string[];
 }
 
 export interface FaissSaveRequest {
   type: "faiss.save";
+  projectKey: string;
   path: string;
 }
 
 export interface FaissLoadRequest {
   type: "faiss.load";
+  projectKey: string;
   path: string;
 }
 
 export interface FaissTrainRequest {
   type: "faiss.train";
+  projectKey: string;
   vectors: number[];
   nVectors: number;
 }
 
 export interface FaissStatsRequest {
   type: "faiss.stats";
+  projectKey: string;
 }
 
 // =============================================================================
@@ -378,10 +388,13 @@ export interface GpuStatsResponse extends GpuSuccessResponse {
     dimensions: number;
     totalVectors: number;
     memoryUsageMB: number;
+    loadedIndexes?: number;
+    indexPoolKeys?: string[];
   };
   cuda: {
     available: boolean;
     deviceInfo: CudaDeviceInfo | null;
+    gpuFaissAvailable?: boolean;
   };
   uptime: number;
 }
@@ -427,8 +440,119 @@ export interface ContentCacheEntry {
   metadata?: Record<string, unknown>;
 }
 
+// =============================================================================
+// Native FAISS Addon Interface (replaces faiss-napi)
+// =============================================================================
+
+export interface NativeFaissAddon {
+  faissIndexCreate(
+    projectKey: string,
+    dims: number,
+    factoryString: string,
+    metric?: string,
+  ): {
+    success: boolean;
+    projectKey: string;
+    dims: number;
+    factory: string;
+    indexType: string;
+    isTrained: boolean;
+  };
+  faissIndexTrain(
+    projectKey: string,
+    vectors: Float32Array | number[],
+    count: number,
+  ): {
+    success: boolean;
+    trainedOn: number;
+    isTrained: boolean;
+  };
+  faissIndexAdd(
+    projectKey: string,
+    vectors: Float32Array | number[],
+    count: number,
+  ): {
+    success: boolean;
+    addedCount: number;
+    totalVectors: number;
+  };
+  faissIndexSearch(
+    projectKey: string,
+    query: Float32Array | number[],
+    k: number,
+    nprobe?: number,
+  ): {
+    labels: BigInt64Array;
+    distances: Float32Array;
+  };
+  faissIndexBatchSearch(
+    projectKey: string,
+    queries: Float32Array,
+    nQueries: number,
+    k: number,
+    nprobe?: number,
+  ): {
+    labels: BigInt64Array;
+    distances: Float32Array;
+    nQueries: number;
+    k: number;
+  };
+  faissIndexSave(projectKey: string, path: string): { success: boolean; path: string };
+  faissIndexLoad(
+    projectKey: string,
+    path: string,
+  ): {
+    success: boolean;
+    path: string;
+    loadedVectors: number;
+    isTrained: boolean;
+    dims: number;
+    indexType: string;
+  };
+  faissIndexRemove(projectKey: string): { success: boolean };
+  faissIndexReset(projectKey: string): { success: boolean };
+  faissIndexStats(projectKey?: string): Array<{
+    projectKey: string;
+    ntotal: number;
+    dims: number;
+    indexType: string;
+    factory: string;
+    memoryMB: number;
+    isTrained: boolean;
+    nlist: number;
+    nprobe: number;
+  }>;
+}
+
+// =============================================================================
+// Multi-Index Pool (per-project indexes)
+// =============================================================================
+
+export interface TrainingBufferEntry {
+  ids: string[];
+  vectors: number[]; // flat array: ids.length * dimensions
+}
+
+export interface IndexEntry {
+  config: FaissIndexConfig;
+  idMap: Map<string, number>;
+  reverseIdMap: Map<number, string>;
+  totalVectors: number;
+  lastAccessedAt: number;
+  isDirty: boolean;
+  isTrained: boolean;
+  dimensions: number;
+  indexType: FaissIndexType;
+  contentCachePath: string | null;
+  /** Buffer for IVF auto-training: collects vectors until threshold, then trains + bulk-adds */
+  trainingBuffer: TrainingBufferEntry | null;
+}
+
 export interface GpuWorkerState {
-  // Faiss state
+  // Multi-index pool (projectKey → IndexEntry)
+  indexPool: Map<string, IndexEntry>;
+  maxLoadedIndexes: number;
+  // Legacy single-index state (used for stats when no projectKey)
   faissInitialized: boolean;
   faissIndexType: FaissIndexType | null;
   faissDimensions: number;
@@ -436,12 +560,15 @@ export interface GpuWorkerState {
   faissIsTrained: boolean;
   faissIdMap: Map<string, number>;
   faissReverseIdMap: Map<number, string>;
+  // Active project key (for backward compat with embeddings handlers)
+  activeProjectKey: string | null;
   // Content cache (id → content/metadata)
   contentCache: Map<string, ContentCacheEntry>;
   contentCacheDirty: boolean;
   // CUDA state
   cudaAvailable: boolean;
   cudaDeviceInfo: CudaDeviceInfo | null;
+  gpuFaissAvailable: boolean;
   // Worker state
   startTime: number;
 }

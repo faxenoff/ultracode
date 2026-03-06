@@ -1,6 +1,6 @@
 # Detectors
 
-Custom code quality detectors for multi-language static analysis patterns.
+Language-specific pattern detectors for identifying code quality and design antipatterns.
 
 ## Exports
 
