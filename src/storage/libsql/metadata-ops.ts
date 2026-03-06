@@ -376,7 +376,14 @@ export class MetadataOperations {
         args: [projectHash, ...branchArgs],
       }),
       client.execute({
-        sql: `SELECT COUNT(*) as cnt FROM relationships WHERE project_hash = ? AND ${branchFilter}`,
+        sql: `SELECT COUNT(*) as cnt FROM relationships r
+              WHERE r.project_hash = ? AND r.${branchFilter}
+              AND EXISTS (
+                SELECT 1 FROM entities e
+                JOIN file_generations fg
+                  ON e.file_path = fg.file_path AND e.project_hash = fg.project_hash AND e.branch_name = fg.branch_name
+                WHERE e.id = r.from_id AND e.file_gen = fg.active_gen
+              )`,
         args: [projectHash, ...branchArgs],
       }),
       client.execute({
