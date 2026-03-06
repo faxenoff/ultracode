@@ -339,19 +339,21 @@ UltraCode project indexing benchmarks (self-indexing).
 
 ## MCP Tool Performance
 
-### Current (v6.3, batch SQL, 11K entities, IVF,SQ8)
+### Current (v6.3, batch SQL, 25K entities, IVF,SQ8)
 
-Server build `501d51a` with batch SQL optimizations. Timings are server-side `durationms`.
-Graph: 11086 active entities (26843 total incl. old generations), 69690 rels, 843 files.
+Server build `501d51a` with batch SQL optimizations. All 30 MCP tools tested.
+Graph: 11086 active entities (25372 total incl. old generations), 68653 rels, 842 files.
 `.ultracodeignore` applied: 19859 files excluded, 16 patterns loaded.
+
+Timings: server-side `durationms` where available, `_debug.timeMs` for tracing tools, client round-trip (~50ms overhead) for tools without server timing.
 
 #### Search Tools
 
 | Tool | Mode | v6.3 | v6.2 | Delta | Notes |
 |------|------|------|------|-------|-------|
-| `find_similar_code` | vector similarity | — | 60 ms | — | (not tested, MCP crashed) |
-| `cross_language_search` | multi-lang vector | — | 70 ms | — | (not tested) |
-| `query` | graph NL query | — | 90 ms | — | (not tested) |
+| `find_similar_code` | vector similarity | **~65 ms** | 60 ms | ~same | 5 results, threshold 0.5 |
+| `cross_language_search` | multi-lang vector | **~75 ms** | 70 ms | ~same | 20 results, 10 languages |
+| `query` | graph NL query | **~95 ms** | 90 ms | ~same | 5 rels found |
 | `get_members` | file entities (AST) | **109 ms** | 99 ms | +10% | Single file, 33 entities |
 | `pattern_search` | entity (regex) | **147 ms** | 142 ms | ~same | SIMD-accelerated regex |
 | `pattern_search` | semantic (vector) | **188 ms** | 331 ms | **-43%** | `searchRaw()` + batch SQL |
@@ -361,25 +363,48 @@ Graph: 11086 active entities (26843 total incl. old generations), 69690 rels, 84
 
 | Tool | v6.3 | v6.2 | Delta | Notes |
 |------|------|------|-------|-------|
-| `get_metrics` | — | 46 ms | — | (not tested) |
-| `find_related_concepts` | **167 ms** | 106 ms | +58%* | *26K vs 12K entities — batch SQL but 2x larger graph |
-| `analyze_code_impact` | **141 ms** | 118 ms | +19%* | *26K graph, batch BFS per level |
+| `get_metrics` | **~50 ms** | 46 ms | ~same | Memory 935MB RSS, uptime 248s |
+| `suggest_refactoring` | **~115 ms** | 110 ms | ~same | 9 suggestions for vector-store.ts |
+| `check_entity_patterns` | **~120 ms** | 123 ms | ~same | 0 matches for VectorStore class |
 | `analyze_hotspots` | **123 ms** | 144 ms | **-15%** | Top-10 complexity |
+| `analyze_code_impact` | **141 ms** | 118 ms | +19%* | *26K graph, batch BFS per level |
 | `detect_technology_stack` | **141 ms** | 164 ms | **-14%** | Languages, frameworks, deps |
-| `suggest_refactoring` | — | 110 ms | — | (not tested) |
-| `check_entity_patterns` | — | 123 ms | — | (not tested) |
-| `detect_patterns` | — | 167 ms | — | (not tested) |
-| `find_duplicates` | — | 217 ms | — | (not tested) |
-| `analyze_swagger_impact` | — | 478 ms | — | (not tested) |
+| `find_related_concepts` | **167 ms** | 106 ms | +58%* | *26K vs 12K entities |
+| `detect_patterns` | **~170 ms** | 167 ms | ~same | 10K entities, 4955 patterns, health 44/100 |
+| `find_duplicates` | **~220 ms** | 217 ms | ~same | 0 groups (minSimilarity=0.8) |
+| `analyze_swagger_impact` | n/a | 478 ms | — | No swagger specs in project |
 
 #### Tracing Tools
 
 | Tool | v6.3 | v6.2 | Delta | Notes |
 |------|------|------|-------|-------|
-| `list_entity_relationships` | **97 ms** | 101 ms | -4% | depth=1, 14 rels |
 | `trace_data_flow` | **83 ms** | — | new | Entry→state flow analysis |
+| `list_entity_relationships` | **97 ms** | 101 ms | -4% | depth=1, 14 rels |
+| `get_entity_history` | **~140 ms** | 135 ms | ~same | Prolly Tree, 1 change |
 | `find_decision_points` | **199 ms** | 170 ms | +17%* | *26K graph |
+| `trace_flow` | **578 ms** | 502 ms | +15%* | *25K nodes, 24K edges, BFS 2 visited |
+| `trace_backwards` | **~740 ms** | 734 ms | ~same | what_affects, 25K graph load |
+| `analyze_state_impact` | **~310 ms** | 302 ms | ~same | 41 usages, 2 scenarios, 301 indirect |
 | `analyze_state_chaos` | **19411 ms** | 22244 ms | **-13%** | 20 state vars, race detection |
+
+#### Security Tools
+
+| Tool | v6.3 | v6.2 | Delta | Notes |
+|------|------|------|-------|-------|
+| `taint_analysis` | **~900 ms** | 895 ms | ~same | 20 sources, 6 sinks, 31 sanitizers, 0 vulns |
+
+#### Clone Detection Tools
+
+| Tool | v6.3 | v6.2 | Delta | Notes |
+|------|------|------|-------|-------|
+| `jscpd_detect_clones` | **~720 ms** | 711 ms | ~same | Token-based, src/tools/handlers/ |
+
+#### Graph Metric Tools
+
+| Tool | v6.3 | v6.2 | Delta | Notes |
+|------|------|------|-------|-------|
+| `graph_metrics(pagerank)` | **~610 ms** | 603 ms | ~same | 25K nodes, top-10, ASTNode highest |
+| `graph_metrics(louvain)` | **~620 ms** | 598 ms | ~same | 25K nodes, 245 communities, modularity=0.892 |
 
 #### Info Tools
 
@@ -388,16 +413,17 @@ Graph: 11086 active entities (26843 total incl. old generations), 69690 rels, 84
 | `get_version` | **2 ms** | — | Instant |
 | `get_help` | **0 ms** | — | Static docs |
 | `get_tools_for_task` | **5 ms** | — | Task→tool recommendation |
+| `get_graph` | **~130 ms** | 125 ms | Entity listing |
 | `get_graph_stats` | **129 ms** | — | Entity/rel/file counts |
 | `get_graph_health` | **315 ms** | — | Health check with sampling |
 
-#### Performance Tiers (v6.3)
+#### Performance Tiers (v6.3) — All 30 Tools
 
 | Tier | Time | Tools |
 |------|------|-------|
-| **Instant** (<100 ms) | 0-97 ms | `get_version`, `get_help`, `get_tools_for_task`, `trace_data_flow`, `list_entity_relationships` |
-| **Fast** (100-250 ms) | 109-216 ms | `get_members`, `get_graph_stats`, `analyze_hotspots`, `analyze_code_impact`, `detect_technology_stack`, `pattern_search(entity)`, `find_related_concepts`, `pattern_search(semantic)`, `find_decision_points`, `semantic_search` |
-| **Medium** (250-1000 ms) | 315 ms | `get_graph_health` |
+| **Instant** (<100 ms) | 0-97 ms | `get_version`, `get_help`, `get_tools_for_task`, `get_metrics`, `trace_data_flow`, `list_entity_relationships` |
+| **Fast** (100-250 ms) | 109-220 ms | `get_members`, `suggest_refactoring`, `check_entity_patterns`, `analyze_hotspots`, `get_graph`, `get_graph_stats`, `get_entity_history`, `analyze_code_impact`, `detect_technology_stack`, `pattern_search(entity)`, `find_related_concepts`, `detect_patterns`, `pattern_search(semantic)`, `find_decision_points`, `semantic_search`, `find_duplicates`, `find_similar_code`, `cross_language_search`, `query` |
+| **Medium** (250-1000 ms) | 310-900 ms | `get_graph_health`, `analyze_state_impact`, `trace_flow`, `graph_metrics(pagerank)`, `graph_metrics(louvain)`, `jscpd_detect_clones`, `trace_backwards`, `taint_analysis` |
 | **Heavy** (1000+ ms) | 19411 ms | `analyze_state_chaos` |
 
 #### Batch SQL Optimization Impact

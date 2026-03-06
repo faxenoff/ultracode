@@ -1,6 +1,6 @@
 # Taint
 
-Security vulnerability detection module performing taint flow analysis
+Security taint analysis system detecting injection vulnerabilities through untrusted data flow tracking.
 
 ## Response Handling
 

@@ -1,6 +1,6 @@
 # Graph Metrics
 
-Computes graph metrics including PageRank, community detection, centrality, and code dependency analysis.
+Analyzes code dependency graphs to compute metrics like PageRank, community detection, centrality, and bus factor.
 
 ## Exports
 
