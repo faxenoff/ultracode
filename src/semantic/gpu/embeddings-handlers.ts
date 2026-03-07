@@ -20,6 +20,7 @@ import type {
   EmbeddingsRemoveResponse,
   EmbeddingsSearchRequest,
   EmbeddingsSearchResponse,
+  EmbeddingsSearchResultItem,
   EmbeddingsStatsResponse,
   GpuWorkerResponse,
   GpuWorkerState,
@@ -183,12 +184,7 @@ export function handleEmbeddingsSearch(request: EmbeddingsSearchRequest, ctx: Em
     const result = nativeFaiss.faissIndexSearch(state.activeProjectKey, float32Query, actualK);
     const { distances, labels } = result;
 
-    const results: Array<{
-      id: string;
-      score: number;
-      content?: string | undefined;
-      metadata?: Record<string, unknown>;
-    }> = [];
+    const results: EmbeddingsSearchResultItem[] = [];
     for (let i = 0; i < actualK; i++) {
       const internalId = Number(labels[i]!);
       if (internalId === -1) continue;
@@ -199,7 +195,12 @@ export function handleEmbeddingsSearch(request: EmbeddingsSearchRequest, ctx: Em
       const distance = distances[i]!;
       const score = 1 / (1 + distance);
 
-      const entry: { id: string; score: number; content?: string | undefined; metadata?: Record<string, unknown> } = {
+      const entry: {
+        id: string;
+        score: number;
+        content?: string | undefined;
+        metadata?: Record<string, unknown> | undefined;
+      } = {
         id: externalId,
         score,
       };

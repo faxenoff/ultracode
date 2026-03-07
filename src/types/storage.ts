@@ -73,27 +73,33 @@ export interface Entity {
     end: { line: number; column: number; index: number };
   };
   metadata: {
-    modifiers?: string[];
+    modifiers?: string[] | undefined;
     returnType?: string | undefined;
-    parameters?: Array<{
-      name: string;
-      type?: string | undefined;
-      optional?: boolean;
-      defaultValue?: string | undefined;
-    }>;
-    importData?: {
-      source: string;
-      specifiers: Array<{ local: string; imported?: string }>;
-      isDefault?: boolean;
-      isNamespace?: boolean;
-    };
+    parameters?:
+      | Array<{
+          name: string;
+          type?: string | undefined;
+          optional?: boolean | undefined;
+          defaultValue?: string | undefined;
+        }>
+      | undefined;
+    importData?:
+      | {
+          source: string;
+          specifiers: Array<{ local: string; imported?: string | undefined }>;
+          isDefault?: boolean | undefined;
+          isNamespace?: boolean | undefined;
+        }
+      | undefined;
     signature?: string | undefined;
     language?: string | undefined;
-    decorators?: Array<{
-      name: string;
-      arguments?: string[];
-      isBuiltin?: boolean;
-    }>;
+    decorators?:
+      | Array<{
+          name: string;
+          arguments?: string[] | undefined;
+          isBuiltin?: boolean | undefined;
+        }>
+      | undefined;
     [key: string]: unknown;
   };
   createdAt: number;
@@ -101,8 +107,8 @@ export interface Entity {
   complexityScore?: number | undefined;
   language?: string | undefined;
   sizeBytes?: number | undefined;
-  embeddingBase64?: string;
-  embeddingText?: string;
+  embeddingBase64?: string | undefined;
+  embeddingText?: string | undefined;
 }
 
 export interface Relationship {
@@ -110,14 +116,16 @@ export interface Relationship {
   fromId: string;
   toId: string;
   type: RelationType;
-  metadata?: {
-    line?: number | undefined;
-    column?: number;
-    context?: string;
-    [key: string]: unknown;
-  };
-  weight?: number;
-  createdAt?: number;
+  metadata?:
+    | {
+        line?: number | undefined;
+        column?: number | undefined;
+        context?: string | undefined;
+        [key: string]: unknown;
+      }
+    | undefined;
+  weight?: number | undefined;
+  createdAt?: number | undefined;
 }
 
 export interface FileInfo {
@@ -130,36 +138,42 @@ export interface FileInfo {
 // -- Query & result shapes --------------------------------------------------
 
 export interface EntityQuery {
-  filters?: {
-    entityType?: EntityType | EntityType[];
-    filePath?: string | string[];
-    name?: string | RegExp;
-  };
-  limit?: number;
-  offset?: number;
+  filters?:
+    | {
+        entityType?: EntityType | EntityType[] | undefined;
+        filePath?: string | string[] | undefined;
+        name?: string | RegExp | undefined;
+      }
+    | undefined;
+  limit?: number | undefined;
+  offset?: number | undefined;
 }
 
 export interface RelationshipQuery {
-  filters?: {
-    relationshipType?: RelationType | RelationType[];
-    fromId?: string | string[];
-    toId?: string | string[];
-  };
-  limit?: number;
-  offset?: number;
+  filters?:
+    | {
+        relationshipType?: RelationType | RelationType[] | undefined;
+        fromId?: string | string[] | undefined;
+        toId?: string | string[] | undefined;
+      }
+    | undefined;
+  limit?: number | undefined;
+  offset?: number | undefined;
 }
 
 export interface GraphQuery {
   type: "entity" | "relationship" | "subgraph";
-  filters?: {
-    entityType?: EntityType | EntityType[];
-    relationshipType?: RelationType | RelationType[];
-    filePath?: string | string[];
-    name?: string | RegExp;
-  };
-  depth?: number;
-  limit?: number;
-  offset?: number;
+  filters?:
+    | {
+        entityType?: EntityType | EntityType[] | undefined;
+        relationshipType?: RelationType | RelationType[] | undefined;
+        filePath?: string | string[] | undefined;
+        name?: string | RegExp | undefined;
+      }
+    | undefined;
+  depth?: number | undefined;
+  limit?: number | undefined;
+  offset?: number | undefined;
 }
 
 export interface GraphQueryResult {
@@ -170,7 +184,7 @@ export interface GraphQueryResult {
 
 export interface EntityChange {
   type: "added" | "modified" | "deleted";
-  entity?: Entity;
+  entity?: Entity | undefined;
   entityId?: string | undefined;
   filePath: string;
   timestamp: number;
@@ -216,11 +230,11 @@ export interface StorageMetrics {
   cacheHitRate: number;
   averageQueryTimeMs: number;
   lastVacuum: number;
-  totalEmbeddings?: number;
-  vectorSearchEnabled?: boolean;
-  performanceMetricsCount?: number;
-  memoryUsageMB?: number;
-  concurrentConnections?: number;
+  totalEmbeddings?: number | undefined;
+  vectorSearchEnabled?: boolean | undefined;
+  performanceMetricsCount?: number | undefined;
+  memoryUsageMB?: number | undefined;
+  concurrentConnections?: number | undefined;
 }
 
 export interface BatchResult {
@@ -240,8 +254,8 @@ export interface CacheEntry<T = unknown> {
 }
 
 export interface EnhancedCacheEntry<T = unknown> extends CacheEntry<T> {
-  missCount?: number;
-  lastAccessed?: number;
+  missCount?: number | undefined;
+  lastAccessed?: number | undefined;
 }
 
 export interface PoolStats {
@@ -256,8 +270,8 @@ export interface PerformanceMetric {
   id: string;
   operation: string;
   durationMs: number;
-  entityCount?: number;
-  memoryUsage?: number;
+  entityCount?: number | undefined;
+  memoryUsage?: number | undefined;
   createdAt: number;
 }
 
@@ -265,7 +279,7 @@ export interface VectorEmbedding {
   id: string;
   entityId: string;
   content: string;
-  vectorData?: ArrayBuffer | null;
+  vectorData?: ArrayBuffer | null | undefined;
   modelName: string;
   createdAt: number;
 }

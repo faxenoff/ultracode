@@ -154,7 +154,7 @@ class FaissProvider {
       const stats = await this.client.faissGetStats(this.getProjectKey());
       log.i("FAISS", "Switched to new context", {
         projectKey: this.getProjectKey(),
-        vectors: stats.totalVectors,
+        vectors: stats?.totalVectors ?? 0,
         idSetSize: this.idSet.size,
       });
     } else {
@@ -244,7 +244,7 @@ class FaissProvider {
       log.i("FAISS", "Initialized", {
         indexType: this.config.indexType,
         dimensions: this.config.dimensions,
-        vectors: stats.totalVectors,
+        vectors: stats?.totalVectors ?? 0,
         loaded: !!loadPath,
         idSetSize: this.idSet.size,
       });

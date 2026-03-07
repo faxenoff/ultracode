@@ -66,6 +66,7 @@ import {
 } from "../storage/graph-storage-factory.js";
 import { type AgentMessage, type AgentTask, AgentType } from "../types/agent.js";
 import type { ParsedEntity } from "../types/parser.js";
+import type { VectorStoreConfig } from "../types/semantic.js";
 import {
   type CloneGroup,
   type CrossLangResult,
@@ -105,7 +106,7 @@ import {
   getModelNameFromSemanticConfig,
   mapSemanticConfigToProvider,
 } from "./semantic/provider-config.js";
-import { type HotspotInput, VectorIndexManager } from "./semantic/vector-index-manager.js";
+import { type AnalyzeHotspotsResult, type HotspotInput, VectorIndexManager } from "./semantic/vector-index-manager.js";
 
 // =============================================================================
 // 2. CONSTANTS AND CONFIGURATION
@@ -164,7 +165,6 @@ export class SemanticAgent extends BaseAgent implements SemanticOperations, Reso
   private readonly defaultBatchSize: number = AGENT_CONFIG.batchSize;
   private resourceMixin = new ResourceAdjustmentMixin();
 
-  // TASK-004B: Circuit breaker for reliability
   private circuitBreaker = new CircuitBreaker({ name: "SemanticAgent" });
 
   // Last indexing warning about oversized entities
@@ -345,12 +345,12 @@ export class SemanticAgent extends BaseAgent implements SemanticOperations, Reso
     const useLayeredIndex = config.mcp?.embedding?.useLayeredIndex ?? true;
 
     this.vectorStore = new VectorStore({
-      dbPath: dbPath,
+      ...(dbPath != null ? { dbPath } : {}),
       dimensions: dimensions,
       workingDirectory: workingDir,
-      libsql: vectorBackend.libsql,
+      ...(vectorBackend.libsql != null ? { libsql: vectorBackend.libsql } : {}),
       useLayeredIndex,
-    });
+    } as VectorStoreConfig);
 
     // Wait for vector store to be fully initialized
     await this.vectorStore.initialize();
@@ -768,7 +768,6 @@ export class SemanticAgent extends BaseAgent implements SemanticOperations, Reso
 
     this.updateCacheHitRate(false);
 
-    // TASK-004B: Execute with circuit breaker protection
     return this.circuitBreaker.execute(
       async () => {
         const result = await this.hybridSearch.semanticSearch(query, limit);
@@ -825,25 +824,7 @@ export class SemanticAgent extends BaseAgent implements SemanticOperations, Reso
    * semantic summaries and complexity indicators.
    * Delegated to VectorIndexManager for better modularity.
    */
-  async analyzeHotspots(
-    hotspots: HotspotInput[],
-    metric: string,
-  ): Promise<{
-    metric: string;
-    items: Array<{
-      entityId?: string | undefined;
-      filePath?: string | undefined;
-      name?: string | undefined;
-      language?: string | undefined;
-      structuralScore?: number;
-      semantic?: SemanticAnalysis | undefined;
-      snippet?: {
-        startLine?: number | undefined;
-        endLine?: number;
-        length?: number;
-      };
-    }>;
-  }> {
+  async analyzeHotspots(hotspots: HotspotInput[], metric: string): Promise<AnalyzeHotspotsResult> {
     return this.vectorIndexManager.analyzeHotspots(hotspots, metric);
   }
 
@@ -1445,12 +1426,15 @@ export class SemanticAgent extends BaseAgent implements SemanticOperations, Reso
         // Save to persistent cache (fire-and-forget)
         const persistAdapter = getLibSQLAdapter();
         if (persistAdapter) {
-          const cacheEntries = textsNeedingGenerationHashes.map((hash, i) => ({
-            contentHash: hash,
-            model: modelName,
-            embedding: generatedEmbeddings[i]!,
-            textPreview: textsNeedingGeneration[i]?.slice(0, 100),
-          }));
+          const cacheEntries = textsNeedingGenerationHashes.map((hash, i) => {
+            const preview = textsNeedingGeneration[i]?.slice(0, 100);
+            return {
+              contentHash: hash,
+              model: modelName,
+              embedding: generatedEmbeddings[i]!,
+              ...(preview != null ? { textPreview: preview } : {}),
+            };
+          });
           persistAdapter.setEmbeddingsInCache(cacheEntries).catch((err) => {
             log.w("CACHE", "Failed to save embeddings", { error: (err as Error).message });
           });

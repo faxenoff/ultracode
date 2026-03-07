@@ -33,8 +33,8 @@ interface OvmsConfigExtended {
   selected_model?: string | null;
   target_device?: string;
   endpoints?: string[];
-  useEmbeddingsApi?: boolean;
-  encodingFormat?: "float" | "base64";
+  useEmbeddingsApi?: boolean | undefined;
+  encodingFormat?: "float" | "base64" | undefined;
   protocol?: string;
   grpcPort?: number;
   timeoutMs?: number;
@@ -78,43 +78,49 @@ interface LlamacppConfigExtended {
  * Extended TEI configuration
  */
 interface TeiConfigExtended {
-  endpoint?: string;
-  baseUrl?: string;
-  max_batch_tokens?: number;
-  max_client_batch_size?: number;
-  concurrency?: number;
-  timeoutMs?: number;
-  checkServer?: boolean;
+  endpoint?: string | undefined;
+  baseUrl?: string | undefined;
+  max_batch_tokens?: number | undefined;
+  max_client_batch_size?: number | undefined;
+  concurrency?: number | undefined;
+  timeoutMs?: number | undefined;
+  checkServer?: boolean | undefined;
 }
 
 /**
  * YAML configuration structure
  */
 interface YamlConfig {
-  semanticAgent?: {
-    modelPath?: string;
-  };
-  mcp?: {
-    embedding?: {
-      tei?: TeiConfigExtended;
-    };
-  };
+  semanticAgent?:
+    | {
+        modelPath?: string | undefined;
+      }
+    | undefined;
+  mcp?:
+    | {
+        embedding?:
+          | {
+              tei?: TeiConfigExtended | undefined;
+            }
+          | undefined;
+      }
+    | undefined;
 }
 
 /**
  * Worker provider options
  */
 interface WorkerProviderOptions {
-  baseUrl?: string;
-  timeoutMs?: number;
-  concurrency?: number;
-  maxBatchSize?: number;
-  useEmbeddingsApi?: boolean;
-  encodingFormat?: "float" | "base64";
-  protocol?: string;
-  grpcPort?: number;
-  contextSize?: number;
-  nGpuLayers?: number;
+  baseUrl?: string | undefined;
+  timeoutMs?: number | undefined;
+  concurrency?: number | undefined;
+  maxBatchSize?: number | undefined;
+  useEmbeddingsApi?: boolean | undefined;
+  encodingFormat?: "float" | "base64" | undefined;
+  protocol?: string | undefined;
+  grpcPort?: number | undefined;
+  contextSize?: number | undefined;
+  nGpuLayers?: number | undefined;
 }
 
 // EmbeddingGeneratorOptions removed - use EmbeddingConfig from types/semantic.ts instead

@@ -9,6 +9,7 @@ import {
   type SemanticConflict,
 } from "../models/semantic-conflict.js";
 import type { AIConflictResolver } from "./ai-conflict-resolver.js";
+import { diff3Merge } from "./diff3.js";
 
 /**
  * Conflict Resolver - Resolves conflicts during merge
@@ -23,7 +24,7 @@ import type { AIConflictResolver } from "./ai-conflict-resolver.js";
 export interface ConflictResolverConfig {
   // AI integration (optional)
   aiEnabled: boolean; // default: false
-  aiResolver?: AIConflictResolver; // AI resolver for semantic analysis
+  aiResolver?: AIConflictResolver | undefined; // AI resolver for semantic analysis
 
   // Resolution preferences
   preferBranchA: boolean; // default: false - prioritize branchA when conditions are equal
@@ -33,7 +34,7 @@ export interface ConflictResolverConfig {
 
 export class ConflictResolver {
   private config: ConflictResolverConfig;
-  private aiResolver?: AIConflictResolver;
+  private aiResolver?: AIConflictResolver | undefined;
 
   constructor(_config: Partial<ConflictResolverConfig> = {}) {
     this.config = {
@@ -274,28 +275,20 @@ export class ConflictResolver {
    * Returns null if automatic merge is not possible.
    */
   private attemptSimpleMerge(baseContent: string, branchAContent: string, branchBContent: string): string | null {
-    // If base is empty - choose the longer version
+    // Without base, diff3 is impossible
     if (!baseContent) {
-      return branchAContent.length > branchBContent.length ? branchAContent : branchBContent;
-    }
-
-    // Simple heuristic: if changes don't overlap by lines
-    const baseLines = baseContent.split("\n");
-    const branchALines = branchAContent.split("\n");
-    const branchBLines = branchBContent.split("\n");
-
-    // If sizes differ significantly - cannot automatically merge
-    const maxLen = Math.max(baseLines.length, branchALines.length, branchBLines.length);
-    const minLen = Math.min(baseLines.length, branchALines.length, branchBLines.length);
-
-    if (maxLen > minLen * 1.5) {
-      // Too different - manual review
+      if (branchAContent === branchBContent) return branchAContent;
       return null;
     }
 
-    // For simplicity return null (a more advanced diff3 is needed)
-    // TODO: implement proper 3-way merge algorithm
-    return null;
+    // Trivial cases: one branch unchanged
+    if (baseContent === branchAContent) return branchBContent;
+    if (baseContent === branchBContent) return branchAContent;
+    if (branchAContent === branchBContent) return branchAContent;
+
+    // Full diff3 merge
+    const result = diff3Merge(baseContent, branchAContent, branchBContent);
+    return result.hasConflicts ? null : result.mergedContent;
   }
 
   /**

@@ -70,7 +70,8 @@ export interface CallInfo {
  */
 export interface AnnotationInfo {
   name: string;
-  arguments?: string[];
+  arguments?: string[] | undefined;
+  isBuiltin?: boolean | undefined;
 }
 
 // =============================================================================
@@ -94,10 +95,10 @@ export interface InheritanceInfo {
  */
 export interface ParameterInfo {
   name: string;
-  type?: string;
-  optional?: boolean;
-  defaultValue?: string;
-  isVararg?: boolean;
+  type?: string | undefined;
+  optional?: boolean | undefined;
+  defaultValue?: string | undefined;
+  isVararg?: boolean | undefined;
 }
 
 // =============================================================================
@@ -109,7 +110,7 @@ export interface ParameterInfo {
  */
 export interface BranchInfo {
   type: "if" | "else" | "else-if" | "switch" | "case" | "default" | "ternary";
-  condition?: string;
+  condition?: string | undefined;
   location: LocationInfo;
 }
 
@@ -126,7 +127,7 @@ export interface LoopInfo {
  */
 export interface ExceptionInfo {
   type: "try" | "catch" | "finally" | "throw";
-  catchType?: string;
+  catchType?: string | undefined;
   location: LocationInfo;
 }
 
@@ -157,29 +158,33 @@ export interface ControlFlowInfo {
  */
 export interface JavaDocParam {
   name: string;
-  type?: string;
-  description?: string;
+  type?: string | undefined;
+  description?: string | undefined;
 }
 
 /**
  * Parsed JavaDoc documentation
  */
 export interface JavaDocInfo {
-  description?: string;
-  params?: JavaDocParam[];
-  returns?: {
-    type?: string;
-    description?: string;
-  };
-  throws?: Array<{
-    type?: string;
-    description?: string;
-  }>;
-  see?: string[];
-  since?: string;
-  author?: string;
-  version?: string;
-  deprecated?: string | boolean;
+  description?: string | undefined;
+  params?: JavaDocParam[] | undefined;
+  returns?:
+    | {
+        type?: string | undefined;
+        description?: string | undefined;
+      }
+    | undefined;
+  throws?:
+    | Array<{
+        type?: string | undefined;
+        description?: string | undefined;
+      }>
+    | undefined;
+  see?: string[] | undefined;
+  since?: string | undefined;
+  author?: string | undefined;
+  version?: string | undefined;
+  deprecated?: string | boolean | undefined;
 }
 
 // =============================================================================
@@ -208,20 +213,20 @@ export interface ComplexityMetrics {
  */
 export interface SpringAnnotationInfo {
   type: "controller" | "service" | "repository" | "component" | "configuration" | "bean";
-  path?: string;
-  method?: "GET" | "POST" | "PUT" | "DELETE" | "PATCH";
-  qualifiers?: string[];
+  path?: string | undefined;
+  method?: "GET" | "POST" | "PUT" | "DELETE" | "PATCH" | undefined;
+  qualifiers?: string[] | undefined;
 }
 
 /**
  * JPA entity information
  */
 export interface JpaEntityInfo {
-  tableName?: string;
+  tableName?: string | undefined;
   relationships: Array<{
     type: "OneToMany" | "ManyToOne" | "OneToOne" | "ManyToMany";
-    targetEntity?: string;
-    mappedBy?: string;
+    targetEntity?: string | undefined;
+    mappedBy?: string | undefined;
   }>;
   isEntity: boolean;
 }
@@ -230,13 +235,13 @@ export interface JpaEntityInfo {
  * Lombok annotation information
  */
 export interface LombokInfo {
-  hasData?: boolean;
-  hasBuilder?: boolean;
-  hasGetter?: boolean;
-  hasSetter?: boolean;
-  hasSlf4j?: boolean;
-  hasAllArgsConstructor?: boolean;
-  hasNoArgsConstructor?: boolean;
+  hasData?: boolean | undefined;
+  hasBuilder?: boolean | undefined;
+  hasGetter?: boolean | undefined;
+  hasSetter?: boolean | undefined;
+  hasSlf4j?: boolean | undefined;
+  hasAllArgsConstructor?: boolean | undefined;
+  hasNoArgsConstructor?: boolean | undefined;
 }
 
 // =============================================================================

@@ -313,6 +313,10 @@ export class LayeredFaissProvider {
     }
 
     const stats = await this.client!.faissGetStats(this.getProjectKey());
+    if (!stats) {
+      log.w("LAYERED_FAISS", "stats_unavailable", { projectKey: this.getProjectKey() });
+      return;
+    }
     log.i("LAYERED_FAISS", "base_loaded", {
       vectors: stats.totalVectors,
       ids: this.baseIdSet.size,

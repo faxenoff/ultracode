@@ -1108,7 +1108,7 @@ export class ZigNativeParser {
         if (name === "self" || name === "ptr") continue;
         params.push({
           name,
-          type,
+          ...(type != null ? { type } : {}),
           optional: type?.startsWith("?") || false,
         });
       }

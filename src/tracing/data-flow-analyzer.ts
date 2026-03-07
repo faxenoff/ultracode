@@ -57,7 +57,7 @@ const TRANSFORM_PATTERNS = {
 
 export class DataFlowAnalyzer {
   private storage: GraphStorage;
-  private semanticSearch?: SemanticSearchService;
+  private semanticSearch?: SemanticSearchService | undefined;
   private stateTracker: StateTracker;
 
   constructor(storage: GraphStorage, semanticSearch?: SemanticSearchService) {

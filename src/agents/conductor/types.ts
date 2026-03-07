@@ -46,5 +46,5 @@ export interface MethodProposal {
 }
 
 export type ConductorConfigOverrides = Partial<Omit<ConductorConfig, "resourceConstraints">> & {
-  resourceConstraints?: Partial<ResourceConstraints>;
+  resourceConstraints?: Partial<ResourceConstraints> | undefined;
 };

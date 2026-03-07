@@ -18,6 +18,7 @@ export class MetadataOperations {
     private getClient: ClientGetter,
     private getContext: ContextGetter,
     private getCacheClient?: ClientGetter,
+    private getStagingMode: () => boolean = () => false,
   ) {}
 
   // ===========================================================================
@@ -51,9 +52,13 @@ export class MetadataOperations {
     if (!client) throw new Error("Client not initialized");
 
     const { projectHash, branchName } = this.getContext();
+    const staging = this.getStagingMode();
+    const fileTable = staging ? "_staging_files" : "files";
+    const insertVerb = staging ? "INSERT INTO" : "INSERT OR REPLACE INTO";
+
     const statements = infos.map((info) => ({
       sql: `
-        INSERT OR REPLACE INTO files
+        ${insertVerb} ${fileTable}
         (path, project_hash, branch_name, hash, last_indexed, entity_count)
         VALUES (?, ?, ?, ?, ?, ?)
       `,
@@ -187,13 +192,14 @@ export class MetadataOperations {
 
     // Get existing tracking data to preserve it (or reset if full index)
     const existing = await client.execute({
-      sql: `SELECT last_full_index_at, incremental_changes_count, created_at
+      sql: `SELECT last_full_index_at, incremental_changes_count, created_at, trace_usage_count
             FROM project_metadata WHERE project_hash = ? AND branch_name = ?`,
       args: [projectHash, branchName],
     });
 
     const existingRow = existing.rows[0];
     const createdAt = (existingRow?.["created_at"] as number) || now;
+    const traceUsageCount = (existingRow?.["trace_usage_count"] as number) || 0;
 
     // On full index: reset counter and update last_full_index_at
     // On incremental: preserve existing values
@@ -204,8 +210,8 @@ export class MetadataOperations {
       sql: `
         INSERT OR REPLACE INTO project_metadata
         (project_hash, branch_name, project_path, last_indexed_at, entity_count, file_count,
-         created_at, updated_at, last_full_index_at, incremental_changes_count)
-        VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+         created_at, updated_at, last_full_index_at, incremental_changes_count, trace_usage_count)
+        VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
       `,
       args: [
         projectHash,
@@ -218,6 +224,7 @@ export class MetadataOperations {
         now,
         lastFullIndexAt,
         incrementalChangesCount,
+        traceUsageCount,
       ],
     });
   }
@@ -289,6 +296,58 @@ export class MetadataOperations {
             WHERE project_hash = ? AND branch_name = ?`,
       args: [now, now, projectHash, branchName],
     });
+  }
+
+  // ===========================================================================
+  // TRACE USAGE TRACKING
+  // ===========================================================================
+
+  /**
+   * Get trace tool usage count for current project/branch.
+   * Used by graph-cache to decide whether to preload the Graphology graph.
+   */
+  async getTraceUsageCount(): Promise<number> {
+    const client = this.getClient();
+    if (!client) return 0;
+
+    const { projectHash, branchName } = this.getContext();
+
+    try {
+      const result = await client.execute({
+        sql: `SELECT trace_usage_count FROM project_metadata
+              WHERE project_hash = ? AND branch_name = ?`,
+        args: [projectHash, branchName],
+      });
+
+      return (result.rows[0]?.["trace_usage_count"] as number) || 0;
+    } catch {
+      // Column may not exist yet (pre-migration)
+      return 0;
+    }
+  }
+
+  /**
+   * Increment trace tool usage counter for current project/branch.
+   * Called on each trace_flow / trace_backwards invocation.
+   */
+  async incrementTraceUsageCount(): Promise<void> {
+    const client = this.getClient();
+    if (!client) return;
+
+    const { projectHash, branchName } = this.getContext();
+
+    try {
+      await client.execute({
+        sql: `INSERT INTO project_metadata
+              (project_hash, branch_name, project_path, last_indexed_at, created_at, updated_at, trace_usage_count)
+              VALUES (?, ?, '', 0, 0, 0, 1)
+              ON CONFLICT(project_hash, branch_name) DO UPDATE
+              SET trace_usage_count = COALESCE(trace_usage_count, 0) + 1`,
+        args: [projectHash, branchName],
+      });
+    } catch {
+      // Column may not exist yet (pre-migration) — non-critical
+    }
   }
 
   /**
@@ -376,7 +435,14 @@ export class MetadataOperations {
         args: [projectHash, ...branchArgs],
       }),
       client.execute({
-        sql: `SELECT COUNT(*) as cnt FROM relationships WHERE project_hash = ? AND ${branchFilter}`,
+        sql: `SELECT COUNT(*) as cnt FROM relationships r
+              WHERE r.project_hash = ? AND r.${branchFilter}
+              AND EXISTS (
+                SELECT 1 FROM entities e
+                JOIN file_generations fg
+                  ON e.file_path = fg.file_path AND e.project_hash = fg.project_hash AND e.branch_name = fg.branch_name
+                WHERE e.id = r.from_id AND e.file_gen = fg.active_gen
+              )`,
         args: [projectHash, ...branchArgs],
       }),
       client.execute({

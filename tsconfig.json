@@ -26,7 +26,7 @@
     "forceConsistentCasingInFileNames": true,
     "noImplicitOverride": true,
     "noPropertyAccessFromIndexSignature": true,
-    "exactOptionalPropertyTypes": false, // TODO: Enable after fixing ~214 remaining errors (nested types in ParsedEntity)
+    "exactOptionalPropertyTypes": true,
     "useUnknownInCatchVariables": true,
 
     "useDefineForClassFields": true,

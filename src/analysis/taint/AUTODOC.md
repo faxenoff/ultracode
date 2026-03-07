@@ -1,6 +1,6 @@
 # Taint
 
-Taint analysis system detecting security vulnerabilities in untrusted data flows.
+Analyzes security vulnerabilities by tracing untrusted data flow to dangerous operations.
 
 ## Response Handling
 

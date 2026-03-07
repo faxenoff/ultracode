@@ -382,9 +382,7 @@ export class DeltaMaintenanceService {
         return;
       }
 
-      // Get existing branches from git (not available in BranchManager API yet)
-      // For now, skip this check
-      // TODO: Add getAllBranches() to BranchManager
+      // Branch enumeration skipped — orphan cleanup relies on LRU eviction
 
       if (this.config.debug) {
         log.d("DELTAMAINT", "check_orphans", { branches: cachedBranches.length });

@@ -32,7 +32,7 @@ export interface ThreeWayMergerConfig {
   // Semantic matching settings
   semanticMatchingEnabled: boolean; // default: true
   semanticThreshold: number; // default: 0.7
-  embeddingGenerator?: EmbeddingGeneratorFn;
+  embeddingGenerator?: EmbeddingGeneratorFn | undefined;
 
   // Intent classification settings
   classifyIntents: boolean; // default: true
@@ -377,7 +377,11 @@ export class ThreeWayMerger {
   ): {
     addedInA: CodeUnit[];
     addedInB: CodeUnit[];
-    deletedUnits: Array<{ baseUnit: CodeUnit; deletedIn: "branchA" | "branchB"; modifiedIn?: "branchA" | "branchB" }>;
+    deletedUnits: Array<{
+      baseUnit: CodeUnit;
+      deletedIn: "branchA" | "branchB";
+      modifiedIn?: "branchA" | "branchB" | undefined;
+    }>;
     renamedUnits: Array<{ oldPath: string; newPath: string; unit: CodeUnit; branch: "branchA" | "branchB" }>;
   } {
     const addedInA: CodeUnit[] = [];
@@ -385,7 +389,7 @@ export class ThreeWayMerger {
     const deletedUnits: Array<{
       baseUnit: CodeUnit;
       deletedIn: "branchA" | "branchB";
-      modifiedIn?: "branchA" | "branchB";
+      modifiedIn?: "branchA" | "branchB" | undefined;
     }> = [];
     const renamedUnits: Array<{ oldPath: string; newPath: string; unit: CodeUnit; branch: "branchA" | "branchB" }> = [];
 
@@ -453,7 +457,7 @@ export class ThreeWayMerger {
         deletedUnits.push({
           baseUnit,
           deletedIn: "branchA",
-          modifiedIn: modifiedInB ? "branchB" : undefined,
+          ...(modifiedInB ? { modifiedIn: "branchB" as const } : {}),
         });
       } else if (!existsInB && !isRenamedInB && existsInA) {
         // Deleted in branchB, check if modified in branchA
@@ -462,7 +466,7 @@ export class ThreeWayMerger {
         deletedUnits.push({
           baseUnit,
           deletedIn: "branchB",
-          modifiedIn: modifiedInA ? "branchA" : undefined,
+          ...(modifiedInA ? { modifiedIn: "branchA" as const } : {}),
         });
       }
     }
@@ -486,7 +490,11 @@ export class ThreeWayMerger {
    * Detect delete-modify conflicts
    */
   private detectDeleteModifyConflicts(
-    deletedUnits: Array<{ baseUnit: CodeUnit; deletedIn: "branchA" | "branchB"; modifiedIn?: "branchA" | "branchB" }>,
+    deletedUnits: Array<{
+      baseUnit: CodeUnit;
+      deletedIn: "branchA" | "branchB";
+      modifiedIn?: "branchA" | "branchB" | undefined;
+    }>,
   ): SemanticConflict[] {
     const conflicts: SemanticConflict[] = [];
 
@@ -518,7 +526,11 @@ export class ThreeWayMerger {
     conflicts: SemanticConflict[],
     addedInA: CodeUnit[],
     addedInB: CodeUnit[],
-    deletedUnits: Array<{ baseUnit: CodeUnit; deletedIn: "branchA" | "branchB"; modifiedIn?: "branchA" | "branchB" }>,
+    deletedUnits: Array<{
+      baseUnit: CodeUnit;
+      deletedIn: "branchA" | "branchB";
+      modifiedIn?: "branchA" | "branchB" | undefined;
+    }>,
     renamedUnits: Array<{ oldPath: string; newPath: string; unit: CodeUnit; branch: "branchA" | "branchB" }>,
   ): MergeAction[] {
     const actions: MergeAction[] = [];

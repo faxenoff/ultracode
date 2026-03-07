@@ -121,16 +121,16 @@ export interface ProviderOption {
 
 export interface InstallResult {
   success: boolean;
-  useIR?: boolean;
-  irPath?: string;
+  useIR?: boolean | undefined;
+  irPath?: string | undefined;
   /** Multi-device endpoints created (for round-robin load balancing) */
-  endpoints?: string[];
+  endpoints?: string[] | undefined;
   /** Model directory name (for OVMS config) */
-  modelName?: string;
+  modelName?: string | undefined;
   /** Detected dimensions from running OVMS (may differ from selected model) */
-  detectedDimensions?: number;
+  detectedDimensions?: number | undefined;
   /** Detected model ID based on dimensions */
-  detectedModelId?: string;
+  detectedModelId?: string | undefined;
 }
 
 export interface SelectedLLMModel {

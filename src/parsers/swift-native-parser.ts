@@ -1282,9 +1282,9 @@ export class SwiftNativeParser {
         if (name) {
           params.push({
             name,
-            type: type?.trim(),
-            optional: defaultValue !== undefined || type?.includes("?"),
-            ...(defaultValue && { defaultValue: defaultValue.trim() }),
+            ...(type?.trim() ? { type: type.trim() } : {}),
+            ...(defaultValue !== undefined || type?.includes("?") ? { optional: true } : {}),
+            ...(defaultValue ? { defaultValue: defaultValue.trim() } : {}),
           });
         }
       }

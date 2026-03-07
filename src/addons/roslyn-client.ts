@@ -28,15 +28,15 @@ import {
 
 export interface RoslynClientOptions {
   /** Path to UltraCode.CSharp.dll */
-  addonPath?: string;
+  addonPath?: string | undefined;
   /** Path to .sln for eager loading */
-  slnPath?: string;
+  slnPath?: string | undefined;
   /** Request timeout in ms (default: 60000) */
-  requestTimeout?: number;
+  requestTimeout?: number | undefined;
   /** Max restart attempts (default: 3) */
-  maxRestarts?: number;
+  maxRestarts?: number | undefined;
   /** Log directory for addon process */
-  logDirectory?: string;
+  logDirectory?: string | undefined;
 }
 
 interface PendingRequest {
@@ -205,7 +205,14 @@ export class RoslynAddonClient {
   // ==========================================================================
 
   private async spawnProcess(): Promise<void> {
-    const args = ["exec", this._options.addonPath, "--pipe", this._pipeName, "--parent-pid", String(process.pid)];
+    const args: string[] = [
+      "exec",
+      this._options.addonPath!,
+      "--pipe",
+      this._pipeName,
+      "--parent-pid",
+      String(process.pid),
+    ];
 
     if (this._options.slnPath) {
       args.push("--sln", this._options.slnPath);
@@ -218,7 +225,7 @@ export class RoslynAddonClient {
       stdio: ["ignore", "pipe", "pipe"],
       windowsHide: true,
       env: {
-        ...process.env,
+        ...Object.fromEntries(Object.entries(process.env).filter((e): e is [string, string] => e[1] != null)),
         // Disable MSBuild node reuse — prevents orphaned dotnet worker processes
         // that MSBuildWorkspace spawns for parallel project evaluation.
         MSBUILDDISABLENODEREUSE: "1",
@@ -229,14 +236,14 @@ export class RoslynAddonClient {
     // Previously, unref() caused orphaned dotnet processes (20+ zombie .NET processes).
 
     // Log stderr
-    this.process.stderr?.on("data", (data: Buffer) => {
+    this.process!.stderr?.on("data", (data: Buffer) => {
       const text = data.toString().trim();
       if (text) {
         log.d("RoslynAddon", "stderr", { msg: text });
       }
     });
 
-    this.process.on("exit", (code) => {
+    this.process!.on("exit", (code) => {
       log.i("RoslynAddon", "process_exit", { code });
       this._connected = false;
       if (!this._shutdownRequested) {

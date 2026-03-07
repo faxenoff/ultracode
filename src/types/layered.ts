@@ -73,7 +73,7 @@ export interface BranchDelta {
 /**
  * Working Delta - Uncommitted changes for a specific client
  *
- * TODO: Layer 2 implementation
+ * Layer 2 — see .autodoc/todo/BACKLOG.md#6
  * This will be needed for:
  * - Multi-client isolation (server scenarios)
  * - Uncommitted changes tracking
@@ -157,7 +157,7 @@ export interface LayeredIndexConfig {
     cleanupIntervalMinutes?: number;
   };
 
-  // TODO: Layer 2 configuration
+  // Layer 2 — see .autodoc/todo/BACKLOG.md#6
   /** Enable Layer 2 (working deltas) - for multi-client scenarios [FUTURE] */
   enableWorkingDeltas?: boolean;
 
@@ -369,7 +369,7 @@ export function createEmptyVectorDelta(branchName: string, baseCommitSha: string
   };
 }
 
-// TODO: Layer 2 helper functions
+// Layer 2 — see .autodoc/todo/BACKLOG.md#6
 /**
  * Create empty WorkingDelta [FUTURE]
  */

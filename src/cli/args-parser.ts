@@ -13,7 +13,7 @@ import { fileURLToPath } from "node:url";
  */
 export interface ParsedArgs {
   /** Override config file path */
-  configPath?: string;
+  configPath?: string | undefined;
   /** Show help and exit */
   helpRequested: boolean;
   /** Show version and exit */

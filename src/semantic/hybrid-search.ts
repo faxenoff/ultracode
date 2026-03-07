@@ -26,10 +26,10 @@ interface StructuralResult {
 interface RankedResult {
   id: string;
   score: number;
-  structuralRank?: number;
-  semanticRank?: number;
+  structuralRank?: number | undefined;
+  semanticRank?: number | undefined;
   content?: string | undefined;
-  metadata?: Record<string, unknown>;
+  metadata?: Record<string, unknown> | undefined;
 }
 
 const FUSION_DEFAULTS: FusionOptions = {

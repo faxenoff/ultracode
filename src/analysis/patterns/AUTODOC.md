@@ -6,15 +6,15 @@ Pattern Detection System for analyzing code across multiple programming language
 
 | Name | Type | Description | Location |
 |------|------|-------------|----------|
-| `CustomDetectorFn` | type | Type for custom detector function signature | [→ types.ts:176] |
+| `CustomDetectorFn` | type | Type for custom detector function signature | [→ types.ts:178] |
 | `CustomDetectorResult` | interface | Interface for custom detector function result | [→ types.ts:168-172] |
 | `ExemplarStore` | class | Loads curated code examples with lazy embedding caching | [→ exemplar-store.ts:36-231] |
 | `PatternCategory` | type | Union type for pattern categories and classifications | [→ types.ts:9] |
 | `PatternDefinition` | interface | Interface for complete pattern rule definition | [→ types.ts:74-102] |
-| `PatternEngine` | class | Orchestrates structural detection and semantic validation pipeline | [→ pattern-engine.ts:44-347] |
-| `PatternExemplar` | interface | Interface for curated code example with metadata | [→ types.ts:106-112] |
+| `PatternEngine` | class | Orchestrates structural detection and semantic validation pipeline | [→ pattern-engine.ts:44-351] |
+| `PatternExemplar` | interface | Interface for curated code example with metadata | [→ types.ts:101-136] |
 | `PatternFormatter` | class | Formats scan results as summary, detailed, or JSON | [→ pattern-formatter.ts:7-166] |
-| `PatternMatch` | interface | Interface for detected pattern match result | [→ types.ts:112-118] |
+| `PatternMatch` | interface | Interface for detected pattern match result | [→ types.ts:114-120] |
 | `PatternRegistry` | class | Indexes pattern definitions by language for efficient lookup | [→ pattern-registry.ts:88-90] |
 | `PatternScanOptions` | interface | Interface for scan configuration and filtering options | [→ types.ts:152-164] |
 | `PatternScanResult` | interface | Interface for complete scan results with summary | [→ types.ts:134-148] |

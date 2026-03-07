@@ -24,9 +24,9 @@ export interface GenerateOptions {
   /** Root directory to scan */
   rootDir: string;
   /** Output directory for general docs (default: .autodoc) */
-  autodocDir?: string;
+  autodocDir?: string | undefined;
   /** Patterns to exclude */
-  exclude?: string[];
+  exclude?: string[] | undefined;
   /** Max depth to scan */
   maxDepth?: number | undefined;
   /** Concurrency for parallel operations */
@@ -55,7 +55,7 @@ const MODULE_DOC_FILENAME = "AUTODOC.md";
 export async function scanModules(
   rootDir: string,
   options: {
-    exclude?: string[];
+    exclude?: string[] | undefined;
     maxDepth?: number | undefined;
     concurrency?: number | undefined;
   } = {},
@@ -247,8 +247,8 @@ export async function generateModuleReadmeWithEntities(
     endLine: number;
   }>,
   llmDescriptions?: {
-    exportDescs?: Record<string, string>;
-    fileDescs?: Record<string, string>;
+    exportDescs?: Record<string, string> | undefined;
+    fileDescs?: Record<string, string> | undefined;
   },
 ): Promise<string> {
   // Debug logging
@@ -427,7 +427,7 @@ export function generateArchitectureDoc(projectName: string, modules: ModuleInfo
  */
 export async function generateDocs(options: GenerateOptions): Promise<GenerateResult> {
   const modules = await scanModules(options.rootDir, {
-    exclude: options.exclude,
+    ...(options.exclude != null ? { exclude: options.exclude } : {}),
     maxDepth: options.maxDepth,
     concurrency: options.concurrency,
   });

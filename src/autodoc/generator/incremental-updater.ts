@@ -422,7 +422,7 @@ export async function updateModuleDoc(
   newContent: string,
   options: {
     useLlm?: boolean | undefined;
-    llmEnhancer?: (content: string, changes: CodeChange[]) => Promise<string>;
+    llmEnhancer?: ((content: string, changes: CodeChange[]) => Promise<string>) | undefined;
   } = {},
 ): Promise<UpdateResult> {
   const result: UpdateResult = {
@@ -513,7 +513,7 @@ export async function updateAllModuleDocs(
   options: {
     preview?: boolean;
     useLlm?: boolean | undefined;
-    llmEnhancer?: (content: string, changes: CodeChange[]) => Promise<string>;
+    llmEnhancer?: ((content: string, changes: CodeChange[]) => Promise<string>) | undefined;
   } = {},
 ): Promise<UpdateResult[]> {
   const results: UpdateResult[] = [];
@@ -528,8 +528,8 @@ export async function updateAllModuleDocs(
     const newContent = generateModuleReadme(mod);
 
     const result = await updateModuleDoc(mod.path, docPath, newContent, {
-      useLlm: options.useLlm,
-      llmEnhancer: options.llmEnhancer,
+      ...(options.useLlm != null ? { useLlm: options.useLlm } : {}),
+      ...(options.llmEnhancer != null ? { llmEnhancer: options.llmEnhancer } : {}),
     });
 
     if (result.updated && !options.preview && result.newContent) {

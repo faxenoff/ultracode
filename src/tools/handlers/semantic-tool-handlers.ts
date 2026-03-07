@@ -70,15 +70,15 @@ interface SemanticResultMetadata {
  */
 interface SemanticSearchResult {
   id: string;
-  name?: string;
-  type?: string;
+  name?: string | undefined;
+  type?: string | undefined;
   similarity: number;
-  reranked?: boolean;
-  filePath?: string;
-  content?: string;
-  metadata?: SemanticResultMetadata;
-  isExpanded?: boolean;
-  relationshipType?: string;
+  reranked?: boolean | undefined;
+  filePath?: string | undefined;
+  content?: string | undefined;
+  metadata?: SemanticResultMetadata | undefined;
+  isExpanded?: boolean | undefined;
+  relationshipType?: string | undefined;
 }
 
 /**

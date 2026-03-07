@@ -15,15 +15,15 @@ import { ensureGeneralDocs } from "./general-docs.js";
  * Options for documentation generation
  */
 export interface GenerateDocsOptions {
-  rootDir?: string;
-  autodocDir?: string;
-  exclude?: string[];
-  maxDepth?: number;
-  module?: string;
-  useLlm?: boolean;
-  preview?: boolean;
-  incremental?: boolean;
-  language?: "auto" | "en" | "ru" | "zh";
+  rootDir?: string | undefined;
+  autodocDir?: string | undefined;
+  exclude?: string[] | undefined;
+  maxDepth?: number | undefined;
+  module?: string | undefined;
+  useLlm?: boolean | undefined;
+  preview?: boolean | undefined;
+  incremental?: boolean | undefined;
+  language?: "auto" | "en" | "ru" | "zh" | undefined;
 }
 
 /**
@@ -101,7 +101,7 @@ export interface GenerateDocsResult {
   modulesFound: number;
   filesToGenerate: number;
   filesWritten: number;
-  incrementalChanges?: Array<{ path: string; changes: string[] }>;
+  incrementalChanges?: Array<{ path: string; changes: string[] }> | undefined;
   modules: Array<{
     name: string;
     path: string;
@@ -391,7 +391,7 @@ export async function executeGenerateDocs(
     files: result.files.map((f: any) => ({
       path: f.path,
       type: f.type,
-      preview: options.preview ? f.content.slice(0, 200) + "..." : undefined,
+      ...(options.preview ? { preview: f.content.slice(0, 200) + "..." } : {}),
     })),
   };
 }

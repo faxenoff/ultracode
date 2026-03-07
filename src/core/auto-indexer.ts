@@ -259,10 +259,10 @@ export async function buildAutoIndexExcludePatterns(targetDir: string): Promise<
  * Options for performAutoIndex
  */
 export interface AutoIndexOptions {
-  incremental?: boolean;
-  reset?: boolean;
-  extraExcludePatterns?: string[];
-  fullScan?: boolean; // Reserved for future use
+  incremental?: boolean | undefined;
+  reset?: boolean | undefined;
+  extraExcludePatterns?: string[] | undefined;
+  fullScan?: boolean | undefined; // Reserved for future use
 }
 
 /**
@@ -272,14 +272,16 @@ export interface AutoIndexResult {
   success: boolean;
   entityCount: number;
   duration: number; // ms
-  embeddingStats?: { generated: number; skipped: number };
-  embeddingPerformance?: {
-    totalEmbeddings: number;
-    durationSeconds: number;
-    embeddingsPerSecond: number;
-    workersUsed: number;
-  };
-  oversizedWarning?: { aiMessage: string | null; oversizedCount: number; maxTokens: number };
+  embeddingStats?: { generated: number; skipped: number } | undefined;
+  embeddingPerformance?:
+    | {
+        totalEmbeddings: number;
+        durationSeconds: number;
+        embeddingsPerSecond: number;
+        workersUsed: number;
+      }
+    | undefined;
+  oversizedWarning?: { aiMessage: string | null; oversizedCount: number; maxTokens: number } | undefined;
 }
 
 /**

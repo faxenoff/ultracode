@@ -143,10 +143,10 @@ export interface BinaryEmbedding {
 export type EmbeddingsCallback = (embeddings: BinaryEmbedding[]) => void;
 
 export interface LanguagePoolOptions {
-  poolSize?: number;
-  taskTimeout?: number;
-  workerScript?: string; // Optional custom worker script path
-  onEmbeddings?: EmbeddingsCallback; // Callback for binary embeddings
+  poolSize?: number | undefined;
+  taskTimeout?: number | undefined;
+  workerScript?: string | undefined; // Optional custom worker script path
+  onEmbeddings?: EmbeddingsCallback | undefined; // Callback for binary embeddings
 }
 
 // =============================================================================
@@ -166,7 +166,7 @@ export class LanguageWorkerPool {
   private readonly workerScript: string;
   private readonly poolSize: number;
   private readonly taskTimeout: number;
-  private readonly onEmbeddings?: EmbeddingsCallback;
+  private readonly onEmbeddings?: EmbeddingsCallback | undefined;
 
   // Runtime-aware worker creation
   private readonly runtime: Runtime;

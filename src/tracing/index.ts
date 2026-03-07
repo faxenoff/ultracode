@@ -27,6 +27,13 @@ export * from "./types.js";
 
 export { ConditionAnalyzer } from "./condition-analyzer.js";
 export { DataFlowAnalyzer } from "./data-flow-analyzer.js";
+export {
+  clearAllGraphCaches,
+  getCachedGraphBuilder,
+  getTraceUsageCount,
+  incrementTraceUsage,
+  invalidateAndPreload,
+} from "./graph-cache.js";
 export { OutputFormatter } from "./output-formatter.js";
 export { PathBuilder } from "./path-builder.js";
 export { StateTracker } from "./state-tracker.js";

@@ -77,6 +77,7 @@ ThreeWayMerger catches errors during merge and ensures git branch restoration vi
 - `MultiVersionIndexer`
 - `AIConflictResolver`
 - `ConflictResolver`
+- `diff3Merge`
 - `ThreeWayMerger`
 
 ## Files

@@ -94,7 +94,7 @@ export function extractJpaInfo(
   annotations: AnnotationInfo[],
   _location: LocationInfo,
 ): {
-  jpaInfo?: JpaEntityInfo;
+  jpaInfo?: JpaEntityInfo | undefined;
   relationships: EntityRelationship[];
 } {
   const relationships: EntityRelationship[] = [];
@@ -174,13 +174,13 @@ function extractRelationshipInfo(
 
   // Extract targetEntity
   const targetMatch = arg.match(/targetEntity\s*=\s*(\w+)\.class/);
-  if (targetMatch) {
+  if (targetMatch?.[1]) {
     result.targetEntity = targetMatch[1];
   }
 
   // Extract mappedBy
   const mappedByMatch = arg.match(/mappedBy\s*=\s*["']([^"']+)["']/);
-  if (mappedByMatch) {
+  if (mappedByMatch?.[1]) {
     result.mappedBy = mappedByMatch[1];
   }
 
@@ -291,12 +291,12 @@ export function extractRepositoryEntityType(entity: ParsedEntity): string | unde
  */
 export function extractCustomQueries(methods: ParsedEntity[]): Array<{
   methodName: string;
-  query?: string;
+  query?: string | undefined;
   isNative?: boolean;
 }> {
   const queries: Array<{
     methodName: string;
-    query?: string;
+    query?: string | undefined;
     isNative?: boolean;
   }> = [];
 

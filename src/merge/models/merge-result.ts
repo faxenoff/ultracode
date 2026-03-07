@@ -87,7 +87,7 @@ export interface MergeResult {
   deletedUnits: Array<{
     baseUnit: CodeUnit;
     deletedIn: "branchA" | "branchB";
-    modifiedIn?: "branchA" | "branchB"; // Для conflict-delete-modify
+    modifiedIn?: "branchA" | "branchB" | undefined; // Для conflict-delete-modify
   }>;
 
   /** Переименованные файлы */

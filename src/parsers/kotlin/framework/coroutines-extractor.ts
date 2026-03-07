@@ -251,12 +251,11 @@ export function extractCoroutineScopeInfo(
   _entity: ParsedEntity,
   code: string,
 ): {
-  scope?: string;
+  scope?: string | undefined;
   hasStructuredConcurrency: boolean;
   hasJobCancellation: boolean;
 } {
-  const result = {
-    scope: undefined as string | undefined,
+  const result: { scope?: string | undefined; hasStructuredConcurrency: boolean; hasJobCancellation: boolean } = {
     hasStructuredConcurrency: false,
     hasJobCancellation: false,
   };

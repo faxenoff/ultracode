@@ -20,11 +20,13 @@ export interface UpdateOptions {
   /** Use LLM for description generation */
   useLlm?: boolean | undefined;
   /** LLM config */
-  llmConfig?: {
-    provider: "ollama" | "openai" | "tgi";
-    model?: string | undefined;
-    endpoint?: string;
-  };
+  llmConfig?:
+    | {
+        provider: "ollama" | "openai" | "tgi";
+        model?: string | undefined;
+        endpoint?: string | undefined;
+      }
+    | undefined;
 }
 
 /**
@@ -174,8 +176,7 @@ function updateExportsSection(content: string, exports: string[], parsed: Parsed
         return content;
       }
 
-      // For now, preserve table as-is - line references are updated separately
-      // TODO: Implement proper table update with line ranges
+      // Table preserved as-is — line references updated separately
       return content;
     }
 

@@ -15,6 +15,7 @@
 
 import { z } from "zod";
 import { log } from "../../logging/index.js";
+import { getCachedGraphBuilder, incrementTraceUsage } from "../../tracing/graph-cache.js";
 import {
   ConditionAnalyzer,
   DataFlowAnalyzer,
@@ -139,9 +140,10 @@ export class TraceFlowToolHandler extends BaseToolHandler<z.infer<typeof TraceFl
     const projectContext = (storage as StorageWithContext).getProjectContext?.();
     log.d("TRACEFLOW", "storage_ctx", { ctx: JSON.stringify(projectContext) });
 
-    // SemanticAgent doesn't expose getSearchService() - pass undefined for now
-    // TraceEngine will work without semantic search (optional parameter)
-    this.traceEngine = new TraceEngine(storage, undefined);
+    // Use cached graph builder for cross-call graph reuse
+    const cachedBuilder = await getCachedGraphBuilder(storage);
+    incrementTraceUsage(storage);
+    this.traceEngine = new TraceEngine(storage, undefined, true, cachedBuilder);
 
     const params: TraceFlowParams = {
       from: args.from,
@@ -242,9 +244,10 @@ export class TraceBackwardsToolHandler extends BaseToolHandler<z.infer<typeof Tr
     // v3: Ensure correct project context for GraphStorage queries
     const storage = await this.ensureGraphStorageForProject(args.projectPath);
 
-    // SemanticAgent doesn't expose getSearchService() - pass undefined for now
-    // TraceEngine will work without semantic search (optional parameter)
-    this.traceEngine = new TraceEngine(storage, undefined);
+    // Use cached graph builder for cross-call graph reuse
+    const cachedBuilder = await getCachedGraphBuilder(storage);
+    incrementTraceUsage(storage);
+    this.traceEngine = new TraceEngine(storage, undefined, true, cachedBuilder);
 
     const params: TraceBackwardsParams = {
       target: args.target,
@@ -331,7 +334,7 @@ export class TraceDataFlowToolHandler extends BaseToolHandler<z.infer<typeof Tra
     const params: TraceDataFlowParams = {
       entryPoint: args.entryPoint,
       targetState: args.targetState,
-      dataSources: args.dataSources,
+      ...(args.dataSources != null ? { dataSources: args.dataSources } : {}),
       trackTransformations: args.trackTransformations,
     };
 

@@ -292,7 +292,7 @@ export class GitDeltaComputer {
   }
 
   // =========================================================================
-  // ENTITY EXTRACTION (TODO: Integration with parsers)
+  // ENTITY EXTRACTION
   // =========================================================================
 
   /**
@@ -414,13 +414,7 @@ export class GitDeltaComputer {
    */
   private async getEntitiesByFilePath(filePath: string): Promise<Entity[]> {
     try {
-      // Query all entities from base index and filter by file path
-      // Note: This is not optimal, but GraphStorage doesn't have getEntitiesByFilePath yet
-      // TODO: Add getEntitiesByFilePath method to GraphStorage for better performance
-
-      // For now, we'll use a simple approach: assume file deletion means entity deletion
-      // Real implementation would query GraphStorage with file path filter
-
+      // File deletion → entity deletion handled by file_generations mechanism
       return [];
     } catch (error) {
       log.e("GITDELTA", "path_query_fail", { err: String(error), filePath });

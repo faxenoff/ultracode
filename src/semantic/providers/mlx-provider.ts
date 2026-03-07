@@ -19,11 +19,11 @@ export interface MlxProviderOptions {
   baseUrl?: string | undefined;
   timeoutMs?: number | undefined;
   concurrency?: number | undefined;
-  checkServer?: boolean;
-  logger?: ProviderLogger;
+  checkServer?: boolean | undefined;
+  logger?: ProviderLogger | undefined;
   maxBatchSize?: number | undefined;
   /** Auto-start MLX server if not running (default: true) */
-  autoStart?: boolean;
+  autoStart?: boolean | undefined;
 }
 
 /**

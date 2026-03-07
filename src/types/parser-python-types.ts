@@ -175,12 +175,12 @@ export interface PythonClassInfo {
   /** Decorator information */
   classDecorators: Array<{
     name: string;
-    arguments?: string[];
+    arguments?: string[] | undefined;
   }>;
 
   methods: string[];
 
-  decorators?: string[];
+  decorators?: string[] | undefined;
 
   location?: {
     start: { line: number; column: number; index: number };

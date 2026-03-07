@@ -160,7 +160,7 @@ export class CoordinatorAgent extends BaseAgent implements AgentPool {
   private readonly cfg: CoordinatorConfig;
   private readonly rrIndex = new Map<AgentType, number>();
   private readonly pending = new Map<string, AgentTask>();
-  private healthTimer?: ReturnType<typeof setInterval>;
+  private healthTimer?: ReturnType<typeof setInterval> | undefined;
   private stopped = false;
 
   constructor(overrides: CoordinatorConfigOverrides = {}) {

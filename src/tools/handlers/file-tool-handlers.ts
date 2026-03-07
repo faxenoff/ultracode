@@ -73,7 +73,7 @@ export class ModifyEntityCodeToolHandler extends BaseToolHandler<z.infer<typeof 
     if (!entityId && args.filePath) {
       const normalizedPath = this.context.normalizeInputPath(args.filePath);
       const entities = await storage.findEntities({
-        filters: { filePath: normalizedPath },
+        filters: { ...(normalizedPath != null ? { filePath: normalizedPath } : {}) },
         limit: 100,
       });
 

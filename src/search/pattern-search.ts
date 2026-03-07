@@ -40,9 +40,9 @@ interface EntityFilters {
 export interface PatternSearchQuery {
   pattern: string; // Regex or semantic query
   scope?: {
-    entityTypes?: EntityType[]; // Filter by entity types
-    files?: string[]; // Filter by file paths
-    frameworks?: string[]; // Filter by framework
+    entityTypes?: EntityType[] | undefined; // Filter by entity types
+    files?: string[] | undefined; // Filter by file paths
+    frameworks?: string[] | undefined; // Filter by framework
   };
   contentFilter?: {
     contains?: string; // Content must contain this string

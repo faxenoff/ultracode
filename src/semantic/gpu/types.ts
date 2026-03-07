@@ -61,7 +61,7 @@ export interface FaissSearchRequest {
   projectKey: string;
   vector: number[];
   k: number;
-  filterIds?: string[];
+  filterIds?: string[] | undefined;
 }
 
 export interface FaissBatchSearchRequest {
@@ -339,7 +339,7 @@ export interface EmbeddingsSearchResultItem {
   id: string;
   score: number;
   content?: string | undefined;
-  metadata?: Record<string, unknown>;
+  metadata?: Record<string, unknown> | undefined;
 }
 
 export interface EmbeddingsAddBatchResponse extends GpuSuccessResponse {
@@ -437,7 +437,7 @@ export type GpuWorkerResponse =
 
 export interface ContentCacheEntry {
   content?: string | undefined;
-  metadata?: Record<string, unknown>;
+  metadata?: Record<string, unknown> | undefined;
 }
 
 // =============================================================================

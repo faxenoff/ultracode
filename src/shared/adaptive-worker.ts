@@ -210,7 +210,7 @@ export class AdaptiveWorkerPool extends EventEmitter {
     const abortController = new AbortController();
 
     (async () => {
-      await sleep(this.options.timeout);
+      await sleep(this.options.timeout ?? 30000);
       if (!abortController.signal.aborted && pooledWorker!.taskId === queuedTask.task.id) {
         log.w("ADAPTWORK", `[AdaptiveWorkerPool] Task ${queuedTask.task.id} timed out`);
         this.handleWorkerError(pooledWorker!, new Error("Task timeout"));

@@ -254,9 +254,6 @@ export class IncrementalUpdateQueue extends EventEmitter {
 
         result.fullRebuild = true;
         this.emit("full-rebuild-triggered", { reason: "batch-size-exceeded", batchSize });
-
-        // TODO: Trigger full rebuild via LayeredIndex
-        // For now, still process incrementally
       }
 
       // Process each file change

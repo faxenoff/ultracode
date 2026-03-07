@@ -12,26 +12,26 @@
 export interface MCPConfig {
   embedding?: {
     model?: string | undefined;
-    provider?: "ollama" | "openai" | "cloudru" | "huggingface" | "tei" | "ovms" | "auto";
+    provider?: "ollama" | "openai" | "cloudru" | "huggingface" | "tei" | "ovms" | "auto" | undefined;
     apiKey?: string | undefined;
     enabled?: boolean | undefined;
 
     // Two-stage retrieval with reranker
-    useReranker?: boolean;
-    rerankerModel?: string;
-    rerankerTopK?: number;
-    rerankerFinalK?: number;
+    useReranker?: boolean | undefined;
+    rerankerModel?: string | undefined;
+    rerankerTopK?: number | undefined;
+    rerankerFinalK?: number | undefined;
 
     // Language hint for optimization
-    queryLanguage?: "english" | "multilingual";
+    queryLanguage?: "english" | "multilingual" | undefined;
 
     // Two-phase mode: dump embeddings to disk, then insert to DB
     // Improves stability by separating CPU-intensive embedding from DB writes
-    twoPhaseMode?: boolean;
+    twoPhaseMode?: boolean | undefined;
 
     // Use layered FAISS index: base (first branch) + delta (changes only) + tombstones
     // Reduces disk usage for feature branches by storing only differences from base
-    useLayeredIndex?: boolean;
+    useLayeredIndex?: boolean | undefined;
 
     // Provider-specific configurations
     ollama?: {
@@ -39,11 +39,11 @@ export interface MCPConfig {
       timeout?: number | undefined;
       timeoutMs?: number | undefined;
       concurrency?: number | undefined;
-      headers?: Record<string, string>;
-      autoPull?: boolean;
-      warmupText?: string;
-      checkServer?: boolean;
-      pullTimeoutMs?: number;
+      headers?: Record<string, string> | undefined;
+      autoPull?: boolean | undefined;
+      warmupText?: string | undefined;
+      checkServer?: boolean | undefined;
+      pullTimeoutMs?: number | undefined;
     };
     openai?: {
       baseUrl?: string | undefined;
@@ -67,44 +67,48 @@ export interface MCPConfig {
       timeout?: number | undefined;
       timeoutMs?: number | undefined;
       concurrency?: number | undefined;
-      warmupText?: string;
+      warmupText?: string | undefined;
     };
     tei?: {
       baseUrl?: string | undefined;
       timeoutMs?: number | undefined;
       concurrency?: number | undefined;
-      checkServer?: boolean;
+      checkServer?: boolean | undefined;
     };
   };
-  server?: { host?: string | undefined; port?: number | undefined; timeout?: number };
+  server?: { host?: string | undefined; port?: number | undefined; timeout?: number | undefined };
   agents?: {
     maxConcurrent?: number | undefined;
     defaultTimeout?: number | undefined;
-    useParser?: boolean; // MCP_USE_PARSER
-    devIndexBatch?: number; // MCP_DEV_INDEX_BATCH
+    useParser?: boolean | undefined; // MCP_USE_PARSER
+    devIndexBatch?: number | undefined; // MCP_DEV_INDEX_BATCH
   };
   semantic?: {
     cacheWarmupLimit?: number | undefined;
     popularEntitiesTopic?: string | undefined;
   };
-  autodoc?: {
-    /** Enable AutoDoc watcher for automatic documentation updates */
-    watcherEnabled?: boolean;
-    /** Debounce delay in milliseconds (default: 45000) */
-    debounceMs?: number;
-    /** Minimum debounce delay in milliseconds (default: 30000) */
-    minDebounceMs?: number;
-    /** Maximum debounce delay in milliseconds (default: 60000) */
-    maxDebounceMs?: number;
-    /** Use LLM for description generation */
-    useLlm?: boolean | undefined;
-    /** LLM configuration for AutoDoc */
-    llmConfig?: {
-      provider: "ollama" | "openai" | "tgi";
-      model?: string | undefined;
-      endpoint?: string;
-    };
-  };
+  autodoc?:
+    | {
+        /** Enable AutoDoc watcher for automatic documentation updates */
+        watcherEnabled?: boolean | undefined;
+        /** Debounce delay in milliseconds (default: 45000) */
+        debounceMs?: number | undefined;
+        /** Minimum debounce delay in milliseconds (default: 30000) */
+        minDebounceMs?: number | undefined;
+        /** Maximum debounce delay in milliseconds (default: 60000) */
+        maxDebounceMs?: number | undefined;
+        /** Use LLM for description generation */
+        useLlm?: boolean | undefined;
+        /** LLM configuration for AutoDoc */
+        llmConfig?:
+          | {
+              provider: "ollama" | "openai" | "tgi";
+              model?: string | undefined;
+              endpoint?: string | undefined;
+            }
+          | undefined;
+      }
+    | undefined;
 }
 
 // =============================================================================
@@ -136,47 +140,57 @@ export interface EmbeddingConfigResolved {
   useLayeredIndex: boolean;
 
   // Provider-specific configurations
-  ollama?: {
-    baseUrl?: string | undefined;
-    timeout?: number | undefined;
-    timeoutMs?: number | undefined;
-    concurrency?: number | undefined;
-    headers?: Record<string, string>;
-    autoPull?: boolean;
-    warmupText?: string;
-    checkServer?: boolean;
-    pullTimeoutMs?: number;
-  };
-  openai?: {
-    baseUrl?: string | undefined;
-    apiKey?: string | undefined;
-    timeout?: number | undefined;
-    timeoutMs?: number | undefined;
-    concurrency?: number | undefined;
-    maxBatchSize?: number | undefined;
-  };
-  cloudru?: {
-    baseUrl?: string | undefined;
-    apiKey?: string | undefined;
-    timeout?: number | undefined;
-    timeoutMs?: number | undefined;
-    concurrency?: number | undefined;
-    maxBatchSize?: number | undefined;
-  };
-  huggingface?: {
-    apiKey?: string | undefined;
-    baseUrl?: string | undefined;
-    timeout?: number | undefined;
-    timeoutMs?: number | undefined;
-    concurrency?: number | undefined;
-    warmupText?: string;
-  };
-  tei?: {
-    baseUrl?: string | undefined;
-    timeoutMs?: number | undefined;
-    concurrency?: number | undefined;
-    checkServer?: boolean;
-  };
+  ollama?:
+    | {
+        baseUrl?: string | undefined;
+        timeout?: number | undefined;
+        timeoutMs?: number | undefined;
+        concurrency?: number | undefined;
+        headers?: Record<string, string> | undefined;
+        autoPull?: boolean | undefined;
+        warmupText?: string | undefined;
+        checkServer?: boolean | undefined;
+        pullTimeoutMs?: number | undefined;
+      }
+    | undefined;
+  openai?:
+    | {
+        baseUrl?: string | undefined;
+        apiKey?: string | undefined;
+        timeout?: number | undefined;
+        timeoutMs?: number | undefined;
+        concurrency?: number | undefined;
+        maxBatchSize?: number | undefined;
+      }
+    | undefined;
+  cloudru?:
+    | {
+        baseUrl?: string | undefined;
+        apiKey?: string | undefined;
+        timeout?: number | undefined;
+        timeoutMs?: number | undefined;
+        concurrency?: number | undefined;
+        maxBatchSize?: number | undefined;
+      }
+    | undefined;
+  huggingface?:
+    | {
+        apiKey?: string | undefined;
+        baseUrl?: string | undefined;
+        timeout?: number | undefined;
+        timeoutMs?: number | undefined;
+        concurrency?: number | undefined;
+        warmupText?: string | undefined;
+      }
+    | undefined;
+  tei?:
+    | {
+        baseUrl?: string | undefined;
+        timeoutMs?: number | undefined;
+        concurrency?: number | undefined;
+        checkServer?: boolean | undefined;
+      }
+    | undefined;
 }
 
 // =============================================================================
@@ -185,20 +199,20 @@ export interface EmbeddingConfigResolved {
 
 export interface DatabaseConfig {
   path?: string | undefined;
-  mode?: "WAL" | "DELETE" | "TRUNCATE";
+  mode?: "WAL" | "DELETE" | "TRUNCATE" | undefined;
   cacheSize?: number | undefined;
-  mmapSize?: number;
-  synchronous?: "OFF" | "NORMAL" | "FULL";
-  tempStore?: "DEFAULT" | "FILE" | "MEMORY";
+  mmapSize?: number | undefined;
+  synchronous?: "OFF" | "NORMAL" | "FULL" | undefined;
+  tempStore?: "DEFAULT" | "FILE" | "MEMORY" | undefined;
 }
 
 export interface LoggingConfig {
-  level?: "debug" | "info" | "warn" | "error";
-  format?: "json" | "text";
+  level?: "debug" | "info" | "warn" | "error" | undefined;
+  format?: "json" | "text" | undefined;
   outputFile?: string | undefined;
   maxFileSize?: string | undefined;
-  maxFiles?: number;
-  enableConsole?: boolean;
+  maxFiles?: number | undefined;
+  enableConsole?: boolean | undefined;
 }
 
 // =============================================================================
@@ -208,29 +222,33 @@ export interface LoggingConfig {
 export interface ParserConfig {
   treeSitter?: {
     enabled?: boolean | undefined;
-    languageConfigs?: string[];
+    languageConfigs?: string[] | undefined;
     maxFileSize?: number | undefined;
     timeout?: number | undefined;
-    bufferSize?: number;
+    bufferSize?: number | undefined;
   };
-  incremental?: { enabled?: boolean | undefined; cacheSize?: number | undefined; cacheTTL?: number };
-  agent?: {
-    maxConcurrency?: number | undefined;
-    memoryLimit?: number | undefined;
-    priority?: number;
-    batchSize?: number | undefined;
-    cacheSize?: number | undefined;
-    workerPoolSize?: number;
-  };
+  incremental?:
+    | { enabled?: boolean | undefined; cacheSize?: number | undefined; cacheTTL?: number | undefined }
+    | undefined;
+  agent?:
+    | {
+        maxConcurrency?: number | undefined;
+        memoryLimit?: number | undefined;
+        priority?: number | undefined;
+        batchSize?: number | undefined;
+        cacheSize?: number | undefined;
+        workerPoolSize?: number | undefined;
+      }
+    | undefined;
 }
 
 export interface IndexerConfig {
   maxConcurrency?: number | undefined;
   memoryLimit?: number | undefined;
-  priority?: number;
+  priority?: number | undefined;
   batchSize?: number | undefined;
   cacheSize?: number | undefined;
-  cacheTTL?: number;
+  cacheTTL?: number | undefined;
 }
 
 // =============================================================================
@@ -240,7 +258,7 @@ export interface IndexerConfig {
 export interface AgentRuntimeConfig {
   maxConcurrency?: number | undefined;
   memoryLimit?: number | undefined;
-  priority?: number;
+  priority?: number | undefined;
 }
 
 export type DevAgentConfig = AgentRuntimeConfig;
@@ -249,11 +267,11 @@ export type DoraAgentConfig = AgentRuntimeConfig;
 export interface QueryAgentConfig extends AgentRuntimeConfig {
   simpleQueryTimeout?: number | undefined;
   complexQueryTimeout?: number | undefined;
-  cacheWarmupSize?: number;
+  cacheWarmupSize?: number | undefined;
 }
 
 export interface SemanticAgentConfig extends AgentRuntimeConfig {
-  queueBatchSize?: number;
+  queueBatchSize?: number | undefined;
   batchSize?: number | undefined;
   modelPath?: string | undefined;
 }
@@ -267,7 +285,7 @@ export interface AgentResourceConstraints {
 
 export interface CoordinatorConfig extends AgentRuntimeConfig {
   taskQueueLimit?: number | undefined;
-  loadBalancingStrategy?: "round-robin" | "least-loaded" | "priority";
+  loadBalancingStrategy?: "round-robin" | "least-loaded" | "priority" | undefined;
   resourceConstraints: AgentResourceConstraints;
 }
 
@@ -283,34 +301,34 @@ export interface ConductorConfig extends CoordinatorConfig {
 export interface IndexingConfig {
   // branchAware removed - auto-detected via .git directory
   autoSwitchOnBranchChange?: boolean | undefined;
-  maxBranchesPerRepo?: number;
-  maxTotalBranches?: number;
-  evictionStrategy?: "LRU" | "LFU" | "FIFO";
-  cleanupIntervalMs?: number;
-  incrementalThreshold?: number;
-  dataDir?: string;
+  maxBranchesPerRepo?: number | undefined;
+  maxTotalBranches?: number | undefined;
+  evictionStrategy?: "LRU" | "LFU" | "FIFO" | undefined;
+  cleanupIntervalMs?: number | undefined;
+  incrementalThreshold?: number | undefined;
+  dataDir?: string | undefined;
   /** Auto-index on startup if supported files detected (default: true) */
-  autoIndex?: boolean;
+  autoIndex?: boolean | undefined;
   /** Supported file extensions for auto-index detection */
-  autoIndexExtensions?: string[];
+  autoIndexExtensions?: string[] | undefined;
 }
 
 export interface GitConfig {
   enabled?: boolean | undefined;
   watchBranchChanges?: boolean | undefined;
   /** Watch uncommitted file changes via git status polling (default: true) */
-  watchUncommitted?: boolean;
+  watchUncommitted?: boolean | undefined;
   /** Interval for uncommitted changes polling in ms (default: 10000) */
-  uncommittedPollIntervalMs?: number;
+  uncommittedPollIntervalMs?: number | undefined;
   /** Include untracked (new) files in uncommitted watch (default: true) */
-  includeUntracked?: boolean;
-  autoReindex?: boolean;
-  diffMode?: "incremental" | "full";
-  pollIntervalMs?: number;
+  includeUntracked?: boolean | undefined;
+  autoReindex?: boolean | undefined;
+  diffMode?: "incremental" | "full" | undefined;
+  pollIntervalMs?: number | undefined;
   /** Debounce delay for embedding generation in ms (default: 60000 = 1 min) */
-  debounceMs?: number;
+  debounceMs?: number | undefined;
   /** Threshold for bulk mode (drop/rebuild index). Files > threshold = bulk mode (default: 1000) */
-  bulkModeThreshold?: number;
+  bulkModeThreshold?: number | undefined;
 }
 
 // =============================================================================
@@ -319,8 +337,8 @@ export interface GitConfig {
 
 export interface VectorBackendConfig {
   libsql?: {
-    metric?: "cosine" | "l2";
-    compression?: "float8" | "float16" | "float32";
+    metric?: "cosine" | "l2" | undefined;
+    compression?: "float8" | "float16" | "float32" | undefined;
     searchL?: number | undefined;
     insertL?: number | undefined;
   };
@@ -338,7 +356,7 @@ export interface AppConfig {
   indexer: IndexerConfig;
   indexing: IndexingConfig;
   git: GitConfig;
-  vectorBackend?: VectorBackendConfig;
+  vectorBackend?: VectorBackendConfig | undefined;
   devAgent: DevAgentConfig;
   doraAgent: DoraAgentConfig;
   queryAgent: QueryAgentConfig;

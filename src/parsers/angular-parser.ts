@@ -121,7 +121,7 @@ export interface TemplateInterpolation {
 
 export interface PipeUsage {
   name: string;
-  args?: string[];
+  args?: string[] | undefined;
   line?: number | undefined;
 }
 
@@ -526,9 +526,10 @@ export function parseTemplate(template: string): AngularTemplateInfo {
           if (pipeResult?.[1]) {
             const pipeName = pipeResult[1];
             const pipeArgs = pipeResult[2];
+            const parsedArgs = pipeArgs?.split(":").map((a) => a.trim());
             info.pipeUsages.push({
               name: pipeName,
-              args: pipeArgs?.split(":").map((a) => a.trim()),
+              ...(parsedArgs != null ? { args: parsedArgs } : {}),
               line: lineNo,
             });
           }

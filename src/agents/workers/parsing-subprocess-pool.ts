@@ -126,10 +126,10 @@ export class ParsingSubprocessPool {
   private readonly memoryLimitMB: number;
   private readonly killAfterBatch: boolean;
   private readonly maxFilesPerChunk: number;
-  private embeddingConfig?: WorkerEmbeddingConfig;
-  private readonly onEmbeddings?: EmbeddingsCallback;
-  private readonly onEmbeddingTexts?: EmbeddingTextsCallback;
-  private readonly onStreamingResult?: StreamingResultCallback;
+  private embeddingConfig?: WorkerEmbeddingConfig | undefined;
+  private readonly onEmbeddings?: EmbeddingsCallback | undefined;
+  private readonly onEmbeddingTexts?: EmbeddingTextsCallback | undefined;
+  private readonly onStreamingResult?: StreamingResultCallback | undefined;
   private readonly streamingMode: boolean;
 
   // Keepalive mode: keep worker 0 alive for fast incremental processing

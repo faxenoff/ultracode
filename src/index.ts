@@ -70,7 +70,6 @@ if (process.argv.includes("--pipe")) {
   // Non-quiet mode: leave console as-is
 })();
 
-// TASK-001: Environment variable fallback for embedding model - MUST BE FIRST
 function createSafeEnvironment() {
   // Provide safe defaults for environment variables that might be undefined
   const safeEnv = {
@@ -110,7 +109,6 @@ import { ConductorOrchestrator } from "./agents/conductor-orchestrator.js";
 import { type AutoDocWatcherConfig, getAutoDocWatcher } from "./autodoc/index.js";
 // CLI argument parsing
 import { handleSetupCommand, parseArgs, printHelp } from "./cli/args-parser.js";
-// TASK-001: Import new YAML configuration system
 import { ConfigLoader, initializeConfig, validateConfig } from "./config/yaml-config.js";
 import { getOrCreateAgent, registerAllAgents } from "./core/agent-registry.js";
 // Auto-indexing
@@ -330,7 +328,6 @@ function normalizeInputPath(rawPath?: string | null): string | undefined {
   return normalize(target);
 }
 
-// TASK-001: Initialize YAML configuration system
 _startTimer("initializeConfig");
 const config = initializeConfig();
 _endTimer("initializeConfig");
@@ -475,8 +472,9 @@ let conductor: ConductorOrchestrator | null = null;
 
 function getConductor(): ConductorOrchestrator {
   if (!conductor) {
-    // TASK-001: Use YAML configuration for conductor setup
-    conductor = new ConductorOrchestrator(config.conductor ?? {});
+    conductor = new ConductorOrchestrator(
+      (config.conductor ?? {}) as import("./agents/conductor/types.js").ConductorConfigOverrides,
+    );
     // Update shutdown context with conductor reference
     setShutdownContext({ conductor });
   }

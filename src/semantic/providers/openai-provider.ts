@@ -24,9 +24,9 @@ export interface OpenAIOptions {
   baseUrl?: string | undefined;
   timeoutMs?: number | undefined;
   concurrency?: number | undefined;
-  dimensions?: number;
+  dimensions?: number | undefined;
   maxBatchSize?: number | undefined;
-  logger?: ProviderLogger;
+  logger?: ProviderLogger | undefined;
 }
 
 const PATH = "/v1/embeddings";

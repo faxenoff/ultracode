@@ -14,17 +14,19 @@ import type { SemanticAnalysis } from "../../types/semantic.js";
 import type { Entity } from "../../types/storage.js";
 
 export interface HotspotItem {
-  entityId?: string;
-  filePath?: string;
-  name?: string;
-  language?: string;
-  structuralScore?: number;
-  semantic?: SemanticAnalysis;
-  snippet?: {
-    startLine?: number;
-    endLine?: number;
-    length?: number;
-  };
+  entityId?: string | undefined;
+  filePath?: string | undefined;
+  name?: string | undefined;
+  language?: string | undefined;
+  structuralScore?: number | undefined;
+  semantic?: SemanticAnalysis | undefined;
+  snippet?:
+    | {
+        startLine?: number | undefined;
+        endLine?: number | undefined;
+        length?: number | undefined;
+      }
+    | undefined;
 }
 
 export interface AnalyzeHotspotsResult {

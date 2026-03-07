@@ -14,7 +14,7 @@
  */
 
 import type { CommonTokenStream } from "antlr4ng";
-import type { KDocInfo } from "../types.js";
+import type { KDocInfo, KDocParam } from "../types.js";
 
 // =============================================================================
 // MAIN EXTRACTION FUNCTION
@@ -211,10 +211,9 @@ function parseParamTag(content: string, result: KDocInfo): void {
     const name = match[1] || "";
     const description = (match[2]?.split(/(?=@\w+)/)[0] || "").trim();
 
-    result.params.push({
-      name,
-      description: description || undefined,
-    });
+    const paramEntry: KDocParam = { name };
+    if (description) paramEntry.description = description;
+    result.params.push(paramEntry);
   }
 }
 
@@ -224,7 +223,7 @@ function parseParamTag(content: string, result: KDocInfo): void {
 function parseReturnTag(content: string, result: KDocInfo): void {
   const description = (content.split(/(?=@\w+)/)[0] || "").trim();
   result.returns = {
-    description: description || undefined,
+    ...(description ? { description } : {}),
   };
 }
 
@@ -244,7 +243,7 @@ function parseThrowsTag(content: string, result: KDocInfo): void {
 
     result.throws.push({
       type,
-      description: description || undefined,
+      ...(description ? { description } : {}),
     });
   }
 }
@@ -265,7 +264,7 @@ function parsePropertyTag(content: string, result: KDocInfo): void {
 
     result.property.push({
       name,
-      description: description || undefined,
+      ...(description ? { description } : {}),
     });
   }
 }

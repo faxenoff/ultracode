@@ -35,9 +35,9 @@ interface RefactoringSuggestionOutput {
   impact: string;
   confidence: number;
   description: string;
-  entityId?: string;
-  filePath?: string;
-  suggestedCode?: string;
+  entityId?: string | undefined;
+  filePath?: string | undefined;
+  suggestedCode?: string | undefined;
 }
 
 /**
@@ -416,7 +416,9 @@ export class AnalyzeHotspotsToolHandler extends BaseToolHandler<z.infer<typeof A
     includeHistoricalMetrics: boolean,
   ): {
     score: number;
-    changeMetrics?: { changeFrequency: number; changeFrequencyScore: number; changeSource: "prolly" | "git" | "none" };
+    changeMetrics?:
+      | { changeFrequency: number; changeFrequencyScore: number; changeSource: "prolly" | "git" | "none" }
+      | undefined;
   } {
     const metrics = entity.metadata?.["metrics"] || {};
     let score = 0;
@@ -560,8 +562,7 @@ export class FindRelatedConceptsToolHandler extends BaseToolHandler<z.infer<type
     // Batch 1: resolve all hash IDs in single query
     const entityMap = hashIds.length > 0 ? await storage.getEntitiesBatch(hashIds) : new Map();
 
-    // Batch 2: resolve composite names — collect unique names, one searchEntities per unique name
-    // (searchEntities doesn't support multi-name batch, but we can deduplicate)
+    // Batch 2: resolve composite names — single searchEntities with regex-union of all unique names
     const nameToEntity = new Map<string, Entity | null>();
     const uniqueNames = [...new Set(compositeNames.map((c) => c.name))];
     if (uniqueNames.length > 0) {
@@ -814,7 +815,7 @@ export class AnalyzeCodeImpactToolHandler extends BaseToolHandler<z.infer<typeof
     if (!entityId && args.filePath) {
       const normalizedPath = this.context.normalizeInputPath(args.filePath);
       const entities = await storage.findEntities({
-        filters: { filePath: normalizedPath },
+        filters: { ...(normalizedPath != null ? { filePath: normalizedPath } : {}) },
         limit: 1,
       });
       if (entities.length > 0 && entities[0]) {

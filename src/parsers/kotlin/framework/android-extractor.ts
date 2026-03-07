@@ -376,7 +376,7 @@ export function extractNavigationDestinations(code: string): Array<{
 
     destinations.push({
       route,
-      arguments: args.length > 0 ? args : undefined,
+      ...(args.length > 0 ? { arguments: args } : {}),
     });
   }
 

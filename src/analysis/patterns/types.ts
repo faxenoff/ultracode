@@ -15,64 +15,64 @@ export type PatternSeverity = "critical" | "high" | "medium" | "low" | "info";
 export interface RelationshipCriteria {
   type: string; // RelationType: "calls", "imports", "extends", etc.
   direction: "incoming" | "outgoing";
-  minCount?: number;
-  maxCount?: number;
+  minCount?: number | undefined;
+  maxCount?: number | undefined;
   /** Cross-file ratio: % of relationships crossing file boundaries */
-  crossFileRatio?: { min?: number; max?: number };
+  crossFileRatio?: { min?: number | undefined; max?: number | undefined } | undefined;
 }
 
 export interface StructuralCriteria {
   // Entity filter
-  entityTypes?: string[];
+  entityTypes?: string[] | undefined;
 
   // Modifiers
-  requiredModifiers?: string[];
-  forbiddenModifiers?: string[];
+  requiredModifiers?: string[] | undefined;
+  forbiddenModifiers?: string[] | undefined;
 
   // Return type (regex)
-  returnTypeMatch?: string;
-  returnTypeNotMatch?: string;
+  returnTypeMatch?: string | undefined;
+  returnTypeNotMatch?: string | undefined;
 
   // Parameters
-  minParams?: number;
-  maxParams?: number;
-  paramTypeRequired?: string; // Must have param of this type
-  paramTypeAbsent?: string; // Must NOT have param of this type
+  minParams?: number | undefined;
+  maxParams?: number | undefined;
+  paramTypeRequired?: string | undefined; // Must have param of this type
+  paramTypeAbsent?: string | undefined; // Must NOT have param of this type
 
   // Metrics (from entity.metadata.metrics)
-  minCyclomatic?: number;
-  maxCyclomatic?: number;
-  minCognitive?: number;
-  minNesting?: number;
-  minLOC?: number;
-  maxLOC?: number;
+  minCyclomatic?: number | undefined;
+  maxCyclomatic?: number | undefined;
+  minCognitive?: number | undefined;
+  minNesting?: number | undefined;
+  minLOC?: number | undefined;
+  maxLOC?: number | undefined;
 
   // ControlFlow (from entity.metadata.controlFlow)
-  hasLoops?: boolean;
-  hasExceptions?: boolean;
-  hasAwaits?: boolean;
-  minBranches?: number;
+  hasLoops?: boolean | undefined;
+  hasExceptions?: boolean | undefined;
+  hasAwaits?: boolean | undefined;
+  minBranches?: number | undefined;
 
   // Calls (from entity.metadata.calls)
-  minCallCount?: number;
-  callsInclude?: string[]; // Entity must call these (regex matched)
-  callsExclude?: string[]; // Entity must NOT call these
+  minCallCount?: number | undefined;
+  callsInclude?: string[] | undefined; // Entity must call these (regex matched)
+  callsExclude?: string[] | undefined; // Entity must NOT call these
 
   // Decorators/attributes
-  decoratorMatch?: string[]; // regex patterns
+  decoratorMatch?: string[] | undefined; // regex patterns
 
   // Inheritance
-  hasNoInheritance?: boolean; // Must NOT have base classes/interfaces
+  hasNoInheritance?: boolean | undefined; // Must NOT have base classes/interfaces
 
   // File path filter (regex)
-  filePathNotMatch?: string; // Skip entities whose filePath matches this regex
+  filePathNotMatch?: string | undefined; // Skip entities whose filePath matches this regex
 
   // Name (regex)
-  nameMatch?: string;
-  nameNotMatch?: string;
+  nameMatch?: string | undefined;
+  nameNotMatch?: string | undefined;
 
   // Graph-based (require relationship queries)
-  relationships?: RelationshipCriteria[];
+  relationships?: RelationshipCriteria[] | undefined;
 }
 
 // ─── Pattern Definition ────────────────────────────────────────────
@@ -85,22 +85,24 @@ export interface PatternDefinition {
   name: string;
   description: string;
   suggestion: string;
-  bigO?: {
-    before: string; // "O(n²)"
-    after: string; // "O(n)"
-  };
-  benchmark?: string; // "10x faster", "50% less memory"
+  bigO?:
+    | {
+        before: string; // "O(n²)"
+        after: string; // "O(n)"
+      }
+    | undefined;
+  benchmark?: string | undefined; // "10x faster", "50% less memory"
   tags: string[];
   enabled: boolean;
 
   // Structural criteria (fast path)
-  structural?: StructuralCriteria;
+  structural?: StructuralCriteria | undefined;
 
   // Custom detector function name
-  customDetector?: string; // e.g., "checkPromiseNoCatch"
+  customDetector?: string | undefined; // e.g., "checkPromiseNoCatch"
 
   // Semantic validation config
-  exemplarIds?: string[];
+  exemplarIds?: string[] | undefined;
   minSemanticSimilarity: number; // 0 = skip semantic check
 
   // Scoring
@@ -131,8 +133,8 @@ export interface PatternMatch {
   semanticSimilarity: number; // 0-1 (1.0 if semantic skipped)
   combinedScore: number; // weighted blend
   matchedCriteria: string[];
-  closestExemplar?: { id: string; similarity: number; description: string };
-  codeSnippet?: string;
+  closestExemplar?: { id: string; similarity: number; description: string } | undefined;
+  codeSnippet?: string | undefined;
 }
 
 // ─── Scan Result ───────────────────────────────────────────────────
@@ -157,10 +159,10 @@ export interface PatternScanResult {
 
 export interface PatternScanOptions {
   projectPath: string;
-  filePath?: string;
-  language?: string;
+  filePath?: string | undefined;
+  language?: string | undefined;
   category?: PatternCategory | "all";
-  tags?: string[];
+  tags?: string[] | undefined;
   minConfidence?: number;
   severity?: PatternSeverity | "all";
   offset?: number;
@@ -168,7 +170,7 @@ export interface PatternScanOptions {
   /** Max entities to fetch from DB. Default: 10000. */
   entityLimit?: number;
   /** Pattern IDs to suppress (skip). For known false positives. */
-  suppressPatterns?: string[];
+  suppressPatterns?: string[] | undefined;
 }
 
 // ─── Custom Detector ───────────────────────────────────────────────

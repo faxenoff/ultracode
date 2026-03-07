@@ -122,7 +122,7 @@ export interface OVMSGrpcClientOptions {
   port: number;
   modelName: string;
   timeoutMs?: number | undefined;
-  maxMessageSize?: number;
+  maxMessageSize?: number | undefined;
 }
 
 export class OVMSGrpcClient {

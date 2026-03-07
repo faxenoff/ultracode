@@ -68,12 +68,14 @@ export interface ImpactAnalyzerOptions {
 
 export class ImpactAnalyzer {
   private storage: GraphStorage;
-  private semanticSearch?: {
-    search(
-      query: string,
-      options: { limit: number; minSimilarity: number },
-    ): Promise<Array<{ entityId: string; similarity: number }>>;
-  };
+  private semanticSearch?:
+    | {
+        search(
+          query: string,
+          options: { limit: number; minSimilarity: number },
+        ): Promise<Array<{ entityId: string; similarity: number }>>;
+      }
+    | undefined;
 
   constructor(
     storage: GraphStorage,
@@ -321,14 +323,12 @@ export class ImpactAnalyzer {
 
       // Collect all caller IDs from this level
       const callerIds: string[] = [];
-      const callerToTarget = new Map<string, string>(); // for tracking which target each caller calls
       for (let i = 0; i < frontier.length; i++) {
         const id = frontier[i]!;
         for (const rel of allRels[i]!) {
           if (rel.toId === id && !visited.has(rel.fromId)) {
             visited.add(rel.fromId);
             callerIds.push(rel.fromId);
-            callerToTarget.set(rel.fromId, id);
           }
         }
       }

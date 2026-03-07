@@ -74,9 +74,9 @@ export interface ProjectContext {
   projectHash: string;
   branchName: string;
   /** Base branch for layered reads (e.g., 'main', 'dev'). If set, read operations include base + current. */
-  baseBranch?: string;
+  baseBranch?: string | undefined;
   /** Embedding dimensions for this project (default: from global config) */
-  dimensions?: SupportedDimension;
+  dimensions?: SupportedDimension | undefined;
 }
 
 export const DEFAULT_PROJECT_CONTEXT: ProjectContext = {

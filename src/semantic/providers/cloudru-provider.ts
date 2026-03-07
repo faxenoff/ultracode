@@ -18,7 +18,7 @@ export interface CloudRUOptions {
   timeoutMs?: number | undefined;
   concurrency?: number | undefined;
   maxBatchSize?: number | undefined;
-  logger?: ProviderLogger;
+  logger?: ProviderLogger | undefined;
 }
 
 const EP = "/v1/embeddings";

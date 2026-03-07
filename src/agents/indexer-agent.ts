@@ -25,6 +25,7 @@ import { getDataDir } from "../shared/storage-paths.js";
 import { BatchOperationsLibSQL } from "../storage/batch-operations-libsql.js";
 import { getCacheManager, QueryCacheManager } from "../storage/cache-manager.js";
 import { getGraphStorage, getLibSQLAdapter } from "../storage/graph-storage-factory.js";
+import { invalidateAndPreload } from "../tracing/graph-cache.js";
 // SQLiteManager removed - using libsql via GraphStorage
 import { type AgentMessage, type AgentTask, AgentType } from "../types/agent.js";
 import type { EntityRelationship, ParsedEntity } from "../types/parser.js";
@@ -80,9 +81,9 @@ interface ProvidedRelationship {
   from: string;
   to: string;
   type: RelationType | string;
-  sourceFile?: string;
-  targetFile?: string;
-  metadata?: { line?: number | undefined; [k: string]: unknown };
+  sourceFile?: string | undefined;
+  targetFile?: string | undefined;
+  metadata?: { line?: number | undefined; [k: string]: unknown } | undefined;
 }
 
 export interface IndexerTask extends AgentTask {
@@ -129,24 +130,126 @@ export class IndexerAgent extends BaseAgent {
 
   // Batch accumulator for streaming indexing optimization
   // Accumulates entities/relationships and flushes in batches to reduce DB operations
-  private readonly BATCH_FLUSH_THRESHOLD = 270; // Flush every 270 files (was 200→50); 3 batches overlaps better with parsing
+  private batchFlushThreshold = 270; // Adaptive: set via setTotalFiles() based on project size
+  private entityFlushThreshold = 15_000; // Primary threshold: entity count triggers flush
   private pendingStorageEntities: Entity[] = [];
   private pendingRelationships: Relationship[] = [];
   private pendingParsedEntities: Array<{ entities: ParsedEntity[]; filePath: string }> = [];
   private pendingFilesCount = 0;
-  private batchFlushPromise: Promise<void> | null = null;
+  private flushChain: Promise<void> = Promise.resolve();
 
   // Incremental entity name map — avoids O(n²) full rebuild on each file
   private entityNameMap = new Map<string, Entity[]>();
   private entitySuffixMap = new Map<string, Entity[]>();
 
-  // Idle flush timer - flushes pending batch if no activity for 10 seconds
+  // Idle flush timer - adaptive: 2s during active indexing, 10s during file watching
   private idleFlushAbort: AbortController | null = null;
-  private readonly IDLE_FLUSH_MS = 10_000;
+  private readonly IDLE_FLUSH_MS_ACTIVE = 2_000;
+  private readonly IDLE_FLUSH_MS_PASSIVE = 10_000;
+  private isActiveIndexing = false;
+  private idleFlushRetries = 0;
+  private readonly MAX_IDLE_RETRIES = 2;
+  private readonly MIN_IDLE_FLUSH_FILES = 20;
+  private bulkIndexesDropped = false;
+  private bulkStagingEnabled = false;
+  private bulkDropPromise: Promise<void> | null = null;
 
   constructor() {
     super(AgentType.INDEXER, getIndexerConfig());
     log.i("INDEXER", "created", { id: this.id });
+  }
+
+  /**
+   * Set total files count to compute adaptive flush threshold.
+   * Must be called after file collection, before parsing starts.
+   */
+  setTotalFiles(totalFiles: number): void {
+    if (totalFiles < 500) {
+      this.batchFlushThreshold = 270;
+      this.entityFlushThreshold = 15_000;
+    } else if (totalFiles < 2000) {
+      this.batchFlushThreshold = 500;
+      this.entityFlushThreshold = 25_000;
+    } else if (totalFiles < 5000) {
+      this.batchFlushThreshold = 800;
+      this.entityFlushThreshold = 35_000;
+    } else {
+      this.batchFlushThreshold = 2000;
+      this.entityFlushThreshold = 40_000;
+    }
+    this.isActiveIndexing = true;
+    log.i("INDEXER", "adaptive_threshold", {
+      totalFiles,
+      fileThreshold: this.batchFlushThreshold,
+      entityThreshold: this.entityFlushThreshold,
+    });
+
+    // Drop indexes + enable staging for bulk insert performance (>500 files)
+    if (totalFiles > 500) {
+      const adapter = getLibSQLAdapter();
+      if (adapter) {
+        this.bulkDropPromise = adapter
+          .dropBulkIndexes()
+          .then(() => adapter.enableStagingMode())
+          .then(() => {
+            this.bulkIndexesDropped = true;
+            this.bulkStagingEnabled = true;
+          })
+          .catch((err) => {
+            log.w("INDEXER", "staging_enable_failed", { error: (err as Error).message });
+          });
+      }
+    }
+  }
+
+  /**
+   * Mark active indexing as complete — switches idle timer to passive mode.
+   */
+  async setIndexingComplete(): Promise<void> {
+    this.isActiveIndexing = false;
+    this.idleFlushRetries = 0;
+
+    if (this.bulkStagingEnabled) {
+      // Staging path: commit staging tables → main + recreate indexes in one step
+      this.bulkStagingEnabled = false;
+      this.bulkIndexesDropped = false;
+      const adapter = getLibSQLAdapter();
+      if (adapter) {
+        const start = Date.now();
+        try {
+          await adapter.commitStaging();
+          log.i("INDEXER", "staging_committed", { ms: Date.now() - start });
+        } catch (err) {
+          log.w("INDEXER", "staging_commit_failed", { error: (err as Error).message });
+          await adapter.abortStaging();
+          await adapter.recreateBulkIndexes();
+        }
+      }
+    } else if (this.bulkIndexesDropped) {
+      // Non-staging path (< 1000 files but indexes were dropped)
+      this.bulkIndexesDropped = false;
+      const adapter = getLibSQLAdapter();
+      if (adapter) {
+        const start = Date.now();
+        try {
+          await adapter.recreateBulkIndexes();
+          log.i("INDEXER", "bulk_indexes_recreated", { ms: Date.now() - start });
+        } catch (err) {
+          log.w("INDEXER", "recreate_indexes_failed", { error: (err as Error).message });
+        }
+      }
+    }
+
+    // Invalidate cached Graphology graph and preload in background if trace tools
+    // were used ≥2 times on this project (adaptive preload)
+    try {
+      const adapter = getLibSQLAdapter();
+      if (adapter) {
+        invalidateAndPreload(adapter as unknown as import("../types/storage.js").GraphStorage);
+      }
+    } catch {
+      // Non-critical: graph preload is a performance optimization, not required
+    }
   }
 
   /**
@@ -301,7 +404,7 @@ export class IndexerAgent extends BaseAgent {
         return await this.indexEntities(
           indexerTask.payload.entities!,
           indexerTask.payload.filePath!,
-          indexerTask.payload.relationships,
+          indexerTask.payload.relationships as any,
         );
 
       case "index:incremental":
@@ -664,25 +767,39 @@ export class IndexerAgent extends BaseAgent {
     const abortController = new AbortController();
     this.idleFlushAbort = abortController;
 
+    const idleMs = this.isActiveIndexing ? this.IDLE_FLUSH_MS_ACTIVE : this.IDLE_FLUSH_MS_PASSIVE;
+
     // Schedule idle flush using async sleep (Bun compatible)
     (async () => {
-      await sleep(this.IDLE_FLUSH_MS);
-      if (!abortController.signal.aborted && this.pendingFilesCount > 0) {
-        log.d("INDEXER", "idle_flush", {
-          pending: this.pendingFilesCount,
-          entities: this.pendingStorageEntities.length,
-          relationships: this.pendingRelationships.length,
-        });
-        logMemory("INDEXER", { pendingFiles: this.pendingFilesCount });
-        try {
-          await this.flushPendingBatch();
-          // Force GC after idle flush to reclaim memory
-          if (tryGarbageCollect(true)) {
-            log.d("INDEXER", "gc_after_idle_flush");
-          }
-        } catch (err) {
-          log.w("INDEXER", "Idle flush failed", { error: (err as Error).message });
+      await sleep(idleMs);
+      if (abortController.signal.aborted || this.pendingFilesCount === 0) return;
+
+      // During active indexing, batch up stragglers instead of flushing 1-2 files
+      if (
+        this.isActiveIndexing &&
+        this.pendingFilesCount < this.MIN_IDLE_FLUSH_FILES &&
+        this.idleFlushRetries < this.MAX_IDLE_RETRIES
+      ) {
+        this.idleFlushRetries++;
+        this.resetIdleFlushTimer(); // Wait another cycle to accumulate more
+        return;
+      }
+      this.idleFlushRetries = 0;
+
+      log.d("INDEXER", "idle_flush", {
+        pending: this.pendingFilesCount,
+        entities: this.pendingStorageEntities.length,
+        relationships: this.pendingRelationships.length,
+      });
+      logMemory("INDEXER", { pendingFiles: this.pendingFilesCount });
+      try {
+        await this.flushPendingBatch();
+        // Force GC after idle flush to reclaim memory
+        if (tryGarbageCollect(true)) {
+          log.d("INDEXER", "gc_after_idle_flush");
         }
+      } catch (err) {
+        log.w("INDEXER", "Idle flush failed", { error: (err as Error).message });
       }
     })();
   }
@@ -867,7 +984,10 @@ export class IndexerAgent extends BaseAgent {
 
     // Immediate fire-and-forget flush when threshold reached
     // Starts DB work concurrently with parsing — no delay
-    if (this.pendingFilesCount >= this.BATCH_FLUSH_THRESHOLD) {
+    if (
+      this.pendingStorageEntities.length >= this.entityFlushThreshold ||
+      this.pendingFilesCount >= this.batchFlushThreshold
+    ) {
       this.flushPendingBatch().catch((err) => {
         log.w("INDEXER", "Auto-flush failed", { error: (err as Error).message });
       });
@@ -879,11 +999,14 @@ export class IndexerAgent extends BaseAgent {
    * Returns stats about what was flushed
    */
   async flushPendingBatch(): Promise<{ entities: number; relationships: number; files: number }> {
-    // Prevent concurrent flushes
-    if (this.batchFlushPromise) {
-      await this.batchFlushPromise;
+    // Wait for bulk index drop to complete before first flush
+    if (this.bulkDropPromise) {
+      await this.bulkDropPromise;
+      this.bulkDropPromise = null;
     }
 
+    // Snapshot IMMEDIATELY — don't let data accumulate while waiting for previous flush.
+    // This prevents mega-flush: each threshold trigger "cuts off" current batch right away.
     const entitiesToFlush = this.pendingStorageEntities;
     const relationshipsToFlush = this.pendingRelationships;
     const parsedToFlush = this.pendingParsedEntities;
@@ -901,13 +1024,12 @@ export class IndexerAgent extends BaseAgent {
       return { entities: 0, relationships: 0, files: 0 };
     }
 
-    const flushStart = Date.now();
-
-    this.batchFlushPromise = (async () => {
-      // Insert entities in one batch
-      const entityResult = await this.batchOps.insertEntities(entitiesToFlush);
-
-      // Publish for embedding generation (all at once)
+    // Chain this flush after all previous ones — guarantees sequential DB writes.
+    // Unlike await+assign pattern, .then() chaining has no race conditions:
+    // each caller appends to the chain, order is deterministic.
+    const flushPromise = this.flushChain.then(async () => {
+      const flushStart = Date.now();
+      // Publish for embedding generation BEFORE DB write — TEI starts work in parallel
       // Build lookup: name+type+filePath → stableEntityId for correct embedding IDs
       const stableIdLookup = new Map<string, string>();
       for (const e of entitiesToFlush) {
@@ -921,6 +1043,9 @@ export class IndexerAgent extends BaseAgent {
         });
         knowledgeBus.publish("semantic:new_entities", entitiesWithPath, this.id);
       }
+
+      // Insert entities in one batch
+      const entityResult = await this.batchOps.insertEntities(entitiesToFlush);
 
       // Process external relationships - create placeholders for unresolved references
       // NOTE: DB lookup was removed here due to O(N) query overhead causing 77+ second delays
@@ -1029,10 +1154,10 @@ export class IndexerAgent extends BaseAgent {
         filesTracked: fileEntityCounts.size,
         ms: Date.now() - flushStart,
       });
-    })();
+    });
+    this.flushChain = flushPromise;
 
-    await this.batchFlushPromise;
-    this.batchFlushPromise = null;
+    await flushPromise;
 
     return {
       entities: entitiesToFlush.length,
@@ -1441,8 +1566,7 @@ export class IndexerAgent extends BaseAgent {
       await handleUncommittedChangesEvent(changedFiles, this.getGitEventContext());
     }
 
-    // Handle deleted files - log for now (entities cleaned up on next full reindex)
-    // TODO: Add deleteEntitiesForFile method to GraphStorage for immediate cleanup
+    // Deleted files — entities cleaned up on next full reindex via file_generations
     if (deletedFiles.length > 0) {
       log.d("INDEXER", "Detected deleted files (cleaned on reindex)", {
         count: deletedFiles.length,

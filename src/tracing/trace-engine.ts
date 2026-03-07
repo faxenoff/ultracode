@@ -58,7 +58,7 @@ function isRealEntity(entity: Entity): boolean {
 
 export class TraceEngine {
   private storage: GraphStorage;
-  private semanticSearch?: SemanticSearchService;
+  private semanticSearch?: SemanticSearchService | undefined;
   private pathBuilder: PathBuilder;
   private graphologyBuilder: GraphologyPathBuilder;
   private useOptimized: boolean;
@@ -66,11 +66,16 @@ export class TraceEngine {
   // Cache for resolveEntity results (cleared on clearCache())
   private resolveEntityCache = new Map<string, Entity | null>();
 
-  constructor(storage: GraphStorage, semanticSearch?: SemanticSearchService, useOptimized = true) {
+  constructor(
+    storage: GraphStorage,
+    semanticSearch?: SemanticSearchService,
+    useOptimized = true,
+    externalGraphBuilder?: GraphologyPathBuilder,
+  ) {
     this.storage = storage;
     this.semanticSearch = semanticSearch;
     this.pathBuilder = new PathBuilder(storage);
-    this.graphologyBuilder = new GraphologyPathBuilder(storage);
+    this.graphologyBuilder = externalGraphBuilder ?? new GraphologyPathBuilder(storage);
     this.useOptimized = useOptimized;
   }
 

@@ -2,6 +2,7 @@ import { log } from "../../logging/index.js";
 import type { EmbeddingGenerator } from "../../semantic/embedding-generator.js";
 import type { CodeUnit } from "../models/code-unit.js";
 import { type Resolution, ResolutionStrategy, type SemanticConflict } from "../models/semantic-conflict.js";
+import { diff3Merge } from "./diff3.js";
 
 /**
  * AI-Assisted Conflict Resolver - Uses embeddings for intelligent conflict resolution
@@ -232,36 +233,20 @@ export class AIConflictResolver {
   private attemptIntelligentMerge(conflict: SemanticConflict, similarity: number): string | null {
     const { baseUnit, branchAUnit, branchBUnit } = conflict;
 
-    // Heuristic 1: If one branch added functionality, the other - bugfix
-    // try to combine both changes
-    const baseLength = baseUnit?.content.length || 0;
-    const branchALength = branchAUnit.content.length;
-    const branchBLength = branchBUnit.content.length;
+    if (!baseUnit?.content) return null;
 
-    // If both branches added code (increased size)
-    const branchAAdded = branchALength > baseLength;
-    const branchBAdded = branchBLength > baseLength;
+    const result = diff3Merge(baseUnit.content, branchAUnit.content, branchBUnit.content);
 
-    if (branchAAdded && branchBAdded && similarity >= 0.7) {
-      // Simple strategy: take the longer version
-      // (assuming it includes more functionality)
-      return branchALength > branchBLength ? branchAUnit.content : branchBUnit.content;
+    // Clean merge — no conflicts at all
+    if (!result.hasConflicts) return result.mergedContent;
+
+    // With high similarity and few conflicts, return content with markers
+    // so downstream can present partial merge to user
+    if (result.conflictCount <= 2 && similarity >= 0.8) {
+      return result.mergedContent;
     }
 
-    // Heuristic 2: If changes are small and similar - take one of the branches
-    const maxChange = Math.max(Math.abs(branchALength - baseLength), Math.abs(branchBLength - baseLength));
-
-    if (maxChange < 100 && similarity >= 0.8) {
-      // Small similar changes - take branchA
-      return branchAUnit.content;
-    }
-
-    // TODO: More advanced heuristics:
-    // - AST-based merge for structural changes
-    // - Line-by-line diff with semantic scoring
-    // - ML-based code generation for merge
-
-    return null; // Cannot safely merge
+    return null;
   }
 
   /**

@@ -179,7 +179,11 @@ export class CodeAnalyzer {
     const cap = Math.min(100, total);
     log.d("ANALYZER", "Analyzing code fragments for clones", { maxSamples: cap, minSimilarity });
 
-    type CachedEntity = { content: string; metadata?: Record<string, unknown>; vector?: Float32Array };
+    type CachedEntity = {
+      content: string;
+      metadata?: Record<string, unknown> | undefined;
+      vector?: Float32Array | undefined;
+    };
     const ecache = new Map<string, CachedEntity>();
     const uf = mkUnionFind();
     const seen = new Set<string>();

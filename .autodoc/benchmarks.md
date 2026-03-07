@@ -282,9 +282,43 @@ All DBs: `journal_mode=OFF`, `synchronous=OFF`, `cache_size=-8192` (8 MB per DB)
 
 ## Indexing Performance
 
-UltraCode project indexing benchmarks (self-indexing).
+### Current (v6.4, staging tables, multi-DB, IVF,SQ8)
 
-### Current (v6.2, 843 files, 12.0K entities, IVF,SQ8, .ultracodeignore)
+**Append-only staging tables** for bulk indexing (>500 files): heap INSERT O(1), no B-tree PK lookup. Commit via `INSERT OR REPLACE INTO main SELECT FROM staging` + recreate indexes in one pass.
+
+#### UltraCode (self-indexing)
+
+[github.com/anthropics/ultracode](https://github.com/anthropics/ultracode) — 275K LOC, 832 files, 27K entities, 69K rels
+
+| Metric | v6.4 (staging) | v6.3 (no staging) | Delta |
+|--------|----------------|-------------------|-------|
+| **Total index_done** | **8.6 sec** | 9.8 sec | **-12%** |
+| **Parsing** | 3.1 sec | 3.5 sec | ~same |
+| **DB flush (2 batches)** | 3.6 sec (2.9s + 0.7s) | 5.2 sec (4.1s + 1.1s) | **-31%** |
+| **commitStaging** | 0.65 sec | — | new |
+| **Total flush+commit** | **4.2 sec** | **5.2 sec** | **-19%** |
+| **Embedding flush** | 0.8 sec | 0.7 sec | ~same |
+
+#### VS Code
+
+[github.com/microsoft/vscode](https://github.com/microsoft/vscode) — 1.9M LOC, 7198 files, 253K entities, 838K rels
+
+| Metric | v6.4 (staging) | v6.3 (no staging) | Delta |
+|--------|----------------|-------------------|-------|
+| **Total index_done** | **82-97 sec** | 205 sec | **2.1-2.5x faster** |
+| **Parsing (14 workers)** | ~14 sec | ~42 sec | difference in flush overlap |
+| **DB flush (8 batches)** | ~31 sec (4-6s each, stable) | ~159 sec (14→32s, degrading) | **5.1x faster** |
+| **commitStaging** | ~11 sec | — | new |
+| **Total flush+commit** | **~42 sec** | **~159 sec** | **3.8x faster** |
+| **Embedding flush** | ~32 sec | ~32 sec | ~same |
+
+**Why staging is faster:**
+- Staging tables have no PRIMARY KEY → heap append O(1) per row (no B-tree page splits)
+- Main table indexes dropped during indexing → no index maintenance during flush
+- Cross-flush duplicates handled by `INSERT OR REPLACE INTO` during commit
+- Stable per-batch times (4-6s vs 14→32s degradation in v6.3)
+
+### Previous (v6.3, 843 files, 12.0K entities, IVF,SQ8, .ultracodeignore)
 
 | Metric | Value |
 |--------|-------|
@@ -302,13 +336,6 @@ UltraCode project indexing benchmarks (self-indexing).
 | **PMI recalculation** | 4.3 sec (63K pairs, background) |
 | **auto_index_done** | 13.5 sec (total including FAISS+PMI) |
 | **Incremental (1-3 files)** | 48-115 ms |
-
-**Key improvements over v6.1:**
-- `.ultracodeignore` excludes 19802 files (FAISS headers, build artifacts, parser CLIs)
-- C-pool eliminated (191→1 file), no Java/Python/Kotlin parser spawning
-- Entities 12K (was 27K) — cleaner graph, more precise search
-- FAISS flush 29165/s (was 11199/s) — **2.6x faster**
-- Parsing 2.9s (was 5.8s) — **2x faster**
 
 ### Previous (v6.1, 844 files, 27K entities)
 
@@ -339,111 +366,121 @@ UltraCode project indexing benchmarks (self-indexing).
 
 ## MCP Tool Performance
 
-### Current (v6.3, batch SQL, 27K entities, IVF,SQ8)
+### Current (v6.4, staging tables, multi-DB)
 
-Server build `501d51a` with batch SQL optimizations. All 30 MCP tools tested.
-Graph: ~27K entities (~12K real + ~15K external placeholders), ~68K rels, ~830 files.
-`.ultracodeignore` applied: 19859 files excluded, 16 patterns loaded.
+Benchmarked on two projects. All server-side `durationms` from log.
 
-Timings: server-side `durationms` where available, `_debug.timeMs` for tracing tools, client round-trip (~50ms overhead) for tools without server timing.
+**UltraCode**: [github.com/anthropics/ultracode](https://github.com/anthropics/ultracode) — 275K LOC, 832 files, 29K entities, 59K rels
+**VS Code**: [github.com/microsoft/vscode](https://github.com/microsoft/vscode) — 1.9M LOC, 7198 files, 223K entities, 576K rels
 
 #### Search Tools
 
-| Tool | Mode | v6.3 | v6.2 | Delta | Notes |
-|------|------|------|------|-------|-------|
-| `find_similar_code` | vector similarity | **~65 ms** | 60 ms | ~same | 5 results, threshold 0.5 |
-| `cross_language_search` | multi-lang vector | **~75 ms** | 70 ms | ~same | 20 results, 10 languages |
-| `query` | graph NL query | **~95 ms** | 90 ms | ~same | 5 rels found |
-| `get_members` | file entities (AST) | **109 ms** | 99 ms | +10% | Single file, 33 entities |
-| `pattern_search` | entity (regex) | **147 ms** | 142 ms | ~same | SIMD-accelerated regex |
-| `pattern_search` | semantic (vector) | **188 ms** | 331 ms | **-43%** | `searchRaw()` + batch SQL |
-| `semantic_search` | FAISS IVF,SQ8 | **216 ms** | 307 ms | **-30%** | Batch enrichment |
+| Tool | Mode | UltraCode | VS Code | Scale | Notes |
+|------|------|-----------|---------|-------|-------|
+| `find_similar_code` | vector | **61 ms** | 79 ms | 1.3x | FAISS IVF,SQ8 |
+| `cross_language_search` | vector | **73 ms** | 58 ms¹ | ~same | 10 languages |
+| `get_members` | AST | **82 ms** | 130 ms | 1.6x | 72 entities (FaissProvider) |
+| `query` | graph NL | **89 ms** | 181 ms | 2.0x | 5 rels found |
+| `detect_technology_stack` | graph | **120 ms** | — | — | Languages, frameworks |
+| `pattern_search` | entity (regex) | **238 ms** | 710 ms | 3.0x | SIMD regex, 29K vs 223K entities |
+| `pattern_search` | semantic | **224 ms** | 405 ms | 1.8x | TEI embed + FAISS |
+| `semantic_search` | FAISS | **461 ms** | 259 ms² | — | Query expansion + enrichment |
+
+¹ VS Code FAISS not loaded (ran on ultracode vectors)
+² Second run, cached cooccurrence
 
 #### Analysis Tools
 
-| Tool | v6.3 | v6.2 | Delta | Notes |
-|------|------|------|-------|-------|
-| `get_metrics` | **~50 ms** | 46 ms | ~same | Memory 935MB RSS, uptime 248s |
-| `suggest_refactoring` | **~115 ms** | 110 ms | ~same | 9 suggestions for vector-store.ts |
-| `check_entity_patterns` | **~120 ms** | 123 ms | ~same | 0 matches for VectorStore class |
-| `analyze_hotspots` | **123 ms** | 144 ms | **-15%** | Top-10 complexity |
-| `analyze_code_impact` | **141 ms** | 118 ms | +19%* | *26K graph, batch BFS per level |
-| `detect_technology_stack` | **141 ms** | 164 ms | **-14%** | Languages, frameworks, deps |
-| `find_related_concepts` | **167 ms** | 106 ms | +58%* | *26K vs 12K entities |
-| `detect_patterns` | **~170 ms** | 167 ms | ~same | 10K entities, 4955 patterns, health 44/100 |
-| `find_duplicates` | **~220 ms** | 217 ms | ~same | 0 groups (minSimilarity=0.8) |
-| `analyze_swagger_impact` | n/a | 478 ms | — | No swagger specs in project |
+| Tool | UltraCode | VS Code | Scale | Notes |
+|------|-----------|---------|-------|-------|
+| `get_metrics` | **144 ms** | 2088 ms | 14.5x | Memory 2.2GB RSS for VS Code |
+| `analyze_hotspots` | **134 ms** | 216 ms | 1.6x | Top-10 complexity |
+| `suggest_refactoring` | **139 ms** | 354 ms | 2.5x | 7 suggestions |
+| `check_entity_patterns` | **188 ms** | — | — | 2 matches (class entity) |
+| `find_related_concepts` | **176 ms** | — | — | FAISS-based, 10 results |
+| `find_duplicates` | **189 ms** | — | — | 0 groups (minSimilarity=0.8) |
+| `detect_patterns` | **310 ms** | 396 ms | 1.3x | 10K entities scanned |
+| `analyze_code_impact` | **510 ms** | 1621 ms | 3.2x | depth=2, batch BFS |
 
 #### Tracing Tools
 
-| Tool | v6.3 | v6.2 | Delta | Notes |
-|------|------|------|-------|-------|
-| `trace_data_flow` | **83 ms** | — | new | Entry→state flow analysis |
-| `list_entity_relationships` | **97 ms** | 101 ms | -4% | depth=1, 14 rels |
-| `get_entity_history` | **~140 ms** | 135 ms | ~same | Prolly Tree, 1 change |
-| `find_decision_points` | **199 ms** | 170 ms | +17%* | *26K graph |
-| `trace_flow` | **578 ms** | 502 ms | +15%* | *25K nodes, 24K edges, BFS 2 visited |
-| `trace_backwards` | **~740 ms** | 734 ms | ~same | what_affects, 25K graph load |
-| `analyze_state_impact` | **~310 ms** | 302 ms | ~same | 41 usages, 2 scenarios, 301 indirect |
-| `analyze_state_chaos` | **19411 ms** | 22244 ms | **-13%** | 20 state vars, race detection |
+| Tool | UltraCode | VS Code | Scale | Notes |
+|------|-----------|---------|-------|-------|
+| `trace_data_flow` | **169 ms** | — | — | handleRequest → response |
+| `list_entity_relationships` | **100 ms** | 295 ms | 3.0x | depth=1, 41 vs 195 rels |
+| `get_entity_history` | **120 ms** | — | — | Prolly Tree, 1 change |
+| `find_decision_points` | **266 ms** | 751 ms | 2.8x | Scenario analysis |
+| `trace_flow` | **557 ms**¹ | 6589 ms | 9.9x | 29K vs 223K nodes graph load |
+| `trace_backwards` | **~560 ms**¹ | 6943 ms | 9.7x | what_affects, graph load dominant |
+| `analyze_state_impact` | **823 ms** | 31463 ms | 38.2x | 37 vs 100+ usages, 2 scenarios |
 
-#### Security Tools
+¹ **Adaptive graph cache**: After ≥2 trace calls on a project, graph is cached in memory and auto-preloaded in background after reindex. Subsequent `trace_flow`/`trace_backwards` calls skip graph loading entirely (**~0 ms** instead of 557-6589 ms). Usage count is persisted in `project_metadata.trace_usage_count` and survives server restarts.
 
-| Tool | v6.3 | v6.2 | Delta | Notes |
-|------|------|------|-------|-------|
-| `taint_analysis` | **~900 ms** | 895 ms | ~same | 20 sources, 6 sinks, 31 sanitizers, 0 vulns |
+#### Security & Clone Detection
 
-#### Clone Detection Tools
+| Tool | UltraCode | VS Code | Scale | Notes |
+|------|-----------|---------|-------|-------|
+| `taint_analysis` | **945 ms** | 204 ms | 0.2x | 18 sources, 0 sinks both |
+| `jscpd_detect_clones` | **1235 ms** | 860 ms | 0.7x | Different scan scope |
 
-| Tool | v6.3 | v6.2 | Delta | Notes |
-|------|------|------|-------|-------|
-| `jscpd_detect_clones` | **~720 ms** | 711 ms | ~same | Token-based, src/tools/handlers/ |
+#### Graph Metrics
 
-#### Graph Metric Tools
-
-| Tool | v6.3 | v6.2 | Delta | Notes |
-|------|------|------|-------|-------|
-| `graph_metrics(pagerank)` | **~610 ms** | 603 ms | ~same | 25K nodes, top-10, ASTNode highest |
-| `graph_metrics(louvain)` | **~620 ms** | 598 ms | ~same | 25K nodes, 245 communities, modularity=0.892 |
+| Tool | UltraCode | VS Code | Scale | Notes |
+|------|-----------|---------|-------|-------|
+| `graph_metrics(pagerank)` | **684 ms** | 7061 ms | 10.3x | 27K vs 223K nodes |
+| `graph_metrics(louvain)` | **742 ms** | 7580 ms | 10.2x | 227 vs 2412 communities |
 
 #### Info Tools
 
-| Tool | v6.3 | v6.2 | Notes |
-|------|------|------|-------|
-| `get_version` | **2 ms** | — | Instant |
-| `get_help` | **0 ms** | — | Static docs |
-| `get_tools_for_task` | **5 ms** | — | Task→tool recommendation |
-| `get_graph` | **~130 ms** | 125 ms | Entity listing |
-| `get_graph_stats` | **129 ms** | — | Entity/rel/file counts |
-| `get_graph_health` | **315 ms** | — | Health check with sampling |
+| Tool | UltraCode | VS Code | Notes |
+|------|-----------|---------|-------|
+| `get_version` | **2 ms** | 30 ms | Instant (30ms = parallel load) |
+| `get_graph_stats` | **226 ms** | 2274 ms | 10x — DB size dependent |
+| `get_graph_health` | **397 ms** | 4461 ms | 11.2x — DB size dependent |
 
-#### Performance Tiers (v6.3) — All 30 Tools
+#### Performance Tiers (v6.4) — UltraCode (29K entities)
 
 | Tier | Time | Tools |
 |------|------|-------|
-| **Instant** (<100 ms) | 0-97 ms | `get_version`, `get_help`, `get_tools_for_task`, `get_metrics`, `trace_data_flow`, `list_entity_relationships` |
-| **Fast** (100-250 ms) | 109-220 ms | `get_members`, `suggest_refactoring`, `check_entity_patterns`, `analyze_hotspots`, `get_graph`, `get_graph_stats`, `get_entity_history`, `analyze_code_impact`, `detect_technology_stack`, `pattern_search(entity)`, `find_related_concepts`, `detect_patterns`, `pattern_search(semantic)`, `find_decision_points`, `semantic_search`, `find_duplicates`, `find_similar_code`, `cross_language_search`, `query` |
-| **Medium** (250-1000 ms) | 310-900 ms | `get_graph_health`, `analyze_state_impact`, `trace_flow`, `graph_metrics(pagerank)`, `graph_metrics(louvain)`, `jscpd_detect_clones`, `trace_backwards`, `taint_analysis` |
-| **Heavy** (1000+ ms) | 19411 ms | `analyze_state_chaos` |
+| **Instant** (<100 ms) | 2-89 ms | `get_version`, `find_similar_code`, `cross_language_search`, `get_members`, `query` |
+| **Fast** (100-250 ms) | 100-238 ms | `list_entity_relationships`, `detect_technology_stack`, `get_entity_history`, `analyze_hotspots`, `suggest_refactoring`, `check_entity_patterns`, `trace_data_flow`, `find_related_concepts`, `find_duplicates`, `get_graph_stats`, `pattern_search(entity)`, `pattern_search(semantic)` |
+| **Medium** (250-1000 ms) | 266-945 ms | `find_decision_points`, `detect_patterns`, `get_graph_health`, `semantic_search`, `analyze_code_impact`, `trace_flow`, `graph_metrics(pagerank)`, `graph_metrics(louvain)`, `trace_backwards`, `analyze_state_impact`, `taint_analysis` |
+| **Heavy** (1000+ ms) | 1235 ms | `jscpd_detect_clones` |
 
-#### Batch SQL Optimization Impact
+#### Scaling: UltraCode (29K) → VS Code (223K) — 7.7x entities
 
-Key changes in v6.3 (`501d51a`, `99be18a`):
+| Category | Avg Scale Factor | Notes |
+|----------|-----------------|-------|
+| Search (regex) | 3.0x | Linear in entity count |
+| Search (vector) | 1.3-1.8x | FAISS sublinear (IVF) |
+| Analysis | 1.3-3.2x | Depends on graph traversal depth |
+| Tracing (graph load) | **9.7-10.3x** | Graphology in-memory, O(n) load; **0ms with adaptive cache** (≥2 uses) |
+| State analysis | **38.2x** | O(usages × graph) — superlinear |
+| Graph metrics | **10.2-10.3x** | Full graph algorithms O(n+e) |
+| Info (DB stats) | **10-11.2x** | Full table scan |
 
-| Optimization | Before | After | Impact |
-|-------------|--------|-------|--------|
-| `pattern_search(semantic)` | `search()` + N×`findEntities` per file | `searchRaw()` + 1×`findEntities` batch | **-43%** (331→188 ms) |
-| `semantic_search` enrichment | N×`getEntity()` + N×`findEntities` fallback | `getEntitiesBatch()` + 1×`findEntities` batch | **-30%** (307→216 ms) |
-| `find_related_concepts` enrich | N×(`getEntity`+`searchEntities`) per result | 1×`getEntitiesBatch` + 1×`searchEntities` | Faster on same graph* |
-| `analyze_code_impact` callers | Recursive N×`getEntity` | Batch per BFS level | Faster on same graph* |
-| `rename_symbol` refs | N×`getEntity` in loop | 1×`getEntitiesBatch` | Fewer SQL queries |
-| `expandWithGraphNeighbors` | N×`getEntity` per hop | 1×`getEntitiesBatch` per hop | Fewer SQL queries |
+### Previous (v6.3, batch SQL, 27K entities)
 
-*Tools tested on 26K graph (v6.3) vs 12K graph (v6.2) — absolute time higher, but SQL query count dramatically reduced.
+| Tool | Time | Notes |
+|------|------|-------|
+| `find_similar_code` | ~65 ms | 5 results, threshold 0.5 |
+| `cross_language_search` | ~75 ms | 20 results, 10 languages |
+| `query` | ~95 ms | 5 rels found |
+| `get_members` | 109 ms | Single file, 33 entities |
+| `pattern_search(entity)` | 147 ms | SIMD regex |
+| `pattern_search(semantic)` | 188 ms | batch SQL, -43% vs v6.2 |
+| `semantic_search` | 216 ms | batch enrichment, -30% vs v6.2 |
+| `analyze_hotspots` | 123 ms | -15% vs v6.2 |
+| `analyze_code_impact` | 141 ms | batch BFS |
+| `detect_patterns` | ~170 ms | 10K entities |
+| `trace_flow` | 578 ms | 25K nodes |
+| `trace_backwards` | ~740 ms | what_affects |
+| `graph_metrics(pagerank)` | ~610 ms | 25K nodes |
+| `graph_metrics(louvain)` | ~620 ms | 245 communities |
+| `taint_analysis` | ~900 ms | 20 sources |
+| `analyze_state_chaos` | 19411 ms | Race detection |
 
 ### Previous (v6.2, 12K entities, 30K rels)
-
-Benchmarked on self-project after `.ultracodeignore` (12K entities, 30K relationships, 9442 FAISS vectors).
 
 | Tool | Time | Notes |
 |------|------|-------|

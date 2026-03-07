@@ -324,7 +324,7 @@ export async function installSkillsIfNeeded(): Promise<{
     version: packageManifest.version,
     skills: installedSkills,
     reason: updateCheck.reason,
-    removed: removed.length > 0 ? removed : undefined,
+    ...(removed.length > 0 ? { removed } : {}),
   });
 
   return {
@@ -332,7 +332,7 @@ export async function installSkillsIfNeeded(): Promise<{
     version: packageManifest.version,
     skills: installedSkills,
     reason: updateCheck.reason,
-    removed: removed.length > 0 ? removed : undefined,
+    ...(removed.length > 0 ? { removed } : {}),
   };
 }
 
@@ -405,7 +405,7 @@ export async function forceReinstallSkills(): Promise<{
     success: result.action !== "skipped" || result.reason === "up_to_date",
     version: result.version,
     skills: result.skills,
-    error: result.action === "skipped" && result.reason !== "up_to_date" ? result.reason : undefined,
+    ...(result.action === "skipped" && result.reason !== "up_to_date" ? { error: result.reason } : {}),
   };
 }
 

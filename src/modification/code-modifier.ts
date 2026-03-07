@@ -44,10 +44,10 @@ export interface CodeModificationResult {
   entitiesUpdated: string[];
   embeddingsUpdated: number;
   relationshipsUpdated: number;
-  preview?: DiffPreview; // If preview: true
+  preview?: DiffPreview | undefined; // If preview: true
   validationReport?: BeforeAfterReport | undefined; // Auto-validation
-  snapshotId?: string; // Snapshot ID for rollback
-  swaggerWarning?: string; // Warning if entity is related to swagger contract
+  snapshotId?: string | undefined; // Snapshot ID for rollback
+  swaggerWarning?: string | undefined; // Warning if entity is related to swagger contract
 }
 
 // =============================================================================

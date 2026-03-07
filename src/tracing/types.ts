@@ -123,27 +123,27 @@ export interface TraceStep {
   /** Condition expression */
   condition?: string | undefined;
   /** Possible branches: outcome → next action description */
-  branches?: Record<string, string>;
+  branches?: Record<string, string> | undefined;
 
   // For action === 'setState'
   /** State changes made */
-  stateChanges?: StateChange[];
+  stateChanges?: StateChange[] | undefined;
 
   // For action === 'await'
   /** Whether this step involves await */
   awaits?: boolean | undefined;
   /** What is being awaited */
-  awaitTarget?: string;
+  awaitTarget?: string | undefined;
 
   // Additional context
   /** Preconditions required for this step */
-  preconditions?: string[];
+  preconditions?: string[] | undefined;
   /** Postconditions after this step */
-  postconditions?: string[];
+  postconditions?: string[] | undefined;
   /** Documentation/comments */
   documentation?: string | undefined;
   /** Code snippet */
-  code?: string;
+  code?: string | undefined;
 }
 
 /**
@@ -351,7 +351,7 @@ export interface TraceDataFlowParams {
   /** Target state to trace (e.g., "startPage") */
   targetState: string;
   /** Data sources to analyze (semantic search queries) */
-  dataSources?: string[];
+  dataSources?: string[] | undefined;
   /** Track data transformations */
   trackTransformations?: boolean;
 }

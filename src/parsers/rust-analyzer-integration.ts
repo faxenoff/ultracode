@@ -90,7 +90,7 @@ export interface RustSymbolInfo {
     start: { line: number; character: number };
     end: { line: number; character: number };
   };
-  detail?: string;
+  detail?: string | undefined;
 }
 
 // LSP message types
@@ -455,7 +455,7 @@ export async function getDocumentSymbols(filePath: string): Promise<RustSymbolIn
         name: sym.name,
         kind: getSymbolKindName(sym.kind),
         range,
-        detail: sym.detail,
+        ...(sym.detail != null ? { detail: sym.detail } : {}),
       });
 
       if (sym.children) {
