@@ -29,7 +29,7 @@ The architectural choice of a multi-agent system with `ConductorOrchestrator` is
 
 ### 1.2. Data Storage (8/10)
 
-- **LibSQL (SQLite)** as primary storage — excellent choice for a local MCP server: no external dependencies, portability, good performance
+- **LibSQL** (not SQLite) as primary storage — a Turso fork of SQLite with key advantages: built-in embedded replicas support, HTTP protocol for remote access, ALTER TABLE extensions, WASM compatibility. Maintains full SQLite API compatibility while enabling future replication and edge deployment without changing the storage layer. For a local MCP server: no external dependencies, portability, good performance
 - **4-database split architecture** (since v6+): `graph.db` (entities, relationships), `semantic.db` (embeddings, vectors), `versioning.db` (prolly tree, snapshots), `cache.db` (LRU, intermediate results) — workload isolation, independent WAL, parallel writes
 - **Layered storage** for git branches — elegant solution with deltas instead of full copying:
   - Tombstone markers for deletions
@@ -262,6 +262,7 @@ Full pipeline ~4K LOC (3217 LOC modules + 836 LOC handler), 7 tools:
 - **Factory pattern** — GraphStorageFactory, createProvider
 - **Ring buffer** for metrics in ResourceManager (avoiding Array.shift())
 - **Bloom filter** for topic check optimization
+- **Structured logging** — a well-designed system with levels, agent categories, file rotation, and a custom CLI **`ulog`** (`npm run ulog` / `ulog` binary) for fast log search, filtering, and analysis without third-party tools
 
 ### 2.3. Performance
 
