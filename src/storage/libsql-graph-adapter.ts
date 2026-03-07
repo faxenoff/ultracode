@@ -138,6 +138,10 @@ export class LibSQLGraphAdapter {
   private prollyTree: ProllyTree | null = null;
   private commitManager: CommitManager | null = null;
   private branchDiffCache: BranchDiffCache | null = null;
+  private _stagingMode = false;
+  get stagingMode(): boolean {
+    return this._stagingMode;
+  }
 
   constructor(config: LibSQLGraphConfig = {}, dbManager?: MultiDbManager) {
     this.config = { ...DEFAULT_CONFIG, ...config };
@@ -155,15 +159,20 @@ export class LibSQLGraphAdapter {
     const getCacheClient = () => this.dbManager?.getCacheClient() ?? this.client;
     const getContext = () => getRequestContext() ?? this.currentContext;
 
+    const getStagingMode = () => this._stagingMode;
     this.generationManager = new GenerationManager(getGraphClient, getContext);
     this.entityOps = new EntityOperations(
       getGraphClient,
       getContext,
       (row) => this.rowToEntity(row as EntityRow),
       this.generationManager,
+      getStagingMode,
     );
-    this.relationshipOps = new RelationshipOperations(getGraphClient, getContext, (row) =>
-      this.rowToRelationship(row as RelationshipRow),
+    this.relationshipOps = new RelationshipOperations(
+      getGraphClient,
+      getContext,
+      (row) => this.rowToRelationship(row as RelationshipRow),
+      getStagingMode,
     );
 
     const vectorOpsContext: VectorOpsContext = {
@@ -183,7 +192,7 @@ export class LibSQLGraphAdapter {
     this.vectorOps = new VectorOperations(vectorOpsContext);
 
     this.cacheOps = new CacheOperations(getCacheClient, (v) => this.vectorToString(v));
-    this.metadataOps = new MetadataOperations(getGraphClient, getContext, getCacheClient);
+    this.metadataOps = new MetadataOperations(getGraphClient, getContext, getCacheClient, getStagingMode);
     this.cooccurrenceOps = new CooccurrenceOperations(getSemanticClient, getContext);
   }
 
@@ -627,6 +636,7 @@ export class LibSQLGraphAdapter {
         updated_at INTEGER NOT NULL,
         last_full_index_at INTEGER DEFAULT 0,
         incremental_changes_count INTEGER DEFAULT 0,
+        trace_usage_count INTEGER DEFAULT 0,
         PRIMARY KEY (project_hash, branch_name)
       )`,
         `CREATE TABLE IF NOT EXISTS tombstones (
@@ -664,6 +674,11 @@ export class LibSQLGraphAdapter {
         `CREATE INDEX IF NOT EXISTS idx_tombstones_lookup ON tombstones(project_hash, branch_name, entity_type)`,
         `CREATE INDEX IF NOT EXISTS idx_name_tokens_lookup ON name_tokens(token, project_hash, branch_name)`,
         `CREATE INDEX IF NOT EXISTS idx_entities_file_gen ON entities(file_path, project_hash, branch_name, file_gen)`,
+        // Crash safety: drop leftover staging tables from previous crash
+        `DROP TABLE IF EXISTS _staging_entities`,
+        `DROP TABLE IF EXISTS _staging_relationships`,
+        `DROP TABLE IF EXISTS _staging_name_tokens`,
+        `DROP TABLE IF EXISTS _staging_files`,
       ],
       "write",
     );
@@ -984,6 +999,10 @@ export class LibSQLGraphAdapter {
   getAllIndexedFiles = (): Promise<Map<string, number>> => this.metadataOps.getAllIndexedFiles();
 
   deleteFileInfo = (path: string): Promise<void> => this.metadataOps.deleteFileInfo(path);
+
+  getTraceUsageCount = (): Promise<number> => this.metadataOps.getTraceUsageCount();
+
+  incrementTraceUsageCount = (): Promise<void> => this.metadataOps.incrementTraceUsageCount();
 
   // ===========================================================================
   // VECTOR OPERATIONS (delegated to VectorOperations)
@@ -1538,5 +1557,180 @@ export class LibSQLGraphAdapter {
   isEntityDeletedOnBranch(entityId: string): boolean {
     if (!this.branchDiffCache) return false;
     return this.branchDiffCache.isDeleted(entityId);
+  }
+
+  // ---------------------------------------------------------------------------
+  // Bulk index management — drop before full reindex, recreate after
+  // ---------------------------------------------------------------------------
+
+  private static readonly GRAPH_INDEXES = [
+    "idx_entities_project_branch",
+    "idx_entities_file_path",
+    "idx_entities_type",
+    "idx_entities_name",
+    "idx_entities_file_gen",
+    "idx_relationships_project_branch",
+    "idx_relationships_from",
+    "idx_relationships_to",
+    "idx_files_project_branch",
+    "idx_tombstones_lookup",
+    "idx_name_tokens_lookup",
+  ];
+
+  private static readonly GRAPH_INDEX_CREATES = [
+    `CREATE INDEX IF NOT EXISTS idx_entities_project_branch ON entities(project_hash, branch_name)`,
+    `CREATE INDEX IF NOT EXISTS idx_entities_file_path ON entities(file_path, project_hash, branch_name)`,
+    `CREATE INDEX IF NOT EXISTS idx_entities_type ON entities(type, project_hash, branch_name)`,
+    `CREATE INDEX IF NOT EXISTS idx_entities_name ON entities(name, project_hash, branch_name)`,
+    `CREATE INDEX IF NOT EXISTS idx_relationships_project_branch ON relationships(project_hash, branch_name)`,
+    `CREATE INDEX IF NOT EXISTS idx_relationships_from ON relationships(from_id, project_hash, branch_name)`,
+    `CREATE INDEX IF NOT EXISTS idx_relationships_to ON relationships(to_id, project_hash, branch_name)`,
+    `CREATE INDEX IF NOT EXISTS idx_files_project_branch ON files(project_hash, branch_name)`,
+    `CREATE INDEX IF NOT EXISTS idx_tombstones_lookup ON tombstones(project_hash, branch_name, entity_type)`,
+    `CREATE INDEX IF NOT EXISTS idx_name_tokens_lookup ON name_tokens(token, project_hash, branch_name)`,
+    `CREATE INDEX IF NOT EXISTS idx_entities_file_gen ON entities(file_path, project_hash, branch_name, file_gen)`,
+  ];
+
+  async dropBulkIndexes(): Promise<void> {
+    const client = this.dbManager?.getGraphClient() ?? this.client;
+    if (!client) return;
+    const stmts = LibSQLGraphAdapter.GRAPH_INDEXES.map((name) => `DROP INDEX IF EXISTS ${name}`);
+    await client.batch(stmts, "write");
+    log.i("LIBSQLADAPT", "indexes_dropped", { count: stmts.length });
+  }
+
+  async recreateBulkIndexes(): Promise<void> {
+    const client = this.dbManager?.getGraphClient() ?? this.client;
+    if (!client) return;
+    await client.batch(LibSQLGraphAdapter.GRAPH_INDEX_CREATES, "write");
+    log.i("LIBSQLADAPT", "indexes_recreated", { count: LibSQLGraphAdapter.GRAPH_INDEX_CREATES.length });
+  }
+
+  /**
+   * Enable staging mode: creates append-only staging tables (no PK, no indexes)
+   * for O(1) bulk inserts during full reindex.
+   */
+  async enableStagingMode(): Promise<void> {
+    const client = this.dbManager?.getGraphClient() ?? this.client;
+    if (!client) return;
+
+    await client.batch(
+      [
+        `CREATE TABLE IF NOT EXISTS _staging_entities (
+        id TEXT NOT NULL, project_hash TEXT NOT NULL, branch_name TEXT NOT NULL,
+        name TEXT NOT NULL, type TEXT NOT NULL, file_path TEXT NOT NULL,
+        location TEXT NOT NULL, metadata TEXT, hash TEXT,
+        created_at INTEGER NOT NULL, updated_at INTEGER NOT NULL,
+        complexity_score INTEGER DEFAULT 1, language TEXT,
+        size_bytes INTEGER DEFAULT 0, embedding_base64 TEXT,
+        embedding_text TEXT, file_gen INTEGER NOT NULL DEFAULT 1
+      )`,
+        `CREATE TABLE IF NOT EXISTS _staging_relationships (
+        id TEXT NOT NULL, project_hash TEXT NOT NULL, branch_name TEXT NOT NULL,
+        from_id TEXT NOT NULL, to_id TEXT NOT NULL, type TEXT NOT NULL,
+        metadata TEXT, weight REAL DEFAULT 1.0, created_at INTEGER NOT NULL
+      )`,
+        `CREATE TABLE IF NOT EXISTS _staging_name_tokens (
+        token TEXT NOT NULL, entity_id TEXT NOT NULL,
+        project_hash TEXT NOT NULL, branch_name TEXT NOT NULL
+      )`,
+        `CREATE TABLE IF NOT EXISTS _staging_files (
+        path TEXT NOT NULL, project_hash TEXT NOT NULL, branch_name TEXT NOT NULL,
+        hash TEXT, last_indexed INTEGER NOT NULL, entity_count INTEGER DEFAULT 0
+      )`,
+        // Clear any leftover data from previous crash
+        `DELETE FROM _staging_entities`,
+        `DELETE FROM _staging_relationships`,
+        `DELETE FROM _staging_name_tokens`,
+        `DELETE FROM _staging_files`,
+      ],
+      "write",
+    );
+
+    this._stagingMode = true;
+    log.i("LIBSQLADAPT", "staging_mode_enabled");
+  }
+
+  /**
+   * Commit staging: move data from staging → main tables in bulk,
+   * then recreate indexes and drop staging tables.
+   */
+  async commitStaging(): Promise<void> {
+    const client = this.dbManager?.getGraphClient() ?? this.client;
+    if (!client) return;
+
+    this._stagingMode = false;
+
+    await client.batch(
+      [
+        // 1. Clear main tables (already empty after reset, but safe)
+        `DELETE FROM entities`,
+        `DELETE FROM relationships`,
+        `DELETE FROM name_tokens`,
+        `DELETE FROM files`,
+      ],
+      "write",
+    );
+
+    // 2. Bulk move — sequential scan, deduplicate via OR REPLACE/OR IGNORE
+    // Staging tables have no PK, so cross-flush duplicates are possible
+    await client.batch(
+      [
+        `INSERT OR REPLACE INTO entities SELECT * FROM _staging_entities`,
+        `INSERT OR REPLACE INTO relationships SELECT * FROM _staging_relationships`,
+        `INSERT OR IGNORE INTO name_tokens SELECT * FROM _staging_name_tokens`,
+        `INSERT OR REPLACE INTO files SELECT * FROM _staging_files`,
+      ],
+      "write",
+    );
+
+    // 3. Recreate indexes
+    await client.batch(LibSQLGraphAdapter.GRAPH_INDEX_CREATES, "write");
+
+    // 4. Drop staging tables
+    await client.batch(
+      [
+        `DROP TABLE IF EXISTS _staging_entities`,
+        `DROP TABLE IF EXISTS _staging_relationships`,
+        `DROP TABLE IF EXISTS _staging_name_tokens`,
+        `DROP TABLE IF EXISTS _staging_files`,
+      ],
+      "write",
+    );
+
+    log.i("LIBSQLADAPT", "staging_committed");
+  }
+
+  /**
+   * Abort staging: drop staging tables and disable staging mode (fallback on error).
+   */
+  async abortStaging(): Promise<void> {
+    this._stagingMode = false;
+    const client = this.dbManager?.getGraphClient() ?? this.client;
+    if (!client) return;
+
+    await client.batch(
+      [
+        `DROP TABLE IF EXISTS _staging_entities`,
+        `DROP TABLE IF EXISTS _staging_relationships`,
+        `DROP TABLE IF EXISTS _staging_name_tokens`,
+        `DROP TABLE IF EXISTS _staging_files`,
+      ],
+      "write",
+    );
+
+    log.i("LIBSQLADAPT", "staging_aborted");
+  }
+
+  async walCheckpoint(): Promise<void> {
+    const client = this.dbManager?.getGraphClient() ?? this.client;
+    if (!client) return;
+    try {
+      await client.execute("PRAGMA wal_checkpoint(TRUNCATE)");
+      await client.execute("PRAGMA wal_autocheckpoint = 1000");
+      log.i("LIBSQLADAPT", "wal_checkpoint_done");
+    } catch {
+      // WAL checkpoint is optional — ignore errors (e.g. journal_mode != WAL)
+    }
   }
 }

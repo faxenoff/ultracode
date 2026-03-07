@@ -1002,6 +1002,9 @@ export class DevAgent extends BaseAgent implements ResourceAdjustmentCapable {
     let streamingCallbackCount = 0;
 
     if (this.parserAgent && this.indexerAgent) {
+      // Adaptive flush threshold based on total files count
+      this.indexerAgent.setTotalFiles(allFiles.length);
+
       // Set the streaming callback — pools already have streamingMode=true from above,
       // the wrapper callback delegates to this.onStreamingResult via closure
       this.parserAgent.setStreamingMode(true, (result, _taskId, _fileIndex, _totalFiles) => {
@@ -1477,6 +1480,7 @@ export class DevAgent extends BaseAgent implements ResourceAdjustmentCapable {
         log.i("DEVAGENT", "Flushing remaining batch accumulator", pendingStats);
       }
       await this.indexerAgent.flushPendingBatch();
+      await this.indexerAgent.setIndexingComplete();
 
       // Get delta stats from all streaming flushes (cumulative - initial)
       const finalStats = this.indexerAgent.getIndexingStats();

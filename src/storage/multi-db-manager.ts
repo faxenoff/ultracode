@@ -38,11 +38,11 @@ export function getMultiDbPaths(basePath: string): MultiDbPaths {
  */
 const PRAGMA_STATEMENTS = [
   "PRAGMA busy_timeout = 5000",
-  "PRAGMA cache_size = -8192",
-  "PRAGMA temp_store = MEMORY",
-  "PRAGMA mmap_size = 0",
   "PRAGMA journal_mode = OFF",
   "PRAGMA synchronous = OFF",
+  "PRAGMA cache_size = -262144", // 256MB cache — keep all B-tree pages in memory
+  "PRAGMA temp_store = MEMORY",
+  "PRAGMA mmap_size = 268435456", // 256MB mmap — OS page cache for reads
 ];
 
 export class MultiDbManager {

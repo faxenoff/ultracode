@@ -87,7 +87,7 @@ export interface IGpuClient {
   faissSave(projectKey: string, path?: string): Promise<FaissSaveResponse>;
   faissLoad(projectKey: string, path: string): Promise<FaissLoadResponse>;
   faissRemove(projectKey: string, ids: string[]): Promise<void>;
-  faissGetStats(projectKey: string): Promise<FaissStatsResponse["stats"]>;
+  faissGetStats(projectKey: string): Promise<FaissStatsResponse["stats"] | undefined>;
 
   // CUDA operations (raw - always use CUDA if available)
   cudaInfo(): Promise<CudaInfoResponse>;
@@ -692,7 +692,7 @@ class GpuSubprocessClient implements IGpuClient {
     if (!response.success) throw new Error(extractGpuError(response));
   }
 
-  async faissGetStats(projectKey: string): Promise<FaissStatsResponse["stats"]> {
+  async faissGetStats(projectKey: string): Promise<FaissStatsResponse["stats"] | undefined> {
     const response = await this.sendRequest({ type: "faiss.stats", projectKey });
     if (!response.success) throw new Error(extractGpuError(response));
     return (response as FaissStatsResponse).stats;

@@ -71,6 +71,7 @@ export class EntityOperations {
     private getContext: ContextGetter,
     private rowToEntity: RowToEntityMapper,
     private genManager: GenerationManager,
+    private getStagingMode: () => boolean = () => false,
   ) {}
 
   /**
@@ -196,6 +197,15 @@ export class EntityOperations {
 
     let processed = 0;
 
+    // Staging mode: write to append-only tables (no PK, no indexes) for O(1) inserts
+    const staging = this.getStagingMode();
+    const entityTable = staging ? "_staging_entities" : "entities";
+    const tokenTable = staging ? "_staging_name_tokens" : "name_tokens";
+    const insertVerb = staging ? "INSERT INTO" : "INSERT OR REPLACE INTO";
+
+    // Collect ALL statements (entities + tokens) into single batch for one transaction
+    const allStatements: Array<{ sql: string; args: (string | number | null)[] }> = [];
+
     for (let i = 0; i < unique.length; i += batchSize) {
       const batch = unique.slice(i, i + batchSize);
 
@@ -227,22 +237,13 @@ export class EntityOperations {
         );
       }
 
-      const sql = `
-        INSERT OR REPLACE INTO entities
+      allStatements.push({
+        sql: `${insertVerb} ${entityTable}
         (id, project_hash, branch_name, name, type, file_path, location, metadata, hash,
          created_at, updated_at, complexity_score, language, size_bytes, embedding_base64, embedding_text, file_gen)
-        VALUES ${valuePlaceholders}
-      `;
-
-      try {
-        await client.execute({ sql, args });
-        processed += batch.length;
-      } catch (error) {
-        errors.push({
-          item: { batchStart: i, batchEnd: i + batch.length },
-          error: (error as Error).message,
-        });
-      }
+        VALUES ${valuePlaceholders}`,
+        args,
+      });
     }
 
     // Batch-insert name tokens for all entities (after entity inserts complete)
@@ -255,19 +256,23 @@ export class EntityOperations {
     }
 
     if (tokenRows.length > 0) {
-      // Delete existing tokens first (handles renames / re-index updates)
-      const idsToClean = unique.map((e) => e.id).filter((id) => id) as string[];
-      const DELETE_CHUNK = 400;
-      for (let i = 0; i < idsToClean.length; i += DELETE_CHUNK) {
-        const chunk = idsToClean.slice(i, i + DELETE_CHUNK);
-        const placeholders = chunk.map(() => "?").join(",");
-        await client.execute({
-          sql: `DELETE FROM name_tokens WHERE entity_id IN (${placeholders}) AND project_hash = ? AND branch_name = ?`,
-          args: [...chunk, projectHash, branchName],
-        });
+      // In staging mode: skip DELETE (staging table starts empty, no PK conflicts)
+      if (!staging) {
+        // Delete existing tokens first (handles renames / re-index updates)
+        const idsToClean = unique.map((e) => e.id).filter((id) => id) as string[];
+        const DELETE_CHUNK = 400;
+        for (let i = 0; i < idsToClean.length; i += DELETE_CHUNK) {
+          const chunk = idsToClean.slice(i, i + DELETE_CHUNK);
+          const placeholders = chunk.map(() => "?").join(",");
+          allStatements.push({
+            sql: `DELETE FROM name_tokens WHERE entity_id IN (${placeholders}) AND project_hash = ? AND branch_name = ?`,
+            args: [...chunk, projectHash, branchName],
+          });
+        }
       }
 
       // Batch-insert tokens (4 cols × 1000 rows = 4000 params, well within SQLite limit)
+      const tokenInsertVerb = staging ? "INSERT INTO" : "INSERT OR IGNORE INTO";
       const TOKEN_BATCH = 1000;
       for (let i = 0; i < tokenRows.length; i += TOKEN_BATCH) {
         const chunk = tokenRows.slice(i, i + TOKEN_BATCH);
@@ -276,11 +281,22 @@ export class EntityOperations {
         for (const [token, entityId] of chunk) {
           tokenArgs.push(token, entityId, projectHash, branchName);
         }
-        await client.execute({
-          sql: `INSERT OR IGNORE INTO name_tokens (token, entity_id, project_hash, branch_name) VALUES ${valuePlaceholders}`,
+        allStatements.push({
+          sql: `${tokenInsertVerb} ${tokenTable} (token, entity_id, project_hash, branch_name) VALUES ${valuePlaceholders}`,
           args: tokenArgs,
         });
       }
+    }
+
+    // Execute ALL statements in a single transaction
+    try {
+      await client.batch(allStatements, "write");
+      processed = unique.length;
+    } catch (error) {
+      errors.push({
+        item: { batchStart: 0, batchEnd: unique.length },
+        error: (error as Error).message,
+      });
     }
 
     return {

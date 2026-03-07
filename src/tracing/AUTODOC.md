@@ -122,6 +122,11 @@ Union types enforce valid values for `ConfidenceLevel`, `ImpactLevel`, `CallProb
 
 - `ConditionAnalyzer`
 - `DataFlowAnalyzer`
+- `clearAllGraphCaches`
+- `getCachedGraphBuilder`
+- `getTraceUsageCount`
+- `incrementTraceUsage`
+- `invalidateAndPreload`
 - `OutputFormatter`
 - `PathBuilder`
 - `StateTracker`

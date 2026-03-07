@@ -42,6 +42,7 @@ export class RelationshipOperations {
     private getClient: ClientGetter,
     private getContext: ContextGetter,
     private rowToRelationship: RowToRelationshipMapper,
+    private getStagingMode: () => boolean = () => false,
   ) {}
 
   /**
@@ -113,6 +114,14 @@ export class RelationshipOperations {
 
     let processed = 0;
 
+    // Staging mode: write to append-only table (no PK, no indexes) for O(1) inserts
+    const staging = this.getStagingMode();
+    const relTable = staging ? "_staging_relationships" : "relationships";
+    const insertVerb = staging ? "INSERT INTO" : "INSERT OR REPLACE INTO";
+
+    // Collect all statements for single transaction
+    const allStatements: Array<{ sql: string; args: (string | number | null)[] }> = [];
+
     for (let i = 0; i < unique.length; i += batchSize) {
       const batch = unique.slice(i, i + batchSize);
 
@@ -135,21 +144,23 @@ export class RelationshipOperations {
         );
       }
 
-      const sql = `
-        INSERT OR REPLACE INTO relationships
+      allStatements.push({
+        sql: `${insertVerb} ${relTable}
         (id, project_hash, branch_name, from_id, to_id, type, metadata, weight, created_at)
-        VALUES ${valuePlaceholders}
-      `;
+        VALUES ${valuePlaceholders}`,
+        args,
+      });
+    }
 
-      try {
-        await client.execute({ sql, args });
-        processed += batch.length;
-      } catch (error) {
-        errors.push({
-          item: { batchStart: i, batchEnd: i + batch.length },
-          error: (error as Error).message,
-        });
-      }
+    // Execute ALL statements in a single transaction
+    try {
+      await client.batch(allStatements, "write");
+      processed = unique.length;
+    } catch (error) {
+      errors.push({
+        item: { batchStart: 0, batchEnd: unique.length },
+        error: (error as Error).message,
+      });
     }
 
     return {
