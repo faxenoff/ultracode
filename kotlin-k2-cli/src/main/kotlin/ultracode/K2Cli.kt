@@ -45,6 +45,11 @@ fun main() {
                         println(json.encodeToString(result))
                         System.out.flush()
                     }
+                    "resolveContracts" -> {
+                        val result = handleResolveContracts(cmd)
+                        println(json.encodeToString(result))
+                        System.out.flush()
+                    }
                     "shutdown" -> {
                         logger.info { "Shutdown requested" }
                         parser.dispose()
@@ -106,5 +111,25 @@ private fun handleParse(parser: K2Parser, cmd: Command): ParseResult {
             success = false,
             error = e.message ?: "Parse error"
         )
+    }
+}
+
+/**
+ * Extract public API contracts of the requested symbols from the compiled dependency JARs
+ * named in cmd.classpath. Reads bytecode + @kotlin.Metadata directly (no class loading).
+ * A symbol that cannot be resolved is omitted (graceful). Empty classpath => empty contracts.
+ * ContractResolver is stateless and independent of the source-PSI K2Parser environment.
+ */
+private fun handleResolveContracts(cmd: Command): ContractsResult {
+    return try {
+        val startTime = System.currentTimeMillis()
+        val classpath = cmd.classpath ?: emptyList()
+        val contracts = ContractResolver().resolve(classpath, cmd.symbols)
+        val elapsed = System.currentTimeMillis() - startTime
+        logger.debug { "resolveContracts: ${contracts.size} contracts from ${classpath.size} jars in ${elapsed}ms" }
+        ContractsResult(id = cmd.id, success = true, contracts = contracts)
+    } catch (e: Exception) {
+        logger.error(e) { "resolveContracts error" }
+        ContractsResult(id = cmd.id, success = false, error = e.message ?: "resolveContracts error")
     }
 }
