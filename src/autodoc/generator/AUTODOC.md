@@ -1,410 +1,303 @@
-# Module: D:/github/ultracode/src/autodoc/generator
+# Module: src/autodoc/generator
 
-Automatically generates and maintains AUTODOC.md files for TypeScript modules using batch processing, incremental updates, and LLM enrichment.
+## 🤖 Overview
 
-## Interface
+The `autodoc/generator` module generates AUTODOC.md templates for changed directories using a ChangeKind-based strategy. It integrates with LLM enrichment for full and incremental documentation. Developers and maintainers of codebases use this module to automate documentation generation and ensure consistency across code changes.
 
-- **GenerateDocsOptions** — `generate-handler-utils.ts:17-27`
-- **AutoDocManager** — `generate-handler-utils.ts:32-35`
-- **ModuleExport** — `generate-handler-utils.ts:40-44`
-- **ModuleInfo** — `generate-handler-utils.ts:49-54`
-- **FileToGenerate** — `generate-handler-utils.ts:59-63`
-- **LLMProvider** — `generate-handler-utils.ts:68-71`
-- **UpdateChange** — `generate-handler-utils.ts:76-80`
-- **GenerateDocsContext** — `generate-handler-utils.ts:85-89`
-- **GenerateDocsResult** — `generate-handler-utils.ts:94-116`
-- **BatchResult** — `batch-autodoc.ts:18-23`
-- **DirectoryDoc** — `batch-autodoc.ts:25-30`
-- **DirectorySummaryEntity** — `batch-autodoc.ts:121-129`
-- **ModuleInfo** — `doc-generator.ts:14-21`
-- **GenerateOptions** — `doc-generator.ts:23-34`
-- **GenerateResult** — `doc-generator.ts:36-45`
-- **ModuleInfoWithEntities** — `doc-generator.ts:222-231`
-- **DocReference** — `incremental-updater.ts:20-32`
-- **CodeChange** — `incremental-updater.ts:34-44`
-- **DocSection** — `incremental-updater.ts:46-57`
-- **UpdateResult** — `incremental-updater.ts:59-71`
+## 🤖 Architecture
 
-## Function
+```
+  +-------------------+
+  |   Batch AutoDoc   |
+  |   Generator       |
+  +-------------------+
+          |
+          v
+  +-------------------+
+  |   Directory Hash  |
+  |   Computation     |
+  +-------------------+
+          |
+          v
+  +-------------------+
+  |   Change Kind     |
+  |   Detection       |
+  +-------------------+
+          |
+          v
+  +-------------------+
+  |   Entity Summary  |
+  |   Generation      |
+  +-------------------+
+          |
+          v
+  +-------------------+
+  |   LLM Enrichment  |
+  +-------------------+
+```
 
-- **findRepoRoot** — `generate-handler-utils.ts:121-132`
-- **ensureGeneralDocs** — `general-docs.ts:181-194`
-- **updateGeneralDocReferences** — `general-docs.ts:200-241`
-- **updateAllGeneralDocs** — `general-docs.ts:246-264`
-- **computeDirectoryHash** — `batch-autodoc.ts:45-62`
-- **capitalizeFirst** — `batch-autodoc.ts:87-89`
-- **parseLocation** — `batch-autodoc.ts:98-119`
-- **generateDirectorySummary** — `batch-autodoc.ts:145-206`
-- **detectChangeKind** — `batch-autodoc.ts:216-257`
-- **mergeNewEntities** — `batch-autodoc.ts:270-310`
-- **postProcessLlmOutput** — `batch-autodoc.ts:419-460`
-- **generateModuleReadme** — `doc-generator.ts:178-219`
-- **generateArchitectureDoc** — `doc-generator.ts:369-417`
-- **extractReferences** — `incremental-updater.ts:84-121`
-- **extractSections** — `incremental-updater.ts:126-177`
-- **updateReferences** — `incremental-updater.ts:270-308`
-- **mergeWithExisting** — `incremental-updater.ts:317-371`
-- **markDeleted** — `incremental-updater.ts:376-410`
+## 🤖 Flow
 
-## Method
+```
+  +-------------------+
+  |   Scan Directory  |
+  +-------------------+
+          |
+          v
+  +-------------------+
+  |   Compute Hash    |
+  +-------------------+
+          |
+          v
+  +-------------------+
+  |   Detect Change   |
+  +-------------------+
+          |
+          v
+  +-------------------+
+  |   Generate Summary|
+  +-------------------+
+          |
+          v
+  +-------------------+
+  |   Enrich with LLM |
+  +-------------------+
+```
 
-- **AutoDocManager.saveDocument** — `generate-handler-utils.ts:33-33`
-- **AutoDocManager.getConfig** — `generate-handler-utils.ts:34-34`
+## 🤖 Entity Listing
 
-## Constant
+### Function
+- **addedChanges** — Tracks changes in code that have been added `incremental-updater.ts:476-476`
+- **addedEntities** — Entities that were added to the documentation `incremental-updater.ts:333-333`, `incremental-updater.ts:333-333`
+- **capitalizeFirst** — Capitalizes the first character of a string `batch-autodoc.ts:87-89`
+- **computeDirectoryHash** — Computes a composite hash for a directory's entities using FNV-1a 64-bit algorithm `batch-autodoc.ts:45-62`
+- **currentEntityNames** — A function to get current entity names `incremental-updater.ts:228-228`
+- **deletedChanges** — Tracks changes in code that have been deleted `incremental-updater.ts:486-486`
+- **detectChangeKind** — Not applicable `batch-autodoc.ts:216-257`
+- **detectChanges** — A function to detect changes in the documentation `incremental-updater.ts:186-261`
+- **detectDocLanguage** — Detects the language of the documentation `generate-handler-utils.ts:137-193`
+- **enhancedDocs** — The enhanced documentation `generate-handler-utils.ts:224-226`
+- **enhanceWithLLM** — Enhances the documentation with LLM `generate-handler-utils.ts:198-241`
+- **ensureGeneralDocs** — Creates template files if they don't exist `general-docs.ts:181-194`
+- **entity** — An entity in the documentation `incremental-updater.ts:244-244`
+- **executeGenerateDocs** — Not present in the provided entities `generate-handler-utils.ts:319-397`
+- **existsInOriginal** — A function to check if an entity exists in the original documentation `incremental-updater.ts:361-361`
+- **exportedEntities** — Represents exported entities in a module `doc-generator.ts:308-308`, `doc-generator.ts:308-308`
+- **extractExports** — Extracts exported names from a file `doc-generator.ts:143-173`
+- **extractReferences** — A function to extract code references from documentation content `incremental-updater.ts:84-121`
+- **extractSections** — A function to extract documentation sections `incremental-updater.ts:126-177`
+- **findRepoRoot** — Finds the root directory of the repository `generate-handler-utils.ts:121-132`
+- **generateArchitectureDoc** — Generates architecture documentation for a module `doc-generator.ts:369-417`
+- **generateDirectorySummary** — Not applicable `batch-autodoc.ts:145-206`
+- **generateDocs** — Generates documentation for a module `doc-generator.ts:428-452`
+- **generateModuleReadme** — Generates a module documentation file `doc-generator.ts:178-219`
+- **generateModuleReadmeWithEntities** — Generates a module documentation file with entities `doc-generator.ts:237-364`
+- **isKey** — Not applicable `batch-autodoc.ts:359-359`
+- **markDeleted** — A function to mark deleted code in the documentation `incremental-updater.ts:376-410`
+- **matching** — Not applicable `batch-autodoc.ts:178-178`
+- **mdFiles** — A list of markdown files `generate-handler-utils.ts:163-163`
+- **mergeNewEntities** — Not applicable `batch-autodoc.ts:270-310`
+- **mergeWithExisting** — A function to merge new entities with existing ones `incremental-updater.ts:317-371`
+- **movedChanges** — Tracks changes in code that have been moved `incremental-updater.ts:466-466`
+- **names** — Names of exported entities `doc-generator.ts:156-156`
+- **newItems** — New items added to the documentation `incremental-updater.ts:398-398`
+- **newSection** — A new documentation section `incremental-updater.ts:327-327`
+- **parseLocation** — Parses location information from a string `batch-autodoc.ts:98-119`
+- **postProcessLlmOutput** — Not applicable `batch-autodoc.ts:419-460`
+- **readCodeSnippets** — Not applicable `batch-autodoc.ts:342-382`
+- **results** — Results from parallel directory scanning operations `doc-generator.ts:78-125`
+- **scanModules** — Asynchronously scans a directory for modules and returns their information `doc-generator.ts:55-138`
+- **sortedFiles** — Represents sorted files in a module `doc-generator.ts:346-346`
+- **sortedRefs** — Sorts references in a file `general-docs.ts:219-219`
+- **title** — Title of the module documentation `doc-generator.ts:184-184`
+- **title** — Represents the title of a module `doc-generator.ts:268-268`
+- **topLevel** — Represents the top-level module `doc-generator.ts:406-406`
+- **uncategorized** — Not applicable `batch-autodoc.ts:193-193`
+- **updateAllGeneralDocs** — Updates all general documentation files `general-docs.ts:246-264`
+- **updateAllModuleDocs** — Updates all module documentation `incremental-updater.ts:511-543`
+- **updateGeneralDocReferences** — Updates file references in existing documentation `general-docs.ts:200-241`
+- **updateModuleDoc** — A function to update the module documentation `incremental-updater.ts:419-506`
+- **updateReferences** — A function to update references in the documentation `incremental-updater.ts:270-308`
+- **writeFilesIncremental** — Writes files incrementally `generate-handler-utils.ts:246-289`
+- **writeFilesOverwrite** — Not present in the provided entities `generate-handler-utils.ts:294-314`
 
-- **adm** — `generate-handler-utils.ts:147-147`
-- **configLang** — `generate-handler-utils.ts:150-150`
-- **targetDir** — `generate-handler-utils.ts:160-160`
-- **files** — `generate-handler-utils.ts:162-162`
-- **mdFiles** — `generate-handler-utils.ts:163-163`
-- **results** — `generate-handler-utils.ts:165-165`
-- **content** — `generate-handler-utils.ts:168-168`
-- **result** — `generate-handler-utils.ts:169-169`
-- **aggregated** — `generate-handler-utils.ts:179-179`
-- **modelName** — `generate-handler-utils.ts:212-212`
-- **enhancedDocs** — `generate-handler-utils.ts:221-227`
-- **enhanced** — `generate-handler-utils.ts:230-230`
-- **incrementalChanges** — `generate-handler-utils.ts:254-254`
-- **modulePath** — `generate-handler-utils.ts:258-258`
-- **updateResult** — `generate-handler-utils.ts:259-259`
-- **targetDir** — `generate-handler-utils.ts:323-323`
-- **repoRoot** — `generate-handler-utils.ts:324-324`
-- **targetAutodocDir** — `generate-handler-utils.ts:325-327`
-- **docLanguage** — `generate-handler-utils.ts:330-330`
-- **result** — `generate-handler-utils.ts:336-340`
-- **filterLower** — `generate-handler-utils.ts:344-344`
-- **llmResult** — `generate-handler-utils.ts:354-354`
-- **adm** — `generate-handler-utils.ts:363-363`
-- **writeResult** — `generate-handler-utils.ts:366-366`
-- **GENERAL_DOC_FILES** — `general-docs.ts:16-23`
-- **TEMPLATES** — `general-docs.ts:30-176`
-- **filePath** — `general-docs.ts:189-189`
-- **content** — `general-docs.ts:208-208`
-- **refs** — `general-docs.ts:209-209`
-- **changes** — `general-docs.ts:210-210`
-- **sortedRefs** — `general-docs.ts:219-219`
-- **key** — `general-docs.ts:225-225`
-- **update** — `general-docs.ts:226-226`
-- **newRef** — `general-docs.ts:230-230`
-- **allChanges** — `general-docs.ts:250-250`
-- **filePath** — `general-docs.ts:254-254`
-- **result** — `general-docs.ts:255-255`
-- **FNV_OFFSET_BASIS** — `batch-autodoc.ts:36-36`
-- **FNV_PRIME** — `batch-autodoc.ts:37-37`
-- **MASK_64** — `batch-autodoc.ts:38-38`
-- **hashes** — `batch-autodoc.ts:46-46`
-- **TYPE_ORDER** — `batch-autodoc.ts:68-85`
-- **s** — `batch-autodoc.ts:105-105`
-- **e** — `batch-autodoc.ts:106-106`
-- **dash** — `batch-autodoc.ts:110-110`
-- **n** — `batch-autodoc.ts:112-112`
-- **lines** — `batch-autodoc.ts:146-146`
-- **langCounts** — `batch-autodoc.ts:149-149`
-- **fileSet** — `batch-autodoc.ts:165-165`
-- **matching** — `batch-autodoc.ts:178-178`
-- **filename** — `batch-autodoc.ts:185-185`
-- **loc** — `batch-autodoc.ts:186-186`
-- **uncategorized** — `batch-autodoc.ts:193-193`
-- **filename** — `batch-autodoc.ts:198-198`
-- **loc** — `batch-autodoc.ts:199-199`
-- **prev** — `batch-autodoc.ts:232-232`
-- **removed** — `batch-autodoc.ts:244-244`
-- **pct** — `batch-autodoc.ts:245-245`
-- **locDiff** — `batch-autodoc.ts:251-251`
-- **pct** — `batch-autodoc.ts:252-252`
-- **newEntries** — `batch-autodoc.ts:271-271`
-- **trimmed** — `batch-autodoc.ts:274-274`
-- **bt1** — `batch-autodoc.ts:278-278`
-- **bt2** — `batch-autodoc.ts:280-280`
-- **ref** — `batch-autodoc.ts:282-282`
-- **colon** — `batch-autodoc.ts:283-283`
-- **filename** — `batch-autodoc.ts:285-285`
-- **SOURCE_EXTENSIONS** — `batch-autodoc.ts:316-332`
-- **KEY_FILE_NAMES** — `batch-autodoc.ts:334-334`
-- **output** — `batch-autodoc.ts:350-350`
-- **ext** — `batch-autodoc.ts:355-355`
-- **baseName** — `batch-autodoc.ts:358-358`
-- **isKey** — `batch-autodoc.ts:359-359`
-- **fp** — `batch-autodoc.ts:364-364`
-- **buf** — `batch-autodoc.ts:365-365`
-- **fh** — `batch-autodoc.ts:366-366`
-- **BAD_PHRASES** — `batch-autodoc.ts:388-400`
-- **TRAILING_PATTERNS** — `batch-autodoc.ts:402-409`
-- **CODE_SAMPLE_MARKERS** — `batch-autodoc.ts:411-411`
-- **headingIdx** — `batch-autodoc.ts:421-421`
-- **start** — `batch-autodoc.ts:424-424`
-- **trimmed** — `batch-autodoc.ts:427-427`
-- **first200** — `batch-autodoc.ts:431-431`
-- **pos** — `batch-autodoc.ts:438-438`
-- **pos** — `batch-autodoc.ts:446-446`
-- **pendingMarker** — `batch-autodoc.ts:453-453`
-- **pendingPos** — `batch-autodoc.ts:454-454`
-- **DEFAULT_EXCLUDE** — `doc-generator.ts:47-47`
-- **MODULE_DOC_FILENAME** — `doc-generator.ts:50-50`
-- **exclude** — `doc-generator.ts:63-63`
-- **maxDepth** — `doc-generator.ts:64-64`
-- **concurrency** — `doc-generator.ts:65-65`
-- **modules** — `doc-generator.ts:67-67`
-- **queue** — `doc-generator.ts:70-70`
-- **batch** — `doc-generator.ts:74-74`
-- **results** — `doc-generator.ts:76-127`
-- **entries** — `doc-generator.ts:81-81`
-- **subdirs** — `doc-generator.ts:82-82`
-- **tsFiles** — `doc-generator.ts:83-83`
-- **name** — `doc-generator.ts:87-87`
-- **fullPath** — `doc-generator.ts:88-88`
-- **isCodeFile** — `doc-generator.ts:95-96`
-- **isTestFile** — `doc-generator.ts:97-101`
-- **exports** — `doc-generator.ts:114-114`
-- **content** — `doc-generator.ts:149-149`
-- **exports** — `doc-generator.ts:150-150`
-- **reExportMatch** — `doc-generator.ts:153-153`
-- **names** — `doc-generator.ts:156-156`
-- **directMatch** — `doc-generator.ts:162-162`
-- **lines** — `doc-generator.ts:179-179`
-- **title** — `doc-generator.ts:182-185`
-- **lines** — `doc-generator.ts:263-263`
-- **title** — `doc-generator.ts:266-269`
-- **allEntities** — `doc-generator.ts:282-289`
-- **filePath** — `doc-generator.ts:292-292`
-- **content** — `doc-generator.ts:294-294`
-- **fileEntities** — `doc-generator.ts:295-295`
-- **exportedEntities** — `doc-generator.ts:308-308`
-- **hasExportDescs** — `doc-generator.ts:309-309`
-- **location** — `doc-generator.ts:320-323`
-- **desc** — `doc-generator.ts:324-324`
-- **location** — `doc-generator.ts:332-335`
-- **sortedFiles** — `doc-generator.ts:346-346`
-- **llmDesc** — `doc-generator.ts:349-349`
-- **lines** — `doc-generator.ts:370-370`
-- **groups** — `doc-generator.ts:380-380`
-- **parent** — `doc-generator.ts:382-382`
-- **firstModulePath** — `doc-generator.ts:405-405`
-- **topLevel** — `doc-generator.ts:406-406`
-- **modules** — `doc-generator.ts:429-433`
-- **files** — `doc-generator.ts:435-435`
-- **autodocPath** — `doc-generator.ts:443-443`
-- **refs** — `incremental-updater.ts:85-85`
-- **fileLinePattern** — `incremental-updater.ts:88-89`
-- **filePath** — `incremental-updater.ts:92-92`
-- **lineNum** — `incremental-updater.ts:93-93`
-- **mdLinkPattern** — `incremental-updater.ts:106-106`
-- **mdFilePath** — `incremental-updater.ts:108-108`
-- **lines** — `incremental-updater.ts:127-127`
-- **sections** — `incremental-updater.ts:128-128`
-- **line** — `incremental-updater.ts:133-133`
-- **headerMatch** — `incremental-updater.ts:134-134`
-- **entityRefs** — `incremental-updater.ts:157-157`
-- **name** — `incremental-updater.ts:160-160`
-- **changes** — `incremental-updater.ts:191-191`
-- **refs** — `incremental-updater.ts:192-192`
-- **sections** — `incremental-updater.ts:193-193`
-- **documentedEntities** — `incremental-updater.ts:196-196`
-- **entityPattern** — `incremental-updater.ts:204-204`
-- **currentEntityNames** — `incremental-updater.ts:228-228`
-- **entity** — `incremental-updater.ts:244-244`
-- **lineUpdates** — `incremental-updater.ts:274-274`
-- **key** — `incremental-updater.ts:277-277`
-- **fileLinePattern** — `incremental-updater.ts:283-283`
-- **line** — `incremental-updater.ts:285-285`
-- **mdLinkPattern** — `incremental-updater.ts:296-296`
-- **line** — `incremental-updater.ts:298-298`
-- **existingSections** — `incremental-updater.ts:318-318`
-- **newSections** — `incremental-updater.ts:319-319`
-- **result** — `incremental-updater.ts:322-322`
-- **processedNewSections** — `incremental-updater.ts:323-323`
-- **newSection** — `incremental-updater.ts:327-327`
-- **addedEntities** — `incremental-updater.ts:333-333`
-- **existsInOriginal** — `incremental-updater.ts:361-361`
-- **timestamp** — `incremental-updater.ts:383-383`
-- **deletedSection** — `incremental-updater.ts:384-384`
-- **timestamp** — `incremental-updater.ts:394-394`
-- **insertPoint** — `incremental-updater.ts:395-395`
-- **afterHeader** — `incremental-updater.ts:397-397`
-- **newItems** — `incremental-updater.ts:398-398`
-- **pattern** — `incremental-updater.ts:405-405`
-- **result** — `incremental-updater.ts:428-432`
-- **docExists** — `incremental-updater.ts:435-435`
-- **existingContent** — `incremental-updater.ts:449-449`
-- **storage** — `incremental-updater.ts:452-452`
-- **currentEntities** — `incremental-updater.ts:453-453`
-- **changes** — `incremental-updater.ts:456-456`
-- **movedChanges** — `incremental-updater.ts:466-466`
-- **addedChanges** — `incremental-updater.ts:476-476`
-- **deletedChanges** — `incremental-updater.ts:486-486`
-- **results** — `incremental-updater.ts:519-519`
-- **modules** — `incremental-updater.ts:524-524`
-- **docPath** — `incremental-updater.ts:527-527`
-- **newContent** — `incremental-updater.ts:528-528`
-- **result** — `incremental-updater.ts:530-533`
+### Interface
+- **AutoDocManager** — Interface for managing auto-generated documentation `generate-handler-utils.ts:32-35`
+- **BatchResult** — Represents the result of a batch auto-doc generation process, including counts of generated, skipped, errors, and synced entities `batch-autodoc.ts:18-23`
+- **CodeChange** — Represents a change in code, including type, entity ID, entity name, entity type, file path, old file path, old line number, new line number, and timestamp `incremental-updater.ts:34-44`
+- **DirectoryDoc** — Represents a document for a directory, containing entity ID, content, source hash, and title `batch-autodoc.ts:25-30`
+- **DirectorySummaryEntity** — Represents a summary entity for a directory `batch-autodoc.ts:121-129`
+- **DocReference** — Represents a reference to a code entity in documentation, including original text, file path, line number, entity name, and content position `incremental-updater.ts:20-32`
+- **DocSection** — Represents a section in documentation, including title, content, start line, end line, and related entities `incremental-updater.ts:46-57`
+- **FileToGenerate** — An interface for file generation with path, type, and content `generate-handler-utils.ts:59-63`
+- **GenerateDocsContext** — Represents the context for generating documentation, including input path normalization, request ID, and auto doc manager retrieval `generate-handler-utils.ts:85-89`
+- **GenerateDocsOptions** — Options for documentation generation `generate-handler-utils.ts:17-27`
+- **GenerateDocsResult** — Contains the result of the documentation generation process, including success status, preview mode, use of LLM, LLM status, incremental generation, language, modules found, files to generate, files written, and detailed module and file information `generate-handler-utils.ts:94-116`
+- **GenerateOptions** — Configuration options for generating documentation `doc-generator.ts:23-34`
+- **GenerateResult** — The result of the documentation generation process `doc-generator.ts:36-45`
+- **LLMProvider** — An interface for LLM providers with a name and selected model `generate-handler-utils.ts:68-71`
+- **ModuleExport** — Information about a module export `generate-handler-utils.ts:40-44`
+- **ModuleInfo** — Represents information about a module, including its name, path, files, and exports `doc-generator.ts:14-21`
+- **ModuleInfo** — Information about a module `generate-handler-utils.ts:49-54`
+- **ModuleInfoWithEntities** — Interface for module information including entities `doc-generator.ts:222-231`
+- **UpdateChange** — An interface for incremental update changes with a description, type, and section `generate-handler-utils.ts:76-80`
+- **UpdateResult** — An object containing the path to the documentation file, whether it was updated, and the changes made `incremental-updater.ts:59-71`
 
-## Variable
+### Type_alias
+- **GeneralDocFile** — Represents a file in the .autodoc/ directory `general-docs.ts:25-25`
 
-- **filesWritten** — `generate-handler-utils.ts:253-253`
-- **filesWritten** — `generate-handler-utils.ts:299-299`
-- **llmStatus** — `generate-handler-utils.ts:352-352`
-- **filesWritten** — `generate-handler-utils.ts:359-359`
-- **incrementalChanges** — `generate-handler-utils.ts:360-360`
-- **updatedContent** — `general-docs.ts:216-216`
-- **totalUpdated** — `general-docs.ts:251-251`
-- **hash** — `batch-autodoc.ts:54-54`
-- **dominantLang** — `batch-autodoc.ts:155-155`
-- **maxCount** — `batch-autodoc.ts:156-156`
-- **header** — `batch-autodoc.ts:171-171`
-- **effective** — `batch-autodoc.ts:229-229`
-- **result** — `batch-autodoc.ts:302-302`
-- **fileNames** — `batch-autodoc.ts:343-343`
-- **filesRead** — `batch-autodoc.ts:351-351`
-- **end** — `batch-autodoc.ts:425-425`
-- **hasIndex** — `doc-generator.ts:84-84`
-- **module** — `doc-generator.ts:112-112`
-- **arr** — `doc-generator.ts:383-383`
-- **match** — `incremental-updater.ts:90-90`
-- **currentSection** — `incremental-updater.ts:129-129`
-- **contentLines** — `incremental-updater.ts:130-130`
-- **match** — `incremental-updater.ts:205-205`
-- **updated** — `incremental-updater.ts:271-271`
-- **updated** — `incremental-updater.ts:379-379`
-- **updatedContent** — `incremental-updater.ts:463-463`
+### Import_decl
+- **../../logging/index.js** — Imports `../../logging/index.js` from `../../logging/index.js`. `batch-autodoc.ts:11-11`, `doc-generator.ts:10-10`, `generate-handler-utils.ts:9-9`
+- **../../storage/graph-storage-factory.js** — Imports `../../storage/graph-storage-factory.js` from `../../storage/graph-storage-factory.js`. `incremental-updater.ts:13-13`
+- **../../types/storage.js** — Imports `../../types/storage.js` from `../../types/storage.js`. `incremental-updater.ts:14-14`
+- **../../utils/file-ops.js** — Imports `../../utils/file-ops.js` from `../../utils/file-ops.js`. `doc-generator.ts:11-11`
+- **../../utils/parallel.js** — Imports `../../utils/parallel.js` from `../../utils/parallel.js`. `doc-generator.ts:12-12`
+- **../sync/file-sync.js** — Imports `../sync/file-sync.js` from `../sync/file-sync.js`. `generate-handler-utils.ts:10-10`
+- **../types.js** — Imports `../types.js` from `../types.js`. `batch-autodoc.ts:12-12`
+- **./doc-generator.js** — Imports `./doc-generator.js` from `./doc-generator.js`. `generate-handler-utils.ts:11-11`
+- **./general-docs.js** — Imports `./general-docs.js` from `./general-docs.js`. `generate-handler-utils.ts:12-12`
+- **./incremental-updater.js** — Imports `./incremental-updater.js` from `./incremental-updater.js`. `general-docs.ts:13-13`
+- **node:child_process** — Imports `node:child_process` from `node:child_process`. `generate-handler-utils.ts:7-7`
+- **node:fs** — Imports `node:fs` from `node:fs`. `general-docs.ts:11-11`, `incremental-updater.ts:11-11`
+- **node:fs/promises** — Imports `node:fs/promises` from `node:fs/promises`. `batch-autodoc.ts:9-9`
+- **node:path** — Imports `node:path` from `node:path`. `batch-autodoc.ts:10-10`, `doc-generator.ts:9-9`, `general-docs.ts:12-12`, `generate-handler-utils.ts:8-8`, `incremental-updater.ts:12-12`
 
-## Module
-
-- **AUTODOC** — `AUTODOC.md:1-1`
-
-## Other
-
-- **../sync/file-sync.js** — `generate-handler-utils.ts:10-10`
-- **./doc-generator.js** — `generate-handler-utils.ts:11-11`
-- **./general-docs.js** — `generate-handler-utils.ts:12-12`
-- **GenerateDocsOptions.rootDir** — `generate-handler-utils.ts:18-18`
-- **GenerateDocsOptions.autodocDir** — `generate-handler-utils.ts:19-19`
-- **GenerateDocsOptions.exclude** — `generate-handler-utils.ts:20-20`
-- **GenerateDocsOptions.maxDepth** — `generate-handler-utils.ts:21-21`
-- **GenerateDocsOptions.module** — `generate-handler-utils.ts:22-22`
-- **GenerateDocsOptions.useLlm** — `generate-handler-utils.ts:23-23`
-- **GenerateDocsOptions.preview** — `generate-handler-utils.ts:24-24`
-- **GenerateDocsOptions.incremental** — `generate-handler-utils.ts:25-25`
-- **GenerateDocsOptions.language** — `generate-handler-utils.ts:26-26`
-- **ModuleExport.name** — `generate-handler-utils.ts:41-41`
-- **ModuleExport.type** — `generate-handler-utils.ts:42-42`
-- **ModuleExport.signature** — `generate-handler-utils.ts:43-43`
-- **ModuleInfo.name** — `generate-handler-utils.ts:50-50`
-- **ModuleInfo.path** — `generate-handler-utils.ts:51-51`
-- **ModuleInfo.files** — `generate-handler-utils.ts:52-52`
-- **ModuleInfo.exports** — `generate-handler-utils.ts:53-53`
-- **FileToGenerate.path** — `generate-handler-utils.ts:60-60`
-- **FileToGenerate.type** — `generate-handler-utils.ts:61-61`
-- **FileToGenerate.content** — `generate-handler-utils.ts:62-62`
-- **LLMProvider.name** — `generate-handler-utils.ts:69-69`
-- **LLMProvider.selectedModel** — `generate-handler-utils.ts:70-70`
-- **UpdateChange.description** — `generate-handler-utils.ts:77-77`
-- **UpdateChange.type** — `generate-handler-utils.ts:78-78`
-- **UpdateChange.section** — `generate-handler-utils.ts:79-79`
-- **GenerateDocsContext.normalizeInputPath** — `generate-handler-utils.ts:86-86`
-- **GenerateDocsContext.requestId** — `generate-handler-utils.ts:87-87`
-- **GenerateDocsContext.getAutoDocManager** — `generate-handler-utils.ts:88-88`
-- **GenerateDocsResult.success** — `generate-handler-utils.ts:95-95`
-- **GenerateDocsResult.preview** — `generate-handler-utils.ts:96-96`
-- **GenerateDocsResult.useLlm** — `generate-handler-utils.ts:97-97`
-- **GenerateDocsResult.llmStatus** — `generate-handler-utils.ts:98-98`
-- **GenerateDocsResult.incremental** — `generate-handler-utils.ts:99-99`
-- **GenerateDocsResult.language** — `generate-handler-utils.ts:100-100`
-- **GenerateDocsResult.modulesFound** — `generate-handler-utils.ts:101-101`
-- **GenerateDocsResult.filesToGenerate** — `generate-handler-utils.ts:102-102`
-- **GenerateDocsResult.filesWritten** — `generate-handler-utils.ts:103-103`
-- **GenerateDocsResult.incrementalChanges** — `generate-handler-utils.ts:104-104`
-- **GenerateDocsResult.modules** — `generate-handler-utils.ts:105-110`
-- **GenerateDocsResult.files** — `generate-handler-utils.ts:111-115`
-- **detectDocLanguage** — `generate-handler-utils.ts:137-193`
-- **enhanceWithLLM** — `generate-handler-utils.ts:198-241`
-- **writeFilesIncremental** — `generate-handler-utils.ts:246-289`
-- **writeFilesOverwrite** — `generate-handler-utils.ts:294-314`
-- **executeGenerateDocs** — `generate-handler-utils.ts:319-397`
-- **./incremental-updater.js** — `general-docs.ts:13-13`
-- **GeneralDocFile** — `general-docs.ts:25-25`
-- **TEMPLATES."architecture.md"** — `general-docs.ts:31-60`
-- **TEMPLATES."dependencies.md"** — `general-docs.ts:62-84`
-- **TEMPLATES."deployment.md"** — `general-docs.ts:86-109`
-- **TEMPLATES."flow.md"** — `general-docs.ts:111-132`
-- **TEMPLATES."glossary.md"** — `general-docs.ts:134-149`
-- **TEMPLATES."processes.md"** — `general-docs.ts:151-175`
-- **BatchResult.generated** — `batch-autodoc.ts:19-19`
-- **BatchResult.skipped** — `batch-autodoc.ts:20-20`
-- **BatchResult.errors** — `batch-autodoc.ts:21-21`
-- **BatchResult.synced** — `batch-autodoc.ts:22-22`
-- **DirectoryDoc.entityId** — `batch-autodoc.ts:26-26`
-- **DirectoryDoc.content** — `batch-autodoc.ts:27-27`
-- **DirectoryDoc.sourceHash** — `batch-autodoc.ts:28-28`
-- **DirectoryDoc.title** — `batch-autodoc.ts:29-29`
-- **DirectorySummaryEntity.name** — `batch-autodoc.ts:122-122`
-- **DirectorySummaryEntity.type** — `batch-autodoc.ts:123-123`
-- **DirectorySummaryEntity.filePath** — `batch-autodoc.ts:124-124`
-- **DirectorySummaryEntity.location** — `batch-autodoc.ts:125-125`
-- **DirectorySummaryEntity.language** — `batch-autodoc.ts:126-126`
-- **DirectorySummaryEntity.size** — `batch-autodoc.ts:127-127`
-- **DirectorySummaryEntity.hash** — `batch-autodoc.ts:128-128`
-- **readCodeSnippets** — `batch-autodoc.ts:342-382`
-- **BatchResult** — `index.ts:6-6`
-- **computeDirectoryHash** — `index.ts:7-7`
-- **DirectorySummaryEntity** — `index.ts:8-8`
-- **detectChangeKind** — `index.ts:9-9`
-- **generateDirectorySummary** — `index.ts:10-10`
-- **mergeNewEntities** — `index.ts:11-11`
-- **postProcessLlmOutput** — `index.ts:12-12`
-- **readCodeSnippets** — `index.ts:13-13`
-- **GenerateOptions** — `index.ts:16-16`
-- **GenerateResult** — `index.ts:17-17`
-- **generateArchitectureDoc** — `index.ts:18-18`
-- **generateDocs** — `index.ts:19-19`
-- **generateModuleReadme** — `index.ts:20-20`
-- **ModuleInfo** — `index.ts:21-21`
-- **scanModules** — `index.ts:22-22`
-- **ModuleInfo.name** — `doc-generator.ts:15-15`
-- **ModuleInfo.path** — `doc-generator.ts:16-16`
-- **ModuleInfo.files** — `doc-generator.ts:17-17`
-- **ModuleInfo.hasIndex** — `doc-generator.ts:18-18`
-- **ModuleInfo.exports** — `doc-generator.ts:19-19`
-- **ModuleInfo.description** — `doc-generator.ts:20-20`
-- **GenerateOptions.rootDir** — `doc-generator.ts:25-25`
-- **GenerateOptions.autodocDir** — `doc-generator.ts:27-27`
-- **GenerateOptions.exclude** — `doc-generator.ts:29-29`
-- **GenerateOptions.maxDepth** — `doc-generator.ts:31-31`
-- **GenerateOptions.concurrency** — `doc-generator.ts:33-33`
-- **GenerateResult.modules** — `doc-generator.ts:38-38`
-- **GenerateResult.files** — `doc-generator.ts:40-44`
-- **scanModules** — `doc-generator.ts:55-138`
-- **extractExports** — `doc-generator.ts:143-173`
-- **ModuleInfoWithEntities.entities** — `doc-generator.ts:223-230`
-- **generateModuleReadmeWithEntities** — `doc-generator.ts:237-364`
-- **generateDocs** — `doc-generator.ts:428-452`
-- **DocReference.original** — `incremental-updater.ts:22-22`
-- **DocReference.filePath** — `incremental-updater.ts:24-24`
-- **DocReference.lineNumber** — `incremental-updater.ts:26-26`
-- **DocReference.entityName** — `incremental-updater.ts:28-28`
-- **DocReference.startIndex** — `incremental-updater.ts:30-30`
-- **DocReference.endIndex** — `incremental-updater.ts:31-31`
-- **CodeChange.type** — `incremental-updater.ts:35-35`
-- **CodeChange.entityId** — `incremental-updater.ts:36-36`
-- **CodeChange.entityName** — `incremental-updater.ts:37-37`
-- **CodeChange.entityType** — `incremental-updater.ts:38-38`
-- **CodeChange.filePath** — `incremental-updater.ts:39-39`
-- **CodeChange.oldFilePath** — `incremental-updater.ts:40-40`
-- **CodeChange.oldLineNumber** — `incremental-updater.ts:41-41`
-- **CodeChange.newLineNumber** — `incremental-updater.ts:42-42`
-- **CodeChange.timestamp** — `incremental-updater.ts:43-43`
-- **DocSection.title** — `incremental-updater.ts:48-48`
-- **DocSection.content** — `incremental-updater.ts:50-50`
-- **DocSection.startLine** — `incremental-updater.ts:52-52`
-- **DocSection.endLine** — `incremental-updater.ts:54-54`
-- **DocSection.relatedEntities** — `incremental-updater.ts:56-56`
-- **UpdateResult.docPath** — `incremental-updater.ts:61-61`
-- **UpdateResult.updated** — `incremental-updater.ts:63-63`
-- **UpdateResult.changes** — `incremental-updater.ts:65-68`
-- **UpdateResult.newContent** — `incremental-updater.ts:70-70`
-- **detectChanges** — `incremental-updater.ts:186-261`
-- **updateModuleDoc** — `incremental-updater.ts:419-506`
-- **result.docPath** — `incremental-updater.ts:429-429`
-- **result.updated** — `incremental-updater.ts:430-430`
-- **result.changes** — `incremental-updater.ts:431-431`
-- **updateAllModuleDocs** — `incremental-updater.ts:511-543`
+### Property
+- **allChanges** — Stores all changes made to files `general-docs.ts:249-249`
+- **autodocDir** — The output directory for general documentation `doc-generator.ts:27-27`
+- **autodocDir** — Directory for auto-generated documentation `generate-handler-utils.ts:19-19`
+- **autoGenerated** — Boolean indicating whether the document is auto-generated `generate-handler-utils.ts:33-33`
+- **changes** — Stores changes made to a file `general-docs.ts:203-203`, `general-docs.ts:249-249`, `general-docs.ts:250-250`
+- **changes** — Contains the changes made to the documentation `generate-handler-utils.ts:104-104`
+- **changes** — Represents an incremental update change `generate-handler-utils.ts:251-251`, `generate-handler-utils.ts:254-254`, `generate-handler-utils.ts:360-360`
+- **changes** — An array of changes made to the documentation `incremental-updater.ts:65-68`
+- **concurrency** — The number of parallel operations to perform `doc-generator.ts:33-33`
+- **concurrency** — Number of parallel operations for directory scanning `doc-generator.ts:60-60`
+- **content** — Content of the entity document `batch-autodoc.ts:27-27`
+- **content** — The content of the generated documentation file `doc-generator.ts:43-43`
+- **content** — The content of the file to be generated `generate-handler-utils.ts:62-62`
+- **content** — Content of the documentation section `incremental-updater.ts:50-50`
+- **depth** — Current depth in the directory scanning process `doc-generator.ts:70-70`, `doc-generator.ts:82-82`
+- **description** — An optional description of the module `doc-generator.ts:20-20`
+- **description** — The description of the incremental update change `generate-handler-utils.ts:77-77`
+- **description** — A description of the change made to the documentation `incremental-updater.ts:67-67`
+- **dir** — Directory path for scanning modules `doc-generator.ts:70-70`, `doc-generator.ts:82-82`
+- **docPath** — The path to the documentation file `incremental-updater.ts:61-61`
+- **end** — End position of a location `batch-autodoc.ts:98-98`
+- **end** — Not applicable `batch-autodoc.ts:125-125`
+- **endIndex** — End index in documentation content `incremental-updater.ts:31-31`
+- **endLine** — End line number of a location `batch-autodoc.ts:100-100`
+- **endLine** — End line number of an entity `doc-generator.ts:229-229`, `doc-generator.ts:247-247`
+- **endLine** — Represents the end line of a file `doc-generator.ts:288-288`
+- **endLine** — Represents the end line number of a section in the documentation `incremental-updater.ts:54-54`
+- **entities** — Entities within a module `doc-generator.ts:223-230`
+- **entityId** — Unique identifier for an entity within a directory `batch-autodoc.ts:26-26`
+- **entityId** — ID of the entity (if applicable) `incremental-updater.ts:36-36`
+- **entityName** — Name of the referenced code entity (if referenced) `incremental-updater.ts:28-28`, `incremental-updater.ts:37-37`
+- **entityType** — Type of the entity `incremental-updater.ts:38-38`
+- **errors** — Count of entities that caused errors in the batch auto-doc process `batch-autodoc.ts:21-21`
+- **exclude** — Patterns to exclude during scanning `doc-generator.ts:29-29`, `doc-generator.ts:58-58`
+- **exclude** — List of files or directories to exclude `generate-handler-utils.ts:20-20`
+- **exportDescs** — Describes exported entities in a module `doc-generator.ts:250-250`
+- **exported** — Whether an entity is exported `doc-generator.ts:227-227`, `doc-generator.ts:245-245`
+- **exported** — Represents exported entities in a module `doc-generator.ts:286-286`
+- **exports** — An array of exported names from the module `doc-generator.ts:19-19`
+- **exports** — An array of module export information `generate-handler-utils.ts:53-53`
+- **exports** — The exports of a module `generate-handler-utils.ts:109-109`
+- **file** — File path for a module `doc-generator.ts:224-224`
+- **file** — Represents a file in a module `doc-generator.ts:283-283`
+- **file** — Represents a file in the .autodoc/ directory `general-docs.ts:249-249`, `general-docs.ts:250-250`
+- **fileDescs** — Describes files in a module `doc-generator.ts:251-251`
+- **filePath** — Not applicable `batch-autodoc.ts:124-124`
+- **filePath** — File path of the referenced code entity `incremental-updater.ts:24-24`, `incremental-updater.ts:39-39`
+- **files** — An array of file names within the module `doc-generator.ts:17-17`, `doc-generator.ts:40-44`
+- **files** — An array of file paths to be processed `generate-handler-utils.ts:52-52`
+- **files** — A list of files involved in the documentation generation `generate-handler-utils.ts:108-108`, `generate-handler-utils.ts:111-115`
+- **filesToGenerate** — A list of files that need to be generated based on the documentation options `generate-handler-utils.ts:102-102`
+- **filesWritten** — Tracks the number of files written during the documentation generation `generate-handler-utils.ts:103-103`, `generate-handler-utils.ts:251-251`
+- **generated** — Count of entities that were successfully generated in the batch auto-doc process `batch-autodoc.ts:19-19`
+- **getAutoDocManager** — Retrieves the auto doc manager for documentation generation `generate-handler-utils.ts:88-88`
+- **hash** — Hash value computed by the `computeDirectoryHash` function `batch-autodoc.ts:45-45`
+- **hash** — Not applicable `batch-autodoc.ts:128-128`
+- **hasIndex** — Indicates whether the module has an index file `doc-generator.ts:18-18`
+- **incremental** — Boolean indicating whether to perform incremental updates `generate-handler-utils.ts:25-25`
+- **incremental** — Indicates if the documentation generation is incremental `generate-handler-utils.ts:99-99`
+- **incrementalChanges** — Stores the incremental changes made to the documentation `generate-handler-utils.ts:104-104`, `generate-handler-utils.ts:251-251`
+- **language** — Not applicable `batch-autodoc.ts:126-126`
+- **language** — Language for documentation generation `generate-handler-utils.ts:26-26`, `generate-handler-utils.ts:34-34`
+- **language** — Specifies the language for documentation generation `generate-handler-utils.ts:100-100`
+- **line** — Line number of a location `batch-autodoc.ts:98-98`, `batch-autodoc.ts:98-98`
+- **line** — Not applicable `batch-autodoc.ts:125-125`, `batch-autodoc.ts:125-125`
+- **line** — Line number of an entity `doc-generator.ts:228-228`, `doc-generator.ts:246-246`
+- **line** — Represents a line in a file `doc-generator.ts:287-287`
+- **lineNumber** — Line number of the referenced code entity (if present) `incremental-updater.ts:26-26`
+- **llmEnhancer** — Enhances documentation updates using an LLM `incremental-updater.ts:425-425`, `incremental-updater.ts:516-516`
+- **llmStatus** — Stores the status of the LLM used for documentation generation `generate-handler-utils.ts:98-98`
+- **llmStatus** — The status of the LLM enhancement `generate-handler-utils.ts:203-203`
+- **location** — Not applicable `batch-autodoc.ts:125-125`
+- **maxDepth** — The maximum depth to scan modules `doc-generator.ts:31-31`
+- **maxDepth** — Maximum depth to scan for modules `doc-generator.ts:59-59`
+- **maxDepth** — Maximum depth for documentation generation `generate-handler-utils.ts:21-21`
+- **module** — Module name for documentation generation `generate-handler-utils.ts:22-22`
+- **modules** — An array of ModuleInfo objects representing found modules `doc-generator.ts:38-38`
+- **modules** — A collection of module information `generate-handler-utils.ts:105-110`
+- **modulesFound** — Represents a collection of modules found during the documentation generation process `generate-handler-utils.ts:101-101`
+- **name** — Batch AutoDoc Generator — ported from Zig batch_generator.zig `batch-autodoc.ts:122-122`
+- **name** — The name of the module `doc-generator.ts:15-15`
+- **name** — Name of an entity `doc-generator.ts:225-225`, `doc-generator.ts:243-243`
+- **name** — Represents the name of a module `doc-generator.ts:284-284`
+- **name** — Name of the module export `generate-handler-utils.ts:41-41`, `generate-handler-utils.ts:50-50`
+- **name** — The name of the LLM provider `generate-handler-utils.ts:69-69`
+- **name** — The name of a module or file `generate-handler-utils.ts:106-106`
+- **new** — The new version of an entity `incremental-updater.ts:274-274`
+- **newContent** — The new content of the documentation file if it was updated `incremental-updater.ts:70-70`
+- **newLine** — Represents a new line in a file `general-docs.ts:202-202`, `general-docs.ts:248-248`
+- **newLineNumber** — New line number of the entity (if moved) `incremental-updater.ts:42-42`
+- **normalizeInputPath** — Normalizes the input path for documentation generation `generate-handler-utils.ts:86-86`
+- **old** — The old version of an entity `incremental-updater.ts:274-274`
+- **oldFilePath** — Old file path of the entity (if moved) `incremental-updater.ts:40-40`
+- **oldLine** — Represents an old line in a file `general-docs.ts:202-202`, `general-docs.ts:248-248`
+- **oldLineNumber** — Old line number of the entity (if moved) `incremental-updater.ts:41-41`
+- **original** — Original text in documentation (e.g., "src/utils/file.ts:42") `incremental-updater.ts:22-22`
+- **path** — The file system path to the module `doc-generator.ts:16-16`, `doc-generator.ts:41-41`
+- **path** — Represents the file path for documentation generation `generate-handler-utils.ts:51-51`, `generate-handler-utils.ts:60-60`, `generate-handler-utils.ts:254-254`, `generate-handler-utils.ts:360-360`
+- **path** — Represents the file path for the documentation generation `generate-handler-utils.ts:104-104`, `generate-handler-utils.ts:107-107`, `generate-handler-utils.ts:112-112`, `generate-handler-utils.ts:251-251`
+- **preview** — Boolean indicating whether to preview documentation `generate-handler-utils.ts:24-24`
+- **preview** — Specifies whether the documentation generation is in preview mode `generate-handler-utils.ts:96-96`
+- **preview** — Indicates whether a preview is enabled for the documentation `generate-handler-utils.ts:114-114`
+- **preview** — Provides a preview of the documentation updates `incremental-updater.ts:514-514`
+- **relatedEntities** — An array of related entities for a documentation section `incremental-updater.ts:56-56`
+- **requestId** — Stores the request ID for documentation generation `generate-handler-utils.ts:87-87`
+- **rootDir** — The root directory to scan for modules `doc-generator.ts:25-25`
+- **rootDir** — Root directory for documentation generation `generate-handler-utils.ts:18-18`
+- **section** — The section of the incremental update change `generate-handler-utils.ts:79-79`
+- **selectedModel** — The selected model for the LLM provider `generate-handler-utils.ts:70-70`
+- **signature** — Signature of the module export `generate-handler-utils.ts:43-43`
+- **size** — Not applicable `batch-autodoc.ts:127-127`
+- **skipped** — Count of entities that were skipped in the batch auto-doc process `batch-autodoc.ts:20-20`
+- **sourceHash** — Hash of the source code for the entity `batch-autodoc.ts:28-28`
+- **start** — Start position of a location `batch-autodoc.ts:98-98`
+- **start** — Not applicable `batch-autodoc.ts:125-125`
+- **startIndex** — Start index in documentation content `incremental-updater.ts:30-30`
+- **startLine** — Start line number of a location `batch-autodoc.ts:99-99`
+- **startLine** — Start line in documentation content `incremental-updater.ts:52-52`
+- **success** — Indicates whether the documentation generation was successful `generate-handler-utils.ts:95-95`
+- **synced** — Count of entities that were synced in the batch auto-doc process `batch-autodoc.ts:22-22`
+- **timestamp** — Timestamp of the change `incremental-updater.ts:43-43`
+- **title** — Title of the entity document `batch-autodoc.ts:29-29`
+- **title** — Title of the documentation section `incremental-updater.ts:48-48`
+- **totalUpdated** — Tracks the total number of updated files `general-docs.ts:249-249`
+- **type** — BatchResult `batch-autodoc.ts:123-123`
+- **type** — The type of the generated documentation file (general or module) `doc-generator.ts:42-42`
+- **type** — Type of an entity `doc-generator.ts:226-226`, `doc-generator.ts:244-244`
+- **type** — Represents the type of a module `doc-generator.ts:285-285`
+- **type** — Type of the module export `generate-handler-utils.ts:42-42`
+- **type** — The type of the file to be generated `generate-handler-utils.ts:61-61`, `generate-handler-utils.ts:78-78`
+- **type** — The type of a module or file `generate-handler-utils.ts:113-113`
+- **type** — Type of code change (added, modified, deleted, moved) `incremental-updater.ts:35-35`
+- **type** — The type of change made to the documentation `incremental-updater.ts:66-66`
+- **updated** — Indicates a file has been updated `general-docs.ts:203-203`
+- **updated** — A boolean indicating whether the documentation was updated `incremental-updater.ts:63-63`
+- **useLlm** — Boolean indicating whether to use an LLM for documentation `generate-handler-utils.ts:23-23`
+- **useLlm** — Determines if the LLM is used for documentation generation `generate-handler-utils.ts:97-97`
+- **useLlm** — Uses an LLM to enhance documentation updates `incremental-updater.ts:424-424`, `incremental-updater.ts:515-515`

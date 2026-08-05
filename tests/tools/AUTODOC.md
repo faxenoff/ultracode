@@ -1,30 +1,221 @@
 # Test Helpers
 
-## Overview
+## 🤖 Overview
 
-This module provides factory functions and assertion utilities for unit testing MCP tool handlers and related agent/orchestrator components. It creates lightweight mock implementations of core dependencies (graph storage, agents, conductors, knowledge bus) that can be injected into tests, enabling isolated testing of tool handler logic without requiring live external systems or complex state setup.
+This module contains a collection of test files for various tools and agents, primarily focusing on testing their functionality and behavior. Developers and testers use this module to ensure that the tools and agents operate as expected under different conditions.
 
-## Entity Listing
+## 🤖 Architecture
 
-### Mock Factory Functions
+```
+  +-------------------+
+  |   Test Files      |
+  |   (12-38 entities)|
+  |   +-----------------+-----------------+
+  |   | _test-helpers.ts | agent-metrics.test.ts |
+  |   | agent-metrics.test.ts | analysis-tool-handlers.test.ts |
+  |   | analysis-tool-handlers.test.ts | autodoc-tool-handlers.test.ts |
+  |   | autodoc-tool-handlers.test.ts | base-tool-handler.test.ts |
+  |   | base-tool-handler.test.ts | branch-tool-handlers.test.ts |
+  |   | branch-tool-handlers.test.ts | bus-tools.test.ts |
+  |   | bus-tools.test.ts | client-session-worktree.test.ts |
+  |   | client-session-worktree.test.ts | entity-tool-handlers.test.ts |
+  |   | entity-tool-handlers.test.ts | file-tool-handlers.test.ts |
+  |   | file-tool-handlers.test.ts | get-tools-for-task-handler.test.ts |
+  |   | get-tools-for-task-handler.test.ts | git-worktree.test.ts |
+  |   | git-worktree.test.ts | graph-metrics-tool-handlers.test.ts |
+  |   | graph-metrics-tool-handlers.test.ts | graph-tool-handlers.test.ts |
+  |   | graph-tool-handlers.test.ts | help-tool-handler.test.ts |
+  |   | help-tool-handler.test.ts | history-tool-handlers.test.ts |
+  |   | history-tool-handlers.test.ts | index-tool-handler.test.ts |
+  |   | index-tool-handler.test.ts | merge-tool-handlers.test.ts |
+  |   | merge-tool-handlers.test.ts | metrics-tool-handlers.test.ts |
+  |   | metrics-tool-handlers.test.ts | pattern-tool-handlers.test.ts |
+  |   | pattern-tool-handlers.test.ts | semantic-tool-handlers.test.ts |
+  |   | semantic-tool-handlers.test.ts | snapshot-tool-handlers.test.ts |
+  |   | snapshot-tool-handlers.test.ts | taint-tool-handlers.test.ts |
+  |   | taint-tool-handlers.test.ts | tool-registry.test.ts |
+  |   | tool-registry.test.ts | tracing-tool-handlers.test.ts |
+  |   | tracing-tool-handlers.test.ts | validation-tool-handlers.test.ts |
+  |   | validation-tool-handlers.test.ts | worktree-tool-handlers.test.ts |
+  |   | worktree-tool-handlers.test.ts |
+  +-------------------+
+```
 
-| Name | Location | Description |
-|------|----------|-------------|
-| `createMockGraphStorage` | ~~[_test-helpers.ts:13](file:///d:/github/ultracode/src/tools/__tests__/_test-helpers.ts)~~ (deleted) | Creates a mock graph storage instance for indexing and querying code graphs in tests. |
-| `createMockSemanticAgent` | ~~[_test-helpers.ts:37](file:///d:/github/ultracode/src/tools/__tests__/_test-helpers.ts)~~ (deleted) | Creates a mock semantic analysis agent that responds to code understanding queries. |
-| `createMockBranchManager` | ~~[_test-helpers.ts:55](file:///d:/github/ultracode/src/tools/__tests__/_test-helpers.ts)~~ (deleted) | Creates a mock branch manager for version control state tracking in tests. |
-| `createMockSnapshotManager` | ~~[_test-helpers.ts:69](file:///d:/github/ultracode/src/tools/__tests__/_test-helpers.ts)~~ (deleted) | Creates a mock snapshot manager for code state capture and restoration in tests. |
-| `createMockConductor` | ~~[_test-helpers.ts:80](file:///d:/github/ultracode/src/tools/__tests__/_test-helpers.ts)~~ (deleted) | Creates a mock conductor orchestrator for agent coordination and task routing. |
-| `createMockKnowledgeBus` | ~~[_test-helpers.ts:90](file:///d:/github/ultracode/src/tools/__tests__/_test-helpers.ts)~~ (deleted) | Creates a mock message bus for inter-component knowledge exchange during tests. |
-| `createMockToolContext` | ~~[_test-helpers.ts:105](file:///d:/github/ultracode/src/tools/__tests__/_test-helpers.ts)~~ (deleted) | Creates a complete mock tool execution context with all dependencies pre-configured for handler testing. |
+## 🤖 Flow
 
-### Test Assertion & Utility Functions
+```
+  +-------------------+
+  |   Test Execution  |
+  |   (15-38 entities)|
+  |   +-----------------+-----------------+
+  |   | _test-helpers.ts | agent-metrics.test.ts |
+  |   | agent-metrics.test.ts | analysis-tool-handlers.test.ts |
+  |   | analysis-tool-handlers.test.ts | autodoc-tool-handlers.test.ts |
+  |   | autodoc-tool-handlers.test.ts | base-tool-handler.test.ts |
+  |   | base-tool-handler.test.ts | branch-tool-handlers.test.ts |
+  |   | branch-tool-handlers.test.ts | bus-tools.test.ts |
+  |   | bus-tools.test.ts | client-session-worktree.test.ts |
+  |   | client-session-worktree.test.ts | entity-tool-handlers.test.ts |
+  |   | entity-tool-handlers.test.ts | file-tool-handlers.test.ts |
+  |   | file-tool-handlers.test.ts | get-tools-for-task-handler.test.ts |
+  |   | get-tools-for-task-handler.test.ts | git-worktree.test.ts |
+  |   | git-worktree.test.ts | graph-metrics-tool-handlers.test.ts |
+  |   | graph-metrics-tool-handlers.test.ts | graph-tool-handlers.test.ts |
+  |   | graph-tool-handlers.test.ts | help-tool-handler.test.ts |
+  |   | help-tool-handler.test.ts | history-tool-handlers.test.ts |
+  |   | history-tool-handlers.test.ts | index-tool-handler.test.ts |
+  |   | index-tool-handler.test.ts | merge-tool-handlers.test.ts |
+  |   | merge-tool-handlers.test.ts | metrics-tool-handlers.test.ts |
+  |   | metrics-tool-handlers.test.ts | pattern-tool-handlers.test.ts |
+  |   | pattern-tool-handlers.test.ts | semantic-tool-handlers.test.ts |
+  |   | semantic-tool-handlers.test.ts | snapshot-tool-handlers.test.ts |
+  |   | snapshot-tool-handlers.test.ts | taint-tool-handlers.test.ts |
+  |   | taint-tool-handlers.test.ts | tool-registry.test.ts |
+  |   | tool-registry.test.ts | tracing-tool-handlers.test.ts |
+  |   | tracing-tool-handlers.test.ts | validation-tool-handlers.test.ts |
+  |   | validation-tool-handlers.test.ts | worktree-tool-handlers.test.ts |
+  |   | worktree-tool-handlers.test.ts |
+  +-------------------+
+```
 
-| Name | Location | Description |
-|------|----------|-------------|
-| `parseJsonResult` | ~~[_test-helpers.ts:134-138](file:///d:/github/ultracode/src/tools/__tests__/_test-helpers.ts)~~ (deleted) | Parses a JSON-encoded tool result string into a plain JavaScript object. |
-| `expectSuccess` | ~~[_test-helpers.ts:141-152](file:///d:/github/ultracode/src/tools/__tests__/_test-helpers.ts)~~ (deleted) | Asserts that a tool result represents success and extracts the returned data payload for assertions. |
-| `expectError` | ~~[_test-helpers.ts:156-160](file:///d:/github/ultracode/src/tools/__tests__/_test-helpers.ts)~~ (deleted) | Asserts that a tool result represents failure and validates error conditions match expectations. |
+## 🤖 Entity Listing
+
+### Function
+- **adapter** — Represents a mock adapter with methods for getting Prolly node store and commit manager `history-tool-handlers.test.ts:42-42`, `history-tool-handlers.test.ts:43-43`
+- **agent** — Not applicable in this context `base-tool-handler.test.ts:186-186`, `base-tool-handler.test.ts:187-187`, `base-tool-handler.test.ts:187-187`
+- **bm** — Creates a mock branch manager with active branches and current branch `branch-tool-handlers.test.ts:16-19`, `branch-tool-handlers.test.ts:20-20`, `branch-tool-handlers.test.ts:34-36`, `branch-tool-handlers.test.ts:37-37`, `branch-tool-handlers.test.ts:84-86`, `branch-tool-handlers.test.ts:102-102`, `branch-tool-handlers.test.ts:103-103`, `branch-tool-handlers.test.ts:104-104`, `branch-tool-handlers.test.ts:105-105`, `branch-tool-handlers.test.ts:132-132`, `branch-tool-handlers.test.ts:133-133`
+- **bus** — Returns mock data for topic count, entry count, subscription count, and message queue size `metrics-tool-handlers.test.ts:155-155`
+- **bus** — Returns mock data for recent messages `metrics-tool-handlers.test.ts:177-177`
+- **commitManager** — Represents a mock commit manager with methods for getting branch head, commit, and history `history-tool-handlers.test.ts:20-20`, `history-tool-handlers.test.ts:21-28`, `history-tool-handlers.test.ts:29-38`
+- **conductor** — A mock conductor used in tests `graph-tool-handlers.test.ts:37-37`, `graph-tool-handlers.test.ts:51-51`, `graph-tool-handlers.test.ts:52-52`
+- **conductor** — Mocks conductor for testing GetMetricsToolHandler `metrics-tool-handlers.test.ts:62-64`, `metrics-tool-handlers.test.ts:107-110`, `metrics-tool-handlers.test.ts:125-127`, `metrics-tool-handlers.test.ts:139-139`, `metrics-tool-handlers.test.ts:227-227`
+- **conductor** — Mocks the getAgentByType method to return the devAgent `metrics-tool-handlers.test.ts:250-250`
+- **createMockBranchManager** — Returns a mock branch manager object with methods for managing branches `_test-helpers.ts:55-66`
+- **createMockConductor** — Returns a mock conductor object with methods for orchestrating tasks `_test-helpers.ts:80-87`
+- **createMockGraphStorage** — Returns a mock graph storage object with various methods stubbed `_test-helpers.ts:13-34`
+- **createMockKnowledgeBus** — Returns a mock KnowledgeBus instance with overridden methods `_test-helpers.ts:90-102`
+- **createMockSemanticAgent** — Returns a mock semantic agent object with methods for semantic search and embedding `_test-helpers.ts:37-52`
+- **createMockSnapshotManager** — Returns a mock snapshot manager object with methods for creating, rolling back, and listing snapshots `_test-helpers.ts:69-77`
+- **createMockToolContext** — Constructs a mock ToolContext with various internal components and overrides `_test-helpers.ts:105-129`
+- **ctx** — Represents a mock tool context `analysis-tool-handlers.test.ts:42-42`, `analysis-tool-handlers.test.ts:79-79`, `analysis-tool-handlers.test.ts:100-100`, `file-tool-handlers.test.ts:39-39`, `file-tool-handlers.test.ts:81-81`, `file-tool-handlers.test.ts:97-97`, `file-tool-handlers.test.ts:142-142`, `file-tool-handlers.test.ts:157-157`, `file-tool-handlers.test.ts:176-176`, `file-tool-handlers.test.ts:190-190`
+- **ctx** — Creates a mock tool context with a graph storage override `analysis-tool-handlers.test.ts:135-135`
+- **ctx** — Represents a session object with project path and resolvePath function `base-tool-handler.test.ts:142-142`
+- **ctx** — Represents a mock tool context used in testing `base-tool-handler.test.ts:161-161`, `base-tool-handler.test.ts:190-190`
+- **ctx** — Creates a mock tool context with a branch manager `branch-tool-handlers.test.ts:22-22`, `branch-tool-handlers.test.ts:39-39`, `branch-tool-handlers.test.ts:49-49`, `branch-tool-handlers.test.ts:63-63`, `branch-tool-handlers.test.ts:74-74`, `branch-tool-handlers.test.ts:88-88`, `branch-tool-handlers.test.ts:107-107`, `branch-tool-handlers.test.ts:118-118`, `branch-tool-handlers.test.ts:135-135`, `branch-tool-handlers.test.ts:145-145`
+- **ctx** — Creates a mock tool context with a getGraphStorage method that returns the mock graph storage `entity-tool-handlers.test.ts:25-25`, `entity-tool-handlers.test.ts:40-40`, `entity-tool-handlers.test.ts:51-51`, `entity-tool-handlers.test.ts:69-69`, `entity-tool-handlers.test.ts:91-91`, `entity-tool-handlers.test.ts:106-106`, `entity-tool-handlers.test.ts:118-118`, `entity-tool-handlers.test.ts:134-134`, `entity-tool-handlers.test.ts:151-151`, `entity-tool-handlers.test.ts:168-168`
+- **ctx** — Creates a mock tool context for testing `entity-tool-handlers.test.ts:186-186`, `entity-tool-handlers.test.ts:199-199`, `entity-tool-handlers.test.ts:211-211`, `entity-tool-handlers.test.ts:225-225`, `snapshot-tool-handlers.test.ts:15-15`, `snapshot-tool-handlers.test.ts:26-26`, `snapshot-tool-handlers.test.ts:40-40`, `snapshot-tool-handlers.test.ts:54-54`, `snapshot-tool-handlers.test.ts:68-68`, `snapshot-tool-handlers.test.ts:79-79`, `snapshot-tool-handlers.test.ts:88-88`, `snapshot-tool-handlers.test.ts:106-106`, `snapshot-tool-handlers.test.ts:117-117`, `snapshot-tool-handlers.test.ts:127-127`, `snapshot-tool-handlers.test.ts:152-152`, `snapshot-tool-handlers.test.ts:165-165`
+- **ctx** — Creates a mock tool context with a graph storage `file-tool-handlers.test.ts:210-210`
+- **ctx** — A mock tool context used in tests `graph-tool-handlers.test.ts:22-22`, `graph-tool-handlers.test.ts:39-39`, `graph-tool-handlers.test.ts:40-40`, `graph-tool-handlers.test.ts:55-55`, `graph-tool-handlers.test.ts:56-56`, `graph-tool-handlers.test.ts:81-81`, `graph-tool-handlers.test.ts:95-95`, `graph-tool-handlers.test.ts:109-109`, `graph-tool-handlers.test.ts:118-118`, `graph-tool-handlers.test.ts:139-139`
+- **ctx** — Creates a mock tool context instance `graph-tool-handlers.test.ts:154-154`, `graph-tool-handlers.test.ts:175-175`, `graph-tool-handlers.test.ts:194-194`
+- **ctx** — Creates a mock tool context for testing the IndexToolHandler `index-tool-handler.test.ts:11-18`, `index-tool-handler.test.ts:13-13`, `index-tool-handler.test.ts:14-14`, `index-tool-handler.test.ts:15-15`, `index-tool-handler.test.ts:16-16`
+- **ctx** — Creates mock tool context for testing GetMetricsToolHandler `metrics-tool-handlers.test.ts:38-38`, `metrics-tool-handlers.test.ts:49-51`, `metrics-tool-handlers.test.ts:66-66`, `metrics-tool-handlers.test.ts:112-112`, `metrics-tool-handlers.test.ts:129-129`, `metrics-tool-handlers.test.ts:141-141`, `metrics-tool-handlers.test.ts:157-157`, `metrics-tool-handlers.test.ts:167-167`, `metrics-tool-handlers.test.ts:179-179`, `metrics-tool-handlers.test.ts:204-204`, `metrics-tool-handlers.test.ts:214-214`, `metrics-tool-handlers.test.ts:228-228`
+- **ctx** — Creates a mock tool context with a conductor mock `metrics-tool-handlers.test.ts:252-252`
+- **ctx** — Represents a mock tool context used in the test cases `pattern-tool-handlers.test.ts:69-69`
+- **ctx** — Creates a mock tool context for semantic search `semantic-tool-handlers.test.ts:30-30`, `semantic-tool-handlers.test.ts:31-31`, `semantic-tool-handlers.test.ts:47-47`, `semantic-tool-handlers.test.ts:63-63`, `semantic-tool-handlers.test.ts:64-64`, `semantic-tool-handlers.test.ts:85-85`, `semantic-tool-handlers.test.ts:86-86`, `semantic-tool-handlers.test.ts:106-106`, `semantic-tool-handlers.test.ts:107-107`, `semantic-tool-handlers.test.ts:124-124`, `semantic-tool-handlers.test.ts:137-137`, `semantic-tool-handlers.test.ts:163-163`, `semantic-tool-handlers.test.ts:174-174`, `semantic-tool-handlers.test.ts:184-184`, `semantic-tool-handlers.test.ts:202-202`
+- **ctx** — A mock tool context used to simulate the environment for testing snapshot handlers `snapshot-tool-handlers.test.ts:175-175`
+- **devAgent** — A mock DevAgent used in tests `graph-tool-handlers.test.ts:49-49`
+- **devAgent** — Creates a mock agent that returns the indexer agent `metrics-tool-handlers.test.ts:248-248`
+- **entities** — Represents entities returned by the findEntities method `entity-tool-handlers.test.ts:61-67`
+- **entities** — Not applicable in this context `entity-tool-handlers.test.ts:220-220`
+- **expectError** — Validates that a ToolResult indicates an error and returns the parsed data `_test-helpers.ts:155-165`
+- **expectSuccess** — Validates that a ToolResult indicates success and returns the parsed data `_test-helpers.ts:141-152`
+- **findEntities** — Mocks the findEntities method to return entities for a file path `entity-tool-handlers.test.ts:38-38`
+- **findEntities** — A mock function to find entities in the graph storage `graph-tool-handlers.test.ts:93-93`
+- **findRelationships** — Not applicable in this context `entity-tool-handlers.test.ts:197-197`, `entity-tool-handlers.test.ts:209-209`
+- **findRelationships** — A mock function to find relationships in the graph storage `graph-tool-handlers.test.ts:104-104`
+- **indexerAgent** — Returns a status indicating the file watcher exists `metrics-tool-handlers.test.ts:239-239`
+- **indexerAgent** — Returns a mock object with methods to check if the git watcher is watching and to get the current branch `metrics-tool-handlers.test.ts:240-243`, `metrics-tool-handlers.test.ts:241-241`, `metrics-tool-handlers.test.ts:242-242`
+- **indexerAgent** — Returns a mock object with methods to check if the git watcher is watching and to get the current branch. `metrics `metrics-tool-handlers.test.ts:244-244`
+- **indexerAgent** — Returns an object with indexing stats `metrics-tool-handlers.test.ts:246-246`
+- **main** — Represents the main repository path used in tests `git-worktree.test.ts:97-97`
+- **mainWt** — Represents the main worktree in the current repository `worktree-tool-handlers.test.ts:60-60`
+- **makeCtx** — Creates a mock tool context with a storage override `file-tool-handlers.test.ts:14-21`
+- **makeCtx** — Creates a mock graph storage and tool context for testing `graph-metrics-tool-handlers.test.ts:11-19`
+- **makeCtx** — Creates a mock tool context with a mock graph storage and semantic agent `pattern-tool-handlers.test.ts:13-24`
+- **makeCtx** — Creates a mock tool context with a graph storage `taint-tool-handlers.test.ts:6-13`
+- **makeCtx** — Creates a mock tool context with a graph storage that simulates entity lookup and relationships `tracing-tool-handlers.test.ts:11-25`
+- **makeCtxNoProlly** — Creates a mock tool context without Prolly Tree support `history-tool-handlers.test.ts:10-15`
+- **makeCtxWithProlly** — Creates a mock tool context with Prolly Tree support, including a mock commit manager and adapter `history-tool-handlers.test.ts:17-48`
+- **makeCtxWithStorage** — Creates a mock tool context with a storage override `analysis-tool-handlers.test.ts:20-29`
+- **makeSnapshots** — Not applicable in this context `snapshot-tool-handlers.test.ts:140-148`, `snapshot-tool-handlers.test.ts:141-148`
+- **parseJsonResult** — Parses the text content of a ToolResult into a JSON object `_test-helpers.ts:134-138`
+- **sa** — Creates a mock semantic agent for semantic search `semantic-tool-handlers.test.ts:20-26`, `semantic-tool-handlers.test.ts:45-45`, `semantic-tool-handlers.test.ts:59-59`, `semantic-tool-handlers.test.ts:76-81`, `semantic-tool-handlers.test.ts:97-102`, `semantic-tool-handlers.test.ts:122-122`, `semantic-tool-handlers.test.ts:135-135`, `semantic-tool-handlers.test.ts:152-161`, `semantic-tool-handlers.test.ts:173-173`, `semantic-tool-handlers.test.ts:183-183`, `semantic-tool-handlers.test.ts:198-200`
+- **scores** — The test checks if the recommendations are sorted by score in descending order `get-tools-for-task-handler.test.ts:24-24`
+- **searchEntities** — Not applicable in this context `entity-tool-handlers.test.ts:196-196`, `entity-tool-handlers.test.ts:208-208`
+- **sm** — Creates a mock snapshot manager for testing `snapshot-tool-handlers.test.ts:14-14`, `snapshot-tool-handlers.test.ts:36-38`, `snapshot-tool-handlers.test.ts:66-66`, `snapshot-tool-handlers.test.ts:78-78`, `snapshot-tool-handlers.test.ts:105-105`, `snapshot-tool-handlers.test.ts:126-126`, `snapshot-tool-handlers.test.ts:151-151`, `snapshot-tool-handlers.test.ts:164-164`
+- **storage** — Represents a mock graph storage for testing `analysis-tool-handlers.test.ts:22-22`, `analysis-tool-handlers.test.ts:23-23`, `analysis-tool-handlers.test.ts:24-24`, `analysis-tool-handlers.test.ts:25-25`, `analysis-tool-handlers.test.ts:37-37`, `analysis-tool-handlers.test.ts:38-38`, `analysis-tool-handlers.test.ts:39-39`, `analysis-tool-handlers.test.ts:40-40`, `analysis-tool-handlers.test.ts:75-75`, `analysis-tool-handlers.test.ts:76-76`, `analysis-tool-handlers.test.ts:77-77`, `analysis-tool-handlers.test.ts:95-95`, `analysis-tool-handlers.test.ts:96-96`, `analysis-tool-handlers.test.ts:97-97`, `analysis-tool-handlers.test.ts:98-98`, `analysis-tool-handlers.test.ts:131-131`, `analysis-tool-handlers.test.ts:132-132`, `analysis-tool-handlers.test.ts:133-133`, `file-tool-handlers.test.ts:16-16`, `file-tool-handlers.test.ts:17-17`, `file-tool-handlers.test.ts:37-37`, `file-tool-handlers.test.ts:79-79`, `file-tool-handlers.test.ts:92-95`, `file-tool-handlers.test.ts:139-139`, `file-tool-handlers.test.ts:140-140`, `file-tool-handlers.test.ts:153-153`, `file-tool-handlers.test.ts:154-154`, `file-tool-handlers.test.ts:155-155`, `file-tool-handlers.test.ts:173-173`, `file-tool-handlers.test.ts:174-174`, `file-tool-handlers.test.ts:187-187`, `file-tool-handlers.test.ts:188-188`
+- **storage** — Not applicable in this context `base-tool-handler.test.ts:159-159`, `base-tool-handler.test.ts:159-159`
+- **storage** — Creates a mock graph storage with a findEntities method that returns entities for a file path `entity-tool-handlers.test.ts:14-23`, `entity-tool-handlers.test.ts:50-50`, `entity-tool-handlers.test.ts:68-68`, `entity-tool-handlers.test.ts:89-89`, `entity-tool-handlers.test.ts:103-103`, `entity-tool-handlers.test.ts:104-104`, `entity-tool-handlers.test.ts:116-116`, `entity-tool-handlers.test.ts:132-132`, `entity-tool-handlers.test.ts:149-149`, `entity-tool-handlers.test.ts:166-166`
+- **storage** — Creates a mock graph storage for testing `entity-tool-handlers.test.ts:183-183`, `entity-tool-handlers.test.ts:184-184`, `entity-tool-handlers.test.ts:222-222`, `entity-tool-handlers.test.ts:223-223`, `file-tool-handlers.test.ts:207-207`, `file-tool-handlers.test.ts:208-208`
+- **storage** — Represents a mock graph storage used in testing `graph-metrics-tool-handlers.test.ts:13-13`, `graph-metrics-tool-handlers.test.ts:14-14`, `graph-metrics-tool-handlers.test.ts:15-15`, `graph-metrics-tool-handlers.test.ts:16-16`
+- **storage** — A mock graph storage used in tests `graph-tool-handlers.test.ts:78-78`, `graph-tool-handlers.test.ts:79-79`, `graph-tool-handlers.test.ts:106-106`, `graph-tool-handlers.test.ts:133-137`, `graph-tool-handlers.test.ts:151-151`, `graph-tool-handlers.test.ts:152-152`
+- **storage** — Creates a mock graph storage instance `graph-tool-handlers.test.ts:152-152`, `graph-tool-handlers.test.ts:169-173`, `graph-tool-handlers.test.ts:190-190`, `graph-tool-handlers.test.ts:191-191`, `graph-tool-handlers.test.ts:192-192`
+- **storage** — Mocks storage for testing GetMetricsToolHandler `metrics-tool-handlers.test.ts:35-35`, `metrics-tool-handlers.test.ts:36-36`
+- **storage** — Represents a mock graph storage used in the test cases `pattern-tool-handlers.test.ts:15-15`, `pattern-tool-handlers.test.ts:16-16`, `pattern-tool-handlers.test.ts:17-17`, `pattern-tool-handlers.test.ts:66-66`, `pattern-tool-handlers.test.ts:67-67`, `tracing-tool-handlers.test.ts:13-19`, `tracing-tool-handlers.test.ts:20-20`, `tracing-tool-handlers.test.ts:21-21`
+- **storage** — Represents a mock graph storage used in the test `taint-tool-handlers.test.ts:8-8`, `taint-tool-handlers.test.ts:9-9`, `taint-tool-handlers.test.ts:10-10`
+
+### Method
+- **canProcessTask** — Returns true if the task type is "noop" `agent-metrics.test.ts:22-24`
+- **constructor** — Initializes a DummyAgent instance with specified agent type and resource constraints `agent-metrics.test.ts:11-17`
+- **constructor** — Initializes the handler with a context and payload size `base-tool-handler.test.ts:33-38`, `base-tool-handler.test.ts:51-56`
+- **execute** — Executes the handler to echo the message and returns a ToolResult `base-tool-handler.test.ts:15-19`, `base-tool-handler.test.ts:27-29`, `base-tool-handler.test.ts:44-47`, `base-tool-handler.test.ts:62-64`
+- **execute** — Executes the tool handler and returns a result `base-tool-handler.test.ts:170-173`, `base-tool-handler.test.ts:197-200`
+- **handleMessage** — An empty method that does nothing `agent-metrics.test.ts:30-30`
+- **onInitialize** — An empty method that does nothing `agent-metrics.test.ts:19-19`
+- **onShutdown** — An empty method that does nothing `agent-metrics.test.ts:20-20`
+- **parseArgs** — Parses the input arguments to extract the message `base-tool-handler.test.ts:9-13`, `base-tool-handler.test.ts:23-25`, `base-tool-handler.test.ts:40-42`, `base-tool-handler.test.ts:58-60`
+- **parseArgs** — Parses arguments for a tool handler `base-tool-handler.test.ts:167-169`, `base-tool-handler.test.ts:194-196`
+- **processTask** — Processes a task and returns an object with ok: true `agent-metrics.test.ts:26-28`
+
+### Class
+- **BigResponseToolHandler** — A subclass of BaseToolHandler that generates a large response `base-tool-handler.test.ts:32-48`
+- **DummyAgent** — A class extending BaseAgent with specific agent type and resource constraints `agent-metrics.test.ts:10-31`
+- **EchoToolHandler** — A subclass of BaseToolHandler that echoes the input message `base-tool-handler.test.ts:8-20`
+- **PlainTextBigHandler** — A subclass of BaseToolHandler that generates a large plain text response `base-tool-handler.test.ts:50-65`
+- **SemanticTestHandler** — Not applicable in this context `base-tool-handler.test.ts:193-201`
+- **StorageTestHandler** — Not applicable in this context `base-tool-handler.test.ts:166-174`
+- **ThrowingToolHandler** — A subclass of BaseToolHandler that throws an error on execution `base-tool-handler.test.ts:22-30`
+
+### Import_decl
+- **../../src/agents/base.js** — Imports `../../src/agents/base.js` from `../../src/agents/base.js`. `agent-metrics.test.ts:2-2`
+- **../../src/agents/conductor-orchestrator.js** — Imports `../../src/agents/conductor-orchestrator.js` from `../../src/agents/conductor-orchestrator.js`. `agent-metrics.test.ts:3-3`
+- **../../src/core/client-session.js** — Imports `../../src/core/client-session.js`. `client-session-worktree.test.ts:2-7`
+- **../../src/core/knowledge-bus.js** — Imports `../../src/core/knowledge-bus.js` from `../../src/core/knowledge-bus.js`. `agent-metrics.test.ts:4-4`, `bus-tools.test.ts:2-2`
+- **../../src/core/resource-manager.js** — Imports `../../src/core/resource-manager.js` from `../../src/core/resource-manager.js`. `agent-metrics.test.ts:5-5`
+- **../../src/shared/git-worktree.js** — Imports `../../src/shared/git-worktree.js` from `../../src/shared/git-worktree.js`. `client-session-worktree.test.ts:8-8`
+- **../../src/shared/git-worktree.js** — Imports `../../src/shared/git-worktree.js`. `git-worktree.test.ts:2-12`
+- **../../src/tools/agent-metrics.js** — Imports `../../src/tools/agent-metrics.js` from `../../src/tools/agent-metrics.js`. `agent-metrics.test.ts:6-6`
+- **../../src/tools/base-tool-handler.js** — Imports `../../src/tools/base-tool-handler.js` from `../../src/tools/base-tool-handler.js`. `_test-helpers.ts:10-10`, `base-tool-handler.test.ts:2-2`
+- **../../src/tools/handlers/analysis-tool-handlers.js** — Imports `../../src/tools/handlers/analysis-tool-handlers.js`. `analysis-tool-handlers.test.ts:4-11`
+- **../../src/tools/handlers/autodoc-tool-handlers.js** — Imports `../../src/tools/handlers/autodoc-tool-handlers.js`. `autodoc-tool-handlers.test.ts:2-6`
+- **../../src/tools/handlers/branch-tool-handlers.js** — Imports `../../src/tools/handlers/branch-tool-handlers.js`. `branch-tool-handlers.test.ts:2-8`
+- **../../src/tools/handlers/entity-tool-handlers.js** — Imports `../../src/tools/handlers/entity-tool-handlers.js`. `entity-tool-handlers.test.ts:2-6`
+- **../../src/tools/handlers/file-tool-handlers.js** — Imports `../../src/tools/handlers/file-tool-handlers.js`. `file-tool-handlers.test.ts:2-11`
+- **../../src/tools/handlers/get-tools-for-task-handler.js** — Imports `../../src/tools/handlers/get-tools-for-task-handler.js` from `../../src/tools/handlers/get-tools-for-task-handler.js`. `get-tools-for-task-handler.test.ts:2-2`
+- **../../src/tools/handlers/graph-metrics-tool-handlers.js** — Imports `../../src/tools/handlers/graph-metrics-tool-handlers.js`. `graph-metrics-tool-handlers.test.ts:2-8`
+- **../../src/tools/handlers/graph-tool-handlers.js** — Imports `../../src/tools/handlers/graph-tool-handlers.js`. `graph-tool-handlers.test.ts:2-8`
+- **../../src/tools/handlers/help-tool-handler.js** — Imports `../../src/tools/handlers/help-tool-handler.js` from `../../src/tools/handlers/help-tool-handler.js`. `help-tool-handler.test.ts:2-2`
+- **../../src/tools/handlers/history-tool-handlers.js** — Imports `../../src/tools/handlers/history-tool-handlers.js`. `history-tool-handlers.test.ts:2-7`
+- **../../src/tools/handlers/index-tool-handler.js** — Imports `../../src/tools/handlers/index-tool-handler.js` from `../../src/tools/handlers/index-tool-handler.js`. `index-tool-handler.test.ts:3-3`
+- **../../src/tools/handlers/merge-tool-handlers.js** — Imports `../../src/tools/handlers/merge-tool-handlers.js` from `../../src/tools/handlers/merge-tool-handlers.js`. `merge-tool-handlers.test.ts:2-2`
+- **../../src/tools/handlers/metrics-tool-handlers.js** — Imports `../../src/tools/handlers/metrics-tool-handlers.js`. `metrics-tool-handlers.test.ts:2-9`
+- **../../src/tools/handlers/pattern-tool-handlers.js** — Imports `../../src/tools/handlers/pattern-tool-handlers.js`. `pattern-tool-handlers.test.ts:2-5`
+- **../../src/tools/handlers/semantic-tool-handlers.js** — Imports `../../src/tools/handlers/semantic-tool-handlers.js`. `semantic-tool-handlers.test.ts:2-7`
+- **../../src/tools/handlers/snapshot-tool-handlers.js** — Imports `../../src/tools/handlers/snapshot-tool-handlers.js`. `snapshot-tool-handlers.test.ts:2-7`
+- **../../src/tools/handlers/taint-tool-handlers.js** — Imports `../../src/tools/handlers/taint-tool-handlers.js` from `../../src/tools/handlers/taint-tool-handlers.js`. `taint-tool-handlers.test.ts:2-2`
+- **../../src/tools/handlers/tracing-tool-handlers.js** — Imports `../../src/tools/handlers/tracing-tool-handlers.js`. `tracing-tool-handlers.test.ts:2-8`
+- **../../src/tools/handlers/validation-tool-handlers.js** — Imports `../../src/tools/handlers/validation-tool-handlers.js`. `validation-tool-handlers.test.ts:2-5`
+- **../../src/tools/handlers/worktree-tool-handlers.js** — Imports `../../src/tools/handlers/worktree-tool-handlers.js` from `../../src/tools/handlers/worktree-tool-handlers.js`. `worktree-tool-handlers.test.ts:2-2`
+- **../../src/tools/response-limits.js** — Imports `../../src/tools/response-limits.js` from `../../src/tools/response-limits.js`. `base-tool-handler.test.ts:3-3`
+- **../../src/tools/tool-registry.js** — Imports `../../src/tools/tool-registry.js` from `../../src/tools/tool-registry.js`. `tool-registry.test.ts:2-2`
+- **../../src/types/agent.js** — Imports `../../src/types/agent.js` from `../../src/types/agent.js`. `agent-metrics.test.ts:7-7`, `agent-metrics.test.ts:8-8`
+- **../../src/utils/fast-hash.js** — Imports `../../src/utils/fast-hash.js` from `../../src/utils/fast-hash.js`. `client-session-worktree.test.ts:9-9`, `git-worktree.test.ts:13-13`
+- **./_test-helpers.js** — Imports `./_test-helpers.js`. `analysis-tool-handlers.test.ts:12-18`, `graph-tool-handlers.test.ts:9-15`, `metrics-tool-handlers.test.ts:10-16`, `pattern-tool-handlers.test.ts:6-11`, `semantic-tool-handlers.test.ts:8-13`
+- **./_test-helpers.js** — Imports `./_test-helpers.js` from `./_test-helpers.js`. `autodoc-tool-handlers.test.ts:7-7`, `base-tool-handler.test.ts:4-4`, `branch-tool-handlers.test.ts:9-9`, `entity-tool-handlers.test.ts:7-7`, `file-tool-handlers.test.ts:12-12`, `get-tools-for-task-handler.test.ts:3-3`, `graph-metrics-tool-handlers.test.ts:9-9`, `help-tool-handler.test.ts:3-3`, `history-tool-handlers.test.ts:8-8`, `index-tool-handler.test.ts:4-4`, `merge-tool-handlers.test.ts:3-3`, `snapshot-tool-handlers.test.ts:8-8`, `taint-tool-handlers.test.ts:3-3`, `tool-registry.test.ts:3-3`, `tracing-tool-handlers.test.ts:9-9`, `validation-tool-handlers.test.ts:6-6`, `worktree-tool-handlers.test.ts:3-3`
+- **bun:test** — Imports `bun:test` from `bun:test`. `_test-helpers.ts:9-9`, `agent-metrics.test.ts:1-1`, `analysis-tool-handlers.test.ts:1-1`, `autodoc-tool-handlers.test.ts:1-1`, `base-tool-handler.test.ts:1-1`, `branch-tool-handlers.test.ts:1-1`, `bus-tools.test.ts:1-1`, `client-session-worktree.test.ts:1-1`, `entity-tool-handlers.test.ts:1-1`, `file-tool-handlers.test.ts:1-1`, `get-tools-for-task-handler.test.ts:1-1`, `git-worktree.test.ts:1-1`, `graph-metrics-tool-handlers.test.ts:1-1`, `graph-tool-handlers.test.ts:1-1`, `help-tool-handler.test.ts:1-1`, `history-tool-handlers.test.ts:1-1`, `index-tool-handler.test.ts:2-2`, `merge-tool-handlers.test.ts:1-1`, `metrics-tool-handlers.test.ts:1-1`, `pattern-tool-handlers.test.ts:1-1`, `semantic-tool-handlers.test.ts:1-1`, `snapshot-tool-handlers.test.ts:1-1`, `taint-tool-handlers.test.ts:1-1`, `tool-registry.test.ts:1-1`, `tracing-tool-handlers.test.ts:1-1`, `validation-tool-handlers.test.ts:1-1`, `worktree-tool-handlers.test.ts:1-1`
+
+### Property
+- **msg** — A property representing the message to be echoed `base-tool-handler.test.ts:8-8`, `base-tool-handler.test.ts:9-9`, `base-tool-handler.test.ts:15-15`, `base-tool-handler.test.ts:22-22`, `base-tool-handler.test.ts:23-23`, `base-tool-handler.test.ts:27-27`
 
 ## Dependencies
 

@@ -1,21 +1,270 @@
----
-module_name: logging
-description: "Fixed-position structured logging with buffered file output, rotation, KV serialization, and memory tracking"
-status: active
-language: typescript
-entry_point: index.ts
-exports: [log, FixedLogger, getLogger, initLogger, setProjectHash, getBuildHash, getPid, setPid, resetBuildInfo, getBuildInfo, serializeKV, parseKV, kvOpStart, kvOpEnd, kvError, formatDuration, formatMemory, formatTimestamp, parseTimestamp, formatPid, formatBuildHash, formatModule, formatEvent, formatLogLine, parseLogLine, formatLogLineColored, extractFields, LogLevelChar, LOG_LEVEL_VALUES, LOG_LEVEL_NAMES, LOG_FIELD_POSITIONS, LOG_FIELD_LENGTHS, KV_CONSTRAINTS, KVValue, KVPairs, STANDARD_KEYS, LogEntry, ParsedLogLine, FixedLoggerConfig, DEFAULT_LOGGER_CONFIG, MODULES, ModuleName, LoggerAdapter, createLoggerAdapter, getMemoryStats, logMemory, logMemoryDelta, isMemoryHigh, formatMemoryStats, MemoryStats]
-dependencies: [child_process, fs, path, process]
-tags: [observability, structured-logging, fixed-position, buffering, file-rotation, memory-tracking]
----
-
 # Logging
 
-> Fixed-position structured logging system with machine-readable format, buffered file output with rotation, KV serialization, and memory monitoring utilities.
+## 🤖 Overview
 
-## Overview
+The `src/logging` module provides a fixed-position logging system for structured logging, used by developers and system administrators to track events and errors. It includes build information retrieval, logger initialization, and key-value serialization for logging events.
 
-The logging module provides a high-performance structured logging system where every log line has fields at exact character positions (`YYYYMMDD-HHmmss.mmm L PPPPP HHHHHHHH PPPPPPPP MODULE EVENT kv...`), enabling efficient machine parsing. It features a `FixedLogger` class with configurable buffering and automatic file rotation, key-value pair serialization with quoting and normalization, and a compatibility adapter for migrating from a legacy logger API. The module also includes memory monitoring utilities for tracking heap and RSS usage across components. All file I/O uses synchronous Node.js APIs with comprehensive error swallowing to ensure logging never crashes the application.
+## 🤖 Architecture
+
+```
+  +-------------------+
+  | build-info.ts     |
+  +-------------------+
+  |    /              |
+  |    v              |
+  +-------------------+
+  | fixed-logger.ts   |
+  +-------------------+
+  |    /              |
+  |    v              |
+  +-------------------+
+  | kv-serializer.ts  |
+  +-------------------+
+  |    /              |
+  |    v              |
+  +-------------------+
+  | log-formatter.ts  |
+  +-------------------+
+  |    /              |
+  |    v              |
+  +-------------------+
+  | log-types.ts      |
+  +-------------------+
+  |    /              |
+  |    v              |
+  +-------------------+
+  | logger-adapter.ts |
+  +-------------------+
+  |    /              |
+  |    v              |
+  +-------------------+
+  | memory-logger.ts  |
+  +-------------------+
+```
+
+## 🤖 Flow
+
+```
+  +-------------------+
+  | build-info.ts     |
+  +-------------------+
+  |    /              |
+  |    v              |
+  +-------------------+
+  | fixed-logger.ts   |
+  +-------------------+
+  |    /              |
+  |    v              |
+  +-------------------+
+  | kv-serializer.ts  |
+  +-------------------+
+  |    /              |
+  |    v              |
+  +-------------------+
+  | log-formatter.ts  |
+  +-------------------+
+  |    /              |
+  |    v              |
+  +-------------------+
+  | log-types.ts      |
+  +-------------------+
+  |    /              |
+  |    v              |
+  +-------------------+
+  | logger-adapter.ts |
+  +-------------------+
+  |    /              |
+  |    v              |
+  +-------------------+
+  | memory-logger.ts  |
+  +----------------
+```
+
+## 🤖 Entity Listing
+
+### Function
+- **createLoggerAdapter** — Function to create a logger adapter for compatibility with old RotatedLogger API `logger-adapter.ts:280-282`
+- **dataToKV** — Converts data to key-value pairs, normalizing keys and handling nested objects `logger-adapter.ts:92-130`
+- **escapeValue** — Escape special characters in quoted string `kv-serializer.ts:14-16`
+- **extractEvent** — Extract event from message `logger-adapter.ts:56-87`
+- **extractFields** — Extracts specific fields from a ParsedLogLine object into a record `log-formatter.ts:250-287`
+- **files** — Array of log files. (Repeated three times in the excerpt) `fixed-logger.ts:116-116`, `fixed-logger.ts:117-125`, `fixed-logger.ts:126-126`
+- **formatBuildHash** — Format build hash (8 chars) `log-formatter.ts:68-70`
+- **formatDuration** — Not present in the provided entities `kv-serializer.ts:190-192`
+- **formatEvent** — Parses and pads the event string to a fixed length `log-formatter.ts:89-91`
+- **formatLogLine** — Constructs a formatted log line from a LogEntry object `log-formatter.ts:108-118`
+- **formatLogLineColored** — Formats a log line with ANSI colors based on the log level `log-formatter.ts:221-245`
+- **formatMemory** — Not present in the provided entities `kv-serializer.ts:198-200`
+- **formatMemoryStats** — Function to format memory statistics for logging `memory-logger.ts:105-107`
+- **formatModule** — Format module name (20 chars, pad right) `log-formatter.ts:82-84`
+- **formatPid** — Format PID with padding (5 chars) `log-formatter.ts:60-63`
+- **formatProjectHash** — Format project hash (8 chars) `log-formatter.ts:75-77`
+- **formatTimestamp** — Format timestamp as YYYYMMDD-HHmmss.mmm (19 chars) `log-formatter.ts:24-40`
+- **getBuildHash** — Gets current git commit hash (first 8 chars) and caches result for performance `build-info.ts:17-75`
+- **getBuildInfo** — Returns an object containing the build hash and process ID `build-info.ts:107-112`
+- **getLogger** — Get the logger instance `fixed-logger.ts:401-406`
+- **getMemoryStats** — Function to get current memory statistics `memory-logger.ts:35-44`
+- **getPid** — Retrieves the current process ID, caching it if not already present `build-info.ts:81-87`
+- **hash** — Maps each part of the version string to a two-digit string `build-info.ts:60-60`
+- **initLogger** — Initializes a fixed-position logger instance with default or provided configuration `fixed-logger.ts:411-417`
+- **isMemoryHigh** — Function to determine if memory usage is high `memory-logger.ts:97-100`
+- **isValidKey** — Validate key format `kv-serializer.ts:25-27`
+- **kvError** — Not present in the provided entities `kv-serializer.ts:219-222`
+- **kvOpEnd** — Not present in the provided entities `kv-serializer.ts:212-214`
+- **kvOpStart** — Not present in the provided entities `kv-serializer.ts:205-207`
+- **logMemory** — Function to log memory statistics for a component `memory-logger.ts:58-67`
+- **logMemoryDelta** — Function to log memory delta between two snapshots `memory-logger.ts:76-89`
+- **mapCategory** — Map old category to new module `logger-adapter.ts:48-50`
+- **needsQuoting** — Check if value needs quoting `kv-serializer.ts:9-11`
+- **normalizeKey** — Normalize key to valid format `kv-serializer.ts:30-36`
+- **PAD2** — Pre-computed padding lookup tables for hot path logging optimization `log-formatter.ts:17-17`
+- **PAD3** — Pre-computed padding lookup tables for hot path logging optimization `log-formatter.ts:18-18`
+- **PAD5** — Pre-computed padding lookup tables for hot path logging optimization `log-formatter.ts:19-19`
+- **parseKV** — Not present in the provided entities `kv-serializer.ts:114-183`
+- **parseLogLine** — Parses a log line into a ParsedLogLine object, handling both worker and main log formats `log-formatter.ts:177-216`
+- **parseTimestamp** — Parse timestamp from YYYYMMDD-HHmmss.mmm format `log-formatter.ts:45-55`
+- **parseWorkerLogLine** — Parses a worker log line into a ParsedLogLine object `log-formatter.ts:123-172`
+- **parts** — Parses the version string into an array of integers `build-info.ts:58-58`
+- **resetBuildInfo** — Resets the cached build hash and process ID `build-info.ts:99-102`
+- **serializeComplexValue** — Serialize complex value to JSON string `kv-serializer.ts:54-62`
+- **serializeKV** — Serialize KV pairs to string `kv-serializer.ts:70-99`
+- **serializeValue** — Serialize single value `kv-serializer.ts:39-51`
+- **setPid** — Sets the cached process ID to a specified value `build-info.ts:92-94`
+- **setProjectHash** — Sets the project hash for the logger `fixed-logger.ts:422-424`
+- **totalSize** — Total size of all log files `fixed-logger.ts:129-129`
+- **truncate** — Truncate string with ellipsis `kv-serializer.ts:19-22`
+
+### Method
+- **agentActivity** — Logs agent activity with data `logger-adapter.ts:230-234`
+- **cleanupOldLogs** — Method to clean up old log files `fixed-logger.ts:109-153`
+- **close** — Close the logger and flush any remaining log entries `fixed-logger.ts:383-389`
+- **configure** — Configure the logger with a new configuration `fixed-logger.ts:376-378`
+- **constructor** — Constructor for the FixedLogger class `fixed-logger.ts:38-58`
+- **constructor** — Initializes the logger with optional configuration `logger-adapter.ts:138-140`
+- **critical** — Logs a critical message with category, message, and optional data `logger-adapter.ts:189-200`
+- **d** — Log a debug message `fixed-logger.ts:285-287`
+- **d** — Represents a debug log entry `fixed-logger.ts:439-441`
+- **debug** — Logs a debug message with category, message, and optional data `logger-adapter.ts:154-160`
+- **e** — Log an error message `fixed-logger.ts:270-272`
+- **e** — Represents an error log entry `fixed-logger.ts:430-432`
+- **error** — Log an error message `fixed-logger.ts:337-339`
+- **error** — Logs an error message `fixed-logger.ts:445-447`
+- **error** — Logs an error message with category, message, and optional data `logger-adapter.ts:178-187`
+- **fixed** — Adapter for compatibility with old RotatedLogger API, allowing gradual migration from old logger to new fixed-position logger `logger-adapter.ts:272-274`
+- **flush** — Flush the log buffer to the file `fixed-logger.ts:186-200`
+- **flush** — Flushes the logger buffer to the log file `fixed-logger.ts:457-459`
+- **flush** — Flushes the logger `logger-adapter.ts:260-262`
+- **flushSync** — Synchronously flush the log buffer to the file `fixed-logger.ts:205-220`
+- **flushSync** — Synchronously flushes the logger buffer to the log file `fixed-logger.ts:460-462`
+- **getLogFilePath** — Method to get the current log file path `fixed-logger.ts:63-67`
+- **getProjectHash** — Get the project hash for logging `fixed-logger.ts:369-371`
+- **getTodayDateStr** — Method to get today's date string `fixed-logger.ts:100-103`
+- **i** — Log an informational message `fixed-logger.ts:280-282`
+- **i** — Represents an info log entry `fixed-logger.ts:436-438`
+- **incident** — Logs incident activity with data `logger-adapter.ts:246-249`
+- **info** — Logs an info message with category, message, and optional data `logger-adapter.ts:162-168`
+- **log** — Log a message with the specified level `fixed-logger.ts:225-263`
+- **mcpError** — Logs an MCP error with method, error message, and request ID `logger-adapter.ts:222-228`
+- **mcpRequest** — Logs an MCP request with method, parameters, and request ID `logger-adapter.ts:206-212`
+- **mcpResponse** — Logs an MCP response with method, duration, and request ID `logger-adapter.ts:214-220`
+- **op** — Log an operation with start and end `fixed-logger.ts:318-328`
+- **op** — Represents an operation log entry `fixed-logger.ts:454-456`
+- **opEnd** — End an operation log entry `fixed-logger.ts:310-313`
+- **opEnd** — Ends an operation log entry `fixed-logger.ts:451-453`
+- **opStart** — Start an operation log entry `fixed-logger.ts:302-305`
+- **opStart** — Starts an operation log entry `fixed-logger.ts:448-450`
+- **parseActivity** — Logs parsed activity with data `logger-adapter.ts:236-239`
+- **queryActivity** — Logs query activity with data `logger-adapter.ts:241-244`
+- **recovery** — Logs recovery activity with data `logger-adapter.ts:251-254`
+- **rotate** — Method to rotate the log file `fixed-logger.ts:79-95`
+- **setBuildHash** — Set the build hash for logging `fixed-logger.ts:355-357`
+- **setPid** — Set the process ID for logging `fixed-logger.ts:348-350`
+- **setProject** — Sets the project hash for the logger `fixed-logger.ts:463-465`
+- **setProjectHash** — Sets the project hash to the first 8 characters of the provided hash or to NO_PROJECT if no hash is provided `fixed-logger.ts:362-364`
+- **shouldRotate** — Method to check if log rotation is needed `fixed-logger.ts:72-74`
+- **stopFlushLoop** — Stops the flush loop by closing the logger `logger-adapter.ts:264-266`
+- **t** — Log a trace message `fixed-logger.ts:290-292`
+- **t** — Represents a trace log entry `fixed-logger.ts:442-444`
+- **trace** — Logs a trace message with category, message, and optional data `logger-adapter.ts:146-152`
+- **w** — Write a message to the log buffer `fixed-logger.ts:275-277`
+- **w** — Represents a warning log entry `fixed-logger.ts:433-435`
+- **warn** — Logs a warn message with category, message, and optional data `logger-adapter.ts:170-176`
+- **writeLine** — Write a line to the log buffer `fixed-logger.ts:158-181`
+
+### Class
+- **FixedLogger** — Fixed-position logger instance with buffered writes and rotation `fixed-logger.ts:28-390`
+- **LoggerAdapter** — Adapter for compatibility with old RotatedLogger API `logger-adapter.ts:135-275`
+
+### Interface
+- **FixedLoggerConfig** — Defines configuration for a fixed logger with properties for log directory, minimum log level, file size, number of files, total size, buffer size, flush interval, and console output `log-types.ts:111-128`
+- **LogEntry** — Represents a log entry with various properties `log-types.ts:93-102`
+- **MemoryStats** — Interface representing memory usage statistics in MB `memory-logger.ts:14-25`
+- **ParsedKVPair** — Not present in the provided entities `kv-serializer.ts:102-106`
+- **ParsedLogLine** — Extends LogEntry with additional properties for parsed log lines `log-types.ts:105-108`
+
+### Type_alias
+- **KVPairs** — KV pairs record - values can be primitives, arrays, or objects (serialized to JSON) `log-types.ts:68-68`
+- **KVValue** — Primitive value types allowed in KV pairs `log-types.ts:65-65`
+- **LogLevelChar** — Log level single character `log-types.ts:8-8`
+- **ModuleName** — Represents a module name as a type derived from the MODULES object `log-types.ts:165-165`
+
+### Import_decl
+- **./build-info.js** — Imports `./build-info.js` from `./build-info.js`. `fixed-logger.ts:9-9`
+- **./fixed-logger.js** — Imports `./fixed-logger.js` from `./fixed-logger.js`. `logger-adapter.ts:6-6`
+- **./index.js** — Imports `./index.js` from `./index.js`. `memory-logger.ts:8-8`
+- **./kv-serializer.js** — Imports `./kv-serializer.js` from `./kv-serializer.js`. `fixed-logger.ts:10-10`, `log-formatter.ts:6-6`
+- **./log-formatter.js** — Imports `./log-formatter.js` from `./log-formatter.js`. `fixed-logger.ts:11-11`
+- **./log-types.js** — Imports `./log-types.js`. `fixed-logger.ts:12-20`, `log-formatter.ts:7-14`
+- **./log-types.js** — Imports `./log-types.js` from `./log-types.js`. `kv-serializer.ts:6-6`, `logger-adapter.ts:7-7`, `logger-adapter.ts:8-8`
+- **child_process** — Imports `child_process` from `child_process`. `build-info.ts:6-6`
+- **fs** — Imports `fs` from `fs`. `build-info.ts:7-7`
+- **node:fs** — Imports `node:fs` from `node:fs`. `fixed-logger.ts:6-6`
+- **node:fs/promises** — Imports `node:fs/promises` from `node:fs/promises`. `fixed-logger.ts:7-7`
+- **node:path** — Imports `node:path` from `node:path`. `fixed-logger.ts:8-8`
+- **path** — Imports `path` from `path`. `build-info.ts:8-8`
+
+### Property
+- **arrayBuffers** — ArrayBuffers in MB `memory-logger.ts:22-22`
+- **buffer** — Array to buffer log entries `fixed-logger.ts:30-30`
+- **bufferSize** — Sets the buffer size for log messages `log-types.ts:123-123`
+- **buildHash** — Build hash of the project `fixed-logger.ts:34-34`
+- **buildHash** — Field positions in log line (0-indexed) `log-types.ts:97-97`
+- **config** — Configuration object for the FixedLogger `fixed-logger.ts:29-29`
+- **consoleOutput** — Indicates whether console output is enabled `log-types.ts:127-127`
+- **currentFileSize** — Current size of the log file `fixed-logger.ts:33-33`
+- **currentLogFile** — Current log file path `fixed-logger.ts:32-32`
+- **event** — Field positions in log line (0-indexed) `log-types.ts:100-100`
+- **external** — External memory in MB `memory-logger.ts:20-20`
+- **flushInterval** — Defines the interval at which logs are flushed `log-types.ts:125-125`
+- **flushTimer** — Timer to flush the buffer periodically `fixed-logger.ts:31-31`
+- **hash** — Returns the build hash as part of the getBuildInfo function `build-info.ts:107-107`
+- **heapTotal** — Total heap size in MB `memory-logger.ts:18-18`
+- **heapUsed** — Heap used memory in MB `memory-logger.ts:16-16`
+- **key** — Not present in the provided entities `kv-serializer.ts:103-103`
+- **kv** — Field positions in log line (0-indexed) `log-types.ts:101-101`
+- **level** — Field positions in log line (0-indexed) `log-types.ts:95-95`
+- **lineNumber** — Stores the line number of the log entry `log-types.ts:107-107`
+- **logDir** — Specifies the directory where logs are stored `log-types.ts:113-113`
+- **logger** — Stores a reference to a fixed logger instance `logger-adapter.ts:136-136`
+- **maxFiles** — Determines the maximum number of log files to retain `log-types.ts:119-119`
+- **maxFileSize** — Sets the maximum file size for log files `log-types.ts:117-117`
+- **maxTotalSize** — Specifies the total size of all log files `log-types.ts:121-121`
+- **minLevel** — Defines the minimum log level to be considered `log-types.ts:115-115`
+- **module** — Field positions in log line (0-indexed) `log-types.ts:99-99`
+- **mtime** — Modification time of the log file `fixed-logger.ts:126-126`
+- **name** — Name of the log file `fixed-logger.ts:126-126`
+- **path** — Path to the log file `fixed-logger.ts:126-126`
+- **pid** — Returns the process ID as part of the getBuildInfo function `build-info.ts:107-107`
+- **pid** — Process ID of the current process `fixed-logger.ts:36-36`
+- **pid** — Field positions in log line (0-indexed) `log-types.ts:96-96`
+- **projectHash** — Project hash, defaulting to "--------" `fixed-logger.ts:35-35`
+- **projectHash** — Field positions in log line (0-indexed) `log-types.ts:98-98`
+- **raw** — Not present in the provided entities `kv-serializer.ts:105-105`
+- **raw** — Represents the raw log line as a string `log-types.ts:106-106`
+- **rss** — Resident Set Size in MB `memory-logger.ts:24-24`
+- **size** — Size of the log file `fixed-logger.ts:126-126`
+- **timestamp** — Field positions in log line (0-indexed) `log-types.ts:94-94`
+- **value** — Not present in the provided entities `kv-serializer.ts:104-104`
 
 ## Data Flow
 
@@ -51,7 +300,7 @@ The logging module provides a high-performance structured logging system where e
 
 | Export | Type | Description | Location |
 |--------|------|-------------|----------|
-| `log` | const | Global logging object with `i()`, `e()`, `w()`, `d()`, `t()`, `op()` methods | [`fixed-logger.ts:346-351`](./fixed-logger.ts) |
+| `log` | const | Global logging object with `i()`, `e()`, `w()`, `d()`, `t()`, `op()` methods | [`fixed-logger.ts:28-390`](./fixed-logger.ts) |
 | `FixedLogger` | class | Logger class with fixed field positions, buffering, and rotation | [`fixed-logger.ts:22-22`](./fixed-logger.ts) |
 | `getLogger` | function | Get the global singleton logger instance | [`fixed-logger.ts:318-318`](./fixed-logger.ts) |
 | `initLogger` | function | Initialize logger with configuration, replaces global instance | [`fixed-logger.ts:328-330`](./fixed-logger.ts) |
@@ -81,7 +330,7 @@ The logging module provides a high-performance structured logging system where e
 | `LogLevelChar` | type | Log level character union: `E \| W \| I \| D \| T` | [`log-types.ts:8-8`](./log-types.ts) |
 | `LOG_LEVEL_VALUES` | const | Numeric values for level filtering (T=0..E=4) | [`log-types.ts:8-8`](./log-types.ts) |
 | `LOG_LEVEL_NAMES` | const | Full level names for display | [`log-types.ts:20-26`](./log-types.ts) |
-| `LOG_FIELD_POSITIONS` | const | Start/end positions of fields in a log string | [`log-types.ts:29-44`](./log-types.ts) |
+| `LOG_FIELD_POSITIONS` | const | Start/end positions of fields in a log string | [`log-types.ts:33-46`](./log-types.ts) |
 | `LOG_FIELD_LENGTHS` | const | Character lengths of each fixed field | [`log-types.ts:47-55`](./log-types.ts) |
 | `KV_CONSTRAINTS` | const | Max key/value/total length constraints | [`log-types.ts:58-62`](./log-types.ts) |
 | `KVValue` | type | Primitive value type: `string \| number \| boolean \| null \| undefined` | [`log-types.ts:65-65`](./log-types.ts) |

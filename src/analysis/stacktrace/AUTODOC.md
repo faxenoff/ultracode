@@ -94,7 +94,8 @@ The `stacktrace` module provides a comprehensive analysis of stack traces, enabl
 - **parser** — Represents a stacktrace parser for a specific language, implementing detect() to return confidence `stacktrace-parser.ts:69-69`
 - **parseStacktrace** — Parses a stacktrace string, auto-detecting language and delegating to the appropriate parser `stacktrace-parser.ts:65-99`
 - **resolveByName** — Resolves a stacktrace frame by name against code graph entities `frame-resolver.ts:233-268`
-- **resolvedCount** — Counts the number of resolved frames in a list of resolved frames `diagnosis-engine.ts:173-173`, `diagnosis-engine.ts:293-293`
+- **resolvedCount** — Counts the number of resolved frames in a list of resolved frames `diagnosis-engine.ts:173-173`
+- **resolvedCount** — Parses frames to count resolved ones `diagnosis-engine.ts:293-293`
 - **resolveFrameAgainstEntities** — Resolves a stacktrace frame against code graph entities `frame-resolver.ts:157-231`
 - **resolveFrames** — Function to resolve all frames in a stacktrace against the code graph `frame-resolver.ts:65-155`
 - **sanitize** — Sanitizes a string by removing certain characters and truncating it `diagnosis-engine.ts:388-394`
@@ -153,8 +154,8 @@ The `stacktrace` module provides a comprehensive analysis of stack traces, enabl
 - **description** — A description of the error `types.ts:68-68`
 - **description** — A description of an error `types.ts:93-93`
 - **diagnosis** — A single frame in a stacktrace `types.ts:114-114`
-- **end** — Not explicitly defined in the provided code `frame-resolver.ts:26-26`
-- **end** — End position of the entity in the file `frame-resolver.ts:97-97`, `frame-resolver.ts:164-164`
+- **end** — End position of the entity in the file `frame-resolver.ts:97-97`
+- **end** — Not explicitly defined in the provided code `frame-resolver.ts:26-26`, `frame-resolver.ts:164-164`
 - **entityId** — An identifier for an entity `types.ts:80-80`
 - **entityName** — The name of an entity `types.ts:81-81`
 - **entityType** — The type of an entity `types.ts:82-82`
@@ -165,8 +166,9 @@ The `stacktrace` module provides a comprehensive analysis of stack traces, enabl
 - **errorType** — The type of error in the stacktrace `types.ts:35-35`
 - **errorType** — The type of an error `types.ts:100-100`
 - **file** — A single frame in a stacktrace `types.ts:112-112`
-- **filePath** — Paths that indicate framework/runtime code — skip resolution `frame-resolver.ts:19-19`, `frame-resolver.ts:24-24`, `frame-resolver.ts:34-34`
-- **filePath** — Path to the file containing the code entity `frame-resolver.ts:96-96`, `frame-resolver.ts:163-163`
+- **filePath** — Path to the file containing the code entity `frame-resolver.ts:24-24`, `frame-resolver.ts:96-96`
+- **filePath** — Paths that indicate framework/runtime code — skip resolution `frame-resolver.ts:19-19`, `frame-resolver.ts:163-163`
+- **filePath** — Stores the file path associated with the frame `frame-resolver.ts:34-34`
 - **filePath** — The file path of the function in the stack frame `types.ts:21-21`
 - **filters** — Not explicitly defined in the provided code `frame-resolver.ts:19-19`
 - **formatted** — A single frame in a stacktrace `types.ts:131-131`
@@ -174,23 +176,27 @@ The `stacktrace` module provides a comprehensive analysis of stack traces, enabl
 - **frames** — An array of StackFrame objects representing the stack trace frames `types.ts:37-37`
 - **functionName** — The name of the function in the stack frame `types.ts:18-18`
 - **guards** — A single frame in a stacktrace `types.ts:126-126`
-- **id** — Not explicitly defined in the provided code `frame-resolver.ts:21-21`, `frame-resolver.ts:31-31`, `frame-resolver.ts:93-93`
-- **id** — Unique identifier for the code entity `frame-resolver.ts:160-160`
+- **id** — Unique identifier for the code entity `frame-resolver.ts:31-31`, `frame-resolver.ts:160-160`
+- **id** — Not explicitly defined in the provided code `frame-resolver.ts:21-21`
+- **id** — Assigns a unique identifier to the frame `frame-resolver.ts:93-93`
 - **impactAnalysis** — A single frame in a stacktrace `types.ts:117-123`
 - **includeBackwardsTrace** — Boolean indicating whether to include backwards trace in diagnosis `diagnosis-engine.ts:29-29`
 - **includeImpactAnalysis** — Boolean indicating whether to include impact analysis in diagnosis `diagnosis-engine.ts:30-30`
 - **index** — The index of the stack frame, with index=0 being the crash point `types.ts:17-17`
 - **isAsync** — Indicates if the function is asynchronous `types.ts:25-25`
 - **isNative** — Indicates if the function is native `types.ts:24-24`
-- **language** — The programming language of the stacktrace `types.ts:34-34`, `types.ts:98-98`
-- **language** — A single frame in a stacktrace `types.ts:143-143`
+- **language** — The programming language of the stacktrace `types.ts:34-34`
+- **language** — A single frame in a stacktrace `types.ts:98-98`
+- **language** — Represents the programming language used in the code `types.ts:143-143`
 - **limit** — Not explicitly defined in the provided code `frame-resolver.ts:19-19`
-- **line** — Not explicitly defined in the provided code `frame-resolver.ts:26-26`, `frame-resolver.ts:26-26`
-- **line** — Line number where the entity starts `frame-resolver.ts:97-97`, `frame-resolver.ts:97-97`, `frame-resolver.ts:164-164`, `frame-resolver.ts:164-164`
+- **line** — Line number where the entity starts `frame-resolver.ts:26-26`, `frame-resolver.ts:97-97`
+- **line** — Not explicitly defined in the provided code `frame-resolver.ts:26-26`, `frame-resolver.ts:97-97`
+- **line** — Represents the line number for the start and end locations `frame-resolver.ts:164-164`
+- **line** — Represents the start and end line numbers of a location `frame-resolver.ts:164-164`
 - **line** — A single frame in a stacktrace `types.ts:112-112`
 - **lineNumber** — The line number of the function in the stack frame `types.ts:22-22`
-- **location** — Not explicitly defined in the provided code `frame-resolver.ts:26-26`
-- **location** — Location within the file where the entity is defined `frame-resolver.ts:97-97`, `frame-resolver.ts:164-164`
+- **location** — Location within the file where the entity is defined `frame-resolver.ts:97-97`
+- **location** — Not explicitly defined in the provided code `frame-resolver.ts:26-26`, `frame-resolver.ts:164-164`
 - **location** — The location of an error `types.ts:92-92`
 - **location** — A single frame in a stacktrace `types.ts:113-113`
 - **mermaidDiagram** — A single frame in a stacktrace `types.ts:130-130`
@@ -199,8 +205,9 @@ The `stacktrace` module provides a comprehensive analysis of stack traces, enabl
 - **missingCheckHints** — An array of hints for missing checks `types.ts:69-69`
 - **missingChecks** — A single frame in a stacktrace `types.ts:127-127`
 - **moduleName** — The module name of the function in the stack frame `types.ts:20-20`
-- **name** — Not explicitly defined in the provided code `frame-resolver.ts:22-22`, `frame-resolver.ts:32-32`, `frame-resolver.ts:94-94`
-- **name** — Name of the code entity `frame-resolver.ts:161-161`
+- **name** — Name of the code entity `frame-resolver.ts:32-32`, `frame-resolver.ts:161-161`
+- **name** — Not explicitly defined in the provided code `frame-resolver.ts:22-22`
+- **name** — Specifies the name of the frame `frame-resolver.ts:94-94`
 - **name** — A single frame in a stacktrace `types.ts:112-112`
 - **namePattern** — Not explicitly defined in the provided code `frame-resolver.ts:29-29`
 - **priority** — The priority of an error `types.ts:94-94`
@@ -214,11 +221,12 @@ The `stacktrace` module provides a comprehensive analysis of stack traces, enabl
 - **severity** — Indicates the severity level of the error `error-classifier.ts:13-13`
 - **severity** — The severity of the error `types.ts:67-67`
 - **severity** — The severity of an error `types.ts:102-102`
-- **start** — Not explicitly defined in the provided code `frame-resolver.ts:26-26`
-- **start** — Start position of the entity in the file `frame-resolver.ts:97-97`, `frame-resolver.ts:164-164`
+- **start** — Start position of the entity in the file `frame-resolver.ts:97-97`
+- **start** — Not explicitly defined in the provided code `frame-resolver.ts:26-26`, `frame-resolver.ts:164-164`
 - **suggestedFixes** — A single frame in a stacktrace `types.ts:129-129`
 - **threadInfo** — Thread information associated with the stacktrace `types.ts:39-39`
 - **totalFrameCount** — The total number of frames `types.ts:109-109`
-- **type** — Not explicitly defined in the provided code `frame-resolver.ts:23-23`, `frame-resolver.ts:33-33`, `frame-resolver.ts:95-95`
-- **type** — Type of the code entity `frame-resolver.ts:162-162`
+- **type** — Type of the code entity `frame-resolver.ts:33-33`, `frame-resolver.ts:162-162`
+- **type** — Not explicitly defined in the provided code `frame-resolver.ts:23-23`
+- **type** — Defines the type of the frame `frame-resolver.ts:95-95`
 - **typePatterns** — An array of regular expressions to match error types `error-classifier.ts:16-16`

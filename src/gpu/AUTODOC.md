@@ -1,6 +1,6 @@
 # gpu
 
-Auto-selects optimal vector computation backend for GPU hardware.
+Detects GPU capabilities and auto-selects optimal vector processing backend.
 
 ## Overview
 
@@ -76,7 +76,7 @@ Bun Process                           Node.js Subprocess
 | `switchBackend(type)` | Asynchronously switches to a specific backend by name and re-initializes it. | [`backend-selector.ts:190-202`](./backend-selector.ts) |
 | `getAvailableBackends()` | Returns array of all successfully initialized backend instances. | [`backend-selector.ts:207-209`](./backend-selector.ts) |
 | `getInfo()` | Returns diagnostic object containing selected backend and list of available backends with their capabilities. | [`backend-selector.ts:214-217`](./backend-selector.ts) |
-| `close()` | Asynchronously closes all backends, releases GPU resources, and resets the selector state. | [`backend-selector.ts:227-234`](./backend-selector.ts) |
+| `close()` | Asynchronously closes all backends, releases GPU resources, and resets the selector state. | [`backend-selector.ts:30-235`](./backend-selector.ts) |
 
 ### Core Interfaces
 

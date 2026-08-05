@@ -1,6 +1,6 @@
 # addons
 
-Manages external process addons (Roslyn) for C# code parsing and analysis.
+Manages C# code parsing via Roslyn addon subprocess with IPC communication and fallback support.
 
 ## Overview
 

@@ -1,42 +1,114 @@
 # validation
 
-Multi-language code validator with before/after comparison and extensible linter support
+## 🤖 Overview
 
-## Overview
+The `code-validator.ts` module provides a comprehensive code validation system that supports multiple programming languages, including TypeScript, JavaScript, and Python. It offers features such as batch validation, before/after problem comparison, and severity categorization. This module is primarily used by developers and maintainers to ensure code quality and consistency across different projects and files.
 
-The validation module provides multi-language code quality checking with a pluggable linter architecture. `CodeValidator` orchestrates linter selection based on file type, executes batch validation with configurable concurrency, and generates before/after comparison reports to track code quality improvements. Three linter implementations are included: `OxlintLinter` for TypeScript/JavaScript (100x faster than ESLint), `BiomeLinter` as an alternative JS/TS linter, and `PylintLinter` for Python. All linters load lazily on first use to avoid import errors when binaries are unavailable, and support autofix with dry-run mode that safely tests fixes on temporary copies without modifying originals.
-
-## Flow
+## 🤖 Architecture
 
 ```
-Input: filePath or dirPath
-  ↓
-[1] Determine file extension (.ts, .js, .py, etc)
-  ↓
-[2] selectLinter(ext) — lazy-load appropriate linter
-  ↓
-[3] readText(filePath) — read file content
-  ↓
-[4] linter.lint(filePath, content) — execute external tool
-    (spawn oxlint/biome subprocess or pylint)
-  ↓
-[5] Parse JSON output → ValidationProblem[]
-  ↓
-[6] categorizeProblems() — count errors/warnings/info
-  ↓
-Output: ValidationReport
-  {filePath, problems[], summary{errors, warnings, info}}
-
-For validateModification():
-before ValidationReport
-  ↓
-validateFile() (after state)
-  ↓
-compareReports()
-  ↓
-Output: BeforeAfterReport
-  {before, after, improvement{errorsFixed, newErrors}}
+  +-------------------+
+  |   Linter Interface |
+  +-------------------+
+          |
+          v
+  +-------------------+
+  |     Language Linters |
+  +-------------------+
+          |
+          v
+  +-------------------+
+  |     Validation Engine |
+  +-------------------+
+          |
+          v
+  +-------------------+
+  |     Problem Reporter |
+  +-------------------+
 ```
+
+## 🤖 Flow
+
+```
+  +-------------------+
+  |     File Selection |
+  +-------------------+
+          |
+          v
+  +-------------------+
+  |     File Validation |
+  +-------------------+
+          |
+          v
+  +-------------------+
+  |     Problem Reporting |
+  +-------------------+
+          |
+          v
+  +-------------------+
+  |     Summary Generation |
+  +-------------------+
+```
+
+## 🤖 Entity Listing
+
+### Function
+- **batchReports** — Method to generate batch reports `code-validator.ts:138-138`
+- **walk** — Method to walk through files `code-validator.ts:259-288`
+
+### Method
+- **categorizeProblems** — Method to categorize problems `code-validator.ts:180-203`
+- **compareReports** — Method to compare before and after reports `code-validator.ts:160-175`
+- **constructor** — Constructor for the CodeValidator class `code-validator.ts:77-79`
+- **findFiles** — Method to find files `code-validator.ts:256-291`
+- **getOrLoadLinter** — Method to get or load a linter `code-validator.ts:228-251`
+- **initializeLinters** — Method to initialize linters `code-validator.ts:84-87`
+- **selectLinter** — Method to select a linter `code-validator.ts:208-223`
+- **validateDirectory** — Method to validate a directory `code-validator.ts:127-143`
+- **validateFile** — Method to validate a single file `code-validator.ts:92-122`
+- **validateModification** — Method to validate a modification `code-validator.ts:148-155`
+
+### Class
+- **CodeValidator** — Class for code validation with linters `code-validator.ts:74-292`
+
+### Interface
+- **BeforeAfterReport** — Represents a report comparing before and after code validation `code-validator.ts:49-59`
+- **Linter** — Interface for code linters `code-validator.ts:65-68`
+- **ValidationProblem** — Represents a single problem found during code validation `code-validator.ts:40-47`
+- **ValidationReport** — Represents a report of code validation results, including file path, timestamp, and problem details `code-validator.ts:27-38`
+
+### Import_decl
+- **../agents/dev/file-extensions.js** — Imports `../agents/dev/file-extensions.js` from `../agents/dev/file-extensions.js`. `code-validator.ts:19-19`
+- **../logging/index.js** — Imports `../logging/index.js` from `../logging/index.js`. `code-validator.ts:20-20`
+- **../utils/file-ops.js** — Imports `../utils/file-ops.js` from `../utils/file-ops.js`. `code-validator.ts:21-21`
+- **node:path** — Imports `node:path` from `node:path`. `code-validator.ts:18-18`
+
+### Property
+- **after** — Contains the validation report after changes were made `code-validator.ts:51-51`
+- **before** — Contains the validation report before any changes were made `code-validator.ts:50-50`
+- **column** — Indicates the column number where the problem occurred `code-validator.ts:44-44`
+- **errors** — Counts the number of errors in the validation report `code-validator.ts:32-32`
+- **errorsFixed** — Number of errors fixed in the code `code-validator.ts:53-53`
+- **filePath** — Stores the file path of the code being validated `code-validator.ts:28-28`
+- **improvement** — Provides details on the improvement in the validation report `code-validator.ts:52-58`
+- **info** — Counts the number of informational messages in the validation report `code-validator.ts:34-34`
+- **line** — Indicates the line number where the problem occurred `code-validator.ts:43-43`
+- **linters** — Map of linters `code-validator.ts:75-75`
+- **linterUsed** — Indicates the linter used for validation `code-validator.ts:37-37`
+- **message** — Contains the message describing the validation problem `code-validator.ts:42-42`
+- **name** — Name of the linter `code-validator.ts:66-66`
+- **netChange** — Net change in the number of errors and warnings `code-validator.ts:57-57`
+- **newErrors** — Number of new errors introduced in the code `code-validator.ts:55-55`
+- **newWarnings** — Number of new warnings introduced in the code `code-validator.ts:56-56`
+- **problems** — Contains an array of validation problems `code-validator.ts:30-30`
+- **ruleId** — Optional identifier for the rule that caused the problem `code-validator.ts:45-45`
+- **severity** — Specifies the severity of the validation problem (error, warning, or info) `code-validator.ts:41-41`
+- **source** — Optional identifier for the linter that reported the problem `code-validator.ts:46-46`
+- **summary** — Provides a summary of the validation results, including error, warning, and info counts `code-validator.ts:31-36`
+- **timestamp** — Records the timestamp of the validation process `code-validator.ts:29-29`
+- **total** — Represents the total number of problems in the validation report `code-validator.ts:35-35`
+- **warnings** — Counts the number of warnings in the validation report `code-validator.ts:33-33`
+- **warningsFixed** — Number of warnings fixed in the code `code-validator.ts:54-54`
 
 ## Public API
 
@@ -47,7 +119,7 @@ Output: BeforeAfterReport
 | `ValidationReport` | `code-validator.ts:26-37` | Single-file lint result containing file path, timestamp, problems array, and summary counts (errors, warnings, info). |
 | `ValidationProblem` | `code-validator.ts:39-46` | Individual lint problem with severity level, message text, line and column position, optional rule identifier, and linter source. |
 | `BeforeAfterReport` | `code-validator.ts:48-58` | Before/after validation comparison containing baseline and current reports with improvement metrics (errors fixed, warnings fixed, new errors introduced). |
-| `Linter` | `code-validator.ts:64-67` | Pluggable linter interface defining `name` property and `lint(filePath: string, content: string)` method returning problems array. |
+| `Linter` | `code-validator.ts:50-68` | Pluggable linter interface defining `name` property and `lint(filePath: string, content: string)` method returning problems array. |
 
 ### Classes
 

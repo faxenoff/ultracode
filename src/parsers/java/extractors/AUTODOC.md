@@ -33,7 +33,7 @@ This module contains specialized extractors that walk Java ANTLR AST nodes to pr
 | `hasExceptionHandling` | function | Checks for try/catch presence | [`control-flow-extractor.ts:380-382`](./control-flow-extractor.ts) |
 | `getCaughtExceptionTypes` | function | Lists caught exception types | [`control-flow-extractor.ts:387-389`](./control-flow-extractor.ts) |
 | `calculateComplexity` | function | Calculates all complexity metrics | [`complexity-analyzer.ts:27-61`](./complexity-analyzer.ts) |
-| `calculateCyclomaticComplexity` | function | McCabe cyclomatic complexity | [`complexity-analyzer.ts:77-101`](./complexity-analyzer.ts) |
+| `calculateCyclomaticComplexity` | function | McCabe cyclomatic complexity | [`complexity-analyzer.ts:57-126`](./complexity-analyzer.ts) |
 | `calculateCognitiveComplexity` | function | Sonar-style cognitive complexity | [`complexity-analyzer.ts:111-167`](./complexity-analyzer.ts) |
 | `calculateClassComplexity` | function | Aggregate class-level metrics | [`complexity-analyzer.ts:336-340`](./complexity-analyzer.ts) |
 | `getComplexityRating` | function | Returns low/medium/high/very-high rating | [`complexity-analyzer.ts:414-446`](./complexity-analyzer.ts) |

@@ -49,11 +49,11 @@ This module provides framework-aware analysis for Kotlin projects. The Android e
 | `extractKtorRoutes` | function | Extracts Ktor route definitions | [`ktor-extractor.ts:112-176`](./ktor-extractor.ts) |
 | `extractRouteHandlers` | function | Extracts HTTP method handlers | [`ktor-extractor.ts:181-186`](./ktor-extractor.ts) |
 | `extractInstalledPlugins` | function | Extracts installed Ktor plugins | [`ktor-extractor.ts:234-237`](./ktor-extractor.ts) |
-| `extractSerializationConfig` | function | Extracts serialization configuration | [`ktor-extractor.ts:265-268`](./ktor-extractor.ts) |
+| `extractSerializationConfig` | function | Extracts serialization configuration | [`ktor-extractor.ts:267-267`](./ktor-extractor.ts) |
 | `extractAuthenticationConfig` | function | Extracts authentication configuration | [`ktor-extractor.ts:296-300`](./ktor-extractor.ts) |
 | `enrichEntityWithKtor` | function | Enriches entity with Ktor metadata | [`ktor-extractor.ts:339-345`](./ktor-extractor.ts) |
 | `extractHttpClientConfig` | function | Extracts Ktor HttpClient config | [`ktor-extractor.ts:391-395`](./ktor-extractor.ts) |
-| `extractWebSocketRoutes` | function | Extracts WebSocket route definitions | [`ktor-extractor.ts:440-444`](./ktor-extractor.ts) |
+| `extractWebSocketRoutes` | function | Extracts WebSocket route definitions | [`ktor-extractor.ts:442-442`](./ktor-extractor.ts) |
 | `isKtorApplication` | function | Checks if entity is a Ktor application | [`ktor-extractor.ts:475-477`](./ktor-extractor.ts) |
 | `getAllEndpoints` | function | Gets all HTTP endpoints from analysis | [`ktor-extractor.ts:483-487`](./ktor-extractor.ts) |
 

@@ -32,7 +32,7 @@ The semantic module is the embedding and vector search layer for the SemanticAge
 | `EMBEDDING_EXCLUDE_PATTERNS` | const | Path patterns excluded from embedding generation | [`embedding-processor.ts:46-82`](./embedding-processor.ts) |
 | `EmbeddingProcessorContext` | interface | Dependency injection context for embedding processing | [`embedding-processor.ts:59-82`](./embedding-processor.ts) |
 | `DeduplicationResult` | interface | Result of deduplication and cache check | [`embedding-processor.ts:298-307`](./embedding-processor.ts) |
-| `mapSemanticConfigToProvider` | function | Maps semantic-config.json to provider kind | [`provider-config.ts:128-148`](./provider-config.ts) |
+| `mapSemanticConfigToProvider` | function | Maps semantic-config.json to provider kind | [`provider-config.ts:88-145`](./provider-config.ts) |
 | `getModelNameFromSemanticConfig` | function | Extracts model name from semantic config | [`provider-config.ts:153-174`](./provider-config.ts) |
 | `buildWorkerProviderOptions` | function | Builds worker embedding provider options | [`provider-config.ts:179-231`](./provider-config.ts) |
 | `buildEmbeddingGeneratorOptions` | function | Builds EmbeddingGenerator options from config | [`provider-config.ts:236-306`](./provider-config.ts) |
@@ -44,7 +44,7 @@ The semantic module is the embedding and vector search layer for the SemanticAge
 | `warmupSemanticCache` | function | Warms up semantic cache with popular entities | [`cache-warmup.ts:77-239`](./cache-warmup.ts) |
 | `buildWarmupText` | function | Builds warmup text from entity data | [`cache-warmup.ts:41-68`](./cache-warmup.ts) |
 | `CacheWarmupContext` | interface | Context for cache warmup operations | [`cache-warmup.ts:24-32`](./cache-warmup.ts) |
-| `processStandaloneComments` | function | Processes comments as searchable entities | [`comment-processor.ts:47-52`](./comment-processor.ts) |
+| `processStandaloneComments` | function | Processes comments as searchable entities | [`comment-processor.ts:47-161`](./comment-processor.ts) |
 | `CommentProcessorContext` | interface | Context for comment processing | [`comment-processor.ts:27-33`](./comment-processor.ts) |
 
 ## Dependencies

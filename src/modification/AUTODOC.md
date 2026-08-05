@@ -75,7 +75,7 @@ Success: return result | Error: auto-rollback via VersionManager
 |--------|-------------|----------|
 | `CopyOptions` | Configuration for copy operation (preview mode, graph updates) | [`file-operations.ts:42-45`](./file-operations.ts) |
 | `RenameOptions` | Configuration for rename operation (preview mode, import updates, graph updates) | [`file-operations.ts:47-51`](./file-operations.ts) |
-| `SplitOptions` | Configuration for split operation (preview mode, graph updates) | [`file-operations.ts:53-56`](./file-operations.ts) |
+| `SplitOptions` | Configuration for split operation (preview mode, graph updates) | [`file-operations.ts:54-54`](./file-operations.ts) |
 | `SynthesizeOptions` | Configuration for synthesize operation (preview mode, delete originals, graph updates) | [`file-operations.ts:58-62`](./file-operations.ts) |
 | `FileOperationResult` | Result object with affected file counts, embeddings metadata, and validation report | [`file-operations.ts:33-40`](./file-operations.ts) |
 

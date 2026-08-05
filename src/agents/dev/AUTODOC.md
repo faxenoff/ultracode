@@ -28,7 +28,7 @@ The dev module provides the file discovery and classification layer for the DevA
 | `isDataExtension` | function | Checks if extension is a data file | [`file-extensions.ts:80-82`](./file-extensions.ts) |
 | `createHeuristicEntities` | function | Creates module entities for non-parseable files | [`heuristic-parser.ts:48-88`](./heuristic-parser.ts) |
 | `separateFilesBySupport` | function | Separates files into supported and heuristic groups | [`incremental-indexer.ts:74-100`](./incremental-indexer.ts) |
-| `setupVectorProvider` | function | Configures FAISS vector provider for incremental indexing | [`incremental-indexer.ts:120-169`](./incremental-indexer.ts) |
+| `setupVectorProvider` | function | Configures FAISS vector provider for incremental indexing | [`incremental-indexer.ts:101-150`](./incremental-indexer.ts) |
 | `setupEmbeddingGenerator` | function | Configures EmbeddingGenerator for centralized mode | [`incremental-indexer.ts:178-225`](./incremental-indexer.ts) |
 | `processSupportedFiles` | function | Batch-parses supported files through ParserAgent | [`incremental-indexer.ts:220-270`](./incremental-indexer.ts) |
 | `processHeuristicFiles` | function | Processes unsupported files via heuristic parser | [`incremental-indexer.ts:279-310`](./incremental-indexer.ts) |
@@ -42,7 +42,7 @@ The dev module provides the file discovery and classification layer for the DevA
 | `VendoredDetectionResult` | interface | Container for vendored directory detection results with prefixes and timing | [`vendored-detector.ts:58-70`](./vendored-detector.ts) |
 | `detectVendoredDirectories` | function | Recursively scans directory tree to identify vendored code paths | [`vendored-detector.ts:84-158`](./vendored-detector.ts) |
 | `detectKnownVendored` | function | Identifies directories matching known vendored path segment patterns | [`vendored-detector.ts:164-194`](./vendored-detector.ts) |
-| `detectArchMirrors` | function | Detects architecture-specific mirror directories common in compiled projects | [`vendored-detector.ts:200-255`](./vendored-detector.ts) |
+| `detectArchMirrors` | function | Detects architecture-specific mirror directories common in compiled projects | [`vendored-detector.ts:222-261`](./vendored-detector.ts) |
 | `detectMassHeaders` | function | Identifies directories with many similar short files characteristic of generated code | [`vendored-detector.ts:261-305`](./vendored-detector.ts) |
 | `estimateAvgLoc` | function | Samples files and estimates average lines of code in a directory | [`vendored-detector.ts:310-331`](./vendored-detector.ts) |
 | `isVendoredPath` | function | Checks if a path matches known vendored directory patterns | [`vendored-detector.ts:341-350`](./vendored-detector.ts) |

@@ -1,116 +1,241 @@
 # Taint
 
-Security vulnerability detector tracking taint flows through source-sink-sanitizer analysis
+## 🤖 Overview
 
-## Overview
+The `taint` module is designed to analyze and track the flow of potentially tainted data within a software application. It identifies sources of untrusted input and sinks where this data might be used, helping developers understand and mitigate security risks such as injection attacks. This module is primarily used by developers and security analysts to ensure data integrity and prevent vulnerabilities.
 
-Taint is a data flow analysis system that detects security vulnerabilities by tracking how untrusted data (sources) flows through the codebase to dangerous operations (sinks) without sufficient sanitization. The module identifies SQL injection, XSS, command injection, and prototype pollution vulnerabilities by analyzing source code patterns and constructing complete vulnerability flows. It uses regex-based pattern catalogs to classify sources, sinks, and sanitizers, then formats results with pagination and severity classification for developer consumption.
-
-## Flow
+## 🤖 Architecture
 
 ```
-Source Code
-    ↓
-TaintFlowAnalyzer (core engine)
-    ├─ Extract sources (HTTP inputs, database reads, user-controlled data)
-    ├─ Extract sinks (SQL queries, eval, DOM writes, command execution)
-    ├─ Extract sanitizers (validation, escaping, parameterization)
-    └─ Trace data flows from sources → sinks, classify vulnerabilities
-    ↓
-TaintVulnerability[] (flows with severity, categories, steps)
-    ↓
-TaintFormatter
-    ├─ Format as text report (statistics, vulnerability list)
-    └─ Paginate results (default 20/page, max 200)
-    ↓
-Handler Response (JSON + pagination metadata + 50KB transport limit)
+  +---------------------+
+  |     TaintFlowAnalyzer |
+  +---------------------+
+          |
+          v
+  +---------------------+
+  |     TaintFormatter   |
+  +---------------------+
+          |
+          v
+  +---------------------+
+  |     TaintCategory    |
+  +---------------------+
+          |
+          v
+  +---------------------+
+  |     SourcePattern    |
+  +---------------------+
+          |
+          v
+  +---------------------+
+  |     SinkPattern      |
+  +---------------------+
+          |
+          v
+  +---------------------+
+  |     SanitizerPattern |
+  +---------------------+
 ```
 
-## Entity Listing
+## 🤖 Flow
 
-### Type Definitions
+```
+  +---------------------+
+  |     TaintFlowAnalyzer |
+  +---------------------+
+          |
+          v
+  +---------------------+
+  |     TaintFormatter   |
+  +---------------------+
+          |
+          v
+  +----------------
+  |     TaintCategory |
+  +----------------+
+          |
+          v
+  +----------------+
+  |     SourcePattern |
+  +----------------+
+          |
+          v
+  +----------------+
+  |     SinkPattern  |
+  +----------------+
+          |
+          v
+  +----------------+
+  |     SanitizerPattern |
+  +----------------+
+```
 
-| Name | Description | Location |
-|------|-------------|----------|
-| `TaintCategory` | Vulnerability category enumeration supporting `"sql_injection"`, `"xss"`, `"command_injection"`, and `"prototype_pollution"`. | [types.ts:1-8](types.ts:1-8) |
-| `TaintSeverity` | Vulnerability severity level enumeration with values `"critical"`, `"high"`, `"medium"`, and `"low"`. | [types.ts:10](types.ts:1) |
-| `TaintFlowRole` | Entity role in taint flow analysis: `"source"` for data entry points, `"sink"` for dangerous operations, or `"sanitizer"` for protective functions. | [types.ts:41](types.ts:1) |
+## 🤖 Entity Listing
 
-### Pattern Interfaces
+### Function
+- **buildCombinedRegex** — Builds a combined regular expression pattern from sources `catalogs.ts:440-443`
+- **categorySinks** — Filters sinks based on the target category `taint-flow-analyzer.ts:128-128`
+- **classifyAsSanitizer** — Represents a sanitizer pattern for sanitizing untrusted data `catalogs.ts:478-488`
+- **classifyAsSink** — Represents a sink pattern for untrusted data output points `catalogs.ts:466-476`
+- **classifyAsSource** — Classifies a pattern as a source pattern `catalogs.ts:456-464`
+- **entities** — A list of entities in the graph, filtered based on test file patterns `taint-flow-analyzer.ts:66-66`
+- **entityMap** — Creates a map of all entities by their IDs `taint-flow-analyzer.ts:249-249`
+- **hasTaintRelevance** — Determines if the pattern has taint relevance `catalogs.ts:452-454`
+- **lookupSemantic** — Looks up a semantic by method name, handling both exact and suffix matches `flow-semantics.ts:186-198`
+- **matchingCategories** — Filters categories that match the target category `taint-flow-analyzer.ts:181-181`
+- **propagateTaint** — Propagates taint information based on semantic mappings and source taint status `flow-semantics.ts:212-237`
+- **relevantSanitizers** — Filters sanitizers that protect against the specified category `taint-flow-analyzer.ts:200-200`
+- **sanitized** — Filters vulnerabilities that are sanitized `taint-formatter.ts:31-31`
+- **sanitizer** — Finds a sanitizer based on the entity ID `taint-flow-analyzer.ts:564-564`
+- **sources** — An array of source patterns used to build the combined regular expression `catalogs.ts:441-441`
+- **unsanitized** — Filters vulnerabilities that are not sanitized `taint-formatter.ts:30-30`
 
-| Name | Description | Location |
-|------|-------------|----------|
-| `SourcePattern` | Configuration for detecting untrusted data entry points with regex pattern, classification type, description, and priority ranking for source prioritization. | [catalogs.ts:3-8](catalogs.ts:3-8) |
-| `SinkPattern` | Configuration for detecting dangerous operations with regex pattern, classification type, list of affected vulnerability categories, and priority ranking. | [catalogs.ts:10-16](catalogs.ts:10-16) |
-| `SanitizerPattern` | Configuration for detecting protective functions with regex pattern, classification type, set of vulnerability categories the sanitizer defends against, and optional location metadata. | [catalogs.ts:18-23](catalogs.ts:18-23) |
+### Method
+- **analyze** — Analyzes the taint flow in the graph based on provided parameters `taint-flow-analyzer.ts:51-272`
+- **buildFlowSteps** — Builds a list of taint flow steps for a set of entity IDs, including their roles and metadata `taint-flow-analyzer.ts:532-557`
+- **calculateConfidence** — Calculates the confidence level of a taint flow based on the length of the flow and whether it is sanitized `taint-flow-analyzer.ts:653-665`
+- **calculateSeverity** — Calculates the severity of a taint category based on whether it is sanitized and the length of the taint flow path `taint-flow-analyzer.ts:631-651`
+- **computeReachableSet** — Computes the set of reachable nodes from a given source node within a specified depth in a graph `taint-flow-analyzer.ts:282-313`
+- **constructor** — Initializes the TaintFlowAnalyzer with a graph storage instance `taint-flow-analyzer.ts:41-49`
+- **discoverAll** — Identifies all taint sources, sinks, and sanitizers from a list of entities, updating their metadata with taint classifications `taint-flow-analyzer.ts:381-526`
+- **findSanitizersOnPath** — Finds all sanitizers along a given taint flow path `taint-flow-analyzer.ts:559-570`
+- **formatAsJSON** — Converts taint analysis results into a JSON string `taint-formatter.ts:63-65`
+- **formatAsText** — Generates a text-based summary of taint analysis results `taint-formatter.ts:4-55`
+- **formatVulnerability** — Formats individual vulnerability details into a string `taint-formatter.ts:67-89`
+- **persistTaintClassifications** — Persists newly classified taint sources, sinks, and sanitizers to the database, updating their metadata `taint-flow-analyzer.ts:576-625`
+- **reconstructPath** — Reconstructs the path from a source node to a target node in a graph, using a breadth-first search approach `taint-flow-analyzer.ts:319-375`
+- **suggestSanitizers** — Suggests sanitization strategies for a given taint category `taint-flow-analyzer.ts:667-700`
+- **toSummary** — Creates a concise summary string of taint analysis results `taint-formatter.ts:57-61`
 
-### Pattern Catalogs
+### Class
+- **TaintFlowAnalyzer** — Represents a class for analyzing taint flow in a graph `taint-flow-analyzer.ts:36-701`
+- **TaintFormatter** — A class for formatting taint analysis results into text, JSON, and vulnerability summaries `taint-formatter.ts:3-90`
 
-| Name | Description | Location |
-|------|-------------|----------|
-| `SOURCE_PATTERNS` | Pre-defined array of regex patterns identifying untrusted data sources including HTTP body/parameters/query/headers/cookies, DOM input elements, database output, and websocket messages. | [catalogs.ts:28-30](catalogs.ts:28-30) |
-| `SINK_PATTERNS` | Pre-defined array of regex patterns identifying dangerous operations including SQL query execution, command execution, JavaScript eval, DOM manipulation, and prototype pollution attacks. | [catalogs.ts:64-66](catalogs.ts:64-66) |
-| `SANITIZER_PATTERNS` | Pre-defined array of regex patterns identifying protective functions including SQL parameterization, HTML escaping, command escaping, input validation, and JSON schema validation. | [catalogs.ts:105-107](catalogs.ts:105-107) |
+### Interface
+- **FlowMapping** — Represents how data flows between arguments and return value `flow-semantics.ts:19-24`
+- **FlowSemantic** — Defines how taint propagates through a function call, including mappings, source, sink, and sanitizer flags `flow-semantics.ts:26-32`
+- **SanitizerPattern** — Represents a pattern for sanitizing untrusted data with protections against taint categories `catalogs.ts:18-23`
+- **SinkPattern** — Represents a pattern for untrusted data output points with categories and priority `catalogs.ts:10-16`
+- **SourcePattern** — Represents a pattern for untrusted data entry points with a priority `catalogs.ts:3-8`
+- **TaintAnalysisParams** — Parameters for a taint analysis, including project path, category, max depth, and include tests `types.ts:63-68`
+- **TaintAnalysisResult** — The result of a taint analysis, including vulnerabilities, sources, sinks, sanitizers, and a summary `types.ts:70-89`
+- **TaintFlowStep** — Represents a step in a taint flow, including its order, entity ID, name, file, line, and role `types.ts:43-50`
+- **TaintSanitizer** — Describes a sanitizer that can protect against taint vulnerabilities `types.ts:32-39`
+- **TaintSink** — Describes the sink of a taint vulnerability, including its location and type `types.ts:22-30`
+- **TaintSource** — Describes the source of a taint vulnerability, including its location and type `types.ts:12-20`
+- **TaintVulnerability** — Represents a vulnerability in the code, including its category, severity, source, sink, flow, and other metadata `types.ts:52-61`
 
-### Flow Entity Types
+### Type_alias
+- **TaintCategory** — Represents the category of a taint vulnerability `types.ts:1-8`
+- **TaintFlowRole** — Represents the role of a taint flow step, such as source, passthrough, sanitizer, or sink `types.ts:41-41`
+- **TaintSeverity** — Defines the severity level of a taint vulnerability `types.ts:10-10`
 
-| Name | Description | Location |
-|------|-------------|----------|
-| `TaintSource` | Discovered taint source with entity name, source type classification (e.g., `"http_body"`), file location, line and column numbers, and detection priority. | [types.ts:10](types.ts:1) |
-| `TaintSink` | Dangerous operation with entity name, sink type classification (e.g., `"sql_execute"`), list of affected vulnerability categories, file location coordinates, and priority ranking. | [types.ts:22-30](types.ts:22-30) |
-| `TaintSanitizer` | Protective function with name, sanitizer type classification (e.g., `"sql_parameterize"`), set of vulnerability categories defended, and file location. | [types.ts:32-39](types.ts:32-39) |
-| `TaintFlowStep` | Single step in a vulnerability propagation path showing the role (source/sink/sanitizer), entity name, file location, and description of data transformation at this step. | [types.ts:41](types.ts:1) |
-| `TaintVulnerability` | Detected security vulnerability with source and sink references, assigned severity level, vulnerability category, complete flow path as sequence of steps, and unsanitized flag. | [types.ts:52-61](types.ts:52-61) |
+### Import_decl
+- **../../logging/index.js** — Imports `../../logging/index.js` from `../../logging/index.js`. `taint-flow-analyzer.ts:2-2`
+- **../../tracing/graphology-path-builder.js** — Imports `../../tracing/graphology-path-builder.js` from `../../tracing/graphology-path-builder.js`. `taint-flow-analyzer.ts:3-3`, `taint-flow-analyzer.ts:4-4`
+- **../../types/storage.js** — Imports `../../types/storage.js` from `../../types/storage.js`. `taint-flow-analyzer.ts:5-5`
+- **./catalogs.js** — Imports `./catalogs.js` from `./catalogs.js`. `taint-flow-analyzer.ts:6-6`
+- **./types.js** — Imports `./types.js` from `./types.js`. `catalogs.ts:1-1`, `taint-formatter.ts:1-1`
+- **./types.js** — Imports `./types.js`. `taint-flow-analyzer.ts:7-17`
+- **graphology** — Imports `graphology` from `graphology`. `taint-flow-analyzer.ts:1-1`
 
-### Analysis Interfaces
-
-| Name | Description | Location |
-|------|-------------|----------|
-| `TaintAnalysisParams` | Parameters for initiating taint analysis including target entity identifier, code cache reference, optional severity filter, optional category filter, and pagination configuration. | [types.ts:63-68](types.ts:63-68) |
-| `TaintAnalysisResult` | Complete taint analysis report containing summary statistics (source count, sink count, sanitizer count, vulnerability count) and list of detected vulnerabilities. | [types.ts:63-68](types.ts:63-68) |
-
-### Core Engine Classes
-
-| Name | Description | Location |
-|------|-------------|----------|
-| `TaintFlowAnalyzer` | Main analysis engine responsible for discovering taint sources and sinks in code, tracing data flow paths between them, evaluating sanitization effectiveness, detecting vulnerabilities, and building complete vulnerability paths with step-by-step tracking for developer review. | [taint-flow-analyzer.ts:19-642](taint-flow-analyzer.ts:19-642) |
-| `TaintFormatter` | Transformer that converts `TaintAnalysisResult` into human-readable text reports with vulnerability statistics, summary section, and detailed vulnerability descriptions for presentation in analysis interfaces. | [taint-formatter.ts:3-90](taint-formatter.ts:3-90) |
-
-### Classification Utilities
-
-| Name | Description | Location |
-|------|-------------|----------|
-| `classifyAsSource` | Classifies an entity as a taint source by matching against `SOURCE_PATTERNS` and assigns priority ranking based on pattern specificity and risk level. | [catalogs.ts:135-137](catalogs.ts:135-137) |
-| `classifyAsSink` | Classifies an entity as a dangerous operation by matching against `SINK_PATTERNS` and determines which vulnerability categories are affected by the sink. | [catalogs.ts:149-151](catalogs.ts:149-151) |
-| `classifyAsSanitizer` | Classifies an entity as a protective sanitizer by matching against `SANITIZER_PATTERNS` and identifies which vulnerability categories are defended by the sanitizer. | [catalogs.ts:163-165](catalogs.ts:163-165) |
-
-
-### Added Entities
-
-- **FlowMapping** — `flow-semantics.ts:19-24`
-- **FlowSemantic** — `flow-semantics.ts:26-32`
-- **lookupSemantic** — `flow-semantics.ts:186-198`
-- **propagateTaint** — `flow-semantics.ts:212-237`
-- **PASSTHROUGH** — `flow-semantics.ts:38-38`
-- **CONCAT** — `flow-semantics.ts:39-42`
-- **SOURCE_RET** — `flow-semantics.ts:43-43`
-- **SINK_0** — `flow-semantics.ts:44-44`
-- **SINK_01** — `flow-semantics.ts:45-48`
-- **SANITIZER** — `flow-semantics.ts:49-49`
-- **STRCPY** — `flow-semantics.ts:50-53`
-- **STRCAT** — `flow-semantics.ts:54-54`
-- **SPRINTF** — `flow-semantics.ts:55-58`
-- **MEMCPY** — `flow-semantics.ts:59-59`
-- **STRDUP** — `flow-semantics.ts:60-60`
-- **FLOW_CATALOG** — `flow-semantics.ts:66-171`
-- **_semanticMap** — `flow-semantics.ts:177-177`
-- **exact** — `flow-semantics.ts:187-187`
-- **dotIdx** — `flow-semantics.ts:191-191`
-- **suffix** — `flow-semantics.ts:193-193`
-- **MAX_ARGS** — `flow-semantics.ts:204-204`
-- **RETURN_IDX** — `flow-semantics.ts:205-205`
-- **result** — `flow-semantics.ts:213-213`
-- **srcTainted** — `flow-semantics.ts:220-220`
+### Property
+- **_cachedClassifications** — Represents cached classifications for the analysis `types.ts:87-87`
+- **_elapsedMs** — Represents the elapsed time in milliseconds for the analysis `types.ts:86-86`
+- **_limitReached** — Indicates whether the maximum number of vulnerabilities has been reached `types.ts:81-81`
+- **_maxVulnerabilities** — Represents the maximum number of vulnerabilities allowed in the analysis `types.ts:82-82`
+- **_sinksTotal** — Represents the total number of sinks in the analysis `types.ts:84-84`
+- **_sourcesTotal** — Represents the total number of sources in the analysis `types.ts:83-83`
+- **_timeoutReached** — Indicates whether the analysis has timed out `types.ts:85-85`
+- **byCategory** — Counts the number of vulnerabilities by their categories `types.ts:78-78`
+- **bySeverity** — Counts the number of vulnerabilities by their severity levels `types.ts:77-77`
+- **cachedCount** — A count of newly classified entities in the taint analysis `taint-flow-analyzer.ts:385-385`
+- **categories** — An array of taint categories associated with the untrusted data output point `catalogs.ts:13-13`
+- **categories** — Lists the taint categories this sink pattern protects against `catalogs.ts:468-468`
+- **categories** — Lists the categories that the taint flow analyzer protects against `taint-flow-analyzer.ts:406-406`
+- **categories** — Categories of taint vulnerabilities that the taint sink protects against `types.ts:28-28`
+- **category** — The category of a taint vulnerability `types.ts:53-53`
+- **category** — Represents the category or a fallback value `types.ts:65-65`
+- **confidence** — The confidence level of a taint vulnerability `types.ts:60-60`
+- **description** — A brief description of the untrusted data entry point `catalogs.ts:6-6`
+- **description** — Provides a brief description of the pattern `catalogs.ts:14-14`
+- **description** — Stores the description of a catalog entry `catalogs.ts:22-22`
+- **description** — Classifies code as a source with type, description, and priority `catalogs.ts:456-456`
+- **description** — Classifies code as a source with type, categories, description, and priority `catalogs.ts:468-468`
+- **description** — Returns a description object with type, protectsAgainst, and description fields `catalogs.ts:480-480`
+- **description** — Provides an optional description for the taint flow analyzer `taint-flow-analyzer.ts:405-405`
+- **description** — Description of the taint source `types.ts:18-18`
+- **dst** — Indicates the destination of taint, with -1 for return value and 0..N for argument indices `flow-semantics.ts:23-23`
+- **entityId** — The unique identifier for a taint flow step `types.ts:45-45`
+- **file** — File path where the taint source, sink, or sanitizer is located `types.ts:15-15`
+- **file** — The file path where a taint flow step is located `types.ts:25-25`
+- **file** — Specifies the file path `types.ts:35-35`, `types.ts:47-47`
+- **flow** — The flow of a taint vulnerability `types.ts:57-57`
+- **id** — Unique identifier for a taint source, sink, or sanitizer `types.ts:13-13`
+- **id** — Represents a unique identifier `types.ts:23-23`, `types.ts:33-33`
+- **includeTests** — Whether to include tests in a taint analysis `types.ts:67-67`
+- **isSanitizer** — Indicates whether the function is a sanitizer, removing taint `flow-semantics.ts:29-29`
+- **isSink** — Indicates whether the function is a sink, dangerous if tainted data reaches it `flow-semantics.ts:31-31`
+- **isSource** — Indicates whether the function is a source, introducing tainted data `flow-semantics.ts:30-30`
+- **line** — Line number in the file where the taint source, sink, or sanitizer is located `types.ts:16-16`
+- **line** — The line number in the file where a taint flow step is located `types.ts:26-26`
+- **line** — Indicates the line number `types.ts:36-36`, `types.ts:48-48`
+- **mappings** — An array of FlowMapping objects that describe how taint flows within the function `flow-semantics.ts:28-28`
+- **maxDepth** — The maximum depth for a taint analysis `types.ts:66-66`
+- **metadata** — Merges metadata into the entity's metadata `taint-flow-analyzer.ts:618-618`
+- **methodName** — The name of the function being analyzed `flow-semantics.ts:27-27`
+- **missingSanitizers** — The list of missing sanitizers for a taint vulnerability `types.ts:59-59`
+- **name** — Name of a taint source, sink, or sanitizer `types.ts:14-14`
+- **name** — The name of a taint flow step `types.ts:24-24`
+- **name** — Stores the name of an entity `types.ts:34-34`, `types.ts:46-46`
+- **newlyClassified** — A set of newly classified entities `taint-flow-analyzer.ts:386-386`
+- **order** — The order of a taint flow step `types.ts:44-44`
+- **pathBuilder** — Builds paths in the graph for taint analysis `taint-flow-analyzer.ts:38-38`
+- **pattern** — A regular expression pattern for identifying untrusted data entry points `catalogs.ts:4-4`
+- **pattern** — Represents a regular expression pattern `catalogs.ts:11-11`, `catalogs.ts:19-19`
+- **pattern** — Builds a combined regular expression from an array of patterns `catalogs.ts:440-440`
+- **priority** — The priority of the untrusted data entry point, with 1 being the highest `catalogs.ts:7-7`
+- **priority** — Determines the priority of the pattern, with higher values indicating more critical untrusted data entry points `catalogs.ts:15-15`
+- **priority** — Classifies code as a source with type, description, and priority `catalogs.ts:456-456`
+- **priority** — Classifies code as a source with type, categories, description, and priority `catalogs.ts:468-468`
+- **priority** — Determines the priority of the taint flow analyzer `taint-flow-analyzer.ts:408-408`
+- **priority** — Priority level of the taint source `types.ts:19-19`
+- **priority** — Indicates the priority level `types.ts:29-29`
+- **projectPath** — The path to the project for a taint analysis `types.ts:64-64`
+- **protectsAgainst** — An array of taint categories that the sanitizer protects against `catalogs.ts:21-21`
+- **protectsAgainst** — Lists the taint categories this sanitizer pattern protects against `catalogs.ts:480-480`
+- **protectsAgainst** — Specifies the categories that the taint flow analyzer protects against `taint-flow-analyzer.ts:407-407`
+- **protectsAgainst** — Categories of taint vulnerabilities that the taint sanitizer protects against `types.ts:38-38`
+- **role** — Represents the role of the taint flow analyzer `taint-flow-analyzer.ts:403-403`
+- **role** — The role of a taint flow step `types.ts:49-49`
+- **sanitized** — Indicates whether a taint vulnerability is sanitized `types.ts:58-58`
+- **sanitizedFlows** — Counts the number of flows that have been sanitized `types.ts:79-79`
+- **sanitizerIdSet** — A set of sanitizer IDs used in the taint analysis `taint-flow-analyzer.ts:39-39`
+- **sanitizers** — A list of sanitizer entities identified in the taint analysis `taint-flow-analyzer.ts:384-384`
+- **sanitizers** — Represents a sanitizer in a taint analysis, detailing its type and the categories it protects against `types.ts:74-74`
+- **sanitizerType** — Type of the taint sanitizer `types.ts:37-37`
+- **severity** — The severity level of a taint vulnerability `types.ts:54-54`
+- **sink** — The sink of a taint vulnerability `types.ts:56-56`
+- **sinks** — A list of sink entities identified in the taint analysis `taint-flow-analyzer.ts:383-383`
+- **sinks** — Represents a sink in a taint analysis, detailing its type, categories, and priority `types.ts:73-73`
+- **sinkType** — Type of the taint sink `types.ts:27-27`
+- **source** — The source of a taint vulnerability `types.ts:55-55`
+- **sources** — A list of source entities identified in the taint analysis `taint-flow-analyzer.ts:382-382`
+- **sources** — Represents a list of taint sources `types.ts:72-72`
+- **sourceType** — Type of the taint source `types.ts:17-17`
+- **src** — Indicates the source of taint, with -1 for return value and 0..N for argument indices `flow-semantics.ts:21-21`
+- **storage** — Stores the graph storage instance used by the TaintFlowAnalyzer `taint-flow-analyzer.ts:37-37`
+- **summary** — Provides a summary of the taint analysis, including total vulnerabilities, by severity, by category, and flow statistics `types.ts:75-88`
+- **totalVulnerabilities** — Counts the total number of vulnerabilities in the taint analysis `types.ts:76-76`
+- **type** — The type of untrusted data entry point `catalogs.ts:5-5`
+- **type** — Specifies the type of the pattern `catalogs.ts:12-12`
+- **type** — Stores the type of a catalog entry `catalogs.ts:20-20`
+- **type** — Classifies code as a source with type, description, and priority `catalogs.ts:456-456`
+- **type** — Classifies code as a source with type, categories, description, and priority `catalogs.ts:468-468`
+- **type** — Classifies code as a source with type, protectsAgainst, description, and priority `catalogs.ts:480-480`
+- **type** — Specifies the type of the taint flow analyzer `taint-flow-analyzer.ts:404-404`
+- **unsanitizedFlows** — Counts the number of flows that have not been sanitized `types.ts:80-80`
+- **vulnerabilities** — Represents a list of taint vulnerabilities `types.ts:71-71`
 
 ## Dependencies
 

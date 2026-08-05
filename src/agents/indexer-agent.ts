@@ -40,7 +40,7 @@ import type {
   GraphStorage,
   Relationship,
 } from "../types/storage.js";
-import { flattenParsedEntities, parsedEntityToEntity, type RelationType } from "../types/storage.js";
+import { finalizeEntity, flattenParsedEntities, parsedEntityToEntity, type RelationType } from "../types/storage.js";
 import { hashText } from "../utils/fast-hash.js";
 import { sleep, tryGarbageCollect } from "../utils/runtime-detection.js";
 import { BaseAgent } from "./base.js";
@@ -594,12 +594,7 @@ export class IndexerAgent extends BaseAgent {
               }
             : null;
 
-        const entity: Entity = {
-          ...base,
-          id: stableEntityId(base, ordinalMap, parentCtx),
-          createdAt: Date.now(),
-          updatedAt: Date.now(),
-        };
+        const entity = finalizeEntity(base, stableEntityId(base, ordinalMap, parentCtx), Date.now());
 
         storageEntities.push(entity);
         validParsed.push(normalizedParsed as ParsedEntity);
@@ -941,12 +936,7 @@ export class IndexerAgent extends BaseAgent {
             ? { semId: parsed.parentSemId, name: parsed.parentName, entityType: parsed.parentType }
             : null;
 
-        const entity: Entity = {
-          ...base,
-          id: stableEntityId(base, ordinalMap, parentCtx),
-          createdAt: Date.now(),
-          updatedAt: Date.now(),
-        };
+        const entity = finalizeEntity(base, stableEntityId(base, ordinalMap, parentCtx), Date.now());
 
         newEntities.push(entity);
 

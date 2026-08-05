@@ -53,10 +53,11 @@ export function extractTrigrams(content: Uint8Array): FileTrigramData {
   if (map.size === 0) return { entries: [] };
 
   // Convert to sorted array
-  const entries: PackedTrigram[] = new Array(map.size);
-  let idx = 0;
+  // push into an empty array keeps PACKED elements — new Array(map.size) would
+  // leave the array HOLEY, and it is then sorted and scanned by callers
+  const entries: PackedTrigram[] = [];
   for (const [trigram, { nextMask, locMask }] of map) {
-    entries[idx++] = { trigram, nextMask, locMask };
+    entries.push({ trigram, nextMask, locMask });
   }
 
   entries.sort((a, b) => a.trigram - b.trigram);
@@ -115,10 +116,11 @@ export function extractTrigramsFiltered(content: Uint8Array, hashComments: boole
 
   if (map.size === 0) return { entries: [] };
 
-  const entries: PackedTrigram[] = new Array(map.size);
-  let idx = 0;
+  // push into an empty array keeps PACKED elements — new Array(map.size) would
+  // leave the array HOLEY, and it is then sorted and scanned by callers
+  const entries: PackedTrigram[] = [];
   for (const [trigram, { nextMask, locMask }] of map) {
-    entries[idx++] = { trigram, nextMask, locMask };
+    entries.push({ trigram, nextMask, locMask });
   }
 
   entries.sort((a, b) => a.trigram - b.trigram);

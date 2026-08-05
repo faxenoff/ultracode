@@ -1,26 +1,102 @@
 # Module: src/merge/indexing/__tests__
 
-## Overview
+## 🤖 Overview
 
-This test suite validates the core components of the merge indexing system: content normalization (handling various file encodings and line endings), structural code normalization for comparison, semantic signature generation for code units, lazy caching of embeddings, and multi-version indexing across different git branches. Together, these tests ensure that files can be normalized consistently, signatures generated deterministically, caches function reliably under concurrent access, and indexing works correctly when switching between code versions.
+The `merge/indexing` module contains test files for normalizing content, managing lazy embeddings, indexing multiple versions, generating signatures, and normalizing structural data. These tests ensure that the module's components handle various edge cases and data formats correctly.
 
-## Flow
+## 🤖 Architecture
 
 ```
-Source Code Files
-        ↓
-ContentNormalizer (UTF-8 BOM, encodings, line endings)
-        ↓
-StructuralNormalizer (normalize code structure)
-        ↓
-SignatureGenerator (create semantic signatures)
-        ↓
-LazyEmbeddingCache (cache and retrieve signatures)
-        ↓
-MultiVersionIndexer (manage indexes across branches)
-        ↓
-Indexed Code Units (ready for merge analysis)
+  +-------------------+
+  | ContentNormalizer |
+  +-------------------+
+  | LazyEmbeddingCache |
+  +-------------------+
+  | MultiVersionIndexer |
+  +-------------------+
+  | SignatureGenerator |
+  +-------------------+
+  | StructuralNormalizer |
+  +-------------------+
 ```
+
+## 🤖 Flow
+
+```
+  +-------------------+
+  | ContentNormalizer |
+  +-------------------+
+  |     /             |
+  |    /              |
+  |   /               |
+  |  /                |
+  | /                 |
+  |/                  |
+  +-------------------+
+  | LazyEmbeddingCache |
+  +-------------------+
+  |     /             |
+  |    /              |
+  |   /               |
+  |  /                |
+  | /                 |
+  |/                  |
+  +-------------------+
+  | MultiVersionIndexer |
+  +-------------------+
+  |     /             |
+  |    /              |
+  |   /               |
+  |  /                |
+  | /                 |
+  |/                  |
+  +-------------------+
+  | SignatureGenerator |
+  +-------------------+
+  |     /             |
+  |    /              |
+  |   /               |
+  |  /                |
+  | /                 |
+  |/                  |
+  +-------------------+
+  | StructuralNormalizer |
+  +-------------------+
+```
+
+## 🤖 Entity Listing
+
+### Function
+- **createIndex** — Constructs a VersionedIndex object from an array of CodeUnits `lazy-embedding-cache.test.ts:46-68`
+- **createUnit** — Creates a CodeUnit object with specified properties `lazy-embedding-cache.test.ts:27-43`
+- **errorGenerator** — Not present in the provided code `lazy-embedding-cache.test.ts:252-254`
+- **mockCheckoutBranch** — Mocks the checkoutBranch method to resolve to undefined `multi-version-indexer.test.ts:14-14`
+- **mockCleanup** — Mocks the cleanup method to resolve to undefined `multi-version-indexer.test.ts:16-16`
+- **mockDevAgentExecute** — Mocks the execute method of the dev agent to resolve to an object with success: true `multi-version-indexer.test.ts:19-19`
+- **mockGetBranchMetadata** — Mocks the getBranchMetadata method to return null `multi-version-indexer.test.ts:9-9`
+- **mockGetCommitHash** — Mocks the getCommitHash method to return a hash based on the reference `multi-version-indexer.test.ts:17-17`
+- **mockGetMergeBase** — Mocks the getMergeBase method to return "base-commit-hash" `multi-version-indexer.test.ts:13-13`
+- **mockGetRepositoryHash** — Mocks the getRepositoryHash method to return "repo-hash-123" `multi-version-indexer.test.ts:11-11`
+- **mockHasBranchDatabase** — Mocks the hasBranchDatabase method to return false `multi-version-indexer.test.ts:8-8`
+- **mockRestoreOriginalBranch** — Mocks the restoreOriginalBranch method to resolve to undefined `multi-version-indexer.test.ts:15-15`
+- **mockUpdateBranchMetadata** — Mocks the updateBranchMetadata method to return an empty object `multi-version-indexer.test.ts:10-10`
+- **units** — Not present in the provided code `lazy-embedding-cache.test.ts:267-267`
+
+### Import_decl
+- **../../../agents/conductor-orchestrator.js** — Imports `../../../agents/conductor-orchestrator.js` from `../../../agents/conductor-orchestrator.js`. `multi-version-indexer.test.ts:2-2`
+- **../../../core/branch-manager.js** — Imports `../../../core/branch-manager.js` from `../../../core/branch-manager.js`. `multi-version-indexer.test.ts:3-3`
+- **../../integration/git-integration.js** — Imports `../../integration/git-integration.js` from `../../integration/git-integration.js`. `multi-version-indexer.test.ts:4-4`
+- **../../models/code-unit.js** — Imports `../../models/code-unit.js` from `../../models/code-unit.js`. `lazy-embedding-cache.test.ts:2-2`, `lazy-embedding-cache.test.ts:3-3`, `signature-generator.test.ts:2-2`, `signature-generator.test.ts:3-3`
+- **../../models/versioned-index.js** — Imports `../../models/versioned-index.js` from `../../models/versioned-index.js`. `lazy-embedding-cache.test.ts:4-4`
+- **../content-normalizer.js** — Imports `../content-normalizer.js` from `../content-normalizer.js`. `content-normalizer.test.ts:5-5`
+- **../lazy-embedding-cache.js** — Imports `../lazy-embedding-cache.js` from `../lazy-embedding-cache.js`. `lazy-embedding-cache.test.ts:5-5`, `lazy-embedding-cache.test.ts:6-6`
+- **../multi-version-indexer.js** — Imports `../multi-version-indexer.js` from `../multi-version-indexer.js`. `multi-version-indexer.test.ts:5-5`
+- **../signature-generator.js** — Imports `../signature-generator.js` from `../signature-generator.js`. `signature-generator.test.ts:4-4`
+- **../structural-normalizer.js** — Imports `../structural-normalizer.js` from `../structural-normalizer.js`. `structural-normalizer.test.ts:2-2`
+- **bun:test** — Imports `bun:test` from `bun:test`. `content-normalizer.test.ts:1-1`, `lazy-embedding-cache.test.ts:1-1`, `multi-version-indexer.test.ts:1-1`, `signature-generator.test.ts:1-1`, `structural-normalizer.test.ts:1-1`
+- **node:fs/promises** — Imports `node:fs/promises` from `node:fs/promises`. `content-normalizer.test.ts:2-2`
+- **node:os** — Imports `node:os` from `node:os`. `content-normalizer.test.ts:3-3`
+- **node:path** — Imports `node:path` from `node:path`. `content-normalizer.test.ts:4-4`
 
 ## Test Suites by Component
 

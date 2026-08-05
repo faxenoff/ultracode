@@ -1,6 +1,6 @@
 # Patterns
 
-Code pattern detection system combining structural and semantic analysis
+Pattern detection system identifying code patterns, anti-patterns, and best practices.
 
 ## Overview
 

@@ -1,17 +1,58 @@
----
-module_name: hooks
-description: "Git hook installation and pre-commit documentation reference validation"
-status: active
-language: typescript
----
-
 # Hooks
 
-> Installs and manages Git pre-commit hooks that validate documentation references before commits, ensuring no broken links are committed to the repository.
-
-## Overview
+## 🤖 Overview
 
 The hooks module provides two complementary capabilities: a hook installer that manages the lifecycle of Git pre-commit hooks (install, uninstall, status check), and a pre-commit checker that validates all markdown link references in staged files. The checker supports entity references, doc references, file references with line ranges, and external URLs, processing files and references in parallel for performance.
+
+## 🤖 Entity Listing
+
+### Function
+- **checkReferenceTarget** — Validates the target of a reference `pre-commit-check.ts:99-146`
+- **extractReferences** — Extracts references from markdown content `pre-commit-check.ts:69-94`
+- **fileResults** — Stores the results of the pre-commit check for each file `pre-commit-check.ts:176-203`
+- **formatPreCommitResult** — Formats the result of the pre-commit check into a structured object `pre-commit-check.ts:225-249`
+- **getGitHooksDir** — Retrieves the directory path for git hooks `hook-installer.ts:61-84`
+- **getHookStatus** — Not present in the provided code `hook-installer.ts:235-247`
+- **getStagedCodeFiles** — Retrieves staged code files (for reference validation) from the git repository `pre-commit-check.ts:50-64`
+- **getStagedMdFiles** — Retrieves staged .md files from the git repository `pre-commit-check.ts:35-45`
+- **installPreCommitHook** — Not present in the provided code `hook-installer.ts:105-161`
+- **isHookInstalled** — Not present in the provided code `hook-installer.ts:89-100`
+- **refChecks** — Manages reference checks for markdown files `pre-commit-check.ts:183-186`
+- **runPreCommitCheck** — Executes the pre-commit check to validate documentation references `pre-commit-check.ts:157-220`
+- **uninstallHooks** — Not present in the provided code `hook-installer.ts:166-230`
+- **writeHookFile** — Not present in the provided code `hook-installer.ts:132-135`
+
+### Interface
+- **HookInstallResult** — Represents the result of installing git hooks, including success status, installed hooks, skipped hooks, and errors `hook-installer.ts:19-24`
+- **PreCommitCheckResult** — Represents the result of a pre-commit check, including success status, broken references, and warnings `pre-commit-check.ts:21-30`
+
+### Import_decl
+- **../../agents/dev/file-extensions.js** — Imports `../../agents/dev/file-extensions.js` from `../../agents/dev/file-extensions.js`. `pre-commit-check.ts:15-15`
+- **../../utils/file-ops.js** — Imports `../../utils/file-ops.js` from `../../utils/file-ops.js`. `hook-installer.ts:15-15`, `pre-commit-check.ts:16-16`
+- **../../utils/parallel.js** — Imports `../../utils/parallel.js` from `../../utils/parallel.js`. `pre-commit-check.ts:17-17`
+- **node:child_process** — Imports `node:child_process` from `node:child_process`. `hook-installer.ts:11-11`, `pre-commit-check.ts:12-12`
+- **node:fs/promises** — Imports `node:fs/promises` from `node:fs/promises`. `hook-installer.ts:12-12`
+- **node:path** — Imports `node:path` from `node:path`. `hook-installer.ts:13-13`, `pre-commit-check.ts:13-13`
+- **node:util** — Imports `node:util` from `node:util`. `hook-installer.ts:14-14`, `pre-commit-check.ts:14-14`
+
+### Property
+- **brokenRefs** — An array of objects containing details about broken references found in the staged files `pre-commit-check.ts:23-28`
+- **error** — The error message associated with the broken reference `pre-commit-check.ts:27-27`
+- **error** — Represents an error object used in the pre-commit check `pre-commit-check.ts:103-103`
+- **errors** — Contains the list of errors encountered during hook installation `hook-installer.ts:23-23`
+- **file** — The file path where a broken reference was found `pre-commit-check.ts:24-24`
+- **gitRepo** — Not present in the provided code `hook-installer.ts:236-236`
+- **hooksDir** — Not present in the provided code `hook-installer.ts:237-237`
+- **installed** — Contains the list of installed hooks `hook-installer.ts:21-21`
+- **line** — The line number in the file where the broken reference was found `pre-commit-check.ts:25-25`, `pre-commit-check.ts:69-69`, `pre-commit-check.ts:70-70`
+- **preCommit** — Not present in the provided code `hook-installer.ts:238-238`
+- **skipped** — Contains the list of skipped hooks `hook-installer.ts:22-22`
+- **success** — Indicates whether the hook installation was successful `hook-installer.ts:20-20`
+- **success** — Indicates whether the pre-commit check was successful `pre-commit-check.ts:22-22`
+- **syntax** — The syntax used for the reference in the markdown content `pre-commit-check.ts:69-69`, `pre-commit-check.ts:70-70`
+- **target** — The target of the broken reference `pre-commit-check.ts:26-26`, `pre-commit-check.ts:69-69`, `pre-commit-check.ts:70-70`
+- **valid** — Indicates whether the target of a reference is valid `pre-commit-check.ts:103-103`
+- **warnings** — An array of warning messages from the pre-commit check `pre-commit-check.ts:29-29`
 
 ## Data Flow
 
@@ -72,10 +113,6 @@ Hook installation gracefully handles missing `.git` directories, existing hooks 
 - The pre-commit hook shell script currently only warns about staged `.md` files rather than running full MCP validation.
 - Uninstall uses line-based matching for the AutoDoc section, which may not handle all edge cases if the hook was manually edited.
 - External URLs are not validated during pre-commit to avoid network dependencies.
-
-## Exports
-
-
 
 ## Files
 

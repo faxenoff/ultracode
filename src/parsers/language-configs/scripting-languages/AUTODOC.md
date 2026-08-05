@@ -26,7 +26,7 @@ The scripting-languages module provides `LanguageConfig` objects for Python, Bas
 | `PYTHON_CONFIG` | const | Extended Python config with four-layer architecture | [`python.ts:8-164`](./python.ts) |
 | `BASH_CONFIG` | const | Bash script and shell command configuration | [`bash.ts:8-51`](./bash.ts) |
 | `BATCH_CONFIG` | const | Windows batch/cmd file configuration | [`batch.ts:8-52`](./batch.ts) |
-| `POWERSHELL_CONFIG` | const | PowerShell script configuration with classes | [`powershell.ts:8-53`](./powershell.ts) |
+| `POWERSHELL_CONFIG` | const | PowerShell script configuration with classes | [`powershell.ts:39-48`](./powershell.ts) |
 
 ## Dependencies
 

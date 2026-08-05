@@ -1,17 +1,760 @@
----
-module_name: providers
-description: "Embedding provider system with factory pattern for multiple LLM backends"
-status: active
-language: typescript
----
-
 # Providers
 
-> Implements a pluggable embedding provider system supporting 10+ backends (OpenAI, OVMS, Ollama, vLLM, TEI, llama.cpp, MLX, HuggingFace, Cloud.ru) with auto-detection and a unified EmbeddingProvider interface.
+## 🤖 Overview
 
-## Overview
+This module provides a framework for interacting with various semantic search providers, including OpenAI, CloudRU, HuggingFace, and others. It supports embedding, reranking, and scoring functionalities, making it suitable for developers and data scientists who need to integrate semantic search capabilities into their applications.
 
-The providers module uses the factory pattern to create embedding provider instances based on configuration. The factory supports an "auto" mode that probes local ports to detect available inference servers in priority order (MLX on macOS ARM64, then OVMS, llama.cpp, vLLM, TEI). All providers implement the EmbeddingProvider interface with embed(), optional embedBatch(), and extended capabilities like rerank and score. The base module defines provider types, capability interfaces, and the common logger contract.
+The module is structured to allow easy integration with different providers, offering a consistent API for embedding, reranking, and scoring. It includes a factory for creating provider instances and a set of utility functions for handling provider-specific operations.
+
+## 🤖 Architecture
+
+```
+  +---------------------+
+  |     ProviderFactory |
+  +---------------------+
+           | 
+           v
+  +---------------------+
+  |     ProviderBase    |
+  +---------------------+
+           |
+           v
+  +---------------------+
+  |     ProviderSpecific |
+  +---------------------+
+           |
+           v
+  +---------------------+
+  |     ProviderSpecific |
+  +---------------------+
+           |
+           v
+  +---------------------+
+  |     ProviderSpecific |
+  +---------------------+
+           |
+           v
+  +---------------------+
+  |     ProviderSpecific |
+  +---------------------+
+```
+
+## 🤖 Flow
+
+```
+  +---------------------+
+  |     ProviderFactory |
+  +---------------------+
+           | 
+           v
+  +---------------------+
+  |     ProviderBase    |
+  +---------------------+
+           |
+           v
+  +----------------
+  |     ProviderSpecific |
+  +----------------+
+           |
+           v
+  +----------------+
+  |     ProviderSpecific |
+  +----------------+
+           |
+           v
+  +----------------+
+  |     ProviderSpecific |
+  +----------------+
+           |
+           v
+  +----------------+
+  |     ProviderSpecific |
+  +----------------+
+           |
+           v
+  +----------------+
+  |     ProviderSpecific |
+  +----------------+
+```
+
+## 🤖 Entity Listing
+
+### Function
+- **[tokenizerJson, tokenizerConfig]** — Fetches and processes tokenizer configuration from the OVMS server `ovms-provider.ts:365-368`
+- **[tokenizerJson, tokenizerConfig]** — Handles the response from fetching tokenizer configuration, ensuring it is parsed correctly `ovms-provider.ts:370-373`
+- **[tokenizerJson, tokenizerConfig]** — Catches errors during the fetching of tokenizer configuration and returns an empty object `ovms-provider.ts:374-374`
+- **batchPromises** — Promises for batch processing `ovms-provider.ts:504-573`
+- **batchPromises** — Processes a batch of text inputs to generate embeddings `ovms-provider.ts:505-573`
+- **body** — Represents the body of the HTTP request `llamacpp-provider.ts:264-264`
+- **body** — The body of a request or response in an HTTP communication `llamacpp-provider.ts:354-354`
+- **body** — Not present in the provided code `ollama-provider.ts:157-157`
+- **body** — Contains the request body for API calls `tei-provider.ts:506-506`
+- **body** — Represents the body of a request `tei-provider.ts:405-405`, `tei-provider.ts:571-571`
+- **buildCandidates** — Generates a list of candidate providers for auto-detection `factory.ts:26-61`
+- **builders** — Contains a list of builder functions `factory.ts:202-214`
+- **builders** — Creates a CloudRUProvider instance with specified options `factory.ts:218-227`
+- **builders** — Creates a HuggingFaceProvider instance with specified options `factory.ts:231-242`
+- **builders** — Parses and returns a new TEI provider instance with specified options `factory.ts:246-258`
+- **builders** — Parses and returns a new Ollama provider instance with specified options `factory.ts:262-276`
+- **builders** — Parses and returns a new llama.cpp provider instance with specified options `factory.ts:280-305`
+- **builders** — Parses and returns a new MLX native provider instance with specified options `factory.ts:309-332`
+- **check** — Checks the status of the TEI container `tei-provider.ts:228-228`
+- **check** — Handles the error case for the TEI provider request `tei-provider.ts:254-254`
+- **createProvider** — Creates a provider instance based on the detected model `factory.ts:370-391`
+- **detail** — Not present in the provided code `ollama-provider.ts:109-109`
+- **detectAvailableProvider** — Detects and returns an available provider and its model `factory.ts:63-96`
+- **embeddings** — A list of embeddings generated from the texts `llamacpp-provider.ts:371-375`
+- **embeddings** — Stores the embeddings generated by the TEI provider `tei-provider.ts:517-521`
+- **errorBody** — Error body for API responses `ovms-provider.ts:535-535`
+- **errorBody** — Stores the error body from the HTTP response `ovms-provider.ts:737-737`
+- **getTokenizerModel** — Get the HuggingFace model ID for tokenizer `ovms-utils.ts:49-51`
+- **gguf** — Represents the GGUF model used by the provider `llamacpp-provider.ts:232-232`
+- **healthCheck** — Performs a health check on the TEI container `tei-provider.ts:173-173`
+- **maxTokensFor** — Calculates the maximum tokens allowed for a given model `ollama-provider.ts:23-25`
+- **normalizeVector** — L2 normalize a vector in-place `ovms-utils.ts:17-29`
+- **ovmsBuilder** — Represents a function to build an OVMS provider `factory.ts:337-364`
+- **p** — Not a standalone entity, likely a typo or placeholder `openai-provider.ts:75-75`
+- **p** — Applies the batch function to the current item `openai-provider.ts:77-77`
+- **part** — Builds a body object for a part request with the model and input `cloudru-provider.ts:74-74`
+- **part** — Applies the many method to the provided input `cloudru-provider.ts:76-76`
+- **processBatch** — Process batch of embeddings `ovms-provider.ts:726-825`
+- **processBatch** — Processes a batch of input texts to generate embeddings `ovms-provider.ts:775-775`
+- **processBatch** — Processes a single batch of text inputs to generate embeddings `ovms-provider.ts:907-928`
+- **processChunk** — Processes a chunk of texts to generate embeddings `llamacpp-provider.ts:306-309`
+- **processChunk** — Processes a chunk of texts for embedding `tei-provider.ts:456-459`
+- **promise** — A promise representing an asynchronous operation `llamacpp-provider.ts:319-323`
+- **promise** — Represents a promise for asynchronous operations `tei-provider.ts:471-475`
+- **res** — Represents the response from the TEI server `tei-provider.ts:564-564`
+- **results** — Stores the results of embedding operations `ovms-provider.ts:828-828`
+- **results** — Stores the results of processing multiple batches `ovms-provider.ts:828-828`
+- **results** — Parses batch configurations and processes each in parallel `ovms-provider.ts:930-930`
+- **results** — Parses a batch of configurations and processes them concurrently `ovms-provider.ts:930-930`
+- **results** — Stores the results of the embedding and reranking operations `tei-provider.ts:577-582`
+- **seemsMissing** — Determines if a model is missing based on the error message `ollama-provider.ts:27-34`
+- **sorted** — A sorted list or array `llamacpp-provider.ts:369-369`
+- **sortedData** — Sorted data for batch processing `ovms-provider.ts:554-554`
+- **text** — A method to extract text from a response `http-engine.ts:97-97`
+- **vs** — Maps the data to Float32Array instances for each embedding `cloudru-provider.ts:122-122`
+- **vs** — Maps the embedding rows to Float32Array instances `cloudru-provider.ts:127-127`
+- **vs** — Parses the embeddings from the response data into a Float32Array `openai-provider.ts:119-119`
+- **{ stdout: containerList }** — Captures the standard output as a container list `tei-provider.ts:191-191`
+- **{ stdout: currentImage }** — Captures the standard output as the current image `tei-provider.ts:200-200`
+- **{ stdout: inspectJson }** — Captures the standard output as inspect JSON `tei-provider.ts:281-281`
+- **{ stdout: logs }** — Captures the standard output as logs `tei-provider.ts:241-241`
+
+### Method
+- **acquireBuffer** — Acquire buffer for GPU operations `ovms-provider.ts:604-613`
+- **batch** — A method to process the response from a batch embedding request `openai-provider.ts:116-122`
+- **callBatch** — A method to batch multiple HTTP requests and return their results `http-engine.ts:70-77`
+- **callSingle** — Makes a single HTTP request and returns the parsed response `http-engine.ts:50-68`
+- **checkReachable** — Checks if the server is reachable `ollama-provider.ts:134-146`
+- **close** — Closes the provider `cloudru-provider.ts:55-55`
+- **close** — Closes a connection or resource `llamacpp-provider.ts:390-393`
+- **close** — Not present in the provided code `mlx-provider.ts:180-183`
+- **close** — An asynchronous method that closes the provider, currently empty `openai-provider.ts:56-56`
+- **close** — Closes the gRPC connection `ovms-grpc-client.ts:418-423`
+- **close** — Closes the gRPC client connection `ovms-provider.ts:952-961`
+- **close** — Closes the connection to the TEI server `tei-provider.ts:536-536`
+- **constructor** — Initializes the CloudRUProvider with options `cloudru-provider.ts:33-46`
+- **constructor** — Initializes an HttpError instance with status, status text, and optional body `http-engine.ts:5-14`
+- **constructor** — Initializes the HTTP engine with options for base URL, timeout, retries, backoff, headers, and concurrency `http-engine.ts:41-48`
+- **constructor** — Constructor for Hugging FaceProvider `huggingface-provider.ts:31-45`
+- **constructor** — Initializes the LlamaCppProvider with given options `llamacpp-provider.ts:68-92`
+- **constructor** — Initializes the MLX provider with given options `mlx-provider.ts:48-61`
+- **constructor** — Initializes the OllamaProvider with given options `ollama-provider.ts:49-65`
+- **constructor** — Initializes the OpenAIProvider with options including API key, model, and other configuration `openai-provider.ts:40-50`
+- **constructor** — The constructor for the OVMS gRPC client `ovms-grpc-client.ts:133-139`
+- **constructor** — Initializes the OVMS provider with necessary configurations `ovms-provider.ts:133-164`
+- **constructor** — The constructor for the TEIProvider class `tei-provider.ts:46-59`
+- **decodeBase64ToFloat32** — Decode base64 string to float32 array `ovms-provider.ts:631-646`
+- **detectComputeCap** — Detects the compute capabilities of the TEI container `tei-provider.ts:137-150`
+- **doWarmup** — Warms up the model using the provided warmText `ollama-provider.ts:128-132`
+- **embed** — Embeds a single text input `cloudru-provider.ts:57-65`
+- **embed** — Embeds a single text input using the Hugging Face model `huggingface-provider.ts:84-132`
+- **embed** — Generates embeddings for the given input text `llamacpp-provider.ts:248-291`
+- **embed** — Not present in the provided code `mlx-provider.ts:90-94`
+- **embed** — Embeds text using the Ollama provider `ollama-provider.ts:99-119`
+- **embed** — Asynchronously embeds a single text input using the OpenAI API `openai-provider.ts:58-66`
+- **embed** — Embeds a single token `ovms-provider.ts:440-446`
+- **embed** — Embeds a text using the TEI provider `tei-provider.ts:391-435`
+- **embedBatch** — Embeds a batch of text inputs `cloudru-provider.ts:67-98`
+- **embedBatch** — Asynchronously embeds a batch of texts using concurrency control `huggingface-provider.ts:134-141`
+- **embedBatch** — Processes a batch of texts to generate embeddings `llamacpp-provider.ts:293-338`
+- **embedBatch** — Not present in the provided code `mlx-provider.ts:112-178`
+- **embedBatch** — Embeds a batch of texts using the Ollama provider `ollama-provider.ts:121-126`
+- **embedBatch** — Asynchronously embeds a batch of text inputs using the OpenAI API `openai-provider.ts:68-99`
+- **embedBatch** — Embeds a batch of tokens `ovms-provider.ts:448-472`
+- **embedBatch** — Embeds a batch of texts using the TEI provider `tei-provider.ts:437-492`
+- **embedBatchGrpc** — Embeds a batch of texts using gRPC `ovms-provider.ts:855-950`
+- **embedBatchInternal** — Internally processes a batch of texts to generate embeddings `llamacpp-provider.ts:340-388`
+- **embedBatchInternal** — Internal method for embedding a batch of texts `tei-provider.ts:494-534`
+- **embedBatchV2** — Embed batch of texts using OVMS API `ovms-provider.ts:652-848`
+- **embedBatchV3** — Embeds a batch of tokens using a newer version `ovms-provider.ts:480-599`
+- **ensureBuffers** — Not present in the provided code `mlx-provider.ts:101-110`
+- **ensureContainerRunning** — Ensures the TEI container is running `tei-provider.ts:167-269`
+- **fetchRetry** — A private method to retry fetching a URL with backoff if the request fails `http-engine.ts:79-109`
+- **findModelPath** — Finds the path to the GGUF model file `llamacpp-provider.ts:208-242`
+- **getCapabilities** — Returns the capabilities of the Hugging Face provider `huggingface-provider.ts:143-150`
+- **getCapabilities** — Retrieves the capabilities of the embedding provider `llamacpp-provider.ts:395-402`
+- **getCapabilities** — Not present in the provided code `mlx-provider.ts:185-187`
+- **getCapabilities** — Returns the capabilities of the Ollama provider `ollama-provider.ts:95-97`
+- **getCapabilities** — Retrieves the capabilities of the OVMS provider `ovms-provider.ts:963-970`
+- **getCapabilities** — Retrieves the capabilities of the TEI provider `tei-provider.ts:542-549`
+- **getCorrectImageTag** — Retrieves the correct image tag for the TEI container `tei-provider.ts:156-161`
+- **getDimension** — Returns the dimension of the embedding `cloudru-provider.ts:52-54`
+- **getDimension** — Method to get the dimensionality of embeddings `huggingface-provider.ts:80-82`
+- **getDimension** — Retrieves the dimension of the embedding model `llamacpp-provider.ts:244-246`
+- **getDimension** — Returns the dimension of the MLX model `mlx-provider.ts:86-88`
+- **getDimension** — Not present in the provided code `ollama-provider.ts:91-93`
+- **getDimension** — Returns the number of dimensions for embeddings `openai-provider.ts:53-55`
+- **getDimension** — Retrieves the dimension of the model `ovms-provider.ts:347-349`
+- **getDimension** — Retrieves the dimension of the TEI model `tei-provider.ts:387-389`
+- **getModelMetadata** — Retrieves metadata for the model `ovms-grpc-client.ts:218-230`
+- **infer** — Performs inference using the model `ovms-grpc-client.ts:239-305`
+- **initialize** — Initializes the CloudRUProvider `cloudru-provider.ts:48-50`
+- **initialize** — Method to initialize Hugging FaceProvider `huggingface-provider.ts:47-78`
+- **initialize** — Initializes the provider, possibly starting the server if autoStart is true `llamacpp-provider.ts:94-153`
+- **initialize** — Loads the MLX native model and sets up the provider `mlx-provider.ts:63-84`
+- **initialize** — Initializes the provider and checks server reachability `ollama-provider.ts:67-89`
+- **initialize** — An asynchronous method that initializes the provider, currently empty `openai-provider.ts:52-52`
+- **initialize** — Initializes the gRPC client `ovms-grpc-client.ts:144-172`
+- **initialize** — Initializes the provider and its components `ovms-provider.ts:166-309`
+- **initialize** — A method to initialize the TEI provider, ensuring the server is running and ready `tei-provider.ts:61-131`
+- **isServerReady** — Checks if the server is ready `ovms-grpc-client.ts:201-213`
+- **loadTokenizer** — Not present in the provided code `mlx-provider.ts:193-249`
+- **loadTokenizerFromHub** — Loads a tokenizer from HuggingFace `ovms-provider.ts:355-398`
+- **many** — Processes a batch of embeddings from the raw response and returns an array of Float32Array `cloudru-provider.ts:119-132`
+- **meanPooling** — Applies mean pooling to the input tensor `ovms-grpc-client.ts:362-413`
+- **one** — Parses a single embedding from the raw response and returns a Float32Array `cloudru-provider.ts:100-117`
+- **one** — A method to process the response from a single embedding request `openai-provider.ts:107-114`
+- **parseInferenceOutput** — Parses the output of the inference `ovms-grpc-client.ts:310-357`
+- **payload** — A method to build the payload for embedding requests `openai-provider.ts:101-105`
+- **performGpuWarmup** — Performs a GPU warmup to optimize model performance `ovms-provider.ts:316-345`
+- **pullModel** — Not present in the provided code `ollama-provider.ts:148-169`
+- **recreateContainer** — Recreates the TEI container `tei-provider.ts:274-315`
+- **releaseBuffer** — Release buffer for GPU operations `ovms-provider.ts:619-626`
+- **rerank** — Reranks documents based on embeddings `tei-provider.ts:555-609`
+- **restartContainer** — Restarts the TEI container `tei-provider.ts:373-385`
+- **tokenizeBatch** — Tokenizes a batch of text inputs `ovms-provider.ts:405-438`
+- **waitForReady** — Waits for the server to be ready before proceeding `llamacpp-provider.ts:158-202`
+- **waitForReady** — Waits for the server to become ready `ovms-grpc-client.ts:177-196`
+- **waitForReady** — Waits for the TEI container to be ready `tei-provider.ts:322-367`
+
+### Class
+- **CloudRUProvider** — Implements the EmbeddingProvider interface for the CloudRU provider `cloudru-provider.ts:26-133`
+- **HttpEngine** — Manages HTTP requests with options for concurrency, retries, and backoff `http-engine.ts:33-110`
+- **HttpError** — Represents an HTTP error with status, status text, and optional body `http-engine.ts:4-15`
+- **HuggingFaceProvider** — Class implementing Hugging Face embeddings `huggingface-provider.ts:21-151`
+- **LlamaCppProvider** — A class implementing the EmbeddingProvider interface for connecting to a local llama-server for embedding generation `llamacpp-provider.ts:52-403`
+- **MlxProvider** — A class implementing the MLX provider for embedding inference `mlx-provider.ts:39-250`
+- **OllamaProvider** — Implements the Ollama provider for embedding `ollama-provider.ts:36-170`
+- **OpenAIProvider** — A class implementing the EmbeddingProvider interface for interacting with the OpenAI API `openai-provider.ts:34-123`
+- **OVMSGrpcClient** — A class for the OVMS gRPC client `ovms-grpc-client.ts:128-424`
+- **OVMSProvider** — Class representing the OVMS API provider `ovms-provider.ts:109-971`
+- **TEIProvider** — A class representing the Text Embeddings Inference (TEI) provider `tei-provider.ts:37-610`
+
+### Interface
+- **BatchConfig** — Configuration for batch processing `ovms-provider.ts:679-685`
+- **CloudRUOptions** — Configuration options for the CloudRU provider `cloudru-provider.ts:14-22`
+- **CRUBody** — Contains data, embedding, and error information `cloudru-provider.ts:8-12`
+- **CRUEntry** — Represents an entry with an embedding and an optional index `cloudru-provider.ts:4-7`
+- **DetectionCandidate** — Represents a candidate provider with its model, URL, and optional post-detection callback `factory.ts:18-24`
+- **EmbeddingProvider** — An interface representing an embedding provider with methods for embedding, reranking, and scoring `base.ts:65-76`
+- **EmbedOptions** — Options for embedding operations, including an abort signal and request ID `base.ts:30-33`
+- **GrpcBatchConfig** — Configuration for a gRPC batch embedding request `ovms-provider.ts:884-889`
+- **GRPCInferenceService** — Represents a gRPC service for inference operations `ovms-grpc-client.ts:91-107`
+- **GrpcProtoPackage** — A package for gRPC protobuf files `ovms-grpc-client.ts:110-118`
+- **HfInferenceClient** — Basic typing for @huggingface/inference client `huggingface-provider.ts:7-9`
+- **HttpEngineOptions** — Defines options for configuring an HttpEngine instance `http-engine.ts:17-24`
+- **HuggingFaceOptions** — Configuration options for Hugging Face embeddings `huggingface-provider.ts:11-19`
+- **InferInputTensor** — Describes the input tensor for a model inference request `ovms-grpc-client.ts:47-52`
+- **InferOutputTensor** — Describes the output tensor for a model inference request `ovms-grpc-client.ts:54-59`
+- **InferTensorContents** — Represents the contents of a tensor with various data types `ovms-grpc-client.ts:36-45`
+- **LenmlTokenizer** — Interface for tokenizing text using the Lenml tokenizer `ovms-provider.ts:11-29`
+- **LlamaCppOptions** — Configuration options for the llama.cpp provider, including model, base URL, timeout, concurrency, and other server settings `llamacpp-provider.ts:10-30`
+- **MlxProviderOptions** — An interface for configuring the MLX provider with model, model directory, and optional batch and sequence length settings `mlx-provider.ts:13-19`
+- **ModelInferRequest** — Represents a model inference request `ovms-grpc-client.ts:61-68`
+- **ModelInferResponse** — Response object containing model inference results `ovms-grpc-client.ts:70-76`
+- **ModelMetadataResponse** — Response object containing model metadata `ovms-grpc-client.ts:82-88`
+- **OAIEntry** — Represents an entry in the OpenAI embeddings response with an embedding, index, and object `openai-provider.ts:4-8`
+- **OAIPayload** — Represents the payload sent to the OpenAI embeddings API, containing the model, input, and optional dimensions `openai-provider.ts:15-19`
+- **OAIResponse** — Represents the response from the OpenAI embeddings API, containing data, model, object, and usage information `openai-provider.ts:9-14`
+- **OllamaEmbedResponse** — Represents the response from the Ollama model embedding `ollama-provider.ts:5-8`
+- **OllamaOptions** — Defines configuration options for the Ollama provider `ollama-provider.ts:10-21`
+- **OpenAIOptions** — An interface for configuring the OpenAI provider, including API key, model, base URL, timeout, concurrency, dimensions, max batch size, and logger `openai-provider.ts:21-30`
+- **OVMSEmbeddingData** — Represents the data for an embedding `ovms-provider.ts:63-67`
+- **OVMSEmbeddingResponse** — Represents the response from the OVMS embedding API `ovms-provider.ts:69-73`
+- **OVMSGrpcClientOptions** — Options for the OVMS gRPC client `ovms-grpc-client.ts:120-126`
+- **OVMSInferRequest** — Represents the input to the OVMS inference API `ovms-provider.ts:45-52`
+- **OVMSInferResponse** — Represents the output from the OVMS inference API `ovms-provider.ts:54-61`
+- **OVMSModelInfo** — Interface for OVMS model information `ovms-provider.ts:40-43`
+- **OVMSOptions** — Defines configuration options for the OVMS provider, including model, base URL, timeout, and other server-related settings `ovms-provider.ts:75-93`
+- **ProviderCapabilities** — Represents the capabilities of the provider, such as embeddings, rerank, score, and classify `base.ts:35-40`
+- **ProviderFactoryOptions** — Not present in the provided code snippet `factory.ts:100-193`
+- **ProviderInfo** — Contains information about the provider, including its name, model, and capabilities `base.ts:21-28`
+- **ProviderLogger** — Provides logging functionality for the provider `base.ts:14-19`
+- **RequestConfig** — Configuration for a single HTTP request `http-engine.ts:26-31`
+- **RerankDocument** — Represents a document for reranking, containing text and an optional ID `base.ts:42-45`
+- **RerankOptions** — An interface for configuring reranking operations, including topK and threshold `base.ts:54-57`
+- **RerankResult** — Represents the result of a reranking operation, containing the index, score, text, and an optional ID `base.ts:47-52`
+- **ScoreOptions** — An interface for configuring score operations `base.ts:63-63`
+- **ScoreResult** — An interface representing the result of a score operation `base.ts:59-61`
+- **ServerReadyResponse** — Response object indicating server readiness `ovms-grpc-client.ts:78-80`
+- **TEIOptions** — Configuration options for the Text Embeddings Inference (TEI) provider `tei-provider.ts:15-23`
+
+### Type_alias
+- **BuilderFn** — Represents a function to build a provider `factory.ts:197-197`
+- **LenmlTokenizer** — A tokenizer interface for tokenizing text using the @lenml/tokenizers library `mlx-provider.ts:22-34`
+- **OutputMeta** — Metadata for API responses `ovms-provider.ts:750-750`
+- **ProviderKind** — Represents the kind of provider, such as openai, cloudru, etc `base.ts:1-12`
+
+### Import_decl
+- **../../logging/index.js** — Imports `../../logging/index.js` from `../../logging/index.js`. `factory.ts:1-1`
+- **../../utils/config-paths.js** — Imports `../../utils/config-paths.js` from `../../utils/config-paths.js`. `llamacpp-provider.ts:3-3`
+- **../../utils/error-handling.js** — Imports `../../utils/error-handling.js` from `../../utils/error-handling.js`. `huggingface-provider.ts:1-1`, `llamacpp-provider.ts:4-4`, `ollama-provider.ts:1-1`, `ovms-provider.ts:1-1`, `tei-provider.ts:1-1`
+- **../../utils/fast-json.js** — Imports `../../utils/fast-json.js` from `../../utils/fast-json.js`. `llamacpp-provider.ts:5-5`, `ollama-provider.ts:2-2`, `ovms-provider.ts:2-2`, `tei-provider.ts:2-2`
+- **../../utils/provider-logger.js** — Imports `../../utils/provider-logger.js` from `../../utils/provider-logger.js`. `factory.ts:2-2`
+- **../../utils/runtime.js** — Imports `../../utils/runtime.js` from `../../utils/runtime.js`. `http-engine.ts:2-2`, `llamacpp-provider.ts:6-6`, `ovms-utils.ts:7-7`, `tei-provider.ts:3-3`
+- **../llamacpp-server-manager.js** — Imports `../llamacpp-server-manager.js` from `../llamacpp-server-manager.js`. `factory.ts:3-3`, `llamacpp-provider.ts:7-7`
+- **../mlx-native.js** — Imports `../mlx-native.js` from `../mlx-native.js`. `factory.ts:4-4`, `mlx-provider.ts:10-10`
+- **../ovms-native-manager.js** — Imports `../ovms-native-manager.js` from `../ovms-native-manager.js`. `factory.ts:5-5`
+- **./base.js** — Imports `./base.js` from `./base.js`. `cloudru-provider.ts:1-1`, `factory.ts:6-6`, `huggingface-provider.ts:2-2`, `llamacpp-provider.ts:8-8`, `mlx-provider.ts:11-11`, `ollama-provider.ts:3-3`, `openai-provider.ts:1-1`, `ovms-provider.ts:3-3`
+- **./base.js** — Imports `./base.js`. `tei-provider.ts:4-13`
+- **./cloudru-provider.js** — Imports `./cloudru-provider.js` from `./cloudru-provider.js`. `factory.ts:7-7`
+- **./http-engine.js** — Imports `./http-engine.js` from `./http-engine.js`. `cloudru-provider.ts:2-2`, `openai-provider.ts:2-2`
+- **./huggingface-provider.js** — Imports `./huggingface-provider.js` from `./huggingface-provider.js`. `factory.ts:8-8`
+- **./llamacpp-provider.js** — Imports `./llamacpp-provider.js` from `./llamacpp-provider.js`. `factory.ts:9-9`
+- **./mlx-provider.js** — Imports `./mlx-provider.js` from `./mlx-provider.js`. `factory.ts:10-10`
+- **./ollama-provider.js** — Imports `./ollama-provider.js` from `./ollama-provider.js`. `factory.ts:11-11`
+- **./openai-provider.js** — Imports `./openai-provider.js` from `./openai-provider.js`. `factory.ts:12-12`
+- **./ovms-grpc-client.js** — Imports `./ovms-grpc-client.js` from `./ovms-grpc-client.js`. `ovms-provider.ts:4-4`
+- **./ovms-provider.js** — Imports `./ovms-provider.js` from `./ovms-provider.js`. `factory.ts:13-13`
+- **./ovms-utils.js** — Imports `./ovms-utils.js` from `./ovms-utils.js`. `ovms-provider.ts:5-5`
+- **./tei-provider.js** — Imports `./tei-provider.js` from `./tei-provider.js`. `factory.ts:14-14`
+- **@grpc/grpc-js** — Imports `@grpc/grpc-js` from `@grpc/grpc-js`. `ovms-grpc-client.ts:16-16`
+- **@grpc/proto-loader** — Imports `@grpc/proto-loader` from `@grpc/proto-loader`. `ovms-grpc-client.ts:17-17`
+- **node:fs** — Imports `node:fs` from `node:fs`. `llamacpp-provider.ts:1-1`
+- **node:path** — Imports `node:path` from `node:path`. `llamacpp-provider.ts:2-2`, `ovms-grpc-client.ts:14-14`
+- **node:url** — Imports `node:url` from `node:url`. `ovms-grpc-client.ts:15-15`
+- **p-limit** — Imports `p-limit` from `p-limit`. `http-engine.ts:1-1`
+
+### Property
+- **add_special_tokens** — Boolean for adding special tokens to the input text `ovms-provider.ts:17-17`
+- **add_special_tokens** — Adds special tokens to the input text for encoding `ovms-provider.ts:28-28`
+- **apiKey** — API key for the CloudRU provider `cloudru-provider.ts:17-17`
+- **apiKey** — Stores the API key for the provider `factory.ts:106-106`
+- **apiKey** — Represents an optional API key `factory.ts:116-116`, `factory.ts:124-124`
+- **apiKey** — API key for Hugging Face embeddings `huggingface-provider.ts:13-13`
+- **apiKey** — Stores the API key for accessing the Hugging Face API `huggingface-provider.ts:23-23`
+- **apiKey** — A string representing the API key for the OpenAI provider `openai-provider.ts:22-22`
+- **attention_mask** — The attention mask for the tokenized text `mlx-provider.ts:32-32`
+- **attention_mask** — Array of integers representing the attention mask `ovms-provider.ts:25-25`
+- **attentionMask** — Not present in the provided code `mlx-provider.ts:101-101`
+- **attentionMask** — Stores the attention mask for the current batch `ovms-provider.ts:887-887`
+- **attentionMask2D** — Stores attention masks for a batch of tokens `ovms-provider.ts:410-410`
+- **autoPull** — Not present in the provided code `factory.ts:146-146`
+- **autoPull** — Indicates whether to automatically pull the model if it's missing `ollama-provider.ts:16-16`
+- **autoStart** — Determines if the provider should start automatically `factory.ts:176-176`
+- **autoStart** — Controls whether the server should start automatically if not running `llamacpp-provider.ts:62-62`
+- **autoStart** — Whether to auto-start the llama-server if not running `llamacpp-provider.ts:23-23`
+- **backoff** — The backoff duration in milliseconds between retries `http-engine.ts:37-37`
+- **backoffMs** — The backoff duration in milliseconds between retries `http-engine.ts:22-22`
+- **baseUrl** — Base URL for the CloudRU provider `cloudru-provider.ts:16-16`
+- **baseUrl** — Stores the base URL for the provider `factory.ts:105-105`
+- **baseUrl** — Not present in the provided code `factory.ts:115-115`
+- **baseUrl** — Represents an optional base URL `factory.ts:125-125`, `factory.ts:133-133`, `factory.ts:142-142`, `factory.ts:154-154`
+- **baseUrl** — Defines the base URL for API requests `factory.ts:168-168`
+- **baseUrl** — The base URL for HTTP requests `http-engine.ts:18-18`
+- **baseUrl** — Base URL for Hugging Face embeddings `huggingface-provider.ts:14-14`
+- **baseUrl** — Holds the base URL for the Hugging Face API `huggingface-provider.ts:24-24`
+- **baseUrl** — The base URL for the llama-server `llamacpp-provider.ts:12-12`
+- **baseUrl** — Stores the base URL for the LlamaCPP provider `llamacpp-provider.ts:54-54`
+- **baseUrl** — Sets the base URL for the Ollama server `ollama-provider.ts:12-12`
+- **baseUrl** — An optional string representing the base URL for the OpenAI API `openai-provider.ts:24-24`
+- **baseUrl** — Base URL for the OVMS API `ovms-provider.ts:77-77`
+- **baseUrl** — Defines the base URL for the server `ovms-provider.ts:111-111`
+- **baseUrl** — The base URL for the TEI server `tei-provider.ts:17-17`
+- **baseUrl** — Represents the base URL for the TEI provider `tei-provider.ts:39-39`
+- **batchIndex** — Manages the index for a batch of tokens `ovms-provider.ts:486-486`
+- **batchIndex** — Index for batch processing `ovms-provider.ts:680-680`
+- **batchIndex** — Tracks the index of the current batch being processed `ovms-provider.ts:726-726`
+- **batchIndex** — Stores the index of the current batch `ovms-provider.ts:885-885`
+- **batchIndex** — Returns the index of the current batch `ovms-provider.ts:909-909`
+- **batchSize** — Defines the batch size for processing `factory.ts:182-182`
+- **batchSize** — Sets the batch size for prompt processing, defaulting to 1024 `llamacpp-provider.ts:66-66`
+- **batchSize** — The batch size for prompt processing `llamacpp-provider.ts:29-29`
+- **bool_contents** — Boolean array contents for a tensor `ovms-grpc-client.ts:37-37`
+- **bufAttentionMask** — Not present in the provided code `mlx-provider.ts:98-98`
+- **bufCapacity** — Not present in the provided code `mlx-provider.ts:99-99`
+- **bufferPool** — Manages a buffer pool for efficient memory usage `ovms-provider.ts:130-130`
+- **bufInputIds** — Not present in the provided code `mlx-provider.ts:97-97`
+- **buildBody** — A function to build the request body `http-engine.ts:30-30`
+- **bytes_contents** — Byte array contents for a tensor `ovms-grpc-client.ts:44-44`
+- **checkServer** — Auto-detects available embedding providers `factory.ts:136-136`
+- **checkServer** — Validates the availability of a server endpoint `factory.ts:148-148`
+- **checkServer** — Indicates whether to check the server status before making requests `factory.ts:157-157`, `factory.ts:171-171`, `tei-provider.ts:42-42`
+- **checkServer** — Determines whether to check if the server is running before making requests `llamacpp-provider.ts:57-57`
+- **checkServer** — Whether to check if the server is running before making requests `llamacpp-provider.ts:15-15`
+- **checkServer** — Indicates whether to check the server's reachability `ollama-provider.ts:18-18`
+- **checkServer** — Boolean flag to check the server status `ovms-provider.ts:80-80`
+- **checkServer** — Indicates whether to check the server status `ovms-provider.ts:116-116`
+- **checkServer** — A flag indicating whether to check if the TEI server is running `tei-provider.ts:20-20`
+- **classify** — Indicates whether the provider supports classification `base.ts:39-39`
+- **client** — Hugging Face inference client `huggingface-provider.ts:29-29`
+- **client** — The gRPC client instance `ovms-grpc-client.ts:129-129`
+- **close** — Closes the gRPC channel `ovms-grpc-client.ts:106-106`
+- **cloudru** — Represents a CloudRU provider for embedding models `factory.ts:113-121`
+- **concurrency** — Number of concurrent requests for the CloudRU provider `cloudru-provider.ts:19-19`
+- **concurrency** — Stores the concurrency level for the provider `factory.ts:108-108`
+- **concurrency** — Not present in the provided code `factory.ts:118-118`
+- **concurrency** — Represents the degree of parallelism for processing tasks `factory.ts:127-127`
+- **concurrency** — Represents an optional concurrency level `factory.ts:135-135`, `factory.ts:144-144`
+- **concurrency** — Specifies the number of concurrent requests allowed `factory.ts:156-156`, `factory.ts:170-170`
+- **concurrency** — The maximum number of concurrent HTTP requests `http-engine.ts:20-20`
+- **concurrency** — Concurrency setting for Hugging Face embeddings `huggingface-provider.ts:16-16`
+- **concurrency** — Defines the maximum number of concurrent API requests. `hugging `huggingface-provider.ts:26-26`
+- **concurrency** — Specifies the number of concurrent requests the server can handle `llamacpp-provider.ts:56-56`
+- **concurrency** — The number of concurrent requests to the server `llamacpp-provider.ts:14-14`
+- **concurrency** — Sets the maximum number of concurrent requests `ollama-provider.ts:14-14`
+- **concurrency** — Specifies the maximum number of concurrent requests allowed `ollama-provider.ts:42-42`
+- **concurrency** — An optional number representing the number of concurrent requests `openai-provider.ts:26-26`
+- **concurrency** — Maximum number of concurrent API requests `ovms-provider.ts:79-79`
+- **concurrency** — Specifies the number of concurrent requests `ovms-provider.ts:115-115`
+- **concurrency** — The number of concurrent requests allowed to the TEI server `tei-provider.ts:19-19`
+- **concurrency** — Determines the number of concurrent requests allowed for the TEI provider `tei-provider.ts:41-41`
+- **config** — A configuration object for the tokenizer `mlx-provider.ts:37-37`
+- **config** — Configuration object for the tokenizer `ovms-provider.ts:32-32`
+- **contents** — Contents of the tensor `ovms-grpc-client.ts:51-51`
+- **contents** — Optionally stores the contents of the tensor `ovms-grpc-client.ts:58-58`
+- **contextSize** — Specifies the maximum length of the context for a model `factory.ts:173-173`
+- **contextSize** — Sets the context size for the model, defaulting to 2048 tokens `llamacpp-provider.ts:60-60`
+- **contextSize** — The context size for the model `llamacpp-provider.ts:19-19`
+- **data** — Optional array of CRUEntry objects `cloudru-provider.ts:9-9`
+- **data** — Contains the data to be processed `llamacpp-provider.ts:269-269`
+- **data** — The data payload in an HTTP request or response `llamacpp-provider.ts:359-359`
+- **data** — An array of OAIEntry objects `openai-provider.ts:10-10`
+- **data** — The data tensor for the output `ovms-provider.ts:50-50`
+- **data** — Data tensor `ovms-provider.ts:59-59`
+- **data** — Represents an array of OVMSEmbeddingData objects `ovms-provider.ts:70-70`
+- **data** — Represents the data of an output metadata object. `ovms-provider.ts:75—you `ovms-provider.ts:750-750`
+- **datatype** — Data type of the input tensor `ovms-grpc-client.ts:56-56`, `ovms-grpc-client.ts:86-86`
+- **datatype** — Data type of the tensor `ovms-grpc-client.ts:49-49`, `ovms-grpc-client.ts:87-87`
+- **datatype** — The data type of the input tensor `ovms-provider.ts:42-42`
+- **datatype** — Data type of the input `ovms-provider.ts:41-41`, `ovms-provider.ts:49-49`
+- **datatype** — Data type of tensor `ovms-provider.ts:58-58`
+- **datatype** — Represents the data type of an output metadata object `ovms-provider.ts:750-750`
+- **deadline** — The deadline for inference `ovms-grpc-client.ts:102-102`
+- **defaultHeaders** — Default headers for HTTP requests `http-engine.ts:23-23`
+- **dimension** — The dimension of the embeddings `base.ts:25-25`
+- **dimensions** — Not present in the provided code `factory.ts:109-109`
+- **dimensions** — An optional number representing the dimensions of the embedding `openai-provider.ts:18-18`
+- **dimensions** — Optionally sets the dimensions `openai-provider.ts:27-27`
+- **dims** — The number of dimensions for embeddings, if specified `openai-provider.ts:37-37`
+- **embedding** — Stores the embedding data `cloudru-provider.ts:5-5`
+- **embedding** — Represents an array of numbers or an array of arrays of numbers `cloudru-provider.ts:10-10`
+- **embedding** — Stores the generated embedding `llamacpp-provider.ts:269-269`
+- **embedding** — A single embedding generated from a text `llamacpp-provider.ts:359-359`
+- **embedding** — Stores the embedding result from the Ollama model `ollama-provider.ts:6-6`
+- **embedding** — An array of numbers representing the embedding `openai-provider.ts:5-5`
+- **embedding** — The embedding vector `ovms-provider.ts:64-64`
+- **embeddings** — Indicates whether the provider supports embeddings `base.ts:36-36`
+- **embeddings** — Represents the embeddings associated with a chunk in the results array `llamacpp-provider.ts:303-303`
+- **embeddings** — Embeddings for processed texts `ovms-provider.ts:726-726`
+- **embeddings** — Stores the embeddings generated for the current batch `ovms-provider.ts:909-909`
+- **embeddings** — Stores the embeddings for the texts processed in the current batch `tei-provider.ts:453-453`
+- **encodingFormat** — Not present in the provided code `factory.ts:160-160`
+- **encodingFormat** — Encoding format for API requests `ovms-provider.ts:83-83`
+- **encodingFormat** — Specifies the encoding format for the data `ovms-provider.ts:119-119`
+- **end** — End time for batch processing `ovms-provider.ts:682-682`
+- **endpoint** — Base URL for OVMS API `ovms-provider.ts:486-486`
+- **endpointIndex** — Manages the index of endpoints for the OVMS API `ovms-provider.ts:127-127`
+- **endpoints** — Not present in the provided code `factory.ts:163-163`
+- **endpoints** — List of endpoints for API requests `ovms-provider.ts:91-91`
+- **endpoints** — Stores endpoints for the OVMS API `ovms-provider.ts:126-126`
+- **engine** — HttpEngine instance for the CloudRU provider `cloudru-provider.ts:28-28`
+- **engine** — An instance of HttpEngine used to make HTTP requests to the OpenAI API `openai-provider.ts:36-36`
+- **error** — Optional error information `cloudru-provider.ts:11-11`
+- **fp32_contents** — 32-bit floating-point array contents for a tensor `ovms-grpc-client.ts:42-42`
+- **fp64_contents** — 64-bit floating-point array contents for a tensor `ovms-grpc-client.ts:43-43`
+- **gate** — A rate limiter for concurrent HTTP requests `http-engine.ts:39-39`
+- **getChannel** — Retrieves the gRPC channel `ovms-grpc-client.ts:105-105`
+- **grpcClient** — Creates a gRPC client for interacting with the OVMS API `ovms-provider.ts:122-122`
+- **GRPCInferenceService** — A gRPC service for model inference `ovms-grpc-client.ts:112-116`
+- **grpcObject** — The gRPC object `ovms-grpc-client.ts:131-131`
+- **grpcPort** — Not present in the provided code `factory.ts:162-162`
+- **grpcPort** — gRPC port for API requests `ovms-provider.ts:87-87`
+- **grpcPort** — Sets the port for gRPC communication `ovms-provider.ts:121-121`
+- **hdrs** — Default headers for HTTP requests `http-engine.ts:38-38`
+- **hdrs** — A record of headers used for API requests `ollama-provider.ts:43-43`
+- **headers** — Not present in the provided code `factory.ts:145-145`
+- **headers** — Additional headers for the request `http-engine.ts:29-29`
+- **headers** — Stores custom headers for Ollama requests `ollama-provider.ts:15-15`
+- **host** — The host address for the gRPC server `ovms-grpc-client.ts:121-121`
+- **huggingface** — Represents a HuggingFace provider for embedding models `factory.ts:122-130`
+- **id** — The ID of a document `base.ts:44-44`
+- **id** — Optionally stores an identifier `base.ts:51-51`
+- **id** — Unique identifier for the model `ovms-grpc-client.ts:64-64`
+- **id** — Stores the identifier of the model `ovms-grpc-client.ts:73-73`
+- **idx** — An index used to track the position in a list or array `llamacpp-provider.ts:298-298`
+- **idx** — Represents the index of a chunk in the results array `llamacpp-provider.ts:303-303`
+- **idx** — Represents the index of a chunk in the processChunk function `llamacpp-provider.ts:306-306`
+- **idx** — Represents an index or position `tei-provider.ts:447-447`
+- **idx** — Stores the index of the current batch being processed `tei-provider.ts:453-453`
+- **idx** — Contains the texts to be processed in the current batch `tei-provider.ts:456-456`
+- **index** — The index of the reranked document `base.ts:48-48`
+- **index** — Optional index for the embedding `cloudru-provider.ts:6-6`
+- **index** — Represents the index of the embedding `llamacpp-provider.ts:269-269`
+- **index** — An index used to track the position in a list or array `llamacpp-provider.ts:359-359`
+- **index** — An integer representing the index of the embedding `openai-provider.ts:6-6`
+- **index** — The index of the embedding `ovms-provider.ts:65-65`
+- **index** — Represents the index of the results `tei-provider.ts:575-575`
+- **inference** — The inference service `ovms-grpc-client.ts:111-117`
+- **inferRequest** — Request for model inference `ovms-provider.ts:684-684`
+- **info** — An interface representing provider information, including name, model, and capabilities `base.ts:66-66`
+- **info** — Provider information for the CloudRU provider `cloudru-provider.ts:27-27`
+- **info** — Provider information for Hugging Face embeddings `huggingface-provider.ts:22-22`
+- **info** — The provider information `llamacpp-provider.ts:53-53`
+- **info** — The provider information including model name, batch size, and sequence length `mlx-provider.ts:40-40`
+- **info** — Provides information about the Ollama provider `ollama-provider.ts:37-37`
+- **info** — An object containing provider information such as name, model, and batch size `openai-provider.ts:35-35`
+- **info** — Information about the OVMS API provider `ovms-provider.ts:110-110`
+- **info** — Information about the TEI provider, including its name and model `tei-provider.ts:38-38`
+- **initialized** — A boolean indicating whether the provider has been initialized `mlx-provider.ts:46-46`
+- **input** — A string or array of strings representing the input text `openai-provider.ts:17-17`
+- **input_ids** — The input IDs for the tokenized text `mlx-provider.ts:31-31`
+- **input_ids** — Array of integers representing the input tokens `ovms-provider.ts:24-24`
+- **inputIds** — Not present in the provided code `mlx-provider.ts:101-101`
+- **inputIds** — Stores the input IDs for the current batch `ovms-provider.ts:886-886`
+- **inputIds2D** — Stores input IDs for a batch of tokens `ovms-provider.ts:409-409`
+- **inputs** — Inputs for the Hugging Face inference client `huggingface-provider.ts:8-8`
+- **inputs** — Array of input tensors for the model inference `ovms-grpc-client.ts:65-65`
+- **inputs** — Stores an array of input tensors `ovms-grpc-client.ts:86-86`
+- **inputs** — An array of input tensors for the OVMS inference API `ovms-provider.ts:46-51`
+- **inputs** — Array of input information for the model `ovms-provider.ts:41-41`
+- **int64_contents** — 64-bit integer array contents for a tensor `ovms-grpc-client.ts:39-39`
+- **int_contents** — Integer array contents for a tensor `ovms-grpc-client.ts:38-38`
+- **isNative** — Boolean flag indicating native support `ovms-provider.ts:89-89`
+- **isNative** — Determines if the tokenizer is native to the model `ovms-provider.ts:125-125`
+- **json** — A JSON object for the tokenizer `mlx-provider.ts:37-37`
+- **json** — JSON object for tokenizer configuration `ovms-provider.ts:32-32`
+- **keyed** — Boolean indicating if the provider is keyed `cloudru-provider.ts:31-31`
+- **label** — Gives a human-readable label for the provider `factory.ts:22-22`
+- **llamacpp** — Not present in the provided code `factory.ts:166-184`
+- **log** — Optional logger for the CloudRU provider `cloudru-provider.ts:29-29`
+- **log** — Logger for Hugging Face embeddings `huggingface-provider.ts:28-28`
+- **log** — Provides a logger for the provider `llamacpp-provider.ts:58-58`
+- **log** — An optional logger for the MLX provider `mlx-provider.ts:44-44`
+- **log** — An optional logger for logging information `ollama-provider.ts:47-47`
+- **log** — A ProviderLogger instance used for logging debug information `openai-provider.ts:38-38`
+- **log** — Logs messages for debugging or informational purposes `ovms-provider.ts:123-123`
+- **log** — A logger instance for logging messages `tei-provider.ts:43-43`
+- **logger** — Logger for the CloudRU provider `cloudru-provider.ts:21-21`
+- **logger** — Logger for Hugging Face embeddings `huggingface-provider.ts:18-18`
+- **logger** — The logger to use for logging server interactions `llamacpp-provider.ts:16-16`
+- **logger** — An optional logger for the MLX provider `mlx-provider.ts:18-18`
+- **logger** — Logs information during the Ollama provider initialization `ollama-provider.ts:20-20`
+- **logger** — A logging function used to debug the embed and embedBatch methods `openai-provider.ts:29-29`
+- **logger** — Logger instance for API requests `ovms-provider.ts:92-92`
+- **logger** — A logger instance for logging messages `tei-provider.ts:21-21`
+- **max_client_batch_size** — Specifies the maximum batch size for client requests `tei-provider.ts:96-96`
+- **max_input_length** — Represents the maximum input length for the model `tei-provider.ts:95-95`
+- **max_length** — The maximum length of the tokenized input `mlx-provider.ts:27-27`
+- **max_length** — Maximum length for the input text `ovms-provider.ts:19-19`
+- **maxBatchSize** — The maximum batch size for embeddings `base.ts:26-26`
+- **maxBatchSize** — Maximum batch size for embeddings `cloudru-provider.ts:20-20`
+- **maxBatchSize** — Stores the maximum batch size for the provider `factory.ts:110-110`
+- **maxBatchSize** — Not present in the provided code `factory.ts:119-119`
+- **maxBatchSize** — Defines the maximum number of tokens in a single batch `factory.ts:137-137`
+- **maxBatchSize** — Sets the maximum number of requests in a batch `factory.ts:172-172`, `factory.ts:189-189`
+- **maxBatchSize** — Defines the maximum number of texts per HTTP request `llamacpp-provider.ts:59-59`
+- **maxBatchSize** — The maximum number of texts per HTTP request `llamacpp-provider.ts:17-17`
+- **maxBatchSize** — The maximum batch size for inference `mlx-provider.ts:16-16`
+- **maxBatchSize** — Sets the maximum batch size for model inference `mlx-provider.ts:42-42`
+- **maxBatchSize** — An optional number representing the maximum batch size for embeddings `openai-provider.ts:28-28`
+- **maxBatchSize** — The maximum number of texts per request to the TEI server `tei-provider.ts:22-22`
+- **maxBatchSize** — Sets the maximum batch size for requests to the TEI provider `tei-provider.ts:44-44`
+- **maxMessageSize** — The maximum message size for the gRPC client `ovms-grpc-client.ts:125-125`
+- **maxPoolSize** — Sets the maximum size of the buffer pool `ovms-provider.ts:131-131`
+- **maxRetries** — The maximum number of retries for failed HTTP requests `http-engine.ts:21-21`
+- **maxSeqLen** — Specifies the maximum length of the sequence for a model `factory.ts:190-190`
+- **maxSeqLen** — The maximum sequence length for inference `mlx-provider.ts:17-17`
+- **maxSeqLen** — Defines the maximum sequence length for model input `mlx-provider.ts:43-43`
+- **maxTokens** — The maximum number of tokens allowed `base.ts:27-27`
+- **method** — The HTTP method for the request `http-engine.ts:28-28`
+- **miniBatchSize** — Not present in the provided code `factory.ts:158-158`
+- **miniBatchSize** — Size of mini-batch for API requests `ovms-provider.ts:81-81`
+- **miniBatchSize** — Size of mini-batch for processing `ovms-provider.ts:117-117`
+- **miniBatchSize** — Sets the size of the mini batch for processing `ovms-provider.ts:683-683`
+- **mlx** — Indicates the use of MLX native provider `factory.ts:185-192`
+- **model** — The model used by the provider `base.ts:23-23`
+- **model** — Model name for the CloudRU provider `cloudru-provider.ts:15-15`
+- **model** — Specifies the model name for the provider `factory.ts:20-20`
+- **model** — Detects available provider and returns its kind and model `factory.ts:63-63`
+- **model** — Model name for Hugging Face embeddings `huggingface-provider.ts:8-8`
+- **model** — Represents the model name for the Hugging Face provider `huggingface-provider.ts:12-12`
+- **model** — Represents the model used for embedding generation `llamacpp-provider.ts:270-270`
+- **model** — The model used for embedding generation `llamacpp-provider.ts:360-360`
+- **model** — The name of the GGUF model to use for embedding generation `llamacpp-provider.ts:11-11`
+- **model** — The name of the model used by the MLX provider `mlx-provider.ts:14-14`
+- **model** — Specifies the model name used for embedding `ollama-provider.ts:7-7`
+- **model** — Represents the name of the model to be used `ollama-provider.ts:11-11`
+- **model** — A string representing the model used for embeddings `openai-provider.ts:11-11`
+- **model** — Specifies the model name `openai-provider.ts:16-16`, `openai-provider.ts:23-23`
+- **model** — The model name `ovms-provider.ts:71-71`
+- **model** — Holds a string representing a model `ovms-provider.ts:76-76`
+- **model** — The model ID used by the TEI provider `tei-provider.ts:16-16`
+- **model_id** — Stores the identifier for the model being used `tei-provider.ts:97-97`
+- **model_name** — Name of the model `ovms-grpc-client.ts:62-62`, `ovms-grpc-client.ts:71-71`
+- **model_version** — Represents the version of the model `ovms-grpc-client.ts:63-63`
+- **model_version** — Stores the version of the model `ovms-grpc-client.ts:72-72`
+- **modelDir** — Stores the directory path for model files `factory.ts:188-188`
+- **modelDir** — The directory containing the model files for the MLX provider `mlx-provider.ts:15-15`
+- **modelDir** — Stores the directory path for the model files `mlx-provider.ts:41-41`
+- **modelId** — ID of the model used by the OVMS API `ovms-provider.ts:113-113`
+- **ModelInfer** — A request for model inference `ovms-grpc-client.ts:100-104`
+- **ModelMetadata** — Metadata for a model `ovms-grpc-client.ts:96-99`
+- **modelName** — Stores the name of the model used by the provider `factory.ts:102-102`
+- **modelName** — The name of the model `ovms-grpc-client.ts:123-123`
+- **modelName** — Name of the model used by the OVMS API `ovms-provider.ts:112-112`
+- **name** — The name of the provider `base.ts:22-22`
+- **name** — Name of the model `ovms-grpc-client.ts:55-55`, `ovms-grpc-client.ts:66-66`
+- **name** — The name of a model `ovms-grpc-client.ts:83-83`
+- **name** — Name of the tensor `ovms-grpc-client.ts:48-48`, `ovms-grpc-client.ts:86-86`
+- **name** — Stores the name of the model `ovms-grpc-client.ts:87-87`
+- **name** — Represents a request object with name and optional version fields `ovms-grpc-client.ts:97-97`
+- **name** — The name of the model `ovms-provider.ts:42-42`
+- **name** — Name of the input `ovms-provider.ts:41-41`, `ovms-provider.ts:47-47`
+- **name** — Name of model or API `ovms-provider.ts:56-56`
+- **name** — Represents the name of an output metadata object `ovms-provider.ts:750-750`
+- **nGpuLayers** — Indicates the number of layers on the GPU `factory.ts:174-174`
+- **nGpuLayers** — Specifies the number of GPU layers to offload, defaulting to 99 `llamacpp-provider.ts:61-61`
+- **nGpuLayers** — The number of GPU layers to offload `llamacpp-provider.ts:21-21`
+- **object** — A string representing the object type `openai-provider.ts:7-7`
+- **object** — Represents the object name `openai-provider.ts:12-12`
+- **object** — The object associated with the embedding `ovms-provider.ts:66-66`
+- **object** — Stores a string representing an object `ovms-provider.ts:72-72`
+- **ollama** — Not present in the provided code `factory.ts:140-151`
+- **openai** — Represents an OpenAI provider for embedding models `factory.ts:103-112`
+- **options** — Options for the gRPC client `ovms-grpc-client.ts:130-130`
+- **origin** — Base URL for the CloudRU provider `cloudru-provider.ts:30-30`
+- **origin** — The origin URL for HTTP requests `http-engine.ts:34-34`
+- **origin** — Stores the base URL for the Ollama server `ollama-provider.ts:39-39`
+- **outputs** — Array of output tensors for the model inference `ovms-grpc-client.ts:66-66`
+- **outputs** — Stores an array of output tensors `ovms-grpc-client.ts:74-74`, `ovms-grpc-client.ts:87-87`
+- **outputs** — An array of output tensors from the OVMS inference API `ovms-provider.ts:55-60`
+- **outputs** — Specifies the output shapes and data types for the OVMS provider `ovms-provider.ts:42-42`
+- **ovms** — Not present in the provided code `factory.ts:152-165`
+- **padding** — A boolean indicating whether padding is applied during tokenization `mlx-provider.ts:25-25`
+- **padding** — Boolean or "max_length" for padding the input text `ovms-provider.ts:16-16`
+- **parallelSlots** — Sets the number of parallel slots for processing `factory.ts:178-178`
+- **parallelSlots** — Sets the number of parallel request slots on the server, defaulting to 4 `llamacpp-provider.ts:64-64`
+- **parallelSlots** — The number of parallel request slots on the server `llamacpp-provider.ts:25-25`
+- **path** — The path for the HTTP request `http-engine.ts:27-27`
+- **platform** — Platform information for the model `ovms-grpc-client.ts:85-85`
+- **port** — The port number for the gRPC server `ovms-grpc-client.ts:122-122`
+- **postDetect** — An optional function to perform post-detection actions `factory.ts:23-23`
+- **probe** — A boolean indicating whether to check server reachability `ollama-provider.ts:46-46`
+- **prompt_tokens** — Counts the number of tokens in the prompt `llamacpp-provider.ts:271-271`
+- **prompt_tokens** — The number of tokens used in the prompt `llamacpp-provider.ts:361-361`
+- **prompt_tokens** — The number of prompt tokens used `openai-provider.ts:13-13`
+- **protocol** — Not present in the provided code `factory.ts:161-161`
+- **protocol** — Protocol used for API requests `ovms-provider.ts:85-85`
+- **protocol** — Defines the communication protocol (REST or gRPC) `ovms-provider.ts:120-120`
+- **provider** — Represents a provider for embedding models `factory.ts:63-63`, `factory.ts:101-101`
+- **provider** — Represents the kind of provider, such as "mlx", "ovms-native", etc `factory.ts:19-19`
+- **pull** — A boolean indicating whether to automatically pull the model `ollama-provider.ts:44-44`
+- **pullTimeout** — Sets the timeout duration for pulling the model `ollama-provider.ts:41-41`
+- **pullTimeoutMs** — Not present in the provided code `factory.ts:149-149`
+- **pullTimeoutMs** — Sets the timeout duration for pulling the model `ollama-provider.ts:19-19`
+- **raw_input_contents** — Raw input contents for the model inference `ovms-grpc-client.ts:67-67`
+- **raw_output_contents** — Raw output contents for the model inference `ovms-grpc-client.ts:75-75`
+- **ready** — Boolean indicating server readiness `ovms-grpc-client.ts:79-79`
+- **requestId** — The request ID for embedding operations `base.ts:32-32`
+- **rerank** — Indicates whether the provider supports reranking `base.ts:37-37`
+- **retries** — The number of retries for failed HTTP requests `http-engine.ts:36-36`
+- **return_tensor** — A boolean indicating whether to return a tensor `mlx-provider.ts:28-28`
+- **return_tensor** — Boolean for returning the input as a tensor `ovms-provider.ts:20-20`
+- **return_token_type_ids** — Boolean for returning token type IDs `ovms-provider.ts:21-21`
+- **score** — Indicates whether the provider supports scoring `base.ts:38-38`
+- **score** — A number representing the score of a document `base.ts:49-49`
+- **score** — Stores a numerical score `base.ts:60-60`
+- **score** — Stores the score of the reranked documents `tei-provider.ts:575-575`
+- **seqLen** — Stores the sequence length for a batch of tokens `ovms-provider.ts:412-412`
+- **ServerReady** — Indicates whether the server is ready for inference `ovms-grpc-client.ts:92-95`
+- **shape** — Shape of the input tensor `ovms-grpc-client.ts:57-57`, `ovms-grpc-client.ts:86-86`
+- **shape** — Represents the dimensions of a tensor `ovms-grpc-client.ts:87-87`
+- **shape** — Shape of the tensor `ovms-grpc-client.ts:50-50`
+- **shape** — The shape of the input tensor `ovms-provider.ts:42-42`
+- **shape** — Shape of the input `ovms-provider.ts:41-41`, `ovms-provider.ts:48-48`
+- **shape** — Shape of tensor `ovms-provider.ts:57-57`
+- **shape** — Represents the shape of an output metadata object `ovms-provider.ts:750-750`
+- **signal** — An abort signal for embedding operations `base.ts:31-31`
+- **signal** — An optional AbortSignal used to abort the fetch operation `http-engine.ts:54-54`
+- **signal** — Optional signal for aborting the request `http-engine.ts:74-74`
+- **start** — Start time for batch processing `ovms-provider.ts:681-681`
+- **stdout** — Stores the standard output of a command `tei-provider.ts:275-275`
+- **supportsBatch** — Indicates whether the provider supports batch operations `base.ts:24-24`
+- **tei** — Represents a TEI provider for embedding models `factory.ts:131-139`
+- **text** — The text content of a document `base.ts:43-43`
+- **text** — Represents the text content `base.ts:50-50`
+- **text_pair** — Optional parameter for text pair tokenization `ovms-provider.ts:15-15`
+- **texts** — A list of texts to be processed for embeddings `llamacpp-provider.ts:298-298`
+- **texts** — Represents the texts associated with a chunk in the processChunk function `llamacpp-provider.ts:306-306`
+- **texts** — Array of text inputs for embedding `ovms-provider.ts:486-486`
+- **texts** — Represents a collection of texts `tei-provider.ts:447-447`
+- **texts** — Processes a chunk of texts `tei-provider.ts:456-456`
+- **threshold** — A number representing the minimum score threshold for reranking `base.ts:56-56`
+- **timeout** — The timeout duration in milliseconds for HTTP requests `http-engine.ts:35-35`
+- **timeout** — Sets the timeout duration for Ollama requests `ollama-provider.ts:40-40`
+- **timeoutMs** — Timeout duration in milliseconds for the CloudRU provider `cloudru-provider.ts:18-18`
+- **timeoutMs** — Stores the timeout in milliseconds for the provider `factory.ts:107-107`
+- **timeoutMs** — Not present in the provided code `factory.ts:117-117`
+- **timeoutMs** — Represents an optional timeout in milliseconds `factory.ts:126-126`, `factory.ts:134-134`, `factory.ts:143-143`
+- **timeoutMs** — Represents the timeout duration in milliseconds for asynchronous operations `factory.ts:155-155`, `factory.ts:169-169`
+- **timeoutMs** — The timeout duration in milliseconds for HTTP requests `http-engine.ts:19-19`
+- **timeoutMs** — Timeout in milliseconds for Hugging Face embeddings `huggingface-provider.ts:15-15`
+- **timeoutMs** — Sets the timeout duration in milliseconds for API requests `huggingface-provider.ts:25-25`
+- **timeoutMs** — Sets the timeout duration in milliseconds for server requests `llamacpp-provider.ts:55-55`
+- **timeoutMs** — The timeout in milliseconds for server requests `llamacpp-provider.ts:13-13`
+- **timeoutMs** — Sets the timeout duration for Ollama requests `ollama-provider.ts:13-13`
+- **timeoutMs** — An optional number representing the timeout in milliseconds for API requests `openai-provider.ts:25-25`
+- **timeoutMs** — The timeout in milliseconds for the gRPC client `ovms-grpc-client.ts:124-124`
+- **timeoutMs** — Timeout duration in milliseconds for API requests `ovms-provider.ts:78-78`
+- **timeoutMs** — Sets the timeout duration in milliseconds `ovms-provider.ts:114-114`
+- **timeoutMs** — The timeout duration in milliseconds for requests to the TEI server `tei-provider.ts:18-18`
+- **timeoutMs** — Specifies the timeout duration in milliseconds for the TEI provider `tei-provider.ts:40-40`
+- **token_type_ids** — The token type IDs for the tokenized text `mlx-provider.ts:33-33`
+- **token_type_ids** — Optional array of integers representing the token type IDs `ovms-provider.ts:26-26`
+- **tokenizer** — A tokenizer instance for the MLX provider `mlx-provider.ts:45-45`
+- **tokenizer** — Loads and initializes a tokenizer for text processing `ovms-provider.ts:124-124`
+- **tokenTypeIds** — Stores the token type IDs for the current batch `ovms-provider.ts:888-888`
+- **tokenTypeIds2D** — Stores token type IDs for a batch of tokens `ovms-provider.ts:411-411`
+- **topK** — A number representing the maximum number of top results to return `base.ts:55-55`
+- **total_tokens** — Represents the total number of tokens processed `llamacpp-provider.ts:271-271`
+- **total_tokens** — Represents the total number of tokens used in the usage object `llamacpp-provider.ts:361-361`
+- **total_tokens** — The total number of tokens used `openai-provider.ts:13-13`
+- **truncation** — A boolean indicating whether truncation is applied during tokenization `mlx-provider.ts:26-26`
+- **truncation** — Boolean for truncating the input text `ovms-provider.ts:18-18`
+- **ubatchSize** — Represents the batch size for unbatched processing `factory.ts:180-180`
+- **ubatchSize** — Defines the micro-batch size for embedding processing, defaulting to 512 `llamacpp-provider.ts:65-65`
+- **ubatchSize** — The micro-batch size for embedding processing `llamacpp-provider.ts:27-27`
+- **uint64_contents** — 64-bit unsigned integer array contents for a tensor `ovms-grpc-client.ts:41-41`
+- **uint_contents** — Unsigned integer array contents for a tensor `ovms-grpc-client.ts:40-40`
+- **url** — Provides the URL for the provider's health check or endpoint `factory.ts:21-21`
+- **usage** — Tracks the usage statistics of the provider `llamacpp-provider.ts:271-271`
+- **usage** — The usage statistics for the model `llamacpp-provider.ts:361-361`
+- **usage** — An object containing prompt tokens and total tokens `openai-provider.ts:13-13`
+- **useEmbeddingsApi** — Not present in the provided code `factory.ts:159-159`
+- **useEmbeddingsApi** — Boolean flag to use the embeddings API `ovms-provider.ts:82-82`
+- **useEmbeddingsApi** — Determines if the embeddings API should be used `ovms-provider.ts:118-118`
+- **version** — The version of a model `ovms-grpc-client.ts:97-97`
+- **versions** — Array of model versions `ovms-grpc-client.ts:84-84`
+- **warmText** — A string used for warming up the model `ollama-provider.ts:45-45`
+- **warmupText** — Not present in the provided code `factory.ts:128-128`
+- **warmupText** — Represents an optional warmup text `factory.ts:147-147`
+- **warmupText** — Warmup text for Hugging Face embeddings `huggingface-provider.ts:17-17`
+- **warmupText** — Represents a string used for warming up the model `huggingface-provider.ts:27-27`
+- **warmupText** — Specifies the text used to warm up the model `ollama-provider.ts:17-17`
 
 ## Data Flow
 

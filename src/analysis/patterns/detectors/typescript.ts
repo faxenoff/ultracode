@@ -105,24 +105,59 @@ export function checkAnyTypeParam(entity: Entity): CustomDetectorResult {
  * Holey array via new Array(n) — HOLEY element kind never becomes PACKED
  */
 export function checkHoleyArray(entity: Entity): CustomDetectorResult {
-  const calls = entity.metadata?.["calls"] as
-    | Array<{
-        name?: string;
-        target?: string;
-        isNew?: boolean;
-        argumentCount?: number;
-      }>
-    | undefined;
-  if (!calls) return { match: false, confidence: 0 };
-
-  const holeyCall = calls.find((c) => c.name === "Array" && c.isNew === true && c.argumentCount === 1);
-  if (!holeyCall) return { match: false, confidence: 0 };
+  // Reads jitHints, not calls[]: `isNew`/`argumentCount` are only emitted by the
+  // Java/Kotlin extractors, so keying off them meant this rule could never fire
+  // on TypeScript — the language it is registered for.
+  const jitHints = entity.metadata?.["jitHints"] as { holeyArrayCount?: number } | undefined;
+  if (!jitHints?.holeyArrayCount) return { match: false, confidence: 0 };
 
   return {
     match: true,
     confidence: 0.9,
-    matchedCriteria: ["new-Array(n)-holey"],
+    matchedCriteria: [`new-Array(n)-holey=${jitHints.holeyArrayCount}`],
   };
+}
+
+/**
+ * delete on an object property — moves it to dictionary mode for good
+ */
+export function checkDeleteOperator(entity: Entity): CustomDetectorResult {
+  const jitHints = entity.metadata?.["jitHints"] as { deleteCount?: number; hasLoops?: boolean } | undefined;
+  if (!jitHints?.deleteCount) return { match: false, confidence: 0 };
+
+  // In a loop the object is rebuilt as a dictionary over and over
+  const inLoop = jitHints.hasLoops === true;
+  return {
+    match: true,
+    confidence: inLoop ? 0.95 : 0.85,
+    matchedCriteria: [`delete-count=${jitHints.deleteCount}`, ...(inLoop ? ["in-loop"] : [])],
+  };
+}
+
+/**
+ * Object literals of several different shapes built in one function —
+ * the reads downstream go polymorphic and then megamorphic
+ */
+export function checkShapeDivergence(entity: Entity): CustomDetectorResult {
+  const jitHints = entity.metadata?.["jitHints"] as
+    | { objectShapeVariants?: number; conditionalFieldAddCount?: number; hasLoops?: boolean }
+    | undefined;
+  if (!jitHints) return { match: false, confidence: 0 };
+
+  const variants = jitHints.objectShapeVariants ?? 0;
+  const conditional = jitHints.conditionalFieldAddCount ?? 0;
+  // V8 keeps a polymorphic inline cache up to 4 shapes; past that a call site
+  // falls back to the generic hash lookup.
+  const megamorphic = variants > 4;
+  if (!megamorphic && conditional === 0) return { match: false, confidence: 0 };
+
+  const criteria: string[] = [];
+  if (megamorphic) criteria.push(`object-shapes=${variants}`);
+  if (conditional > 0) criteria.push(`conditional-field-adds=${conditional}`);
+  if (jitHints.hasLoops) criteria.push("in-loop");
+
+  const confidence = megamorphic ? (jitHints.hasLoops ? 0.8 : 0.7) : conditional >= 3 ? 0.6 : 0.5;
+  return { match: true, confidence, matchedCriteria: criteria };
 }
 
 /**

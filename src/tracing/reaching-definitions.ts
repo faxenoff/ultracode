@@ -296,8 +296,8 @@ export function solveReachingDefinitions(cfg: MethodCfg, sourceLines: string[]):
   }
 
   // Step 3: Build predecessor map
-  const predecessors: number[][] = new Array(nodeCount);
-  for (let i = 0; i < nodeCount; i++) predecessors[i] = [];
+  // Array.from keeps PACKED elements; new Array(n) would stay HOLEY forever
+  const predecessors: number[][] = Array.from({ length: nodeCount }, () => []);
   for (const edge of cfg.edges) {
     const fromIdx = nodeIdToIdx.get(edge.from);
     const toIdx = nodeIdToIdx.get(edge.to);

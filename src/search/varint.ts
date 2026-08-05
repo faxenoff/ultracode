@@ -71,13 +71,14 @@ export function encodeDelta(ids: number[], buf: Uint8Array, offset = 0): number 
  * Delta+LEB128 decode `count` u32 file IDs from buf.
  */
 export function decodeDelta(buf: Uint8Array, offset: number, count: number): number[] {
-  const ids: number[] = new Array(count);
+  // push keeps PACKED_SMI elements; new Array(count) would stay HOLEY
+  const ids: number[] = [];
   let pos = offset;
   let prev = 0;
   for (let i = 0; i < count; i++) {
     const r = decode(buf, pos);
     prev = (prev + r.value) >>> 0;
-    ids[i] = prev;
+    ids.push(prev);
     pos += r.len;
   }
   return ids;

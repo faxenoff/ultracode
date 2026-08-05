@@ -1,6 +1,6 @@
 # Engine
 
-Semantic merge engine with AI-assisted conflict resolution and three-way merge capabilities
+Semantic merge engine with AI-assisted conflict resolution using embeddings and three-way diffing.
 
 ## Overview
 
@@ -24,12 +24,12 @@ The engine module is the core of the semantic merge system. ThreeWayMerger perfo
 | `AIConflictResolverConfig` | interface | Similarity thresholds and confidence settings | [`ai-conflict-resolver.ts:16-28`](./ai-conflict-resolver.ts) |
 | `AIAnalysisResult` | interface | Result of AI conflict analysis | [`ai-conflict-resolver.ts:33-52`](./ai-conflict-resolver.ts) |
 | `MultiVersionIndexer` | class | Re-exported from indexing module for convenience | [`index.ts:1-1`](./index.ts) |
-| `Diff3Options` | interface | Configuration options for the diff3 merge algorithm | [`diff3.ts:19-24`](./diff3.ts) |
+| `Diff3Options` | interface | Configuration options for the diff3 merge algorithm | [`diff3.ts:21-21`](./diff3.ts) |
 | `Diff3Region` | interface | Represents a contiguous region of changes in the three-way diff | [`diff3.ts:26-31`](./diff3.ts) |
 | `Diff3Result` | interface | Result of a diff3 merge operation containing regions and conflict information | [`diff3.ts:33-39`](./diff3.ts) |
 | `Hunk` | interface | A contiguous block of matching or differing lines in a diff | [`diff3.ts:46-51`](./diff3.ts) |
 | `diff3Merge` | function | Performs a three-way merge using the diff3 algorithm | [`diff3.ts:57-126`](./diff3.ts) |
-| `splitLines` | function | Splits text into individual lines for processing | [`diff3.ts:132-135`](./diff3.ts) |
+| `splitLines` | function | Splits text into individual lines for processing | [`diff3.ts:125-174`](./diff3.ts) |
 | `trimCommon` | function | Removes common prefix and suffix lines from three versions | [`diff3.ts:141-180`](./diff3.ts) |
 | `computeLCS` | function | Computes the longest common subsequence between two line arrays | [`diff3.ts:186-202`](./diff3.ts) |
 | `computeHunks` | function | Identifies contiguous blocks of changes in a diff | [`diff3.ts:204-252`](./diff3.ts) |

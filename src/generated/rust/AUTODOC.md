@@ -1,25 +1,3465 @@
 # Rust
 
-## Overview
+## 🤖 Overview
 
-This module exports ANTLR-generated lexer and parser components for tokenizing and parsing Rust source code into abstract syntax trees. It serves as the foundation for Rust semantic analysis within the code analysis pipeline. The components support both event-driven (listener) and value-returning (visitor) traversal patterns for AST processing.
+The Rust module provides a parser and lexer for Rust code, used by developers to analyze and generate code. It includes a listener and visitor for parsing and visiting Rust syntax trees.
 
-## Flow
+## 🤖 Architecture
 
 ```
-Rust Source Code
-       ↓
-   RustLexer
-  (Tokenization)
-       ↓
-   RustParser
- (AST Construction)
-       ↓
-   Listener / Visitor
-    (Tree Traversal)
-       ↓
-  Analysis Results
+RustLexer
+    |
+    v
+RustParser
+    |
+    v
+RustParserListener
+    |
+    v
+RustParserVisitor
 ```
+
+## 🤖 Flow
+
+```
+RustLexer
+    |
+    v
+RustParser
+    |
+    v
+RustParserListener
+    |
+    v
+RustParserVisitor
+```
+
+## 🤖 Entity Listing
+
+### Method
+- **_ATN** — Represents the ATN (Alternative Tree Node) for the RustLexer `RustLexer.ts:1091-1097`
+- **_ATN** — Represents an ATN (Automaton Tree Network) for the parser `RustParser.ts:11680-11686`
+- **abi** — Represents the ABI (Application Binary Interface) in the Rust grammar `RustParser.ts:2555-2580`
+- **abi** — Represents the ABI (Application Binary Interface) context `RustParser.ts:12843-12845`
+- **abi** — Represents the ABI (Application Binary Interface) in the code `RustParser.ts:14088-14090`
+- **abi** — Represents the abstract syntax tree (AST) for a function return type `RustParser.ts:18898-18900`
+- **accept** — Accepts the current token as part of the rule `RustParser.ts:11734-11740`
+- **accept** — Accepts a token in the parser `RustParser.ts:11766-11772`
+- **accept** — Accepts the current token `RustParser.ts:11816-11822`
+- **accept** — Accepts the current token as part of the current rule `RustParser.ts:11851-11857`
+- **accept** — Represents accepting a rule `RustParser.ts:11889-11895`
+- **accept** — Represents accepting a rule in the parser `RustParser.ts:11948-11954`
+- **accept** — Accepts the current token in the Rust parser `RustParser.ts:11983-11989`
+- **accept** — Accepts a rule in the Rust parser `RustParser.ts:12030-12036`
+- **accept** — Accepts a rule in the Rust grammar `RustParser.ts:12071-12077`
+- **accept** — Accepts a rule in the parser `RustParser.ts:12103-12109`
+- **accept** — Accepts a token `RustParser.ts:12153-12159`
+- **accept** — Accepts a token and consumes it `RustParser.ts:12224-12230`
+- **accept** — Accepts the current token in the parser `RustParser.ts:12259-12265`
+- **accept** — Accepts a rule `RustParser.ts:12285-12291`
+- **accept** — Parses the current rule `RustParser.ts:12320-12326`
+- **accept** — Accepts a parsed element `RustParser.ts:12352-12358`
+- **accept** — Accepts a rule and returns the result `RustParser.ts:12378-12384`
+- **accept** — Accepts a token and returns the corresponding node `RustParser.ts:12416-12422`
+- **accept** — Accepts the current rule `RustParser.ts:12481-12487`
+- **accept** — Accepts a context in the parser `RustParser.ts:12510-12516`
+- **accept** — Represents accepting a rule in the Rust grammar `RustParser.ts:12569-12575`
+- **accept** — Parses a raw pointer type context `RustParser.ts:12607-12613`
+- **accept** — Accepts a parsed rule `RustParser.ts:12636-12642`
+- **accept** — Accept `RustParser.ts:12668-12674`
+- **accept** — Accepts the visitor for the rule "shr" and returns the result `RustParser.ts:12700-12706`
+- **accept** — Parses the use tree or function tree based on the visitor's method `RustParser.ts:12765-12771`
+- **accept** — Parses the function or function qualifiers based on the visitor's method `RustParser.ts:12821-12827`
+- **accept** — Parses the function qualifiers based on the visitor's method `RustParser.ts:12859-12865`
+- **accept** — Returns the result of visiting the Abi rule or its children `RustParser.ts:12888-12894`
+- **accept** — Accepts a visitor and returns the result of visiting the function parameters rule `RustParser.ts:12932-12938`
+- **accept** — Accepts a visitor and returns the result of visiting the self parameter rule `RustParser.ts:12970-12976`
+- **accept** — Returns the result of visiting the ShorthandSelf rule or its children `RustParser.ts:13005-13011`
+- **accept** — Accepts a visitor and returns the result of visiting `typedSelf` or its children `RustParser.ts:13040-13046`
+- **accept** — Accepts a visitor and returns the result of visiting `functionParam` or its children `RustParser.ts:13081-13087`
+- **accept** — Accepts a visitor for the function parameter pattern rule `RustParser.ts:13116-13122`
+- **accept** — Accepts a visitor and returns the result of visiting the function return type `RustParser.ts:13145-13151`
+- **accept** — Accepts a visitor and returns the result of visiting the `RustParser.ts:13189-13195`
+- **accept** — Accepts a visitor for the struct rule `RustParser.ts:13218-13224`
+- **accept** — Returns the result of visiting the struct struct or visiting its children `RustParser.ts:13265-13271`
+- **accept** — Returns the result of visiting the tuple struct or visiting its children `RustParser.ts:13312-13318`
+- **accept** — Returns the result of visiting the StructFields rule or its children `RustParser.ts:13353-13359`
+- **accept** — Returns the result of visiting the struct field or visiting children if no visitor is available `RustParser.ts:13397-13403`
+- **accept** — Returns the result of visiting the tuple fields or visiting children if no visitor is available `RustParser.ts:13438-13444`
+- **accept** — Returns the result of visiting the node with the visitor, or null if the visitor does not support the node `RustParser.ts:13476-13482`, `RustParser.ts:15298-15304`, `RustParser.ts:18496-18502`
+- **accept** — Accepts a visitor and returns the result of visiting the enumeration `RustParser.ts:13520-13526`
+- **accept** — Accepts a visitor and returns the result of visiting the enum items `RustParser.ts:13561-13567`
+- **accept** — Returns the result of visiting the enum item or visiting its children `RustParser.ts:13608-13614`
+- **accept** — Returns the result of visiting the enum item tuple or visiting its children `RustParser.ts:13640-13646`
+- **accept** — Returns the result of visiting the enum item struct or visiting its children if the visitor does not have a specific visit method `RustParser.ts:13672-13678`
+- **accept** — Returns the result of visiting the enum item discriminant or visiting its children if the visitor does not have a specific visit method `RustParser.ts:13701-13707`
+- **accept** — Returns the result of visiting the union or visiting its children if the visitor does not have a specific visit method `RustParser.ts:13745-13751`
+- **accept** — Accepts the visitor and returns the result of visiting the constant item or its children `RustParser.ts:13792-13798`
+- **accept** — Returns the result of visiting the static item or visiting children if the visitor does not have a visitStaticItem method `RustParser.ts:13839-13845`
+- **accept** — Returns the result of visiting the trait or visiting children if the visitor does not have a visitTrait_ method `RustParser.ts:13907-13913`
+- **accept** — Returns the result of visiting the implementation or visiting children if the visitor does not have a visitImplementation method `RustParser.ts:13936-13942`
+- **accept** — Accepts the visitor for the inherent implementation rule `RustParser.ts:13995-14001`
+- **accept** — Returns the result of visiting the trait implementation or visiting children if no visitor method exists `RustParser.ts:14066-14072`
+- **accept** — Returns the result of visiting the extern block or visiting children if no visitor method exists `RustParser.ts:14122-14128`
+- **accept** — Returns the result of visiting the external item or visiting children if no visitor method exists `RustParser.ts:14166-14172`
+- **accept** — Accepts a visitor and returns the result of visiting the genericParams node or visiting its children `RustParser.ts:14213-14219`
+- **accept** — Accepts a visitor and returns the result of visiting the genericParam node or visiting its children `RustParser.ts:14254-14260`
+- **accept** — Accepts a visitor and returns the result of visiting lifetime parameters or visiting children `RustParser.ts:14289-14295`
+- **accept** — Accepts a visitor and returns the result of visiting type parameters or visiting children `RustParser.ts:14330-14336`
+- **accept** — Accepts the visitor and returns the result of visiting the constParam rule `RustParser.ts:14365-14371`
+- **accept** — Accepts the visitor and returns the result of visiting the whereClause rule `RustParser.ts:14409-14415`
+- **accept** — Returns the result of visiting the current node with the visitor or visiting its children if the visitor does not have a specific visit method `RustParser.ts:14438-14444`, `RustParser.ts:14470-14476`, `RustParser.ts:14505-14511`
+- **accept** — Accepts a visitor and returns the result of visiting for lifetimes or children `RustParser.ts:14534-14540`
+- **accept** — Returns the result of visiting the associated item or visiting children if no visitor method is available `RustParser.ts:14581-14587`
+- **accept** — Returns the result of visiting the inner attribute or visiting children if no visitor method is available `RustParser.ts:14619-14625`
+- **accept** — Accepts the visitor and returns the result of visiting outerAttribute or children `RustParser.ts:14654-14660`
+- **accept** — Accepts a visitor for the attribute rule `RustParser.ts:14683-14689`
+- **accept** — Accepts a visitor for the attribute input rule `RustParser.ts:14715-14721`
+- **accept** — Accepts a visitor and returns the result of visiting the statement `RustParser.ts:14753-14759`
+- **accept** — Accepts a visitor and returns the result of visiting the let statement `RustParser.ts:14806-14812`
+- **accept** — Accepts the visitor and returns the result of visiting the expressionStatement or visiting children `RustParser.ts:14838-14844`
+- **accept** — Accepts the visitor and returns the result of visiting the typeCastExpression or visiting children `RustParser.ts:14879-14885`
+- **accept** — Accepts the visitor and returns the result of visiting pathExpression_ or children `RustParser.ts:14905-14911`
+- **accept** — Accepts a visitor and returns the result of visiting the TupleExpression or visiting its children `RustParser.ts:14946-14952`
+- **accept** — Accepts a visitor and returns the result of visiting the IndexExpression or visiting its children `RustParser.ts:14984-14990`
+- **accept** — Accepts a visitor and returns the result of visiting the RangeExpression or visiting its children `RustParser.ts:15022-15028`
+- **accept** — Returns the result of visiting the macro invocation as an expression or visiting its children `RustParser.ts:15048-15054`
+- **accept** — Returns the result of visiting the return expression or visiting its children `RustParser.ts:15077-15083`
+- **accept** — Returns the result of visiting the await expression or visiting its children `RustParser.ts:15109-15115`
+- **accept** — Accepts the visitor and returns the result of visiting errorPropagationExpression or children. `RustParser.ts:15138-151 `RustParser.ts:15138-15144`
+- **accept** — Accepts a visitor and returns the result of visiting continue expression `RustParser.ts:15170-15176`
+- **accept** — Accepts a visitor and returns the result of visiting assignment expression `RustParser.ts:15205-15211`
+- **accept** — This method returns the result of visiting the method call expression or visiting children if the visitor does not have a method for visiting method call expressions `RustParser.ts:15246-15252`
+- **accept** — This method returns the result of visiting the literal expression or visiting children if the visitor does not have a method for visiting literal expressions `RustParser.ts:15272-15278`
+- **accept** — Accepts a visitor for tuple indexing expression, returning the result or visiting children `RustParser.ts:15330-15336`
+- **accept** — Accepts a visitor for negation expression, returning the result or visiting children `RustParser.ts:15362-15368`
+- **accept** — Returns the result of visiting the call expression or visiting children if the visitor does not have a visitCallExpression method `RustParser.ts:15397-15403`
+- **accept** — Returns the result of visiting the lazy boolean expression or visiting children if the visitor does not have a visitLazyBooleanExpression method `RustParser.ts:15435-15441`
+- **accept** — Accepts a visitor for a dereference expression, returning the result of the visit or visiting children `RustParser.ts:15464-15470`
+- **accept** — Accepts a visitor for an expression with a block, returning the result of the visit or visiting children `RustParser.ts:15490-15496`
+- **accept** — Accepts a visitor and returns the result of visiting a grouped expression or its children `RustParser.ts:15531-15537`
+- **accept** — Accepts a visitor and returns the result of visiting a break expression or its children `RustParser.ts:15563-15569`
+- **accept** — Accepts a visitor and returns the result of visiting arithmetic or logical expressions or children `RustParser.ts:15625-15631`
+- **accept** — Accepts a visitor and returns the result of visiting the field expression `RustParser.ts:15657-15663`
+- **accept** — Accepts a visitor and returns the result of visiting the enumeration variant expression `RustParser.ts:15683-15689`
+- **accept** — Accepts a visitor and returns the result of visiting the comparison expression or its children `RustParser.ts:15718-15724`
+- **accept** — Accepts a visitor and returns the result of visiting the attributed expression or its children `RustParser.ts:15753-15759`
+- **accept** — Accepts a visitor and returns the result of visiting the borrow expression or its children `RustParser.ts:15788-15794`
+- **accept** — Accepts a visitor and returns the result of visiting the compound assignment expression or its children `RustParser.ts:15823-15829`
+- **accept** — Returns the result of visiting the closure expression or visiting children if the visitor does not support visiting closure expressions `RustParser.ts:15849-15855`
+- **accept** — Returns the result of visiting the array expression or visiting children if the visitor does not support visiting array expressions `RustParser.ts:15890-15896`
+- **accept** — Accepts a visitor and returns the result of visiting comparison operators or children `RustParser.ts:15931-15937`
+- **accept** — Accepts a visitor and returns the result of visiting compound assign operators or children `RustParser.ts:15984-15990`
+- **accept** — Accepts a visitor for the expression with block rule `RustParser.ts:16040-16046`
+- **accept** — Accepts a visitor for the literal expression rule. `R `RustParser.ts:16093-16099`
+- **accept** — Accepts a visitor and returns the result of visiting the pathExpression or its children `RustParser.ts:16122-16128`
+- **accept** — Accepts a visitor and returns the result of visiting the blockExpression or its children `RustParser.ts:16163-16169`
+- **accept** — Returns the result of visiting statements or visiting children if the visitor does not have a `visitStatements` method `RustParser.ts:16198-16204`
+- **accept** — Returns the result of visiting async block expressions or visiting children if the visitor does not have a `visitAsyncBlockExpression` method `RustParser.ts:16230-16236`
+- **accept** — Returns the result of visiting the unsafe block expression or visiting children if the visitor does not have a visitUnsafeBlockExpression method. `RustParser.ts `RustParser.ts:16259-16265`
+- **accept** — Accepts the visitor and returns the result of visiting array elements or children `RustParser.ts:16303-16309`
+- **accept** — Returns the result of visiting `TupleElements` if the visitor has a `visitTupleElements` method, otherwise visits children `RustParser.ts:16344-16350`
+- **accept** — Returns the result of visiting `TupleIndex` if the visitor has a `visitTupleIndex` method, otherwise visits children `RustParser.ts:16370-16376`
+- **accept** — Returns the result of visiting `StructExpression` if the visitor has a `visitStructExpression` method, otherwise visits children `RustParser.ts:16402-16408`
+- **accept** — Accepts a visitor for structExprStruct `RustParser.ts:16449-16455`
+- **accept** — Accepts a visitor for structExprFields `RustParser.ts:16493-16499`
+- **accept** — Accepts a visitor and returns the result of visiting the structExprField `RustParser.ts:16537-16543`
+- **accept** — Accepts a visitor and returns the result of visiting the structBase `RustParser.ts:16566-16572`
+- **accept** — Accepts a visitor and returns the result of visiting the structExprTuple node or visiting its children `RustParser.ts:16625-16631`
+- **accept** — Accepts a visitor and returns the result of visiting the structExprUnit node or visiting its children `RustParser.ts:16651-16657`
+- **accept** — Returns the result of visiting the enumeration variant expression or visiting children if the visitor does not have a visitEnumerationVariantExpression method `RustParser.ts:16683-16689`
+- **accept** — Returns the result of visiting the enum expression struct or visiting children if the visitor does not have a visitEnumExprStruct method `RustParser.ts:16718-16724`
+- **accept** — Returns the result of visiting the enum expression fields or visiting children if the visitor does not have a visitEnumExprFields method `RustParser.ts:16759-16765`
+- **accept** — Accepts the visitor for enumExprField `RustParser.ts:16794-16800`
+- **accept** — Returns the result of visiting the enum expression tuple or visiting children if the visitor does not support visiting the enum expression tuple `RustParser.ts:16844-16850`
+- **accept** — Returns the result of visiting the enum expression fieldless or visiting children if the visitor does not support visiting the enum expression fieldless `RustParser.ts:16870-16876`
+- **accept** — Returns the result of visiting the call params or visiting children if the visitor does not support visiting the call params `RustParser.ts:16911-16917`
+- **accept** — Accepts a visitor to visit the closure expression `RustParser.ts:16964-16970`
+- **accept** — Accepts a visitor to visit the closure parameters. `Rust `RustParser.ts:17005-17011`
+- **accept** — Accepts a visitor and returns the result of visiting the closure parameter or its children `RustParser.ts:17046-17052`
+- **accept** — Accepts a visitor and returns the result of visiting the loop expression or its children `RustParser.ts:17084-17090`
+- **accept** — Accepts a visitor and returns the result of visiting the infinite loop expression or its children `RustParser.ts:17113-17119`
+- **accept** — Accepts a visitor and returns the result of visiting the predicate loop expression `RustParser.ts:17145-17151`
+- **accept** — Accepts a visitor and returns the result of visiting the predicate pattern loop expression `RustParser.ts:17186-17192`
+- **accept** — Accepts a visitor for the iterator loop expression and returns the result `RustParser.ts:17224-17230`
+- **accept** — Accepts a visitor for the loop label and returns the result `RustParser.ts:17253-17259`
+- **accept** — Accepts the visitor and returns the result `RustParser.ts:17300-17306`
+- **accept** — Returns the result of visiting the IfLetExpression or visiting children if the visitor does not support it `RustParser.ts:17356-17362`
+- **accept** — Returns the result of visiting the MatchExpression or visiting children if the visitor does not support it `RustParser.ts:17403-17409`
+- **accept** — Accepts a visitor and returns the result of visiting the `matchArms` node or its children `RustParser.ts:17459-17465`
+- **accept** — Accepts a visitor and returns the result of visiting the `matchArmExpression` node or its children `RustParser.ts:17491-17497`
+- **accept** — Accepts a visitor and returns the result of visiting the matchArm node or its children `RustParser.ts:17529-17535`
+- **accept** — Accepts a visitor and returns the result of visiting the matchArmGuard node or its children `RustParser.ts:17558-17564`
+- **accept** — Parses a pattern and returns the result or null `RustParser.ts:17599-17605`
+- **accept** — Parses a pattern without top alternative and returns the result or null `RustParser.ts:17628-17634`
+- **accept** — Parses a pattern without range and returns the result or null `RustParser.ts:17687-17693`
+- **accept** — Accepts the visitor for the literal pattern rule `RustParser.ts:17743-17749`
+- **accept** — Accepts the visitor for the identifier pattern rule `RustParser.ts:17781-17787`
+- **accept** — Returns the result of visiting the wildcard pattern or visiting children if no visitor is available `RustParser.ts:17807-17813`
+- **accept** — Returns the result of visiting the rest pattern or visiting children if no visitor is available `RustParser.ts:17833-17839`
+- **accept** — Returns the result of visiting the inclusive range pattern or visiting children if no visitor is available `RustParser.ts:17877-17883`
+- **accept** — Accepts a visitor for the obsolete range pattern and returns the result `RustParser.ts:17912-17918`
+- **accept** — Accepts a visitor for the half-open range pattern and returns the result `RustParser.ts:17941-17947`
+- **accept** — Accepts the visitor for range pattern bound `RustParser.ts:17982-17988`
+- **accept** — Accepts the visitor for reference pattern `RustParser.ts:18017-18023`
+- **accept** — Accepts the struct pattern rule and returns the result of visiting it `RustParser.ts:18052-18058`
+- **accept** — Accepts the struct pattern elements rule and returns the result of visiting it `RustParser.ts:18084-18090`
+- **accept** — Returns the result of visiting structPatternFields or visiting children if the visitor does not have a visitStructPatternFields method `RustParser.ts:18125-18131`
+- **accept** — Returns the result of `RustParser.ts:18175-18181`
+- **accept** — Accepts a visitor for the struct pattern rule and returns the result `RustParser.ts:18210-18216`
+- **accept** — Accepts a visitor for the tuple struct pattern rule and returns the result `RustParser.ts:18245-18251`
+- **accept** — Accepts a visitor for the tuple struct items rule `RustParser.ts:18286-18292`
+- **accept** — Accepts a visitor for the tuple pattern rule `RustParser.ts:18318-18324`
+- **accept** — Accepts a visitor and returns the result of visiting tuple pattern items `RustParser.ts:18362-18368`
+- **accept** — Returns the result of visiting the grouped pattern or children based on the visitor's method `RustParser.ts:18394-18400`
+- **accept** — Returns the result of visiting the slice pattern or children based on the visitor's method `RustParser.ts:18426-18432`
+- **accept** — Accepts a visitor and returns the result of visiting the slice pattern items or children `RustParser.ts:18467-18473`
+- **accept** — Returns the result of visiting the node with the visitor, or null if the visitor does not support the node. `Rust `RustParser.ts:18528-18534`
+- **accept** — Accepts the visitor for the typeNoBounds rule `RustParser.ts:18593-18599`
+- **accept** — Accepts the visitor for the parenthesized type rule `RustParser.ts:18625-18631`
+- **accept** — Accepts the visitor for the never type rule `RustParser.ts:18651-18657`
+- **accept** — Accepts the visitor and returns the result of visiting the tupleType rule or its children `RustParser.ts:18698-18704`
+- **accept** — Accepts a visitor and returns the result of visiting the array type or its children `RustParser.ts:18736-18742`
+- **accept** — Accepts a visitor and returns the result of visiting the slice type or its children. `RustParser.ts:18768 `RustParser.ts:18768-18774`
+- **accept** — Accepts a visitor and returns the result of visiting the reference type or its children `RustParser.ts:18803-18809`
+- **accept** — Accepts a visitor and returns the result of visiting the raw pointer type or its children `RustParser.ts:18838-18844`
+- **accept** — Accepts a visitor and returns the result of visiting the bare function type `RustParser.ts:18882-18888`
+- **accept** — Accepts a visitor and returns the result of visiting the function type qualifiers `RustParser.ts:18914-18920`
+- **accept** — Accepts a visitor and returns the result of visiting the bare function return type or its children `RustParser.ts:18943-18949`
+- **accept** — Accepts a visitor and returns the result of visiting the function parameters maybe named variadic rule or its children `RustParser.ts:18972-18978`
+- **accept** — Accepts a visitor and returns the result of visiting the children or the named function parameters `RustParser.ts:19013-19019`
+- **accept** — Accepts the visitor and returns the result of visiting MaybeNamedParam `RustParser.ts:19057-19063`
+- **accept** — Parses the visitor's visit method for named function parameters variadic `RustParser.ts:19110-19116`
+- **accept** — Parses the visitor's visit method for trait object type `RustParser.ts:19139-19145`
+- **accept** — Parses the visitor's visit method for trait object type one bound `RustParser.ts:19168-19174`
+- **accept** — Accepts a visitor and returns the result of visiting the `implTraitType` rule `RustParser.ts:19197-19203`
+- **accept** — Accepts a visitor and returns the result of visiting the `implTraitTypeOneBound` rule `RustParser.ts:19226-19232`
+- **accept** — Accepts a visitor and returns the result of visiting the `inferredType` rule `RustParser.ts:19252-19258`
+- **accept** — Accepts a visitor and returns the result of visiting type parameter bounds or children `RustParser.ts:19293-19299`
+- **accept** — Accepts a visitor and returns the result of visiting type parameter bounds or children. `Rust `RustParser.ts:19322-19328`
+- **accept** — Returns the result of visiting the trait bound or visiting children if no visitor is available `RustParser.ts:19360-19366`
+- **accept** — Returns the result of visiting the lifetime bounds or visiting children if no visitor is available. `Rust `RustParser.ts:19401-19407`
+- **accept** — Returns the result of visiting the current node with the visitor, or visits children if the visitor does not support the current node `RustParser.ts:19433-19439`, `RustParser.ts:19474-19480`, `RustParser.ts:19512-19518`
+- **accept** — Returns the result of visiting the path in expression or visiting children if the visitor does not have a visitPathInExpression method `RustParser.ts:19553-19559`
+- **accept** — Returns the result of visiting the pathExprSegment or visiting children if the visitor does not have a visitPathExprSegment method `RustParser.ts:19585-19591`
+- **accept** — Determines the result of visiting a path ident segment or generic arg `RustParser.ts:19626-19632`
+- **accept** — Accepts a visitor and returns the result of visiting generic args or visiting children `RustParser.ts:19682-19688`
+- **accept** — Determines the result of visiting a generic arg or generic args bindings `RustParser.ts:19717-19723`
+- **accept** — Accepts the generic arguments constant rule `RustParser.ts:19752-19758`
+- **accept** — Returns the result of visiting generic args lifetimes or children based on the visitor's method `RustParser.ts:19793-19799`
+- **accept** — Returns the result of visiting generic args types or children based on the visitor's method `RustParser.ts:19834-19840`
+- **accept** — Determines the result of visiting generic args bindings or children `RustParser.ts:19875-19881`
+- **accept** — Accepts the visitor and returns the result of visiting the genericArgsBinding `RustParser.ts:19907-19913`
+- **accept** — Accepts the visitor and returns the result of visiting the qualifiedPathInExpression. `RustParser.ts:19951-19 `RustParser.ts:19951-19957`
+- **accept** — Accepts a visitor for a qualified path type and returns the result `RustParser.ts:19989-19995`
+- **accept** — Determines the result of visiting a qualified path in type or children `RustParser.ts:20033-20039`
+- **accept** — Determines the result of visiting a type path or children `RustParser.ts:20074-20080`
+- **accept** — Accepts the visitor and returns the result of visiting the typePathSegment `RustParser.ts:20109-20115`
+- **accept** — Returns the result of visiting the type path function or children `RustParser.ts:20147-20153`
+- **accept** — Accepts the visitor for type path inputs `RustParser.ts:20188-20194`
+- **accept** — Returns the result of visiting the visibility node or visiting its children if no visitor method exists `RustParser.ts:20235-20241`
+- **accept** — Returns the result of visiting the identifier node or visiting its children if no visitor method exists `RustParser.ts:20267-20273`
+- **accept** — Accepts a visitor and returns the result of visiting the keyword or visiting its children `RustParser.ts:20449-20455`
+- **accept** — Accepts a visitor and returns the result of visiting the macro identifier like token or visiting its children `RustParser.ts:20490-20496`
+- **accept** — Accepts the macro literal token and returns the result of visiting it or visiting its children `RustParser.ts:20516-20522`
+- **accept** — Accepts the macro punctuation token rule visitor and returns the result `RustParser.ts:20656-20662`
+- **accept** — Accepts the shift-left operator rule visitor and returns the result `RustParser.ts:20688-20694`
+- **accept** — Accepts the SHR rule and returns the result of visiting it `RustParser.ts:20720-20726`
+- **AND** — Logical AND operator `RustParser.ts:12983-12985`
+- **AND** — Represents the bitwise AND operator `RustParser.ts:15606-15608`
+- **AND** — Parses an AND operator `RustParser.ts:15769-15771`
+- **AND** — Represents the logical AND operator in the Rust grammar `RustParser.ts:17995-17997`
+- **AND** — Represents an AND operator in the parser `RustParser.ts:18778-18780`
+- **AND** — Represents the and operator `RustParser.ts:20541-20543`
+- **ANDAND** — Parses an ANDAND operator `RustParser.ts:15419-15421`
+- **ANDAND** — Represents the logical AND operator in the Rust grammar `RustParser.ts:15772-15774`
+- **ANDAND** — Represents the and-and operator `RustParser.ts:17998-18000`
+- **ANDAND** — Returns the ANDAND terminal node if it exists `RustParser.ts:20547-20549`
+- **ANDEQ** — Represents bitwise AND assignment operator `RustParser.ts:15956-15958`
+- **ANDEQ** — Represents the and-equal operator `RustParser.ts:20571-20573`
+- **arrayElements** — Parses elements of an array `RustParser.ts:6025-6085`
+- **arrayElements** — Parses array elements `RustParser.ts:15877-15879`
+- **arrayType** — Represents an array type `RustParser.ts:8839-8865`
+- **arrayType** — Returns the context of an array type `RustParser.ts:18562-18564`
+- **asClause** — Represents an `as` clause in the Rust grammar `RustParser.ts:2217-2255`
+- **asClause** — Represents an 'as' clause in the parser `RustParser.ts:12591-12593`
+- **associatedItem** — Represents an associated item in a type or function `RustParser.ts:4509-4595`
+- **associatedItem** — Represents an associated item in the Rust parser `RustParser.ts:13884-13890`
+- **associatedItem** — Represents an associated item in the code `RustParser.ts:13975-13981`
+- **associatedItem** — Returns the associated item context or null if not specified `RustParser.ts:14046-14052`
+- **asyncBlockExpression** — Parses an asynchronous block expression `RustParser.ts:5974-6003`
+- **asyncBlockExpression** — Returns the async block expression context if it exists `RustParser.ts:16009-16011`
+- **AT** — Represents the '@' symbol `RustParser.ts:17762-17764`
+- **AT** — Returns the terminal node for the symbol "@" `RustParser.ts:20604-20606`
+- **attr** — Represents an attribute `RustParser.ts:4648-4674`
+- **attr** — Returns the context of the attribute at the current position `RustParser.ts:14600-14602`, `RustParser.ts:14635-14637`
+- **attrInput** — Represents an attribute input `RustParser.ts:4675-4714`
+- **attrInput** — Represents the input for an attribute `RustParser.ts:14667-14669`
+- **bareFunctionReturnType** — Represents the return type of a bare function `RustParser.ts:9054-9074`
+- **bareFunctionReturnType** — Returns the return type of a bare function `RustParser.ts:18866-18868`
+- **bareFunctionType** — Represents a function type without qualifiers `RustParser.ts:8957-9013`
+- **bareFunctionType** — Represents a bare function type `RustParser.ts:18574-18576`
+- **blockExpression** — Represents a block expression `RustParser.ts:5862-5909`
+- **blockExpression** — Parses a block expression `RustParser.ts:12790-12792`
+- **blockExpression** — Block expression `RustParser.ts:16006-16008`
+- **blockExpression** — Parses a block expression in the parser `RustParser.ts:16211-16213`
+- **blockExpression** — Represents a block expression in the Rust grammar `RustParser.ts:16243-16245`
+- **blockExpression** — Represents a block of code `RustParser.ts:16942-16944`
+- **blockExpression** — Parses a block expression in the Rust parser `RustParser.ts:17097-17099`
+- **blockExpression** — Returns the context of a block expression `RustParser.ts:17129-17131`, `RustParser.ts:17170-17172`, `RustParser.ts:17208-17210`
+- **blockExpression** — Returns the context of the block expression `RustParser.ts:17271-17277`
+- **blockExpression** — Returns the context of the block expression. `Rust—you can continue the list here `RustParser.ts:17327-17333`
+- **blockExpression** — Returns the block expression context `RustParser.ts:19727-19729`
+- **BYTE_LITERAL** — Represents a byte literal `RustParser.ts:16059-16061`
+- **BYTE_LITERAL** — Represents a byte literal in the Rust grammar `RustParser.ts:17706-17708`
+- **BYTE_LITERAL** — Returns the BYTE_LITERAL terminal node if it exists `RustParser.ts:17954-17956`
+- **BYTE_STRING_LITERAL** — Represents a byte string literal `RustParser.ts:16062-16064`
+- **BYTE_STRING_LITERAL** — Returns the terminal node for a byte string literal `RustParser.ts:17715-17717`
+- **callParams** — Parses parameters for a function call `RustParser.ts:6741-6782`
+- **callParams** — Parses call parameters `RustParser.ts:15233-15235`
+- **callParams** — Parses parameters for a call expression `RustParser.ts:15384-15386`
+- **CARET** — Represents the bitwise XOR operator `RustParser.ts:15609-15611`
+- **CARET** — Represents the caret operator `RustParser.ts:20535-20537`
+- **CARETEQ** — Represents bitwise XOR assignment operator `RustParser.ts:15962-15964`
+- **CARETEQ** — Represents the caret-equal operator `RustParser.ts:20568-20570`
+- **channelNames** — Stores names of channels used in the lexer `RustLexer.ts:588-590`
+- **CHAR_LITERAL** — Represents a character literal `RustParser.ts:16050-16052`
+- **CHAR_LITERAL** — Represents a character literal in the Rust grammar `RustParser.ts:17703-17705`
+- **CHAR_LITERAL** — Returns the CHAR_LITERAL terminal node if it exists `RustParser.ts:17951-17953`
+- **closureExpression** — Parses a closure expression `RustParser.ts:6783-6904`
+- **closureExpression** — Returns the closure expression context `RustParser.ts:15836-15838`
+- **closureParam** — Parses a parameter for a closure `RustParser.ts:6947-6985`
+- **closureParam** — Parses a closure parameter in the parser `RustParser.ts:16976-16982`
+- **closureParameters** — Parses parameters for a closure `RustParser.ts:6905-6946`
+- **closureParameters** — Parses closure parameters in the parser `RustParser.ts:16948-16950`
+- **COLON** — Represents the colon in the parser `RustParser.ts:12178-12180`
+- **COLON** — Colon character `RustParser.ts:13018-13020`
+- **COLON** — Represents a colon in the Rust parser `RustParser.ts:13094-13096`
+- **COLON** — Represents a colon character `RustParser.ts:13366-13368`
+- **COLON** — Represents a colon `RustParser.ts:13758-13760`
+- **COLON** — Represents a colon token `RustParser.ts:13808-13810`
+- **COLON** — Represents a colon in the parser `RustParser.ts:13867-13869`
+- **COLON** — Represents a colon in the Rust grammar `RustParser.ts:14270-14272`
+- **COLON** — Colon token `RustParser.ts:14305-14307`
+- **COLON** — Colon `RustParser.ts:14346-14348`
+- **COLON** — Returns the terminal node for the colon token `RustParser.ts:14451-14453`, `RustParser.ts:14483-14485`
+- **COLON** — Returns the COLON terminal node or null `RustParser.ts:14781-14783`
+- **COLON** — Returns a terminal node or null for the colon token `RustParser.ts:16506-16508`
+- **COLON** — Returns the context of a colon token `RustParser.ts:16772-16774`
+- **COLON** — Returns the COLON token if it exists `RustParser.ts:17027-17029`
+- **COLON** — Returns the terminal node for the COLON rule `RustParser.ts:17237-17239`
+- **COLON** — Returns the terminal node for the colon token if it exists `RustParser.ts:18138-18140`
+- **COLON** — Returns a TerminalNode or null for the COLON token `RustParser.ts:19035-19037`
+- **COLON** — Returns the terminal node for the colon character `RustParser.ts:20628-20630`
+- **COMMA** — Represents a comma in the Rust parser `RustParser.ts:12736-12742`
+- **COMMA** — Represents a comma `RustParser.ts:12903-12909`
+- **COMMA** — Comma `RustParser.ts:13333-13339`
+- **COMMA** — Represents a comma character `RustParser.ts:13418-13424`
+- **COMMA** — Comma character `RustParser.ts:13541-13547`
+- **COMMA** — Represents a comma in the parser `RustParser.ts:14193-14199`
+- **COMMA** — Parses a comma in the Rust parser `RustParser.ts:14389-14395`
+- **COMMA** — Represents a comma token `RustParser.ts:16280-16286`
+- **COMMA** — Represents a comma in an expression `RustParser.ts:16324-16330`
+- **COMMA** — Parses a comma `RustParser.ts:16470-16476`
+- **COMMA** — Comma token `RustParser.ts:16605-16611`
+- **COMMA** — Represents the ",", comma `RustParser.ts:16739-16745`
+- **COMMA** — Represents a comma in a parameter list `RustParser.ts:16824-16830`
+- **COMMA** — Represents the comma character `RustParser.ts:16891-16897`
+- **COMMA** — Returns a comma token or an array of comma tokens `RustParser.ts:16985-16991`, `RustParser.ts:18266-18272`
+- **COMMA** — Returns the terminal node for the comma or null if not found `RustParser.ts:17443-17445`
+- **COMMA** — Returns the terminal node for the `COMMA` rule `RustParser.ts:17472-17474`
+- **COMMA** — Returns the comma token or an array of comma tokens `RustParser.ts:18065-18067`, `RustParser.ts:18993-18999`
+- **COMMA** — Returns the comma token or an array of comma tokens. `RustParser.ts:18105 `RustParser.ts:18105-18111`
+- **COMMA** — Returns a comma token or an array of comma tokens based on the provided index `RustParser.ts:18339-18345`, `RustParser.ts:19647-19653`
+- **COMMA** — Returns the comma terminal node or nodes based on the index `RustParser.ts:18447-18453`
+- **COMMA** — Returns a TerminalNode or an array of TerminalNodes based on the provided index `RustParser.ts:18678-18684`
+- **COMMA** — Returns a TerminalNode or an array of TerminalNodes for the COMMA token `RustParser.ts:19078-19084`
+- **COMMA** — Returns the comma token `RustParser.ts:19773-19779`
+- **COMMA** — Returns the comma token or tokens based on the provided index `RustParser.ts:19814-19820`, `RustParser.ts:19855-19861`
+- **COMMA** — Returns the comma token or an array of comma tokens. `RustParser.ts:20168-2 `RustParser.ts:20168-20174`
+- **COMMA** — Returns the COMMA terminal node if it exists `RustParser.ts:20622-20624`
+- **comparisonOperator** — Represents a comparison operator `RustParser.ts:5645-5670`
+- **comparisonOperator** — Parses a comparison operator `RustParser.ts:15705-15707`
+- **compoundAssignOperator** — Represents a compound assignment operator `RustParser.ts:5671-5696`
+- **compoundAssignOperator** — Parses a compound assignment operator `RustParser.ts:15810-15812`
+- **constantItem** — Represents a constant item `RustParser.ts:3569-3624`
+- **constantItem** — Returns a context for a constant item `RustParser.ts:12450-12452`
+- **constantItem** — Returns the constant item context `RustParser.ts:14559-14561`
+- **constParam** — Represents a constant parameter `RustParser.ts:4316-4340`
+- **constParam** — Returns the context of the constParam rule if it exists `RustParser.ts:14229-14231`
+- **constructor** — The constructor of the RustLexer class `RustLexer.ts:560-568`
+- **constructor** — Initializes the RustParser class `RustParser.ts:827-835`
+- **constructor** — Initializes a new instance of a class `RustParser.ts:14856-14859`
+- **constructor** — Constructor for the Rust parser `RustParser.ts:14888-14891`
+- **constructor** — Initializes a new instance of the RustParser class `RustParser.ts:14914-14917`
+- **constructor** — Constructor for a class `RustParser.ts:14955-14958`
+- **constructor** — Initializes a new instance of the CallExpressionContext `RustParser.ts:14993-14996`
+- **constructor** — Constructor for the RustParser class `RustParser.ts:15031-15034`
+- **constructor** — Initializes a new instance of the RangePatternContext `RustParser.ts:15057-15060`
+- **constructor** — Initializes the parser with the given context and invoking state `RustParser.ts:15086-15089`, `RustParser.ts:15118-15121`
+- **constructor** — Initializes the node with the parent context and invoking state, then copies the context from the provided context `RustParser.ts:15147-15150`, `RustParser.ts:15307-15310`
+- **constructor** — Initializes the parser with the given context `RustParser.ts:15179-15182`, `RustParser.ts:15214-15217`, `RustParser.ts:15339-15342`, `RustParser.ts:15371-15374`
+- **constructor** — This constructor initializes the object with the parent context and invoking state, then copies properties from the given context `RustParser.ts:15255-15258`, `RustParser.ts:15281-15284`
+- **constructor** — Initializes the parser with the given context and invoking state, then copies properties from the context `RustParser.ts:15406-15409`
+- **constructor** — Initializes the RustParser with a parent context and invoking state `RustParser.ts:15444-15447`
+- **constructor** — Initializes a new instance of the parser with a given context `RustParser.ts:15473-15476`, `RustParser.ts:15499-15502`
+- **constructor** — Initializes a new instance of the RustParser with a given context `RustParser.ts:15540-15543`, `RustParser.ts:15572-15575`
+- **constructor** — Initializes the parser with a parent context and invoking state `RustParser.ts:15634-15637`, `RustParser.ts:15666-15669`
+- **constructor** — Initializes the parser with a parent context and `RustParser.ts:15692-15695`
+- **constructor** — Initializes the parser with the given context and copies properties from the context `RustParser.ts:15727-15730`
+- **constructor** — Initializes the parser with the given `RustParser.ts:15762-15765`
+- **constructor** — Initializes the parser with a context and copies properties from the context `RustParser.ts:15797-15800`, `RustParser.ts:15832-15835`
+- **constructor** — Initializes the parser with a context and invoking state, copying properties from the context `RustParser.ts:15858-15861`
+- **constructor** — Initializes the RustParser with a context and invoking state `RustParser.ts:17851-17854`
+- **constructor** — Initializes the parser with a context and invoking state `RustParser.ts:17886-17889`, `RustParser.ts:17921-17924`
+- **copyFrom** — Copies attributes from another context `RustParser.ts:14851-14853`
+- **copyFrom** — Copies properties from another context `RustParser.ts:17846-17848`
+- **crate** — Represents the crate keyword in the Rust grammar `RustParser.ts:836-883`
+- **crateRef** — Represents a crate reference in the Rust grammar `RustParser.ts:2179-2216`
+- **crateRef** — Represents a crate reference in the parser `RustParser.ts:12585-12587`
+- **createFailedPredicateException** — Creates an exception for failed predicate checks `RustParser.ts:823-825`
+- **delimTokenTree** — Represents a token tree for delimiter tokens `RustParser.ts:907-1001`
+- **delimTokenTree** — Token tree for delimiter tokens `RustParser.ts:11750-11752`
+- **delimTokenTree** — Token representing a delimiter token tree `RustParser.ts:11835-11837`
+- **delimTokenTree** — Represents a delimiter token tree `RustParser.ts:12362-12364`
+- **delimTokenTree** — Returns the context of a delimiter token tree `RustParser.ts:14693-14695`
+- **DOLLAR** — Token representing the dollar symbol `RustParser.ts:11873-11875`
+- **DOLLAR** — Represents the dollar sign in the parser `RustParser.ts:12175-12177`
+- **DOLLAR** — Represents the dollar symbol `RustParser.ts:12304-12306`
+- **DOT** — Represents the dot operator `RustParser.ts:15093-15095`
+- **DOT** — Represents the dot operator in the parser `RustParser.ts:15221-15223`
+- **DOT** — Dot `RustParser.ts:15314-15316`
+- **DOT** — Returns the terminal node for the DOT token `RustParser.ts:15641-15643`
+- **DOT** — Returns the DOT terminal node if it exists `RustParser.ts:20610-20612`
+- **DOTDOT** — Dot dot in the Rust parser `RustParser.ts:14997-14999`
+- **DOTDOT** — Represents a dot-dot token `RustParser.ts:16547-16549`
+- **DOTDOT** — Represents the '..' symbol `RustParser.ts:17817-17819`
+- **DOTDOT** — Represents the exclusive range pattern operator `RustParser.ts:17928-17930`
+- **DOTDOT** — Represents the "..." token in Rust `RustParser.ts:18185-18187`
+- **DOTDOT** — Dot dot `RustParser.ts:20613-20615`
+- **DOTDOTDOT** — Represents a sequence of three dots `RustParser.ts:13053-13055`
+- **DOTDOTDOT** — Represents the half-open range pattern operator `RustParser.ts:13100-13102`
+- **DOTDOTDOT** — Represents a variadic parameter in the parser `RustParser.ts:17899-17901`
+- **DOTDOTDOT** — Dot dot dot `RustParser.ts:19085-19087`
+- **DOTDOTDOT** — Returns the DOTDOTDOT terminal node if it exists `RustParser.ts:20616-20618`
+- **DOTDOTEQ** — Dot dot equal in the Rust parser `RustParser.ts:15009-15011`
+- **DOTDOTEQ** — Represents the inclusive range pattern operator `RustParser.ts:17864-17866`
+- **DOTDOTEQ** — Dot dot equal `RustParser.ts:20619-20621`
+- **enterEveryRule** — Enters every rule `RustParserListener.ts:2592-2592`
+- **enterRule** — Enters a new rule in the parser `RustParser.ts:11724-11728`
+- **enterRule** — Enters a rule in the parser `RustParser.ts:11756-11760`
+- **enterRule** — Enters a new rule `RustParser.ts:11806-11810`
+- **enterRule** — Begins the parsing of a new rule `RustParser.ts:11841-11845`
+- **enterRule** — Represents entering a rule `RustParser.ts:11879-11883`
+- **enterRule** — Represents entering a rule in the parser `RustParser.ts:11938-11942`
+- **enterRule** — Enters a new rule in the Rust parser `RustParser.ts:11973-11977`
+- **enterRule** — Begins parsing a new rule `RustParser.ts:12020-12024`
+- **enterRule** — Enters a rule in the Rust parser `RustParser.ts:12061-12065`
+- **enterRule** — Enters a rule in the Rust grammar `RustParser.ts:12093-12097`
+- **enterRule** — Enters a parsing rule `RustParser.ts:12143-12147`
+- **enterRule** — Begins parsing a rule `RustParser.ts:12214-12218`
+- **enterRule** — Enters the current parsing rule `RustParser.ts:12249-12253`
+- **enterRule** — Enters a rule `RustParser.ts:12275-12279`
+- **enterRule** — Enters the current rule `RustParser.ts:12310-12314`
+- **enterRule** — Begins parsing a rule in the Rust parser `RustParser.ts:12342-12346`
+- **enterRule** — Represents the enter action for a rule `RustParser.ts:12368-12372`
+- **enterRule** — Enters a new rule context `RustParser.ts:12406-12410`
+- **enterRule** — Represents entering a rule in the Rust grammar `RustParser.ts:12471-12475`
+- **enterRule** — Begins parsing a specific rule `RustParser.ts:12500-12504`
+- **enterRule** — Begins the parsing of a specific rule `RustParser.ts:12559-12563`
+- **enterRule** — Enter rule `RustParser.ts:12597-12601`
+- **enterRule** — Invokes the enter method for the rule "shr" on the listener `RustParser.ts:12626-12630`
+- **enterRule** — Invokes the enter rule for the as clause `RustParser.ts:12658-12662`
+- **enterRule** — Invokes the enter rule for the use declaration `RustParser.ts:12690-12694`
+- **enterRule** — Invokes the enterUseTree method of the listener if it exists `RustParser.ts:12755-12759`
+- **enterRule** — Invokes the listener's enter function for the function rule `RustParser.ts:12811-12815`
+- **enterRule** — Invokes the listener's enter function for the function qualifiers rule `RustParser.ts:12849-12853`
+- **enterRule** — Invokes the enterAbi method of the listener if it exists `RustParser.ts:12878-12882`
+- **enterRule** — Invokes the enter method for the function parameters rule `RustParser.ts:12922-12926`
+- **enterRule** — Invokes the enter method for the self parameter rule `RustParser.ts:12960-12964`
+- **enterRule** — Invokes the enterShorthandSelf method of the listener if it exists `RustParser.ts:12995-12999`
+- **enterRule** — Invokes the `enterTypedSelf` method of the listener if it exists `RustParser.ts:13030-13034`
+- **enterRule** — Invokes the `enterFunctionParam` method of the listener if it exists `RustParser.ts:13071-13075`
+- **enterRule** — Invokes the enter method for the function parameter pattern rule `RustParser.ts:13106-13110`
+- **enterRule** — Invokes the enter method for the function return type rule `RustParser.ts:13135-13139`
+- **enterRule** — Invokes the enter method for the type alias rule `RustParser.ts:13179-13183`
+- **enterRule** — Invokes the enter method for the struct rule `RustParser.ts:13208-13212`
+- **enterRule** — Invokes the enterStructStruct method of the listener if it exists `RustParser.ts:13255-13259`
+- **enterRule** — Invokes the enterTupleStruct method of the listener if it exists `RustParser.ts:13302-13306`
+- **enterRule** — Invokes the enterStructFields method of the listener if it exists. `Rust `RustParser.ts:13343-13347`
+- **enterRule** — Invokes the listener's enterStructField method if it exists `RustParser.ts:13387-13391`
+- **enterRule** — Invokes the listener's enterTupleFields method if it exists `RustParser.ts:13428-13432`
+- **enterRule** — Inv `RustParser.ts:13466-13470`
+- **enterRule** — Invokes the enter enumeration rule listener `RustParser.ts:13510-13514`
+- **enterRule** — Invokes the enter enum items rule listener `RustParser.ts:13551-13555`
+- **enterRule** — Invokes the enterEnumItem method of the listener `RustParser.ts:13598-13602`
+- **enterRule** — Invokes the enter method for the enum item tuple rule `RustParser.ts:13630-13634`
+- **enterRule** — Invokes the enter method for the enum item struct rule `RustParser.ts:13662-13666`
+- **enterRule** — Invokes the listener's `enterEnumItemDiscriminant` method if it exists `RustParser.ts:13691-13695`
+- **enterRule** — Invokes the listener's `enterUnion_` method if it exists `RustParser.ts:13735-13739`
+- **enterRule** — Invokes the enterConstantItem method of the listener if it exists `RustParser.ts:13782-13786`
+- **enterRule** — Invokes the enterStaticItem method of the listener if it exists `RustParser.ts:13829-13833`
+- **enterRule** — Invokes the listener's enterTrait_ method if it exists `RustParser.ts:13897-13901`
+- **enterRule** — Invokes the listener's enterImplementation method if it exists `RustParser.ts:13926-13930`
+- **enterRule** — Enters the rule for inherent implementation `RustParser.ts:13985-13989`
+- **enterRule** — Invokes the enterTraitImpl method of the listener `RustParser.ts:14056-14060`
+- **enterRule** — Invokes the listener's `enterExternBlock` method if it exists `RustParser.ts:14112-14116`
+- **enterRule** — Invokes the listener's `enterExternalItem` method if it exists `RustParser.ts:14156-14160`
+- **enterRule** — Invokes the enterGenericParams method of the listener if it exists `RustParser.ts:14203-14207`
+- **enterRule** — Invokes the enterGenericParam method of the listener if it exists `RustParser.ts:14244-14248`
+- **enterRule** — Invokes the enter method for lifetime parameters if the listener has it `RustParser.ts:14279-14283`
+- **enterRule** — Invokes the enter method for type parameters if the listener has it `RustParser.ts:14320-14324`
+- **enterRule** — Invokes the enterConstParam method of the listener if it exists `RustParser.ts:14355-14359`
+- **enterRule** — Invokes the enterWhereClause method of the listener if it exists `RustParser.ts:14399-14403`
+- **enterRule** — Invokes the enterWhereClauseItem method of the listener if it exists `RustParser.ts:14428-14432`
+- **enterRule** — Invokes the enter method of the listener for the lifetime where clause item `RustParser.ts:14460-14464`
+- **enterRule** — Invokes the enter method of the listener for the type bound where clause item `RustParser.ts:14495-14499`
+- **enterRule** — Invokes the listener's `enterForLifetimes` method `RustParser.ts:14524-14528`
+- **enterRule** — Invokes the listener's `enterAssociatedItem` method `RustParser.ts:14571-14575`
+- **enterRule** — Invokes the listener's enterInnerAttribute method if it exists `RustParser.ts:14609-14613`
+- **enterRule** — Invokes the listener's enterOuterAttribute method if it exists `RustParser.ts:14644-14648`
+- **enterRule** — Invokes the enter method for the attribute rule `RustParser.ts:14673-14677`
+- **enterRule** — Invokes the enter method for the attribute input rule `RustParser.ts:14705-14709`
+- **enterRule** — Invokes the enter method for the statement rule `RustParser.ts:14743-14747`
+- **enterRule** — Invokes the enter method for the let statement rule `RustParser.ts:14796-14800`
+- **enterRule** — Invokes the enterExpressionStatement method of the listener if it exists `RustParser.ts:14828-14832`
+- **enterRule** — Invokes the enterTypeCastExpression method of the listener if it exists `RustParser.ts:14869-14873`
+- **enterRule** — Invokes the enterPathExpression_ method of the listener if it exists `RustParser.ts:14895-14899`
+- **enterRule** — Invokes the listener's enterTupleExpression method if it exists `RustParser.ts:14936-14940`
+- **enterRule** — Invokes the listener's enterIndexExpression method if it exists `RustParser.ts:14974-14978`
+- **enterRule** — Invokes the listener's enterRangeExpression method if it exists `RustParser.ts:15012-15016`
+- **enterRule** — Invokes the listener's enterMacroInvocationAsExpression method if it `RustParser.ts:15038-15042`
+- **enterRule** — Invokes the listener's enter method for the return expression `RustParser.ts:15067-15071`
+- **enterRule** — Invokes the listener's enter method for the await expression `RustParser.ts:15099-15103`
+- **enterRule** — Invokes the enterErrorPropagationExpression method of the listener `RustParser.ts:15128-15132`
+- **enterRule** — Invokes the listener's enter method for continue expression `RustParser.ts:15160-15164`
+- **enterRule** — Invokes the listener's enter method for assignment expression `RustParser.ts:15195-15199`
+- **enterRule** — Invokes the listener's enter method for method call expression. `RustParser.ts:15 `RustParser.ts:15236-15240`
+- **enterRule** — This method calls the listener's enterLiteralExpression_ method if it exists `RustParser.ts:15262-15266`
+- **enterRule** — This method calls the listener's enterStructExpression_ method if it exists `RustParser.ts:15288-15292`
+- **enterRule** — Invokes the listener's enter method for tuple indexing expression `RustParser.ts:15320-15324`
+- **enterRule** — Invokes the listener's enter method for negation expression `RustParser.ts:15352-15356`
+- **enterRule** — Invokes the listener's enter method for call expression `RustParser.ts:15387-15391`
+- **enterRule** — Invokes the listener's enterLazyBooleanExpression method if it exists `RustParser.ts:15425-15429`
+- **enterRule** — Invokes the listener's enter method for a dereference expression `RustParser.ts:15454-15458`
+- **enterRule** — Invokes the listener's enter method for an expression with a block `RustParser.ts:15480-15484`
+- **enterRule** — Invokes the listener's enterGroupedExpression method if it exists `RustParser.ts:15521-15525`
+- **enterRule** — Invokes the listener's enter method for a break expression `RustParser.ts:15553-15557`
+- **enterRule** — Invokes the listener's enter method for an arithmetic or logical expression `RustParser.ts:15615-15619`
+- **enterRule** — Invokes the listener's enterFieldExpression method `RustParser.ts:15647-15651`
+- **enterRule** — Invokes the listener's enterEnumerationVariantExpression_ method `RustParser.ts:15673-15677`
+- **enterRule** — Invokes the enterComparisonExpression method of the listener if it exists `RustParser.ts:15708-15712`
+- **enterRule** — Invokes the enterAttributedExpression method of the listener if it exists `RustParser.ts:15743-15747`
+- **enterRule** — Invokes the listener's enterBorrowExpression method if it exists `RustParser.ts:15778-15782`
+- **enterRule** — Invokes the listener's enterCompoundAssignmentExpression method if it exists `RustParser.ts:15813-15817`
+- **enterRule** — Invokes the listener's enterClosureExpression `RustParser.ts:15839-15843`
+- **enterRule** — Invokes the enter method of the listener for the array expression rule `RustParser.ts:15880-15884`
+- **enterRule** — Invokes the enter method of the listener for the comparison operator rule `RustParser.ts:15921-15925`
+- **enterRule** — Invokes the listener's enterCompoundAssignOperator method if it exists `RustParser.ts:15974-15978`
+- **enterRule** — Invokes the enter method for the expression with block rule `RustParser.ts:16030-16034`
+- **enterRule** — Invokes the enter method for the literal expression rule `RustParser.ts:16083-16087`
+- **enterRule** — Invokes the enterPathExpression method of the listener if it exists `RustParser.ts:16112-16116`
+- **enterRule** — Invokes the enterBlockExpression method of the listener if it exists `RustParser.ts:16153-16157`
+- **enterRule** — Invokes the listener's `enterStatements` method if it exists `RustParser.ts:16188-16192`
+- **enterRule** — Invokes the listener's `enterAsyncBlockExpression` method if it exists `RustParser.ts:16220-16224`
+- **enterRule** — Invokes the listener's `enterUnsafeBlockExpression` method if it exists `RustParser.ts:16249-16253`
+- **enterRule** — Invokes the enterArrayElements method of the listener if it exists `RustParser.ts:16293-16297`
+- **enterRule** — Invokes the listener's `enterTupleElements` method if it exists `RustParser.ts:16334-16338`
+- **enterRule** — Invokes the listener's `enterTupleIndex` method if it exists `RustParser.ts:16360-16364`
+- **enterRule** — Invokes the listener's `enterStructExpression` method if it exists `RustParser.ts:16392-16396`
+- **enterRule** — Invokes the enter method for structExprStruct `RustParser.ts:16439-16443`
+- **enterRule** — Invokes the enter method for structExprFields `RustParser.ts:16483-16487`
+- **enterRule** — Invokes the enterStructExprField method of the listener `RustParser.ts:16527-16531`
+- **enterRule** — Invokes the enterStructBase method of the listener `RustParser.ts:16556-16560`
+- **enterRule** — Invokes the enterStructExprTuple method of the listener if it exists `RustParser.ts:16615-16619`
+- **enterRule** — Invokes the enterStructExprUnit method of the listener if it exists `RustParser.ts:16641-16645`
+- **enterRule** — Invokes the enterEnumerationVariantExpression method of the listener if it exists `RustParser.ts:16673-16677`
+- **enterRule** — Invokes the listener's enterEnumExprStruct method if it exists `RustParser.ts:16708-16712`
+- **enterRule** — Invokes the listener's enterEnumExprFields method if it exists `RustParser.ts:16749-16753`
+- **enterRule** — Invokes the enter method for enumExprField `RustParser.ts:16784-16788`
+- **enterRule** — Invokes the enter method for enumExprTuple `RustParser.ts:16834-16838`
+- **enterRule** — Invokes the enter method for the enum expression fieldless rule if the listener supports it `RustParser.ts:16860-16864`
+- **enterRule** — Invokes the enter method for the call params rule if the listener supports it `RustParser.ts:16901-16905`
+- **enterRule** — Invokes the enter closure expression listener if it exists `RustParser.ts:16954-16958`
+- **enterRule** — Invokes the enter closure parameters listener if it exists `RustParser.ts:16995-16999`
+- **enterRule** — Invokes the enter closure parameter listener if it exists `RustParser.ts:17036-17040`
+- **enterRule** — Invokes the enter loop expression listener if it exists `RustParser.ts:17074-17078`
+- **enterRule** — Invokes the enter infinite loop expression listener if it exists `RustParser.ts:17103-17107`
+- **enterRule** — Invokes the enter predicate loop expression method of the listener `RustParser.ts:17135-17139`
+- **enterRule** — Invokes the enter predicate pattern loop expression method of the listener `RustParser.ts:17176-17180`
+- **enterRule** — Invokes the enter method for the iterator loop expression rule `RustParser.ts:17214-17218`
+- **enterRule** — Invokes the enter method for the loop label rule `RustParser.ts:17243-17247`
+- **enterRule** — Enters the rule and notifies the listener `RustParser.ts:17290-17294`
+- **enterRule** — Invokes the listener's `enterIfLetExpression` method if it exists `RustParser.ts:17346-17350`
+- **enterRule** — Invokes the listener's enterMatchExpression method if it exists `RustParser.ts:17393-17397`
+- **enterRule** — Invokes the `enterMatchArms` method of the listener if it exists `RustParser.ts:17449-17453`
+- **enterRule** — Invokes the `enterMatchArmExpression` method of the listener if it exists `RustParser.ts:17481-17485`
+- **enterRule** — Invokes the enterMatchArm method of the listener if it exists `RustParser.ts:17519-17523`
+- **enterRule** — Invokes the enterMatchArmGuard method of the listener if it exists `RustParser.ts:17548-17552`
+- **enterRule** — Invokes the enterPattern method of the listener if it exists `RustParser.ts:17589-17593`
+- **enterRule** — Enters the pattern rule and calls the listener's enter method `RustParser.ts:17618-17622`
+- **enterRule** — Enters the pattern without range rule and calls the listener's enter method `RustParser.ts:17677-17681`
+- **enterRule** — Invokes the enter method for the literal pattern rule `RustParser.ts:17733-17737`
+- **enterRule** — Invokes the enter method for the identifier pattern rule `RustParser.ts:17771-17775`
+- **enterRule** — Invokes the listener's enterWildcardPattern method if it exists `RustParser.ts:17797-17801`
+- **enterRule** — Invokes the listener's enterRestPattern method if it exists `RustParser.ts:17823-17827`
+- **enterRule** — Invokes the listener's enterInclusiveRangePattern method if it exists `RustParser.ts:17867-17871`
+- **enterRule** — Invokes the listener's enter method for the obsolete range pattern rule `RustParser.ts:17902-17906`
+- **enterRule** — Invokes the listener's enter method for the half-open range pattern rule `RustParser.ts:17931-17935`
+- **enterRule** — Invokes the enter method for range pattern bound `RustParser.ts:17972-17976`
+- **enterRule** — Invokes the enter method for reference pattern `RustParser.ts:18007-18011`
+- **enterRule** — Invokes the enter method for the struct pattern rule `RustParser.ts:18042-18046`, `RustParser.ts:18200-18204`
+- **enterRule** — Invokes the enter method for the struct pattern elements rule `RustParser.ts:18074-18078`
+- **enterRule** — Invokes the listener's enterStructPatternFields method if it exists `RustParser.ts:18115-18119`
+- **enterRule** — Invokes the listener's enterStructPatternField method if it exists `RustParser.ts:18165-18169`
+- **enterRule** — Invokes the enter method for the tuple struct pattern rule `RustParser.ts:18235-18239`
+- **enterRule** — Invokes the enter method for the tuple struct items rule `RustParser.ts:18276-18280`
+- **enterRule** — Invokes the enter method for the tuple pattern rule `RustParser.ts:18308-18312`
+- **enterRule** — Invokes the enter method for tuple pattern items `RustParser.ts:18352-18356`
+- **enterRule** — Invokes the enter method for grouped pattern `RustParser.ts:18384-18388`
+- **enterRule** — Invokes the listener's enter method for the slice pattern rule `RustParser.ts:18416-18420`
+- **enterRule** — Invokes the listener's enter method for the slice pattern items rule `RustParser.ts:18457-18461`
+- **enterRule** — Invokes the listener's `enterPathPattern` method if it exists `RustParser.ts:18486-18490`
+- **enterRule** — Invokes the enter method of the listener for the rule `RustParser.ts:18518-18522`
+- **enterRule** — Enters the rule for typeNoBounds `RustParser.ts:18583-18587`
+- **enterRule** — Invokes the enter method for the parenthesized type rule `RustParser.ts:18615-18619`
+- **enterRule** — Invokes the enter method for the never type rule `RustParser.ts:18641-18645`
+- **enterRule** — Invokes the enterTupleType method of the listener if it exists `RustParser.ts:18688-18692`
+- **enterRule** — Invokes the enterArrayType method of the listener if it exists `RustParser.ts:18726-18730`
+- **enterRule** — Invokes the enterSliceType method of the listener if it exists `RustParser.ts:18758-18762`
+- **enterRule** — Invokes the enterReferenceType method of the listener if it exists `RustParser.ts:18793-18797`
+- **enterRule** — Invokes the enterRawPointerType method of the listener if it exists `RustParser.ts:18828-18832`
+- **enterRule** — Invokes the enter method for the bare function type rule `RustParser.ts:18872-18876`
+- **enterRule** — Invokes the enter method for the function type qualifiers rule `RustParser.ts:18904-18908`
+- **enterRule** — Invokes the listener's enterBareFunctionReturnType method if it exists `RustParser.ts:18933-18937`
+- **enterRule** — Invokes the listener's enter method for the function parameters maybe named variadic rule `RustParser.ts:18962-18966`
+- **enterRule** — Invokes the listener's enter method for the maybe named function parameters rule `RustParser.ts:19003-19007`
+- **enterRule** — Invokes the enterMaybeNamedParam method of the listener `RustParser.ts:19047-19051`
+- **enterRule** — Invokes the enterMaybeNamedFunctionParametersVariadic method of the listener. `RustParser.ts `RustParser.ts:19100-19104`
+- **enterRule** — Enters the rule for trait object type `RustParser.ts:19129-19133`
+- **enterRule** — Enters the rule for trait object type one bound `RustParser.ts:19158-19162`
+- **enterRule** — Invokes the listener's enterImplTraitType method if it exists `RustParser.ts:19187-19191`
+- **enterRule** — Invokes the listener's enter method for the `implTraitTypeOneBound` rule `RustParser.ts:19216-19220`
+- **enterRule** — Invokes the listener's enter method for the `inferredType` rule `RustParser.ts:19242-19246`
+- **enterRule** — Invokes the listener's enter method for the `typeParamBounds` rule `RustParser.ts:19283-19287`
+- **enterRule** — Invokes the listener's enter method for type parameter bounds `RustParser.ts:19312-19316`
+- **enterRule** — Invokes the listener's `enterTraitBound` method if it exists `RustParser.ts:19350-19354`
+- **enterRule** — Invokes the listener's `enterLifetimeBounds` method if it exists `RustParser.ts:19391-19395`
+- **enterRule** — Invokes the enterLifetime method of the listener `RustParser.ts:19423-19427`
+- **enterRule** — Invokes the enter method of the listener for the current node if it exists `RustParser.ts:19464-19468`, `RustParser.ts:19502-19506`
+- **enterRule** — Invokes the listener's enterPathInExpression method if it exists `RustParser.ts:19543-19547`
+- **enterRule** — Invokes the listener's enterPathExprSegment method if it exists `RustParser.ts:19575-19579`
+- **enterRule** — Invokes the listener's enterPathIdentSegment method if it exists. `Rust `RustParser.ts:19616-19620`
+- **enterRule** — Invokes the enterGenericArgs method of the listener if it exists `RustParser.ts:19672-19676`
+- **enterRule** — Invokes the enterGenericArg method of the listener if it exists `RustParser.ts:19707-19711`
+- **enterRule** — Enters the generic arguments constant rule `RustParser.ts:19742-19746`
+- **enterRule** — Enters the generic arguments lifetimes rule `RustParser.ts:19783-19787`
+- **enterRule** — Invokes the enter method for the generic args types rule `RustParser.ts:19824-19828`
+- **enterRule** — Invokes the enter method for the generic args bindings rule `RustParser.ts:19865-19869`
+- **enterRule** — Invokes the enterGenericArgsBinding method of the listener `RustParser.ts:19897-19901`
+- **enterRule** — Invokes the enterQualifiedPathInExpression method of the listener `RustParser.ts:19941-19945`
+- **enterRule** — Invokes the enter method for a qualified path type rule `RustParser.ts:19979-19983`
+- **enterRule** — Invokes the enter method for a qualified path in type rule `RustParser.ts:20023-20027`
+- **enterRule** — Notifies the listener of the entry of the type path rule `RustParser.ts:20064-20068`
+- **enterRule** — Invokes the enterTypePathSegment method of the listener `RustParser.ts:20099-20103`
+- **enterRule** — Invokes the enterTypePathFn method of the listener `RustParser.ts:20137-20141`
+- **enterRule** — Invokes the enterTypePathInputs method of the listener `RustParser.ts:20178-20182`
+- **enterRule** — Invokes the listener's enterVisibility method if it exists `RustParser.ts:20225-20229`
+- **enterRule** — Invokes the listener's enterIdentifier method if it exists `RustParser.ts:20257-20261`
+- **enterRule** — Invokes the enterKeyword method of the listener if it exists `RustParser.ts:20439-20443`
+- **enterRule** — Invokes the enterMacroIdentifierLikeToken method of the listener if it exists `RustParser.ts:20480-20484`
+- **enterRule** — Invokes the enter macro literal token listener if it exists `RustParser.ts:20506-20510`
+- **enterRule** — Invokes the enter macro punctuation token rule listener `RustParser.ts:20646-20650`
+- **enterRule** — Invokes the enter shift-left operator rule listener `RustParser.ts:20678-20682`
+- **enterRule** — Invokes the enterShr method of the listener `RustParser.ts:20710-20714`
+- **enumeration** — Represents an enumeration `RustParser.ts:3282-3331`
+- **enumeration** — Represents an enumeration definition `RustParser.ts:12444-12446`
+- **enumerationVariantExpression** — Parses an enumeration variant expression `RustParser.ts:6492-6532`
+- **enumerationVariantExpression** — Represents an expression for an enumeration variant `RustParser.ts:15670-15672`
+- **enumExprField** — Parses a field of an enumeration expression `RustParser.ts:6607-6662`
+- **enumExprField** — Represents a field in an enum expression `RustParser.ts:16730-16736`
+- **enumExprFieldless** — Parses a fieldless enumeration expression `RustParser.ts:6722-6740`
+- **enumExprFieldless** — Represents an enum expression without any fields `RustParser.ts:16667-16669`
+- **enumExprFields** — Parses fields of an enumeration expression `RustParser.ts:6565-6606`
+- **enumExprFields** — Represents fields in an enum expression `RustParser.ts:16702-16704`
+- **enumExprStruct** — Parses a struct in an enumeration expression `RustParser.ts:6533-6564`
+- **enumExprStruct** — Represents an enum expression with a struct-like syntax `RustParser.ts:16661-16663`
+- **enumExprTuple** — Parses a tuple in an enumeration expression `RustParser.ts:6663-6721`
+- **enumExprTuple** — Represents an enum expression with a tuple-like syntax `RustParser.ts:16664-16666`
+- **enumItem** — Represents an item of an enumeration `RustParser.ts:3374-3438`
+- **enumItem** — An item within an enumeration `RustParser.ts:13532-13538`
+- **enumItemDiscriminant** — Represents the discriminant of an enumeration item `RustParser.ts:3504-3524`
+- **enumItemDiscriminant** — Represents the discriminant of an enum item `RustParser.ts:13592-13594`
+- **enumItems** — Represents the items of an enumeration `RustParser.ts:3332-3373`
+- **enumItems** — Items within an enumeration `RustParser.ts:13504-13506`
+- **enumItemStruct** — Represents a struct item of an enumeration `RustParser.ts:3474-3503`
+- **enumItemStruct** — Struct representation of an enumeration item `RustParser.ts:13589-13591`
+- **enumItemTuple** — Represents a tuple item of an enumeration `RustParser.ts:3439-3473`
+- **enumItemTuple** — Tuple representation of an enumeration item `RustParser.ts:13586-13588`
+- **EOF** — Represents the end of the file `RustParser.ts:11700-11702`
+- **EQ** — Represents an equality operator in the Rust grammar `RustParser.ts:13170-13172`
+- **EQ** — Represents the equality token `RustParser.ts:13682-13684`
+- **EQ** — Represents an equality `RustParser.ts:13773-13775`
+- **EQ** — Represents an equality token `RustParser.ts:13820-13822`
+- **EQ** — Represents an equality in the Rust parser `RustParser.ts:14308-14310`
+- **EQ** — Represents the equality operator `RustParser.ts:14696-14698`
+- **EQ** — Represents the equality operator in the Rust parser `RustParser.ts:14787-14789`
+- **EQ** — Represents an equality operator in the parser `RustParser.ts:15192-15194`
+- **EQ** — Represents the equal operator `RustParser.ts:17164-17166`
+- **EQ** — Returns the terminal node for the equality operator `RustParser.ts:17319-17321`
+- **EQ** — Returns the EQ terminal node `RustParser.ts:19888-19890`
+- **EQ** — Returns the EQ terminal node if it exists `RustParser.ts:20583-20585`
+- **EQEQ** — Represents equality comparison `RustParser.ts:15900-15902`
+- **EQEQ** — Represents the equal-equal operator `RustParser.ts:20586-20588`
+- **exitEveryRule** — Exits every rule `RustParserListener.ts:2593-2593`
+- **exitRule** — Exits the current rule in the parser `RustParser.ts:11729-11733`
+- **exitRule** — Exits a rule in the parser `RustParser.ts:11761-11765`
+- **exitRule** — Exits the current rule `RustParser.ts:11811-11815`
+- **exitRule** — Ends the parsing of the current rule `RustParser.ts:11846-11850`
+- **exitRule** — Represents exiting a rule `RustParser.ts:11884-11888`
+- **exitRule** — Represents exiting a rule in the parser `RustParser.ts:11943-11947`
+- **exitRule** — Exits the current rule in the Rust parser `RustParser.ts:11978-11982`
+- **exitRule** — Ends parsing the current rule `RustParser.ts:12025-12029`
+- **exitRule** — Exits a rule in the Rust parser `RustParser.ts:12066-12070`
+- **exitRule** — Exits a rule in the Rust grammar `RustParser.ts:12098-12102`
+- **exitRule** — Exits a parsing rule `RustParser.ts:12148-12152`
+- **exitRule** — Ends parsing a rule `RustParser.ts:12219-12223`
+- **exitRule** — Exits the current parsing rule `RustParser.ts:12254-12258`
+- **exitRule** — Exits a rule `RustParser.ts:12280-12284`
+- **exitRule** — Ends parsing a rule in the Rust parser `RustParser.ts:12315-12319`
+- **exitRule** — Represents the exit action for a rule `RustParser.ts:12347-12351`
+- **exitRule** — Exits the current rule context `RustParser.ts:12373-12377`
+- **exitRule** — Represents exiting a rule in the Rust grammar `RustParser.ts:12411-12415`
+- **exitRule** — Ends parsing a specific rule `RustParser.ts:12476-12480`
+- **exitRule** — Ends the parsing of a specific rule `RustParser.ts:12505-12509`
+- **exitRule** — Exit rule `RustParser.ts:12564-12568`
+- **exitRule** — Invokes the exit method for the rule "shr" on the listener `RustParser.ts:12602-12606`
+- **exitRule** — Invokes the exit rule for the crate reference `RustParser.ts:12631-12635`
+- **exitRule** — Invokes the exit rule for the as clause `RustParser.ts:12663-12667`
+- **exitRule** — Invokes the exit rule for the use declaration. `RustParser.ts:126 `RustParser.ts:12695-12699`
+- **exitRule** — Invokes the exitUseTree method of the listener if it exists `RustParser.ts:12760-12764`
+- **exitRule** — Invokes the listener's exit function for the function rule `RustParser.ts:12816-12820`
+- **exitRule** — Invokes the listener's exit function for the function qualifiers rule `RustParser.ts:12854-12858`
+- **exitRule** — Invokes the exitAbi method of the listener if it exists `RustParser.ts:12883-12887`
+- **exitRule** — Invokes the exit method for the function parameters rule `RustParser.ts:12927-12931`
+- **exitRule** — Invokes the exit method for the self parameter rule `RustParser.ts:12965-12969`
+- **exitRule** — Invokes the exitShorthandSelf method of the listener if it exists `RustParser.ts:13000-13004`
+- **exitRule** — Invokes the `exitTypedSelf` method of the listener if it exists `RustParser.ts:13035-13039`
+- **exitRule** — Invokes the `exitFunctionParam` method of the listener if it exists `RustParser.ts:13076-13080`
+- **exitRule** — Invokes the exit method for the function parameter pattern rule `RustParser.ts:13111-13115`
+- **exitRule** — Invokes the exit method for the function return type rule `RustParser.ts:13140-13144`
+- **exitRule** — Invokes the exit method for the type alias rule `RustParser.ts:13184-13188`
+- **exitRule** — Invokes the exit method for the struct rule `RustParser.ts:13213-13217`
+- **exitRule** — Invokes the exitStructStruct method of the listener if it exists `RustParser.ts:13260-13264`
+- **exitRule** — Invokes the exitTupleStruct method of the listener if it exists `RustParser.ts:13307-13311`
+- **exitRule** — Invokes the exitStructFields method of the listener if it exists `RustParser.ts:13348-13352`
+- **exitRule** — Invokes the listener's exitStructField method if it exists `RustParser.ts:13392-13396`
+- **exitRule** — Invokes the listener's exitTupleFields method if it exists `RustParser.ts:13433-13437`
+- **exitRule** — Invokes the exitTupleField method of the listener if it exists `RustParser.ts:13471-13475`
+- **exitRule** — Invokes the exit enumeration rule listener `RustParser.ts:13515-13519`
+- **exitRule** — Invokes the exit enum items rule listener `RustParser.ts:13556-13560`
+- **exitRule** — Invokes the exitEnumItem method of the listener `RustParser.ts:13603-13607`
+- **exitRule** — Invokes the exit method for the enum item tuple rule `RustParser.ts:13635-13639`
+- **exitRule** — Invokes the listener's `exitEnumItemStruct` method if it exists `RustParser.ts:13667-13671`
+- **exitRule** — Invokes the listener's `exitEnumItemDiscriminant` method if it exists `RustParser.ts:13696-13700`
+- **exitRule** — Invokes the listener's `exitUnion_` method if it exists `RustParser.ts:13740-13744`
+- **exitRule** — Invokes the exitConstantItem method of the listener if it exists `RustParser.ts:13787-13791`
+- **exitRule** — Invokes the listener's exitStaticItem method if it exists `RustParser.ts:13834-13838`
+- **exitRule** — Invokes the listener's exitTrait_ method if it exists `RustParser.ts:13902-13906`
+- **exitRule** — Invokes the listener's exitImplementation method if it exists `RustParser.ts:13931-13935`
+- **exitRule** — Exits the rule for inherent implementation `RustParser.ts:13990-13994`
+- **exitRule** — Invokes the listener's `exitTraitImpl` method if it exists `RustParser.ts:14061-14065`
+- **exitRule** — Invokes the listener's `exitExternBlock` method if it exists `RustParser.ts:14117-14121`
+- **exitRule** — Invokes the listener's `exitExternalItem` method if it exists `RustParser.ts:14161-14165`
+- **exitRule** — Invokes the exitGenericParams method of the listener if it exists `RustParser.ts:14208-14212`
+- **exitRule** — Invokes the exitGenericParam method of the listener if it exists `RustParser.ts:14249-14253`
+- **exitRule** — Invokes the exit method for lifetime parameters if the listener has it `RustParser.ts:14284-14288`
+- **exitRule** — Invokes the exit method for type parameters if the listener has it `RustParser.ts:14325-14329`
+- **exitRule** — Invokes the exitConstParam method of the listener if it exists `RustParser.ts:14360-14364`
+- **exitRule** — Invokes the exitWhereClause method of the listener if it exists `RustParser.ts:14404-14408`
+- **exitRule** — Invokes the exitWhereClauseItem method of the listener if it exists `RustParser.ts:14433-14437`
+- **exitRule** — Invokes the exit method of the listener for the lifetime where clause item `RustParser.ts:14465-14469`
+- **exitRule** — Invokes the exit method of the listener for the type bound where clause item `RustParser.ts:14500-14504`
+- **exitRule** — Invokes the listener's `exitForLifetimes` method `RustParser.ts:14529-14533`
+- **exitRule** — Invokes the listener's exitAssociatedItem method if it exists `RustParser.ts:14576-14580`
+- **exitRule** — Invokes the listener's exitInnerAttribute method if it exists `RustParser.ts:14614-14618`
+- **exitRule** — Invokes the listener's exitOuterAttribute method if it exists `RustParser.ts:14649-14653`
+- **exitRule** — Invokes the exit method for the attribute rule `RustParser.ts:14678-14682`
+- **exitRule** — Invokes the exit method for the attribute input rule `RustParser.ts:14710-14714`
+- **exitRule** — Invokes the exit method for the statement rule `RustParser.ts:14748-14752`
+- **exitRule** — Invokes the exit method for the let statement rule `RustParser.ts:14801-14805`
+- **exitRule** — Invokes the exitExpressionStatement method of the listener if it exists `RustParser.ts:14833-14837`
+- **exitRule** — Invokes the exitTypeCastExpression method of the listener if it exists `RustParser.ts:14874-14878`
+- **exitRule** — Invokes the exitPathExpression_ method of the listener if it exists. `RustParser.ts:14900 `RustParser.ts:14900-14904`
+- **exitRule** — Invokes the listener's exitTupleExpression method if it exists `RustParser.ts:14941-14945`
+- **exitRule** — Invokes the listener's exitIndexExpression method if it exists `RustParser.ts:14979-14983`
+- **exitRule** — Invokes the listener's exitRangeExpression method if it exists `RustParser.ts:15017-15021`
+- **exitRule** — Invokes the exitMacroInvocationAsExpression method of the listener `RustParser.ts:15043-15047`
+- **exitRule** — Invokes the listener's exit method for the return expression `RustParser.ts:15072-15076`
+- **exitRule** — Invokes the listener's exit method for the await expression `RustParser.ts:15104-15108`
+- **exitRule** — Invokes the exitErrorPropagationExpression method of the listener `RustParser.ts:15133-15137`
+- **exitRule** — Invokes the listener's exit method for continue expression `RustParser.ts:15165-15169`
+- **exitRule** — Invokes the listener's exit method for assignment expression `RustParser.ts:15200-15204`
+- **exitRule** — This method calls the listener's exitMethodCallExpression method if it exists `RustParser.ts:15241-15245`
+- **exitRule** — This method calls the listener's exitLiteralExpression_ method if it exists `RustParser.ts:15267-15271`
+- **exitRule** — This method `RustParser.ts:15293-15297`
+- **exitRule** — Invokes the listener's exit method for tuple indexing expression `RustParser.ts:15325-15329`
+- **exitRule** — Invokes the listener's exit method for negation expression `RustParser.ts:15357-15361`
+- **exitRule** — Invokes the listener's exitCallExpression method if it exists `RustParser.ts:15392-15396`
+- **exitRule** — Invokes the listener's exitLazyBooleanExpression method if it exists `RustParser.ts:15430-15434`
+- **exitRule** — Invokes the listener's exit method for a dereference expression `RustParser.ts:15459-15463`
+- **exitRule** — Invokes the listener's exit method for an expression with a block `RustParser.ts:15485-15489`
+- **exitRule** — Invokes the listener's exit method for a grouped expression `RustParser.ts:15526-15530`
+- **exitRule** — Invokes the listener's exit method for a break expression `RustParser.ts:15558-15562`
+- **exitRule** — Inv `RustParser.ts:15620-15624`
+- **exitRule** — Invokes the listener's exitFieldExpression method `RustParser.ts:15652-15656`
+- **exitRule** — Invokes the listener's exitEnumerationVariantExpression_ method `RustParser.ts:15678-15682`
+- **exitRule** — Invokes the exitComparisonExpression method of the listener if it exists `RustParser.ts:15713-15717`
+- **exitRule** — Invokes the exitAttributedExpression method of the listener if it exists `RustParser.ts:15748-15752`
+- **exitRule** — Invokes the listener's exitBorrowExpression method if it exists `RustParser.ts:15783-15787`
+- **exitRule** — Invokes the listener's exitCompoundAssignmentExpression method if it exists `RustParser.ts:15818-15822`
+- **exitRule** — Invokes the listener's exitClosureExpression_ method if it exists `RustParser.ts:15844-15848`
+- **exitRule** — Invokes the exit method of the listener for the array expression rule `RustParser.ts:15885-15889`
+- **exitRule** — Invokes the exit method of the listener for the comparison operator rule. `RustParser.ts:15926-1593 `RustParser.ts:15926-15930`
+- **exitRule** — Invokes the listener's exitCompoundAssignOperator method if it exists `RustParser.ts:15979-15983`
+- **exitRule** — Invokes the exit method for the expression with block rule `RustParser.ts:16035-16039`
+- **exitRule** — Invokes the exit method for the literal expression rule `RustParser.ts:16088-16092`
+- **exitRule** — Invokes the exitPathExpression method of the listener if it exists `RustParser.ts:16117-16121`
+- **exitRule** — Invokes the exitBlockExpression method of the listener if it exists `RustParser.ts:16158-16162`
+- **exitRule** — Invokes the listener's `exitStatements` method if it exists `RustParser.ts:16193-16197`
+- **exitRule** — Invokes the listener's `exitAsyncBlockExpression` method if it exists `RustParser.ts:16225-16229`
+- **exitRule** — Invokes the listener's `exitUnsafeBlockExpression` method if it exists. `RustParser.ts:16254 `RustParser.ts:16254-16258`
+- **exitRule** — Invokes the exitArrayElements method of the listener if it exists `RustParser.ts:16298-16302`
+- **exitRule** — Invokes the listener's `exitTupleElements` method if it exists `RustParser.ts:16339-16343`
+- **exitRule** — Invokes the listener's `exitTupleIndex` method if it exists `RustParser.ts:16365-16369`
+- **exitRule** — Invokes the listener's `exitStructExpression` method if it exists `RustParser.ts:16397-16401`
+- **exitRule** — Invokes the exit method for structExprStruct `RustParser.ts:16444-16448`
+- **exitRule** — Invokes the exit method for structExprFields `RustParser.ts:16488-16492`
+- **exitRule** — Invokes the exitStructExprField method of the listener `RustParser.ts:16532-16536`
+- **exitRule** — Invokes the exitStructBase method of the listener `RustParser.ts:16561-16565`
+- **exitRule** — Invokes the exitStructExprTuple method of the listener if it exists `RustParser.ts:16620-16624`
+- **exitRule** — Invokes the exitStructExprUnit method of the listener if it exists `RustParser.ts:16646-16650`
+- **exitRule** — Invokes the listener's exitEnumerationVariantExpression method if it exists `RustParser.ts:16678-16682`
+- **exitRule** — Invokes the listener's exitEnumExprStruct method if it exists `RustParser.ts:16713-16717`
+- **exitRule** — Invokes the listener's exitEnumExprFields method if it exists `RustParser.ts:16754-16758`
+- **exitRule** — Invokes the exit method for enumExprField `RustParser.ts:16789-16793`
+- **exitRule** — Invokes the exit method for enumExprTuple `RustParser.ts:16839-16843`
+- **exitRule** — Invokes the exit method for the enum expression fieldless rule if the listener supports it `RustParser.ts:16865-16869`
+- **exitRule** — Invokes the exit method for the call params rule if the listener supports it `RustParser.ts:16906-16910`
+- **exitRule** — Invokes the exit closure expression listener if it exists `RustParser.ts:16959-16963`
+- **exitRule** — Invokes the exit closure parameters listener if it exists `RustParser.ts:17000-17004`
+- **exitRule** — Invokes the exit closure parameter listener if it exists `RustParser.ts:17041-17045`
+- **exitRule** — Invokes the exit loop expression listener if it exists `RustParser.ts:17079-17083`
+- **exitRule** — Invokes the exit infinite loop expression listener if it exists `RustParser.ts:17108-17112`
+- **exitRule** — Invokes the exit predicate loop expression method of the listener `RustParser.ts:17140-17144`
+- **exitRule** — Invokes the exit predicate pattern loop expression method of the listener `RustParser.ts:17181-17185`
+- **exitRule** — Invokes the exit method for the iterator loop expression rule `RustParser.ts:17219-17223`
+- **exitRule** — Invokes the exit method for the loop label rule `RustParser.ts:17248-17252`
+- **exitRule** — Exits the rule and notifies the listener `RustParser.ts:17295-17299`
+- **exitRule** — Invokes the listener's exitIfLetExpression method if it exists `RustParser.ts:17351-17355`
+- **exitRule** — Invokes the listener's exitMatchExpression method if it exists `RustParser.ts:17398-17402`
+- **exitRule** — Invokes the `exitMatchArms` method of the listener if it exists `RustParser.ts:17454-17458`
+- **exitRule** — Invokes the `exitMatchArmExpression` method of the listener if it exists `RustParser.ts:17486-17490`
+- **exitRule** — Invokes the exitMatchArm method of the listener if it exists `RustParser.ts:17524-17528`
+- **exitRule** — Invokes the exitMatchArmGuard method of the listener if it exists `RustParser.ts:17553-17557`
+- **exitRule** — Invokes the exitPattern method of the listener if it exists `RustParser.ts:17594-17598`
+- **exitRule** — Exits the pattern rule and calls the listener's exit method `RustParser.ts:17623-17627`
+- **exitRule** — Exits the pattern without range rule and calls the listener's exit method `RustParser.ts:17682-17686`
+- **exitRule** — Invokes the exit method for the literal pattern rule `RustParser.ts:17738-17742`
+- **exitRule** — Invokes the exit method for the identifier pattern rule `RustParser.ts:17776-17780`
+- **exitRule** — Invokes the listener's exitWildcardPattern method if it exists `RustParser.ts:17802-17806`
+- **exitRule** — Invokes the listener's exitRestPattern method if it exists `RustParser.ts:17828-17832`
+- **exitRule** — Invokes the listener's exitInclusiveRangePattern method if it exists `RustParser.ts:17872-17876`
+- **exitRule** — Invokes the listener's exit method for the obsolete range pattern rule `RustParser.ts:17907-17911`
+- **exitRule** — Invokes the listener's exit method for the half-open range pattern rule `RustParser.ts:17936-17940`
+- **exitRule** — Invokes the exit method for range pattern bound `RustParser.ts:17977-17981`
+- **exitRule** — Invokes the exit method for reference pattern `RustParser.ts:18012-18016`
+- **exitRule** — Invokes the exit method for the struct pattern rule `RustParser.ts:18047-18051`, `RustParser.ts:18205-18209`
+- **exitRule** — Invokes the exit method for the struct pattern elements rule `RustParser.ts:18079-18083`
+- **exitRule** — Invokes the listener's exitStructPatternFields method if it exists `RustParser.ts:18120-18124`
+- **exitRule** — Invokes the listener's exitStructPatternField method if it exists `RustParser.ts:18170-18174`
+- **exitRule** — Invokes the exit method for the tuple struct pattern rule `RustParser.ts:18240-18244`
+- **exitRule** — Invokes the exit method for the tuple struct items rule `RustParser.ts:18281-18285`
+- **exitRule** — Invokes the exit method for the tuple pattern rule `RustParser.ts:18313-18317`
+- **exitRule** — Invokes the exit method for tuple pattern items `RustParser.ts:18357-18361`
+- **exitRule** — Invokes the exit method for grouped pattern. `RustParser.ts `RustParser.ts:18389-18393`
+- **exitRule** — Invokes the listener's exit method for the slice pattern rule `RustParser.ts:18421-18425`
+- **exitRule** — Invokes the listener's `exitSlicePatternItems` method if it exists `RustParser.ts:18462-18466`
+- **exitRule** — Invokes the listener's `exitPathPattern` method if it exists `RustParser.ts:18491-18495`
+- **exitRule** — Invokes the exit method of the listener for the rule `RustParser.ts:18523-18527`
+- **exitRule** — Exits the rule for typeNoBounds `RustParser.ts:18588-18592`
+- **exitRule** — Invokes the exit method for the parenthesized type rule `RustParser.ts:18620-18624`
+- **exitRule** — Invokes the exit method for the never type rule `RustParser.ts:18646-18650`
+- **exitRule** — Invokes the exitTupleType method of the listener if it exists `RustParser.ts:18693-18697`
+- **exitRule** — Invokes the exitArrayType method of the listener if it exists `RustParser.ts:18731-18735`
+- **exitRule** — Invokes the exitSliceType method of the listener if it exists `RustParser.ts:18763-18767`
+- **exitRule** — Invokes the exitReferenceType method of the listener if it exists `RustParser.ts:18798-18802`
+- **exitRule** — Invokes the exitRawPointerType method of the listener if it exists `RustParser.ts:18833-18837`
+- **exitRule** — Invokes the exit method for the bare function type rule `RustParser.ts:18877-18881`
+- **exitRule** — Invokes the exit method for the function type qualifiers rule `RustParser.ts:18909-18913`
+- **exitRule** — Invokes the listener's exit method for the bare function return type `RustParser.ts:18938-18942`
+- **exitRule** — Invokes the listener's exit method for the function parameters maybe named variadic rule `RustParser.ts:18967-18971`
+- **exitRule** — Invokes the listener's exit method for the maybe named function parameters rule. `RustParser.ts:19008-19 `RustParser.ts:19008-19012`
+- **exitRule** — Invokes the exitMaybeNamedParam method of the listener `RustParser.ts:19052-19056`
+- **exitRule** — Invokes the listener's exitMaybeNamedFunctionParametersVariadic method if it exists `RustParser.ts:19105-19109`
+- **exitRule** — Exits the rule for trait object type `RustParser.ts:19134-19138`
+- **exitRule** — Exits the rule for trait object type one bound `RustParser.ts:19163-19167`
+- **exitRule** — Invokes the listener's exit method for the `implTraitType` rule `RustParser.ts:19192-19196`
+- **exitRule** — Invokes the listener's exit method for the `implTraitTypeOneBound` rule `RustParser.ts:19221-19225`
+- **exitRule** — Invokes the listener's exit method for the `inferredType` rule `RustParser.ts:19247-19251`
+- **exitRule** — Invokes the listener's exit method for type parameter bounds `RustParser.ts:19288-19292`, `RustParser.ts:19317-19321`
+- **exitRule** — Invokes the listener's `exitTraitBound` method if it exists `RustParser.ts:19355-19359`
+- **exitRule** — Invokes the listener's `exitLifetimeBounds` method if it exists `RustParser.ts:19396-19400`
+- **exitRule** — Invokes the exitLifetime method of the listener `RustParser.ts:19428-19432`
+- **exitRule** — Invokes the exit method of the listener for the current node if it exists `RustParser.ts:19469-19473`, `RustParser.ts:19507-19511`, `RustParser.ts:19621-19625`
+- **exitRule** — Invokes the listener's exitPathInExpression method if it exists `RustParser.ts:19548-19552`
+- **exitRule** — Invokes the listener's exitPathExprSegment method if it exists `RustParser.ts:19580-19584`
+- **exitRule** — Invokes the exitGenericArgs method of the listener if it exists `RustParser.ts:19677-19681`
+- **exitRule** — Invokes the exitGenericArg method of the listener `RustParser.ts:19712-19716`
+- **exitRule** — Exits the generic arguments constant rule `RustParser.ts:19747-19751`
+- **exitRule** — Exits the generic arguments lifetimes rule. `RustParser.ts:19788-1 `RustParser.ts:19788-19792`
+- **exitRule** — Invokes the exit method for the generic args types rule `RustParser.ts:19829-19833`
+- **exitRule** — Notifies the listener of the exit of the generic args bindings rule `RustParser.ts:19870-19874`
+- **exitRule** — Invokes the exitGenericArgsBinding method of the listener `RustParser.ts:19902-19906`
+- **exitRule** — Invokes the exitQualifiedPathInExpression method of the listener `RustParser.ts:19946-19950`
+- **exitRule** — Invokes the exit method for a qualified path type rule `RustParser.ts:19984-19988`
+- **exitRule** — Invokes the exit method for a qualified path in type rule. `Rust `RustParser.ts:20028-20032`
+- **exitRule** — Notifies the listener of the exit of the type path rule `RustParser.ts:20069-20073`
+- **exitRule** — Invokes the exitTypePathSegment method of the listener `RustParser.ts:20104-20108`
+- **exitRule** — Invokes the exitTypePathFn method of the listener `RustParser.ts:20142-20146`
+- **exitRule** — Invokes the exitTypePathInputs method of the listener `RustParser.ts:20183-20187`
+- **exitRule** — Invokes the listener's exitVisibility method if it exists `RustParser.ts:20230-20234`
+- **exitRule** — Invokes the listener's exitIdentifier method if it exists `RustParser.ts:20262-20266`
+- **exitRule** — Invokes the exitKeyword method of the listener if it exists `RustParser.ts:20444-20448`
+- **exitRule** — Invokes the exitMacroIdentifierLikeToken method of the listener if it exists `RustParser.ts:20485-20489`
+- **exitRule** — Invokes the exit macro literal token listener if it exists `RustParser.ts:20511-20515`
+- **exitRule** — Invokes the exit macro punctuation token rule listener `RustParser.ts:20651-20655`
+- **exitRule** — Invokes the exit shift-left operator rule listener `RustParser.ts:20683-20687`
+- **exitRule** — Invokes the exitShr method of the listener `RustParser.ts:20715-20719`
+- **expression** — Represents an expression `RustParser.ts:4873-5644`
+- **expression** — Parses an expression in the context of an enum item discriminant `RustParser.ts:13685-13687`
+- **expression** — Represents an expression in the Rust parser `RustParser.ts:13776-13778`
+- **expression** — Parses an expression `RustParser.ts:13823-13825`
+- **expression** — Parses an expression in the Rust parser `RustParser.ts:14790-14792`
+- **expression** — Parses an expression in the Rust grammar `RustParser.ts:14816-14818`
+- **expression** — Expression `RustParser.ts:14860-14862`
+- **expression** — Represents an expression in the parser `RustParser.ts:14961-14967`
+- **expression** — Parses an expression in the parser `RustParser.ts:15002-15008`
+- **expression** — Returns the context of the expression `RustParser.ts:15064-15066`, `RustParser.ts:15090-15092`, `RustParser.ts:17266-17268`, `RustParser.ts:17322-17324`
+- **expression** — Returns the context of the expression. `RustParser.ts:15 `RustParser.ts:15122-15124`
+- **expression** — Returns the root expression context `RustParser.ts:15157-15159`, `RustParser.ts:15185-15191`, `RustParser.ts:15218-15220`, `RustParser.ts:15311-15313`, `RustParser.ts:15343-15345`, `RustParser.ts:15375-15377`, `RustParser.ts:15638-15640`
+- **expression** — Returns the expression context or contexts based on the provided index `RustParser.ts:15412-15418`, `RustParser.ts:16315-16321`
+- **expression** — Returns the root context of an expression `RustParser.ts:15451-15453`, `RustParser.ts:15506-15508`
+- **expression** — Returns the context of an expression or an array of contexts if an index is provided `RustParser.ts:15550-15552`, `RustParser.ts:15578-15584`
+- **expression** — Returns an ExpressionContext based on the provided index or default value `RustParser.ts:15698-15704`
+- **expression** — Returns the first ExpressionContext `RustParser.ts:15731-15733`
+- **expression** — Returns the context of the expression rule `RustParser.ts:15766-15768`, `RustParser.ts:17542-17544`
+- **expression** — Returns the expression context based on the provided index or all contexts `RustParser.ts:15803-15809`
+- **expression** — Returns the root expression context. `RustParser.ts:1618 `RustParser.ts:16182-16184`
+- **expression** — Returns the expression context at the specified index or all expression contexts `RustParser.ts:16271-16277`
+- **expression** — Returns an ExpressionContext or null `RustParser.ts:16509-16511`
+- **expression** — Returns an ExpressionContext `RustParser.ts:16550-16552`
+- **expression** — Returns an array or a single ExpressionContext based on the provided index `RustParser.ts:16596-16602`
+- **expression** — Returns the context of an expression `RustParser.ts:16775-16777`, `RustParser.ts:17126-17128`, `RustParser.ts:17167-17169`, `RustParser.ts:17205-17207`
+- **expression** — Returns the context of an expression, optionally with an index `RustParser.ts:16815-16821`
+- **expression** — Returns the expression context or an array of expression contexts based on the index provided `RustParser.ts:16882-16888`
+- **expression** — Returns the expression context based on the index provided `RustParser.ts:16933-16935`
+- **expression** — Returns the root context of the expression `RustParser.ts:17369-17371`, `RustParser.ts:17431-17433`
+- **expression** — Returns the context of the `expression` rule `RustParser.ts:17469-17471`
+- **expression** — Returns the ExpressionContext at index 0 `RustParser.ts:18717-18719`
+- **expression_sempred** — Represents a semantic predicate for an expression `RustParser.ts:10825-10871`
+- **expressionStatement** — Represents an expression statement `RustParser.ts:4824-4869`
+- **expressionStatement** — Represents an expression statement in the Rust parser `RustParser.ts:14734-14736`
+- **expressionWithBlock** — Represents an expression with a block `RustParser.ts:5697-5791`
+- **expressionWithBlock** — Represents an expression with a block in the Rust parser `RustParser.ts:14822-14824`
+- **expressionWithBlock** — Parses an expression with a block `RustParser.ts:15477-15479`
+- **expressionWithBlock** — Parses an expression that includes a block `RustParser.ts:15994-15996`
+- **expressionWithBlock** — Returns the context of the `expressionWithBlock` rule `RustParser.ts:17475-17477`
+- **externalItem** — Represents an external item `RustParser.ts:4032-4118`
+- **externalItem** — Represents an external item in the Rust parser `RustParser.ts:14102-14108`
+- **externBlock** — Represents an external block `RustParser.ts:3964-4031`
+- **externBlock** — Returns a context for an extern block `RustParser.ts:12462-12464`
+- **externCrate** — Represents an external crate in the Rust grammar `RustParser.ts:2145-2178`
+- **externCrate** — Represents an external crate in the parser `RustParser.ts:12429-12431`
+- **FATARROW** — Represents a fat arrow token `RustParser.ts:12084-12086`
+- **FATARROW** — Represents a fat arrow in the parser `RustParser.ts:17424-17430`
+- **FATARROW** — Fat right arrow `RustParser.ts:20637-20639`
+- **FLOAT_LITERAL** — Represents a float literal `RustParser.ts:16071-16073`
+- **FLOAT_LITERAL** — Represents a float literal in the Rust grammar `RustParser.ts:17727-17729`
+- **FLOAT_LITERAL** — Returns the terminal node for a float literal `RustParser.ts:17963-17965`
+- **FLOAT_LITERAL_sempred** — Represents a semantic predicate for the FLOAT_LITERAL token `RustLexer.ts:612-620`
+- **forLifetimes** — Represents a for lifetimes clause `RustParser.ts:4488-4508`
+- **forLifetimes** — Represents a for lifetimes context `RustParser.ts:14486-14488`
+- **forLifetimes** — Handles lifetimes in a function `RustParser.ts:18860-18862`
+- **forLifetimes** — Returns the context for lifetimes `RustParser.ts:19338-19340`
+- **function_** — Represents a function in the Rust grammar `RustParser.ts:2416-2498`
+- **function_** — Represents a function in the parser `RustParser.ts:12435-12437`
+- **function_** — Represents a function `RustParser.ts:14147-14149`
+- **function_** — Returns the function context `RustParser.ts:14562-14564`
+- **functionParam** — Represents a function parameter in the Rust grammar `RustParser.ts:2776-2825`
+- **functionParam** — Represents a function parameter `RustParser.ts:12912-12918`
+- **functionParameters** — Represents function parameters in the Rust grammar `RustParser.ts:2581-2656`
+- **functionParameters** — Parses function parameters `RustParser.ts:12799-12801`
+- **functionParametersMaybeNamedVariadic** — Represents function parameters that may be named or variadic `RustParser.ts:9075-9108`
+- **functionParametersMaybeNamedVariadic** — Handles named and variadic function parameters `RustParser.ts:18863-18865`
+- **functionParamPattern** — Represents a pattern for function parameters `RustParser.ts:2826-2889`
+- **functionParamPattern** — Represents a function parameter pattern in the parser `RustParser.ts:13050-13052`
+- **functionQualifiers** — Represents function qualifiers in the Rust grammar `RustParser.ts:2499-2554`
+- **functionQualifiers** — Qualifiers for a function `RustParser.ts:12775-12777`
+- **functionReturnType** — Represents the return type of a function `RustParser.ts:2890-2910`
+- **functionReturnType** — Parses the return type of a function `RustParser.ts:12802-12804`
+- **functionTypeQualifiers** — Represents qualifiers for a function type `RustParser.ts:9014-9053`
+- **functionTypeQualifiers** — Qualifiers for a function type `RustParser.ts:18848-18850`
+- **GE** — Represents greater than or equal to comparison `RustParser.ts:15912-15914`
+- **GE** — Greater than or equal to `RustParser.ts:20598-20600`
+- **genericArg** — Represents a generic argument `RustParser.ts:9999-10046`
+- **genericArg** — Returns a generic argument context or an array of generic argument contexts based on the provided index `RustParser.ts:19662-19668`
+- **genericArgs** — Represents generic arguments `RustParser.ts:9861-9998`
+- **genericArgs** — Parses generic arguments in the Rust parser `RustParser.ts:19569-19571`
+- **genericArgs** — Returns the genericArgs context `RustParser.ts:20090-20092`
+- **genericArgsBinding** — Represents a binding generic argument `RustParser.ts:10217-10239`
+- **genericArgsBinding** — Manages binding generic arguments `RustParser.ts:19701-19703`
+- **genericArgsBinding** — Represents a generic argument binding in the parser `RustParser.ts:19846-19852`
+- **genericArgsBindings** — Represents binding generic arguments `RustParser.ts:10183-10216`
+- **genericArgsBindings** — Represents the bindings in generic arguments `RustParser.ts:19657-19659`
+- **genericArgsConst** — Represents constant generic arguments `RustParser.ts:10047-10114`
+- **genericArgsConst** — Handles constant generic arguments `RustParser.ts:19698-19700`
+- **genericArgsLifetimes** — Represents lifetime generic arguments `RustParser.ts:10115-10148`
+- **genericArgsLifetimes** — Represents the lifetimes in generic arguments `RustParser.ts:19642-19644`
+- **genericArgsTypes** — Represents type generic arguments `RustParser.ts:10149-10182`
+- **genericArgsTypes** — Represents the types in generic arguments `RustParser.ts:19654-19656`
+- **genericParam** — Represents a single generic parameter `RustParser.ts:4171-4222`
+- **genericParam** — Represents a generic parameter in the parser `RustParser.ts:14184-14190`
+- **genericParams** — Represents parameters for generic types `RustParser.ts:4119-4170`
+- **genericParams** — Parses generic parameters `RustParser.ts:12796-12798`
+- **genericParams** — Represents generic parameters in the Rust grammar `RustParser.ts:13164-13166`
+- **genericParams** — Generic parameters for a struct `RustParser.ts:13243-13245`
+- **genericParams** — Parameters for generic types `RustParser.ts:13290-13292`
+- **genericParams** — Represents generic parameters `RustParser.ts:13498-13500`
+- **genericParams** — Represents generic parameters in the Rust parser `RustParser.ts:13726-13728`
+- **genericParams** — Represents generic parameters in the code `RustParser.ts:13864-13866`
+- **genericParams** — Returns the context for generic parameters `RustParser.ts:13958-13960`, `RustParser.ts:14026-14028`, `RustParser.ts:14518-14520`
+- **grammarFileName** — The name of the grammar file used to generate the lexer `RustLexer.ts:570-572`
+- **grammarFileName** — Stores the name of the grammar file `RustParser.ts:807-809`
+- **groupedPattern** — Represents a pattern grouped together `RustParser.ts:8427-8449`
+- **groupedPattern** — Represents a pattern for grouped expressions `RustParser.ts:17662-17664`
+- **GT** — Represents a greater-than symbol in the parser `RustParser.ts:14179-14181`
+- **GT** — Represents greater than comparison `RustParser.ts:15906-15908`
+- **GT** — Represents the greater-than operator `RustParser.ts:19639-19641`
+- **GT** — Represents a greater-than token `RustParser.ts:19967-19969`
+- **GT** — Returns the terminal node for the symbol ">" or an array of such nodes `RustParser.ts:20592-20594`
+- **GT** — Returns a terminal node or an array of terminal nodes for the GT rule `RustParser.ts:20700-20706`
+- **identifier** — Represents an identifier in the code `RustParser.ts:10594-10619`
+- **identifier** — Represents an identifier `RustParser.ts:11964-11966`
+- **identifier** — Identifies an identifier in the parser `RustParser.ts:12184-12186`
+- **identifier** — Represents an identifier in the parser `RustParser.ts:12269-12271`
+- **identifier** — Represents an identifier in the Rust parser `RustParser.ts:12523-12525`
+- **identifier** — Represents an identifier in the Rust grammar `RustParser.ts:12617-12619`
+- **identifier** — Identifies an identifier in the code `RustParser.ts:12649-12651`
+- **identifier** — Identifies a variable or function name `RustParser.ts:12746-12748`
+- **identifier** — Identifies an identifier `RustParser.ts:12781-12783`
+- **identifier** — Parses an identifier in the Rust grammar `RustParser.ts:13158-13160`
+- **identifier** — Represents an identifier in the grammar `RustParser.ts:13231-13233`
+- **identifier** — Identifier `RustParser.ts:13278-13280`
+- **identifier** — Parses an identifier in the Rust parser `RustParser.ts:13363-13365`
+- **identifier** — Returns the identifier context `RustParser.ts:13489-13491`, `RustParser.ts:13571-13573`, `RustParser.ts:15644-15646`, `RustParser.ts:16503-16505`, `RustParser.ts:19885-19887`
+- **identifier** — Returns the identifier context from the parser `RustParser.ts:13714-13716`
+- **identifier** — Returns the identifier context at the current position or null `RustParser.ts:13767-13769`
+- **identifier** — Returns the identifier context at the current position `RustParser.ts:13805-13807`
+- **identifier** — Returns the context of the identifier `RustParser.ts:13852-13854`
+- **identifier** — Returns the context of the identifier at the current position `RustParser.ts:14299-14301`, `RustParser.ts:14343-14345`
+- **identifier** — Returns the context of an identifier `RustParser.ts:16769-16771`
+- **identifier** — Returns the context for an identifier `RustParser.ts:17753-17755`
+- **identifier** — Returns the context for the identifier rule if it exists `RustParser.ts:18144-18146`
+- **identifier** — Returns an IdentifierContext or null `RustParser.ts:19038-19040`
+- **identifier** — Returns the context of the identifier if it exists `RustParser.ts:19484-19486`, `RustParser.ts:19595-19597`
+- **identifier** — Returns the context of the identifier rule `RustParser.ts:20462-20464`
+- **identifierPattern** — Represents an identifier pattern `RustParser.ts:7767-7811`
+- **identifierPattern** — Context for parsing identifier patterns `RustParser.ts:17641-17643`
+- **ifExpression** — Represents an if expression `RustParser.ts:7161-7215`
+- **ifExpression** — Parses an if expression `RustParser.ts:16018-16020`
+- **ifExpression** — Parses an if expression in the Rust parser `RustParser.ts:17281-17283`
+- **ifExpression** — Returns the ifExpression context `RustParser.ts:17337-17339`
+- **ifLetExpression** — Represents an if-let expression `RustParser.ts:7216-7276`
+- **ifLetExpression** — Parses an if-let expression `RustParser.ts:16021-16023`
+- **ifLetExpression** — Parses an if let expression `RustParser.ts:17284-17286`
+- **ifLetExpression** — Parses an if-let expression in the Rust parser `RustParser.ts:17340-17342`
+- **implementation** — Represents an implementation `RustParser.ts:3768-3801`
+- **implementation** — Represents an implementation of a trait `RustParser.ts:12459-12461`
+- **implTraitType** — Represents an implementation of a trait type `RustParser.ts:9316-9336`
+- **implTraitType** — Represents an implementation of a trait `RustParser.ts:18509-18511`
+- **implTraitTypeOneBound** — Represents an implementation of a trait type with one bound `RustParser.ts:9337-9357`
+- **implTraitTypeOneBound** — Represents an implementation of a trait with one bound `RustParser.ts:18541-18543`
+- **inferredType** — Represents an inferred type `RustParser.ts:9358-9376`
+- **inferredType** — Returns the context of an inferred type `RustParser.ts:18568-18570`
+- **infiniteLoopExpression** — Parses an infinite loop expression `RustParser.ts:7040-7060`
+- **infiniteLoopExpression** — Represents an infinite loop expression in the Rust grammar `RustParser.ts:17056-17058`
+- **inherentImpl** — Represents an inherent implementation `RustParser.ts:3802-3873`
+- **inherentImpl** — Represents an inherent implementation in the Rust parser `RustParser.ts:13917-13919`
+- **innerAttribute** — Represents an inner attribute `RustParser.ts:4596-4622`
+- **innerAttribute** — Represents an inner attribute in the code `RustParser.ts:11705-11711`
+- **innerAttribute** — Represents an inner attribute in the parser `RustParser.ts:12540-12546`
+- **innerAttribute** — Represents an inner attribute in the Rust parser `RustParser.ts:13875-13881`
+- **innerAttribute** — Parses an inner attribute `RustParser.ts:13966-13972`
+- **innerAttribute** — Parses an inner attribute in the Rust parser `RustParser.ts:14037-14043`
+- **innerAttribute** — Returns an array or a single inner attribute context based on the provided index `RustParser.ts:14093-14099`
+- **innerAttribute** — Returns an array or a single InnerAttributeContext based on the provided index `RustParser.ts:14926-14932`, `RustParser.ts:16587-16593`
+- **innerAttribute** — Returns the inner attribute context or contexts based on the `RustParser.ts:15514-15520`
+- **innerAttribute** — Retrieves inner attribute contexts based on an index or returns all inner attribute contexts `RustParser.ts:15870-15876`
+- **innerAttribute** — Returns the inner attribute context or contexts based on the provided index `RustParser.ts:16140-16146`, `RustParser.ts:17380-17386`
+- **innerAttribute** — Retrieves inner attribute contexts based on an index `RustParser.ts:16423-16429`
+- **INTEGER_LITERAL** — Represents an integer literal `RustParser.ts:16068-16070`
+- **INTEGER_LITERAL** — Parses an integer literal in the Rust parser `RustParser.ts:16354-16356`
+- **INTEGER_LITERAL** — Represents an integer literal in the Rust grammar `RustParser.ts:17721-17723`
+- **INTEGER_LITERAL** — Returns the terminal node for an integer literal `RustParser.ts:17957-17959`
+- **item** — Represents an item in the Rust grammar `RustParser.ts:1858-1924`
+- **item** — Represents a single item in the parser `RustParser.ts:11714-11720`
+- **item** — Represents an item in the parser `RustParser.ts:12549-12555`
+- **item** — Represents an item `RustParser.ts:14728-14730`
+- **iteratorLoopExpression** — Represents an iterator loop expression `RustParser.ts:7113-7139`
+- **iteratorLoopExpression** — Represents an iterator loop expression in the Rust grammar `RustParser.ts:17065-17067`
+- **keyword** — Represents a keyword in the code `RustParser.ts:10620-10650`
+- **keyword** — Represents a keyword in the Rust parser `RustParser.ts:20459-20461`
+- **KW_ABSTRACT** — Represents the keyword for abstract in Rust `RustParser.ts:20391-20393`
+- **KW_AS** — Keyword for 'as' in the Rust parser `RustParser.ts:12646-12648`
+- **KW_AS** — Represents the keyword "as" `RustParser.ts:12743-12745`
+- **KW_AS** — Keyword for type casting `RustParser.ts:14863-14865`
+- **KW_AS** — Returns the terminal node for the keyword "AS" `RustParser.ts:19970-19972`
+- **KW_AS** — Returns the terminal node for the keyword "AS" if it exists `RustParser.ts:20277-20279`
+- **KW_ASYNC** — Keyword for async `RustParser.ts:12834-12836`
+- **KW_ASYNC** — Represents the keyword for async in Rust `RustParser.ts:16208-16210`
+- **KW_ASYNC** — Returns the terminal node for the keyword "async" if it exists `RustParser.ts:20382-20384`
+- **KW_AWAIT** — Represents the keyword "await" `RustParser.ts:15096-15098`
+- **KW_AWAIT** — Represents the keyword for await in Rust `RustParser.ts:20385-20387`
+- **KW_BECOME** — Represents the keyword for become in Rust `RustParser.ts:20394-20396`
+- **KW_BOX** — Represents the keyword for box in Rust `RustParser.ts:20397-20399`
+- **KW_BREAK** — Keyword for break `RustParser.ts:15544-15546`
+- **KW_BREAK** — Keyword to break out of a loop `RustParser.ts:20280-20282`
+- **KW_CONST** — Keyword for const `RustParser.ts:12831-12833`
+- **KW_CONST** — Keyword for constant `RustParser.ts:13755-13757`
+- **KW_CONST** — Represents the keyword 'const' `RustParser.ts:14340-14342`
+- **KW_CONST** — Keyword for constant declarations `RustParser.ts:18822-18824`
+- **KW_CONST** — Returns the terminal node for the keyword "CONST" if it exists `RustParser.ts:20283-20285`
+- **KW_CONTINUE** — Represents the keyword 'continue' `RustParser.ts:15151-15153`
+- **KW_CONTINUE** — Keyword to skip the current iteration of a loop `RustParser.ts:20286-20288`
+- **KW_CRATE** — Represents the keyword 'crate' in the parser `RustParser.ts:12582-12584`
+- **KW_CRATE** — Represents the keyword "crate" in the Rust parser `RustParser.ts:19493-19495`
+- **KW_CRATE** — Represents the keyword "crate" `RustParser.ts:19607-19609`
+- **KW_CRATE** — Keyword for crate `RustParser.ts:20207-20209`
+- **KW_CRATE** — Keyword for crate declarations `RustParser.ts:20289-20291`
+- **KW_DO** — Represents the keyword for do in Rust `RustParser.ts:20400-20402`
+- **KW_DOLLARCRATE** — Represents the keyword "$crate" in the Rust parser `RustParser.ts:19496-19498`
+- **KW_DOLLARCRATE** — Represents the keyword "$crate" `RustParser.ts:19610-19612`
+- **KW_DOLLARCRATE** — Represents the keyword '$crate' in the Rust parser `RustParser.ts:20471-20473`
+- **KW_DYN** — Represents the keyword "dyn" in the parser `RustParser.ts:19123-19125`
+- **KW_DYN** — Represents the keyword "dyn" `RustParser.ts:19152-19154`
+- **KW_DYN** — Represents the keyword for dyn in Rust `RustParser.ts:20388-20390`
+- **KW_ELSE** — Represents the keyword 'else' `RustParser.ts:17278-17280`
+- **KW_ELSE** — Represents the keyword 'else' in the Rust parser `RustParser.ts:17334-17336`
+- **KW_ELSE** — Keyword for else clauses in conditionals `RustParser.ts:20292-20294`
+- **KW_ENUM** — Keyword for defining an enumeration `RustParser.ts:13486-13488`
+- **KW_ENUM** — Keyword for enum declarations `RustParser.ts:20295-20297`
+- **KW_EXTERN** — Represents the keyword 'extern' in the parser `RustParser.ts:12579-12581`
+- **KW_EXTERN** — Represents the keyword 'extern' `RustParser.ts:12840-12842`
+- **KW_EXTERN** — Keyword for extern block `RustParser.ts:14076-14078`
+- **KW_EXTERN** — Returns the terminal node for the keyword "extern" `RustParser.ts:18895-18897`
+- **KW_EXTERN** — Keyword for external function declarations `RustParser.ts:20298-20300`
+- **KW_FALSE** — Represents the keyword "false" `RustParser.ts:16077-16079`
+- **KW_FALSE** — Keyword for false `RustParser.ts:17700-17702`
+- **KW_FALSE** — Keyword for the boolean value false `RustParser.ts:20301-20303`
+- **KW_FINAL** — Represents the keyword for final in Rust `RustParser.ts:20403-20405`
+- **KW_FN** — Keyword for function `RustParser.ts:12778-12780`
+- **KW_FN** — Represents the keyword 'fn' `RustParser.ts:18851-18853`
+- **KW_FN** — Keyword for function declarations `RustParser.ts:20304-20306`
+- **KW_FOR** — Keyword for loop iteration `RustParser.ts:14011-14013`
+- **KW_FOR** — Represents the keyword "for" `RustParser.ts:14515-14517`
+- **KW_FOR** — Keyword for for loops `RustParser.ts:17196-17198`
+- **KW_FOR** — Returns the terminal node for the keyword "FOR" if it exists `RustParser.ts:20307-20309`
+- **KW_IF** — Represents the keyword 'if' `RustParser.ts:17263-17265`
+- **KW_IF** — Represents the keyword 'if' in the Rust parser `RustParser.ts:17310-17312`
+- **KW_IF** — Keyword for if statements `RustParser.ts:17539-17541`
+- **KW_IF** — Returns the terminal node for the keyword "IF" if it exists `RustParser.ts:20310-20312`
+- **KW_IMPL** — Represents the keyword "impl" in the Rust parser `RustParser.ts:13946-13948`
+- **KW_IMPL** — Keyword for trait implementation `RustParser.ts:14005-14007`
+- **KW_IMPL** — Represents the keyword "impl" `RustParser.ts:19178-19180`
+- **KW_IMPL** — Keyword for impl blocks `RustParser.ts:19207-19209`
+- **KW_IMPL** — Returns the terminal node for the keyword "IMPL" if it exists `RustParser.ts:20313-20315`
+- **KW_IN** — Represents the keyword "in" `RustParser.ts:17202-17204`
+- **KW_IN** — Keyword for in `RustParser.ts:20216-20218`
+- **KW_IN** — Keyword for in expressions `RustParser.ts:20316-20318`
+- **KW_LET** — Keyword for let in the Rust parser `RustParser.ts:14763-14765`
+- **KW_LET** — Represents the keyword "let" `RustParser.ts:17158-17160`
+- **KW_LET** — Represents the keyword 'let' in the Rust parser `RustParser.ts:17313-17315`
+- **KW_LET** — Keyword for let bindings `RustParser.ts:20319-20321`
+- **KW_LOOP** — Represents the keyword "loop" in the Rust grammar `RustParser.ts:17094-17096`
+- **KW_LOOP** — Keyword for loops `RustParser.ts:20322-20324`
+- **KW_MACRO** — Represents the keyword for macro in Rust `RustParser.ts:20406-20408`
+- **KW_MACRORULES** — Keyword for macro rules `RustParser.ts:11958-11960`
+- **KW_MACRORULES** — Represents the keyword 'macro_rules' in the Rust parser `RustParser.ts:20251-20253`
+- **KW_MACRORULES** — Returns the terminal node for the KW_MACRORULES rule `RustParser.ts:20465-20467`
+- **KW_MATCH** — Represents the keyword 'match' in the Rust parser `RustParser.ts:17366-17368`
+- **KW_MATCH** — Keyword for match expressions `RustParser.ts:20325-20327`
+- **KW_MOD** — Represents the keyword "mod" `RustParser.ts:12520-12522`
+- **KW_MOD** — Keyword for module declarations `RustParser.ts:20328-20330`
+- **KW_MOVE** — Keyword for move `RustParser.ts:16214-16216`
+- **KW_MOVE** — Represents the keyword "move" in the parser `RustParser.ts:16945-16947`
+- **KW_MOVE** — Keyword for move expressions `RustParser.ts:20331-20333`
+- **KW_MUT** — Keyword for mutable `RustParser.ts:12986-12988`
+- **KW_MUT** — Represents the keyword "mut" `RustParser.ts:13024-13026`
+- **KW_MUT** — Represents the keyword `mut` in the Rust grammar `RustParser.ts:13817-13819`
+- **KW_MUT** — Represents the keyword "mut" in Rust `RustParser.ts:15775-15777`
+- **KW_MUT** — Represents the keyword "mut" in the parser `RustParser.ts:17759-17761`
+- **KW_MUT** — Represents the keyword 'mut' `RustParser.ts:18001-18003`
+- **KW_MUT** — Keyword for mutable variables `RustParser.ts:18159-18161`
+- **KW_MUT** — Returns the KW_MUT terminal node or null `RustParser.ts:18787-18789`
+- **KW_MUT** — Returns the terminal node for the keyword "mut" if it exists `RustParser.ts:18819-18821`, `RustParser.ts:20334-20336`
+- **KW_OVERRIDE** — Represents the keyword for override in Rust `RustParser.ts:20409-20411`
+- **KW_PRIV** — Represents the keyword for priv in Rust `RustParser.ts:20412-20414`
+- **KW_PUB** — Keyword for public visibility `RustParser.ts:20198-20200`
+- **KW_PUB** — Returns the terminal node for the keyword "pub" if it exists `RustParser.ts:20337-20339`
+- **KW_REF** — Keyword for reference `RustParser.ts:17756-17758`
+- **KW_REF** — Keyword reference `RustParser.ts:18156-18158`
+- **KW_REF** — Keyword for references `RustParser.ts:20340-20342`
+- **KW_RETURN** — Represents the keyword "return" `RustParser.ts:15061-15063`
+- **KW_RETURN** — Keyword for return statements `RustParser.ts:20343-20345`
+- **KW_SELFTYPE** — Represents the keyword "selftype" `RustParser.ts:19604-19606`
+- **KW_SELFTYPE** — Represents the keyword for self type in Rust `RustParser.ts:20349-20351`
+- **KW_SELFVALUE** — Keyword for self value in the parser `RustParser.ts:12187-12189`
+- **KW_SELFVALUE** — Represents the keyword 'selfvalue' in the parser `RustParser.ts:12620-12622`
+- **KW_SELFVALUE** — Keyword for self value `RustParser.ts:12980-12982`
+- **KW_SELFVALUE** — Represents the keyword "selfvalue" in the Rust parser `RustParser.ts:13015-13017`
+- **KW_SELFVALUE** — Represents the keyword "selfvalue" `RustParser.ts:19490-19492`
+- **KW_SELFVALUE** — Keyword for self value in method calls `RustParser.ts:19601-19603`
+- **KW_SELFVALUE** — Returns the KW_SELFVALUE terminal node `RustParser.ts:20210-20212`
+- **KW_SELFVALUE** — Returns the terminal node for the keyword "selfvalue" if it exists `RustParser.ts:20346-20348`
+- **KW_STATIC** — Represents the keyword "static" `RustParser.ts:13802-13804`
+- **KW_STATIC** — Represents the keyword for static in Rust `RustParser.ts:20352-20354`
+- **KW_STATICLIFETIME** — Represents the keyword for static lifetime `RustParser.ts:19414-19416`
+- **KW_STATICLIFETIME** — Represents the keyword 'staticlifetime' in the Rust parser `RustParser.ts:20433-20435`
+- **KW_STRUCT** — Represents the keyword "struct" in the Rust grammar `RustParser.ts:13228-13230`
+- **KW_STRUCT** — Keyword for struct `RustParser.ts:13275-13277`
+- **KW_STRUCT** — Represents the keyword for struct in Rust `RustParser.ts:20355-20357`
+- **KW_SUPER** — Represents the keyword "super" in the Rust parser `RustParser.ts:19487-19489`
+- **KW_SUPER** — Represents the keyword "super" `RustParser.ts:19598-19600`
+- **KW_SUPER** — Keyword for super `RustParser.ts:20213-20215`
+- **KW_SUPER** — Represents the keyword for super in Rust `RustParser.ts:20358-20360`
+- **KW_TRAIT** — Represents the keyword "trait" `RustParser.ts:13849-13851`
+- **KW_TRAIT** — Represents the keyword for trait in Rust `RustParser.ts:20361-20363`
+- **KW_TRUE** — Represents the keyword "true" `RustParser.ts:16074-16076`
+- **KW_TRUE** — Keyword for true `RustParser.ts:17697-17699`
+- **KW_TRUE** — Represents the keyword for true in Rust `RustParser.ts:20364-20366`
+- **KW_TRY** — Represents the keyword 'try' in the Rust parser `RustParser.ts:20427-20429`
+- **KW_TYPE** — Represents the keyword "type" in the Rust parser `RustParser.ts:13155-13157`
+- **KW_TYPE** — Represents the keyword for type in Rust `RustParser.ts:20367-20369`
+- **KW_TYPEOF** — Represents the keyword for typeof in Rust `RustParser.ts:20415-20417`
+- **KW_UNDERLINELIFETIME** — Represents the keyword for underlined lifetime `RustParser.ts:19417-19419`
+- **KW_UNDERLINELIFETIME** — Represents the keyword 'underlinelifetime' in the Rust parser `RustParser.ts:20468-20470`
+- **KW_UNION** — Keyword for union `RustParser.ts:13711-13713`
+- **KW_UNION** — Represents the keyword 'union' in the Rust parser `RustParser.ts:20430-20432`
+- **KW_UNSAFE** — Represents the keyword 'unsafe' in the parser `RustParser.ts:12535-12537`
+- **KW_UNSAFE** — Represents the keyword 'unsafe' `RustParser.ts:12837-12839`
+- **KW_UNSAFE** — Represents the keyword "unsafe" `RustParser.ts:13861-13863`
+- **KW_UNSAFE** — Keyword for unsafe code `RustParser.ts:14023-14025`
+- **KW_UNSAFE** — Keyword for unsafe `RustParser.ts:14085-14087`
+- **KW_UNSAFE** — Represents the keyword for unsafe in Rust `RustParser.ts:16240-16242`
+- **KW_UNSAFE** — Returns the terminal node for the keyword "unsafe" `RustParser.ts:18892-18894`
+- **KW_UNSAFE** — Returns the terminal node for the keyword "unsafe" if it exists `RustParser.ts:20370-20372`
+- **KW_UNSIZED** — Represents the keyword for unsized in Rust `RustParser.ts:20418-20420`
+- **KW_USE** — Keyword for 'use' in the Rust parser `RustParser.ts:12678-12680`
+- **KW_USE** — Represents the keyword for use in Rust `RustParser.ts:20373-20375`
+- **KW_VIRTUAL** — Represents the keyword for virtual in Rust `RustParser.ts:20421-20423`
+- **KW_WHERE** — Keyword for where clause `RustParser.ts:14375-14377`
+- **KW_WHERE** — Represents the keyword for where in Rust `RustParser.ts:20376-20378`
+- **KW_WHILE** — Represents the keyword "while" `RustParser.ts:17123-17125`
+- **KW_WHILE** — Represents the keyword for while in Rust `RustParser.ts:17155-17157`
+- **KW_WHILE** — Returns the terminal node for the keyword "while" if it exists `RustParser.ts:20379-20381`
+- **KW_YIELD** — Represents the keyword 'yield' in the Rust parser `RustParser.ts:20424-20426`
+- **LCURLYBRACE** — Represents an opening curly brace `RustParser.ts:11797-11799`
+- **LCURLYBRACE** — Represents a left curly brace `RustParser.ts:11929-11931`
+- **LCURLYBRACE** — Represents the opening curly brace in the parser `RustParser.ts:12011-12013`
+- **LCURLYBRACE** — Represents a left curly brace in the Rust parser `RustParser.ts:12134-12136`
+- **LCURLYBRACE** — Represents a left curly brace in the Rust grammar `RustParser.ts:12529-12531`
+- **LCURLYBRACE** — Left curly brace character `RustParser.ts:12713-12715`
+- **LCURLYBRACE** — Represents the left curly brace token `RustParser.ts:13234-13236`
+- **LCURLYBRACE** — Represents a left curly brace token `RustParser.ts:13492-13494`
+- **LCURLYBRACE** — Left curly brace token `RustParser.ts:13650-13652`
+- **LCURLYBRACE** — Parses the left curly brace `RustParser.ts:13717-13719`
+- **LCURLYBRACE** — Parses a left curly brace in the Rust parser `RustParser.ts:13855-13857`
+- **LCURLYBRACE** — Represents an opening curly brace in an expression `RustParser.ts:13952-13954`
+- **LCURLYBRACE** — Represents the left curly brace in the Rust parser `RustParser.ts:14017-14019`
+- **LCURLYBRACE** — Represents an opening curly brace in the Rust grammar `RustParser.ts:14079-14081`
+- **LCURLYBRACE** — Returns the terminal node for the LCURLYBRACE token `RustParser.ts:16132-16134`
+- **LCURLYBRACE** — Returns the `LCURLYBRACE` terminal node `RustParser.ts:16415-16417`
+- **LCURLYBRACE** — Returns the terminal node for the left curly brace `RustParser.ts:16696-16698`, `RustParser.ts:17372-17374`
+- **LCURLYBRACE** — Returns the terminal node for left curly brace `RustParser.ts:18030-18032`
+- **LE** — Represents less than or equal to comparison `RustParser.ts:15915-15917`
+- **LE** — Less than or equal to `RustParser.ts:20601-20603`
+- **letStatement** — Represents a let statement `RustParser.ts:4770-4823`
+- **letStatement** — Represents a let statement in the Rust parser `RustParser.ts:14731-14733`
+- **lifetime** — Represents a lifetime `RustParser.ts:9593-9618`
+- **lifetime** — Represents a lifetime in the parser `RustParser.ts:12989-12991`
+- **lifetime** — Represents a lifetime in the Rust syntax `RustParser.ts:14448-14450`
+- **lifetime** — Parses a lifetime in the parser `RustParser.ts:18784-18786`
+- **lifetime** — Returns the lifetime context if it exists `RustParser.ts:19303-19305`
+- **lifetime** — Returns the lifetime context or contexts based on the provided index `RustParser.ts:19372-19378`
+- **lifetime** — Returns the lifetime context `RustParser.ts:19692-19694`, `RustParser.ts:19764-19770`
+- **LIFETIME_OR_LABEL** — Represents a lifetime or label `RustParser.ts:14264-14266`
+- **LIFETIME_OR_LABEL** — Lifetime or label `RustParser.ts:15154-15156`
+- **LIFETIME_OR_LABEL** — Represents a lifetime or label in the Rust parser `RustParser.ts:15547-15549`
+- **LIFETIME_OR_LABEL** — Returns the terminal node for the LIFETIME_OR_LABEL rule `RustParser.ts:17234-17236`, `RustParser.ts:20474-20476`
+- **LIFETIME_OR_LABEL** — Returns the lifetime or label token `RustParser.ts:19411-19413`
+- **lifetimeBounds** — Represents bounds for lifetimes `RustParser.ts:9553-9592`
+- **lifetimeBounds** — Represents lifetime bounds `RustParser.ts:14273-14275`
+- **lifetimeBounds** — Represents bounds for a lifetime `RustParser.ts:14454-14456`
+- **lifetimeParam** — Represents a lifetime parameter `RustParser.ts:4223-4259`
+- **lifetimeParam** — Returns the context of the lifetimeParam rule if it exists `RustParser.ts:14223-14225`
+- **lifetimeWhereClauseItem** — Represents a lifetime constraint in a where clause `RustParser.ts:4422-4444`
+- **lifetimeWhereClauseItem** — Item within a where clause related to lifetimes `RustParser.ts:14419-14421`
+- **literalExpression** — Represents a literal expression `RustParser.ts:5792-5817`
+- **literalExpression** — Parses a literal expression `RustParser.ts:14699-14701`
+- **literalExpression** — Represents a literal expression in the Rust parser `RustParser.ts:15259-15261`
+- **literalExpression** — Returns the literal expression context `RustParser.ts:19730-19732`
+- **literalExpression** — Returns the context of the literal expression rule `RustParser.ts:20500-20502`
+- **literalNames** — Stores names of literals used in the lexer `RustLexer.ts:574-576`
+- **literalNames** — Stores names of literal tokens `RustParser.ts:810-812`
+- **literalPattern** — Represents a literal pattern `RustParser.ts:7660-7766`
+- **literalPattern** — Context for parsing literal patterns `RustParser.ts:17638-17640`
+- **loopExpression** — Parses a loop expression `RustParser.ts:6986-7039`
+- **loopExpression** — Returns the context of a loop expression `RustParser.ts:16015-16017`
+- **loopLabel** — Represents a loop label `RustParser.ts:7140-7160`
+- **loopLabel** — Represents a loop label in the Rust grammar `RustParser.ts:17068-17070`
+- **LPAREN** — Represents an opening parenthesis `RustParser.ts:11776-11778`
+- **LPAREN** — Token representing the left parenthesis `RustParser.ts:11905-11907`
+- **LPAREN** — Represents a left parenthesis `RustParser.ts:11993-11995`
+- **LPAREN** — Represents an opening parenthesis token `RustParser.ts:12113-12115`
+- **LPAREN** — Represents the opening parenthesis in the parser `RustParser.ts:12190-12192`
+- **LPAREN** — Left parenthesis `RustParser.ts:12784-12786`
+- **LPAREN** — Represents the left parenthesis token `RustParser.ts:13281-13283`
+- **LPAREN** — Represents the left parenthesis `RustParser.ts:13618-13620`
+- **LPAREN** — Parses a left parenthesis `RustParser.ts:14918-14920`
+- **LPAREN** — Represents an open parenthesis token `RustParser.ts:15227-15229`
+- **LPAREN** — Represents the "(", left parenthesis `RustParser.ts:15378-15380`
+- **LPAREN** — Represents an open parenthesis `RustParser.ts:15503-15505`
+- **LPAREN** — Represents the '(' operator `RustParser.ts:16579-16581`
+- **LPAREN** — Left parenthesis token `RustParser.ts:16807-16809`
+- **LPAREN** — Returns the left parenthesis terminal node `RustParser.ts:18223-18225`, `RustParser.ts:18661-18663`
+- **LPAREN** — Returns the left parenthesis token `RustParser.ts:18296-18298`, `RustParser.ts:18372-18374`, `RustParser.ts:19341-19343`
+- **LPAREN** — Returns the context of an opening parenthesis `RustParser.ts:18603-18605`
+- **LPAREN** — Returns the terminal node for the left parenthesis if `RustParser.ts:18854-18856`
+- **LPAREN** — Returns the LPAREN terminal node `RustParser.ts:20119-20121`, `RustParser.ts:20201-20203`
+- **LSQUAREBRACKET** — Represents an opening square bracket `RustParser.ts:11791-11793`
+- **LSQUAREBRACKET** — Token representing the left square bracket `RustParser.ts:11923-11925`
+- **LSQUAREBRACKET** — Represents a left square bracket `RustParser.ts:12005-12007`
+- **LSQUAREBRACKET** — Represents an opening square bracket token `RustParser.ts:12128-12130`
+- **LSQUAREBRACKET** — Represents the left square bracket `RustParser.ts:14597-14599`
+- **LSQUAREBRACKET** — Left square bracket in the Rust parser `RustParser.ts:14632-14634`
+- **LSQUAREBRACKET** — Parses a left square bracket `RustParser.ts:14968-14970`
+- **LSQUAREBRACKET** — Represents a left square bracket in the parser `RustParser.ts:15862-15864`
+- **LSQUAREBRACKET** — Returns the terminal node for the left square bracket `RustParser.ts:18404-18406`
+- **LSQUAREBRACKET** — Returns the LSQUAREBRACKET terminal node `RustParser.ts:18708-18710`, `RustParser.ts:18746-18748`
+- **LT** — Represents a less-than symbol in the parser `RustParser.ts:14176-14178`
+- **LT** — Represents less than comparison `RustParser.ts:15909-15911`
+- **LT** — Represents the less-than operator `RustParser.ts:19636-19638`
+- **LT** — Represents a less-than token `RustParser.ts:19961-19963`
+- **LT** — Less than `RustParser.ts:20595-20597`
+- **LT** — Returns the terminal node for the less-than character or an array of such nodes `RustParser.ts:20668-20674`
+- **macroFragSpec** — Specifies a fragment specification for macros `RustParser.ts:1746-1764`
+- **macroFragSpec** — Specification for macro fragments `RustParser.ts:12181-12183`
+- **macroIdentifierLikeToken** — Represents a token that looks like a macro identifier `RustParser.ts:10651-10712`
+- **macroIdentifierLikeToken** — Token representing a macro identifier-like token `RustParser.ts:11861-11863`
+- **macroIdentifierLikeToken** — Token for macro identifiers `RustParser.ts:12234-12236`
+- **macroIdentifierLikeToken** — Represents a macro identifier-like token `RustParser.ts:12295-12297`
+- **macroInvocation** — Represents a macro invocation in the Rust grammar `RustParser.ts:884-906`
+- **macroInvocation** — Parses a macro invocation in the Rust parser `RustParser.ts:15035-15037`
+- **macroInvocation** — Represents a macro invocation `RustParser.ts:17671-17673`
+- **macroInvocation** — Returns the context of a macro invocation `RustParser.ts:18577-18579`
+- **macroInvocationSemi** — Represents a macro invocation followed by a semicolon `RustParser.ts:1221-1329`
+- **macroInvocationSemi** — Represents a macro invocation with a semicolon `RustParser.ts:12491-12493`
+- **macroInvocationSemi** — Represents a macro invocation followed by a semicolon in the parser `RustParser.ts:14132-14134`
+- **macroInvocationSemi** — Represents a macro invocation followed by a semicolon in the Rust parser `RustParser.ts:14544-14546`
+- **macroInvocationSemi** — Returns the context of a macro invocation semicolon. `RustParser.ts:14737-147 `RustParser.ts:14737-14739`
+- **macroItem** — Represents a macro item in the Rust grammar `RustParser.ts:2033-2066`
+- **macroItem** — Represents a macro item `RustParser.ts:12391-12393`
+- **macroLiteralToken** — Represents a literal token for a macro `RustParser.ts:10713-10731`
+- **macroLiteralToken** — Token representing a macro literal token `RustParser.ts:11864-11866`
+- **macroLiteralToken** — Represents a macro literal token `RustParser.ts:12237-12239`
+- **macroLiteralToken** — Returns a context for a macro literal token `RustParser.ts:12298-12300`
+- **macroMatch** — Matches a macro in the input `RustParser.ts:1574-1697`
+- **macroMatch** — Matches macro rules `RustParser.ts:12121-12127`
+- **macroMatch** — Matches a macro `RustParser.ts:12201-12207`
+- **macroMatcher** — Matches macro patterns in the input `RustParser.ts:1479-1573`
+- **macroMatcher** — Matches macro rules `RustParser.ts:12081-12083`
+- **macroMatcher** — Matcher for macros `RustParser.ts:12172-12174`
+- **macroMatchToken** — Matches a token in a macro `RustParser.ts:1698-1745`
+- **macroMatchToken** — Token for matching macros `RustParser.ts:12165-12171`
+- **macroPunctuationToken** — Represents a punctuation token for a macro `RustParser.ts:10732-10762`
+- **macroPunctuationToken** — Token representing a macro punctuation token `RustParser.ts:11867-11869`
+- **macroPunctuationToken** — Represents a macro punctuation token `RustParser.ts:12240-12242`
+- **macroPunctuationToken** — Returns a context for a macro punctuation token `RustParser.ts:12301-12303`
+- **macroRepOp** — Represents an operation for macro repetition `RustParser.ts:1813-1838`
+- **macroRepOp** — Token representing a macro repetition operator `RustParser.ts:11870-11872`
+- **macroRepOp** — Operator for macro repetition `RustParser.ts:12196-12198`
+- **macroRepOp** — Represents a macro repetition operator `RustParser.ts:12243-12245`
+- **macroRepSep** — Represents a separator for macro repetition `RustParser.ts:1765-1812`
+- **macroRepSep** — Separator for macro repetition `RustParser.ts:12208-12210`
+- **macroRule** — Represents a rule for macro matching `RustParser.ts:1456-1478`
+- **macroRule** — Parses a macro rule `RustParser.ts:12042-12048`
+- **macroRules** — Represents the rules for macro invocations `RustParser.ts:1414-1455`
+- **macroRules** — Represents macro rules `RustParser.ts:11996-11998`
+- **macroRulesDef** — Represents the definition of macro rules `RustParser.ts:1355-1413`
+- **macroRulesDef** — Represents macro rules definition `RustParser.ts:11967-11969`
+- **macroRulesDefinition** — Represents the definition of macro rules `RustParser.ts:1330-1354`
+- **macroRulesDefinition** — Represents a macro rules definition `RustParser.ts:12494-12496`
+- **macroTranscriber** — Transcribes macro matches into code `RustParser.ts:1839-1857`
+- **macroTranscriber** — Transcribes macro rules `RustParser.ts:12087-12089`
+- **matchArm** — Represents an arm in a match expression `RustParser.ts:7421-7457`
+- **matchArm** — Parses a match arm in the Rust parser `RustParser.ts:17415-17421`
+- **matchArmExpression** — Represents an arm expression in a match expression `RustParser.ts:7377-7420`
+- **matchArmExpression** — Parses a match arm expression `RustParser.ts:17436-17442`
+- **matchArmGuard** — Represents a guard in a match arm `RustParser.ts:7458-7478`
+- **matchArmGuard** — Parses a match arm guard `RustParser.ts:17513-17515`
+- **matchArms** — Represents the arms of a match expression `RustParser.ts:7329-7376`
+- **matchArms** — Parses match arms in the Rust parser `RustParser.ts:17387-17389`
+- **matchExpression** — Represents a match expression `RustParser.ts:7277-7328`
+- **matchExpression** — Parses a match expression `RustParser.ts:16024-16026`
+- **maybeNamedFunctionParameters** — Represents function parameters that may be named `RustParser.ts:9109-9150`
+- **maybeNamedFunctionParameters** — Represents named function parameters `RustParser.ts:18953-18955`
+- **maybeNamedFunctionParametersVariadic** — Represents function parameters that may be named and variadic `RustParser.ts:9211-9259`
+- **maybeNamedFunctionParametersVariadic** — Represents named function parameters with a variadic suffix `RustParser.ts:18956-18958`
+- **maybeNamedParam** — Represents a parameter that may be named `RustParser.ts:9151-9210`
+- **maybeNamedParam** — Represents a named parameter `RustParser.ts:18984-18990`
+- **maybeNamedParam** — Represents a named parameter in the parser `RustParser.ts:19069-19075`
+- **MINUS** — Represents the minus operator in the parser `RustParser.ts:15346-15348`
+- **MINUS** — Represents the subtraction operator `RustParser.ts:15597-15599`
+- **MINUS** — Represents a minus sign `RustParser.ts:17724-17726`
+- **MINUS** — Represents a minus sign in the Rust grammar `RustParser.ts:17960-17962`
+- **MINUS** — Represents a minus sign in the parser `RustParser.ts:19733-19735`
+- **MINUS** — Represents the minus operator `RustParser.ts:20526-20528`
+- **MINUSEQ** — Represents subtraction assignment operator `RustParser.ts:15944-15946`
+- **MINUSEQ** — Represents the minus-equal operator `RustParser.ts:20556-20558`
+- **modeNames** — Stores names of modes used in the lexer `RustLexer.ts:592-594`
+- **module** — Represents a module in the parser `RustParser.ts:12426-12428`
+- **module_** — Represents a module in the Rust grammar `RustParser.ts:2067-2144`
+- **NE** — Represents inequality comparison `RustParser.ts:15903-15905`
+- **NE** — Represents the not-equal operator `RustParser.ts:20589-20591`
+- **neverType** — Represents the never type `RustParser.ts:8754-8772`
+- **neverType** — Returns the context for a never type `RustParser.ts:18553-18555`
+- **NON_KEYWORD_IDENTIFIER** — Represents a non-keyword identifier `RustParser.ts:20245-20247`
+- **NOT** — Represents a negation in the parser `RustParser.ts:11747-11749`
+- **NOT** — Token representing the NOT operator `RustParser.ts:11902-11904`
+- **NOT** — Represents a negation operator `RustParser.ts:11961-11963`
+- **NOT** — Represents a logical negation `RustParser.ts:14029-14031`
+- **NOT** — Represents the not symbol `RustParser.ts:14594-14596`
+- **NOT** — Represents the not operator in the parser `RustParser.ts:15349-15351`
+- **NOT** — Represents the not operator `RustParser.ts:18635-18637`
+- **NOT** — Returns the NOT terminal node if it exists `RustParser.ts:20538-20540`
+- **OR** — Represents the bitwise OR operator `RustParser.ts:15612-15614`
+- **OR** — Represents an OR operator in the parser `RustParser.ts:16926-16932`
+- **OR** — Represents the logical OR operator in the Rust parser `RustParser.ts:17579-17585`
+- **OR** — Represents the or operator `RustParser.ts:20544-20546`
+- **OREQ** — Represents bitwise OR assignment operator `RustParser.ts:15959-15961`
+- **OREQ** — Represents the or-equal operator `RustParser.ts:20574-20576`
+- **OROR** — Parses an OROR operator `RustParser.ts:15422-15424`
+- **OROR** — Represents an OR operator in the parser `RustParser.ts:16921-16923`
+- **OROR** — Represents the or-or operator `RustParser.ts:20550-20552`
+- **outerAttribute** — Represents an outer attribute `RustParser.ts:4623-4647`
+- **outerAttribute** — Represents an attribute in the outer scope `RustParser.ts:12396-12402`
+- **outerAttribute** — Represents an outer attribute in the Rust parser `RustParser.ts:12950-12956`
+- **outerAttribute** — Outer attribute for an item `RustParser.ts:13061-13067`
+- **outerAttribute** — Represents an outer attribute in the parser `RustParser.ts:13374-13380`
+- **outerAttribute** — Parses an outer attribute `RustParser.ts:13453-13459`
+- **outerAttribute** — Represents an outer attribute in the Rust grammar `RustParser.ts:13576-13582`
+- **outerAttribute** — Outer attribute `RustParser.ts:14137-14143`
+- **outerAttribute** — Parses outer attributes in Rust `RustParser.ts:14234-14240`
+- **outerAttribute** — Returns the context of the outerAttribute rule if it exists `RustParser.ts:14267-14269`
+- **outerAttribute** — Returns the context of the outer attribute at the current position or null `RustParser.ts:14302-14304`
+- **outerAttribute** — Returns the outer attribute context or contexts `RustParser.ts:14549-14555`, `RustParser.ts:14774-14780`
+- **outerAttribute** — Returns an OuterAttributeContext based on the provided index or default value `RustParser.ts:15736-15742`
+- **outerAttribute** — Returns the outer attribute context or contexts based on the index. `RustParser.ts:159 `RustParser.ts:15999-16005`
+- **outerAttribute** — Returns an array or single OuterAttributeContext based on the index `RustParser.ts:16514-16520`
+- **outerAttribute** — Returns the outer attribute context or contexts based on the provided index `RustParser.ts:17020-17026`
+- **outerAttribute** — Returns the context of the `outerAttribute` rule, optionally with an index `RustParser.ts:17506-17512`
+- **outerAttribute** — Returns the context for the outer attribute rule if it exists `RustParser.ts:18149-18155`
+- **outerAttribute** — Retrieves the outer attribute context at a given index or all contexts `RustParser.ts:18190-18196`
+- **outerAttribute** — Returns an array or a single OuterAttributeContext based on the provided index `RustParser.ts:19028-19034`, `RustParser.ts:19090-19096`
+- **parenthesizedType** — Represents a type enclosed in parentheses `RustParser.ts:8731-8753`
+- **parenthesizedType** — Represents a parenthesized type `RustParser.ts:18538-18540`
+- **pathExpression** — Represents a path expression `RustParser.ts:5818-5861`
+- **pathExpression** — Parses a path expression `RustParser.ts:14892-14894`
+- **pathExprSegment** — Represents a segment of a path in an expression `RustParser.ts:9764-9794`
+- **pathExprSegment** — Parses a path expression segment `RustParser.ts:15224-15226`
+- **pathExprSegment** — Parses a path expression segment in the Rust parser `RustParser.ts:19524-19530`
+- **pathExprSegment** — Represents a path expression segment in the parser `RustParser.ts:19931-19937`
+- **pathIdentSegment** — Represents a segment of a path that is an identifier `RustParser.ts:9795-9860`
+- **pathIdentSegment** — Parses a path identifier segment in the Rust parser `RustParser.ts:19563-19565`
+- **pathIdentSegment** — Represents a path identifier segment `RustParser.ts:20084-20086`
+- **pathInExpression** — Represents a path in an expression `RustParser.ts:9721-9763`
+- **pathInExpression** — Parses a path within an expression `RustParser.ts:16103-16105`
+- **pathInExpression** — Parses a path in an expression in the Rust parser `RustParser.ts:16412-16414`
+- **pathInExpression** — Represents the path within an expression `RustParser.ts:16576-16578`
+- **pathInExpression** — Represents a path within an expression `RustParser.ts:16635-16637`
+- **pathInExpression** — Represents a path in an expression in the Rust grammar `RustParser.ts:16693-16695`
+- **pathInExpression** — Returns the context of a path in expression `RustParser.ts:16804-16806`
+- **pathInExpression** — Returns the path in expression context `RustParser.ts:16854-16856`, `RustParser.ts:18220-18222`
+- **pathInExpression** — Returns the context for path in expression `RustParser.ts:18027-18029`
+- **pathInExpression** — Returns the path in expression context at index 0 `RustParser.ts:18477-18479`
+- **pathPattern** — Represents a pattern for a path `RustParser.ts:8528-8571`
+- **pathPattern** — Represents a pattern for path expressions `RustParser.ts:17668-17670`
+- **pathPattern** — Represents a path pattern in the Rust grammar `RustParser.ts:17966-17968`
+- **PATHSEP** — Represents a path separator in the Rust parser `RustParser.ts:12719-12721`
+- **PATHSEP** — Represents a path separator `RustParser.ts:19454-19460`
+- **PATHSEP** — Represents the path separator in the Rust parser `RustParser.ts:19533-19539`
+- **PATHSEP** — Represents a path separator in the parser `RustParser.ts:19566-19568`
+- **PATHSEP** — Path separator `RustParser.ts:19922-19928`
+- **PATHSEP** — Returns the terminal node or nodes for the path separator `RustParser.ts:20004-20010`
+- **PATHSEP** — Returns the path separator token or tokens `RustParser.ts:20054-20060`
+- **PATHSEP** — Returns the PATHSEP terminal node `RustParser.ts:20087-20089`
+- **PATHSEP** — Returns the terminal node for the path separator character `RustParser.ts:20631-20633`
+- **pattern** — Represents a pattern `RustParser.ts:7479-7521`
+- **pattern** — Represents a pattern in the Rust parser `RustParser.ts:13091-13093`
+- **pattern** — Represents a pattern in the Rust grammar `RustParser.ts:17015-17017`
+- **pattern** — Parses a pattern `RustParser.ts:17161-17163`
+- **pattern** — Parses a pattern in the Rust parser `RustParser.ts:17199-17201`
+- **pattern** — Represents a pattern in the grammar `RustParser.ts:17316-17318`
+- **pattern** — Pattern `RustParser.ts:17501-17503`
+- **pattern** — Returns the context for a pattern `RustParser.ts:17765-17767`
+- **pattern** — Returns the context for the pattern rule if it exists `RustParser.ts:18141-18143`
+- **pattern** — Retrieves the pattern context at a given index or all contexts `RustParser.ts:18257-18263`
+- **pattern** — Returns a pattern context `RustParser.ts:18330-18336`, `RustParser.ts:18375-18377`
+- **pattern** — Returns the pattern context or contexts based on the index `RustParser.ts:18438-18444`
+- **patternNoTopAlt** — Represents a pattern without a top alternative `RustParser.ts:7522-7555`
+- **patternNoTopAlt** — Represents a pattern without a top alternative in the Rust parser `RustParser.ts:14766-14768`
+- **patternNoTopAlt** — Context for parsing patterns without top alternative `RustParser.ts:17570-17576`
+- **patternWithoutRange** — Represents a pattern without a range `RustParser.ts:7556-7659`
+- **patternWithoutRange** — Context for parsing patterns without range `RustParser.ts:17609-17611`
+- **patternWithoutRange** — Represents a pattern without a range in the Rust grammar `RustParser.ts:17992-17994`
+- **PERCENT** — Represents the modulus operator `RustParser.ts:15591-15593`
+- **PERCENT** — Represents the percent operator `RustParser.ts:20532-20534`
+- **PERCENTEQ** — Represents modulo assignment operator `RustParser.ts:15953-15955`
+- **PERCENTEQ** — Represents the percent-equal operator `RustParser.ts:20565-20567`
+- **PLUS** — Represents the plus symbol `RustParser.ts:12333-12335`
+- **PLUS** — Represents the addition operator `RustParser.ts:15594-15596`
+- **PLUS** — Represents the '+' operator `RustParser.ts:19273-19279`
+- **PLUS** — Represents a plus operator `RustParser.ts:19381-19387`
+- **PLUSEQ** — Represents addition assignment operator `RustParser.ts:15941-15943`
+- **PLUSEQ** — Represents the plus-equal operator `RustParser.ts:20553-20555`
+- **POUND** — Represents the pound symbol `RustParser.ts:14591-14593`
+- **POUND** — Pound `RustParser.ts:14629-14631`
+- **POUND** — Returns the terminal node for the pound character `RustParser.ts:20640-20642`
+- **predicateLoopExpression** — Represents a loop expression with a predicate `RustParser.ts:7061-7083`
+- **predicateLoopExpression** — Represents a predicate loop expression in the Rust grammar `RustParser.ts:17059-17061`
+- **predicatePatternLoopExpression** — Represents a loop expression with a predicate and pattern `RustParser.ts:7084-7112`
+- **predicatePatternLoopExpression** — Represents a predicate pattern loop expression in the Rust grammar `RustParser.ts:17062-17064`
+- **qualifiedPathInExpression** — Represents a qualified path in an expression `RustParser.ts:10240-10279`
+- **qualifiedPathInExpression** — Parses a qualified path within an expression `RustParser.ts:16106-16108`
+- **qualifiedPathInExpression** — Returns the qualified path in expression context at index 0 `RustParser.ts:18480-18482`
+- **qualifiedPathInType** — Represents a qualified path in a type `RustParser.ts:10314-10353`
+- **qualifiedPathInType** — Returns the context of a qualified path in a type `RustParser.ts:18571-18573`
+- **qualifiedPathType** — Represents a qualified path in a type `RustParser.ts:10280-10313`
+- **qualifiedPathType** — Represents a qualified path type in the parser `RustParser.ts:19917-19919`
+- **qualifiedPathType** — Represents a qualified path type `RustParser.ts:19999-20001`
+- **QUESTION** — Represents a question mark token `RustParser.ts:12336-12338`
+- **QUESTION** — Represents the question mark operator `RustParser.ts:15125-15127`
+- **QUESTION** — Represents the '?' operator `RustParser.ts:19335-19337`
+- **rangePattern** — Represents a range pattern `RustParser.ts:7850-7903`
+- **rangePattern** — Context for parsing range patterns `RustParser.ts:17612-17614`
+- **rangePatternBound** — Represents a bound in a range pattern `RustParser.ts:7904-7975`
+- **rangePatternBound** — Represents the bound of a range pattern `RustParser.ts:17857-17863`
+- **rangePatternBound** — Retrieves range pattern bounds based on an index or returns all bounds `RustParser.ts:17892-17898`
+- **rangePatternBound** — Returns the first range pattern bound context `RustParser.ts:17925-17927`
+- **RARROW** — Represents a right arrow in the Rust parser `RustParser.ts:13126-13128`
+- **RARROW** — Represents a right arrow in the parser `RustParser.ts:16936-16938`
+- **RARROW** — Represents the right arrow symbol in a function return type `RustParser.ts:18924-18926`
+- **RARROW** — Represents a right arrow `RustParser.ts:20128-20130`
+- **RARROW** — Right arrow `RustParser.ts:20634-20636`
+- **RAW_BYTE_STRING_LITERAL** — Represents a raw byte string literal `RustParser.ts:16065-16067`
+- **RAW_BYTE_STRING_LITERAL** — Returns the terminal node for a raw byte string literal `RustParser.ts:17718-17720`
+- **RAW_IDENTIFIER** — Represents a raw identifier `RustParser.ts:20248-20250`
+- **RAW_STRING_LITERAL** — Represents a raw string literal `RustParser.ts:12872-12874`
+- **RAW_STRING_LITERAL** — Returns the terminal node for a raw string literal `RustParser.ts:16056-16058`, `RustParser.ts:17712-17714`
+- **rawPointerType** — Represents a raw pointer type `RustParser.ts:8927-8956`
+- **rawPointerType** — Returns the context of a raw pointer type `RustParser.ts:18556-18558`
+- **RCURLYBRACE** — Represents a closing curly brace `RustParser.ts:11800-11802`
+- **RCURLYBRACE** — Represents a right curly brace `RustParser.ts:11932-11934`
+- **RCURLYBRACE** — Represents the closing curly brace in the parser `RustParser.ts:12014-12016`
+- **RCURLYBRACE** — Represents a right curly brace in the parser `RustParser.ts:12137-12139`
+- **RCURLYBRACE** — Represents a right curly brace in the Rust parser `RustParser.ts:12532-12534`
+- **RCURLYBRACE** — Represents a right curly brace in the Rust grammar `RustParser.ts:12716-12718`
+- **RCURLYBRACE** — Right curly brace character `RustParser.ts:13237-13239`
+- **RCURLYBRACE** — Represents the right curly brace token `RustParser.ts:13495-13497`
+- **RCURLYBRACE** — Represents a right curly brace token `RustParser.ts:13653-13655`
+- **RCURLYBRACE** — Right curly brace token `RustParser.ts:13723-13725`
+- **RCURLYBRACE** — Parses the right curly brace `RustParser.ts:13858-13860`
+- **RCURLYBRACE** — Parses a right curly brace in the Rust parser `RustParser.ts:13955-13957`
+- **RCURLYBRACE** — Represents a closing curly brace in an expression `RustParser.ts:14020-14022`
+- **RCURLYBRACE** — Represents the right curly brace in the Rust parser `RustParser.ts:14082-14084`
+- **RCURLYBRACE** — Represents a closing curly brace in the Rust grammar `RustParser.ts:16135-16137`
+- **RCURLYBRACE** — Returns the right curly brace token `RustParser.ts:16418-16420`, `RustParser.ts:18033-18035`
+- **RCURLYBRACE** — Returns the terminal node for the right curly brace `RustParser.ts:16699-16701`, `RustParser.ts:17375-17377`
+- **referencePattern** — Represents a reference pattern `RustParser.ts:7976-8013`
+- **referencePattern** — Represents a pattern for referencing a variable or value `RustParser.ts:17650-17652`
+- **referenceType** — Represents a reference type `RustParser.ts:8889-8926`
+- **referenceType** — Returns the context of a reference type `RustParser.ts:18559-18561`
+- **restPattern** — Represents a rest pattern `RustParser.ts:7831-7849`
+- **restPattern** — Context for parsing rest patterns `RustParser.ts:17647-17649`
+- **restPattern** — Returns a rest pattern context `RustParser.ts:18346-18348`
+- **RPAREN** — Represents a closing parenthesis `RustParser.ts:11779-11781`
+- **RPAREN** — Token representing the right parenthesis `RustParser.ts:11908-11910`
+- **RPAREN** — Represents a right parenthesis `RustParser.ts:11999-12001`
+- **RPAREN** — Represents a closing parenthesis token `RustParser.ts:12116-12118`
+- **RPAREN** — Represents the closing parenthesis in the parser `RustParser.ts:12193-12195`
+- **RPAREN** — Right parenthesis `RustParser.ts:12787-12789`
+- **RPAREN** — Represents the right parenthesis token `RustParser.ts:13284-13286`
+- **RPAREN** — Represents the right parenthesis `RustParser.ts:13621-13623`
+- **RPAREN** — Parses a right parenthesis `RustParser.ts:14921-14923`
+- **RPAREN** — Represents a close parenthesis token `RustParser.ts:15230-15232`
+- **RPAREN** — Represents the ")", right parenthesis `RustParser.ts:15381-15383`
+- **RPAREN** — Represents a close parenthesis `RustParser.ts:15509-15511`
+- **RPAREN** — Represents the ')' operator `RustParser.ts:16582-16584`
+- **RPAREN** — Right parenthesis token `RustParser.ts:16810-16812`
+- **RPAREN** — Returns the right parenthesis terminal node `RustParser.ts:18226-18228`, `RustParser.ts:18609-18611`, `RustParser.ts:18664-18666`
+- **RPAREN** — Returns the right parenthesis token `RustParser.ts:18299-18301`, `RustParser.ts:18378-18380`, `RustParser.ts:18857-18859`, `RustParser.ts:19344-19346`
+- **RPAREN** — Returns the RPAREN terminal node `RustParser.ts:20122-20124`, `RustParser.ts:20204-20206`
+- **RSQUAREBRACKET** — Represents a closing square bracket `RustParser.ts:11794-11796`
+- **RSQUAREBRACKET** — Represents a right square bracket `RustParser.ts:11926-11928`
+- **RSQUAREBRACKET** — Represents a closing square bracket token `RustParser.ts:12008-12010`
+- **RSQUAREBRACKET** — Represents the right square bracket `RustParser.ts:12131-12133`
+- **RSQUAREBRACKET** — Right square bracket in the Rust parser `RustParser.ts:14603-14605`
+- **RSQUAREBRACKET** — Parses a right square bracket `RustParser.ts:14638-14640`
+- **RSQUAREBRACKET** — Represents a right square bracket in the parser `RustParser.ts:14971-14973`
+- **RSQUAREBRACKET** — Returns the terminal node for the right square bracket `RustParser.ts:15865-15867`, `RustParser.ts:18407-18409`
+- **RSQUAREBRACKET** — Returns the RSQUAREBRACKET terminal node `RustParser.ts:18720-18722`, `RustParser.ts:18752-18754`
+- **ruleIndex** — Tracks the index of the current rule being parsed `RustParser.ts:11721-11723`
+- **ruleIndex** — Index for a rule in the parser `RustParser.ts:11753-11755`
+- **ruleIndex** — Tracks the index of the current rule `RustParser.ts:11803-11805`
+- **ruleIndex** — Represents the index of the current rule being parsed `RustParser.ts:11838-11840`
+- **ruleIndex** — Represents a rule index `RustParser.ts:11876-11878`
+- **ruleIndex** — Represents the index of a rule in the parser `RustParser.ts:11935-11937`
+- **ruleIndex** — Stores the index of the current rule in the Rust parser `RustParser.ts:11970-11972`
+- **ruleIndex** — Represents the index of the current rule `RustParser.ts:12017-12019`
+- **ruleIndex** — Represents the index of a rule in the Rust parser `RustParser.ts:12058-12060`
+- **ruleIndex** — Represents the index of a rule in the Rust grammar `RustParser.ts:12090-12092`
+- **ruleIndex** — Tracks the index of a rule `RustParser.ts:12140-12142`
+- **ruleIndex** — Index for parsing rules `RustParser.ts:12211-12213`
+- **ruleIndex** — Represents the index of a rule `RustParser.ts:12246-12248`
+- **ruleIndex** — Tracks the index of the current rule in the parser `RustParser.ts:12272-12274`
+- **ruleIndex** — Stores the index of the current rule `RustParser.ts:12307-12309`
+- **ruleIndex** — Index for the current rule `RustParser.ts:12339-12341`
+- **ruleIndex** — Manages the index for rules in the Rust parser `RustParser.ts:12365-12367`
+- **ruleIndex** — Tracks the index of a rule in the parser `RustParser.ts:12403-12405`
+- **ruleIndex** — Manages the index for parsing rules `RustParser.ts:12468-12470`
+- **ruleIndex** — Manages the index of the current rule `RustParser.ts:12497-12499`
+- **ruleIndex** — Manages the index of parsing rules `RustParser.ts:12556-12558`
+- **ruleIndex** — Stores the index of a rule in the parser `RustParser.ts:12594-12596`
+- **ruleIndex** — Index of the current rule `RustParser.ts:12623-12625`
+- **ruleIndex** — Rule index `RustParser.ts:12655-12657`
+- **ruleIndex** — Represents the index of the current rule in the parser `RustParser.ts:12687-12689`
+- **ruleIndex** — Tracks the index of the current rule being processed `RustParser.ts:12752-12754`
+- **ruleIndex** — Returns the index of the rule "shr" `RustParser.ts:12808-12810`
+- **ruleIndex** — Returns the index of the function qualifiers rule `RustParser.ts:12846-12848`
+- **ruleIndex** — Returns the `RustParser.ts:12875-12877`
+- **ruleIndex** — Returns the index of the function parameters rule `RustParser.ts:12919-12921`
+- **ruleIndex** — Returns the index of the self parameter rule `RustParser.ts:12957-12959`
+- **ruleIndex** — Returns the index of the shorthand `RustParser.ts:12992-12994`
+- **ruleIndex** — Returns the index of the rule for `typedSelf `RustParser.ts:13027-13029`
+- **ruleIndex** — Returns the index of the rule for `functionParam `RustParser.ts:13068-13070`
+- **ruleIndex** — Returns the index of the function parameter pattern rule `RustParser.ts:13103-13105`
+- **ruleIndex** — Returns the index of the function return type rule `RustParser.ts:13132-13134`
+- **ruleIndex** — Returns the index of the type alias rule `RustParser.ts:13176-13178`
+- **ruleIndex** — Returns the index of the struct rule `RustParser.ts:13205-13207`
+- **ruleIndex** — Returns the index of the structStruct rule `RustParser.ts:13252-13254`
+- **ruleIndex** — Returns the rule index for tuple struct `RustParser.ts:13299-13301`
+- **ruleIndex** — Returns the rule index for struct fields `RustParser.ts:13340-13342`
+- **ruleIndex** — Returns the index of the structField rule `RustParser.ts:13384-13386`
+- **ruleIndex** — Returns the index of the tuple fields rule `RustParser.ts:13425-13427`
+- **ruleIndex** — Returns the index of the tuple field rule `RustParser.ts:13463-13465`
+- **ruleIndex** — Returns the index of the enumeration rule `RustParser.ts:13507-13509`
+- **ruleIndex** — Returns the index of the enum items rule `RustParser.ts:13548-13550`
+- **ruleIndex** — Returns the rule index for enumItem `RustParser.ts:13595-13597`
+- **ruleIndex** — Returns the index of the enum item rule `RustParser.ts:13627-13629`
+- **ruleIndex** — Returns the index of the enum item struct rule `RustParser.ts:13659-13661`
+- **ruleIndex** — Returns the index of the enum item discriminant rule `RustParser.ts:13688-13690`
+- **ruleIndex** — Returns the index of the union rule `RustParser.ts:13732-13734`
+- **ruleIndex** — Returns the rule index for the constant item rule `RustParser.ts:13779-13781`
+- **ruleIndex** — Returns the rule index for the static item rule `RustParser.ts:13826-13828`
+- **ruleIndex** — Returns the index of the rule for the trait `RustParser.ts:13894-13896`
+- **ruleIndex** — Returns the index of the rule for the implementation `RustParser.ts:13923-13925`
+- **ruleIndex** — Returns the index of the rule for inherent implementation `RustParser.ts:13982-13984`
+- **ruleIndex** — Returns the index of the trait impl rule. `Rust `RustParser.ts:14053-14055`
+- **ruleIndex** — Returns the index of the rule for `externBlock `RustParser.ts:14109-14111`
+- **ruleIndex** — Returns the index of the rule for `externalItem `RustParser.ts:14153-14155`
+- **ruleIndex** — Returns the index of the genericParams rule `RustParser.ts:14200-14202`
+- **ruleIndex** — Returns the index of the genericParam rule `RustParser.ts:14241-14243`
+- **ruleIndex** — Returns the index of the rule for lifetime parameters `RustParser.ts:14276-14278`
+- **ruleIndex** — Returns the index of the rule for type parameters `RustParser.ts:14317-14319`
+- **ruleIndex** — Returns the rule index for the constParam rule `RustParser.ts:14352-14354`
+- **ruleIndex** — Returns the rule index for the whereClause rule `RustParser.ts:14396-14398`
+- **ruleIndex** — Returns the rule index for the whereClauseItem rule `RustParser.ts:14425-14427`
+- **ruleIndex** — Returns the index of the rule for the lifetime where clause item `RustParser.ts:14457-14459`
+- **ruleIndex** — Returns the index of the rule for the type bound where clause item `RustParser.ts:14492-14494`
+- **ruleIndex** — Returns the rule index for `forLifetimes `RustParser.ts:14521-14523`
+- **ruleIndex** — Returns the rule index for `associatedItem `RustParser.ts:14568-14570`
+- **ruleIndex** — Returns the index of the inner attribute rule `RustParser.ts:14606-14608`
+- **ruleIndex** — Returns the index of the outer attribute rule `RustParser.ts:14641-14643`
+- **ruleIndex** — Returns the index of the rule for attribute `RustParser.ts:14670-14672`
+- **ruleIndex** — Returns the index of the rule for attribute input `RustParser.ts:14702-14704`
+- **ruleIndex** — Returns the index of the rule for statements `RustParser.ts:14740-14742`, `RustParser.ts:16185-16187`
+- **ruleIndex** — Returns the index of the rule for let statements `RustParser.ts:14793-14795`
+- **ruleIndex** — Returns the rule index for expressionStatement `RustParser.ts:14825-14827`
+- **ruleIndex** — Returns the rule index for expression `RustParser.ts:14848-14850`
+- **ruleIndex** — Returns the index of the comparison operator rule `RustParser.ts:15918-15920`
+- **ruleIndex** — Returns the index of the compound assign operator rule `RustParser.ts:15971-15973`
+- **ruleIndex** — Returns the index of the rule for expression with block `RustParser.ts:16027-16029`
+- **ruleIndex** — Returns the index of the rule for literal expression `RustParser.ts:16080-16082`
+- **ruleIndex** — Returns the index of the pathExpression rule `RustParser.ts:16109-16111`
+- **ruleIndex** — Returns the index of the blockExpression rule `RustParser.ts:16150-16152`
+- **ruleIndex** — Returns the index of the `asyncBlockExpression` rule `RustParser.ts:16217-16219`
+- **ruleIndex** — Returns the index of the `unsafeBlockExpression` rule `RustParser.ts:16246-16248`
+- **ruleIndex** — Returns the rule index for array elements `RustParser.ts:16290-16292`
+- **ruleIndex** — Returns the rule index for tuple elements `RustParser.ts:16331-16333`
+- **ruleIndex** — Returns the index of the `tupleIndex` rule `RustParser.ts:16357-16359`
+- **ruleIndex** — Returns the index of the `structExpression` rule `RustParser.ts:16389-16391`
+- **ruleIndex** — Gets the rule index for structExprStruct `RustParser.ts:16436-16438`
+- **ruleIndex** — Gets the rule index for structExprFields `RustParser.ts:16480-16482`
+- **ruleIndex** — Returns the rule index for structExprField `RustParser.ts:16524-16526`
+- **ruleIndex** — Returns the rule index for structBase `RustParser.ts:16553-16555`
+- **ruleIndex** — Returns the index of the structExprTuple rule `RustParser.ts:16612-16614`
+- **ruleIndex** — Returns the index of the structExprUnit rule `RustParser.ts:16638-16640`
+- **ruleIndex** — Returns the index of the enumerationVariantExpression rule `RustParser.ts:16670-16672`
+- **ruleIndex** — Returns the index of the rule for enumeration expression struct `RustParser.ts:16705-16707`
+- **ruleIndex** — Returns the index of the rule for enumeration expression fields `RustParser.ts:16746-16748`
+- **ruleIndex** — Returns the rule index for enumExprField `RustParser.ts:16781-16783`
+- **ruleIndex** — Returns the rule index for enumExprTuple `RustParser.ts:16831-16833`
+- **ruleIndex** — Returns the rule index for the enum expression fieldless rule `RustParser.ts:16857-16859`
+- **ruleIndex** — Returns the rule index for the call params rule `RustParser.ts:16898-16900`
+- **ruleIndex** — Returns the index of the closure expression rule `RustParser.ts:16951-16953`
+- **ruleIndex** — Returns the index of the closure parameters rule `RustParser.ts:16992-16994`
+- **ruleIndex** — Returns the index of the closure parameter rule `RustParser.ts:17033-17035`
+- **ruleIndex** — Returns the index of the loop expression rule `RustParser.ts:17071-17073`
+- **ruleIndex** — Returns the index of the infinite loop expression rule `RustParser.ts:17100-17102`
+- **ruleIndex** — Returns the index of the rule for predicate loop expression `RustParser.ts:17132-17134`
+- **ruleIndex** — Returns the index of the rule for predicate pattern loop expression `RustParser.ts:17173-17175`
+- **ruleIndex** — Returns the index of the rule for iterator loop expression `RustParser.ts:17211-17213`
+- **ruleIndex** — Returns the index of the rule for loop label `RustParser.ts:17240-17242`
+- **ruleIndex** — Returns the index of the rule `RustParser.ts:17287-17289`
+- **ruleIndex** — Returns the rule index for ifLetExpression `RustParser.ts:17343-17345`
+- **ruleIndex** — Returns the index of the matchExpression rule `RustParser.ts:17390-17392`
+- **ruleIndex** — Returns the index of the `matchArms` rule `RustParser.ts:17446-17448`
+- **ruleIndex** — Returns the index of the `matchArmExpression` rule `RustParser.ts:17478-17480`
+- **ruleIndex** — Returns the index of the matchArm rule `RustParser.ts:17516-17518`
+- **ruleIndex** — Returns the index of the matchArmGuard rule `RustParser.ts:17545-17547`
+- **ruleIndex** — Returns the index of the pattern rule `RustParser.ts:17586-17588`, `RustParser.ts:17615-17617`
+- **ruleIndex** — Returns the index of the pattern without range rule `RustParser.ts:17674-17676`
+- **ruleIndex** — Returns the index of the rule for literal pattern `RustParser.ts:17730-17732`
+- **ruleIndex** — Returns the index of the rule for identifier pattern `RustParser.ts:17768-17770`
+- **ruleIndex** — Returns the index of the rule for wildcard pattern `RustParser.ts:17794-17796`
+- **ruleIndex** — Returns the index of the rest pattern rule `RustParser.ts:17820-17822`
+- **ruleIndex** — Returns the index of the range pattern rule `RustParser.ts:17843-17845`
+- **ruleIndex** — Returns the rule index for range pattern bound `RustParser.ts:17969-17971`
+- **ruleIndex** — Returns the rule index for reference pattern `RustParser.ts:18004-18006`
+- **ruleIndex** — Returns the index of the struct pattern rule `RustParser.ts:18039-18041`, `RustParser.ts:18197-18199`
+- **ruleIndex** — Returns the index of the struct pattern elements rule `RustParser.ts:18071-18073`
+- **ruleIndex** — Returns the index of the `structPatternFields` rule `RustParser.ts:18112-18114`
+- **ruleIndex** — Returns the index of the structPatternField rule `RustParser.ts:18162-18164`
+- **ruleIndex** — Returns the index of the tuple struct pattern rule `RustParser.ts:18232-18234`
+- **ruleIndex** — Returns the index of the rule for tuple struct items `RustParser.ts:18273-18275`
+- **ruleIndex** — Returns the index of the rule for tuple pattern `RustParser.ts:18305-18307`
+- **ruleIndex** — Returns the rule index for tuple pattern items `RustParser.ts:18349-18351`
+- **ruleIndex** — Returns the rule index for grouped pattern `RustParser.ts:18381-18383`
+- **ruleIndex** — Returns the index of the slice pattern rule `RustParser.ts:18413-18415`
+- **ruleIndex** — Returns the index of the slice pattern items rule `RustParser.ts:18454-18456`
+- **ruleIndex** — Returns the index of the `pathPattern` rule `RustParser.ts:18483-18485`
+- **ruleIndex** — Returns the index of the rule for the node `RustParser.ts:18515-18517`
+- **ruleIndex** — Returns the index of the rule for typeNoBounds `RustParser.ts:18580-18582`
+- **ruleIndex** — Returns the rule index for the parenthesized type rule `RustParser.ts:18612-18614`
+- **ruleIndex** — Returns the rule index for the never type rule `RustParser.ts:18638-18640`
+- **ruleIndex** — Returns the rule index for the tupleType rule `RustParser.ts:18685-18687`
+- **ruleIndex** — Returns the index of the array type rule `RustParser.ts:18723-18725`
+- **ruleIndex** — Returns the index of the slice type rule `RustParser.ts:18755-18757`
+- **ruleIndex** — Returns the index of the reference type rule `RustParser.ts:18790-18792`
+- **ruleIndex** — Returns the index of the raw pointer type rule `RustParser.ts:18825-18827`
+- **ruleIndex** — Returns the index of the rule for bare function type `RustParser.ts:18869-18871`
+- **ruleIndex** — Returns the index of the rule for function type qualifiers `RustParser.ts:18901-18903`
+- **ruleIndex** — Returns the index of the rule for bare function return type. `RustParser.ts:1893 `RustParser.ts:18930-18932`
+- **ruleIndex** — Returns the index of the function parameters maybe named variadic rule `RustParser.ts:18959-18961`
+- **ruleIndex** — Returns the index of the maybe named function parameters rule `RustParser.ts:19000-19002`
+- **ruleIndex** — Returns the rule index for maybeNamedParam `RustParser.ts:19044-19046`
+- **ruleIndex** — Returns the rule index for maybeNamedFunctionParametersVariadic `RustParser.ts:19097-19099`
+- **ruleIndex** — Returns the rule index for trait object type `RustParser.ts:19126-19128`
+- **ruleIndex** — Returns the rule index for trait object type one bound `RustParser.ts:19155-19157`
+- **ruleIndex** — Returns the rule index for impl trait type `RustParser.ts:19184-19186`
+- **ruleIndex** — Returns the index of the `implTraitTypeOneBound` rule `RustParser.ts:19213-19215`
+- **ruleIndex** — Returns the index of the `inferredType` rule `RustParser.ts:19239-19241`
+- **ruleIndex** — Returns the index of the `typeParamBounds` rule `RustParser.ts:19280-19282`
+- **ruleIndex** — Returns the rule index for type parameter bounds `RustParser.ts:19309-19311`
+- **ruleIndex** — Returns the rule index for trait bound `RustParser.ts:19347-19349`
+- **ruleIndex** — Returns the index of the `lifetimeBounds` rule `RustParser.ts:19388-19390`
+- **ruleIndex** — Returns the rule index for lifetime `RustParser.ts:19420-19422`
+- **ruleIndex** — Returns the index of the rule for the current node `RustParser.ts:19461-19463`, `RustParser.ts:19499-19501`, `RustParser.ts:19540-19542`
+- **ruleIndex** — Returns the index of the pathExprSegment rule `RustParser.ts:19572-19574`
+- **ruleIndex** — Returns the index of the pathIdentSegment rule `RustParser.ts:19613-19615`
+- **ruleIndex** — Returns the rule index for generic args `RustParser.ts:19669-19671`
+- **ruleIndex** — Returns the rule index for generic arg `RustParser.ts:19704-19706`
+- **ruleIndex** — Returns the rule index for generic arguments constant `RustParser.ts:19739-19741`
+- **ruleIndex** — Returns the rule index for generic arguments lifetimes `RustParser.ts:19780-19782`
+- **ruleIndex** — Returns the index of the rule for generic args types `RustParser.ts:19821-19823`
+- **ruleIndex** — Returns the index of the rule for generic args bindings `RustParser.ts:19862-19864`
+- **ruleIndex** — Returns the rule index for genericArgsBinding `RustParser.ts:19894-19896`
+- **ruleIndex** — Returns the rule index for qualifiedPathInExpression `RustParser.ts:19938-19940`
+- **ruleIndex** — Returns the rule index for a qualified path type `RustParser.ts:19976-19978`
+- **ruleIndex** — Returns the rule index for a qualified path in type `RustParser.ts:20020-20022`
+- **ruleIndex** — Returns the index of the type path rule `RustParser.ts:20061-20063`
+- **ruleIndex** — Returns the rule index for typePathSegment `RustParser.ts:20096-20098`
+- **ruleIndex** — Returns the rule index for typePathFn `RustParser.ts:20134-20136`
+- **ruleIndex** — Returns the rule index for type path inputs `RustParser.ts:20175-20177`
+- **ruleIndex** — Returns the rule index for visibility `RustParser.ts:20222-20224`
+- **ruleIndex** — Returns the index of the identifier rule `RustParser.ts:20254-20256`
+- **ruleIndex** — Returns the index of the keyword rule `RustParser.ts:20436-20438`
+- **ruleIndex** — Returns the index of the macro identifier like token rule `RustParser.ts:20477-20479`
+- **ruleIndex** — Returns the index of the macro literal token rule `RustParser.ts:20503-20505`
+- **ruleIndex** — Returns the index of the macro punctuation token rule `RustParser.ts:20643-20645`
+- **ruleIndex** — Returns the index of the shift-left operator rule `RustParser.ts:20675-20677`
+- **ruleIndex** — Returns the index of the SHR rule `RustParser.ts:20707-20709`
+- **ruleNames** — Stores names of rules used in the lexer `RustLexer.ts:580-582`
+- **ruleNames** — Stores names of rule tokens `RustParser.ts:816-818`
+- **selfParam** — Represents a self parameter in the Rust grammar `RustParser.ts:2657-2700`
+- **selfParam** — Represents the self parameter `RustParser.ts:12898-12900`
+- **SEMI** — Token representing the semicolon `RustParser.ts:11911-11913`
+- **SEMI** — Represents a semicolon `RustParser.ts:12002-12004`
+- **SEMI** — Represents a semicolon token `RustParser.ts:12051-12057`
+- **SEMI** — Represents a semicolon in the parser `RustParser.ts:12526-12528`
+- **SEMI** — Represents a semicolon in the Rust parser `RustParser.ts:12588-12590`
+- **SEMI** — Represents a semicolon in the Rust grammar `RustParser.ts:12684-12686`
+- **SEMI** — Semicolon `RustParser.ts:12793-12795`
+- **SEMI** — Returns the SEMI terminal node `RustParser.ts:13161-13163`, `RustParser.ts:13287-13289`, `RustParser.ts:14769-14771`, `RustParser.ts:18714-18716`
+- **SEMI** — Returns the SEMI terminal node. `RustParser.ts:13240-1324 `RustParser.ts:13240-13242`
+- **SEMI** — Returns the SEMI terminal node at the current position `RustParser.ts:13764-13766`, `RustParser.ts:13814-13816`
+- **SEMI** — Returns the terminal node for the semicolon `RustParser.ts:14725-14727`
+- **SEMI** — Returns the SEMI token if it exists `RustParser.ts:14819-14821`, `RustParser.ts:16287-16289`
+- **SEMI** — Returns the SEMI terminal node if it exists `RustParser.ts:20625-20627`
+- **sempred** — Represents a semantic predicate in the lexer `RustLexer.ts:596-604`
+- **sempred** — Represents a semantic predicate `RustParser.ts:10814-10824`
+- **serializedATN** — Serializes the ATN (Abstract Syntax Tree) of the parser `RustLexer.ts:584-586`
+- **serializedATN** — Serializes the ATN (ANTLR Transition Network) for the parser `RustParser.ts:819-821`
+- **SHEBANG_sempred** — Represents a semantic predicate for the SHEBANG token `RustLexer.ts:605-611`
+- **shl** — Represents a left shift operation `RustParser.ts:10763-10787`
+- **shl** — Represents the left shift operator `RustParser.ts:15600-15602`
+- **shl_sempred** — Represents a semantic predicate for a left shift operation `RustParser.ts:10872-10878`
+- **SHLEQ** — Represents left shift assignment operator `RustParser.ts:15965-15967`
+- **SHLEQ** — Represents the shift-left-equal operator `RustParser.ts:20577-20579`
+- **shorthandSelf** — Represents a shorthand self parameter in the Rust grammar `RustParser.ts:2701-2743`
+- **shorthandSelf** — Represents a shorthand self parameter `RustParser.ts:12942-12944`
+- **shr** — Represents a right shift operation `RustParser.ts:10788-10812`
+- **shr** — Represents the right shift operator `RustParser.ts:15603-15605`
+- **shr_sempred** — Represents a semantic predicate for a right shift operation `RustParser.ts:10879-10885`
+- **SHREQ** — Represents right shift assignment operator `RustParser.ts:15968-15970`
+- **SHREQ** — Represents the shift-right-equal operator `RustParser.ts:20580-20582`
+- **simplePath** — Represents a simple path `RustParser.ts:9619-9661`
+- **simplePath** — Represents a simple path in the parser `RustParser.ts:11744-11746`
+- **simplePath** — Represents a simple path in the Rust parser `RustParser.ts:11899-11901`
+- **simplePath** — Represents a simple path in the code `RustParser.ts:12731-12733`
+- **simplePath** — Returns the context of a simple path `RustParser.ts:14664-14666`
+- **simplePath** — Returns the SimplePathContext `RustParser.ts:20219-20221`
+- **simplePathSegment** — Represents a segment of a simple path `RustParser.ts:9662-9720`
+- **simplePathSegment** — Parses a simple path segment `RustParser.ts:19445-19451`
+- **simplePathSegment** — Returns the simple path segment context `RustParser.ts:19736-19738`
+- **SLASH** — Represents the division operator `RustParser.ts:15588-15590`
+- **SLASH** — Represents the slash operator `RustParser.ts:20529-20531`
+- **SLASHEQ** — Represents division assignment operator `RustParser.ts:15950-15952`
+- **SLASHEQ** — Represents the slash-equal operator `RustParser.ts:20562-20564`
+- **slicePattern** — Represents a pattern for a slice `RustParser.ts:8450-8485`
+- **slicePattern** — Defines a pattern for slice expressions `RustParser.ts:17665-17667`
+- **slicePatternItems** — Represents items within a slice pattern `RustParser.ts:8486-8527`
+- **slicePatternItems** — Represents items in a slice pattern `RustParser.ts:18410-18412`
+- **sliceType** — Represents a slice type `RustParser.ts:8866-8888`
+- **sliceType** — Returns the context of a slice type `RustParser.ts:18565-18567`
+- **STAR** — Represents the star symbol `RustParser.ts:12330-12332`
+- **STAR** — Represents a star in the Rust parser `RustParser.ts:12710-12712`
+- **STAR** — Parses a star operator `RustParser.ts:15448-15450`
+- **STAR** — Represents the multiplication operator `RustParser.ts:15585-15587`
+- **STAR** — Represents a star operator `RustParser.ts:18813-18815`
+- **STAREQ** — Represents multiplication assignment operator `RustParser.ts:15947-15949`
+- **STAREQ** — Represents the star-equal operator `RustParser.ts:20559-20561`
+- **statement** — Represents a statement `RustParser.ts:4715-4769`
+- **statement** — Parses a single statement `RustParser.ts:16175-16181`
+- **statements** — Represents a sequence of statements in the Rust parser `RustParser.ts:5910-5973`
+- **statements** — Parses a sequence of statements `RustParser.ts:16147-16149`
+- **staticItem** — Represents a static item `RustParser.ts:3625-3670`
+- **staticItem** — Represents a static item in the parser `RustParser.ts:12453-12455`
+- **staticItem** — Returns the static item context at index 0 `RustParser.ts:14144-14146`
+- **STRING_LITERAL** — Represents a string literal `RustParser.ts:12869-12871`
+- **STRING_LITERAL** — Returns the terminal node for a string literal `RustParser.ts:16053-16055`, `RustParser.ts:17709-17711`
+- **struct_** — Represents a struct `RustParser.ts:2961-2994`
+- **struct_** — Represents a structure definition `RustParser.ts:12441-12443`
+- **structBase** — Parses the base of a struct expression `RustParser.ts:6381-6401`
+- **structBase** — Represents the base of a struct expression `RustParser.ts:16433-16435`
+- **structBase** — Returns the struct base context `RustParser.ts:16477-16479`
+- **structExpression** — Parses a struct expression `RustParser.ts:6156-6196`
+- **structExpression** — This method returns the struct expression context from the parser `RustParser.ts:15285-15287`
+- **structExprField** — Parses a field of a struct expression `RustParser.ts:6315-6380`
+- **structExprField** — Represents a field in a struct expression `RustParser.ts:16461-16467`
+- **structExprFields** — Parses fields of a struct expression `RustParser.ts:6257-6314`
+- **structExprFields** — Manages fields in a struct expression `RustParser.ts:16430-16432`
+- **structExprStruct** — Parses a struct expression with a struct `RustParser.ts:6197-6256`
+- **structExprStruct** — Parses a struct expression in the Rust parser `RustParser.ts:16380-16382`
+- **structExprTuple** — Parses a tuple in a struct expression `RustParser.ts:6402-6472`
+- **structExprTuple** — Parses a tuple expression in the Rust parser `RustParser.ts:16383-16385`
+- **structExprUnit** — Parses a unit in a struct expression `RustParser.ts:6473-6491`
+- **structExprUnit** — Parses a unit expression in the Rust parser `RustParser.ts:16386-16388`
+- **structField** — Represents a field of a struct `RustParser.ts:3160-3201`
+- **structField** — Returns the struct field context or null if not provided `RustParser.ts:13324-13330`
+- **structFields** — Represents the fields of a struct `RustParser.ts:3118-3159`
+- **structFields** — Parses the fields of a struct in an enum item `RustParser.ts:13249-13251`
+- **structFields** — Represents fields of a struct `RustParser.ts:13656-13658`
+- **structFields** — Returns the struct fields context from the parser `RustParser.ts:13720-13722`
+- **structPattern** — Represents a struct pattern `RustParser.ts:8014-8051`
+- **structPattern** — Defines a pattern for struct types `RustParser.ts:17653-17655`
+- **structPatternElements** — Represents the elements of a struct pattern `RustParser.ts:8052-8100`
+- **structPatternElements** — Represents elements of a struct pattern in the Rust grammar `RustParser.ts:18036-18038`
+- **structPatternEtCetera** — Represents a pattern for a struct with additional elements `RustParser.ts:8209-8238`
+- **structPatternEtCetera** — Context for struct pattern et cetera `RustParser.ts:18068-18070`
+- **structPatternField** — Represents a field in a struct pattern `RustParser.ts:8135-8208`
+- **structPatternField** — Context for struct pattern field `RustParser.ts:18096-18102`
+- **structPatternFields** — Represents the fields of a struct pattern `RustParser.ts:8101-8134`
+- **structPatternFields** — Context for struct pattern fields `RustParser.ts:18062-18064`
+- **structStruct** — Represents a struct `RustParser.ts:2995-3060`
+- **structStruct** — Represents a struct in the Rust grammar `RustParser.ts:13199-13201`
+- **symbolicNames** — Stores names of symbolic tokens used in the lexer `RustLexer.ts:577-579`
+- **symbolicNames** — Stores names of symbolic tokens `RustParser.ts:813-815`
+- **tokenTree** — Represents a token tree for the parser `RustParser.ts:1002-1165`
+- **tokenTree** — Token tree for the parser `RustParser.ts:11784-11790`
+- **tokenTree** — Represents a token tree `RustParser.ts:11916-11922`
+- **tokenTreeToken** — Represents a token in the token tree `RustParser.ts:1166-1220`
+- **tokenTreeToken** — Token representing a token tree `RustParser.ts:11828-11834`
+- **trait_** — Represents a trait `RustParser.ts:3671-3767`
+- **trait_** — Represents a trait definition `RustParser.ts:12456-12458`
+- **traitBound** — Represents a bound for a trait `RustParser.ts:9470-9552`
+- **traitBound** — Represents a trait bound `RustParser.ts:19149-19151`
+- **traitBound** — Represents a trait bound in the Rust syntax `RustParser.ts:19210-19212`
+- **traitBound** — Returns the trait bound context if it exists `RustParser.ts:19306-19308`
+- **traitImpl** — Represents a trait implementation `RustParser.ts:3874-3963`
+- **traitImpl** — Represents a trait implementation in the Rust parser `RustParser.ts:13920-13922`
+- **traitObjectType** — Represents a trait object type `RustParser.ts:9260-9287`
+- **traitObjectType** — Represents an object type with a trait `RustParser.ts:18512-18514`
+- **traitObjectTypeOneBound** — Represents a trait object type with one bound `RustParser.ts:9288-9315`
+- **traitObjectTypeOneBound** — Represents an object type with a trait and one bound `RustParser.ts:18544-18546`
+- **tupleElements** — Parses elements of a tuple `RustParser.ts:6086-6136`
+- **tupleElements** — Represents elements of a tuple in the Rust parser `RustParser.ts:14933-14935`
+- **tupleField** — Represents a field of a tuple struct `RustParser.ts:3244-3281`
+- **tupleField** — Represents a tuple field `RustParser.ts:13409-13415`
+- **tupleFields** — Represents the fields of a tuple struct `RustParser.ts:3202-3243`
+- **tupleFields** — Fields of a tuple struct `RustParser.ts:13293-13295`
+- **tupleFields** — Parses the fields of a tuple in an enum item `RustParser.ts:13624-13626`
+- **tupleIndex** — Parses an index for a tuple `RustParser.ts:6137-6155`
+- **tupleIndex** — Parses a tuple index `RustParser.ts:15317-15319`
+- **tupleIndex** — Tracks the index of a tuple in the parser `RustParser.ts:16521-16523`
+- **tupleIndex** — Represents the index of a tuple `RustParser.ts:16778-16780`
+- **tupleIndex** — Tuple index `RustParser.ts:18135-18137`
+- **tuplePattern** — Represents a pattern for a tuple `RustParser.ts:8319-8354`
+- **tuplePattern** — Defines a pattern for tuples `RustParser.ts:17659-17661`
+- **tuplePatternItems** — Represents items within a tuple pattern `RustParser.ts:8355-8426`
+- **tuplePatternItems** — Represents items in a tuple pattern `RustParser.ts:18302-18304`
+- **tupleStruct** — Represents a tuple struct `RustParser.ts:3061-3117`
+- **tupleStruct** — Represents a tuple struct in the Rust grammar `RustParser.ts:13202-13204`
+- **tupleStructItems** — Represents items within a tuple struct pattern `RustParser.ts:8277-8318`
+- **tupleStructItems** — Parses items within a tuple struct `RustParser.ts:18229-18231`
+- **tupleStructPattern** — Represents a pattern for a tuple struct `RustParser.ts:8239-8276`
+- **tupleStructPattern** — Represents a pattern for tuple struct types `RustParser.ts:17656-17658`
+- **tupleType** — Represents a tuple type `RustParser.ts:8773-8838`
+- **tupleType** — Returns the context for a tuple type `RustParser.ts:18550-18552`
+- **type_** — Represents a type `RustParser.ts:8572-8612`
+- **type_** — Represents a type in the parser `RustParser.ts:13021-13023`
+- **type_** — Represents a type in the Rust parser `RustParser.ts:13056-13058`
+- **type_** — Represents a type in the Rust grammar `RustParser.ts:13097-13099`
+- **type_** — Defines the type of a variable or function `RustParser.ts:13129-13131`
+- **type_** — Represents a type in the code `RustParser.ts:13173-13175`
+- **type_** — Type declaration `RustParser.ts:13369-13371`
+- **type_** — Defines a type in the parser `RustParser.ts:13448-13450`
+- **type_** — Returns the type context at the current position `RustParser.ts:13761-13763`, `RustParser.ts:13811-13813`
+- **type_** — Returns the context of the type `RustParser.ts:13949-13951`
+- **type_** — Returns the context for the type `RustParser.ts:14014-14016`
+- **type_** — Returns the context of the type parameter at the current position or null `RustParser.ts:14311-14313`
+- **type_** — Returns the type context for the current rule `RustParser.ts:14349-14351`, `RustParser.ts:19023-19025`
+- **type_** — Returns the context for the type bound where clause item `RustParser.ts:14480-14482`
+- **type_** — Returns the type context `RustParser.ts:14784-14786`, `RustParser.ts:18749-18751`, `RustParser.ts:19695-19697`, `RustParser.ts:19891-19893`
+- **type_** — Returns the type context based on the provided index `RustParser.ts:17030-17032`
+- **type_** — Returns the type context from the rule context `RustParser.ts:18606-18608`
+- **type_** — Returns a Type_Context or null based on the provided index `RustParser.ts:18669-18675`
+- **type_** — Returns the Type_Context at index 0 `RustParser.ts:18711-18713`
+- **type_** — Returns the type context or contexts based on the provided index `RustParser.ts:19805-19811`
+- **type_** — Returns the type context of the current rule `RustParser.ts:19964-19966`
+- **type_** — Returns the type_ context `RustParser.ts:20131-20133`
+- **type_** — Retrieves the type context based on an index or returns all type contexts `RustParser.ts:20159-20165`
+- **typeAlias** — Represents a type alias `RustParser.ts:2911-2960`
+- **typeAlias** — Represents a type alias in the parser `RustParser.ts:12438-12440`
+- **typeAlias** — Returns the type alias context `RustParser.ts:14556-14558`
+- **typeBoundWhereClauseItem** — Represents a type bound constraint in a where clause `RustParser.ts:4445-4487`
+- **typeBoundWhereClauseItem** — Item within a where clause related to type bounds `RustParser.ts:14422-14424`
+- **typedSelf** — Represents a typed self parameter in the Rust grammar `RustParser.ts:2744-2775`
+- **typedSelf** — Represents a typed self parameter `RustParser.ts:12945-12947`
+- **typeNoBounds** — Represents a type without bounds `RustParser.ts:8613-8730`
+- **typeNoBounds** — Parses a type without bounds in the parser `RustParser.ts:14866-14868`
+- **typeNoBounds** — Represents a type without any bounds `RustParser.ts:16939-16941`
+- **typeNoBounds** — Defines a type without bounds in the parser `RustParser.ts:18506-18508`
+- **typeNoBounds** — Returns a type without bounds `RustParser.ts:18781-18783`
+- **typeNoBounds** — Returns the context of the type no bounds rule `RustParser.ts:18816-18818`
+- **typeNoBounds** — Returns the context for the type no bounds rule `RustParser.ts:18927-18929`
+- **typeParam** — Represents a type parameter `RustParser.ts:4260-4315`
+- **typeParam** — Returns the context of the typeParam rule if it exists `RustParser.ts:14226-14228`
+- **typeParamBound** — Represents a bound for a type parameter `RustParser.ts:9421-9469`
+- **typeParamBound** — Represents a bound on a type parameter `RustParser.ts:19264-19270`
+- **typeParamBounds** — Represents bounds for type parameters `RustParser.ts:9377-9420`
+- **typeParamBounds** — Represents type parameter bounds in the Rust parser `RustParser.ts:13891-13893`
+- **typeParamBounds** — Represents type parameter bounds `RustParser.ts:14314-14316`
+- **typeParamBounds** — Represents type parameter bounds in the parser `RustParser.ts:14489-14491`
+- **typeParamBounds** — Returns the type parameter bounds context `RustParser.ts:19120-19122`, `RustParser.ts:19181-19183`
+- **typePath** — Represents a path to a type `RustParser.ts:10354-10396`
+- **typePath** — Represents a type path in the code `RustParser.ts:14008-14010`
+- **typePath** — Represents a type path `RustParser.ts:18547-18549`
+- **typePath** — Represents a type path in the Rust syntax `RustParser.ts:19332-19334`
+- **typePath** — Returns the context for a type path `RustParser.ts:19973-19975`
+- **typePathFn** — Represents a function in a type path `RustParser.ts:10442-10488`
+- **typePathFn** — Represents a type path function `RustParser.ts:20093-20095`
+- **typePathInputs** — Represents inputs for a type path `RustParser.ts:10489-10530`
+- **typePathInputs** — Represents type path inputs `RustParser.ts:20125-20127`
+- **typePathSegment** — Represents a segment of a type path `RustParser.ts:10397-10441`
+- **typePathSegment** — Returns the context for a type path segment `RustParser.ts:20013-20019`
+- **typePathSegment** — Returns the type path segment context or null `RustParser.ts:20045-20051`
+- **UNDERSCORE** — Represents an underscore in the Rust parser `RustParser.ts:12652-12654`
+- **UNDERSCORE** — Represents an underscore character `RustParser.ts:12749-12751`
+- **UNDERSCORE** — Represents an underscore `RustParser.ts:13770-13772`
+- **UNDERSCORE** — Represents the '_' symbol `RustParser.ts:17791-17793`
+- **UNDERSCORE** — Represents an underscore in the parser `RustParser.ts:19041-19043`
+- **UNDERSCORE** — Underscore `RustParser.ts:19236-19238`
+- **UNDERSCORE** — Returns the UNDERSCORE terminal node if it exists `RustParser.ts:20607-20609`
+- **union_** — Represents a union `RustParser.ts:3525-3568`
+- **union_** — Represents a union definition `RustParser.ts:12447-12449`
+- **unsafeBlockExpression** — Parses an unsafe block expression `RustParser.ts:6004-6024`
+- **unsafeBlockExpression** — Returns the context of an unsafe block expression `RustParser.ts:16012-16014`
+- **useDeclaration** — Represents a use declaration in the Rust grammar `RustParser.ts:2256-2278`
+- **useDeclaration** — Represents a use declaration in the parser `RustParser.ts:12432-12434`
+- **useTree** — Represents a use tree in the Rust grammar `RustParser.ts:2279-2415`
+- **useTree** — Represents the use tree in the Rust parser `RustParser.ts:12681-12683`
+- **useTree** — Returns a UseTreeContext or an array of UseTreeContexts based on the provided index `RustParser.ts:12724-12730`
+- **visibility** — Represents the visibility of a declaration `RustParser.ts:10531-10593`
+- **visibility** — Represents visibility modifiers `RustParser.ts:12465-12467`
+- **visibility** — Specifies the visibility of a struct field `RustParser.ts:13381-13383`
+- **visibility** — Visibility of an item `RustParser.ts:13460-13462`
+- **visibility** — Represents the visibility of an item in the parser `RustParser.ts:13583-13585`
+- **visibility** — Represents the visibility of an item `RustParser.ts:14150-14152`
+- **visibility** — Returns the visibility context `RustParser.ts:14565-14567`
+- **visItem** — Represents a visibility item in the Rust grammar `RustParser.ts:1925-2032`
+- **visItem** — Represents a visibility item `RustParser.ts:12388-12390`
+- **visitErrorNode** — Visits an error node `RustParserListener.ts:2591-2591`
+- **visitTerminal** — Visits a terminal node `RustParserListener.ts:2590-2590`
+- **vocabulary** — Stores the vocabulary of tokens recognized by the RustLexer `RustLexer.ts:1101-1103`
+- **vocabulary** — Represents the vocabulary of the parser `RustParser.ts:11690-11692`
+- **whereClause** — Represents a where clause in a type or function `RustParser.ts:4341-4387`
+- **whereClause** — Parses the where clause of a function `RustParser.ts:12805-12807`
+- **whereClause** — Represents a where clause in the Rust grammar `RustParser.ts:13167-13169`
+- **whereClause** — Where clause for a struct `RustParser.ts:13246-13248`
+- **whereClause** — Clause for type constraints `RustParser.ts:13296-13298`
+- **whereClause** — Represents a where clause `RustParser.ts:13501-13503`
+- **whereClause** — Represents a where clause in the Rust parser `RustParser.ts:13729-13731`
+- **whereClause** — Represents a where clause in the code `RustParser.ts:13870-13872`
+- **whereClause** — Returns the context for the where clause `RustParser.ts:13961-13963`
+- **whereClause** — Returns the context for the where clause. `Rust `RustParser.ts:14032-14034`
+- **whereClauseItem** — Represents an item within a where clause `RustParser.ts:4388-4421`
+- **whereClauseItem** — Item within a where clause `RustParser.ts:14380-14386`
+- **wildcardPattern** — Represents a wildcard pattern `RustParser.ts:7812-7830`
+- **wildcardPattern** — Context for parsing wildcard patterns `RustParser.ts:17644-17646`
+
+### Class
+- **AbiContext** — Represents the ABI context `RustParser.ts:12868-12895`
+- **ArithmeticOrLogicalExpressionContext** — Context for an arithmetic or logical expression `RustParser.ts:15571-15632`
+- **ArrayElementsContext** — Context for array elements `RustParser.ts:16268-16310`
+- **ArrayExpressionContext** — Context for array expressions `RustParser.ts:15857-15897`
+- **ArrayTypeContext** — Represents a context for an array type `RustParser.ts:18707-18743`
+- **AsClauseContext** — Represents the context of an 'as' clause in the Rust parser `RustParser.ts:12645-12675`
+- **AssignmentExpressionContext** — Context for assignment expressions `RustParser.ts:15178-15212`
+- **AssociatedItemContext** — Represents the context of an associated item `RustParser.ts:14543-14588`
+- **AsyncBlockExpressionContext** — Context for an async block expression `RustParser.ts:16207-16237`
+- **AttrContext** — Represents the context of an attribute `RustParser.ts:14663-14690`
+- **AttributedExpressionContext** — Context for an attributed expression `RustParser.ts:15726-15760`
+- **AttrInputContext** — Represents the context of an attribute input `RustParser.ts:14692-14722`
+- **AwaitExpressionContext** — Represents the context of an await expression `RustParser.ts:15085-15116`
+- **BareFunctionReturnTypeContext** — Context for a bare function return type `RustParser.ts:18923-18950`
+- **BareFunctionTypeContext** — Represents a bare function type context `RustParser.ts:18847-18889`
+- **BlockExpressionContext** — Context for parsing a block expression `RustParser.ts:16131-16170`
+- **BorrowExpressionContext** — Context for a borrow expression `RustParser.ts:15761-15795`
+- **BreakExpressionContext** — Context for a break expression `RustParser.ts:15539-15570`
+- **CallExpressionContext** — Represents a context for a call expression `RustParser.ts:15370-15404`
+- **CallParamsContext** — Represents the context of call parameters `RustParser.ts:16879-16918`
+- **ClosureExpression_Context** — Context for closure expressions `RustParser.ts:15831-15856`
+- **ClosureExpressionContext** — Context for a closure expression in the parser `RustParser.ts:16920-16971`
+- **ClosureParamContext** — Represents the context of a closure parameter `RustParser.ts:17014-17053`
+- **ClosureParametersContext** — Context for closure parameters in the parser `RustParser.ts:16973-17012`
+- **ComparisonExpressionContext** — Context for a comparison expression `RustParser.ts:15691-15725`
+- **ComparisonOperatorContext** — Context for comparison operators `RustParser.ts:15899-15938`
+- **CompoundAssignmentExpressionContext** — Context for compound assignment expressions `RustParser.ts:15796-15830`
+- **CompoundAssignOperatorContext** — Context for compound assignment operators `RustParser.ts:15940-15991`
+- **ConstantItemContext** — Represents a context for a constant item `RustParser.ts:13754-13799`
+- **ConstParamContext** — Context for a constant parameter `RustParser.ts:14339-14372`
+- **ContinueExpressionContext** — Represents the context of a continue expression `RustParser.ts:15146-15177`
+- **CrateContext** — Represents the context of a crate in the parser `RustParser.ts:11699-11741`
+- **CrateRefContext** — Represents the context for a crate reference in the parser `RustParser.ts:12616-12643`
+- **DelimTokenTreeContext** — Context for delimiter token trees `RustParser.ts:11775-11823`
+- **DereferenceExpressionContext** — Represents a context for a dereference expression `RustParser.ts:15443-15471`
+- **EnumerationContext** — Represents the context of an enumeration definition `RustParser.ts:13485-13527`
+- **EnumerationVariantExpression_Context** — Represents the context of an enumeration variant expression `RustParser.ts:15665-15690`
+- **EnumerationVariantExpressionContext** — Represents the context for an enumeration variant expression `RustParser.ts:16660-16690`
+- **EnumExprFieldContext** — Context for parsing a field in an enum expression `RustParser.ts:16768-16801`
+- **EnumExprFieldlessContext** — Represents the context of an enum expression fieldless `RustParser.ts:16853-16877`
+- **EnumExprFieldsContext** — Context for parsing fields in an enum expression `RustParser.ts:16727-16766`
+- **EnumExprStructContext** — Context for parsing an enum expression with a struct-like syntax `RustParser.ts:16692-16725`
+- **EnumExprTupleContext** — Represents the context of an enum expression tuple `RustParser.ts:16803-16851`
+- **EnumItemContext** — Context for an enumeration item `RustParser.ts:13570-13615`
+- **EnumItemDiscriminantContext** — Context for parsing the discriminant of an enum item `RustParser.ts:13681-13708`
+- **EnumItemsContext** — Context for enumeration items `RustParser.ts:13529-13568`
+- **EnumItemStructContext** — Context for parsing an enum item with a struct `RustParser.ts:13649-13679`
+- **EnumItemTupleContext** — Context for parsing an enum item with a tuple `RustParser.ts:13617-13647`
+- **ErrorPropagationExpressionContext** — Represents the context of an error propagation expression `RustParser.ts:15117-15145`
+- **ExpressionContext** — Represents the context of an expression `RustParser.ts:14847-14854`
+- **ExpressionStatementContext** — Context for an expression statement in the Rust parser `RustParser.ts:14815-14845`
+- **ExpressionWithBlock_Context** — Context for an expression with a block `RustParser.ts:15472-15497`
+- **ExpressionWithBlockContext** — Represents the context for an expression that includes a block `RustParser.ts:15993-16047`
+- **ExternalItemContext** — Context for an external item in the parser `RustParser.ts:14131-14173`
+- **ExternBlockContext** — Represents the context of an extern block `RustParser.ts:14075-14129`
+- **ExternCrateContext** — Represents the context for an extern crate in the parser `RustParser.ts:12578-12614`
+- **FieldExpressionContext** — Represents the context of a field expression `RustParser.ts:15633-15664`
+- **ForLifetimesContext** — Represents a context for a for lifetimes `RustParser.ts:14514-14541`
+- **Function_Context** — Context for function parsing `RustParser.ts:12774-12828`
+- **FunctionParamContext** — Represents a function parameter context in the parser `RustParser.ts:13049-13088`
+- **FunctionParametersContext** — Represents the context for function parameters `RustParser.ts:12897-12939`
+- **FunctionParametersMaybeNamedVariadicContext** — Context for function parameters that may be named and variadic `RustParser.ts:18952-18979`
+- **FunctionParamPatternContext** — Represents a context for a function parameter pattern in the Rust parser `RustParser.ts:13090-13123`
+- **FunctionQualifiersContext** — Context for function qualifiers `RustParser.ts:12830-12866`
+- **FunctionReturnTypeContext** — Represents a context for a function return type in the Rust parser `RustParser.ts:13125-13152`
+- **FunctionTypeQualifiersContext** — Represents a function type qualifiers context `RustParser.ts:18891-18921`
+- **GenericArgContext** — Represents a context for a generic argument `RustParser.ts:19691-19724`
+- **GenericArgsBindingContext** — Context for generic argument bindings in the parser `RustParser.ts:19884-19914`
+- **GenericArgsBindingsContext** — Context for generic argument bindings in the parser `RustParser.ts:19843-19882`
+- **GenericArgsConstContext** — Context for constant generic arguments `RustParser.ts:19726-19759`
+- **GenericArgsContext** — Represents a context for generic arguments `RustParser.ts:19635-19689`
+- **GenericArgsLifetimesContext** — Context for lifetime generic arguments `RustParser.ts:19761-19800`
+- **GenericArgsTypesContext** — Context for type generic arguments `RustParser.ts:19802-19841`
+- **GenericParamContext** — Represents the context for generic parameters `RustParser.ts:14222-14261`
+- **GenericParamsContext** — Context for generic parameters in the parser `RustParser.ts:14175-14220`
+- **GroupedExpressionContext** — Context for a grouped expression `RustParser.ts:15498-15538`
+- **GroupedPatternContext** — Represents a context for a grouped pattern `RustParser.ts:18371-18401`
+- **HalfOpenRangePatternContext** — Represents a half-open range pattern context `RustParser.ts:17920-17948`
+- **IdentifierContext** — Context for identifiers `RustParser.ts:20244-20274`
+- **IdentifierPatternContext** — Context for an identifier pattern `RustParser.ts:17752-17788`
+- **IfExpressionContext** — Manages the context for if expressions `RustParser.ts:17262-17307`
+- **IfLetExpressionContext** — Manages the context for if let expressions `RustParser.ts:17309-17363`
+- **ImplementationContext** — Represents the context for implementation in the Rust parser `RustParser.ts:13916-13943`
+- **ImplTraitTypeContext** — Represents a context for an implementation of a trait type `RustParser.ts:19177-19204`
+- **ImplTraitTypeOneBoundContext** — Represents a context for an implementation of a trait type with one bound `RustParser.ts:19206-19233`
+- **InclusiveRangePatternContext** — Represents an inclusive range pattern context `RustParser.ts:17850-17884`
+- **IndexExpressionContext** — Context for an index expression in the Rust parser `RustParser.ts:14954-14991`
+- **InferredTypeContext** — Represents a context for an inferred type `RustParser.ts:19235-19259`
+- **InfiniteLoopExpressionContext** — Represents the context of an infinite loop expression in the Rust grammar `RustParser.ts:17093-17120`
+- **InherentImplContext** — Represents the context for inherent implementation in the Rust parser `RustParser.ts:13945-14002`
+- **InnerAttributeContext** — Represents the context of an inner attribute `RustParser.ts:14590-14626`
+- **ItemContext** — Context for an item in the parser `RustParser.ts:12387-12423`
+- **IteratorLoopExpressionContext** — Represents a context for an iterator loop expression `RustParser.ts:17195-17231`
+- **KeywordContext** — Represents the context of a keyword in the Rust parser `RustParser.ts:20276-20456`
+- **LazyBooleanExpressionContext** — Represents a context for a lazy boolean expression `RustParser.ts:15405-15442`
+- **LetStatementContext** — Context for a let statement in the Rust parser `RustParser.ts:14762-14813`
+- **LifetimeBoundsContext** — Represents a context for lifetime bounds `RustParser.ts:19369-19408`
+- **LifetimeContext** — Represents a context for lifetimes `RustParser.ts:19410-19440`
+- **LifetimeParamContext** — Represents the context for lifetime parameters `RustParser.ts:14263-14296`
+- **LifetimeWhereClauseItemContext** — Represents a context for a lifetime where clause item `RustParser.ts:14447-14477`
+- **LiteralExpression_Context** — Context for literal expressions `RustParser.ts:15254-15279`
+- **LiteralExpressionContext** — Represents the context for a literal expression `RustParser.ts:16049-16100`
+- **LiteralPatternContext** — Context for literal patterns `RustParser.ts:17696-17750`
+- **LoopExpressionContext** — Represents the context of a loop expression in the Rust grammar `RustParser.ts:17055-17091`
+- **LoopLabelContext** — Manages the context for loop labels `RustParser.ts:17233-17260`
+- **MacroFragSpecContext** — Context for macro fragment specification `RustParser.ts:12268-12292`
+- **MacroIdentifierLikeTokenContext** — Context for macro identifier-like tokens `RustParser.ts:20458-20497`
+- **MacroInvocationAsExpressionContext** — Context for a macro invocation as an expression in the Rust parser `RustParser.ts:15030-15055`
+- **MacroInvocationContext** — Context for macro invocations `RustParser.ts:11743-11773`
+- **MacroInvocationSemiContext** — Context for parsing a macro invocation followed by a semicolon `RustParser.ts:11898-11955`
+- **MacroItemContext** — Represents a macro item context `RustParser.ts:12490-12517`
+- **MacroLiteralTokenContext** — Context for macro literal tokens `RustParser.ts:20499-20523`
+- **MacroMatchContext** — Context for matching macros `RustParser.ts:12162-12231`
+- **MacroMatcherContext** — Context for matching macro rules `RustParser.ts:12112-12160`
+- **MacroMatchTokenContext** — Context for matching macro tokens `RustParser.ts:12233-12266`
+- **MacroPunctuationTokenContext** — Represents the context of a macro punctuation token `RustParser.ts:20525-20663`
+- **MacroRepOpContext** — Context for macro repetition operator `RustParser.ts:12329-12359`
+- **MacroRepSepContext** — Context for macro repetition separator `RustParser.ts:12294-12327`
+- **MacroRuleContext** — Context for parsing macro rules `RustParser.ts:12080-12110`
+- **MacroRulesContext** — Context for parsing macro rules `RustParser.ts:12039-12078`
+- **MacroRulesDefContext** — Context for macro rules definition `RustParser.ts:11992-12037`
+- **MacroRulesDefinitionContext** — Context for macro rules definition `RustParser.ts:11957-11990`
+- **MacroTranscriberContext** — Context for macro transcriber `RustParser.ts:12361-12385`
+- **MatchArmContext** — Context for a match arm `RustParser.ts:17500-17536`
+- **MatchArmExpressionContext** — Context for a match arm expression `RustParser.ts:17468-17498`
+- **MatchArmGuardContext** — Context for a match arm guard `RustParser.ts:17538-17565`
+- **MatchArmsContext** — Represents the context of match arms in the Rust parser `RustParser.ts:17412-17466`
+- **MatchExpressionContext** — Represents the context of a match expression in the Rust parser `RustParser.ts:17365-17410`
+- **MaybeNamedFunctionParametersContext** — Context for named function parameters `RustParser.ts:18981-19020`
+- **MaybeNamedFunctionParametersVariadicContext** — Represents a context for a variadic function parameter `RustParser.ts:19066-19117`
+- **MaybeNamedParamContext** — Represents a context for a named parameter in a function `RustParser.ts:19022-19064`
+- **MethodCallExpressionContext** — Context for method call expressions `RustParser.ts:15213-15253`
+- **ModuleContext** — Represents a module context `RustParser.ts:12519-12576`
+- **NegationExpressionContext** — Represents the context for a negation expression `RustParser.ts:15338-15369`
+- **NeverTypeContext** — Represents a context for a never type `RustParser.ts:18634-18658`
+- **ObsoleteRangePatternContext** — Represents an obsolete range pattern context `RustParser.ts:17885-17919`
+- **OuterAttributeContext** — Represents the context of an outer attribute `RustParser.ts:14628-14661`
+- **ParenthesizedTypeContext** — Represents a context for a parenthesized type `RustParser.ts:18602-18632`
+- **PathExpression_Context** — Represents the context of a path expression `RustParser.ts:14887-14912`
+- **PathExpressionContext** — Context for parsing a path expression `RustParser.ts:16102-16129`
+- **PathExprSegmentContext** — Represents a context for a path expression segment in the Rust parser `RustParser.ts:19562-19592`
+- **PathIdentSegmentContext** — Represents a context for a path identifier segment `RustParser.ts:19594-19633`
+- **PathInExpressionContext** — Represents a context for a path in an expression in the Rust parser `RustParser.ts:19521-19560`
+- **PathPatternContext** — Represents a context for a path pattern `RustParser.ts:18476-18503`
+- **PatternContext** — Context for parsing patterns `RustParser.ts:17567-17606`
+- **PatternNoTopAltContext** — Context for parsing patterns without top alternative `RustParser.ts:17608-17635`
+- **PatternWithoutRangeContext** — Context for parsing patterns without range `RustParser.ts:17637-17694`
+- **PredicateLoopExpressionContext** — Represents a context for a predicate loop expression `RustParser.ts:17122-17152`
+- **PredicatePatternLoopExpressionContext** — Represents a context for a predicate pattern loop expression `RustParser.ts:17154-17193`
+- **QualifiedPathInExpressionContext** — Context for a qualified path in an expression in the parser `RustParser.ts:19916-19958`
+- **QualifiedPathInTypeContext** — Represents a context for a qualified path in a type `RustParser.ts:19998-20040`
+- **QualifiedPathTypeContext** — Represents a context for a qualified path type `RustParser.ts:19960-19996`
+- **RangeExpressionContext** — Context for a range expression in the Rust parser `RustParser.ts:14992-15029`
+- **RangePatternBoundContext** — Represents the context for a range pattern bound `RustParser.ts:17950-17989`
+- **RangePatternContext** — Represents a context for range patterns in Rust `RustParser.ts:17842-17849`
+- **RawPointerTypeContext** — Represents a raw pointer type context `RustParser.ts:18812-18845`
+- **ReferencePatternContext** — Represents a reference pattern context in the Rust grammar `RustParser.ts:17991-18024`
+- **ReferenceTypeContext** — Context for a reference type in the parser `RustParser.ts:18777-18810`
+- **RestPatternContext** — Context for a rest pattern `RustParser.ts:17816-17840`
+- **ReturnExpressionContext** — Represents the context of a return expression `RustParser.ts:15056-15084`
+- **RustLexer** — Represents a lexical analyzer for Rust code `RustLexer.ts:6-1108`
+- **RustParser** — Extends RustParserBase and contains static keyword constants `RustParser.ts:13-11697`
+- **RustParserListener** — A listener for parsing Rust code `RustParserListener.ts:240-2594`
+- **RustParserVisitor** — A visitor for parsing Rust code `RustParserVisitor.ts:243-1646`
+- **SelfParamContext** — Represents the context for the self parameter `RustParser.ts:12941-12977`
+- **ShlContext** — Shift context `RustParser.ts:20665-20695`
+- **ShorthandSelfContext** — Represents a shorthand self context in the parser `RustParser.ts:12979-13012`
+- **ShrContext** — Represents the context for parsing Rust code `RustParser.ts:20697-20727`
+- **SimplePathContext** — Represents a context for a simple path `RustParser.ts:19442-19481`
+- **SimplePathSegmentContext** — Represents a context for a simple path segment in the Rust parser `RustParser.ts:19483-19519`
+- **SlicePatternContext** — Represents a context for a slice pattern `RustParser.ts:18403-18433`
+- **SlicePatternItemsContext** — Represents a context for items in a slice pattern `RustParser.ts:18435-18474`
+- **SliceTypeContext** — Context for a slice type in the parser `RustParser.ts:18745-18775`
+- **StatementContext** — Represents the context of a statement `RustParser.ts:14724-14760`
+- **StatementsContext** — Context for parsing a sequence of statements `RustParser.ts:16172-16205`
+- **StaticItemContext** — Represents a static item context `RustParser.ts:13801-13846`
+- **Struct_Context** — Represents the context for a struct in the Rust grammar `RustParser.ts:13198-13225`
+- **StructBaseContext** — Represents the context for struct definitions `RustParser.ts:16546-16573`
+- **StructExpression_Context** — Represents the context for a struct expression `RustParser.ts:15280-15305`
+- **StructExpressionContext** — Represents a context for struct expressions in the Rust parser `RustParser.ts:16379-16409`
+- **StructExprFieldContext** — Context for struct expression fields `RustParser.ts:16502-16544`
+- **StructExprFieldsContext** — Context for struct expression fields `RustParser.ts:16458-16500`
+- **StructExprStructContext** — Represents a context for struct expressions in the Rust parser `RustParser.ts:16411-16456`
+- **StructExprTupleContext** — Represents the context for a tuple expression in a struct `RustParser.ts:16575-16632`
+- **StructExprUnitContext** — Represents the context for a unit expression in a struct `RustParser.ts:16634-16658`
+- **StructFieldContext** — Represents the context of a struct field `RustParser.ts:13362-13404`
+- **StructFieldsContext** — Context for parsing struct fields `RustParser.ts:13321-13360`
+- **StructPatternContext** — Represents a struct pattern context in the Rust grammar `RustParser.ts:18026-18059`
+- **StructPatternElementsContext** — Context for struct pattern elements `RustParser.ts:18061-18091`
+- **StructPatternEtCeteraContext** — Context for parsing struct patterns and other related patterns `RustParser.ts:18184-18217`
+- **StructPatternFieldContext** — Context for struct pattern field `RustParser.ts:18134-18182`
+- **StructPatternFieldsContext** — Context for struct pattern fields `RustParser.ts:18093-18132`
+- **StructStructContext** — Represents the context for a struct in the Rust grammar `RustParser.ts:13227-13272`
+- **TokenTreeContext** — Represents the context for parsing a token tree `RustParser.ts:11825-11858`
+- **TokenTreeTokenContext** — Context for parsing a token tree token `RustParser.ts:11860-11896`
+- **Trait_Context** — Represents a trait context `RustParser.ts:13848-13914`
+- **TraitBoundContext** — Context for trait bounds `RustParser.ts:19331-19367`
+- **TraitImplContext** — Represents the context of a trait implementation `RustParser.ts:14004-14073`
+- **TraitObjectTypeContext** — Represents a context for a trait object type `RustParser.ts:19119-19146`
+- **TraitObjectTypeOneBoundContext** — Represents a context for a trait object with one bound `RustParser.ts:19148-19175`
+- **TupleElementsContext** — Represents a context for tuple elements in the Rust parser `RustParser.ts:16312-16351`
+- **TupleExpressionContext** — Represents the context of a tuple expression `RustParser.ts:14913-14953`
+- **TupleFieldContext** — Represents the context of a tuple field `RustParser.ts:13447-13483`
+- **TupleFieldsContext** — Represents the context of tuple fields `RustParser.ts:13406-13445`
+- **TupleIndexContext** — Represents a context for tuple indices in the Rust parser `RustParser.ts:16353-16377`
+- **TupleIndexingExpressionContext** — Represents the context for a tuple indexing expression `RustParser.ts:15306-15337`
+- **TuplePatternContext** — Represents a context for a tuple pattern `RustParser.ts:18295-18325`
+- **TuplePatternItemsContext** — Represents a context for items in a tuple pattern `RustParser.ts:18327-18369`
+- **TupleStructContext** — Context for parsing a tuple struct `RustParser.ts:13274-13319`
+- **TupleStructItemsContext** — Context for parsing items within a tuple struct `RustParser.ts:18254-18293`
+- **TupleStructPatternContext** — Context for parsing tuple struct patterns `RustParser.ts:18219-18252`
+- **TupleTypeContext** — Represents a context for a tuple type `RustParser.ts:18660-18705`
+- **Type_Context** — Represents a context for a type `RustParser.ts:18505-18535`
+- **TypeAliasContext** — Represents a context for a type alias in the Rust parser `RustParser.ts:13154-13196`
+- **TypeBoundWhereClauseItemContext** — Represents a context for a type bound where clause item `RustParser.ts:14479-14512`
+- **TypeCastExpressionContext** — Represents the context of a type cast expression `RustParser.ts:14855-14886`
+- **TypedSelfContext** — Represents a typed self context in the parser `RustParser.ts:13014-13047`
+- **TypeNoBoundsContext** — Context for a type without bounds `RustParser.ts:18537-18600`
+- **TypeParamBoundContext** — Context for type parameter bounds `RustParser.ts:19302-19329`
+- **TypeParamBoundsContext** — Context for type parameter bounds `RustParser.ts:19261-19300`
+- **TypeParamContext** — Represents the context for type parameters `RustParser.ts:14298-14337`
+- **TypePathContext** — Represents a context for a type path `RustParser.ts:20042-20081`
+- **TypePathFnContext** — Represents a context for a type path function `RustParser.ts:20118-20154`
+- **TypePathInputsContext** — Represents a context for type path inputs `RustParser.ts:20156-20195`
+- **TypePathSegmentContext** — Represents a context for a type path segment `RustParser.ts:20083-20116`
+- **Union_Context** — Represents a context for a union `RustParser.ts:13710-13752`
+- **UnsafeBlockExpressionContext** — Context for an unsafe block expression `RustParser.ts:16239-16266`
+- **UseDeclarationContext** — Represents the context of a 'use' declaration in the Rust parser `RustParser.ts:12677-12707`
+- **UseTreeContext** — Represents the context of a use tree in the Rust parser `RustParser.ts:12709-12772`
+- **VisibilityContext** — Context for visibility of identifiers `RustParser.ts:20197-20242`
+- **VisItemContext** — Context for a visibility item `RustParser.ts:12425-12488`
+- **WhereClauseContext** — Context for a where clause `RustParser.ts:14374-14416`
+- **WhereClauseItemContext** — Context for a where clause item `RustParser.ts:14418-14445`
+- **WildcardPatternContext** — Context for a wildcard pattern `RustParser.ts:17790-17814`
+
+### Type_alias
+- **int** — Represents a number type `RustParser.ts:11-11`
+
+### Import_decl
+- **./RustParser.js** — Imports `./RustParser.js`. `RustParserListener.ts:5-234`, `RustParserVisitor.ts:5-234`
+- **./RustParserListener.js** — Imports `./RustParserListener.js` from `./RustParserListener.js`. `RustParser.ts:6-6`
+- **./RustParserVisitor.js** — Imports `./RustParserVisitor.js` from `./RustParserVisitor.js`. `RustParser.ts:7-7`
+- **antlr4ng** — Imports `antlr4ng` from `antlr4ng`. `RustLexer.ts:4-4`, `RustParser.ts:4-4`, `RustParserListener.ts:4-4`, `RustParserVisitor.ts:4-4`
+
+### Property
+- **__ATN** — Represents the ATN of the parser `RustLexer.ts:1090-1090`
+- **__ATN** — Represents an ATN (Automaton Tree Network) for the parser `RustParser.ts:11679-11679`
+- **_serializedATN** — Serializes the ATN of the parser `RustLexer.ts:622-1088`
+- **_serializedATN** — Represents a serialized ATN (Automaton Tree Network) for the parser `RustParser.ts:10887-11677`
+- **AND** — Parses an and operator `RustLexer.ts:95-95`
+- **AND** — Represents the and operator `RustParser.ts:102-102`
+- **ANDAND** — Parses an and-and operator `RustLexer.ts:97-97`
+- **ANDAND** — Represents the and-and operator `RustParser.ts:104-104`
+- **ANDEQ** — Represents the logical AND equality operator `RustLexer.ts:105-105`, `RustParser.ts:112-112`
+- **AT** — Represents the at operator `RustLexer.ts:116-116`, `RustParser.ts:123-123`
+- **BIN_LITERAL** — Parses a binary literal `RustLexer.ts:85-85`
+- **BIN_LITERAL** — Represents a binary literal `RustParser.ts:92-92`
+- **BLOCK_COMMENT** — Represents a block comment `RustLexer.ts:66-66`
+- **BLOCK_COMMENT** — Represents a block comment in Rust code `RustParser.ts:73-73`
+- **BLOCK_COMMENT_OR_DOC** — Represents a block comment or documentation comment `RustLexer.ts:71-71`
+- **BLOCK_COMMENT_OR_DOC** — Represents a block comment or documentation comment in Rust code `RustParser.ts:78-78`
+- **BYTE_LITERAL** — Represents a byte literal `RustLexer.ts:78-78`
+- **BYTE_LITERAL** — Represents a byte literal in Rust `RustParser.ts:85-85`
+- **BYTE_STRING_LITERAL** — Represents a byte string literal `RustLexer.ts:79-79`
+- **BYTE_STRING_LITERAL** — Represents a byte string literal in Rust `RustParser.ts:86-86`
+- **CARET** — Parses a caret operator `RustLexer.ts:93-93`
+- **CARET** — Represents the caret operator `RustParser.ts:100-100`
+- **CARETEQ** — Parses a caret-equals operator `RustLexer.ts:104-104`
+- **CARETEQ** — Represents the caret-equal operator `RustParser.ts:111-111`
+- **channelNames** — Represents the names of different token channels `RustLexer.ts:138-138`
+- **CHAR_LITERAL** — Represents a character literal `RustLexer.ts:75-75`
+- **CHAR_LITERAL** — Represents a character literal with a value of 69 `RustParser.ts:82-82`
+- **COLON** — Represents the colon character `RustLexer.ts:124-124`
+- **COLON** — Represents the ASCII value of the colon character `RustParser.ts:131-131`
+- **COMMA** — Represents the comma character `RustLexer.ts:122-122`
+- **COMMA** — Represents the ASCII value of the comma character `RustParser.ts:129-129`
+- **DEC_LITERAL** — Parses a decimal literal `RustLexer.ts:82-82`
+- **DEC_LITERAL** — Represents a decimal literal `RustParser.ts:89-89`
+- **decisionsToDFA** — Maps decisions to DFA states for the RustLexer `RustLexer.ts:1105-1107`
+- **decisionsToDFA** — Represents decisions to a DFA (Deterministic Finite Automaton) for the parser `RustParser.ts:11694-11696`
+- **DOLLAR** — Represents the dollar character `RustLexer.ts:129-129`
+- **DOLLAR** — Represents the dollar symbol with a value of 123 `RustParser.ts:136-136`
+- **DOT** — Represents the dot character `RustLexer.ts:118-118`
+- **DOT** — Represents the ASCII value of the dot character `RustParser.ts:125-125`
+- **DOTDOT** — Represents the double dot character `RustLexer.ts:119-119`
+- **DOTDOT** — Represents the ASCII value of the double dot character `RustParser.ts:126-126`
+- **DOTDOTDOT** — Represents the triple dot character `RustLexer.ts:120-120`
+- **DOTDOTDOT** — Represents the ASCII value of the triple dot character `RustParser.ts:127-127`
+- **DOTDOTEQ** — Represents the dot dot dot dot character `RustLexer.ts:121-121`
+- **DOTDOTEQ** — Represents the ASCII value of the dot followed by an equals sign `RustParser.ts:128-128`
+- **enterAbi** — Enters the ABI context `RustParserListener.ts:525-525`
+- **enterArithmeticOrLogicalExpression** — Enters the ArithmeticOrLogicalExpression context `RustParserListener.ts:1280-1280`
+- **enterArrayElements** — Parses array elements `RustParserListener.ts:1477-1477`
+- **enterArrayExpression** — Enters the ArrayExpression context `RustParserListener.ts:1376-1376`
+- **enterArrayType** — Enters the array type context `RustParserListener.ts:2113-2113`
+- **enterAsClause** — Parses the start of an as clause `RustParserListener.ts:475-475`
+- **enterAssignmentExpression** — Parses the start of an assignment expression `RustParserListener.ts:1136-1136`
+- **enterAssociatedItem** — Parses the start of an associated item `RustParserListener.ts:935-935`
+- **enterAsyncBlockExpression** — Parses an async block expression `RustParserListener.ts:1457-1457`
+- **enterAttr** — Parses the start of an attribute `RustParserListener.ts:965-965`
+- **enterAttributedExpression** — Enters the AttributedExpression context `RustParserListener.ts:1328-1328`
+- **enterAttrInput** — Parses the start of an attribute input `RustParserListener.ts:975-975`
+- **enterAwaitExpression** — Enters an await expression context `RustParserListener.ts:1100-1100`
+- **enterBareFunctionReturnType** — Parses the bare function return type `RustParserListener.ts:2173-2173`
+- **enterBareFunctionType** — Enters the bare function type context `RustParserListener.ts:2153-2153`
+- **enterBlockExpression** — Parses a block expression `RustParserListener.ts:1437-1437`
+- **enterBorrowExpression** — Enters the BorrowExpression context `RustParserListener.ts:1340-1340`
+- **enterBreakExpression** — Parses the start of a break expression `RustParserListener.ts:1268-1268`
+- **enterCallExpression** — Parses the start of a call expression `RustParserListener.ts:1208-1208`
+- **enterCallParams** — Enters the parsing of call parameters `RustParserListener.ts:1637-1637`
+- **enterClosureExpression** — Enters the parsing of a closure expression `RustParserListener.ts:1647-1647`
+- **enterClosureExpression_** — Enters the ClosureExpression_ context `RustParserListener.ts:1364-1364`
+- **enterClosureParam** — Parses the start of a closure parameter `RustParserListener.ts:1667-1667`
+- **enterClosureParameters** — Enters the parsing of closure parameters `RustParserListener.ts:1657-1657`
+- **enterComparisonExpression** — Enters the ComparisonExpression context `RustParserListener.ts:1316-1316`
+- **enterComparisonOperator** — Enters the ComparisonOperator context `RustParserListener.ts:1387-1387`
+- **enterCompoundAssignmentExpression** — Enters the CompoundAssignmentExpression context `RustParserListener.ts:1352-1352`
+- **enterCompoundAssignOperator** — Enters the CompoundAssignOperator context `RustParserListener.ts:1397-1397`
+- **enterConstantItem** — Enters the constant item context `RustParserListener.ts:755-755`
+- **enterConstParam** — Parses the start of a const parameter `RustParserListener.ts:875-875`
+- **enterContinueExpression** — Parses the start of a continue expression `RustParserListener.ts:1124-1124`
+- **enterCrate** — Begins parsing a crate `RustParserListener.ts:245-245`
+- **enterCrateRef** — Parses the start of a crate reference `RustParserListener.ts:465-465`
+- **enterDelimTokenTree** — Begins parsing a delimited token tree `RustParserListener.ts:265-265`
+- **enterDereferenceExpression** — Parses the start of a dereference expression `RustParserListener.ts:1232-1232`
+- **enterEnumeration** — Parses the start of an enumeration definition `RustParserListener.ts:685-685`
+- **enterEnumerationVariantExpression** — Enters the parsing of an enumeration variant expression `RustParserListener.ts:1577-1577`
+- **enterEnumerationVariantExpression_** — Enters the EnumerationVariantExpression_ context `RustParserListener.ts:1304-1304`
+- **enterEnumExprField** — Enters the parsing of an enum expression field `RustParserListener.ts:1607-1607`
+- **enterEnumExprFieldless** — Enters the parsing of an enum expression fieldless `RustParserListener.ts:1627-1627`
+- **enterEnumExprFields** — Enters the parsing of an enum expression fields `RustParserListener.ts:1597-1597`
+- **enterEnumExprStruct** — Enters the parsing of an enum expression struct `RustParserListener.ts:1587-1587`
+- **enterEnumExprTuple** — Enters the parsing of an enum expression tuple `RustParserListener.ts:1617-1617`
+- **enterEnumItem** — Parses the start of an enum item `RustParserListener.ts:705-705`
+- **enterEnumItemDiscriminant** — Enters the enum item discriminant context `RustParserListener.ts:735-735`
+- **enterEnumItems** — Parses the start of enum items `RustParserListener.ts:695-695`
+- **enterEnumItemStruct** — Parses the start of an enum item struct `RustParserListener.ts:725-725`
+- **enterEnumItemTuple** — Parses the start of an enum item tuple `RustParserListener.ts:715-715`
+- **enterErrorPropagationExpression** — Enters an error propagation expression context `RustParserListener.ts:1112-1112`
+- **enterExpressionStatement** — Enters an expression statement context `RustParserListener.ts:1005-1005`
+- **enterExpressionWithBlock** — Enters the ExpressionWithBlock context `RustParserListener.ts:1407-1407`
+- **enterExpressionWithBlock_** — Parses the start of an expression with block `RustParserListener.ts:1244-1244`
+- **enterExternalItem** — Enters the external item context `RustParserListener.ts:825-825`
+- **enterExternBlock** — Enters the extern block context `RustParserListener.ts:815-815`
+- **enterExternCrate** — Parses the start of an extern crate `RustParserListener.ts:455-455`
+- **enterFieldExpression** — Enters the FieldExpression context `RustParserListener.ts:1292-1292`
+- **enterForLifetimes** — Parses the start of a for lifetimes `RustParserListener.ts:925-925`
+- **enterFunction_** — Enters the function context `RustParserListener.ts:505-505`
+- **enterFunctionParam** — Enters the function parameter context `RustParserListener.ts:575-575`
+- **enterFunctionParameters** — Enters the function parameters context `RustParserListener.ts:535-535`
+- **enterFunctionParametersMaybeNamedVariadic** — Parses the function parameters, possibly named and variadic `RustParserListener.ts:2183-2183`
+- **enterFunctionParamPattern** — Enters the function parameter pattern context `RustParserListener.ts:585-585`
+- **enterFunctionQualifiers** — Enters the function qualifiers context `RustParserListener.ts:515-515`
+- **enterFunctionReturnType** — Enters the function return type context `RustParserListener.ts:595-595`
+- **enterFunctionTypeQualifiers** — Enters the function type qualifiers context `RustParserListener.ts:2163-2163`
+- **enterGenericArg** — Enters the parsing of a generic argument `RustParserListener.ts:2383-2383`
+- **enterGenericArgs** — Enters the parsing of generic arguments `RustParserListener.ts:2373-2373`
+- **enterGenericArgsBinding** — Parses the start of a generic argument binding `RustParserListener.ts:2433-2433`
+- **enterGenericArgsBindings** — Parses the start of generic argument bindings `RustParserListener.ts:2423-2423`
+- **enterGenericArgsConst** — Enters the parsing of generic arguments with const `RustParserListener.ts:2393-2393`
+- **enterGenericArgsLifetimes** — Enters the parsing of generic arguments with lifetimes `RustParserListener.ts:2403-2403`
+- **enterGenericArgsTypes** — Enters the parsing of generic arguments with types `RustParserListener.ts:2413-2413`
+- **enterGenericParam** — Enters the generic parameter context `RustParserListener.ts:845-845`
+- **enterGenericParams** — Enters the generic parameters context `RustParserListener.ts:835-835`
+- **enterGroupedExpression** — Parses the start of a grouped expression `RustParserListener.ts:1256-1256`
+- **enterGroupedPattern** — Parses the start of a grouped pattern `RustParserListener.ts:2023-2023`
+- **enterHalfOpenRangePattern** — Enters the half open range pattern parsing `RustParserListener.ts:1890-1890`
+- **enterIdentifier** — Parses the start of an identifier `RustParserListener.ts:2523-2523`
+- **enterIdentifierPattern** — Enters the identifier pattern parsing `RustParserListener.ts:1847-1847`
+- **enterIfExpression** — Parses the start of an if expression `RustParserListener.ts:1737-1737`
+- **enterIfLetExpression** — Parses the start of an if let expression `RustParserListener.ts:1747-1747`
+- **enterImplementation** — Enters the implementation context `RustParserListener.ts:785-785`
+- **enterImplTraitType** — Parses the impl trait type `RustParserListener.ts:2243-2243`
+- **enterImplTraitTypeOneBound** — Parses the impl trait type with one bound `RustParserListener.ts:2253-2253`
+- **enterInclusiveRangePattern** — Enters the inclusive range pattern parsing `RustParserListener.ts:1878-1878`
+- **enterIndexExpression** — Enters an index expression context `RustParserListener.ts:1052-1052`
+- **enterInferredType** — Parses the inferred type `RustParserListener.ts:2263-2263`
+- **enterInfiniteLoopExpression** — Parses the start of an infinite loop expression `RustParserListener.ts:1687-1687`
+- **enterInherentImpl** — Enters the inherent implementation context `RustParserListener.ts:795-795`
+- **enterInnerAttribute** — Parses the start of an inner attribute `RustParserListener.ts:945-945`
+- **enterItem** — Parses the start of an item `RustParserListener.ts:415-415`
+- **enterIteratorLoopExpression** — Parses the start of an iterator loop expression `RustParserListener.ts:1717-1717`
+- **enterKeyword** — Parses the start of a keyword `RustParserListener.ts:2533-2533`
+- **enterLazyBooleanExpression** — Parses the start of a lazy boolean expression `RustParserListener.ts:1220-1220`
+- **enterLetStatement** — Enters a let statement context `RustParserListener.ts:995-995`
+- **enterLifetime** — Enters the parsing of a lifetime `RustParserListener.ts:2313-2313`
+- **enterLifetimeBounds** — Enters the parsing of lifetime bounds `RustParserListener.ts:2303-2303`
+- **enterLifetimeParam** — Parses the start of a lifetime parameter `RustParserListener.ts:855-855`
+- **enterLifetimeWhereClauseItem** — Parses the start of a lifetime where clause item `RustParserListener.ts:905-905`
+- **enterLiteralExpression** — Parses a literal expression `RustParserListener.ts:1417-1417`
+- **enterLiteralExpression_** — Parses the start of a literal expression `RustParserListener.ts:1160-1160`
+- **enterLiteralPattern** — Enters the literal pattern parsing `RustParserListener.ts:1837-1837`
+- **enterLoopExpression** — Parses the start of a loop expression `RustParserListener.ts:1677-1677`
+- **enterLoopLabel** — Parses the start of a loop label `RustParserListener.ts:1727-1727`
+- **enterMacroFragSpec** — Parses the start of a macro fragment specification `RustParserListener.ts:375-375`
+- **enterMacroIdentifierLikeToken** — Parses the start of a macro identifier-like token `RustParserListener.ts:2543-2543`
+- **enterMacroInvocation** — Begins parsing a macro invocation `RustParserListener.ts:255-255`
+- **enterMacroInvocationAsExpression** — Enters a macro invocation as expression context `RustParserListener.ts:1076-1076`
+- **enterMacroInvocationSemi** — Begins parsing a macro invocation followed by a semicolon `RustParserListener.ts:295-295`
+- **enterMacroItem** — Parses the start of a macro item `RustParserListener.ts:435-435`
+- **enterMacroLiteralToken** — Enters the macro literal token `RustParserListener.ts:2553-2553`
+- **enterMacroMatch** — Parses the start of a macro match `RustParserListener.ts:355-355`
+- **enterMacroMatcher** — Begins parsing a macro matcher `RustParserListener.ts:345-345`
+- **enterMacroMatchToken** — Parses the start of a macro match token `RustParserListener.ts:365-365`
+- **enterMacroPunctuationToken** — Enters the macro punctuation token `RustParserListener.ts:2563-2563`
+- **enterMacroRepOp** — Parses the start of a macro repetition operator `RustParserListener.ts:395-395`
+- **enterMacroRepSep** — Parses the start of a macro repetition separator `RustParserListener.ts:385-385`
+- **enterMacroRule** — Begins parsing a macro rule `RustParserListener.ts:335-335`
+- **enterMacroRules** — Begins parsing macro rules `RustParserListener.ts:325-325`
+- **enterMacroRulesDef** — Begins parsing macro rules definition `RustParserListener.ts:315-315`
+- **enterMacroRulesDefinition** — Begins parsing macro rules definition `RustParserListener.ts:305-305`
+- **enterMacroTranscriber** — Parses the start of a macro transcriber `RustParserListener.ts:405-405`
+- **enterMatchArm** — Parses the start of a match arm `RustParserListener.ts:1787-1787`
+- **enterMatchArmExpression** — Parses the start of a match arm expression `RustParserListener.ts:1777-1777`
+- **enterMatchArmGuard** — Enters the match arm guard parsing `RustParserListener.ts:1797-1797`
+- **enterMatchArms** — Parses the start of match arms `RustParserListener.ts:1767-1767`
+- **enterMatchExpression** — Parses the start of a match expression `RustParserListener.ts:1757-1757`
+- **enterMaybeNamedFunctionParameters** — Parses the maybe named function parameters `RustParserListener.ts:2193-2193`
+- **enterMaybeNamedFunctionParametersVariadic** — Parses the maybe named function parameters, variadic `RustParserListener.ts:2213-2213`
+- **enterMaybeNamedParam** — Parses the maybe named parameter `RustParserListener.ts:2203-2203`
+- **enterMethodCallExpression** — Parses the start of a method call expression `RustParserListener.ts:1148-1148`
+- **enterModule** — Parses the start of a module `RustParserListener.ts:445-445`
+- **enterNegationExpression** — Parses the start of a negation expression `RustParserListener.ts:1196-1196`
+- **enterNeverType** — Enters the never type context `RustParserListener.ts:2093-2093`
+- **enterObsoleteRangePattern** — Enters the obsolete range pattern parsing `RustParserListener.ts:1902-1902`
+- **enterOuterAttribute** — Parses the start of an outer attribute `RustParserListener.ts:955-955`
+- **enterParenthesizedType** — Enters the parenthesized type context `RustParserListener.ts:2083-2083`
+- **enterPathExpression** — Parses a path expression `RustParserListener.ts:1427-1427`
+- **enterPathExpression_** — Enters a path expression context `RustParserListener.ts:1028-1028`
+- **enterPathExprSegment** — Enters the parsing of a path expression segment `RustParserListener.ts:2353-2353`
+- **enterPathIdentSegment** — Enters the parsing of a path identifier segment `RustParserListener.ts:2363-2363`
+- **enterPathInExpression** — Enters the parsing of a path in an expression `RustParserListener.ts:2343-2343`
+- **enterPathPattern** — Enters the path pattern context `RustParserListener.ts:2053-2053`
+- **enterPattern** — Enters the pattern parsing `RustParserListener.ts:1807-1807`
+- **enterPatternNoTopAlt** — Enters the pattern without top alternative parsing `RustParserListener.ts:1817-1817`
+- **enterPatternWithoutRange** — Enters the pattern without range parsing `RustParserListener.ts:1827-1827`
+- **enterPredicateLoopExpression** — Parses the start of a predicate loop expression `RustParserListener.ts:1697-1697`
+- **enterPredicatePatternLoopExpression** — Parses the start of a predicate pattern loop expression `RustParserListener.ts:1707-1707`
+- **enterQualifiedPathInExpression** — Parses the start of a qualified path in an expression `RustParserListener.ts:2443-2443`
+- **enterQualifiedPathInType** — Parses the start of a qualified path in a type `RustParserListener.ts:2463-2463`
+- **enterQualifiedPathType** — Parses the start of a qualified path type `RustParserListener.ts:2453-2453`
+- **enterRangeExpression** — Enters a range expression context `RustParserListener.ts:1064-1064`
+- **enterRangePatternBound** — Enters the range pattern bound parsing `RustParserListener.ts:1913-1913`
+- **enterRawPointerType** — Enters the raw pointer type context `RustParserListener.ts:2143-2143`
+- **enterReferencePattern** — Parses the start of a reference pattern `RustParserListener.ts:1923-1923`
+- **enterReferenceType** — Enters the reference type context `RustParserListener.ts:2133-2133`
+- **enterRestPattern** — Enters the rest pattern parsing `RustParserListener.ts:1867-1867`
+- **enterReturnExpression** — Enters a return expression context `RustParserListener.ts:1088-1088`
+- **enterSelfParam** — Enters the self parameter context `RustParserListener.ts:545-545`
+- **enterShl** — Enters the shift left token `RustParserListener.ts:2573-2573`
+- **enterShorthandSelf** — Enters the shorthand self context `RustParserListener.ts:555-555`
+- **enterShr** — Enters the shift right token `RustParserListener.ts:2583-2583`
+- **enterSimplePath** — Enters the parsing of a simple path `RustParserListener.ts:2323-2323`
+- **enterSimplePathSegment** — Enters the parsing of a simple path segment `RustParserListener.ts:2333-2333`
+- **enterSlicePattern** — Parses the start of a slice pattern `RustParserListener.ts:2033-2033`
+- **enterSlicePatternItems** — Parses the items of a slice pattern `RustParserListener.ts:2043-2043`
+- **enterSliceType** — Enters the slice type context `RustParserListener.ts:2123-2123`
+- **enterStatement** — Enters a statement context `RustParserListener.ts:985-985`
+- **enterStatements** — Parses statements `RustParserListener.ts:1447-1447`
+- **enterStaticItem** — Enters the static item context `RustParserListener.ts:765-765`
+- **enterStruct_** — Parses the start of a struct definition `RustParserListener.ts:615-615`
+- **enterStructBase** — Enters the parsing of a struct base `RustParserListener.ts:1547-1547`
+- **enterStructExpression** — Parses a struct expression `RustParserListener.ts:1507-1507`
+- **enterStructExpression_** — Parses the start of a struct expression `RustParserListener.ts:1172-1172`
+- **enterStructExprField** — Parses struct expression field `RustParserListener.ts:1537-1537`
+- **enterStructExprFields** — Parses struct expression fields `RustParserListener.ts:1527-1527`
+- **enterStructExprStruct** — Parses struct expression struct `RustParserListener.ts:1517-1517`
+- **enterStructExprTuple** — Enters the parsing of a struct expression tuple `RustParserListener.ts:1557-1557`
+- **enterStructExprUnit** — Enters the parsing of a struct expression unit `RustParserListener.ts:1567-1567`
+- **enterStructField** — Parses the start of a struct field `RustParserListener.ts:655-655`
+- **enterStructFields** — Parses the start of struct fields `RustParserListener.ts:645-645`
+- **enterStructPattern** — Parses the start of a struct pattern `RustParserListener.ts:1933-1933`
+- **enterStructPatternElements** — Parses the elements of a struct pattern `RustParserListener.ts:1943-1943`
+- **enterStructPatternEtCetera** — Parses the "etcetera" part of a struct pattern `RustParserListener.ts:1973-1973`
+- **enterStructPatternField** — Enters the struct pattern field context `RustParserListener.ts:1963-1963`
+- **enterStructPatternFields** — Parses the fields of a struct pattern `RustParserListener.ts:1953-1953`
+- **enterStructStruct** — Parses the start of a struct struct definition `RustParserListener.ts:625-625`
+- **enterTokenTree** — Begins parsing a token tree `RustParserListener.ts:275-275`
+- **enterTokenTreeToken** — Begins parsing a token tree token `RustParserListener.ts:285-285`
+- **enterTrait_** — Enters the trait context `RustParserListener.ts:775-775`
+- **enterTraitBound** — Parses the trait bound `RustParserListener.ts:2293-2293`
+- **enterTraitImpl** — Enters the trait implementation context `RustParserListener.ts:805-805`
+- **enterTraitObjectType** — Parses the trait object type `RustParserListener.ts:2223-2223`
+- **enterTraitObjectTypeOneBound** — Parses the trait object type with one bound `RustParserListener.ts:2233-2233`
+- **enterTupleElements** — Parses tuple elements `RustParserListener.ts:1487-1487`
+- **enterTupleExpression** — Enters a tuple expression context `RustParserListener.ts:1040-1040`
+- **enterTupleField** — Parses the start of a tuple field `RustParserListener.ts:675-675`
+- **enterTupleFields** — Parses the start of tuple fields `RustParserListener.ts:665-665`
+- **enterTupleIndex** — Parses tuple index `RustParserListener.ts:1497-1497`
+- **enterTupleIndexingExpression** — Parses the start of a tuple indexing expression `RustParserListener.ts:1184-1184`
+- **enterTuplePattern** — Parses the start of a tuple pattern `RustParserListener.ts:2003-2003`
+- **enterTuplePatternItems** — Parses the items of a tuple pattern `RustParserListener.ts:2013-2013`
+- **enterTupleStruct** — Parses the start of a tuple struct definition `RustParserListener.ts:635-635`
+- **enterTupleStructItems** — Parses the items of a tuple struct pattern `RustParserListener.ts:1993-1993`
+- **enterTupleStructPattern** — Parses the start of a tuple struct pattern `RustParserListener.ts:1983-1983`
+- **enterTupleType** — Enters the tuple type context `RustParserListener.ts:2103-2103`
+- **enterType_** — Enters the type context `RustParserListener.ts:2063-2063`
+- **enterTypeAlias** — Parses the start of a type alias definition `RustParserListener.ts:605-605`
+- **enterTypeBoundWhereClauseItem** — Parses the start of a type bound where clause item `RustParserListener.ts:915-915`
+- **enterTypeCastExpression** — Enters a type cast expression context `RustParserListener.ts:1016-1016`
+- **enterTypedSelf** — Enters the typed self context `RustParserListener.ts:565-565`
+- **enterTypeNoBounds** — Enters the type without bounds context `RustParserListener.ts:2073-2073`
+- **enterTypeParam** — Parses the start of a type parameter `RustParserListener.ts:865-865`
+- **enterTypeParamBound** — Parses the type parameter bound `RustParserListener.ts:2283-2283`
+- **enterTypeParamBounds** — Parses the type parameter bounds `RustParserListener.ts:2273-2273`
+- **enterTypePath** — Parses the start of a type path `RustParserListener.ts:2473-2473`
+- **enterTypePathFn** — Parses the start of a type path function `RustParserListener.ts:2493-2493`
+- **enterTypePathInputs** — Parses the start of type path inputs `RustParserListener.ts:2503-2503`
+- **enterTypePathSegment** — Parses the start of a type path segment `RustParserListener.ts:2483-2483`
+- **enterUnion_** — Enters the union context `RustParserListener.ts:745-745`
+- **enterUnsafeBlockExpression** — Parses an unsafe block expression `RustParserListener.ts:1467-1467`
+- **enterUseDeclaration** — Enters the use declaration context `RustParserListener.ts:485-485`
+- **enterUseTree** — Enters the use tree context `RustParserListener.ts:495-495`
+- **enterVisibility** — Parses the start of visibility `RustParserListener.ts:2513-2513`
+- **enterVisItem** — Parses the start of a visibility item `RustParserListener.ts:425-425`
+- **enterWhereClause** — Parses the start of a where clause `RustParserListener.ts:885-885`
+- **enterWhereClauseItem** — Parses the start of a where clause item `RustParserListener.ts:895-895`
+- **enterWildcardPattern** — Enters the wildcard pattern parsing `RustParserListener.ts:1857-1857`
+- **EQ** — Represents the equality operator `RustLexer.ts:109-109`, `RustParser.ts:116-116`
+- **EQEQ** — Represents the equality operator `RustLexer.ts:110-110`
+- **EQEQ** — Represents the double equality operator `RustParser.ts:117-117`
+- **exitAbi** — Exits the ABI context `RustParserListener.ts:530-530`
+- **exitArithmeticOrLogicalExpression** — Exits the ArithmeticOrLogicalExpression context `RustParserListener.ts:1286-1286`
+- **exitArrayElements** — Exits array elements `RustParserListener.ts:1482-1482`
+- **exitArrayExpression** — Exits the ArrayExpression context `RustParserListener.ts:1382-1382`
+- **exitArrayType** — Exits the array type context `RustParserListener.ts:2118-2118`
+- **exitAsClause** — Exits the `as` clause context `RustParserListener.ts:480-480`
+- **exitAssignmentExpression** — Exits the assignment expression parsing `RustParserListener.ts:1142-1142`
+- **exitAssociatedItem** — Exits the associated item parsing `RustParserListener.ts:940-940`
+- **exitAsyncBlockExpression** — Exits an async block expression `RustParserListener.ts:1462-1462`
+- **exitAttr** — Exits the attribute parsing `RustParserListener.ts:970-970`
+- **exitAttributedExpression** — Exits the AtExpression context `RustParserListener.ts:1334-1334`
+- **exitAttrInput** — Exits the attribute input context `RustParserListener.ts:980-980`
+- **exitAwaitExpression** — Exits an await expression context `RustParserListener.ts:1106-1106`
+- **exitBareFunctionReturnType** — Exits the parsing of the bare function return type `RustParserListener.ts:2178-2178`
+- **exitBareFunctionType** — Exits the bare function type context `RustParserListener.ts:2158-2158`
+- **exitBlockExpression** — Exits a block expression `RustParserListener.ts:1442-1442`
+- **exitBorrowExpression** — Exits the BorrowExpression context `RustParserListener.ts:1346-1346`
+- **exitBreakExpression** — Exits the BreakExpression context `RustParserListener.ts:1274-1274`
+- **exitCallExpression** — Exits the call expression parsing `RustParserListener.ts:1214-1214`
+- **exitCallParams** — Exits the parsing of call parameters `RustParserListener.ts:1642-1642`
+- **exitClosureExpression** — Exits the parsing of a closure expression `RustParserListener.ts:1652-1652`
+- **exitClosureExpression_** — Exits the ClosureExpression_ context `RustParserListener.ts:1370-1370`
+- **exitClosureParam** — Exits the closure parameter parsing `RustParserListener.ts:1672-1672`
+- **exitClosureParameters** — Parses the closure parameters context `RustParserListener.ts:1662-1662`
+- **exitComparisonExpression** — Exits the ComparisonExpression context `RustParserListener.ts:1322-1322`
+- **exitComparisonOperator** — Exits the ComparisonOperator context `RustParserListener.ts:1392-1392`
+- **exitCompoundAssignmentExpression** — Exits the CompoundAssignmentExpression context `RustParserListener.ts:1358-1358`
+- **exitCompoundAssignOperator** — Exits the CompoundAssignOperator context `RustParserListener.ts:1402-1402`
+- **exitConstantItem** — Exits the constant item context `RustParserListener.ts:760-760`
+- **exitConstParam** — Exits the const parameter parsing `RustParserListener.ts:880-880`
+- **exitContinueExpression** — Exits the continue expression parsing `RustParserListener.ts:1130-1130`
+- **exitCrate** — Ends parsing a crate `RustParserListener.ts:250-250`
+- **exitCrateRef** — Parses the end of a crate reference `RustParserListener.ts:470-470`
+- **exitDelimTokenTree** — Ends parsing a delimited token tree `RustParserListener.ts:270-270`
+- **exitDereferenceExpression** — Exits the dereference expression parsing `RustParserListener.ts:1238-1238`
+- **exitEnumeration** — Exits the enumeration definition `RustParserListener.ts:690-690`
+- **exitEnumerationVariantExpression** — Exits the parsing of an enumeration variant expression `RustParserListener.ts:1582-1582`
+- **exitEnumerationVariantExpression_** — Exits the EnumerationVariantExpression_ context `RustParserListener.ts:1310-1310`
+- **exitEnumExprField** — Exits the parsing of an enum expression field `RustParserListener.ts:1612-1612`
+- **exitEnumExprFieldless** — Exits the parsing of an enum expression fieldless `RustParserListener.ts:1632-1632`
+- **exitEnumExprFields** — Exits the parsing of an enum expression fields `RustParserListener.ts:1602-1602`
+- **exitEnumExprStruct** — Exits the parsing of an enum expression struct `RustParserListener.ts:1592-1592`
+- **exitEnumExprTuple** — Exits the parsing of an enum expression tuple `RustParserListener.ts:1622-1622`
+- **exitEnumItem** — Exits the enum item `RustParserListener.ts:710-710`
+- **exitEnumItemDiscriminant** — Exits the enum item discriminant context `RustParserListener.ts:740-740`
+- **exitEnumItems** — Exits the enum items `RustParserListener.ts:700-700`
+- **exitEnumItemStruct** — Exits the enum item struct context `RustParserListener.ts:730-730`
+- **exitEnumItemTuple** — Exits the enum item tuple `RustParserListener.ts:720-720`
+- **exitErrorPropagationExpression** — Exits an error propagation expression context `RustParserListener.ts:1118-1118`
+- **exitExpressionStatement** — Exits an expression statement context `RustParserListener.ts:1010-1010`
+- **exitExpressionWithBlock** — Exits the ExpressionWithBlock context `RustParserListener.ts:1412-1412`
+- **exitExpressionWithBlock_** — Exits the expression with block parsing `RustParserListener.ts:1250-1250`
+- **exitExternalItem** — Exits the external item context `RustParserListener.ts:830-830`
+- **exitExternBlock** — Exits the extern block context `RustParserListener.ts:820-820`
+- **exitExternCrate** — Parses the end of an extern crate `RustParserListener.ts:460-460`
+- **exitFieldExpression** — Exits the FieldExpression context `RustParserListener.ts:1298-1298`
+- **exitForLifetimes** — Exits the for lifetimes parsing `RustParserListener.ts:930-930`
+- **exitFunction_** — Exits the function context `RustParserListener.ts:510-510`
+- **exitFunctionParam** — Exits the function parameter context `RustParserListener.ts:580-580`
+- **exitFunctionParameters** — Exits the function parameters context `RustParserListener.ts:540-540`
+- **exitFunctionParametersMaybeNamedVariadic** — Exits the parsing of the function parameters, possibly named and variadic `RustParserListener.ts:2188-2188`
+- **exitFunctionParamPattern** — Exits the function parameter pattern context `RustParserListener.ts:590-590`
+- **exitFunctionQualifiers** — Parses the function qualifiers context `RustParserListener.ts:520-520`
+- **exitFunctionReturnType** — Exits the function return type context `RustParserListener.ts:600-600`
+- **exitFunctionTypeQualifiers** — Parses the function type qualifiers context. `RustParser `RustParserListener.ts:2168-2168`
+- **exitGenericArg** — Exits the parsing of a generic argument `RustParserListener.ts:2388-2388`
+- **exitGenericArgs** — Exits the parsing of generic arguments `RustParserListener.ts:2378-2378`
+- **exitGenericArgsBinding** — Exits the generic argument binding `RustParserListener.ts:2438-2438`
+- **exitGenericArgsBindings** — Exits the generic argument bindings `RustParserListener.ts:2428-2428`
+- **exitGenericArgsConst** — Exits the parsing of generic arguments with const `RustParserListener.ts:2398-2398`
+- **exitGenericArgsLifetimes** — Exits the—or `RustParserListener.ts:2408-2408`
+- **exitGenericArgsTypes** — Exits the parsing of generic arguments with types `RustParserListener.ts:2418-2418`
+- **exitGenericParam** — Exits the generic parameter context `RustParserListener.ts:850-850`
+- **exitGenericParams** — Exits the generic parameters context `RustParserListener.ts:840-840`
+- **exitGroupedExpression** — Exits the grouped expression parsing `RustParserListener.ts:1262-1262`
+- **exitGroupedPattern** — Exits the grouped pattern parsing `RustParserListener.ts:2028-2028`
+- **exitHalfOpenRangePattern** — Parses the half open range pattern context `RustParserListener.ts:1896-1896`
+- **exitIdentifier** — Exits the identifier `RustParserListener.ts:2528-2528`
+- **exitIdentifierPattern** — Exits the identifier pattern parsing `RustParserListener.ts:1852-1852`
+- **exitIfExpression** — Exits the if expression parsing `RustParserListener.ts:1742-1742`
+- **exitIfLetExpression** — Exits the if let expression parsing `RustParserListener.ts:1752-1752`
+- **exitImplementation** — Exits the implementation context `RustParserListener.ts:790-790`
+- **exitImplTraitType** — Exits the parsing of the impl trait type `RustParserListener.ts:2248-2248`
+- **exitImplTraitTypeOneBound** — Exits the parsing of the impl trait type with one bound `RustParserListener.ts:2258-2258`
+- **exitInclusiveRangePattern** — Exits the inclusive range pattern parsing `RustParserListener.ts:1884-1884`
+- **exitIndexExpression** — Exits an index expression context `RustParserListener.ts:1058-1058`
+- **exitInferredType** — Exits the parsing of the inferred type `RustParserListener.ts:2268-2268`
+- **exitInfiniteLoopExpression** — Exits the infinite loop expression parsing `RustParserListener.ts:1692-1692`
+- **exitInherentImpl** — Exits the inherent implementation context `RustParserListener.ts:800-800`
+- **exitInnerAttribute** — Exits the inner attribute parsing `RustParserListener.ts:950-950`
+- **exitItem** — Parses the end of an item `RustParserListener.ts:420-420`
+- **exitIteratorLoopExpression** — Exits the iterator loop expression parsing `RustParserListener.ts:1722-1722`
+- **exitKeyword** — Exits the keyword `RustParserListener.ts:2538-2538`
+- **exitLazyBooleanExpression** — Exits the lazy boolean expression parsing `RustParserListener.ts:1226-1226`
+- **exitLetStatement** — Exits a let statement context `RustParserListener.ts:1000-1000`
+- **exitLifetime** — Exits the parsing of a lifetime `RustParserListener.ts:2318-2318`
+- **exitLifetimeBounds** — Exits the parsing of lifetime bounds `RustParserListener.ts:2308-2308`
+- **exitLifetimeParam** — Exits the lifetime parameter parsing `RustParserListener.ts:860-860`
+- **exitLifetimeWhereClauseItem** — Parses the lifetime where clause item context `RustParserListener.ts:910-910`
+- **exitLiteralExpression** — Exits a literal expression `RustParserListener.ts:1422-1422`
+- **exitLiteralExpression_** — Exits the literal expression parsing `RustParserListener.ts:1166-1166`
+- **exitLiteralPattern** — Exits the literal pattern parsing `RustParserListener.ts:1842-1842`
+- **exitLoopExpression** — Exits the loop expression parsing `RustParserListener.ts:1682-1682`
+- **exitLoopLabel** — Exits the loop label parsing `RustParserListener.ts:1732-1732`
+- **exitMacroFragSpec** — Parses the end of a macro fragment specification `RustParserListener.ts:380-380`
+- **exitMacroIdentifierLikeToken** — Exits the macro identifier like token `RustParserListener.ts:2548-2548`
+- **exitMacroInvocation** — Ends parsing a macro invocation `RustParserListener.ts:260-260`
+- **exitMacroInvocationAsExpression** — Exits a macro invocation as expression context `RustParserListener.ts:1082-1082`
+- **exitMacroInvocationSemi** — Ends parsing a macro invocation followed by a semicolon `RustParserListener.ts:300-300`
+- **exitMacroItem** — Parses the end of a macro item `RustParserListener.ts:440-440`
+- **exitMacroLiteralToken** — Exits the macro literal token `RustParserListener.ts:2558-2558`
+- **exitMacroMatch** — Parses the end of a macro match `RustParserListener.ts:360-360`
+- **exitMacroMatcher** — Ends parsing a macro matcher `RustParserListener.ts:350-350`
+- **exitMacroMatchToken** — Parses the end of a macro match token `RustParserListener.ts:370-370`
+- **exitMacroPunctuationToken** — Exits the macro punctuation token `RustParserListener.ts:2568-2568`
+- **exitMacroRepOp** — Parses the end of a macro repetition operator `RustParserListener.ts:400-400`
+- **exitMacroRepSep** — Parses the end of a macro repetition separator `RustParserListener.ts:390-390`
+- **exitMacroRule** — Ends parsing a macro rule `RustParserListener.ts:340-340`
+- **exitMacroRules** — Ends parsing macro rules `RustParserListener.ts:330-330`
+- **exitMacroRulesDef** — Ends parsing macro rules definition `RustParserListener.ts:320-320`
+- **exitMacroRulesDefinition** — Ends parsing macro rules definition `RustParserListener.ts:310-310`
+- **exitMacroTranscriber** — Parses the end of a macro transcriber `RustParserListener.ts:410-410`
+- **exitMatchArm** — Exits the match arm parsing `RustParserListener.ts:1792-1792`
+- **exitMatchArmExpression** — Exits the match arm expression parsing `RustParserListener.ts:1782-1782`
+- **exitMatchArmGuard** — Exits the match arm guard parsing `RustParserListener.ts:1802-1802`
+- **exitMatchArms** — Exits the match arms parsing `RustParserListener.ts:1772-1772`
+- **exitMatchExpression** — Exits the match expression parsing `RustParserListener.ts:1762-1762`
+- **exitMaybeNamedFunctionParameters** — Exits the parsing of the maybe named function parameters `RustParserListener.ts:2198-2198`
+- **exitMaybeNamedFunctionParametersVariadic** — Exits the parsing of the maybe named function parameters, variadic `RustParserListener.ts:2218-2218`
+- **exitMaybeNamedParam** — Exits the parsing of the maybe named parameter `RustParserListener.ts:2208-2208`
+- **exitMethodCallExpression** — Exits the method call expression parsing `RustParserListener.ts:1154-1154`
+- **exitModule** — Parses the end of a module `RustParserListener.ts:450-450`
+- **exitNegationExpression** — Exits the negation expression parsing `RustParserListener.ts:1202-1202`
+- **exitNeverType** — Exits the never type context `RustParserListener.ts:2098-2098`
+- **exitObsoleteRangePattern** — Exits the obsolete range pattern parsing `RustParserListener.ts:1908-1908`
+- **exitOuterAttribute** — Exits the outer attribute parsing `RustParserListener.ts:960-960`
+- **exitParenthesizedType** — Exits the parenthesized type context `RustParserListener.ts:2088-2088`
+- **exitPathExpression** — Exits a path expression `RustParserListener.ts:1432-1432`
+- **exitPathExpression_** — Exits a path expression context `RustParserListener.ts:1034-1034`
+- **exitPathExprSegment** — Exits the parsing of a path expression segment `RustParserListener.ts:2358-2358`
+- **exitPathIdentSegment** — Exits the parsing of a path identifier segment `RustParserListener.ts:2368-2368`
+- **exitPathInExpression** — Exits the parsing of a path in an expression `RustParserListener.ts:2348-2348`
+- **exitPathPattern** — Exits the path pattern context `RustParserListener.ts:2058-2058`
+- **exitPattern** — Exits the pattern parsing `RustParserListener.ts:1812-1812`
+- **exitPatternNoTopAlt** — Exits the pattern without top alternative parsing `RustParserListener.ts:1822-1822`
+- **exitPatternWithoutRange** — Exits the pattern without range parsing `RustParserListener.ts:1832-1832`
+- **exitPredicateLoopExpression** — Exits the predicate loop expression parsing `RustParserListener.ts:1702-1702`
+- **exitPredicatePatternLoopExpression** — Exits the predicate pattern loop expression parsing `RustParserListener.ts:1712-1712`
+- **exitQualifiedPathInExpression** — Exits the qualified path in an expression `RustParserListener.ts:2448-2448`
+- **exitQualifiedPathInType** — Exits the qualified path in a type `RustParserListener.ts:2468-2468`
+- **exitQualifiedPathType** — Exits the qualified path type `RustParserListener.ts:2458-2458`
+- **exitRangeExpression** — Exits a range expression context `RustParserListener.ts:1070-1070`
+- **exitRangePatternBound** — Exits the range pattern bound parsing `RustParserListener.ts:1918-1918`
+- **exitRawPointerType** — Exits the raw pointer type context `RustParserListener.ts:2148-2148`
+- **exitReferencePattern** — Exits the reference pattern parsing `RustParserListener.ts:1928-1928`
+- **exitReferenceType** — Exits the reference type context `RustParserListener.ts:2138-2138`
+- **exitRestPattern** — Exits the rest pattern parsing `RustParserListener.ts:1872-1872`
+- **exitReturnExpression** — Exits a return expression context `RustParserListener.ts:1094-1094`
+- **exitSelfParam** — Exits the self parameter context `RustParserListener.ts:550-550`
+- **exitShl** — Exits the shift left token `RustParserListener.ts:2578-2578`
+- **exitShorthandSelf** — Exits the shorthand self context `RustParserListener.ts:560-560`
+- **exitShr** — Parses the ShrContext and returns a void `RustParserListener.ts:2588-2588`
+- **exitSimplePath** — Exits the parsing of a simple path `RustParserListener.ts:2328-2328`
+- **exitSimplePathSegment** — Exits the parsing of a simple path segment `RustParserListener.ts:2338-2338`
+- **exitSlicePattern** — Exits the slice pattern parsing `RustParserListener.ts:2038-2038`
+- **exitSlicePatternItems** — Exits the slice pattern items context `RustParserListener.ts:2048-2048`
+- **exitSliceType** — Exits the slice type context `RustParserListener.ts:2128-2128`
+- **exitStatement** — Exits a statement context `RustParserListener.ts:990-990`
+- **exitStatements** — Exits statements `RustParserListener.ts:1452-1452`
+- **exitStaticItem** — Exits the static item context `RustParserListener.ts:770-770`
+- **exitStruct_** — Exits the struct definition `RustParserListener.ts:620-620`
+- **exitStructBase** — Exits the parsing of a struct base `RustParserListener.ts:1552-1552`
+- **exitStructExpression** — Exits a struct expression `RustParserListener.ts:1512-1512`
+- **exitStructExpression_** — Exits the struct expression parsing `RustParserListener.ts:1178-1178`
+- **exitStructExprField** — Exits the parsing of a struct expression field `RustParserListener.ts:1542-1542`
+- **exitStructExprFields** — Exits struct expression fields `RustParserListener.ts:1532-1532`
+- **exitStructExprStruct** — Exits struct expression struct `RustParserListener.ts:1522-1522`
+- **exitStructExprTuple** — Exits the parsing of a struct expression tuple `RustParserListener.ts:1562-1562`
+- **exitStructExprUnit** — Exits the parsing of a struct expression unit `RustParserListener.ts:1572-1572`
+- **exitStructField** — Exits the struct field `RustParserListener.ts:660-660`
+- **exitStructFields** — Exits the struct fields `RustParserListener.ts:650-650`
+- **exitStructPattern** — Exits the struct pattern parsing `RustParserListener.ts:1938-1938`
+- **exitStructPatternElements** — Exits the elements of a struct pattern parsing `RustParserListener.ts:1948-1948`
+- **exitStructPatternEtCetera** — Exits the "etcetera" part of a struct pattern parsing `RustParserListener.ts:1978-1978`
+- **exitStructPatternField** — Parses the struct pattern field context `RustParserListener.ts:1968-1968`
+- **exitStructPatternFields** — Parses the struct pattern fields context `RustParserListener.ts:1958-1958`
+- **exitStructStruct** — Exits the struct struct definition `RustParserListener.ts:630-630`
+- **exitTokenTree** — Ends parsing a token tree `RustParserListener.ts:280-280`
+- **exitTokenTreeToken** — Ends parsing a token tree token `RustParserListener.ts:290-290`
+- **exitTrait_** — Exits the trait context `RustParserListener.ts:780-780`
+- **exitTraitBound** — Exits the parsing of a trait bound `RustParserListener.ts:2298-2298`
+- **exitTraitImpl** — Exits the trait implementation context `RustParserListener.ts:810-810`
+- **exitTraitObjectType** — Exits the parsing of the trait object type `RustParserListener.ts:2228-2228`
+- **exitTraitObjectTypeOneBound** — Exits the parsing of the trait object type with one bound `RustParserListener.ts:2238-2238`
+- **exitTupleElements** — Exits tuple elements `RustParserListener.ts:1492-1492`
+- **exitTupleExpression** — Exits a tuple expression context `RustParserListener.ts:1046-1046`
+- **exitTupleField** — Exits the tuple field `RustParserListener.ts:680-680`
+- **exitTupleFields** — Exits the tuple fields `RustParserListener.ts:670-670`
+- **exitTupleIndex** — Exits tuple index `RustParserListener.ts:1502-1502`
+- **exitTupleIndexingExpression** — Parses the tuple indexing expression context `RustParserListener.ts:1190-1190`
+- **exitTuplePattern** — Exits the tuple pattern parsing `RustParserListener.ts:2008-2008`
+- **exitTuplePatternItems** — Exits the items of a tuple pattern parsing `RustParserListener.ts:2018-2018`
+- **exitTupleStruct** — Exits the tuple struct definition `RustParserListener.ts:640-640`
+- **exitTupleStructItems** — Exits the items of a tuple struct pattern parsing `RustParserListener.ts:1998-1998`
+- **exitTupleStructPattern** — Exits the tuple struct pattern parsing `RustParserListener.ts:1988-1988`
+- **exitTupleType** — Exits the tuple type context `RustParserListener.ts:2108-2108`
+- **exitType_** — Exits the type context `RustParserListener.ts:2068-2068`
+- **exitTypeAlias** — Exits the type alias definition `RustParserListener.ts:610-610`
+- **exitTypeBoundWhereClauseItem** — Exits the type bound where clause item parsing `RustParserListener.ts:920-920`
+- **exitTypeCastExpression** — Exits a type cast expression context `RustParserListener.ts:1022-1022`
+- **exitTypedSelf** — Exits the typed self context `RustParserListener.ts:570-570`
+- **exitTypeNoBounds** — Exits the type without bounds context `RustParserListener.ts:2078-2078`
+- **exitTypeParam** — Exits the type parameter parsing `RustParserListener.ts:870-870`
+- **exitTypeParamBound** — Exits the parsing of the type parameter bound `RustParserListener.ts:2288-2288`
+- **exitTypeParamBounds** — Exits the parsing of the type parameter bounds `RustParserListener.ts:2278-2278`
+- **exitTypePath** — Exits the type path `RustParserListener.ts:2478-2478`
+- **exitTypePathFn** — Exits the type path function `RustParserListener.ts:2498-2498`
+- **exitTypePathInputs** — Exits the type path inputs `RustParserListener.ts:2508-2508`
+- **exitTypePathSegment** — Exits the type path segment `RustParserListener.ts:2488-2488`
+- **exitUnion_** — Exits the union context `RustParserListener.ts:750-750`
+- **exitUnsafeBlockExpression** — Exits an unsafe block expression `RustParserListener.ts:1472-1472`
+- **exitUseDeclaration** — Exits the use declaration context `RustParserListener.ts:490-490`
+- **exitUseTree** — Exits the use tree context `RustParserListener.ts:500-500`
+- **exitVisibility** — Exits the visibility `RustParserListener.ts:2518-2518`
+- **exitVisItem** — Parses the end of a visibility item `RustParserListener.ts:430-430`
+- **exitWhereClause** — Exits the where clause parsing `RustParserListener.ts:890-890`
+- **exitWhereClauseItem** — Exits the where clause item parsing `RustParserListener.ts:900-900`
+- **exitWildcardPattern** — Exits the wildcard pattern parsing `RustParserListener.ts:1862-1862`
+- **FATARROW** — Represents the fat arrow character `RustLexer.ts:127-127`
+- **FATARROW** — Represents the ASCII value of the fat arrow character `RustParser.ts:134-134`
+- **FLOAT_LITERAL** — Parses a float literal `RustLexer.ts:86-86`
+- **FLOAT_LITERAL** — Represents a float literal in Rust `RustParser.ts:93-93`
+- **GE** — Represents the greater than or equal to operator `RustLexer.ts:114-114`, `RustParser.ts:121-121`
+- **GT** — Represents the greater than operator `RustLexer.ts:112-112`, `RustParser.ts:119-119`
+- **HEX_LITERAL** — Parses a hexadecimal literal `RustLexer.ts:83-83`
+- **HEX_LITERAL** — Represents a hexadecimal literal `RustParser.ts:90-90`
+- **INNER_BLOCK_DOC** — Represents an inner block documentation comment `RustLexer.ts:68-68`
+- **INNER_BLOCK_DOC** — Represents an inner block documentation comment in Rust code `RustParser.ts:75-75`
+- **INNER_LINE_DOC** — Represents an inner line documentation comment `RustLexer.ts:67-67`
+- **INNER_LINE_DOC** — Represents an inner line documentation comment in Rust code `RustParser.ts:74-74`
+- **INTEGER_LITERAL** — Parses an integer literal `RustLexer.ts:81-81`
+- **INTEGER_LITERAL** — Represents an integer literal in Rust `RustParser.ts:88-88`
+- **KW_ABSTRACT** — Represents the keyword `abstract `RustLexer.ts:45-45`
+- **KW_ABSTRACT** — Represents the keyword 'abstract' with a value of 39 `RustParser.ts:52-52`
+- **KW_AS** — Keyword for type casting `RustLexer.ts:7-7`
+- **KW_AS** — Represents the keyword 'as' with a value of 1 `RustParser.ts:14-14`
+- **KW_ASYNC** — Represents the keyword `async `RustLexer.ts:42-42`
+- **KW_ASYNC** — Represents the keyword 'async' with a value of 36 `RustParser.ts:49-49`
+- **KW_AWAIT** — Represents the keyword `await `RustLexer.ts:43-43`
+- **KW_AWAIT** — Represents the keyword 'await' with a value of 37 `RustParser.ts:50-50`
+- **KW_BECOME** — Represents the keyword `become `RustLexer.ts:46-46`
+- **KW_BECOME** — Represents the keyword 'become' with a value of 40 `RustParser.ts:53-53`
+- **KW_BOX** — Represents the keyword `box `RustLexer.ts:47-47`
+- **KW_BOX** — Represents the keyword 'box' with a value of 41 `RustParser.ts:54-54`
+- **KW_BREAK** — Keyword to break out of a loop `RustLexer.ts:8-8`
+- **KW_BREAK** — Represents the keyword 'break' with a value of 2 `RustParser.ts:15-15`
+- **KW_CONST** — Keyword for constant declarations `RustLexer.ts:9-9`
+- **KW_CONST** — Represents the keyword 'const' with a value of 3 `RustParser.ts:16-16`
+- **KW_CONTINUE** — Keyword to skip the current iteration of a loop `RustLexer.ts:10-10`
+- **KW_CONTINUE** — Represents the keyword 'continue' with a value of 4 `RustParser.ts:17-17`
+- **KW_CRATE** — Keyword for crate declarations `RustLexer.ts:11-11`
+- **KW_CRATE** — Represents the keyword 'crate' with a value of 5 `RustParser.ts:18-18`
+- **KW_DO** — Represents the keyword `do `RustLexer.ts:48-48`
+- **KW_DO** — Represents the keyword 'do' with a value of 42 `RustParser.ts:55-55`
+- **KW_DOLLARCRATE** — Represents the keyword "$crate" `RustLexer.ts:62-62`
+- **KW_DOLLARCRATE** — Represents the keyword "$crate" with a value of 56 `RustParser.ts:69-69`
+- **KW_DYN** — Represents the keyword `dyn `RustLexer.ts:44-44`
+- **KW_DYN** — Represents the keyword 'dyn' with a value of 38 `RustParser.ts:51-51`
+- **KW_ELSE** — Keyword for else clauses in if statements `RustLexer.ts:12-12`
+- **KW_ELSE** — Represents the keyword 'else' with a value of 6 `RustParser.ts:19-19`
+- **KW_ENUM** — Keyword for enum declarations `RustLexer.ts:13-13`
+- **KW_ENUM** — Represents the keyword 'enum' with a value of 7 `RustParser.ts:20-20`
+- **KW_EXTERN** — Keyword for external function declarations `RustLexer.ts:14-14`
+- **KW_EXTERN** — Represents the keyword 'extern' with a value of 8 `RustParser.ts:21-21`
+- **KW_FALSE** — Keyword for the boolean value false `RustLexer.ts:15-15`
+- **KW_FALSE** — Represents the keyword 'false' with a value of 9 `RustParser.ts:22-22`
+- **KW_FINAL** — Represents the keyword `final `RustLexer.ts:49-49`
+- **KW_FINAL** — Represents the keyword 'final' with a value of 43 `RustParser.ts:56-56`
+- **KW_FN** — Keyword for function declarations `RustLexer.ts:16-16`
+- **KW_FN** — Represents the keyword 'fn' with a value of 10 `RustParser.ts:23-23`
+- **KW_FOR** — Keyword for for loops `RustLexer.ts:17-17`
+- **KW_FOR** — Represents the keyword 'for' with a value of 11 `RustParser.ts:24-24`
+- **KW_IF** — Keyword for if statements `RustLexer.ts:18-18`
+- **KW_IF** — Represents the keyword 'if' with a value of 12 `RustParser.ts:25-25`
+- **KW_IMPL** — Keyword for impl blocks `RustLexer.ts:19-19`
+- **KW_IMPL** — Represents the keyword 'impl' with a value of 13 `RustParser.ts:26-26`
+- **KW_IN** — Keyword for in expressions `RustLexer.ts:20-20`
+- **KW_IN** — Represents the keyword 'in' with a value of 14 `RustParser.ts:27-27`
+- **KW_LET** — Keyword for let bindings `RustLexer.ts:21-21`
+- **KW_LET** — Represents the keyword 'let' with a value of 15 `RustParser.ts:28-28`
+- **KW_LOOP** — Keyword for loops `RustLexer.ts:22-22`
+- **KW_LOOP** — Represents the keyword 'loop' with a value of 16 `RustParser.ts:29-29`
+- **KW_MACRO** — Represents the keyword `macro `RustLexer.ts:50-50`
+- **KW_MACRO** — Represents the keyword 'macro' with a value of 44 `RustParser.ts:57-57`
+- **KW_MACRORULES** — Represents the keyword "macro_rules" `RustLexer.ts:60-60`
+- **KW_MACRORULES** — Represents the keyword "macro_rules" with a value of 54 `RustParser.ts:67-67`
+- **KW_MATCH** — Keyword for match expressions `RustLexer.ts:23-23`
+- **KW_MATCH** — Represents the keyword 'match' with a value of 17 `RustParser.ts:30-30`
+- **KW_MOD** — Keyword for module declarations `RustLexer.ts:24-24`
+- **KW_MOD** — Represents the keyword 'mod' with a value of 18 `RustParser.ts:31-31`
+- **KW_MOVE** — Keyword for move expressions `RustLexer.ts:25-25`
+- **KW_MOVE** — Represents the keyword 'move' with a value of 19 `RustParser.ts:32-32`
+- **KW_MUT** — Keyword for mutable variables `RustLexer.ts:26-26`
+- **KW_MUT** — Represents the keyword 'mut' with a value of 20 `RustParser.ts:33-33`
+- **KW_OVERRIDE** — Represents the keyword `override `RustLexer.ts:51-51`
+- **KW_OVERRIDE** — Represents the keyword 'override' with a value of �5 `RustParser.ts:58-58`
+- **KW_PRIV** — Represents the keyword `priv `RustLexer.ts:52-52`
+- **KW_PRIV** — Represents the keyword 'priv' with a value of 46 `RustParser.ts:59-59`
+- **KW_PUB** — Keyword for public declarations `RustLexer.ts:27-27`
+- **KW_PUB** — Represents the keyword 'pub' with a value of 21 `RustParser.ts:34-34`
+- **KW_REF** — Keyword for references `RustLexer.ts:28-28`
+- **KW_REF** — Represents the keyword 'ref' with a value of 22 `RustParser.ts:35-35`
+- **KW_RETURN** — Keyword for return statements `RustLexer.ts:29-29`
+- **KW_RETURN** — Represents the keyword 'return' with a value of 23 `RustParser.ts:36-36`
+- **KW_SELFTYPE** — Represents the keyword `self.type `RustLexer.ts:31-31`
+- **KW_SELFTYPE** — Represents the keyword 'selftype' with a value of 25 `RustParser.ts:38-38`
+- **KW_SELFVALUE** — Represents the keyword `self.value `RustLexer.ts:30-30`
+- **KW_SELFVALUE** — Represents the keyword 'selfvalue' with a value of 24 `RustParser.ts:37-37`
+- **KW_STATIC** — Represents the keyword `static `RustLexer.ts:32-32`
+- **KW_STATIC** — Represents the keyword 'static' with a value of 26 `RustParser.ts:39-39`
+- **KW_STATICLIFETIME** — Represents the keyword "staticlifetime" `RustLexer.ts:59-59`
+- **KW_STATICLIFETIME** — Represents the keyword "staticlifetime" with a value of 53 `RustParser.ts:66-66`
+- **KW_STRUCT** — Represents the keyword `struct `RustLexer.ts:33-33`
+- **KW_STRUCT** — Represents the keyword 'struct' with a value of 27 `RustParser.ts:40-40`
+- **KW_SUPER** — Represents the keyword `super `RustLexer.ts:34-34`
+- **KW_SUPER** — Represents the keyword 'super' with a value of 28 `RustParser.ts:41-41`
+- **KW_TRAIT** — Represents the keyword `trait `RustLexer.ts:35-35`
+- **KW_TRAIT** — Represents the keyword 'trait' with a value of 29 `RustParser.ts:42-42`
+- **KW_TRUE** — Represents the keyword `true `RustLexer.ts:36-36`
+- **KW_TRUE** — Represents the keyword 'true' with a value of 30 `RustParser.ts:43-43`
+- **KW_TRY** — Represents the keyword "try" `RustLexer.ts:57-57`
+- **KW_TRY** — Represents the keyword "try" with a value of 51 `RustParser.ts:64-64`
+- **KW_TYPE** — Represents the keyword `type `RustLexer.ts:37-37`
+- **KW_TYPE** — Represents the keyword 'type' with a value of 31 `RustParser.ts:44-44`
+- **KW_TYPEOF** — Represents the keyword `typeof `RustLexer.ts:53-53`
+- **KW_TYPEOF** — Represents the keyword 'typeof' with a value of 47 `RustParser.ts:60-60`
+- **KW_UNDERLINELIFETIME** — Represents the keyword "underlinelifetime" `RustLexer.ts:61-61`
+- **KW_UNDERLINELIFETIME** — Represents the keyword "underlinelifetime" with a value of 55 `RustParser.ts:68-68`
+- **KW_UNION** — Represents the keyword "union" `RustLexer.ts:58-58`
+- **KW_UNION** — Represents the keyword "union" with a value of 52 `RustParser.ts:65-65`
+- **KW_UNSAFE** — Represents the keyword `unsafe `RustLexer.ts:38-38`
+- **KW_UNSAFE** — Represents the keyword 'unsafe' with a value of 32 `RustParser.ts:45-45`
+- **KW_UNSIZED** — Represents the keyword `unsized `RustLexer.ts:54-54`
+- **KW_UNSIZED** — Represents the keyword 'unsized' with a value of 48 `RustParser.ts:61-61`
+- **KW_USE** — Represents the keyword `use `RustLexer.ts:39-39`
+- **KW_USE** — Represents the keyword 'use' with a value of 33 `RustParser.ts:46-46`
+- **KW_VIRTUAL** — Represents the keyword "virtual" `RustLexer.ts:55-55`
+- **KW_VIRTUAL** — Represents the keyword "virtual" with a value of 49 `RustParser.ts:62-62`
+- **KW_WHERE** — Represents the keyword `where `RustLexer.ts:40-40`
+- **KW_WHERE** — Represents the keyword 'where' with a value of 34 `RustParser.ts:47-47`
+- **KW_WHILE** — Represents the keyword `while `RustLexer.ts:41-41`
+- **KW_WHILE** — Represents the keyword 'while' with a value of 35 `RustParser.ts:48-48`
+- **KW_YIELD** — Represents the keyword "yield" `RustLexer.ts:56-56`
+- **KW_YIELD** — Represents the keyword "yield" with a value of 50 `RustParser.ts:63-63`
+- **LCURLYBRACE** — Represents a left curly brace in the lexer `RustLexer.ts:131-131`
+- **LCURLYBRACE** — Represents the left curly brace symbol with a value of 125 `RustParser.ts:138-138`
+- **LE** — Represents the less than or equal to operator `RustLexer.ts:115-115`, `RustParser.ts:122-122`
+- **LIFETIME_OR_LABEL** — Represents a lifetime or label `RustLexer.ts:87-87`
+- **LIFETIME_OR_LABEL** — Represents a lifetime or label in Rust `RustParser.ts:94-94`
+- **LINE_COMMENT** — Represents a line comment `RustLexer.ts:65-65`
+- **LINE_COMMENT** — Represents a line comment in Rust code `RustParser.ts:72-72`
+- **literalNames** — Contains the names of various literal tokens in Rust `RustLexer.ts:140-272`
+- **literalNames** — Contains a list `RustParser.ts:341-473`
+- **LPAREN** — Represents a left parenthesis in the lexer `RustLexer.ts:135-135`
+- **LPAREN** — Represents the left parenthesis symbol with a value of 129 `RustParser.ts:142-142`
+- **LSQUAREBRACKET** — Represents a left square bracket in the lexer `RustLexer.ts:133-133`
+- **LSQUAREBRACKET** — Represents the left square bracket symbol with a value of 127 `RustParser.ts:140-140`
+- **LT** — Represents the less than operator `RustLexer.ts:113-113`, `RustParser.ts:120-120`
+- **MINUS** — Parses a minus operator `RustLexer.ts:89-89`
+- **MINUS** — Represents the minus operator in Rust `RustParser.ts:96-96`
+- **MINUSEQ** — Parses a minus-equals operator `RustLexer.ts:100-100`
+- **MINUSEQ** — Represents the minus-equal operator `RustParser.ts:107-107`
+- **modeNames** — Defines the names of different modes in the lexer `RustLexer.ts:408-408`
+- **NE** — Represents the inequality operator `RustLexer.ts:111-111`, `RustParser.ts:118-118`
+- **NEWLINE** — Represents a newline `RustLexer.ts:74-74`
+- **NEWLINE** — Represents newline characters `RustParser.ts:81-81`
+- **NON_KEYWORD_IDENTIFIER** — Represents a non-keyword identifier `RustLexer.ts:63-63`
+- **NON_KEYWORD_IDENTIFIER** — Represents a non-keyword identifier with a value of 57 `RustParser.ts:70-70`
+- **NOT** — Parses a not operator `RustLexer.ts:94-94`
+- **NOT** — Represents the not operator `RustParser.ts:101-101`
+- **OCT_LITERAL** — Parses an octal literal `RustLexer.ts:84-84`
+- **OCT_LITERAL** — Represents an octal literal `RustParser.ts:91-91`
+- **OR** — Parses an or operator `RustLexer.ts:96-96`
+- **OR** — Represents the or operator `RustParser.ts:103-103`
+- **OREQ** — Represents the logical OR equality operator `RustLexer.ts:106-106`, `RustParser.ts:113-113`
+- **OROR** — Parses an or-or operator `RustLexer.ts:98-98`
+- **OROR** — Represents the or-or operator `RustParser.ts:105-105`
+- **OUTER_BLOCK_DOC** — Represents an outer block documentation comment `RustLexer.ts:70-70`
+- **OUTER_BLOCK_DOC** — Represents an outer block documentation comment in Rust code `RustParser.ts:77-77`
+- **OUTER_LINE_DOC** — Represents an outer line documentation comment `RustLexer.ts:69-69`
+- **OUTER_LINE_DOC** — Represents an outer line documentation comment in Rust code `RustParser.ts:76-76`
+- **PATHSEP** — Represents the path separator character `RustLexer.ts:125-125`
+- **PATHSEP** — Represents the ASCII value of the path separator character `RustParser.ts:132-132`
+- **PERCENT** — Parses a percent operator `RustLexer.ts:92-92`
+- **PERCENT** — Represents the percent operator in Rust `RustParser.ts:99-99`
+- **PERCENTEQ** — Parses a percent-equals operator `RustLexer.ts:103-103`
+- **PERCENTEQ** — Represents the percent-equal operator `RustParser.ts:110-110`
+- **PLUS** — Parses a plus operator `RustLexer.ts:88-88`
+- **PLUS** — Represents the plus operator in Rust `RustParser.ts:95-95`
+- **PLUSEQ** — Parses a plus-equals operator `RustLexer.ts:99-99`
+- **PLUSEQ** — Represents the plus-equal operator `RustParser.ts:106-106`
+- **POUND** — Represents the pound character `RustLexer.ts:128-128`
+- **POUND** — Represents the ASCII value of the pound character `RustParser.ts:135-135`
+- **QUESTION** — Represents a question mark in the lexer `RustLexer.ts:130-130`
+- **QUESTION** — Represents the question mark symbol with a value of 124 `RustParser.ts:137-137`
+- **RARROW** — Represents the right arrow character `RustLexer.ts:126-126`
+- **RARROW** — Represents the ASCII value of the right arrow character `RustParser.ts:133-133`
+- **RAW_BYTE_STRING_LITERAL** — Represents a raw byte string literal `RustLexer.ts:80-80`
+- **RAW_BYTE_STRING_LITERAL** — Represents a raw byte string literal in Rust `RustParser.ts:87-87`
+- **RAW_IDENTIFIER** — Represents a raw identifier `RustLexer.ts:64-64`
+- **RAW_IDENTIFIER** — Represents a raw identifier with a value of 58 `RustParser.ts:71-71`
+- **RAW_STRING_LITERAL** — Represents a raw string literal `RustLexer.ts:77-77`
+- **RAW_STRING_LITERAL** — Represents a raw string literal in Rust `RustParser.ts:84-84`
+- **RCURLYBRACE** — Represents a right curly brace in the lexer `RustLexer.ts:132-132`
+- **RCURLYBRACE** — Represents the right curly brace symbol with a value of 126 `RustParser.ts:139-139`
+- **RPAREN** — Represents a right parenthesis in the lexer `RustLexer.ts:136-136`
+- **RPAREN** — Represents the right parenthesis symbol with a value of 130 `RustParser.ts:143-143`
+- **RSQUAREBRACKET** — Represents a right square bracket in the lexer `RustLexer.ts:134-134`
+- **RSQUAREBRACKET** — Represents the right square bracket symbol with a value of 128 `RustParser.ts:141-141`
+- **RULE_abi** — Represents the ABI of a function `RustParser.ts:172-172`
+- **RULE_arrayElements** — Represents array elements in the Rust grammar `RustParser.ts:231-231`
+- **RULE_arrayType** — Represents an array type in Rust `RustParser.ts:292-292`
+- **RULE_asClause** — Represents an `as` clause `RustParser.ts:167-167`
+- **RULE_associatedItem** — Represents an associated item in the Rust grammar `RustParser.ts:213-213`
+- **RULE_asyncBlockExpression** — Represents an async block expression in the Rust grammar `RustParser.ts:229-229`
+- **RULE_attr** — Represents an attribute in the Rust grammar `RustParser.ts:216-216`
+- **RULE_attrInput** — Represents an attribute input in the Rust grammar `RustParser.ts:217-217`
+- **RULE_bareFunctionReturnType** — Represents the return type of a bare function in Rust `RustParser.ts:298-298`
+- **RULE_bareFunctionType** — Represents a bare function type in Rust `RustParser.ts:296-296`
+- **RULE_blockExpression** — Represents a block expression in the Rust grammar `RustParser.ts:227-227`
+- **RULE_callParams** — Parses parameters for a function call `RustParser.ts:247-247`
+- **RULE_closureExpression** — Parses a closure expression `RustParser.ts:248-248`
+- **RULE_closureParam** — Parses a single parameter for a closure expression `RustParser.ts:250-250`
+- **RULE_closureParameters** — Parses parameters for a closure expression `RustParser.ts:249-249`
+- **RULE_comparisonOperator** — Represents a comparison operator in the Rust grammar `RustParser.ts:222-222`
+- **RULE_compoundAssignOperator** — Represents a compound assignment operator in the Rust grammar `RustParser.ts:223-223`
+- **RULE_constantItem** — Represents a constant item `RustParser.ts:195-195`
+- **RULE_constParam** — Represents a constant parameter `RustParser.ts:207-207`
+- **RULE_crate** — Represents a rule for parsing the `crate` keyword `RustParser.ts:144-144`
+- **RULE_crateRef** — Represents a crate reference `RustParser.ts:166-166`
+- **RULE_delimTokenTree** — Represents a rule for parsing delimited token trees `RustParser.ts:146-146`
+- **RULE_enumeration** — Represents an enumeration `RustParser.ts:188-188`
+- **RULE_enumerationVariantExpression** — Parses an enumeration variant expression `RustParser.ts:241-241`
+- **RULE_enumExprField** — Parses a single field of an enumeration variant expression `RustParser.ts:244-244`
+- **RULE_enumExprFieldless** — Parses a fieldless variant expression within an enumeration `RustParser.ts:246-246`
+- **RULE_enumExprFields** — Parses fields of an enumeration variant expression `RustParser.ts:243-243`
+- **RULE_enumExprStruct** — Represents a struct expression within an enumeration variant `RustParser.ts:242-242`
+- **RULE_enumExprTuple** — Parses a tuple variant expression within an enumeration `RustParser.ts:245-245`
+- **RULE_enumItem** — Represents an item of an enumeration `RustParser.ts:190-190`
+- **RULE_enumItemDiscriminant** — Represents the discriminant of an enumeration item `RustParser.ts:193-193`
+- **RULE_enumItems** — Represents items of an enumeration `RustParser.ts:189-189`
+- **RULE_enumItemStruct** — Represents a struct item of an enumeration `RustParser.ts:192-192`
+- **RULE_enumItemTuple** — Represents a tuple item of an enumeration `RustParser.ts:191-191`
+- **RULE_expression** — Represents an expression in the Rust grammar `RustParser.ts:221-221`
+- **RULE_expressionStatement** — Represents an expression statement in the Rust grammar `RustParser.ts:220-220`
+- **RULE_expressionWithBlock** — Represents an expression with a block in the Rust grammar `RustParser.ts:224-224`
+- **RULE_externalItem** — Represents an external item `RustParser.ts:202-202`
+- **RULE_externBlock** — Represents an external block `RustParser.ts:201-201`
+- **RULE_externCrate** — Represents an external crate declaration `RustParser.ts:165-165`
+- **RULE_forLifetimes** — Represents a for lifetimes clause in the Rust grammar `RustParser.ts:212-212`
+- **RULE_function_** — Represents a function `RustParser.ts:170-170`
+- **RULE_functionParam** — Represents a function parameter `RustParser.ts:177-177`
+- **RULE_functionParameters** — Represents function parameters `RustParser.ts:173-173`
+- **RULE_functionParametersMaybeNamedVariadic** — Represents function parameters that may be named and variadic in Rust `RustParser.ts:299-299`
+- **RULE_functionParamPattern** — Represents a function parameter pattern `RustParser.ts:178-178`
+- **RULE_functionQualifiers** — Represents function qualifiers `RustParser.ts:171-171`
+- **RULE_functionReturnType** — Represents the return type of a function `RustParser.ts:179-179`
+- **RULE_functionTypeQualifiers** — Represents function type qualifiers in Rust `RustParser.ts:297-297`
+- **RULE_genericArg** — Represents a generic argument in a Rust type `RustParser.ts:319-319`
+- **RULE_genericArgs** — Represents generic arguments in a Rust type `RustParser.ts:318-318`
+- **RULE_genericArgsBinding** — Represents a binding generic argument in a Rust type `RustParser.ts:324-324`
+- **RULE_genericArgsBindings** — Represents binding generic arguments in a Rust type `RustParser.ts:323-323`
+- **RULE_genericArgsConst** — Represents constant generic arguments in a Rust type `RustParser.ts:320-320`
+- **RULE_genericArgsLifetimes** — Represents lifetime generic arguments in a Rust type `RustParser.ts:321-321`
+- **RULE_genericArgsTypes** — Represents type generic arguments in a Rust type `RustParser.ts:322-322`
+- **RULE_genericParam** — Represents a generic parameter `RustParser.ts:204-204`
+- **RULE_genericParams** — Represents generic parameters `RustParser.ts:203-203`
+- **RULE_groupedPattern** — Represents a grouped pattern `RustParser.ts:283-283`
+- **RULE_identifier** — Represents an identifier in a Rust type `RustParser.ts:333-333`
+- **RULE_identifierPattern** — Represents an identifier pattern `RustParser.ts:268-268`
+- **RULE_ifExpression** — Parses an if expression `RustParser.ts:257-257`
+- **RULE_ifLetExpression** — Parses an if-let expression `RustParser.ts:258-258`
+- **RULE_implementation** — Represents an implementation `RustParser.ts:198-198`
+- **RULE_implTraitType** — Represents an impl trait type in Rust `RustParser.ts:305-305`
+- **RULE_implTraitTypeOneBound** — Represents an impl trait type with one bound in Rust `RustParser.ts:306-306`
+- **RULE_inferredType** — Represents an inferred type in Rust `RustParser.ts:307-307`
+- **RULE_infiniteLoopExpression** — Parses an infinite loop expression `RustParser.ts:252-252`
+- **RULE_inherentImpl** — Represents an inherent implementation `RustParser.ts:199-199`
+- **RULE_innerAttribute** — Represents an inner attribute in the Rust grammar `RustParser.ts:214-214`
+- **RULE_item** — Represents a single item in the Rust grammar `RustParser.ts:161-161`
+- **RULE_iteratorLoopExpression** — Parses an iterator loop expression `RustParser.ts:255-255`
+- **RULE_keyword** — Represents a keyword in the Rust grammar `RustParser.ts:334-334`
+- **RULE_letStatement** — Represents a let statement in the Rust grammar `RustParser.ts:219-219`
+- **RULE_lifetime** — Represents a lifetime in a Rust type `RustParser.ts:312-312`
+- **RULE_lifetimeBounds** — Represents lifetime bounds in a Rust type `RustParser.ts:311-311`
+- **RULE_lifetimeParam** — Represents a lifetime parameter `RustParser.ts:205-205`
+- **RULE_lifetimeWhereClauseItem** — Represents a lifetime where clause item in the Rust grammar `RustParser.ts:210-210`
+- **RULE_literalExpression** — Represents a literal expression in the Rust grammar `RustParser.ts:225-225`
+- **RULE_literalPattern** — Represents a literal pattern `RustParser.ts:267-267`
+- **RULE_loopExpression** — Parses a loop expression `RustParser.ts:251-251`
+- **RULE_loopLabel** — Parses a loop label `RustParser.ts:256-256`
+- **RULE_macroFragSpec** — Represents a rule for parsing macro fragment specifications `RustParser.ts:157-157`
+- **RULE_macroIdentifierLikeToken** — Represents a token that resembles a macro identifier `RustParser.ts:335-335`
+- **RULE_macroInvocation** — Represents a rule for parsing macro invocations `RustParser.ts:145-145`
+- **RULE_macroInvocationSemi** — Represents a rule for parsing macro invocations followed by a semicolon `RustParser.ts:149-149`
+- **RULE_macroItem** — Represents a macro item `RustParser.ts:163-163`
+- **RULE_macroLiteralToken** — Represents a literal token used in macro invocations `RustParser.ts:336-336`
+- **RULE_macroMatch** — Represents a rule for parsing macro matches `RustParser.ts:155-155`
+- **RULE_macroMatcher** — Represents a rule for parsing macro matchers `RustParser.ts:154-154`
+- **RULE_macroMatchToken** — Represents a rule for parsing macro match tokens `RustParser.ts:156-156`
+- **RULE_macroPunctuationToken** — Represents a punctuation token used in macro invocations `RustParser.ts:337-337`
+- **RULE_macroRepOp** — Represents macro repetition operations `RustParser.ts:159-159`
+- **RULE_macroRepSep** — Represents a rule for parsing macro repetition separators `RustParser.ts:158-158`
+- **RULE_macroRule** — Represents a rule for parsing individual macro rules `RustParser.ts:153-153`
+- **RULE_macroRules** — Represents a rule for parsing macro rules `RustParser.ts:152-152`
+- **RULE_macroRulesDef** — Represents a rule for defining macro rules `RustParser.ts:151-151`
+- **RULE_macroRulesDefinition** — Represents a rule for defining macro rules `RustParser.ts:150-150`
+- **RULE_macroTranscriber** — Transcribes macro definitions `RustParser.ts:160-160`
+- **RULE_matchArm** — Represents a match arm `RustParser.ts:262-262`
+- **RULE_matchArmExpression** — Represents the expression part of a match arm `RustParser.ts:261-261`
+- **RULE_matchArmGuard** — Represents the guard condition of a match arm `RustParser.ts:263-263`
+- **RULE_matchArms** — Defines the arms of a match expression `RustParser.ts:260-260`
+- **RULE_matchExpression** — Represents a match expression in Rust `RustParser.ts:259-259`
+- **RULE_maybeNamedFunctionParameters** — Represents function parameters that may be named in Rust `RustParser.ts:300-300`
+- **RULE_maybeNamedFunctionParametersVariadic** — Represents function parameters that may be named and variadic in Rust `RustParser.ts:302-302`
+- **RULE_maybeNamedParam** — Represents a maybe named parameter in Rust `RustParser.ts:301-301`
+- **RULE_module** — Represents a module in the Rust grammar `RustParser.ts:164-164`
+- **RULE_neverType** — Represents the never type in Rust `RustParser.ts:290-290`
+- **RULE_outerAttribute** — Represents an outer attribute in the Rust grammar `RustParser.ts:215-215`
+- **RULE_parenthesizedType** — Represents a parenthesized type in Rust `RustParser.ts:289-289`
+- **RULE_pathExpression** — Represents a path expression in the Rust grammar `RustParser.ts:226-226`
+- **RULE_pathExprSegment** — Represents a segment of a path in an expression in a Rust expression `RustParser.ts:316-316`
+- **RULE_pathIdentSegment** — Represents an identifier segment of a path in an expression in a Rust expression `RustParser.ts:317-317`
+- **RULE_pathInExpression** — Represents a path in an expression in a Rust expression `RustParser.ts:315-315`
+- **RULE_pathPattern** — Represents a path pattern in Rust `RustParser.ts:286-286`
+- **RULE_pattern** — Represents a pattern in Rust `RustParser.ts:264-264`
+- **RULE_patternNoTopAlt** — Represents a pattern without a top alternative `RustParser.ts:265-265`
+- **RULE_patternWithoutRange** — Represents a pattern without a range `RustParser.ts:266-266`
+- **RULE_predicateLoopExpression** — Parses a loop expression with a predicate `RustParser.ts:253-253`
+- **RULE_predicatePatternLoopExpression** — Parses a loop expression with a predicate and pattern `RustParser.ts:254-254`
+- **RULE_qualifiedPathInExpression** — Represents a qualified path in an expression in a Rust expression `RustParser.ts:325-325`
+- **RULE_qualifiedPathInType** — Represents a qualified path in a type in a Rust type `RustParser.ts:327-327`
+- **RULE_qualifiedPathType** — Represents a qualified path type in a Rust type `RustParser.ts:326-326`
+- **RULE_rangePattern** — Represents a range pattern `RustParser.ts:271-271`
+- **RULE_rangePatternBound** — Represents the bounds of a range pattern `RustParser.ts:272-272`
+- **RULE_rawPointerType** — Represents a raw pointer type in Rust `RustParser.ts:295-295`
+- **RULE_referencePattern** — Represents a reference pattern `RustParser.ts:273-273`
+- **RULE_referenceType** — Represents a reference type in Rust `RustParser.ts:294-294`
+- **RULE_restPattern** — Represents a rest pattern `RustParser.ts:270-270`
+- **RULE_selfParam** — Represents a self parameter `RustParser.ts:174-174`
+- **RULE_shl** — Represents a left shift operator `RustParser.ts:338-338`
+- **RULE_shorthandSelf** — Represents a shorthand self parameter `RustParser.ts:175-175`
+- **RULE_shr** — Represents a right shift operator `RustParser.ts:339-339`
+- **RULE_simplePath** — Represents a simple path in a Rust expression `RustParser.ts:313-313`
+- **RULE_simplePathSegment** — Represents a segment of a simple path in a Rust expression `RustParser.ts:314-314`
+- **RULE_slicePattern** — Represents a slice pattern in Rust `RustParser.ts:284-284`
+- **RULE_slicePatternItems** — Defines the items within a slice pattern `RustParser.ts:285-285`
+- **RULE_sliceType** — Represents a slice type in Rust `RustParser.ts:293-293`
+- **RULE_statement** — Represents a statement in the Rust grammar `RustParser.ts:218-218`
+- **RULE_statements** — Represents a sequence of statements in the Rust grammar `RustParser.ts:228-228`
+- **RULE_staticItem** — Represents a static item `RustParser.ts:196-196`
+- **RULE_struct_** — Represents a struct `RustParser.ts:181-181`
+- **RULE_structBase** — Represents the base of a struct expression `RustParser.ts:238-238`
+- **RULE_structExpression** — Parses a struct expression `RustParser.ts:234-234`
+- **RULE_structExprField** — Parses a single field of a struct expression `RustParser.ts:237-237`
+- **RULE_structExprFields** — Parses fields of a struct expression `RustParser.ts:236-236`
+- **RULE_structExprStruct** — Represents a struct expression with fields `RustParser.ts:235-235`
+- **RULE_structExprTuple** — Parses a tuple struct expression `RustParser.ts:239-239`
+- **RULE_structExprUnit** — Parses a unit struct expression `RustParser.ts:240-240`
+- **RULE_structField** — Represents a single field of a struct `RustParser.ts:185-185`
+- **RULE_structFields** — Represents fields of a struct `RustParser.ts:184-184`
+- **RULE_structPattern** — Represents a struct pattern `RustParser.ts:274-274`
+- **RULE_structPatternElements** — Represents the elements of a struct pattern `RustParser.ts:275-275`
+- **RULE_structPatternEtCetera** — Represents the "etcetera" part of a struct pattern `RustParser.ts:278-278`
+- **RULE_structPatternField** — Represents a field of a struct pattern `RustParser.ts:277-277`
+- **RULE_structPatternFields** — Represents the fields of a struct pattern `RustParser.ts:276-276`
+- **RULE_structStruct** — Represents a struct struct `RustParser.ts:182-182`
+- **RULE_tokenTree** — Represents a rule for parsing token trees `RustParser.ts:147-147`
+- **RULE_tokenTreeToken** — Represents a rule for parsing individual token tree tokens `RustParser.ts:148-148`
+- **RULE_trait_** — Represents a trait `RustParser.ts:197-197`
+- **RULE_traitBound** — Represents a trait bound in a Rust type `RustParser.ts:310-310`
+- **RULE_traitImpl** — Represents a trait implementation `RustParser.ts:200-200`
+- **RULE_traitObjectType** — Represents a trait object type in Rust `RustParser.ts:303-303`
+- **RULE_traitObjectTypeOneBound** — Represents a trait object type with one bound in Rust `RustParser.ts:304-304`
+- **RULE_tupleElements** — Represents tuple elements in the Rust grammar `RustParser.ts:232-232`
+- **RULE_tupleField** — Represents a single field of a tuple `RustParser.ts:187-187`
+- **RULE_tupleFields** — Represents fields of a tuple `RustParser.ts:186-186`
+- **RULE_tupleIndex** — Represents a tuple index in the Rust grammar `RustParser.ts:233-233`
+- **RULE_tuplePattern** — Represents a tuple pattern `RustParser.ts:281-281`
+- **RULE_tuplePatternItems** — Represents the items of a tuple pattern `RustParser.ts:282-282`
+- **RULE_tupleStruct** — Represents a tuple struct `RustParser.ts:183-183`
+- **RULE_tupleStructItems** — Represents the items of a tuple struct pattern `RustParser.ts:280-280`
+- **RULE_tupleStructPattern** — Represents a tuple struct pattern `RustParser.ts:279-279`
+- **RULE_tupleType** — Represents a tuple type in Rust `RustParser.ts:291-291`
+- **RULE_type_** — Represents a type in Rust `RustParser.ts:287-287`
+- **RULE_typeAlias** — Represents a type alias `RustParser.ts:180-180`
+- **RULE_typeBoundWhereClauseItem** — Represents a type bound where clause item in the Rust grammar `RustParser.ts:211-211`
+- **RULE_typedSelf** — Represents a typed self parameter `RustParser.ts:176-176`
+- **RULE_typeNoBounds** — Represents a type without bounds in Rust `RustParser.ts:288-288`
+- **RULE_typeParam** — Represents a type parameter `RustParser.ts:206-206`
+- **RULE_typeParamBound** — Represents a type parameter bound in a Rust type `RustParser.ts:309-309`
+- **RULE_typeParamBounds** — Represents type parameter bounds in Rust `RustParser.ts:308-308`
+- **RULE_typePath** — Represents a type path in a Rust type `RustParser.ts:328-328`
+- **RULE_typePathFn** — Represents a function path in a type path in a Rust type `RustParser.ts:330-330`
+- **RULE_typePathInputs** — Represents input parameters in a type path in a Rust type `RustParser.ts:331-331`
+- **RULE_typePathSegment** — Represents a segment of a type path in a Rust type `RustParser.ts:329-329`
+- **RULE_union_** — Represents a union `RustParser.ts:194-194`
+- **RULE_unsafeBlockExpression** — Represents an unsafe block expression in the Rust grammar `RustParser.ts:230-230`
+- **RULE_useDeclaration** — Represents a use declaration `RustParser.ts:168-168`
+- **RULE_useTree** — Represents a use tree `RustParser.ts:169-169`
+- **RULE_visibility** — Represents visibility in a Rust type `RustParser.ts:332-332`
+- **RULE_visItem** — Represents a visibility item `RustParser.ts:162-162`
+- **RULE_whereClause** — Represents a where clause `RustParser.ts:208-208`
+- **RULE_whereClauseItem** — Represents a where clause item in the Rust grammar `RustParser.ts:209-209`
+- **RULE_wildcardPattern** — Represents a wildcard pattern `RustParser.ts:269-269`
+- **ruleNames** — Specifies the names of the rules used in the lexer `RustLexer.ts:410-558`
+- **ruleNames** — Contains names of parsing rules for Rust syntax `RustParser.ts:608-805`
+- **SEMI** — Represents the semicolon character `RustLexer.ts:123-123`
+- **SEMI** — Represents the ASCII value of the semicolon character `RustParser.ts:130-130`
+- **SHEBANG** — Represents a shebang comment `RustLexer.ts:72-72`
+- **SHEBANG** — Represents a shebang line in Rust code `RustParser.ts:79-79`
+- **SHLEQ** — Represents the shift left equality operator `RustLexer.ts:107-107`, `RustParser.ts:114-114`
+- **SHREQ** — Represents the shift right equality operator `RustLexer.ts:108-108`, `RustParser.ts:115-115`
+- **SLASH** — Parses a slash operator `RustLexer.ts:91-91`
+- **SLASH** — Represents the slash operator in Rust `RustParser.ts:98-98`
+- **SLASHEQ** — Parses a slash-equals operator `RustLexer.ts:102-102`
+- **SLASHEQ** — Represents the slash-equal operator `RustParser.ts:109-109`
+- **STAR** — Parses a star operator `RustLexer.ts:90-90`
+- **STAR** — Represents the star operator in Rust `RustParser.ts:97-97`
+- **STAREQ** — Parses a star-equals operator `RustLexer.ts:101-101`
+- **STAREQ** — Represents the star-equal operator `RustParser.ts:108-108`
+- **STRING_LITERAL** — Represents a string literal `RustLexer.ts:76-76`
+- **STRING_LITERAL** — Represents a string literal with a value of 70 `RustParser.ts:83-83`
+- **symbolicNames** — Lists the symbolic names of keywords and identifiers in Rust `RustLexer.ts:274-406`
+- **symbolicNames** — Represents a list of symbolic names for Rust keywords `RustParser.ts:475-607`
+- **UNDERSCORE** — Represents the underscore character `RustLexer.ts:117-117`
+- **UNDERSCORE** — Represents the ASCII value of the underscore character `RustParser.ts:124-124`
+- **visitAbi** — Parses an ABI `RustParserVisitor.ts:417-417`
+- **visitArithmeticOrLogicalExpression** — Parses an arithmetic or logical expression `RustParserVisitor.ts:866-866`
+- **visitArrayElements** — Parses array elements `RustParserVisitor.ts:982-982`
+- **visitArrayExpression** — Parses an array expression `RustParserVisitor.ts:922-922`
+- **visitArrayType** — Parses an array type `RustParserVisitor.ts:1363-1363`
+- **visitAsClause** — Parses an as clause `RustParserVisitor.ts:387-387`
+- **visitAssignmentExpression** — Parses an assignment expression context `RustParserVisitor.ts:782-782`
+- **visitAssociatedItem** — Parses an associated item `RustParserVisitor.ts:663-663`
+- **visitAsyncBlockExpression** — Parses an async block expression `RustParserVisitor.ts:970-970`
+- **visitAttr** — Parses an attribute context `RustParserVisitor.ts:681-681`
+- **visitAttributedExpression** — Parses an attributed expression `RustParserVisitor.ts:894-894`
+- **visitAttrInput** — Parses an attribute input context `RustParserVisitor.ts:687-687`
+- **visitAwaitExpression** — Parses an await expression context `RustParserVisitor.ts:761-761`
+- **visitBareFunctionReturnType** — Parses a bare function return type `RustParserVisitor.ts:1399-1399`
+- **visitBareFunctionType** — Parses a bare function type `RustParserVisitor.ts:1387-1387`
+- **visitBlockExpression** — Parses a block expression `RustParserVisitor.ts:958-958`
+- **visitBorrowExpression** — Parses a borrow expression `RustParserVisitor.ts:901-901`
+- **visitBreakExpression** — Parses a break expression `RustParserVisitor.ts:859-859`
+- **visitCallExpression** — Parses a call expression context `RustParserVisitor.ts:824-824`
+- **visitCallParams** — Parses parameters of a function call `RustParserVisitor.ts:1078-1078`
+- **visitClosureExpression** — Parses a closure expression `RustParserVisitor.ts:1084-1084`
+- **visitClosureExpression_** — Parses a closure expression `RustParserVisitor.ts:915-915`
+- **visitClosureParam** — Parses a parameter of a closure `RustParserVisitor.ts:1096-1096`
+- **visitClosureParameters** — Parses parameters of a closure `RustParserVisitor.ts:1090-1090`
+- **visitComparisonExpression** — Parses a comparison expression `RustParserVisitor.ts:887-887`
+- **visitComparisonOperator** — Parses a comparison operator `RustParserVisitor.ts:928-928`
+- **visitCompoundAssignmentExpression** — Parses a compound assignment expression `RustParserVisitor.ts:908-908`
+- **visitCompoundAssignOperator** — Parses a compound assignment operator `RustParserVisitor.ts:934-934`
+- **visitConstantItem** — Parses a constant item `RustParserVisitor.ts:555-555`
+- **visitConstParam** — Parses a const parameter `RustParserVisitor.ts:627-627`
+- **visitContinueExpression** — Parses a continue expression context `RustParserVisitor.ts:775-775`
+- **visitCrate** — Visits the crate context `RustParserVisitor.ts:249-249`
+- **visitCrateRef** — Parses a crate reference `RustParserVisitor.ts:381-381`
+- **visitDelimTokenTree** — Visits a delimited token tree `RustParserVisitor.ts:261-261`
+- **visitDereferenceExpression** — Parses a dereference expression context `RustParserVisitor.ts:838-838`
+- **visitEnumeration** — Parses an enumeration `RustParserVisitor.ts:513-513`
+- **visitEnumerationVariantExpression** — Parses an enumeration variant expression `RustParserVisitor.ts:1042-1042`
+- **visitEnumerationVariantExpression_** — Parses an enumeration variant expression `RustParserVisitor.ts:880-880`
+- **visitEnumExprField** — Parses a single field of an enum expression `RustParserVisitor.ts:1060-1060`
+- **visitEnumExprFieldless** — Parses a fieldless enum expression `RustParserVisitor.ts:1072-1072`
+- **visitEnumExprFields** — Parses fields of an enum expression `RustParserVisitor.ts:1054-1054`
+- **visitEnumExprStruct** — Parses a struct variant expression `RustParserVisitor.ts:1048-1048`
+- **visitEnumExprTuple** — Parses a tuple enum expression `RustParserVisitor.ts:1066-1066`
+- **visitEnumItem** — Parses an enum item `RustParserVisitor.ts:525-525`
+- **visitEnumItemDiscriminant** — Parses the discriminant of an enum item `RustParserVisitor.ts:543-543`
+- **visitEnumItems** — Parses enum items `RustParserVisitor.ts:519-519`
+- **visitEnumItemStruct** — Parses an enum item with a struct discriminant `RustParserVisitor.ts:537-537`
+- **visitEnumItemTuple** — Parses an enum item with a tuple discriminant `RustParserVisitor.ts:531-531`
+- **visitErrorPropagationExpression** — Parses an error propagation expression context `RustParserVisitor.ts:768-768`
+- **visitExpressionStatement** — Parses an expression statement context `RustParserVisitor.ts:705-705`
+- **visitExpressionWithBlock** — Parses an expression with a block `RustParserVisitor.ts:940-940`
+- **visitExpressionWithBlock_** — Parses an expression with block context `RustParserVisitor.ts:845-845`
+- **visitExternalItem** — Parses an external item `RustParserVisitor.ts:597-597`
+- **visitExternBlock** — Parses an extern block `RustParserVisitor.ts:591-591`
+- **visitExternCrate** — Visits an extern crate `RustParserVisitor.ts:375-375`
+- **visitFieldExpression** — Parses a field expression `RustParserVisitor.ts:873-873`
+- **visitForLifetimes** — Parses a for lifetimes clause `RustParserVisitor.ts:657-657`
+- **visitFunction_** — Parses a function `RustParserVisitor.ts:405-405`
+- **visitFunctionParam** — Parses a function parameter `RustParserVisitor.ts:447-447`
+- **visitFunctionParameters** — Parses function parameters `RustParserVisitor.ts:423-423`
+- **visitFunctionParametersMaybeNamedVariadic** — Parses function parameters that may be named and variadic `RustParserVisitor.ts:1405-1405`
+- **visitFunctionParamPattern** — Parses a function parameter pattern `RustParserVisitor.ts:453-453`
+- **visitFunctionQualifiers** — Parses function qualifiers `RustParserVisitor.ts:411-411`
+- **visitFunctionReturnType** — Parses a function return type `RustParserVisitor.ts:459-459`
+- **visitFunctionTypeQualifiers** — Parses function type qualifiers `RustParserVisitor.ts:1393-1393`
+- **visitGenericArg** — Parses a generic argument `RustParserVisitor.ts:1525-1525`
+- **visitGenericArgs** — Parses generic arguments `RustParserVisitor.ts:1519-1519`
+- **visitGenericArgsBinding** — Parses a binding generic argument `RustParserVisitor.ts:1555-1555`
+- **visitGenericArgsBindings** — Parses binding generic arguments `RustParserVisitor.ts:1549-1549`
+- **visitGenericArgsConst** — Parses constant generic arguments `RustParserVisitor.ts:1531-1531`
+- **visitGenericArgsLifetimes** — Parses lifetime generic arguments `RustParserVisitor.ts:1537-1537`
+- **visitGenericArgsTypes** — Parses type generic arguments `RustParserVisitor.ts:1543-1543`
+- **visitGenericParam** — Parses a generic parameter `RustParserVisitor.ts:609-609`
+- **visitGenericParams** — Parses generic parameters `RustParserVisitor.ts:603-603`
+- **visitGroupedExpression** — Parses a grouped expression `RustParserVisitor.ts:852-852`
+- **visitGroupedPattern** — Parses a grouped pattern `RustParserVisitor.ts:1309-1309`
+- **visitHalfOpenRangePattern** — Parses a half-open range pattern `RustParserVisitor.ts:1230-1230`
+- **visitIdentifier** — Parses an identifier `RustParserVisitor.ts:1609-1609`
+- **visitIdentifierPattern** — Parses an identifier pattern `RustParserVisitor.ts:1204-1204`
+- **visitIfExpression** — Parses an if expression `RustParserVisitor.ts:1138-1138`
+- **visitIfLetExpression** — Parses an if-let expression `RustParserVisitor.ts:1144-1144`
+- **visitImplementation** — Parses an implementation `RustParserVisitor.ts:573-573`
+- **visitImplTraitType** — Parses an impl trait type `RustParserVisitor.ts:1441-1441`
+- **visitImplTraitTypeOneBound** — Parses an impl trait type with one bound `RustParserVisitor.ts:1447-1447`
+- **visitInclusiveRangePattern** — Parses an inclusive range pattern `RustParserVisitor.ts:1223-1223`
+- **visitIndexExpression** — Parses an index expression context `RustParserVisitor.ts:733-733`
+- **visitInferredType** — Parses an inferred type `RustParserVisitor.ts:1453-1453`
+- **visitInfiniteLoopExpression** — Parses an infinite loop expression `RustParserVisitor.ts:1108-1108`
+- **visitInherentImpl** — Parses an inherent implementation `RustParserVisitor.ts:579-579`
+- **visitInnerAttribute** — Parses an inner attribute `RustParserVisitor.ts:669-669`
+- **visitItem** — Visits an item `RustParserVisitor.ts:351-351`
+- **visitIteratorLoopExpression** — Parses an iterator loop expression `RustParserVisitor.ts:1126-1126`
+- **visitKeyword** — Parses a keyword in the Rust grammar `RustParserVisitor.ts:1615-1615`
+- **visitLazyBooleanExpression** — Parses a lazy boolean expression context `RustParserVisitor.ts:831-831`
+- **visitLetStatement** — Parses a let statement context `RustParserVisitor.ts:699-699`
+- **visitLifetime** — Parses a lifetime `RustParserVisitor.ts:1483-1483`
+- **visitLifetimeBounds** — Parses lifetime bounds `RustParserVisitor.ts:1477-1477`
+- **visitLifetimeParam** — Parses a lifetime parameter `RustParserVisitor.ts:615-615`
+- **visitLifetimeWhereClauseItem** — Parses a lifetime where clause item `RustParserVisitor.ts:645-645`
+- **visitLiteralExpression** — Parses a literal expression `RustParserVisitor.ts:946-946`
+- **visitLiteralExpression_** — Parses a literal expression context `RustParserVisitor.ts:796-796`
+- **visitLiteralPattern** — Parses a literal pattern `RustParserVisitor.ts:1198-1198`
+- **visitLoopExpression** — Parses a loop expression `RustParserVisitor.ts:1102-1102`
+- **visitLoopLabel** — Parses a loop label `RustParserVisitor.ts:1132-1132`
+- **visitMacroFragSpec** — Visits a macro fragment specification `RustParserVisitor.ts:327-327`
+- **visitMacroIdentifierLikeToken** — Parses a macro identifier-like token in the Rust grammar `RustParserVisitor.ts:1621-1621`
+- **visitMacroInvocation** — Visits a macro invocation `RustParserVisitor.ts:255-255`
+- **visitMacroInvocationAsExpression** — Parses a macro invocation as an expression context `RustParserVisitor.ts:747-747`
+- **visitMacroInvocationSemi** — Visits a macro invocation followed by a semicolon `RustParserVisitor.ts:279-279`
+- **visitMacroItem** — Visits a macro item `RustParserVisitor.ts:363-363`
+- **visitMacroLiteralToken** — Parses a macro literal token in the Rust grammar `RustParserVisitor.ts:1627-1627`
+- **visitMacroMatch** — Visits a macro match `RustParserVisitor.ts:315-315`
+- **visitMacroMatcher** — Visits a macro matcher `RustParserVisitor.ts:309-309`
+- **visitMacroMatchToken** — Visits a macro match token `RustParserVisitor.ts:321-321`
+- **visitMacroPunctuationToken** — Parses a macro punctuation token in the Rust grammar `RustParserVisitor.ts:1633-1633`
+- **visitMacroRepOp** — Visits a macro repetition operator `RustParserVisitor.ts:339-339`
+- **visitMacroRepSep** — Visits a macro repetition separator `RustParserVisitor.ts:333-333`
+- **visitMacroRule** — Visits a macro rule `RustParserVisitor.ts:303-303`
+- **visitMacroRules** — Visits macro rules `RustParserVisitor.ts:297-297`
+- **visitMacroRulesDef** — Visits a macro rules definition `RustParserVisitor.ts:291-291`
+- **visitMacroRulesDefinition** — Visits a macro rules definition `RustParserVisitor.ts:285-285`
+- **visitMacroTranscriber** — Visits a macro transcriber `RustParserVisitor.ts:345-345`
+- **visitMatchArm** — Parses a match arm `RustParserVisitor.ts:1168-1168`
+- **visitMatchArmExpression** — Parses a match arm expression `RustParserVisitor.ts:1162-1162`
+- **visitMatchArmGuard** — Parses a match arm guard `RustParserVisitor.ts:1174-1174`
+- **visitMatchArms** — Parses match arms `RustParserVisitor.ts:1156-1156`
+- **visitMatchExpression** — Parses a match expression `RustParserVisitor.ts:1150-1150`
+- **visitMaybeNamedFunctionParameters** — Parses maybe named function parameters `RustParserVisitor.ts:1411-1411`
+- **visitMaybeNamedFunctionParametersVariadic** — Parses maybe named function parameters that are variadic `RustParserVisitor.ts:1423-1423`
+- **visitMaybeNamedParam** — Parses maybe named parameters `RustParserVisitor.ts:1417-1417`
+- **visitMethodCallExpression** — Parses a method call expression context `RustParserVisitor.ts:789-789`
+- **visitModule** — Visits a module `RustParserVisitor.ts:369-369`
+- **visitNegationExpression** — Parses a negation expression context `RustParserVisitor.ts:817-817`
+- **visitNeverType** — Parses a never type `RustParserVisitor.ts:1351-1351`
+- **visitObsoleteRangePattern** — Parses an obsolete range pattern `RustParserVisitor.ts:1237-1237`
+- **visitOuterAttribute** — Parses an outer attribute `RustParserVisitor.ts:675-675`
+- **visitParenthesizedType** — Parses a parenthesized type `RustParserVisitor.ts:1345-1345`
+- **visitPathExpression** — Parses a path expression `RustParserVisitor.ts:952-952`
+- **visitPathExpression_** — Parses a path expression context `RustParserVisitor.ts:719-719`
+- **visitPathExprSegment** — Parses a path expression segment `RustParserVisitor.ts:1507-1507`
+- **visitPathIdentSegment** — Parses a path identifier segment `RustParserVisitor.ts:1513-1513`
+- **visitPathInExpression** — Parses a path in an expression `RustParserVisitor.ts:1501-1501`
+- **visitPathPattern** — Parses a path pattern `RustParserVisitor.ts:1327-1327`
+- **visitPattern** — Parses a pattern `RustParserVisitor.ts:1180-1180`
+- **visitPatternNoTopAlt** — Parses a pattern without a top alternative `RustParserVisitor.ts:1186-1186`
+- **visitPatternWithoutRange** — Parses a pattern without a range `RustParserVisitor.ts:1192-1192`
+- **visitPredicateLoopExpression** — Parses a predicate loop expression `RustParserVisitor.ts:1114-1114`
+- **visitPredicatePatternLoopExpression** — Parses a predicate pattern loop expression `RustParserVisitor.ts:1120-1120`
+- **visitQualifiedPathInExpression** — Parses a qualified path in an expression `RustParserVisitor.ts:1561-1561`
+- **visitQualifiedPathInType** — Parses a qualified path in a type `RustParserVisitor.ts:1573-1573`
+- **visitQualifiedPathType** — Parses a qualified path type `RustParserVisitor.ts:1567-1567`
+- **visitRangeExpression** — Parses a range expression context `RustParserVisitor.ts:740-740`
+- **visitRangePatternBound** — Parses a range pattern bound `RustParserVisitor.ts:1243-1243`
+- **visitRawPointerType** — Parses a raw pointer type `RustParserVisitor.ts:1381-1381`
+- **visitReferencePattern** — Parses a reference pattern `RustParserVisitor.ts:1249-1249`
+- **visitReferenceType** — Parses a reference type `RustParserVisitor.ts:1375-1375`
+- **visitRestPattern** — Parses a rest pattern `RustParserVisitor.ts:1216-1216`
+- **visitReturnExpression** — Parses a return expression context `RustParserVisitor.ts:754-754`
+- **visitSelfParam** — Parses a self parameter `RustParserVisitor.ts:429-429`
+- **visitShl** — Parses a left shift operator in the Rust grammar `RustParserVisitor.ts:1639-1639`
+- **visitShorthandSelf** — Parses a shorthand self `RustParserVisitor.ts:435-435`
+- **visitShr** — Parses a right shift operator in the Rust grammar `RustParserVisitor.ts:1645-1645`
+- **visitSimplePath** — Parses a simple path `RustParserVisitor.ts:1489-1489`
+- **visitSimplePathSegment** — Parses a simple path segment `RustParserVisitor.ts:1495-1495`
+- **visitSlicePattern** — Parses a slice pattern `RustParserVisitor.ts:1315-1315`
+- **visitSlicePatternItems** — Parses items within a slice pattern `RustParserVisitor.ts:1321-1321`
+- **visitSliceType** — Parses a slice type `RustParserVisitor.ts:1369-1369`
+- **visitStatement** — Parses a statement context `RustParserVisitor.ts:693-693`
+- **visitStatements** — Parses statements `RustParserVisitor.ts:964-964`
+- **visitStaticItem** — Parses a static item `RustParserVisitor.ts:561-561`
+- **visitStruct_** — Parses a struct `RustParserVisitor.ts:471-471`
+- **visitStructBase** — Parses the base of a struct expression `RustParserVisitor.ts:1024-1024`
+- **visitStructExpression** — Parses a struct expression `RustParserVisitor.ts:1000-1000`
+- **visitStructExpression_** — Parses a struct expression context `RustParserVisitor.ts:803-803`
+- **visitStructExprField** — Parses a single field of a struct expression `RustParserVisitor.ts:1018-1018`
+- **visitStructExprFields** — Parses fields of a struct expression `RustParserVisitor.ts:1012-1012`
+- **visitStructExprStruct** — Parses a struct expression `RustParserVisitor.ts:1006-1006`
+- **visitStructExprTuple** — Parses a tuple struct expression `RustParserVisitor.ts:1030-1030`
+- **visitStructExprUnit** — Parses a unit struct expression `RustParserVisitor.ts:1036-1036`
+- **visitStructField** — Parses a struct field `RustParserVisitor.ts:495-495`
+- **visitStructFields** — Parses struct fields `RustParserVisitor.ts:489-489`
+- **visitStructPattern** — Parses a struct pattern `RustParserVisitor.ts:1255-1255`
+- **visitStructPatternElements** — Parses struct pattern elements `RustParserVisitor.ts:1261-1261`
+- **visitStructPatternEtCetera** — Parses struct pattern et cetera `RustParserVisitor.ts:1279-1279`
+- **visitStructPatternField** — Parses a struct pattern field `RustParserVisitor.ts:1273-1273`
+- **visitStructPatternFields** — Parses struct pattern fields `RustParserVisitor.ts:1267-1267`
+- **visitStructStruct** — Parses a struct struct `RustParserVisitor.ts:477-477`
+- **visitTokenTree** — Visits a token tree `RustParserVisitor.ts:267-267`
+- **visitTokenTreeToken** — Visits a token tree token `RustParserVisitor.ts:273-273`
+- **visitTrait_** — Parses a trait `RustParserVisitor.ts:567-567`
+- **visitTraitBound** — Parses a trait bound `RustParserVisitor.ts:1471-1471`
+- **visitTraitImpl** — Parses a trait implementation `RustParserVisitor.ts:585-585`
+- **visitTraitObjectType** — Parses a trait object type `RustParserVisitor.ts:1429-1429`
+- **visitTraitObjectTypeOneBound** — Parses a trait object type with one bound `RustParserVisitor.ts:1435-1435`
+- **visitTupleElements** — Parses tuple elements `RustParserVisitor.ts:988-988`
+- **visitTupleExpression** — Parses a tuple expression context `RustParserVisitor.ts:726-726`
+- **visitTupleField** — Parses a tuple field `RustParserVisitor.ts:507-507`
+- **visitTupleFields** — Parses tuple fields `RustParserVisitor.ts:501-501`
+- **visitTupleIndex** — Parses a tuple index `RustParserVisitor.ts:994-994`
+- **visitTupleIndexingExpression** — Parses a tuple indexing expression context `RustParserVisitor.ts:810-810`
+- **visitTuplePattern** — Parses a tuple pattern `RustParserVisitor.ts:1297-1297`
+- **visitTuplePatternItems** — Parses tuple pattern items `RustParserVisitor.ts:1303-1303`
+- **visitTupleStruct** — Parses a tuple struct `RustParserVisitor.ts:483-483`
+- **visitTupleStructItems** — Parses tuple struct items `RustParserVisitor.ts:1291-1291`
+- **visitTupleStructPattern** — Parses a tuple struct pattern `RustParserVisitor.ts:1285-1285`
+- **visitTupleType** — Parses a tuple type `RustParserVisitor.ts:1357-1357`
+- **visitType_** — Parses a type `RustParserVisitor.ts:1333-1333`
+- **visitTypeAlias** — Parses a type alias `RustParserVisitor.ts:465-465`
+- **visitTypeBoundWhereClauseItem** — Parses a type bound where clause item `RustParserVisitor.ts:651-651`
+- **visitTypeCastExpression** — Parses a type cast expression context `RustParserVisitor.ts:712-712`
+- **visitTypedSelf** — Parses a typed self `RustParserVisitor.ts:441-441`
+- **visitTypeNoBounds** — Parses a type without bounds `RustParserVisitor.ts:1339-1339`
+- **visitTypeParam** — Parses a type parameter `RustParserVisitor.ts:621-621`
+- **visitTypeParamBound** — Parses a type parameter bound `RustParserVisitor.ts:1465-1465`
+- **visitTypeParamBounds** — Parses type parameter bounds `RustParserVisitor.ts:1459-1459`
+- **visitTypePath** — Parses a type path `RustParserVisitor.ts:1579-1579`
+- **visitTypePathFn** — Parses a type path function `RustParserVisitor.ts:1591-1591`
+- **visitTypePathInputs** — Parses type path inputs `RustParserVisitor.ts:1597-1597`
+- **visitTypePathSegment** — Parses a type path segment `RustParserVisitor.ts:1585-1585`
+- **visitUnion_** — Parses a union type `RustParserVisitor.ts:549-549`
+- **visitUnsafeBlockExpression** — Parses an unsafe block expression `RustParserVisitor.ts:976-976`
+- **visitUseDeclaration** — Parses a use declaration `RustParserVisitor.ts:393-393`
+- **visitUseTree** — Parses a use tree `RustParserVisitor.ts:399-399`
+- **visitVisibility** — Parses visibility `RustParserVisitor.ts:1603-1603`
+- **visitVisItem** — Visits a visibility item `RustParserVisitor.ts:357-357`
+- **visitWhereClause** — Parses a where clause `RustParserVisitor.ts:633-633`
+- **visitWhereClauseItem** — Parses a where clause item `RustParserVisitor.ts:639-639`
+- **visitWildcardPattern** — Parses a wildcard pattern `RustParserVisitor.ts:1210-1210`
+- **vocabulary** — Initializes the vocabulary for the lexer using literal and symbolic names `RustLexer.ts:1099-1099`
+- **vocabulary** — Initializes a vocabulary for the parser using literal names, symbolic names, and an empty array `RustParser.ts:11688-11688`
+- **WHITESPACE** — Represents whitespace `RustLexer.ts:73-73`
+- **WHITESPACE** — Represents whitespace characters `RustParser.ts:80-80`
 
 ## Entities
 

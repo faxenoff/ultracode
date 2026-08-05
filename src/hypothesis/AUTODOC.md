@@ -152,8 +152,10 @@ The `hypothesis` module provides a 4-tier runtime relationship inference system 
 - **bySource** — A map storing outgoing hypotheses by source entity ID `types.ts:53-53`
 - **byTarget** — A map storing incoming hypotheses by target entity ID `types.ts:55-55`
 - **confidence** — The confidence score of a hypothesis `bridge.ts:157-157`
-- **confidence** — The confidence level of the register/dispatch pair `catalogs.ts:17-17`, `catalogs.ts:26-26`
-- **confidence** — A confidence score for a hypothesis, ranging from 0.0 to 1.0 `types.ts:31-31`, `types.ts:39-39`
+- **confidence** — The confidence level of the register/dispatch pair `catalogs.ts:17-17`
+- **confidence** — Represents the confidence level of a catalog entry `catalogs.ts:26-26`
+- **confidence** — A confidence score for a hypothesis, ranging from 0.0 to 1.0 `types.ts:31-31`
+- **confidence** — Represents the confidence level as a number `types.ts:39-39`
 - **decoratorOnNextFn** — A boolean indicating whether the next function is decorated `catalogs.ts:20-20`
 - **dispatch** — The name of the dispatch function `catalogs.ts:14-14`
 - **durationMs** — Duration in milliseconds taken to generate hypotheses `engine.ts:28-28`
@@ -161,7 +163,8 @@ The `hypothesis` module provides a 4-tier runtime relationship inference system 
 - **entityId** — The unique identifier of an entity `bridge.ts:31-31`
 - **entityName** — The name of an entity `bridge.ts:32-32`
 - **evidence** — Represents a hypothesis with its confidence and evidence `bridge.ts:157-157`
-- **evidence** — The evidence supporting a hypothesis `types.ts:33-33`, `types.ts:41-41`
+- **evidence** — The evidence supporting a hypothesis `types.ts:33-33`
+- **evidence** — Stores the evidence as a string `types.ts:41-41`
 - **fnName** — The name of the function `catalogs.ts:24-24`
 - **fromId** — The identifier of the source entity `bridge.ts:157-157`
 - **fromId** — The identifier of the source entity in a hypothesis `types.ts:28-28`
@@ -171,11 +174,14 @@ The `hypothesis` module provides a 4-tier runtime relationship inference system 
 - **hypothesisType** — The type of hypothesis, which is an enum value `types.ts:30-30`
 - **id** — A unique identifier for a hypothesis `types.ts:27-27`
 - **keyArgPos** — The position of the key argument in the register function `catalogs.ts:15-15`
-- **languages** — The languages supported by the register/dispatch pair `catalogs.ts:19-19`, `catalogs.ts:28-28`, `catalogs.ts:317-317`
+- **languages** — The languages supported by the register/dispatch pair `catalogs.ts:19-19`
+- **languages** — An array of languages supported by a catalog entry, with an empty array indicating all languages `catalogs.ts:28-28`
+- **languages** — A function that checks if a catalog entry matches a given language `catalogs.ts:317-317`
 - **marker** — A marker indicating the confidence level of a hypothesis reference `types.ts:40-40`
 - **register** — The name of the register function `catalogs.ts:13-13`
 - **relType** — The type of relationship between entities `bridge.ts:157-157`
-- **relType** — The relationship type between the register and dispatch functions `catalogs.ts:18-18`, `catalogs.ts:27-27`
+- **relType** — The relationship type between the register and dispatch functions `catalogs.ts:18-18`
+- **relType** — Specifies the relationship type of a catalog entry `catalogs.ts:27-27`
 - **relType** — The type of relationship represented by a hypothesis `types.ts:32-32`
 - **steps** — An array of steps in a path `bridge.ts:26-26`
 - **strategy** — The strategy used to infer a hypothesis `types.ts:34-34`

@@ -31,7 +31,7 @@ The libsql module implements the persistent storage layer for the code graph usi
 | `VectorOpsContext` | interface | Context for vector operations (client, context, config getters) | [`vector-ops.ts:29-42`](./vector-ops.ts) |
 | `MetadataOperations` | class | File and project metadata operations with indexing tracking | [`metadata-ops.ts:16-470`](./metadata-ops.ts) |
 | `CacheOperations` | class | Global embedding cache operations by content hash | [`cache-ops.ts:24-160`](./cache-ops.ts) |
-| `VectorToStringFn` | type | Function for converting Float32Array to SQL-compatible string | [`cache-ops.ts:18-18`](./cache-ops.ts) |
+| `VectorToStringFn` | type | Function for converting Float32Array to SQL-compatible string | [`cache-ops.ts:16-19`](./cache-ops.ts) |
 | `CooccurrenceOperations` | class | Term co-occurrence tracking and PMI-based related term retrieval | [`cooccurrence-ops.ts:34-393`](./cooccurrence-ops.ts) |
 | `LibSQLGraphConfig` | interface | Adapter configuration with vector dimensions and DiskANN parameters | [`types.ts:15-28`](./types.ts) |
 | `ProjectContext` | interface | Multi-tenant project context (projectHash, branchName, baseBranch) | [`types.ts:73-80`](./types.ts) |

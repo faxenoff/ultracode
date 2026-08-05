@@ -26,7 +26,7 @@ This module provides framework-aware analysis for Java projects. Each extractor 
 | `detectSpringFramework` | function | Checks for Spring imports/annotations | [`spring-extractor.ts:59-68`](./spring-extractor.ts) |
 | `getSpringConfidence` | function | Returns 0-1 confidence for Spring usage | [`spring-extractor.ts:73-82`](./spring-extractor.ts) |
 | `extractSpringInfo` | function | Extracts Spring metadata from annotations | [`spring-extractor.ts:91-97`](./spring-extractor.ts) |
-| `enrichEntityWithSpring` | function | Enriches entity with Spring info and DI relationships | [`spring-extractor.ts:192-198`](./spring-extractor.ts) |
+| `enrichEntityWithSpring` | function | Enriches entity with Spring info and DI relationships | [`spring-extractor.ts:196-196`](./spring-extractor.ts) |
 | `extractEndpoints` | function | Extracts REST endpoints from controller class | [`spring-extractor.ts:247-255`](./spring-extractor.ts) |
 | `detectJpaFramework` | function | Checks for JPA/Hibernate imports | [`jpa-extractor.ts:59-70`](./jpa-extractor.ts) |
 | `getJpaConfidence` | function | Returns 0-1 confidence for JPA usage | [`jpa-extractor.ts:75-84`](./jpa-extractor.ts) |

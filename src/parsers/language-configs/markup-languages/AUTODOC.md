@@ -1,17 +1,64 @@
----
-module_name: markup-languages
-description: "Parser configurations for markup and data languages: CSS, HTML, JSON, XML"
-status: active
-language: typescript
----
-
 # Markup Languages
 
-> Parser configuration objects for markup and structured data languages: CSS (with preprocessor support), HTML, JSON (with OpenAPI/npm), and XML.
+## 🤖 Overview
 
-## Overview
+This module provides language configurations for various markup languages, including CSS, HTML, JSON, and XML. Developers and tools that need to parse or highlight these languages can use these configurations to enhance their functionality.
 
-The markup-languages module provides `LanguageConfig` objects for CSS, HTML, JSON, and XML. The CSS config covers SCSS, Sass, and Less preprocessors in addition to standard CSS. The JSON config handles package.json, OpenAPI schemas, and general JSON files. HTML and XML configs define element and attribute node types for structural analysis. These configs enable the parser to index non-code files that are important for project understanding.
+## 🤖 Architecture
+
+```
+  +-------------------+
+  |   Language Config |
+  +-------------------+
+  |     - CSS         |
+  |     - HTML        |
+  |     - JSON        |
+  |     - XML         |
+  +-------------------+
+  |     Language      |
+  |     - Keywords     |
+  |     - Node Types   |
+  |     - Extractors   |
+  +-------------------+
+```
+
+## 🤖 Flow
+
+```
+  +-------------------+
+  |   Language Config |
+  |     - CSS         |
+  |     - HTML        |
+  |     - JSON        |
+  |     - XML         |
+  +-------------------+
+  |     Language      |
+  |     - Keywords     |
+  |     - Node Types   |
+  |     - Extractors   |
+  +-------------------+
+  |     Language      |
+  |     - Keywords     |
+  |     - Node Types   |
+  |     - Extractors   |
+  +-------------------+
+```
+
+## 🤖 Entity Listing
+
+### Function
+- **CSS_CONFIG** — Defines the configuration for the CSS language, including its name, file extensions, keywords, node types, and extractors `css.ts:23-23`
+- **CSS_CONFIG** — Parses the CSS configuration `css.ts:24-24`
+- **HTML_CONFIG** — Represents the configuration for the HTML language, including its keywords, node types, and extractors `html.ts:23-23`
+- **HTML_CONFIG** — Parses the HTML configuration `html.ts:24-24`
+- **JSON_CONFIG** — Defines the configuration for the JSON language, including keywords, node types, and extractors `json.ts:23-23`
+- **JSON_CONFIG** — Parses a JSON configuration object `json.ts:24-24`
+- **XML_CONFIG** — Defines the configuration for the XML language, including its name, extensions, keywords, and various extractors `xml.ts:23-23`
+- **XML_CONFIG** — Parses the XML configuration and extracts modifiers `xml.ts:24-24`
+
+### Import_decl
+- **../shared/keywords.js** — Imports `../shared/keywords.js` from `../shared/keywords.js`. `css.ts:5-5`, `html.ts:5-5`, `json.ts:5-5`, `xml.ts:5-5`
+- **../shared/types.js** — Imports `../shared/types.js` from `../shared/types.js`. `css.ts:6-6`, `html.ts:6-6`, `json.ts:6-6`, `xml.ts:6-6`
 
 ## Data Flow
 

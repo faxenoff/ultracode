@@ -210,9 +210,9 @@ export class BloomReachIndex {
     const nodeToIdx = new Map<string, number>();
     for (let i = 0; i < n; i++) nodeToIdx.set(nodeIds[i]!, i);
 
-    // Build numeric adjacency
-    const fwd: number[][] = new Array(n);
-    for (let i = 0; i < n; i++) fwd[i] = [];
+    // Build numeric adjacency (Array.from keeps PACKED elements; new Array(n)
+    // would stay HOLEY for the lifetime of the array)
+    const fwd: number[][] = Array.from({ length: n }, () => []);
 
     for (const [id, neighbors] of adjacency) {
       const i = nodeToIdx.get(id)!;

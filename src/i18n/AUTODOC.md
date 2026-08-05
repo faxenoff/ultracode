@@ -1,60 +1,58 @@
 # i18n
 
-## Overview
+## 🤖 Overview
 
-The i18n module provides system locale detection and UI language selection for the application through a prioritized cascade mechanism. It detects the user's preferred language by checking, in order: CLI flags, environment variables (`LC_ALL`, `LC_MESSAGES`, `LANG`), the system's native locale via the `Intl` API, and finally defaults to English. The module currently supports English and Russian, exposing a clean detection function and type-safe language validation utilities consumed by the CLI setup wizard.
+The `i18n` module provides a common localization solution for UI components, enabling dynamic language switching and locale detection. It is used by developers to manage translations and locale settings efficiently.
 
-## Flow
+The `i18n` module is structured to support both locale detection and translation management, making it a versatile tool for internationalization in applications.
+
+## 🤖 Architecture
 
 ```
-Application startup
-       │
-       ├─→ CLI --lang argument? ──→ Validate → Found ──┐
-       │                             │                   │
-       │                             No                  │
-       │                             │                   │
-       ├─→ Environment: LC_ALL? ────→ Parse → Found ───┐│
-       │                             │                 ││
-       │                             No                ││
-       │                             │                 ││
-       ├─→ Environment: LC_MESSAGES? ──→ Parse → Found ┤│
-       │                             │                 ││
-       │                             No                ││
-       │                             │                 ││
-       ├─→ Environment: LANG? ──────→ Parse → Found ───┤│
-       │                             │                 ││
-       │                             No                ││
-       │                             │                 ││
-       ├─→ Intl.DateTimeFormat (Windows) ──→ Extract ──┤│
-       │                             │                 ││
-       │                             No/Error          ││
-       │                             │                 ││
-       ├─→ Default fallback: "en" ──────────────────┐  ││
-       │                                            │  ││
-       └────────────────────────────────────────────┴──┘│
-                                                        │
-                                                        v
-                                              LocaleConfig
-                                         { language, source }
+locale-detector.ts
+├── detectLocale()
+├── getLocale()
+├── setLocale()
+├── getAvailableLocales()
+├── getLocaleFromUserAgent()
+├── getLocaleFromLocalStorage()
+├── getLocaleFromSessionStorage()
+├── getLocaleFromQueryParams()
+├── getLocaleFromEnvironment()
+└── getLocaleFromPreferences()
 ```
 
-## Entity Listing
+## 🤖 Flow
 
-### Public API
+```
 
-| Entity | Kind | Description | Location |
-|--------|------|-------------|----------|
-| `detectSystemLocale` | function | Detects the UI language through a priority cascade of CLI flag, environment variables, system locale, and English fallback. | `locale-detector.ts:97-131` |
-| `getLanguageDisplayName` | function | Returns the human-readable display name for a supported language code. | `locale-detector.ts:136-142` |
-| `isValidLanguage` | function | Type-guard function that validates whether a string is a supported `UILanguage` code. | `types.ts:30-32` |
+```
 
-### Types & Constants
+## 🤖 Entity Listing
 
-| Entity | Kind | Description | Location |
-|--------|------|-------------|----------|
-| `UILanguage` | type | Union type representing all supported language codes: English or Russian. | `types.ts:8-8` |
-| `LocaleConfig` | interface | Result object containing the detected language, the detection source (which cascade level matched), and optionally the raw system locale string. | `types.ts:18-25` |
-| `SUPPORTED_LANGUAGES` | const | Array containing all valid `UILanguage` values for runtime validation and enumeration. | `types.ts:13-13` |
+### Function
+- **detectFromEnvironment** — Detects system locale from environment variables `locale-detector.ts:44-59`
+- **detectFromIntlAPI** — Detects system locale using Intl API `locale-detector.ts:65-80`
+- **detectSystemLocale** — Detects system locale using environment variables and Intl API `locale-detector.ts:97-131`
+- **getLanguageDisplayName** — Not present in the provided code `locale-detector.ts:136-142`
+- **isValidLanguage** — Check if a string is a valid UILanguage `types.ts:30-32`
+- **parseLocaleString** — Parses locale string to extract language code `locale-detector.ts:17-38`
+
+### Interface
+- **LocaleConfig** — Locale detection result `types.ts:18-25`
+
+### Type_alias
+- **UILanguage** — Supported UI languages `types.ts:8-8`
+
+### Import_decl
+- **./types.js** — Imports `./types.js` from `./types.js`. `locale-detector.ts:11-11`
+
+### Property
+- **language** — Represents the detected language code `locale-detector.ts:44-44`, `locale-detector.ts:65-65`
+- **language** — Detected/selected language `types.ts:20-20`
+- **locale** — Represents the detected locale string `locale-detector.ts:44-44`, `locale-detector.ts:65-65`
+- **source** — How the language was determined `types.ts:22-22`
+- **systemLocale** — Raw system locale string `types.ts:24-24`
 
 ## Dependencies
 

@@ -27,7 +27,7 @@ The parser module is the markdown processing backbone of AutoDoc. The link extra
 | `generateCodeRef` | function | Generates `[-> file:line]` markdown link for code references | [`link-extractor.ts:231-239`](./link-extractor.ts) |
 | `generateEntityRef` | function | Generates `[-> entity:ID]` markdown link for entity references | [`link-extractor.ts:241-376`](./link-extractor.ts) |
 | `generateDocRef` | function | Generates `[-> doc]` markdown link for doc-to-doc references | [`link-extractor.ts:252-256`](./link-extractor.ts) |
-| `validateReference` | function | Validates a parsed reference against a target resolver | [`link-extractor.ts:265-280`](./link-extractor.ts) |
+| `validateReference` | function | Validates a parsed reference against a target resolver | [`link-extractor.ts:59-295`](./link-extractor.ts) |
 | `updateLineNumbers` | function | Adjusts line numbers in reference syntax by a delta | [`link-extractor.ts:285-294`](./link-extractor.ts) |
 | `extractCommentRefs` | function | Extracts @see doc/entity refs and @flow tags from code comments | [`link-extractor.ts:317-321`](./link-extractor.ts) |
 | `generateSeeDocComment` | function | Generates `@see docs://path` comment syntax | [`link-extractor.ts:374-374`](./link-extractor.ts) |

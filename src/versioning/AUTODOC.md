@@ -59,7 +59,7 @@ Initialize (detect Git/backup backend)
 
 **deleteSnapshot** (`version-manager.ts:169-202`) — Permanently removes a snapshot's metadata and backend storage (git stash or backup files).
 
-**cleanup** (`version-manager.ts:207-223`) — Removes snapshots older than specified retention period (default 30 days) to maintain disk space.
+**cleanup** (`version-manager.ts:62-500`) — Removes snapshots older than specified retention period (default 30 days) to maintain disk space.
 
 ### Git Backend Methods
 
@@ -77,21 +77,21 @@ Initialize (detect Git/backup backend)
 
 ### Utility Methods
 
-**getSnapshotMetadata** (`version-manager.ts:228-230`) — Retrieves full metadata object for a specific snapshot ID.
+**getSnapshotMetadata** (`version-manager.ts:62-500`) — Retrieves full metadata object for a specific snapshot ID.
 
-**getAllTrackedFiles** (`version-manager.ts:433-468`) — Gathers all project files excluding node_modules and build artifacts via recursive directory walk with exclude patterns.
+**getAllTrackedFiles** (`version-manager.ts:62-500`) — Gathers all project files excluding node_modules and build artifacts via recursive directory walk with exclude patterns.
 
 **detectGit** (`version-manager.ts:474-481`) — Checks if working directory is a Git repository by looking for .git directory.
 
 **saveMetadata** (`version-manager.ts:483-489`) — Writes snapshot metadata to JSON file in metadata directory.
 
-**loadMetadata** (`version-manager.ts:491-505`) — Reads and parses snapshot metadata from JSON file.
+**loadMetadata** (`version-manager.ts:485-499`) — Reads and parses snapshot metadata from JSON file.
 
 ### Internal Functions
 
 **walk** (`version-manager.ts:446-464`) — Recursively traverses directory tree yielding relative paths of files not matching exclude patterns.
 
-**pattern** (`version-manager.ts:454-454`) — Converts glob pattern string to RegExp for exclude matching during file enumeration.
+**pattern** (`version-manager.ts:427-462`) — Converts glob pattern string to RegExp for exclude matching during file enumeration.
 
 ## Dependencies
 

@@ -24,7 +24,7 @@ This module supports Rust code analysis with two components. The AST helpers pro
 | Export | Type | Description | Location |
 |--------|------|-------------|----------|
 | `findNodes` | function | Finds all AST nodes of a specific type | [`ast-helpers.ts:18-31`](./ast-helpers.ts) |
-| `getNodeText` | function | Returns text content of an AST node | [`ast-helpers.ts:36-38`](./ast-helpers.ts) |
+| `getNodeText` | function | Returns text content of an AST node | [`ast-helpers.ts:27-57`](./ast-helpers.ts) |
 | `extractVisibility` | function | Extracts visibility modifier (pub, pub(crate), etc.) | [`ast-helpers.ts:47-50`](./ast-helpers.ts) |
 | `hasModifier` | function | Checks for a specific modifier in a node | [`ast-helpers.ts:55-63`](./ast-helpers.ts) |
 | `extractGenerics` | function | Extracts generic parameters from definitions | [`ast-helpers.ts:72-87`](./ast-helpers.ts) |
@@ -51,7 +51,7 @@ This module supports Rust code analysis with two components. The AST helpers pro
 | `identifyPatterns` | function | Analyzes code for Rust patterns | [`pattern-identifier.ts:19-50`](./pattern-identifier.ts) |
 | `identifyBuilderPattern` | function | Detects Builder pattern usage | [`pattern-identifier.ts:59-81`](./pattern-identifier.ts) |
 | `identifyIteratorPattern` | function | Detects Iterator trait implementations | [`pattern-identifier.ts:86-116`](./pattern-identifier.ts) |
-| `identifyErrorHandlingPatterns` | function | Finds error handling patterns | [`pattern-identifier.ts:125-156`](./pattern-identifier.ts) |
+| `identifyErrorHandlingPatterns` | function | Finds error handling patterns | [`pattern-identifier.ts:129-133`](./pattern-identifier.ts) |
 | `identifyOwnershipPatterns` | function | Identifies ownership patterns | [`pattern-identifier.ts:161-192`](./pattern-identifier.ts) |
 | `identifyUnsafePatterns` | function | Detects unsafe code blocks | [`pattern-identifier.ts:210-236`](./pattern-identifier.ts) |
 

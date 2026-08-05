@@ -64,8 +64,8 @@ GraphologyPathBuilder  StateTracker  ConditionAnalyzer  DataFlowAnalyzer  PathBu
 | Entity | Kind | Description | Location |
 |--------|------|-------------|----------|
 | `PathTrace` | interface | Single execution path with `nodes[]`, `edges[]`, `conditions[]`, `confidence`, `warningsCount`. | `types.ts:127-146` |
-| `DecisionPoint` | interface | Identified branching decision; specifies `id`, `condition`, `impactLevel`, `type`, affected `entities[]`, resolved values. | `types.ts:477-499` |
-| `StateChange` | interface | State modification record; contains `entity`, `property`, `previousValue`, `newValue`, `triggeredBy`, cascade info. | `types.ts:547-565` |
+| `DecisionPoint` | interface | Identified branching decision; specifies `id`, `condition`, `impactLevel`, `type`, affected `entities[]`, resolved values. | `types.ts:489-489` |
+| `StateChange` | interface | State modification record; contains `entity`, `property`, `previousValue`, `newValue`, `triggeredBy`, cascade info. | `types.ts:547-547` |
 | `DataFlowEdge` | interface | Data source or transformation in sequence; specifies `from`, `to`, `type` (source/transform/sink), `confidence`, metadata. | `types.ts:381-405` |
 | `ConditionsSummary` | interface | Summary of conditions encountered; lists `condition[]` entries with `type`, `frequency`, `impactLevel`. | `types.ts:218-230` |
 | `ImpactLevel` | type | Severity classification: `critical` \| `high` \| `medium` \| `low`. | `types.ts:21` |

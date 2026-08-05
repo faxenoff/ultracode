@@ -91,11 +91,11 @@ EventEmitter-based multi-agent architecture for code indexing, parsing, semantic
 | `IndexerAgent` | class | Graph indexing, git events, branch-aware | [`indexer-agent.ts:105-105`](./indexer-agent.ts) |
 | `MergeAgent` | class | 3-way semantic merge, AI conflict resolution | [`merge-agent.ts:63-441`](./merge-agent.ts) |
 | `ParserAgent` | class | Multi-language parsing via tree-sitter/Roslyn | [`parser-agent.ts:490-1865`](./parser-agent.ts) |
-| `QueryAgent` | class | Graph queries, impact analysis, hotspots | [`query-agent.ts:93-348`](./query-agent.ts) |
+| `QueryAgent` | class | Graph queries, impact analysis, hotspots | [`query-agent.ts:35-217`](./query-agent.ts) |
 | `SemanticAgent` | class | Embeddings, hybrid search, code analysis | [`semantic-agent.ts:147-1797`](./semantic-agent.ts) |
 | `ResourceAdjustmentMixin` | class | Dynamic resource adjustment mixin | [`resource-adjustment-mixin.ts:19-43`](./resource-adjustment-mixin.ts) |
 | `ResourceAdjustmentCapable` | interface | Marker for adjustable agents | [`resource-adjustment-mixin.ts:10-17`](./resource-adjustment-mixin.ts) |
-| `isEventfulAgent` | function | Type guard for EventEmitter agents | [`coordinator.ts:73-75`](./coordinator.ts) |
+| `isEventfulAgent` | function | Type guard for EventEmitter agents | [`coordinator.ts:67-74`](./coordinator.ts) |
 | `devAgent` | singleton | Global DevAgent instance | [`dev-agent.ts:1819-1819`](./dev-agent.ts) |
 | `doraAgent` | singleton | Global DoraAgent instance | [`dora-agent.ts:257-257`](./dora-agent.ts) |
 

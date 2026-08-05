@@ -26,7 +26,7 @@ The installers module contains dedicated installer implementations for each supp
 | `installOllama` | function | Checks Ollama installation and starts embedding service | [`ollama-installer.ts:11-65`](./ollama-installer.ts) |
 | `installOVMSNative` | function | Installs OpenVINO Model Server with multi-device support | [`ovms-installer.ts:16-23`](./ovms-installer.ts) |
 | `installTEI` | function | Deploys Text Embeddings Inference via Docker | [`tei-installer.ts:18-20`](./tei-installer.ts) |
-| `installVLLM` | function | Creates vLLM container with OpenAI-compatible API | ~~[`vllm-installer.ts:15-198`](./vllm-installer.ts)~~ (deleted) |
+| `installVLLM` | function | Creates vLLM container with OpenAI-compatible API | ~~[~~`vllm-installer.ts:15-198`~~ (deleted)](./vllm-installer.ts)~~ (deleted) |
 | `installLlamaCpp` | function | Downloads llama-server binary and GGUF models | [`llamacpp-installer.ts:408-489`](./llamacpp-installer.ts) |
 
 

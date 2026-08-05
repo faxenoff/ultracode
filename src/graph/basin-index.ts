@@ -123,16 +123,13 @@ export class BasinIndex {
     const nodeToIdx = new Map<string, number>();
     for (let i = 0; i < n; i++) nodeToIdx.set(nodeIds[i]!, i);
 
-    // Build numeric adjacency + reverse
-    const fwd: number[][] = new Array(n);
-    const rev: number[][] = new Array(n);
+    // Build numeric adjacency + reverse.
+    // Array.from keeps PACKED elements — new Array(n) would stay HOLEY forever,
+    // and these lists are read on every traversal edge.
+    const fwd: number[][] = Array.from({ length: n }, () => []);
+    const rev: number[][] = Array.from({ length: n }, () => []);
     const fanIn = new Uint32Array(n);
     const fanOut = new Uint32Array(n);
-
-    for (let i = 0; i < n; i++) {
-      fwd[i] = [];
-      rev[i] = [];
-    }
 
     for (const [id, neighbors] of adjacency) {
       const i = nodeToIdx.get(id)!;

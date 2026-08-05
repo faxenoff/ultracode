@@ -13,6 +13,21 @@ export interface JitHints {
   hasWithStatement: boolean;
   spreadInCallCount: number;
   dynamicPropAccessCount: number;
+  /** `new Array(n)` — creates HOLEY elements that never become PACKED again */
+  holeyArrayCount: number;
+  /** direct `eval(...)` calls — deoptimizes the enclosing scope */
+  evalCount: number;
+  /** whether the body contains a loop; rules use it to separate hot from cold */
+  hasLoops: boolean;
+  /**
+   * Number of distinct key-order signatures among object literals created in
+   * this function. 2+ means one call site downstream sees several hidden
+   * classes, which is how a monomorphic read turns polymorphic and then
+   * megamorphic.
+   */
+  objectShapeVariants: number;
+  /** `obj.field = …` inside a branch — grows a second shape of the same object */
+  conditionalFieldAddCount: number;
 }
 
 /**
@@ -25,6 +40,11 @@ export function extractJitHints(node: ts.Node, _sourceFile: ts.SourceFile): JitH
   let hasWithStatement = false;
   let spreadInCallCount = 0;
   let dynamicPropAccessCount = 0;
+  let holeyArrayCount = 0;
+  let evalCount = 0;
+  let hasLoops = false;
+  let conditionalFieldAddCount = 0;
+  const objectShapes = new Set<string>();
 
   // Collect parameter names to distinguish `arguments` identifier from user-defined params
   const paramNames = new Set<string>();
@@ -84,6 +104,59 @@ export function extractJitHints(node: ts.Node, _sourceFile: ts.SourceFile): JitH
       }
     }
 
+    // new Array(n) — one argument means "length", which yields HOLEY elements.
+    // new Array() and new Array(a, b) build packed arrays and are fine.
+    if (ts.isNewExpression(n) && ts.isIdentifier(n.expression) && n.expression.text === "Array") {
+      if (n.arguments?.length === 1) holeyArrayCount++;
+    }
+
+    // Direct eval() — indirect (window.eval) does not deoptimize the scope
+    if (ts.isCallExpression(n) && ts.isIdentifier(n.expression) && n.expression.text === "eval") {
+      evalCount++;
+    }
+
+    // Loops — both statements and the array methods that act as loops
+    if (
+      ts.isForStatement(n) ||
+      ts.isForOfStatement(n) ||
+      ts.isForInStatement(n) ||
+      ts.isWhileStatement(n) ||
+      ts.isDoStatement(n)
+    ) {
+      hasLoops = true;
+    }
+    if (ts.isCallExpression(n) && ts.isPropertyAccessExpression(n.expression)) {
+      if (LOOP_METHODS.has(n.expression.name.text)) hasLoops = true;
+    }
+
+    // Object literal shapes: the key order IS the hidden class
+    if (ts.isObjectLiteralExpression(n) && n.properties.length >= 2) {
+      const keys: string[] = [];
+      let dynamic = false;
+      for (const p of n.properties) {
+        if (ts.isSpreadAssignment(p)) {
+          dynamic = true; // spread merges an unknown key set — shape depends on data
+          keys.push("...");
+        } else if (p.name && !ts.isComputedPropertyName(p.name)) {
+          keys.push(p.name.getText());
+        } else {
+          dynamic = true;
+        }
+      }
+      objectShapes.add((dynamic ? "~" : "") + keys.join(","));
+    }
+
+    // Conditional field addition: `x.f = …` guarded by a branch
+    if (
+      ts.isBinaryExpression(n) &&
+      n.operatorToken.kind === ts.SyntaxKind.EqualsToken &&
+      ts.isPropertyAccessExpression(n.left) &&
+      ts.isIdentifier(n.left.expression) &&
+      isInsideBranch(n, node)
+    ) {
+      conditionalFieldAddCount++;
+    }
+
     ts.forEachChild(n, visit);
   }
 
@@ -95,18 +168,64 @@ export function extractJitHints(node: ts.Node, _sourceFile: ts.SourceFile): JitH
     ts.forEachChild(node, visit);
   }
 
-  // Return undefined if nothing found (common case — avoids metadata bloat)
+  // Return undefined if nothing found (common case — avoids metadata bloat).
+  // hasLoops alone is not a finding, it only qualifies the other counts.
+  const objectShapeVariants = objectShapes.size;
   if (
     deleteCount === 0 &&
     argumentsRefCount === 0 &&
     !hasWithStatement &&
     spreadInCallCount === 0 &&
-    dynamicPropAccessCount === 0
+    dynamicPropAccessCount === 0 &&
+    holeyArrayCount === 0 &&
+    evalCount === 0 &&
+    objectShapeVariants < 2 &&
+    conditionalFieldAddCount === 0
   ) {
     return undefined;
   }
 
-  return { deleteCount, argumentsRefCount, hasWithStatement, spreadInCallCount, dynamicPropAccessCount };
+  return {
+    deleteCount,
+    argumentsRefCount,
+    hasWithStatement,
+    spreadInCallCount,
+    dynamicPropAccessCount,
+    holeyArrayCount,
+    evalCount,
+    hasLoops,
+    objectShapeVariants,
+    conditionalFieldAddCount,
+  };
+}
+
+/** Array methods that iterate — treated as loops for hot-path rules */
+const LOOP_METHODS = new Set([
+  "forEach",
+  "map",
+  "filter",
+  "reduce",
+  "reduceRight",
+  "flatMap",
+  "some",
+  "every",
+  "find",
+  "findIndex",
+  "sort",
+]);
+
+/**
+ * Whether `n` sits inside an if/ternary/logical-and that is still within the
+ * function being analyzed (`root`).
+ */
+function isInsideBranch(n: ts.Node, root: ts.Node): boolean {
+  let p: ts.Node | undefined = n.parent;
+  while (p && p !== root) {
+    if (ts.isIfStatement(p) || ts.isConditionalExpression(p) || ts.isCaseClause(p)) return true;
+    if (ts.isBinaryExpression(p) && p.operatorToken.kind === ts.SyntaxKind.AmpersandAmpersandToken) return true;
+    p = p.parent;
+  }
+  return false;
 }
 
 /**

@@ -1,22 +1,50 @@
 # tests/search
 
-## Overview
+## 🤖 Overview
 
-This test suite validates the code classification, keyword scanning, and trigram extraction components that power semantic code search. It covers three key modules: CodeClassifier (character-level parsing with string/comment awareness), keyword-triage (rapid keyword detection), and trigram-extract (n-gram generation for fuzzy matching). Tests are ported from the Zig reference implementation to ensure parity across search indexing layers.
+This module contains tests for the `CodeClassifier` class, which classifies code and non-code segments in a string. It also includes tests for keyword triage and trigram extraction. The tests are derived from Zig code and additional coverage for keyword-triage.ts.
 
-## Flow
+## 🤖 Architecture
 
 ```
-Source code bytes
-       ↓
-   [CodeClassifier]
-       ↓
-Character classification mask (code vs. non-code)
-       ↓
-[Keyword Triage / Trigram Extract]
-       ↓
-Keywords + Trigrams for indexing
+CodeClassifier
+├── classifyChunk
+│   └── classifies code and non-code segments
+├── isCodeByte
+│   └── determines if a byte is code
+├── isWordBoundary
+│   └── checks for word boundaries
+└── buildCodeBitmap
+    └── constructs a bitmask for code segments
 ```
+
+## 🤖 Flow
+
+```
+CodeClassifier
+├── classifyChunk
+│   └── processes a chunk of data
+│       └── iterates through each byte
+│           └── checks if the byte is code
+│               └── sets the corresponding bit in the mask
+└── isCodeByte
+    └── checks if a byte is code
+└── isWordBoundary
+    └── checks for word boundaries
+└── buildCodeBitmap
+    └── constructs a bitmask for code segments
+```
+
+## 🤖 Entity Listing
+
+### Function
+- **trigramStrings** — Not present in the provided code snippet `code-classifier.test.ts:323-328`, `code-classifier.test.ts:340-345`
+
+### Import_decl
+- **../../src/search/code-classifier.js** — Imports `../../src/search/code-classifier.js`. `code-classifier.test.ts:9-15`
+- **../../src/search/keyword-triage.js** — Imports `../../src/search/keyword-triage.js` from `../../src/search/keyword-triage.js`. `code-classifier.test.ts:16-16`
+- **../../src/search/trigram-extract.js** — Imports `../../src/search/trigram-extract.js` from `../../src/search/trigram-extract.js`. `code-classifier.test.ts:17-17`
+- **bun:test** — Imports `bun:test` from `bun:test`. `code-classifier.test.ts:8-8`
 
 ## Test Cases & Fixtures
 

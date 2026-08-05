@@ -209,8 +209,8 @@ Archives            # .zip, .tar, .gz, .7z, .rar
 | Constant | Value | File | Description |
 |----------|-------|------|-------------|
 | `DEFAULT_MAX_SIZE` | 50MB | `src/storage/cache-manager.ts:25` | Max file cache size |
-| `DEFAULT_MAX_ENTRIES` | 1000 | `src/storage/cache-manager.ts:26-51` | Max entries |
-| `DEFAULT_CACHE_SIZE` | 100MB | `src/parsers/incremental-parser.ts:33` | Parser cache |
+| `DEFAULT_MAX_ENTRIES` | 1000 | `src/storage/cache-manager.ts:14-73` | Max entries |
+| `DEFAULT_CACHE_SIZE` | 100MB | `src/parsers/incremental-parser.ts:14-73` | Parser cache |
 
 #### Semantic Cache
 
@@ -287,9 +287,9 @@ Archives            # .zip, .tar, .gz, .7z, .rar
 
 | Constant | Value | File | Description |
 |----------|-------|------|-------------|
-| `MAX_FILE_CONCURRENCY` | 8 | `src/autodoc/hooks/pre-commit-check.ts:99-146` | File concurrency |
+| `MAX_FILE_CONCURRENCY` | 8 | `src/autodoc/hooks/pre-commit-check.ts:90-113` | File concurrency |
 | `MAX_REF_CONCURRENCY` | 4 | `src/autodoc/hooks/pre-commit-check.ts:147` | Reference concurrency |
-| `OUTDATED_THRESHOLD` | 0.7 | `src/autodoc/storage/autodoc-manager.ts:36` | Outdated threshold |
+| `OUTDATED_THRESHOLD` | 0.7 | `src/autodoc/storage/autodoc-manager.ts:34-41` | Outdated threshold |
 
 ---
 

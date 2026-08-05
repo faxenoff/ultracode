@@ -1,17 +1,74 @@
----
-module_name: shared
-description: "Shared types, keywords, file extension mappings, and utilities for language configuration"
-status: active
-language: typescript
----
-
 # Shared
 
-> Shared foundations for all language configurations: type interfaces (`LanguageConfig`, `NodeTypeConfig`, `ExtractorConfig`), file extension-to-language mappings, language keyword dictionaries, and utility functions for language detection.
+## 🤖 Overview
 
-## Overview
+The `shared` module provides shared language configuration utilities for parsing and analyzing code. It is used by developers and tools that need to identify and extract language-specific information from code files.
 
-The shared module provides the core type definitions and utilities used by all language configuration sub-modules. `LanguageConfig` defines the shape of every language config (extensions, keywords, node types, extractors). `FILE_EXTENSIONS` maps file extensions to `SupportedLanguage` values. `LANGUAGE_KEYWORDS` provides keyword dictionaries per language. Utility functions handle language detection from file paths, supported file checks, and listing all supported extensions.
+## 🤖 Architecture
+
+```
+  +---------------------+
+  |     keywords.ts     |
+  |     types.ts        |
+  |     utils.ts        |
+  +---------------------+
+  |     index.ts        |
+  +---------------------+
+```
+
+## 🤖 Flow
+
+```
+  +---------------------+
+  |     index.ts        |
+  |     keywords.ts     |
+  |     types.ts        |
+  |     utils.ts        |
+  +---------------------+
+  |     shared module   |
+  +---------------------+
+```
+
+## 🤖 Entity Listing
+
+### Function
+- **detectLanguageFromPath** — Detects the programming language based on the file path `utils.ts:13-30`
+- **getSupportedExtensions** — Returns a list of all supported file extensions `utils.ts:43-45`
+- **isFileSupported** — Checks if a file has a supported extension `utils.ts:35-38`
+
+### Interface
+- **ExtractorConfig** — Extraction patterns and rules for parsing `types.ts:38-44`
+- **LanguageConfig** — Language configuration for parsing `types.ts:13-19`
+- **NodeTypeConfig** — Tree-sitter node types for each language construct `types.ts:24-33`
+
+### Import_decl
+- **../../../types/parser.js** — Imports `../../../types/parser.js` from `../../../types/parser.js`. `keywords.ts:7-7`, `types.ts:7-7`, `utils.ts:7-7`
+- **./keywords.js** — Imports `./keywords.js` from `./keywords.js`. `types.ts:8-8`, `utils.ts:8-8`
+
+### Property
+- **classes** — Not applicable in this context `keywords.ts:121-121`
+- **classes** — Node types for classes `types.ts:26-26`
+- **exports** — Not applicable in this context `keywords.ts:123-123`
+- **exports** — Node types for exports `types.ts:29-29`
+- **extensions** — File extensions associated with the language `types.ts:15-15`
+- **extractModifiers** — Function to extract modifiers from node types `types.ts:40-40`
+- **extractName** — Function to extract names from node types `types.ts:39-39`
+- **extractors** — Extraction patterns and rules for parsing `types.ts:18-18`
+- **extractParameters** — Boolean indicating whether to extract parameters `types.ts:41-41`
+- **extractReferences** — Boolean indicating whether to extract references `types.ts:43-43`
+- **extractReturnType** — Boolean indicating whether to extract return types `types.ts:42-42`
+- **functions** — Not applicable in this context `keywords.ts:120-120`
+- **functions** — Node types for functions `types.ts:25-25`
+- **imports** — Not applicable in this context `keywords.ts:122-122`
+- **imports** — Node types for imports `types.ts:28-28`
+- **interfaces** — Node types for interfaces `types.ts:32-32`
+- **keywords** — Keywords specific to the language `types.ts:16-16`
+- **language** — Supported language for parsing `types.ts:14-14`
+- **methods** — Node types for methods `types.ts:27-27`
+- **nodeTypes** — Tree-sitter node types for each language construct `types.ts:17-17`
+- **types** — Not applicable in this context `keywords.ts:124-124`
+- **types** — Node types for types `types.ts:31-31`
+- **variables** — Node types for variables `types.ts:30-30`
 
 ## Data Flow
 

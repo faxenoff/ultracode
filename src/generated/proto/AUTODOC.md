@@ -1,162 +1,197 @@
 # Proto
 
-## Overview
+## 🤖 Overview
 
-The Proto module provides the canonical type registry and loader for UltraCode's code-analysis data model. It dynamically loads protocol buffer definitions from `.proto` files and exports TypeScript interfaces for entities, relationships, locations, and incremental synchronization structures. This module serves as the single source of truth for serialization contracts across the codebase, enabling safe inter-process communication (IPC) between analysis workers and delta-based code indexing.
+This module is a Protocol Buffers loader and serializer, designed to dynamically load and manage proto files to avoid Windows path issues. It is used by developers to serialize and deserialize data structures defined in proto files, facilitating communication between different components of a system.
 
-## Entity Listing
+## 🤖 Architecture
 
-### Configuration & Loader
+```
+       +---------------------+
+       |     ProtoLoader    |
+       |     (dynamic loader)|
+       |     (avoids Windows path issues)|
+       +---------------------+
+               |
+               v
+       +---------------------+
+       |     ProtoRoot      |
+       |     (cached root)   |
+       +---------------------+
+               |
+               v
+       +---------------------+
+       |     ProtoMessages   |
+       |     (interface definitions)|
+       +---------------------+
+```
 
-- `loadProtoRootSync` — Synchronously loads all proto files (entity.proto, delta.proto, ipc.proto) and returns the cached protobuf Root instance, blocking on first call; subsequent calls return the cached instance.
-- `loadProtoRoot` — Asynchronously loads all proto files and returns the cached protobuf Root instance.
-- `proto` — Re-exported protobuf Root object after initialization for message creation and serialization.
+## 🤖 Flow
 
-### Positional & Location Types
+```
+       +---------------------+
+       |     ProtoLoader    |
+       |     (dynamic loader)|
+       |     (avoids Windows path issues)|
+       +---------------------+
+               |
+               v
+       +---------------------+
+       |     ProtoRoot      |
+       |     (cached root)   |
+       +---------------------+
+               |
+               v
+       +---------------------+
+       |     ProtoMessages   |
+       |     (interface definitions)|
+       +---------------------+
+               |
+               v
+       +---------------------+
+       |     DataSerializer |
+       |     (serializes data)|
+       +---------------------+
+               |
+               v
+       +---------------------+
+       |     DataDeserializer|
+       |     (deserializes data)|
+       +---------------------+
+```
 
-- `IPosition` — Represents a single point in source code with line, column, and absolute index coordinates.
-- `ILocation` — Represents a span in source code from start position to end position.
+## 🤖 Entity Listing
 
-### Code Entity Metadata
+### Function
+- **getBranchDeltaType** — Returns the branch delta type `index.ts:214-217`
+- **getEntityBatchType** — Returns the entity batch type `index.ts:234-237`
+- **getEntityType** — Returns the entity type `index.ts:204-207`
+- **getGpuWorkerResponseType** — Returns the GPU worker response type `index.ts:224-227`
+- **getIPCMessageType** — Returns the IPC message type `index.ts:219-222`
+- **getPacketHeaderType** — Returns the packet header type `index.ts:229-232`
+- **getRelationshipBatchType** — Returns the relationship batch type `index.ts:239-242`
+- **getRelationshipType** — Returns the relationship type `index.ts:209-212`
+- **getType** — Returns the type of an entity `index.ts:199-202`
+- **loadProtoRoot** — Asynchronously loads all proto files and returns the root `index.ts:22-36`
+- **loadProtoRootSync** — Synchronously loads all proto files and returns the root `index.ts:41-55`
 
-- `IParameter` — Describes a function parameter with name and optional type annotation.
-- `IImportSpecifier` — Represents a single imported name from an import statement.
-- `IImportData` — Contains metadata about imports including specifiers list and source module information.
-- `IDecorator` — Represents a decorator or annotation applied to a code entity (e.g., @Override, @Deprecated).
-- `IEntityMetadata` — Holds optional metadata about a code entity including decorators, imports, and custom fields.
-- `IEntity` — Core representation of a code entity (function, class, variable, etc.) with kind, name, location, and optional metadata.
+### Method
+- **decodeBranchDelta** — Decodes a branch delta from a byte array `index.ts:306-309`
+- **decodeEntity** — Decodes an entity from a byte array `index.ts:256-259`
+- **decodeEntityBatch** — Decodes a batch of entities from a byte array `index.ts:267-271`
+- **decodeGpuWorkerResponse** — Decodes a GPU worker response from a packet header `index.ts:328-331`
+- **decodeIPCMessage** — Decodes an IPC message from a byte array `index.ts:317-320`
+- **decodePacketHeader** — Decodes a packet header from a byte array `index.ts:339-342`
+- **decodeRelationship** — Decodes a relationship from a byte array `index.ts:281-284`
+- **decodeRelationshipBatch** — Decodes a batch of relationships from a byte array `index.ts:292-296`
+- **encodeBranchDelta** — Encodes a branch delta into a byte array `index.ts:299-304`
+- **encodeEntity** — Encodes an entity into a byte array `index.ts:249-254`
+- **encodeEntityBatch** — Encodes a batch of entities into a byte array `index.ts:262-265`
+- **encodeGpuWorkerResponse** — Encodes a GPU worker response into a packet header `index.ts:323-326`
+- **encodeIPCMessage** — Encodes an IPC message into a byte array `index.ts:312-315`
+- **encodePacketHeader** — Encodes a packet header into a byte array `index.ts:334-337`
+- **encodeRelationship** — Encodes a relationship into a byte array `index.ts:274-279`
+- **encodeRelationshipBatch** — Encodes a batch of relationships into a byte array `index.ts:287-290`
 
-### Relationships & Dependencies
+### Interface
+- **IBranchDelta** — Defines a delta for a branch `index.ts:151-158`
+- **IDecorator** — Represents a decorator for modifying entity metadata `index.ts:88-92`
+- **IEntity** — Interface for an entity `index.ts:105-120`
+- **IEntityDelta** — Defines a delta for an entity `index.ts:139-143`
+- **IEntityMetadata** — Interface for metadata associated with an entity `index.ts:94-103`
+- **IGpuWorkerResponse** — Defines an interface for GPU worker responses `index.ts:173-181`
+- **IImportData** — Represents import data with source and specifiers `index.ts:81-86`
+- **IImportSpecifier** — Represents an import specifier with local and imported names `index.ts:76-79`
+- **IIPCMessage** — Defines an interface for IPC messages `index.ts:160-166`
+- **ILocation** — Represents the location of a token with start and end positions `index.ts:64-67`
+- **IPacketHeader** — Defines an interface for packet headers `index.ts:183-187`
+- **IParameter** — Represents a parameter with name, type, optional flag, and default value `index.ts:69-74`
+- **IPosition** — Represents the position of a token with line, column, and index `index.ts:58-62`
+- **IRelationship** — Defines a relationship between entities `index.ts:129-137`
+- **IRelationshipDelta** — Defines a delta for a relationship `index.ts:145-149`
+- **IRelationshipMetadata** — Defines metadata for a relationship `index.ts:122-127`
+- **ISearchResult** — Defines an interface for search results `index.ts:168-171`
 
-- `IRelationshipMetadata` — Holds optional metadata about relationships between entities.
-- `IRelationship` — Represents a directed relationship between two entities (e.g., calls, inherits, imports) with kind, source entity ID, and target entity ID.
+### Import_decl
+- **node:path** — Imports `node:path` from `node:path`. `index.ts:7-7`
+- **node:url** — Imports `node:url` from `node:url`. `index.ts:8-8`
+- **protobufjs** — Imports `protobufjs` from `protobufjs`. `index.ts:6-6`
 
-### Incremental Change Structures
-
-- `IEntityDelta` — Encodes an add, update, or delete operation on a single entity for incremental synchronization.
-- `IRelationshipDelta` — Encodes an add, update, or delete operation on a single relationship for incremental synchronization.
-- `IBranchDelta` — Container for all entity and relationship deltas associated with a branch commit.
-
-### Inter-Process Communication
-
-- `IIPCMessage` — Wraps an IPC request or response payload with an optional ID for request-response pairing.
-- `ISearchResult` — Represents a single result from a code search query, containing matched entity and associated metadata.
-- `IGpuWorkerResponse` — Response message from a GPU worker containing computed analysis results.
-- `IPacketHeader` — Header metadata for data packets including size, type, and sequence identifiers.
-
-### Utility Functions & Accessors
-
-- `getType` — Generic function to retrieve a message type definition by name from the cached protobuf Root instance.
-- `getEntityType` — Returns the Entity message type definition from the loaded protobuf schema.
-- `getRelationshipType` — Returns the Relationship message type definition from the loaded protobuf schema.
-- `getBranchDeltaType` — Returns the BranchDelta message type definition from the loaded protobuf schema.
-- `getIPCMessageType` — Returns the IIPCMessage message type definition from the loaded protobuf schema.
-- `getGpuWorkerResponseType` — Returns the IGpuWorkerResponse message type definition from the loaded protobuf schema.
-- `getPacketHeaderType` — Returns the IPacketHeader message type definition from the loaded protobuf schema.
-- `getEntityBatchType` — Returns the EntityBatch message type definition from the loaded protobuf schema.
-- `getRelationshipBatchType` — Returns the RelationshipBatch message type definition from the loaded protobuf schema.
-
-### Serialization & Encoding
-
-- `encodeEntity` — Serializes an Entity object to binary protobuf format.
-- `decodeEntity` — Deserializes binary protobuf data into an Entity object.
-- `encodeEntityBatch` — Serializes an EntityBatch object to binary protobuf format.
-- `decodeEntityBatch` — Deserializes binary protobuf data into an EntityBatch object.
-- `encodeRelationship` — Serializes a Relationship object to binary protobuf format.
-- `decodeRelationship` — Deserializes binary protobuf data into a Relationship object.
-- `encodeRelationshipBatch` — Serializes a RelationshipBatch object to binary protobuf format.
-- `decodeRelationshipBatch` — Deserializes binary protobuf data into a RelationshipBatch object.
-- `encodeBranchDelta` — Serializes a BranchDelta object to binary protobuf format.
-- `decodeBranchDelta` — Deserializes binary protobuf data into a BranchDelta object.
-- `encodeIPCMessage` — Serializes an IIPCMessage object to binary protobuf format.
-- `decodeIPCMessage` — Deserializes binary protobuf data into an IIPCMessage object.
-- `encodeGpuWorkerResponse` — Serializes an IGpuWorkerResponse object to binary protobuf format.
-- `decodeGpuWorkerResponse` — Deserializes binary protobuf data into an IGpuWorkerResponse object.
-- `encodePacketHeader` — Serializes an IPacketHeader object to binary protobuf format.
-- `decodePacketHeader` — Deserializes binary protobuf data into an IPacketHeader object.
-
-
-### Added Entities
-
-- **IPosition** — `index.ts:58-62`
-- **ILocation** — `index.ts:64-67`
-- **IParameter** — `index.ts:69-74`
-- **IImportSpecifier** — `index.ts:76-79`
-- **IImportData** — `index.ts:81-86`
-- **IDecorator** — `index.ts:88-92`
-- **IEntityMetadata** — `index.ts:94-103`
-- **IEntity** — `index.ts:105-120`
-- **IRelationshipMetadata** — `index.ts:122-127`
-- **IRelationship** — `index.ts:129-137`
-- **IEntityDelta** — `index.ts:139-143`
-- **IRelationshipDelta** — `index.ts:145-149`
-- **IBranchDelta** — `index.ts:151-158`
-- **IIPCMessage** — `index.ts:160-166`
-- **ISearchResult** — `index.ts:168-171`
-- **IGpuWorkerResponse** — `index.ts:173-181`
-- **IPacketHeader** — `index.ts:183-187`
-- **loadProtoRoot** — `index.ts:22-36`
-- **loadProtoRootSync** — `index.ts:41-55`
-- **getType** — `index.ts:199-202`
-- **getEntityType** — `index.ts:204-207`
-- **getRelationshipType** — `index.ts:209-212`
-- **getBranchDeltaType** — `index.ts:214-217`
-- **getIPCMessageType** — `index.ts:219-222`
-- **getGpuWorkerResponseType** — `index.ts:224-227`
-- **getPacketHeaderType** — `index.ts:229-232`
-- **getEntityBatchType** — `index.ts:234-237`
-- **getRelationshipBatchType** — `index.ts:239-242`
-- **encodeEntity** — `index.ts:249-254`
-- **decodeEntity** — `index.ts:256-259`
-- **encodeEntityBatch** — `index.ts:262-265`
-- **decodeEntityBatch** — `index.ts:267-271`
-- **encodeRelationship** — `index.ts:274-279`
-- **decodeRelationship** — `index.ts:281-284`
-- **encodeRelationshipBatch** — `index.ts:287-290`
-- **decodeRelationshipBatch** — `index.ts:292-296`
-- **encodeBranchDelta** — `index.ts:299-304`
-- **decodeBranchDelta** — `index.ts:306-309`
-- **encodeIPCMessage** — `index.ts:312-315`
-- **decodeIPCMessage** — `index.ts:317-320`
-- **encodeGpuWorkerResponse** — `index.ts:323-326`
-- **decodeGpuWorkerResponse** — `index.ts:328-331`
-- **encodePacketHeader** — `index.ts:334-337`
-- **decodePacketHeader** — `index.ts:339-342`
-- **__filename** — `index.ts:10-10`
-- **__dirname** — `index.ts:11-11`
-- **PROTO_DIR** — `index.ts:14-14`
-- **root** — `index.ts:200-200`
-- **proto** — `index.ts:247-343`
-- **type** — `index.ts:250-250`
-- **errMsg** — `index.ts:251-251`
-- **type** — `index.ts:257-257`
-- **type** — `index.ts:263-263`
-- **type** — `index.ts:268-268`
-- **decoded** — `index.ts:269-269`
-- **type** — `index.ts:275-275`
-- **errMsg** — `index.ts:276-276`
-- **type** — `index.ts:282-282`
-- **type** — `index.ts:288-288`
-- **type** — `index.ts:293-293`
-- **decoded** — `index.ts:294-294`
-- **type** — `index.ts:300-300`
-- **errMsg** — `index.ts:301-301`
-- **type** — `index.ts:307-307`
-- **type** — `index.ts:313-313`
-- **type** — `index.ts:318-318`
-- **type** — `index.ts:324-324`
-- **type** — `index.ts:329-329`
-- **type** — `index.ts:335-335`
-- **type** — `index.ts:340-340`
-- **_root** — `index.ts:17-17`
-- **_Entity** — `index.ts:190-190`
-- **_Relationship** — `index.ts:191-191`
-- **_BranchDelta** — `index.ts:192-192`
-- **_IPCMessage** — `index.ts:193-193`
-- **_GpuWorkerResponse** — `index.ts:194-194`
-- **_PacketHeader** — `index.ts:195-195`
-- **_EntityBatch** — `index.ts:196-196`
-- **_RelationshipBatch** — `index.ts:197-197`
+### Property
+- **added** — Represents the added delta for an entity `index.ts:140-140`, `index.ts:146-146`
+- **arguments** — Contains the arguments for the entity `index.ts:90-90`
+- **base_commit_sha** — Stores the SHA of the base commit `index.ts:153-153`
+- **branch_name** — Represents the name of the branch `index.ts:152-152`
+- **column** — The column number of a token `index.ts:60-60`
+- **column** — Represents the column number of a position `index.ts:124-124`
+- **complexity_score** — Complexity score of the entity `index.ts:115-115`
+- **content_type** — Represents the type of content being processed `index.ts:185-185`
+- **context** — Stores the context of an entity `index.ts:125-125`
+- **created_at** — Creation timestamp of the entity `index.ts:113-113`
+- **created_at** — Stores the timestamp when the entity was created `index.ts:136-136`
+- **decorators** — List of decorators for the entity `index.ts:101-101`
+- **default_value** — The default value of a parameter `index.ts:73-73`
+- **deleted** — Represents the deleted delta for an entity `index.ts:142-142`, `index.ts:148-148`
+- **dimensions** — Defines the dimensions of the embeddings `index.ts:178-178`
+- **distance** — Represents the distance in the search result `index.ts:170-170`
+- **embedding** — Stores the embedding of an entity `index.ts:118-118`
+- **embedding_text** — Stores the text representation of an entity's embedding `index.ts:119-119`
+- **embeddings** — Stores the embeddings in the response `index.ts:177-177`
+- **end** — The end position of a token `index.ts:66-66`
+- **entities** — Represents a collection of entities `index.ts:269-269`
+- **entity_delta** — Describes the delta of an entity `index.ts:154-154`
+- **error** — Indicates an error in the message `index.ts:165-165`, `index.ts:175-175`
+- **extra** — Additional information for the entity `index.ts:102-102`
+- **extra** — Stores additional information about an entity `index.ts:126-126`
+- **file_path** — File path of the entity `index.ts:109-109`
+- **from_id** — Represents the identifier of the entity from which the relationship originates `index.ts:131-131`
+- **hash** — Hash of the entity `index.ts:112-112`
+- **id** — Unique identifier for the entity `index.ts:106-106`
+- **id** — Represents the unique identifier of an entity `index.ts:130-130`
+- **id** — Identifies the message `index.ts:162-162`, `index.ts:169-169`
+- **import_data** — Data for importing the entity `index.ts:98-98`
+- **imported** — The imported name of an import specifier `index.ts:78-78`
+- **index** — The index of a token `index.ts:61-61`
+- **is_builtin** — Indicates whether the entity is a built-in type `index.ts:91-91`
+- **is_default** — Indicates if an import is a default import `index.ts:84-84`
+- **is_namespace** — Indicates if an import is a namespace import `index.ts:85-85`
+- **language** — Language of the entity `index.ts:100-100`, `index.ts:116-116`
+- **last_modified** — Indicates the last modified time `index.ts:156-156`
+- **line** — The line number of a token `index.ts:59-59`
+- **line** — Represents the line number of a position `index.ts:123-123`
+- **local** — The local name of an import specifier `index.ts:77-77`
+- **location** — Location of the entity `index.ts:110-110`
+- **message_id** — Identifies a specific message `index.ts:186-186`
+- **metadata** — Metadata for the entity `index.ts:111-111`
+- **metadata** — Stores metadata for the relationship `index.ts:134-134`
+- **modified** — Represents the modified delta for an entity `index.ts:141-141`, `index.ts:147-147`
+- **modifiers** — List of modifiers for the entity `index.ts:95-95`
+- **name** — The name of a parameter `index.ts:70-70`
+- **name** — Stores the name of the entity `index.ts:89-89`, `index.ts:107-107`
+- **optional** — Indicates if a parameter is optional `index.ts:72-72`
+- **parameters** — Array of parameters for the entity `index.ts:97-97`
+- **payload** — Contains the message payload `index.ts:163-163`
+- **payload_size** — Specifies the size of the payload in the packet header `index.ts:184-184`
+- **relationship_delta** — Represents the delta of a relationship `index.ts:155-155`
+- **relationships** — Represents a collection of relationships `index.ts:294-294`
+- **results** — Contains the results of the search `index.ts:179-179`
+- **return_type** — Specifies the return type of the entity `index.ts:96-96`
+- **signature** — Signature of the entity `index.ts:99-99`
+- **size_bytes** — Represents the size of an entity in bytes `index.ts:117-117`
+- **source** — The source of an import `index.ts:82-82`
+- **specifiers** — The specifiers of an import `index.ts:83-83`
+- **start** — The start position of a token `index.ts:65-65`
+- **success** — Indicates the success status of the response `index.ts:174-174`
+- **timestamp** — Records the timestamp of the message `index.ts:164-164`
+- **to_id** — Represents the identifier of the entity to which the relationship points `index.ts:132-132`
+- **total_changes** — Counts the total number of changes `index.ts:157-157`
+- **type** — The type of a parameter `index.ts:71-71`
+- **type** — Type of the entity `index.ts:108-108`
+- **type** — Represents the type of the relationship `index.ts:133-133`
+- **type** — Specifies the type of the message `index.ts:161-161`, `index.ts:176-176`
+- **updated_at** — Last update timestamp of the entity `index.ts:114-114`
+- **vector_count** — Counts the number of vectors in the results `index.ts:180-180`
+- **weight** — Represents the weight of the relationship `index.ts:135-135`
 
 ## Dependencies
 

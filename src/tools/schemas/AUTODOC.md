@@ -1,6 +1,6 @@
 # Schemas
 
-Zod validation schemas for MCP tool parameters and configurations
+Central collection of Zod schemas for validating tool parameters across code analysis, documentation generation, entity management, graph operations, and file modification tools.
 
 ## Overview
 

@@ -60,7 +60,7 @@ GraphStorage (all entities after indexing)
 
 | Export | Kind | Description | Location |
 |--------|------|-------------|----------|
-| `analyzeSwaggerCodeLinks` | function | Main entry: analyzes all swagger↔code links from entity array | [`swagger-code-linker.ts:117-185`](./swagger-code-linker.ts) |
+| `analyzeSwaggerCodeLinks` | function | Main entry: analyzes all swagger↔code links from entity array | [`swagger-code-linker.ts:102-172`](./swagger-code-linker.ts) |
 | `buildSwaggerRelationships` | function | Converts SwaggerAnalysis to graph relationships | [`swagger-code-linker.ts:190-240`](./swagger-code-linker.ts) |
 | `getCodegenConfigFiles` | function | Lists known codegen config filenames | [`swagger-code-linker.ts:693-695`](./swagger-code-linker.ts) |
 | `getGeneratedCodeMarkers` | function | Lists auto-generation file markers | [`swagger-code-linker.ts:686-688`](./swagger-code-linker.ts) |

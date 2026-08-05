@@ -1,17 +1,107 @@
----
-module_name: sync
-description: "Bidirectional synchronization between markdown files on disk and SQLite database"
-status: active
-language: typescript
----
-
 # Sync
 
-> Provides bidirectional synchronization between `.md` documentation files on disk and the AutoDoc SQLite database, with parallel file discovery, timestamp-based change detection, and single-file read/write utilities.
+## 🤖 Overview
 
-## Overview
+The `file-sync` module facilitates bidirectional synchronization between .md files on disk and an SQLite database. It ensures that changes made to .md files are validated and updated in the database, while changes in the database are reflected in the corresponding .md files. This module is used by developers and maintainers to keep documentation files and the database in sync, ensuring consistency and reliability.
 
-The sync module bridges the gap between the file system and the database by syncing documentation in both directions. Disk-to-DB sync discovers markdown files via BFS traversal, compares file modification times against database timestamps, and only syncs newer files. DB-to-disk sync groups database documents by file path, generates markdown content, and writes files that are older than the database version. Bidirectional sync runs disk-to-DB first (to pick up user edits) then DB-to-disk (to write API-generated docs). All operations are parallelized for performance.
+## 🤖 Architecture
+
+```
+       +-------------------+
+       |   File Sync Module |
+       +-------------------+
+           /         \
+       +-------------+     +-------------+
+       | Disk Files  |     | SQLite DB  |
+       +-------------+     +-------------+
+           \         /
+       +-------------+
+       | File Ops    |
+       +-------------+
+           |
+           v
+       +-------------------+
+       |   File Sync Logic |
+       +-------------------+
+           |
+           v
+       +-------------------+
+       |   Sync Results    |
+       +-------------------+
+```
+
+## 🤖 Flow
+
+```
+       +-------------------+
+       |   File Sync Module |
+       +-------------------+
+           /         \
+       +-------------+     +-------------+
+       | Disk Files  |     | SQLite DB  |
+       +-------------+     +-------------+
+           \         /
+       +-------------+
+       | File Ops    |
+       +-------------+
+           |
+           v
+       +-------------------+
+       |   Sync Logic      |
+       +-------------------+
+           |
+           v
+       +-------------------+
+       |   Sync Results    |
+       +-------------------+
+           |
+           v
+       +-------------------+
+       |   Sync Results    |
+       +-------------------+
+```
+
+## 🤖 Entity Listing
+
+### Function
+- **dbTime** — Calculates the latest update time from a list of documents `file-sync.ts:261-261`
+- **findMarkdownFiles** — Function to find all .md files in a directory recursively `file-sync.ts:54-108`
+- **generateMarkdownFromDocs** — Generates a markdown string from an array of documents, sorted by section `file-sync.ts:191-216`
+- **groupDocsByFile** — Groups documents by their file path `file-sync.ts:176-186`
+- **lastSync** — Calculates the last sync time based on existing documents `file-sync.ts:143-143`
+- **levelResults** — Results from processing a level of directories in parallel `file-sync.ts:65-96`
+- **readDocumentFromDisk** — Reads a document from a file `file-sync.ts:331-343`
+- **sorted** — Sorts an array of documents by their section, with empty sections first `file-sync.ts:193-198`
+- **syncBidirectional** — Synchronizes documents between disk and database in both directions `file-sync.ts:300-314`
+- **syncDbToDisk** — Synchronizes changes from SQLite database to .md files on disk `file-sync.ts:237-291`
+- **syncDiskToDb** — Synchronizes .md files from disk to SQLite database `file-sync.ts:118-167`
+- **writeDocToFile** — Writes a document to a file `file-sync.ts:222-231`
+- **writeDocumentToDisk** — Writes a document to a file `file-sync.ts:323-325`
+
+### Interface
+- **FileInfo** — Interface representing file information including path and modification time `file-sync.ts:41-44`
+- **FileSyncResult** — Represents the result of file synchronization between disk and database `file-sync.ts:27-39`
+
+### Import_decl
+- **../../utils/file-ops.js** — Imports `../../utils/file-ops.js` from `../../utils/file-ops.js`. `file-sync.ts:19-19`
+- **../../utils/parallel.js** — Imports `../../utils/parallel.js` from `../../utils/parallel.js`. `file-sync.ts:20-20`
+- **../types.js** — Imports `../types.js` from `../types.js`. `file-sync.ts:21-21`
+- **node:path** — Imports `node:path` from `node:path`. `file-sync.ts:18-18`
+
+### Property
+- **added** — Array of files added during disk to database sync `file-sync.ts:30-30`
+- **content** — Reads the content of a document from disk and returns it along with the modification time `file-sync.ts:331-331`
+- **dbToDisk** — Contains the result of syncing files from database to disk `file-sync.ts:35-38`
+- **depth** — Depth of directory traversal `file-sync.ts:56-56`, `file-sync.ts:71-71`
+- **diskToDb** — Contains the result of syncing files from disk to database `file-sync.ts:29-33`
+- **error** — Represents an error encountered during file operations `file-sync.ts:32-32`, `file-sync.ts:37-37`
+- **errors** — Array of errors encountered during disk to database sync `file-sync.ts:32-32`, `file-sync.ts:37-37`
+- **file** — Represents a file in the file system `file-sync.ts:32-32`, `file-sync.ts:37-37`
+- **mtime** — Modification time of a file `file-sync.ts:43-43`
+- **mtime** — Reads the modification time of a document from disk and returns it along with the content `file-sync.ts:331-331`
+- **path** — Path to a file or directory `file-sync.ts:42-42`, `file-sync.ts:56-56`, `file-sync.ts:71-71`
+- **updated** — Array of files updated during disk to database sync `file-sync.ts:31-31`
+- **written** — Array of files written during database to disk sync `file-sync.ts:36-36`
 
 ## Data Flow
 
@@ -23,7 +113,7 @@ The sync module bridges the gap between the file system and the database by sync
 
 | Export | Type | Description | Location |
 |--------|------|-------------|----------|
-| `FileInfo` | interface | File path and modification time | [`file-sync.ts:41-44`](./file-sync.ts) |
+| `FileInfo` | interface | File path and modification time | [`file-sync.ts:43-43`](./file-sync.ts) |
 | `FileSyncResult` | interface | Combined result of bidirectional sync (diskToDb + dbToDisk) | [`file-sync.ts:27-39`](./file-sync.ts) |
 | `findMarkdownFiles` | function | Recursively discovers all .md files with BFS and parallel stat | [`file-sync.ts:54-108`](./file-sync.ts) |
 | `syncDiskToDb` | function | Syncs newer disk files to database via provided callbacks | [`file-sync.ts:118-167`](./file-sync.ts) |

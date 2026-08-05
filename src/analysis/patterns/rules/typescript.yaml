@@ -272,8 +272,24 @@ patterns:
     structural:
       entityTypes: ["method", "function", "async_function"]
       hasDeleteExpression: true
+    customDetector: "checkDeleteOperator"
     minSemanticSimilarity: 0
     minStructuralConfidence: 0.9
+
+  - id: "ts:jit-shape-divergence"
+    category: "optimization"
+    severity: "medium"
+    name: "Object Shape Divergence"
+    description: "One function builds object literals of several different shapes, or adds fields conditionally — each variant is a separate hidden class, so a single read downstream goes polymorphic and then megamorphic"
+    suggestion: "Emit one fixed key set in a fixed order (a factory or class), and pre-set absent fields to null instead of adding them under a condition"
+    benchmark: "12 shapes vs 1 measured at 40.3 vs 12.0 ns per read on Node 24 (V8), 21.8 vs 15.5 ns on Bun 1.3 (JSC); a class-based factory recovers most of it"
+    tags: ["jit", "performance"]
+    enabled: true
+    structural:
+      entityTypes: ["method", "function", "async_function"]
+    customDetector: "checkShapeDivergence"
+    minSemanticSimilarity: 0
+    minStructuralConfidence: 0.5
 
   - id: "ts:jit-arguments-object"
     category: "optimization"

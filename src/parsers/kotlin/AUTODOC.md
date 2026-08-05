@@ -1,17 +1,91 @@
----
-module_name: kotlin
-description: "Type definitions for the Kotlin ANTLR parser context and extracted information"
-status: active
-language: typescript
----
-
 # Kotlin
 
-> Defines all shared types for the Kotlin parser pipeline, including parser context, call info, control flow, documentation, coroutines, complexity metrics, and framework patterns.
+## 🤖 Overview
 
-## Overview
+The `kotlin` parser module in `src/parsers/kotlin` provides a set of types and interfaces for parsing Kotlin code, particularly focusing on coroutine and Android ViewModel patterns. It re-exports shared JVM types and includes Kotlin-specific type definitions for backward compatibility and framework-specific information.
 
-This module provides the foundational type definitions used across all Kotlin parser submodules. It defines the `ParserContext` passed through parsing functions, structural types for calls, annotations, inheritance, parameters, control flow (including Kotlin-specific constructs like `when`, `elvis`, labeled returns), KDoc documentation, coroutine information, complexity metrics, and framework pattern types for Android ViewModel and Ktor routing.
+## 🤖 Architecture
+
+```
+  +---------------------+
+  |     Kotlin Parser   |
+  +---------------------+
+  |     +-----------------+     |
+  |     | Shared JVM Types |     |
+  |     +-----------------+     |
+  |     +-----------------+     |
+  |     | Kotlin-Specific |     |
+  |     |   Types         |     |
+  |     +-----------------+     |
+  |     +-----------------+     |
+  |     | Framework Types |     |
+  |     +-----------------+     |
+  |     +-----------------+     |
+  |     | Coroutine Info   |     |
+  |     +-----------------+     |
+  |     +-----------------+     |
+  |     | ViewModel Info   |     |
+  |     +-----------------+     |
+  +---------------------+
+```
+
+## 🤖 Flow
+
+```
+  +---------------------+
+  |     Kotlin Parser   |
+  +---------------------+
+  |     +-----------------+     |
+  |     | Parse Kotlin    |     |
+  |     |   Code          |     |
+  |     +-----------------+     |
+  |     +-----------------+     |
+  |     | Extract Shared  |     |
+  |     |   JVM Types     |     |
+  |     +-----------------+     |
+  |     +-----------------+     |
+  |     | Extract Kotlin  |     |
+  |     |   Specific Types|     |
+  |     +-----------------+     |
+  |     +-----------------+     |
+  |     | Extract Framework|     |
+  |     |   Types         |     |
+  |     +-----------------+     |
+  |     +-----------------+     |
+  |     | Process Coroutine|     |
+  |     |   Info          |     |
+  |     +-----------------+     |
+  |     +-----------------+     |
+  |     | Process ViewModel|     |
+  |     |   Info          |     |
+  |     +-----------------+     |
+  +---------------------+
+```
+
+## 🤖 Entity Listing
+
+### Interface
+- **CoroutineInfo** — Represents coroutine-specific information including suspend status and associated coroutine types `types.ts:40-48`
+- **KtorRouteInfo** — Represents Ktor routing pattern information including HTTP method, path, and location `types.ts:66-70`
+- **ViewModelInfo** — Represents Android ViewModel pattern information including state flows and live data `types.ts:57-61`
+
+### Import_decl
+- **../jvm/shared-types.js** — Imports `../jvm/shared-types.js` from `../jvm/shared-types.js`. `types.ts:7-7`
+
+### Property
+- **dispatcherUsed** — Specifies the dispatcher used by the coroutine `types.ts:46-46`
+- **hasAsync** — Indicates whether a coroutine uses the async function `types.ts:43-43`
+- **hasFlow** — Indicates whether a coroutine uses the flow function `types.ts:44-44`
+- **hasLaunch** — Indicates whether a coroutine uses the launch function `types.ts:42-42`
+- **hasWithContext** — Indicates whether a coroutine uses the withContext function `types.ts:45-45`
+- **isSuspend** — Indicates whether a coroutine is suspendable `types.ts:41-41`
+- **liveData** — Lists LiveData associated with the ViewModel `types.ts:59-59`
+- **location** — Provides location information for the Ktor route `types.ts:69-69`
+- **method** — Specifies the HTTP method used in the Ktor route `types.ts:67-67`
+- **path** — Specifies the path of the Ktor route `types.ts:68-68`
+- **savedStateHandle** — Indicates whether the ViewModel uses a savedStateHandle `types.ts:60-60`
+- **scopeType** — Indicates the scope type of the coroutine `types.ts:47-47`
+- **stateFlows** — Lists state flows associated with the ViewModel `types.ts:58-58`
 
 ## Data Flow
 

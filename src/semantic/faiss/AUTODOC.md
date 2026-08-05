@@ -30,7 +30,7 @@ The faiss module implements vector indexing for the semantic search pipeline. **
 | `initializeFaissProvider` | function | Creates and initializes FaissProvider | [`faiss-provider.ts:765-769`](./faiss-provider.ts) |
 | `FaissProvider` | class | In-memory FAISS index with auto-save and project context | [`faiss-provider.ts:62-750`](./faiss-provider.ts) |
 | `LayeredFaissProvider` | class | Two-layer (base + delta) index with tombstone support | [`layered-faiss-provider.ts:91-861`](./layered-faiss-provider.ts) |
-| `getLayeredFaissProvider` | function | Singleton factory for LayeredFaissProvider | [`layered-faiss-provider.ts:872-877`](./layered-faiss-provider.ts) |
+| `getLayeredFaissProvider` | function | Singleton factory for LayeredFaissProvider | [`layered-faiss-provider.ts:91-966`](./layered-faiss-provider.ts) |
 | `IFaissProvider` | interface | Common interface for both standard and layered providers | [`provider-interface.ts:13-103`](./provider-interface.ts) |
 | `IVectorProvider` | interface | Minimal interface for EmbeddingAccumulator (addBatch, getExistingIds, remove, save) | [`types.ts:24-35`](./types.ts) |
 | `FaissIndexConfig` | interface | Index configuration (dimensions, type, HNSW/IVF parameters) | [`types.ts:35-58`](./types.ts) |

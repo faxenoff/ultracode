@@ -47,10 +47,17 @@ for (const [full, compact] of Object.entries(COMPACT_KEYS)) {
   }
 }
 
-/** Compact metadata keys before CBOR encoding */
+/**
+ * Compact metadata keys before CBOR encoding.
+ * Keys holding `undefined` are dropped: cbor-x encodes them as real entries
+ * (39 bytes vs 9 for a 4-key sample), and a missing key decodes to `undefined`
+ * anyway. This keeps the BLOB small even though parsedEntityToEntity now always
+ * emits the full metadata skeleton to keep the object shape stable.
+ */
 function compactKeys(obj: Record<string, unknown>): Record<string, unknown> {
   const result: Record<string, unknown> = {};
   for (const [key, value] of Object.entries(obj)) {
+    if (value === undefined) continue;
     result[COMPACT_KEYS[key] ?? key] = value;
   }
   return result;

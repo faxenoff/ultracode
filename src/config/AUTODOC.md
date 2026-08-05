@@ -49,7 +49,7 @@ The configuration module manages all application-wide settings for the MCP serve
 | `getMCPConfigSafe()` | function | Get MCP config with embedding availability flag | [`yaml-config.ts:820-820`](./yaml-config.ts) |
 | `initializeConfig()` | function | Initialize config and log startup info | [`yaml-config.ts:833-844`](./yaml-config.ts) |
 | `validateConfig()` | function | Validate config, return error array | [`yaml-config.ts:853-853`](./yaml-config.ts) |
-| `buildWorkerEmbeddingConfig()` | function | Build worker-specific embedding config (cached) | [`worker-embedding-config.ts:217-217`](./worker-embedding-config.ts) |
+| `buildWorkerEmbeddingConfig()` | function | Build worker-specific embedding config (cached) | [`worker-embedding-config.ts:214-249`](./worker-embedding-config.ts) |
 | `CONSTANTS` | const | All constants as single aggregate object | [`constants.ts:277-285`](./constants.ts) |
 | `CACHE_CONSTANTS` | const | Cache TTL, max entries, eviction settings | [`constants.ts:26-47`](./constants.ts) |
 | `DATABASE_CONSTANTS` | const | SQLite pool size, page size, WAL limits | [`constants.ts:58-93`](./constants.ts) |

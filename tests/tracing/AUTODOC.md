@@ -1,25 +1,59 @@
 # Module: tests/tracing
 
-## Overview
+## 🤖 Overview
 
-The tracing module test suite validates the semantic code tracing subsystem, which enables developers to understand how data flows through code, trace function call chains, analyze state changes, and detect decision points. Tests cover five core components (PathBuilder, StateTracker, ConditionAnalyzer, DataFlowAnalyzer, OutputFormatter) using a mock storage layer, ensuring accurate graph traversal, dependency tracking, and visualization output.
+The `tracing-module.test.ts` file contains tests for the Semantic Tracing Module, focusing on core tracing functionalities such as path finding, state change detection, decision point analysis, and data flow tracing. These tests are used by developers to ensure the correctness and reliability of the tracing module's components.
 
-## Flow
+## 🤖 Architecture
 
 ```
-Test Setup
-    ↓
-createMockStorage (mock entities & relationships)
-    ↓
-Component-Specific Tests
-    ├─ PathBuilder: Graph → Paths (callers/callees/nodes)
-    ├─ StateTracker: Entity → State changes & impacts
-    ├─ ConditionAnalyzer: Code → Decision points
-    ├─ DataFlowAnalyzer: Entity → Data dependencies
-    └─ OutputFormatter: Analysis → Text/Mermaid output
-    ↓
-Assertions & Results
+  +---------------------+
+  |  PathBuilder       |
+  +---------------------+
+  |  StateTracker      |
+  +---------------------+
+  |  ConditionAnalyzer |
+  +---------------------+
+  |  DataFlowAnalyzer  |
+  +---------------------+
+  |  OutputFormatter   |
+  +---------------------+
 ```
+
+## 🤖 Flow
+
+```
+  +---------------------+
+  |  PathBuilder       |
+  +---------------------+
+  |  StateTracker      |
+  +---------------------+
+  |  ConditionAnalyzer |
+  +---------------------+
+  |  DataFlowAnalyzer  |
+  +---------------------+
+  |  OutputFormatter   |
+  +---------------------+
+```
+
+## 🤖 Entity Listing
+
+### Function
+- **createMockStorage** — Creates a mock storage for testing semantic tracing module functionalities `tracing-module.test.ts:25-61`
+- **e** — Represents an entity in the test data `tracing-module.test.ts:41-41`
+- **types** — Maps decision points to their types `tracing-module.test.ts:291-291`
+
+### Import_decl
+- **../../src/tracing/condition-analyzer.js** — Imports `../../src/tracing/condition-analyzer.js` from `../../src/tracing/condition-analyzer.js`. `tracing-module.test.ts:13-13`
+- **../../src/tracing/data-flow-analyzer.js** — Imports `../../src/tracing/data-flow-analyzer.js` from `../../src/tracing/data-flow-analyzer.js`. `tracing-module.test.ts:14-14`
+- **../../src/tracing/output-formatter.js** — Imports `../../src/tracing/output-formatter.js` from `../../src/tracing/output-formatter.js`. `tracing-module.test.ts:15-15`
+- **../../src/tracing/path-builder.js** — Imports `../../src/tracing/path-builder.js` from `../../src/tracing/path-builder.js`. `tracing-module.test.ts:16-16`
+- **../../src/tracing/state-tracker.js** — Imports `../../src/tracing/state-tracker.js` from `../../src/tracing/state-tracker.js`. `tracing-module.test.ts:17-17`
+- **../../src/types/storage.js** — Imports `../../src/types/storage.js` from `../../src/types/storage.js`. `tracing-module.test.ts:18-18`, `tracing-module.test.ts:19-19`
+- **bun:test** — Imports `bun:test` from `bun:test`. `tracing-module.test.ts:12-12`
+
+### Property
+- **namePattern** — A pattern used for searching entities by name in the mock storage `tracing-module.test.ts:29-29`
 
 ## Test Structure
 

@@ -1,17 +1,99 @@
----
-module_name: language-configs
-description: "Language-specific parsing configurations for 20+ programming languages with AST node types and extraction rules"
-status: active
-language: typescript
----
-
 # Language Configs
 
-> Central registry of language-specific parsing configurations defining AST node types, file extensions, keywords, and extraction rules for 20+ programming languages.
+## 🤖 Overview
 
-## Overview
+The `language-configs` module provides a comprehensive set of language configurations and utilities for various programming languages, including Python, JavaScript, and more. It is used by developers and tools that require language-specific parsing and analysis capabilities.
 
-The language-configs module provides `LanguageConfig` objects for every supported programming language, organized into four sub-modules: compiled languages (C, C++, C#, Go, Java, Kotlin, Rust, Swift, Zig), JavaScript family (JS, TS, JSX, TSX), scripting languages (Python, Bash, Batch, PowerShell), and markup languages (CSS, HTML, JSON, XML). The central registry maps language names to configs and provides lookup functions for determining language from file paths, checking AST node types (function, class, import, export, type), and validating configurations.
+The `language-configs` module is structured to export language configurations and utilities, making it easy for other modules to access and utilize these configurations. It includes a registry for language configurations and helper functions for advanced usage.
+
+## 🤖 Architecture
+
+```
+  +---------------------+
+  |     Language Configs |
+  +---------------------+
+          |               |
+          v               v
+  +---------------------+   +---------------------+
+  |     Python Helpers  |   |     Registry        |
+  +---------------------+   +---------------------+
+          |               |
+          v               v
+  +---------------------+   +---------------------+
+  |     JavaScript      |   |     Shared Keywords  |
+  +---------------------+   +---------------------+
+          |               |
+          v               v
+  +---------------------+
+  |     Markup Languages |
+  +---------------------+
+          |
+          v
+  +---------------------+
+  |     Scripting       |
+  +---------------------+
+```
+
+## 🤖 Flow
+
+```
+  +---------------------+
+  |     Language Configs |
+  +---------------------+
+          |               |
+          v               v
+  +---------------------+   +---------------------+
+  |     Python Helpers  |   |     Registry        |
+  +---------------------+   +---------------------+
+          |               |
+          v               v
+  +---------------------+   +---------------------+
+  |     JavaScript      |   |     Shared Keywords  |
+  +---------------------+   +---------------------+
+          |               |
+          v               v
+  +---------------------+
+  |     Markup Languages |
+  +---------------------+
+          |
+          v
+  +---------------------+
+  |     Scripting       |
+  +---------------------+
+```
+
+## 🤖 Entity Listing
+
+### Function
+- **getFileConfig** — Returns the configuration for a file based on its path `registry.ts:78-81`
+- **getLanguageConfig** — Returns the configuration for a specified language `registry.ts:71-73`
+- **getPythonNodeCategory** — Determines the category of a Python node based on its type and name, with layers of parsing and feature recognition `python-helpers.ts:103-143`
+- **isAsyncNode** — Check if a node type represents an async pattern (Layer 2) `python-helpers.ts:24-27`
+- **isClassNode** — Checks if a node type is a class node for a given language `registry.ts:94-97`
+- **isComprehensionNode** — Check if a node type represents a comprehension (Layer 2) `python-helpers.ts:40-48`
+- **isContextManagerNode** — Check if a node type represents a context manager pattern (Layer 4) `python-helpers.ts:53-56`
+- **isDecoratorNode** — Check if a node type represents a decorator (Layer 1) `python-helpers.ts:75-78`
+- **isExceptionHandlingNode** — Check if a node type represents exception handling (Layer 4) `python-helpers.ts:61-70`
+- **isExportNode** — Checks if a node type is an export node for a given language `registry.ts:110-113`
+- **isFunctionNode** — Checks if a node type is a function node for a given language `registry.ts:86-89`
+- **isGeneratorNode** — Check if a node type represents a generator pattern (Layer 2) `python-helpers.ts:32-35`
+- **isImportNode** — Checks if a node type is an import node for a given language `registry.ts:102-105`
+- **isMagicMethodNode** — Check if a node type represents a magic/dunder method (Layer 2) `python-helpers.ts:14-19`
+- **isSpecialClassNode** — Checks if a node is a special class node in Python, considering decorators and base classes `python-helpers.ts:83-98`
+- **isTypeNode** — Checks if a node type is a type or interface node for a given language `registry.ts:118-121`
+- **validateConfigurations** — Validates the configurations for all supported languages `registry.ts:126-138`
+
+### Import_decl
+- **../../logging/index.js** — Imports `../../logging/index.js` from `../../logging/index.js`. `registry.ts:7-7`
+- **../../types/parser.js** — Imports `../../types/parser.js` from `../../types/parser.js`. `python-helpers.ts:8-8`, `registry.ts:8-8`
+- **./compiled-languages/index.js** — Imports `./compiled-languages/index.js`. `registry.ts:9-19`
+- **./infrastructure/index.js** — Imports `./infrastructure/index.js`. `registry.ts:20-27`
+- **./javascript-family/index.js** — Imports `./javascript-family/index.js` from `./javascript-family/index.js`. `registry.ts:29-29`
+- **./markup-languages/index.js** — Imports `./markup-languages/index.js` from `./markup-languages/index.js`. `registry.ts:30-30`
+- **./registry.js** — Imports `./registry.js` from `./registry.js`. `python-helpers.ts:9-9`
+- **./scripting-languages/index.js** — Imports `./scripting-languages/index.js` from `./scripting-languages/index.js`. `registry.ts:31-31`
+- **./shared/types.js** — Imports `./shared/types.js` from `./shared/types.js`. `registry.ts:32-32`
+- **./shared/utils.js** — Imports `./shared/utils.js` from `./shared/utils.js`. `registry.ts:33-33`
 
 ## Data Flow
 

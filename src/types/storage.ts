@@ -357,6 +357,28 @@ export interface ConnectionPool<T> {
 
 // -- Conversion helpers -----------------------------------------------------
 
+/**
+ * Fixed key set of the metadata skeleton built by {@link parsedEntityToEntity}.
+ * Parser-supplied keys colliding with it are skipped, which preserves the
+ * previous precedence (skeleton was spread last, so it overwrote the parser's).
+ */
+const META_SKELETON_KEYS = new Set([
+  "modifiers",
+  "returnType",
+  "parameters",
+  "importData",
+  "signature",
+  "language",
+  "decorators",
+  "calls",
+  "controlFlow",
+  "metrics",
+  "jitHints",
+  "antipatternHints",
+  "closureHints",
+  "pythonHints",
+]);
+
 export function parsedEntityToEntity(
   parsed: ParsedEntity,
   filePath: string,
@@ -375,8 +397,13 @@ export function parsedEntityToEntity(
         }
       : undefined;
 
+  // Fixed key set in a fixed order: every entity gets the same hidden class, so
+  // reads like entity.metadata.calls stay monomorphic across the whole pipeline.
+  // The previous form spread parser metadata first (~200 distinct shapes) and
+  // then added four conditional spreads on top (2^4 more variants) — that made
+  // this the most megamorphic object in the codebase. undefined values are
+  // dropped during CBOR encoding, so the stored BLOB does not grow.
   const meta: Entity["metadata"] = {
-    ...(parsed.metadata ?? {}),
     modifiers: parsed.modifiers,
     returnType: parsed.returnType,
     parameters: parsed.parameters,
@@ -387,11 +414,19 @@ export function parsedEntityToEntity(
     calls: parsed.calls,
     controlFlow: parsed.controlFlow,
     metrics: complexityMeta,
-    ...(parsed.jitHints && { jitHints: parsed.jitHints }),
-    ...(parsed.antipatternHints && { antipatternHints: parsed.antipatternHints }),
-    ...(parsed.closureHints && { closureHints: parsed.closureHints }),
-    ...(parsed.pythonHints && { pythonHints: parsed.pythonHints }),
+    jitHints: parsed.jitHints,
+    antipatternHints: parsed.antipatternHints,
+    closureHints: parsed.closureHints,
+    pythonHints: parsed.pythonHints,
   };
+
+  // Parser-specific keys keep their flat layout — the same BLOB is read by the
+  // Zig implementation, so the storage format must not change.
+  if (parsed.metadata) {
+    for (const [key, value] of Object.entries(parsed.metadata)) {
+      if (!META_SKELETON_KEYS.has(key)) meta[key] = value;
+    }
+  }
 
   return {
     name: parsed.name,
@@ -401,6 +436,34 @@ export function parsedEntityToEntity(
     location: parsed.location,
     metadata: meta,
     language: parsed.language,
+  };
+}
+
+/**
+ * Finalize a parsed entity into a storage {@link Entity}.
+ *
+ * A single factory on purpose: every Entity created while indexing then shares
+ * one hidden class, and the key order matches what rowToEntity() produces for
+ * entities read back from SQLite — so both sources look identical to the JIT.
+ */
+export function finalizeEntity(
+  base: Omit<Entity, "id" | "createdAt" | "updatedAt">,
+  id: string,
+  timestamp: number,
+): Entity {
+  return {
+    id,
+    name: base.name,
+    type: base.type,
+    filePath: base.filePath,
+    location: base.location,
+    metadata: base.metadata,
+    hash: base.hash,
+    createdAt: timestamp,
+    updatedAt: timestamp,
+    complexity: base.complexity,
+    language: base.language,
+    size: base.size,
   };
 }
 

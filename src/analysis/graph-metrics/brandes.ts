@@ -37,12 +37,14 @@ export function computeBetweenness(adjacency: Map<string, Set<string>>, maxSourc
   const nodeToIdx = new Map<string, number>();
   for (let i = 0; i < n; i++) nodeToIdx.set(allNodes[i]!, i);
 
-  // Build CSR-like adjacency for fast iteration
-  const neighbors: number[][] = new Array(n);
+  // Build CSR-like adjacency for fast iteration.
+  // Filled via push instead of new Array(n): new Array(n) yields HOLEY elements
+  // that never turn PACKED again, and this array is read on every BFS edge.
+  const neighbors: number[][] = [];
   for (let i = 0; i < n; i++) {
     const adj = adjacency.get(allNodes[i]!);
     if (!adj) {
-      neighbors[i] = [];
+      neighbors.push([]);
       continue;
     }
     const nbs: number[] = [];
@@ -50,7 +52,7 @@ export function computeBetweenness(adjacency: Map<string, Set<string>>, maxSourc
       const j = nodeToIdx.get(nb);
       if (j !== undefined) nbs.push(j);
     }
-    neighbors[i] = nbs;
+    neighbors.push(nbs);
   }
 
   // Centrality accumulator

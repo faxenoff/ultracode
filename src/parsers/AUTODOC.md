@@ -68,11 +68,11 @@ Multi-language source code parsing framework supporting 20+ languages. Uses a tw
 | `TypeScriptParser` | class | [`typescript-parser.ts:164-332`](./typescript-parser.ts) | TS Compiler API parser with Angular/NgRx support |
 | `MultiPassOrchestrator` | class | [`multipass/multipass-orchestrator.ts:38-405`](./multipass/multipass-orchestrator.ts) | Two-pass OXC + TS API coordinator |
 | `getMultiPassOrchestrator` | function | [`multipass/multipass-orchestrator.ts:410-416`](./multipass/multipass-orchestrator.ts) | Singleton factory for orchestrator |
-| `fastParse` | function | [`multipass/oxc-fast-parser.ts:99-175`](./multipass/oxc-fast-parser.ts) | OXC single-file fast parse |
+| `fastParse` | function | [`multipass/oxc-fast-parser.ts:136-142`](./multipass/oxc-fast-parser.ts) | OXC single-file fast parse |
 | `fastParseBatch` | function | [`multipass/oxc-fast-parser.ts:180-181`](./multipass/oxc-fast-parser.ts) | OXC batch fast parse |
 | `BaseParser` | interface | [`base-parser.ts:27-57`](./base-parser.ts) | Common interface for all parsers |
 | `ParserStats` | interface | [`base-parser.ts:13-22`](./base-parser.ts) | Cache hits, throughput, error count |
-| `LineOffsetMap` | class | [`base-parser-utils.ts:21-50`](./base-parser-utils.ts) | O(log n) index-to-line/column lookup |
+| `LineOffsetMap` | class | [`base-parser-utils.ts:22-22`](./base-parser-utils.ts) | O(log n) index-to-line/column lookup |
 | `CircuitBreakerError` | class | [`base-parser-utils.ts:65-70`](./base-parser-utils.ts) | Thrown on recursion/timeout breach |
 | `checkCircuitBreakers` | function | [`base-parser-utils.ts:117-133`](./base-parser-utils.ts) | Guard against infinite loops |
 | `ComplexityScore` | interface | [`multipass/types.ts:14-31`](./multipass/types.ts) | Complexity metrics (0-100 scale) |
