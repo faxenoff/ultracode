@@ -2,7 +2,53 @@
 
 ## 🤖 Overview
 
-This module provides type definitions for NgRx constructs and builder functions that convert NgRx analysis results into graph entities and relationships. It models the full NgRx data flow: actions trigger effects and reducers, reducers modify state, selectors compose state queries, and components dispatch actions and select state. The builders produce `ParsedEntity` and `NgRxRelationship` objects for integration into the code knowledge graph.
+The `src/parsers/ngrx` module is responsible for parsing NgRx analysis results and converting them into graph entities and relationships. It is used by developers and data analysts to understand and visualize the structure of NgRx applications.
+
+## 🤖 Architecture
+
+```
+  +---------------------+
+  |     NgRx Analysis   |
+  +---------------------+
+          | 
+          v
+  +---------------------+
+  | NgRx Entity Builders |
+  +---------------------+
+          |
+          v
+  +---------------------+
+  | NgRx Relationship Builders |
+  +---------------------+
+          |
+          v
+  +---------------------+
+  | NgRx Parser Module   |
+  +---------------------+
+```
+
+## 🤖 Flow
+
+```
+  +---------------------+
+  | NgRx Analysis       |
+  +---------------------+
+          | 
+          v
+  +---------------------+
+  | NgRx Entity Builders |
+  +---------------------+
+          |
+          v
+  +---------------------+
+  | NgRx Relationship Builders |
+  +---------------------+
+          |
+          v
+  +---------------------+
+  | NgRx Parser Module   |
+  +---------------------+
+```
 
 ## 🤖 Entity Listing
 
@@ -29,28 +75,32 @@ This module provides type definitions for NgRx constructs and builder functions 
 ### Property
 - **actionName** — The name of the action being dispatched `types.ts:68-68`
 - **actions** — An array of NgRxAction objects `types.ts:89-89`
-- **actionType** — The type of action the handler responds to `types.ts:38-38`
 - **actionType** — The type of the action being dispatched `types.ts:69-69`
 - **actionType** — Specifies the type of an NgRx action `types.ts:105-105`
-- **callerEntity** — The entity that initiated the dispatch `types.ts:70-70`, `types.ts:80-80`
+- **actionType** — The type of action the handler responds to `types.ts:38-38`
+- **callerEntity** — The entity that initiated the dispatch `types.ts:70-70`
+- **callerEntity** — Represents the entity that called the current function `types.ts:80-80`
 - **context** — Represents an optional string context `types.ts:106-106`
 - **dependencies** — Other selectors this selector depends on `types.ts:58-58`
-- **dispatches** — The action types this effect dispatches `types.ts:27-27`
 - **dispatches** — An array of NgRxDispatch objects `types.ts:93-93`
+- **dispatches** — The action types this effect dispatches `types.ts:27-27`
 - **effects** — An array of NgRxEffect objects `types.ts:90-90`
-- **filePath** — The file path where the action is defined `types.ts:17-17`, `types.ts:30-30`, `types.ts:49-49`
-- **filePath** — The file path where the selector is defined `types.ts:60-60`, `types.ts:71-71`, `types.ts:81-81`
+- **filePath** — Stores the file path of the current file `types.ts:49-49`, `types.ts:60-60`
+- **filePath** — The file path where the selector is defined `types.ts:30-30`, `types.ts:71-71`
+- **filePath** — The file path where the action is defined `types.ts:17-17`, `types.ts:81-81`
 - **fromName** — Represents the name of the source entity in a relation `types.ts:101-101`
 - **functional** — Indicates whether the effect is created using createEffect or @Effect decorator `types.ts:29-29`
 - **handlers** — An array of reducer handlers `types.ts:48-48`
 - **hasProps** — Indicates whether the action has properties `types.ts:15-15`
 - **isRoot** — Indicates whether the effect is a root effect `types.ts:28-28`
-- **line** — The line number in the file where the action is defined `types.ts:18-18`, `types.ts:31-31`, `types.ts:50-50`
-- **line** — The line number where the selector is defined `types.ts:61-61`, `types.ts:72-72`, `types.ts:82-82`
+- **line** — Indicates the line number in the file `types.ts:50-50`, `types.ts:61-61`
+- **line** — The line number where the selector is defined `types.ts:31-31`, `types.ts:72-72`
+- **line** — The line number in the file where the action is defined `types.ts:18-18`, `types.ts:82-82`
 - **listensTo** — The action types this effect responds to `types.ts:26-26`
 - **metadata** — Stores additional information about a relation `types.ts:104-107`
-- **name** — The name of the action `types.ts:13-13`, `types.ts:25-25`, `types.ts:46-46`
-- **name** — The name of the selector `types.ts:57-57`
+- **name** — Stores the name of the entity `types.ts:46-46`, `types.ts:57-57`
+- **name** — The name of the action `types.ts:13-13`
+- **name** — The name of the selector `types.ts:25-25`
 - **propsType** — The type of properties if the action has them `types.ts:16-16`
 - **reducers** — An array of NgRxReducer objects `types.ts:91-91`
 - **selectorName** — The name of the selector being selected `types.ts:79-79`
@@ -60,8 +110,8 @@ This module provides type definitions for NgRx constructs and builder functions 
 - **stateName** — The name of the state the reducer manages `types.ts:47-47`
 - **statePath** — The state path for the selector `types.ts:59-59`
 - **toName** — Represents the name of the target entity in a relation `types.ts:102-102`
-- **type** — The type of the action, e.g., '[Task] Load Tasks' `types.ts:14-14`
 - **type** — Defines the type of a relation `types.ts:103-103`
+- **type** — The type of the action, e.g., '[Task] Load Tasks' `types.ts:14-14`
 
 ## Data Flow
 

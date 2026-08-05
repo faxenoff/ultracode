@@ -75,18 +75,25 @@ The `recent-changes-enrichment.ts` module provides a utility for annotating diag
 ### Property
 - **changeType** — Type of change to an entity, either "added" or "modified" `recent-changes-enrichment.ts:20-20`
 - **commitsAnalyzed** — Number of commits analyzed `recent-changes-enrichment.ts:28-28`
-- **entityId** — Unique identifier for an entity `recent-changes-enrichment.ts:17-17`, `recent-changes-enrichment.ts:33-33`
-- **entityId** — Represents the unique identifier of an entity `recent-changes-enrichment.ts:125-125`, `recent-changes-enrichment.ts:144-144`
-- **entityName** — Name of an entity `recent-changes-enrichment.ts:18-18`, `recent-changes-enrichment.ts:35-35`
-- **entityName** — Represents the name of an entity `recent-changes-enrichment.ts:145-145`
-- **filePath** — File path where an entity is located `recent-changes-enrichment.ts:19-19`, `recent-changes-enrichment.ts:36-36`
-- **filePath** — Represents the file path of an entity `recent-changes-enrichment.ts:142-142`
+- **entityId** — Unique identifier for an entity `recent-changes-enrichment.ts:17-17`
+- **entityId** — Represents the unique identifier of an entity `recent-changes-enrichment.ts:33-33`
+- **entityId** — An array of objects containing an optional entityId and other properties `recent-changes-enrichment.ts:125-125`
+- **entityId** — Stores the entity ID as a string `recent-changes-enrichment.ts:144-144`
+- **entityName** — Name of an entity `recent-changes-enrichment.ts:18-18`
+- **entityName** — Represents the name of an entity `recent-changes-enrichment.ts:35-35`
+- **entityName** — Stores the entity name as a string `recent-changes-enrichment.ts:145-145`
+- **filePath** — File path where an entity is located `recent-changes-enrichment.ts:19-19`
+- **filePath** — Represents the file path of an entity `recent-changes-enrichment.ts:36-36`
+- **filePath** — Stores the file path as a string `recent-changes-enrichment.ts:142-142`
 - **getLibSQLAdapter** — Function to get a GraphAdapter from storage `recent-changes-enrichment.ts:45-45`
 - **hint** — A hint or note related to the significance of the change `recent-changes-enrichment.ts:22-22`
-- **line** — Represents the line number of an entity `recent-changes-enrichment.ts:143-143`, `recent-changes-enrichment.ts:159-159`
-- **location** — Represents the location of an entity `recent-changes-enrichment.ts:141-141`, `recent-changes-enrichment.ts:159-159`
+- **line** — Represents the line number of an entity `recent-changes-enrichment.ts:143-143`
+- **line** — Represents the line number of changes, including the file path and line number `recent-changes-enrichment.ts:159-159`
+- **location** — Represents the location of an entity `recent-changes-enrichment.ts:141-141`
+- **location** — Represents the location of changes, including the file path and line number `recent-changes-enrichment.ts:159-159`
 - **recentlyChangedEntities** — Array of recently changed entities `recent-changes-enrichment.ts:26-26`
-- **significance** — Significance level of the change, either "critical", "high", or "medium" `recent-changes-enrichment.ts:21-21`, `recent-changes-enrichment.ts:34-34`
+- **significance** — Significance level of the change, either "critical", "high", or "medium" `recent-changes-enrichment.ts:21-21`
+- **significance** — Represents the significance level of changes, which can be critical, high, medium, or undefined `recent-changes-enrichment.ts:34-34`
 - **timeMs** — Time taken in milliseconds to analyze changes `recent-changes-enrichment.ts:29-29`
 - **totalAnnotated** — Total number of annotated entities `recent-changes-enrichment.ts:27-27`
 

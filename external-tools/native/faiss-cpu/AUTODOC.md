@@ -1,25 +1,29 @@
-# faiss-cpu
+# Module: external-tools/native/faiss-cpu
 
 ## 🤖 Overview
 
-The `external-tools/native/faiss-cpu` module provides a native CPU implementation of the FAISS library, enabling efficient similarity search and clustering for high-dimensional vectors. This module is primarily used by developers and data scientists who need to perform fast nearest neighbor searches on large datasets without relying on GPU acceleration.
+The `external-tools/native/faiss-cpu` module provides a native CPU implementation of the FAISS library, enabling efficient similarity search and clustering for high-dimensional vector data. This module is primarily used by developers and data scientists who need to perform fast nearest neighbor searches and clustering operations without relying on GPU acceleration.
 
 ## 🤖 Architecture
 
 ```
-[FAISS CPU]
+[FAISS CPU Module]
     |
     v
-[Vector Index] → [Search Engine] → [Distance Metric]
+[Vector Index] ← [Vector Data]
     |
     v
-[Data Structure] → [Index Manager] → [Memory Allocator]
+[Search Engine] ← [Vector Index]
+    |
+    v
+[Clustering Engine] ← [Vector Index]
 ```
 
 ## 🤖 Flow
 
 ```
-[User Input] → [Index Manager] → [Vector Index] → [Search Engine] → [Distance Metric] → [Result Output]
+[Vector Data] ← [Data Source] → [Vector Index] → [Search Engine] → [Result]
+[Vector Data] ← [Data Source] → [Vector Index] → [Clustering Engine] → [Cluster Result]
 ```
 
 ## 🤖 Entity Listing
@@ -30,13 +34,3 @@ The `external-tools/native/faiss-cpu` module provides a native CPU implementatio
 ### Import_decl
 - **cmake-js** — Imports `cmake-js`. `package.json:0-0`
 - **node-addon-api** — Imports `node-addon-api`. `package.json:0-0`
-
-## Entity listing
-
-### Packages
-
-- **ultracode-faiss-cpu** — `package.json:1-1` — CPU-optimized variant of the FAISS library for vector similarity search operations.
-
-## Dependencies
-
-This module represents a native, precompiled dependency and does not contain internal TypeScript/JavaScript code. External dependencies are managed through the package manager and include the underlying FAISS C++ library compiled for CPU execution.

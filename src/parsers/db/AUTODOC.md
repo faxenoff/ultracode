@@ -2,30 +2,120 @@
 
 ## 🤖 Overview
 
-The Db module analyzes database schemas and links them to code entities, enabling detection of ORM patterns, Redis usage, and data access relationships throughout the codebase. It provides parsers for multiple schema definition formats (SQL, Prisma, LINQ) and pattern detectors to extract database usage from code. By connecting schema metadata to code entities, the module enables impact analysis of database changes and discovery of how applications interact with persistent data stores.
+The `db` module provides a suite of parsers and detectors for analyzing database code and schema drift. It includes tools for linking database entities to code entities, detecting ORM and SQL patterns, and identifying migration files. Developers and data engineers use this module to understand and maintain database structures and migrations.
+
+## 🤖 Architecture
+
+```
+  +-------------------+
+  |   DbCodeLinker    |
+  |   (links DB to code)|
+  +-------------------+
+          |
+          v
+  +-------------------+
+  |  LinqParser       |
+  |  (parses Linq queries)|
+  +-------------------+
+          |
+          v
+  +-------------------+
+  |  MigrationDetector |
+  |  (detects migration files)|
+  +-------------------+
+          |
+          v
+  +-------------------+
+  |  MigrationSchemaBuilder |
+  |  (builds migration schemas)|
+  +-------------------+
+          |
+          v
+  +-------------------+
+  |  OrmDetector       |
+  |  (detects ORM frameworks)|
+  +-------------------+
+          |
+          v
+  +-------------------+
+  |  PrismaParser      |
+  |  (parses Prisma schema)|
+  +-------------------+
+          |
+          v
+  +-------------------+
+  |  RedisDetector     |
+  |  (detects Redis patterns)|
+  +-------------------+
+          |
+          v
+  +-------------------+
+  |  SchemaDriftDetector |
+  |  (detects schema drift)|
+  +-------------------+
+          |
+          v
+  +-------------------+
+  |  SqlParser         |
+  |  (parses SQL queries)|
+  +-------------------+
+```
 
 ## 🤖 Flow
 
 ```
-Schema Files (SQL, Prisma, LINQ)
-        ↓
-    [Parsers]
-    /   |   \
-   ↓    ↓    ↓
- SqlParser  PrismaParser  LinqParser
-        ↓
-  [Schema Extraction]
-  Tables, Columns, Constraints
-        ↓
-  [Pattern Detectors]
-  /           \
- ↓             ↓
-ORM Models    Redis Patterns
-        ↓
-[DbSchemaAnalysis]
-        ↓
-Code Entity → Database Entity Links
-(reads_table, writes_table, maps_to_table)
+  +-------------------+
+  |   DbCodeLinker    |
+  |   (links DB to code)|
+  +-------------------+
+          |
+          v
+  +-------------------+
+  |  LinqParser       |
+  |  (parses Linq queries)|
+  +-------------------+
+          |
+          v
+  +-------------------+
+  |  MigrationDetector |
+  |  (detects migration files)|
+  +-------------------+
+          |
+          v
+  +----------------
+  |  MigrationSchemaBuilder |
+  |  (builds migration schemas)|
+  +----------------
+          |
+          v
+  +-------------------+
+  |  OrmDetector       |
+  |  (detects ORM frameworks)|
+  +-------------------+
+          |
+          v
+  +-------------------+
+  |  PrismaParser      |
+  |  (parses Prisma schema)|
+  +-------------------+
+          |
+          v
+  +-------------------+
+  |  RedisDetector     |
+  |  (detects Redis patterns)|
+  +-------------------+
+          |
+          v
+  +-------------------+
+  |  SchemaDriftDetector |
+  |  (detects schema drift)|
+  +-------------------+
+          |
+          v
+  +-------------------+
+  |  SqlParser         |
+  |  (parses SQL queries)|
+  +-------------------+
 ```
 
 ## 🤖 Entity Listing
@@ -199,10 +289,10 @@ Code Entity → Database Entity Links
 - **alterColumns** — Represents columns to be altered in an ALTER TABLE statement `sql-parser.ts:259-259`
 - **alterConstraints** — Represents constraints to be altered in an ALTER TABLE statement `sql-parser.ts:260-260`
 - **alterTarget** — Represents the target of an ALTER TABLE statement `sql-parser.ts:258-258`
-- **arguments** — Extracts arguments from an annotation `orm-detector.ts:54-54`
-- **arguments** — Stores the arguments of an entity `orm-detector.ts:172-172`
 - **arguments** — Extracts the table name from the decorator arguments `orm-detector.ts:180-180`
 - **arguments** — Extracts the name from the annotation arguments `orm-detector.ts:189-189`
+- **arguments** — Extracts arguments from an annotation `orm-detector.ts:54-54`
+- **arguments** — Stores the arguments of an entity `orm-detector.ts:172-172`
 - **autoIncrement** — Indicates whether a column is auto-incremented `types.ts:16-16`
 - **body** — Represents the body of a .linq file `linq-parser.ts:104-104`
 - **body** — Represents the body of the block `prisma-parser.ts:135-135`
@@ -215,18 +305,18 @@ Code Entity → Database Entity Links
 - **columnDrifts** — Represents the drifts between database columns and ORM models `types.ts:152-160`
 - **columnName** — Stores the name of a database column `types.ts:154-154`
 - **columns** — The columns of the ORM table `schema-drift-detector.ts:144-144`
-- **columns** — Represents an array of database columns `sql-parser.ts:390-390`
+- **columns** — Represents a list of database columns `sql-parser.ts:390-390`
+- **columns** — Maps column names to their respective database column objects `types.ts:120-120`
 - **columns** — The columns involved in an index `types.ts:23-23`
 - **columns** — Lists the columns of an effective table `types.ts:29-29`
-- **columns** — Maps column names to their respective database column objects `types.ts:120-120`
 - **comment** — A comment associated with a column `types.ts:18-18`
 - **confidence** — Indicates the confidence level of the link between database entities and code entities `types.ts:42-42`
 - **connectionId** — Represents the connection ID in the LINQ header `linq-parser.ts:100-100`
 - **content** — Represents the SQL content used to build a migration schema `migration-schema-builder.ts:68-68`
 - **createdBy** — Indicates the user who created a migration operation `types.ts:124-124`
-- **data** — Represents an optional array of constraint types and their associated data `sql-parser.ts:260-260`
 - **data** — Represents the data of a database entity `sql-parser.ts:807-807`
 - **data** — Merges constraints into a parsed entity `sql-parser.ts:840-840`
+- **data** — Represents an optional array of constraint types and their associated data `sql-parser.ts:260-260`
 - **dbEntityName** — The name of the database entity `types.ts:37-37`
 - **dbFilePath** — Represents the file path of the database schema `types.ts:40-40`
 - **default** — The default value for a column `types.ts:17-17`
@@ -271,20 +361,20 @@ Code Entity → Database Entity Links
 - **migrationSource** — Stores the source of the migration framework `types.ts:159-159`
 - **migrationValue** — Stores the value of a column in the migration framework `types.ts:157-157`
 - **missingMigrations** — Lists the missing migrations in a schema drift `types.ts:141-145`
+- **name** — Extracts the table name from the decorator arguments `orm-detector.ts:180-180`
+- **name** — Extracts the name from the annotation arguments `orm-detector.ts:189-189`
 - **name** — Extracts the name from an annotation `orm-detector.ts:54-54`
 - **name** — Represents the name of an entity `orm-detector.ts:100-100`
 - **name** — Extracts the name from the entity metadata `orm-detector.ts:142-142`
 - **name** — Formats the decorator names for logging `orm-detector.ts:166-166`
 - **name** — Extracts the decorator string argument `orm-detector.ts:172-172`
-- **name** — Extracts the table name from the decorator arguments `orm-detector.ts:180-180`
-- **name** — Extracts the name from the annotation arguments `orm-detector.ts:189-189`
 - **name** — Represents the name of the block `prisma-parser.ts:134-134`
 - **name** — The name of a column `schema-drift-detector.ts:188-188`
 - **name** — Represents the name of a SQL entity `sql-parser.ts:977-977`
 - **name** — Initializes an array to store parameter objects `sql-parser.ts:980-980`
+- **name** — Stores the name of a database column `types.ts:119-119`
 - **name** — The name of a database column `types.ts:11-11`
 - **name** — Provides the name of an effective table `types.ts:22-22`
-- **name** — Stores the name of a database column `types.ts:119-119`
 - **nugetReferences** — Represents the NuGet references in the LINQ header `linq-parser.ts:101-101`
 - **nullable** — Whether a column is nullable `schema-drift-detector.ts:188-188`
 - **nullable** — Indicates whether a column can contain null values `types.ts:14-14`
@@ -316,22 +406,23 @@ Code Entity → Database Entity Links
 - **summary** — Provides a summary of the database schema analysis `types.ts:164-164`
 - **tableLinks** — Contains links between database tables and code entities `types.ts:48-48`
 - **tableName** — Indicates the name of a table in a migration operation `types.ts:113-113`
-- **tableName** — Stores the name of a database table `types.ts:142-142`, `types.ts:148-148`, `types.ts:153-153`
+- **tableName** — Stores the name of a database table `types.ts:142-142`
+- **tableName** — Represents the name of a database table `types.ts:148-148`, `types.ts:153-153`
 - **tables** — Lists the tables in a migration schema `types.ts:131-131`
 - **tags** — Retrieves tags from entity metadata members. `orm-detector.ts `orm-detector.ts:142-142`
 - **toFile** — The file path of the target database entity `types.ts:59-59`
 - **toName** — The name of the target database entity in the relationship `types.ts:56-56`
 - **type** — Represents the type of the block `prisma-parser.ts:133-133`
 - **type** — The data type of a column `schema-drift-detector.ts:188-188`
-- **type** — Represents an optional array of constraint types and their associated data `sql-parser.ts:260-260`
 - **type** — Represents the type of a database entity `sql-parser.ts:807-807`
 - **type** — Represents the type of a SQL entity `sql-parser.ts:840-840`
 - **type** — Parses parameters from a string and returns an array of parameter objects `sql-parser.ts:977-977`
 - **type** — Initializes an array to store parameter objects `sql-parser.ts:980-980`
-- **type** — The data type of a database column `types.ts:12-12`
-- **type** — The type of the relationship between the database entities `types.ts:25-25`
+- **type** — Represents an optional array of constraint types and their associated data `sql-parser.ts:260-260`
 - **type** — Specifies the type of a migration operation `types.ts:57-57`
 - **type** — Specifies the type of database operation `types.ts:102-112`
+- **type** — The data type of a database column `types.ts:12-12`
+- **type** — The type of the relationship between the database entities `types.ts:25-25`
 - **unique** — Indicates whether a column has a unique constraint `types.ts:15-15`
 - **unique** — Indicates whether a column is unique `types.ts:24-24`
 - **value** — Extracts the value from an annotation `orm-detector.ts:100-100`

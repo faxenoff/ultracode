@@ -143,8 +143,9 @@ This module provides shared AST helper utilities for JVM parsers, enabling consi
 - **deprecated** — Not applicable in this context `shared-types.ts:183-183`
 - **description** — Provides a description of a parameter or entity `shared-types.ts:162-162`
 - **description** — JVM Shared Parser Types — Unified type definitions shared between Java and Kotlin ANTLR parsers `shared-types.ts:166-166`
-- **description** — Optionally stores the description of a code entity `shared-types.ts:171-171`, `shared-types.ts:177-177`
-- **description** — Represents an optional string description `shared-types.ts:190-190`
+- **description** — Optionally stores the description of a code entity `shared-types.ts:171-171`
+- **description** — Represents an optional string description `shared-types.ts:177-177`
+- **description** — Optionally stores a string description `shared-types.ts:190-190`
 - **end** — Represents the end location of a parsed entity `shared-types.ts:36-36`
 - **entities** — Contains an array of parsed entities `shared-types.ts:24-24`
 - **exceptions** — Represents the exceptions in a control flow `shared-types.ts:146-146`
@@ -182,13 +183,15 @@ This module provides shared AST helper utilities for JVM parsers, enabling consi
 - **location** — Represents the location of the call `shared-types.ts:49-49`
 - **location** — Represents the location of the branch `shared-types.ts:122-122`
 - **location** — Provides the location information for a code entity `shared-types.ts:127-127`
-- **location** — Stores the location information of a code entity `shared-types.ts:133-133`, `shared-types.ts:137-137`, `shared-types.ts:150-150`
+- **location** — Stores the location information of a code entity `shared-types.ts:133-133`
+- **location** — Represents a location information object `shared-types.ts:137-137`
+- **location** — Represents a location with detailed information `shared-types.ts:150-150`
 - **loops** — Represents the loops in a control flow `shared-types.ts:145-145`
 - **low** — Represents a low complexity rating `shared-complexity.ts:208-208`
 - **low** — Represents the low complexity level for cognitive complexity `shared-complexity.ts:209-209`
 - **low** — Represents the low complexity level for lines of code `shared-complexity.ts:210-210`
 - **low** — Represents the low complexity level for nesting depth `shared-complexity.ts:211-211`
-- **maxCyclomatic** — Stores the maximum cyclomatic complexity `shared-complexity.ts:152-152`
+- **maxCyclomatic** — Stores the maximum cyclomatic complexity found in the code `shared-complexity.ts:152-152`
 - **medium** — Represents a medium complexity rating `shared-complexity.ts:208-208`
 - **medium** — Represents the medium complexity level for cognitive complexity `shared-complexity.ts:209-209`
 - **medium** — Represents the medium complexity level for lines of code `shared-complexity.ts:210-210`
@@ -206,7 +209,7 @@ This module provides shared AST helper utilities for JVM parsers, enabling consi
 - **parameterCount** — Parameter count metric `shared-types.ts:208-208`
 - **params** — Represents the parameters of a documentation comment `shared-types.ts:167-167`
 - **property** — Not applicable in this context `shared-types.ts:187-192`
-- **publicMethodCount** — Represents the count of public methods in the class `shared-complexity.ts:156-156`
+- **publicMethodCount** — Counts the number of public methods in the code `shared-complexity.ts:156-156`
 - **receiver** — Not applicable in this context `shared-types.ts:193-193`
 - **receiverType** — Represents the receiver type for extension functions in Kotlin `shared-types.ts:69-69`
 - **relationships** — Stores relationships between parsed entities `shared-types.ts:25-25`
@@ -225,13 +228,15 @@ This module provides shared AST helper utilities for JVM parsers, enabling consi
 - **target** — Represents the target object for method calls `shared-types.ts:47-47`
 - **text** — Represents text content `shared-types.ts:221-221`
 - **throws** — Not applicable in this context `shared-types.ts:174-179`
-- **totalCognitive** — Stores the total cognitive complexity `shared-complexity.ts:153-153`
-- **totalCyclomatic** — Stores the total cyclomatic complexity `shared-complexity.ts:150-150`
+- **totalCognitive** — Indicates the total cognitive complexity of the code `shared-complexity.ts:153-153`
+- **totalCyclomatic** — Represents the total cyclomatic complexity of the code `shared-complexity.ts:150-150`
 - **type** — Represents the type of the parameter `shared-types.ts:97-97`
 - **type** — Specifies the type of an entity or value `shared-types.ts:108-120`
 - **type** — Not applicable in this context `shared-types.ts:126-126`
 - **type** — Specifies the type of a code entity, such as "try", "catch", "finally", or "throw" `shared-types.ts:131-131`
-- **type** — Optionally stores the type of a code entity `shared-types.ts:161-161`, `shared-types.ts:170-170`, `shared-types.ts:176-176`
+- **type** — Optionally stores the type of a code entity `shared-types.ts:161-161`
+- **type** — Optionally stores a string type `shared-types.ts:170-170`
+- **type** — Optionally represents a string type `shared-types.ts:176-176`
 - **typeArguments** — Represents type arguments for generic calls `shared-types.ts:55-55`
 - **version** — Not applicable in this context `shared-types.ts:185-185`
 - **weightedMethodsPerClass** — Calculates the weighted methods per class based on complexity `shared-complexity.ts:157-157`

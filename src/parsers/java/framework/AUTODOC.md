@@ -99,21 +99,29 @@ The `jpa-extractor.ts` module is designed to extract JPA-specific patterns and a
 - **../types.js** — Imports `../types.js` from `../types.js`. `jpa-extractor.ts:16-16`, `lombok-extractor.ts:16-16`, `spring-extractor.ts:16-16`
 
 ### Property
-- **entity** — Represents a parsed entity `jpa-extractor.ts:201-201`, `lombok-extractor.ts:286-286`, `spring-extractor.ts:196-196`
+- **entity** — Represents a parsed entity `jpa-extractor.ts:201-201`
+- **entity** — Lombok class-level annotations (exported for external use) `lombok-extractor.ts:286-286`
+- **entity** — Represents a Java Spring Framework Extractor that identifies and extracts Spring-specific patterns and annotations from Java code `spring-extractor.ts:196-196`
 - **handlerName** — Represents the handler name of an endpoint `spring-extractor.ts:253-253`
 - **handlerName** — Stores the handler name `spring-extractor.ts:259-259`
-- **isNative** — Optionally indicates if the query is native `jpa-extractor.ts:295-295`, `jpa-extractor.ts:300-300`
+- **isNative** — Optionally indicates if the query is native `jpa-extractor.ts:295-295`
+- **isNative** — Optionally indicates whether the query is native `jpa-extractor.ts:300-300`
 - **jpaInfo** — Represents JPA entity information `jpa-extractor.ts:97-97`
-- **location** — Represents the location information `spring-extractor.ts:254-254`, `spring-extractor.ts:260-260`
+- **location** — Represents the location information `spring-extractor.ts:254-254`
+- **location** — Stores information about the location `spring-extractor.ts:260-260`
 - **method** — Represents the HTTP method of an endpoint `spring-extractor.ts:252-252`
 - **method** — Stores the HTTP method `spring-extractor.ts:258-258`
-- **methodName** — Represents the name of the method `jpa-extractor.ts:293-293`, `jpa-extractor.ts:298-298`
+- **methodName** — Represents the name of the method `jpa-extractor.ts:293-293`
+- **methodName** — Stores the name of the method being processed `jpa-extractor.ts:298-298`
 - **path** — Represents the path of an endpoint `spring-extractor.ts:251-251`
 - **path** — Stores the request path `spring-extractor.ts:257-257`
-- **query** — Optionally holds a string query `jpa-extractor.ts:294-294`, `jpa-extractor.ts:299-299`
-- **relationships** — Stores entity relationships `jpa-extractor.ts:98-98`, `jpa-extractor.ts:202-202`
+- **query** — Optionally holds a string query `jpa-extractor.ts:294-294`
+- **query** — Optionally holds a string representing a query `jpa-extractor.ts:299-299`
+- **relationships** — Stores entity relationships `jpa-extractor.ts:98-98`
+- **relationships** — Represents a list of entity relationships `jpa-extractor.ts:202-202`
 - **relationships** — Represents relationships between entities `lombok-extractor.ts:287-287`
-- **relationships** — Stores an array of entity relationships `spring-extractor.ts:96-96`, `spring-extractor.ts:197-197`
+- **relationships** — Stores an array of entity relationships `spring-extractor.ts:96-96`
+- **relationships** — Represents a collection of entity relationships `spring-extractor.ts:197-197`
 - **springInfo** — Represents the Spring annotation information `spring-extractor.ts:95-95`
 
 ## Data Flow

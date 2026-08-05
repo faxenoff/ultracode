@@ -2,7 +2,53 @@
 
 ## 🤖 Overview
 
-The `dev` module in `src/agents` is designed for collecting and processing source files, particularly those related to code and data extensions. It is used by developers and data engineers to manage and index files efficiently. The module includes utilities for file collection, extension detection, and incremental indexing, making it a crucial component in the development and data engineering workflows.
+The `dev` module in `src/agents` is designed for collecting and processing source files, particularly those related to code and data extensions. It is used by developers and data engineers to manage and index files efficiently. The module includes utilities for file collection, extension detection, and incremental indexing, making it a crucial component in the development and data pipeline.
+
+## 🤖 Architecture
+
+```
+  +-------------------+
+  | file-collector.ts |
+  +-------------------+
+          |
+          v
+  +-------------------+
+  | file-extensions.ts |
+  +-------------------+
+          |
+          v
+  +-------------------+
+  | incremental-indexer.ts |
+  +-------------------+
+          |
+          v
+  +-------------------+
+  | indexing-pipeline.ts |
+  +-------------------+
+```
+
+## 🤖 Flow
+
+```
+  +-------------------+
+  | file-collector.ts |
+  +-------------------+
+          |
+          v
+  +-------------------+
+  | file-extensions.ts |
+  +-------------------+
+          |
+          v
+  +-------------------+
+  | incremental-indexer.ts |
+  +-------------------+
+          |
+          v
+  +-------------------+
+  | indexing-pipeline.ts |
+  +-------------------+
+```
 
 ## 🤖 Entity Listing
 
@@ -18,7 +64,8 @@ The `dev` module in `src/agents` is designed for collecting and processing sourc
 - **createHeuristicEntities** — Creates heuristic entities for a file that can't be parsed with AST, generating a single module entity representing the file `heuristic-parser.ts:48-88`
 - **currentFilesSet** — Represents the current set of files used for indexing `indexing-pipeline.ts:173-173`
 - **dbEntities** — Stores database entities `indexing-pipeline.ts:754-754`
-- **defaultIgnorePatterns** — Default ignore patterns for file collection `file-collector.ts:195-195`, `file-collector.ts:376-376`
+- **defaultIgnorePatterns** — Default ignore patterns for file collection `file-collector.ts:195-195`
+- **defaultIgnorePatterns** — Creates an array of ignore patterns from default excluded directory names `file-collector.ts:376-376`
 - **detectArchMirrors** — Detects architecture mirrors `vendored-detector.ts:200-255`
 - **detectChangedFiles** — Detects changed files based on the current and previous file sets `indexing-pipeline.ts:125-196`
 - **detectKnownVendored** — Detects known vendored path segments `vendored-detector.ts:164-194`
@@ -43,8 +90,10 @@ The `dev` module in `src/agents` is designed for collecting and processing sourc
 - **migEntity** — Represents a migration entity `indexing-pipeline.ts:760-760`
 - **processHeuristicFiles** — Processes heuristic files to extract entities and queues them for indexing `incremental-indexer.ts:279-310`
 - **processSupportedFiles** — Processes a list of files using the parser agent and queues the results for indexing `incremental-indexer.ts:220-270`
-- **relationships** — Represents the relationships in the graph `indexing-pipeline.ts:372-382`, `indexing-pipeline.ts:475-485`
-- **relationships** — Represents relationships between entities `indexing-pipeline.ts:575-585`, `indexing-pipeline.ts:693-703`
+- **relationships** — Represents the relationships in the graph `indexing-pipeline.ts:372-382`
+- **relationships** — Represents relationships between entities `indexing-pipeline.ts:475-485`
+- **relationships** — Maps GraphQL relationships to a new format with unique IDs and metadata `indexing-pipeline.ts:575-585`
+- **relationships** — Maps database relationships to a new format with unique IDs and metadata `indexing-pipeline.ts:693-703`
 - **resolveDbSchemaLinks** — Resolves database schema links from the provided directory `indexing-pipeline.ts:648-801`
 - **resolveGraphQLLinks** — Parses GraphQL links from the provided directory `indexing-pipeline.ts:547-637`
 - **resolveProtobufLinks** — Resolves Protobuf links in the files `indexing-pipeline.ts:447-537`
@@ -56,7 +105,8 @@ The `dev` module in `src/agents` is designed for collecting and processing sourc
 - **setupVectorProvider** — Initializes a vector provider based on the embedding configuration and current project context `incremental-indexer.ts:101-150`
 - **shouldExclude** — Determines if a file path should be excluded based on provided patterns `file-collector.ts:123-136`
 - **shouldUseIncrementalMode** — Determines if incremental mode should be used `indexing-pipeline.ts:813-815`
-- **uniqueDirs** — Set of unique directories scanned `file-collector.ts:439-439`, `file-collector.ts:448-448`
+- **uniqueDirs** — Set of unique directories scanned `file-collector.ts:439-439`
+- **uniqueDirs** — Extracts unique directories from a list of files by their relative paths `file-collector.ts:448-448`
 - **walkDir** — Walks through a directory to collect files `file-collector.ts:241-285`
 
 ### Interface
@@ -96,10 +146,12 @@ The `dev` module in `src/agents` is designed for collecting and processing sourc
 
 ### Property
 - **agentId** — A string representing the agent ID for file collection `file-collector.ts:154-154`
-- **agentId** — Unique identifier for the agent performing indexing `indexing-pipeline.ts:28-28`, `indexing-pipeline.ts:38-38`
+- **agentId** — Unique identifier for the agent performing indexing `indexing-pipeline.ts:28-28`
+- **agentId** — Stores the unique identifier for the agent performing the indexing `indexing-pipeline.ts:38-38`
 - **allFiles** — Array of all files in the directory `indexing-pipeline.ts:39-39`
 - **archMirrors** — Detects directories with architecture mirrors `vendored-detector.ts:65-65`
-- **Bun** — Runtime environment for Bun.Glob `file-collector.ts:186-186`, `file-collector.ts:433-433`
+- **Bun** — Runtime environment for Bun.Glob `file-collector.ts:186-186`
+- **Bun** — Checks if the current runtime is Bun and if the Bun.Glob module is available `file-collector.ts:433-433`
 - **byExtension** — Maps file extensions to their exclusion counts `file-collector.ts:163-163`
 - **changedFiles** — Array of files that have changed `indexing-pipeline.ts:47-47`
 - **codeFiles** — Represents the list of code files separated `indexing-pipeline.ts:291-291`
@@ -110,24 +162,31 @@ The `dev` module in `src/agents` is designed for collecting and processing sourc
 - **deletedEntities** — Represents the number of entities deleted during the indexing `indexing-pipeline.ts:61-61`
 - **deletedEntityIds** — Array of IDs of deleted entities `indexing-pipeline.ts:40-40`
 - **deletedFiles** — Array of deleted files `indexing-pipeline.ts:49-49`
-- **directory** — Directory path for indexing `indexing-pipeline.ts:25-25`, `indexing-pipeline.ts:35-35`
+- **directory** — Directory path for indexing `indexing-pipeline.ts:25-25`
+- **directory** — Stores the directory path for file operations `indexing-pipeline.ts:35-35`
 - **dirsScanned** — A number representing the number of directories scanned during file collection `file-collector.ts:160-160`
 - **dirsScanned** — Set of directories scanned `file-collector.ts:235-235`
 - **elapsedMs** — Time elapsed in milliseconds during file processing `incremental-indexer.ts:37-37`
 - **entitiesExtracted** — Represents the number of entities extracted during the indexing process `indexing-pipeline.ts:58-58`
 - **entityCount** — Represents the count of entities in the graph `indexing-pipeline.ts:68-68`
-- **errorCount** — Count of files that failed to be processed `incremental-indexer.ts:36-36`, `incremental-indexer.ts:224-224`
-- **errorCount** — Represents the number of failed file processing operations `incremental-indexer.ts:282-282`
+- **errorCount** — Represents the number of failed file processing operations `incremental-indexer.ts:224-224`, `incremental-indexer.ts:282-282`
+- **errorCount** — Count of files that failed to be processed `incremental-indexer.ts:36-36`
 - **excludedByDefault** — Represents the number of files excluded by default `file-collector.ts:162-162`
 - **excludedByDefault** — Boolean indicating if default exclusions are applied `file-collector.ts:235-235`
 - **excludedByPattern** — Represents the number of files excluded by a pattern `file-collector.ts:161-161`
-- **excludedByPattern** — Array of file paths excluded by patterns `file-collector.ts:185-185`, `file-collector.ts:235-235`, `file-collector.ts:372-372`
+- **excludedByPattern** — Array of file paths excluded by patterns `file-collector.ts:185-185`
+- **excludedByPattern** — Returns an object containing files and the count of files excluded by pattern `file-collector.ts:235-235`
+- **excludedByPattern** — Returns a promise containing an array of files and the count of files excluded by pattern `file-collector.ts:372-372`
 - **excludePatterns** — An array of strings representing patterns to exclude files `file-collector.ts:153-153`
-- **excludePatterns** — Array of patterns to exclude files from indexing `indexing-pipeline.ts:26-26`, `indexing-pipeline.ts:36-36`
+- **excludePatterns** — Array of patterns to exclude files from indexing `indexing-pipeline.ts:26-26`
+- **excludePatterns** — Stores an array of patterns to exclude files from processing `indexing-pipeline.ts:36-36`
 - **files** — An array of strings representing the files collected `file-collector.ts:158-158`
-- **files** — Array of collected files `file-collector.ts:185-185`, `file-collector.ts:235-235`, `file-collector.ts:372-372`
+- **files** — Array of collected files `file-collector.ts:185-185`
+- **files** — Returns an object containing files, directories scanned, and counts of files excluded by pattern and default `file-collector.ts:235-235`
+- **files** — Returns a promise containing an array of files and the count of files excluded by pattern `file-collector.ts:372-372`
 - **filesProcessed** — Number of files processed during indexing `indexing-pipeline.ts:57-57`
-- **Glob** — Glob pattern matching `file-collector.ts:186-186`, `file-collector.ts:433-433`
+- **Glob** — Glob pattern matching `file-collector.ts:186-186`
+- **Glob** — Checks if the current runtime is Bun and if the Bun.Glob module is available `file-collector.ts:433-433`
 - **ignore** — Specifies patterns to ignore during file scanning `file-collector.ts:175-175`
 - **incremental** — Boolean indicating if the indexing is incremental `indexing-pipeline.ts:27-27`
 - **isIncremental** — Boolean indicating if the indexing is incremental `indexing-pipeline.ts:37-37`
@@ -143,8 +202,8 @@ The `dev` module in `src/agents` is designed for collecting and processing sourc
 - **skipped** — Represents the number of files skipped during the embedding generation `indexing-pipeline.ts:77-77`
 - **stats** — An object containing statistics about the file collection process `file-collector.ts:159-164`
 - **stats** — Logs statistics for arch mirrors, mass headers, known vendored directories, and total skipped files `vendored-detector.ts:64-69`
-- **successCount** — Count of successfully processed files `incremental-indexer.ts:35-35`, `incremental-indexer.ts:224-224`
-- **successCount** — Represents the number of successful file processing operations `incremental-indexer.ts:282-282`
+- **successCount** — Represents the number of successful file processing operations `incremental-indexer.ts:224-224`, `incremental-indexer.ts:282-282`
+- **successCount** — Count of successfully processed files `incremental-indexer.ts:35-35`
 - **supportedFiles** — List of files that are supported for full parsing `incremental-indexer.ts:27-27`
 - **totalFiles** — Represents the total number of files processed during the indexing `indexing-pipeline.ts:60-60`
 - **totalSkippedFiles** — Counts total skipped files `vendored-detector.ts:68-68`

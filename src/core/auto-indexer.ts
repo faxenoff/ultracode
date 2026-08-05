@@ -5,6 +5,7 @@
  * Extracted from index.ts for better modularity.
  */
 
+import { glob } from "node:fs/promises";
 import { log } from "../logging/index.js";
 import { getMainRepoPath } from "../shared/git-worktree.js";
 import type { Agent, AgentTask } from "../types/agent.js";
@@ -105,26 +106,20 @@ export async function detectSupportedProject(
   extensions: string[],
 ): Promise<{ supported: boolean; detectedExt?: string; sampleFile?: string }> {
   try {
-    const { glob } = await import("glob");
-
     // Build glob pattern for all supported extensions
     // e.g., **/*.{ts,tsx,js,jsx,py,go,rs,kt,swift,c,cpp,java}
     const extList = extensions.map((e) => e.replace(/^\./, "")).join(",");
-    const pattern = `**/*.{${extList}}`;
+    // node:fs glob has no maxDepth, so the depth cap is spelled out as five
+    // patterns — still "don't go too deep for quick detection".
+    const patterns = Array.from({ length: 5 }, (_, depth) => `${"*/".repeat(depth)}*.{${extList}}`);
 
-    // Use glob with limit 1 for fast detection
-    const files = await glob(pattern, {
+    // Stop at the first hit — this only answers "is anything here?"
+    for await (const file of glob(patterns, {
       cwd: targetDir,
-      nodir: true,
-      ignore: ["**/node_modules/**", "**/dist/**", "**/.git/**", "**/vendor/**", "**/target/**", "**/__pycache__/**"],
-      maxDepth: 5, // Don't go too deep for quick detection
-      absolute: false,
-    });
-
-    if (files.length > 0) {
-      const sampleFile = files[0]!;
-      const ext = "." + sampleFile.split(".").pop();
-      return { supported: true, detectedExt: ext, sampleFile };
+      exclude: ["**/node_modules/**", "**/dist/**", "**/.git/**", "**/vendor/**", "**/target/**", "**/__pycache__/**"],
+    })) {
+      const ext = "." + file.split(".").pop();
+      return { supported: true, detectedExt: ext, sampleFile: file };
     }
 
     return { supported: false };
@@ -140,19 +135,20 @@ export async function detectSupportedProject(
  */
 export async function countSourceFiles(targetDir: string, extensions: string[]): Promise<number> {
   try {
-    const { glob } = await import("glob");
     const extList = extensions.map((e) => e.replace(/^\./, "")).join(",");
     const pattern = `**/*.{${extList}}`;
 
-    const files = await glob(pattern, {
-      cwd: targetDir,
-      nodir: true,
-      ignore: BASE_EXCLUDE_PATTERNS,
-      stat: false,
-      absolute: false,
-    });
+    // No `nodir` equivalent here: node:fs offers withFileTypes, but Bun's
+    // fs.glob rejects that option ("does not support options.withFileTypes
+    // yet"), and this code runs on both. Stat-ing every hit would defeat the
+    // point of a fast count, so directories named like a source file are
+    // counted — the result feeds a consistency check, not an exact figure.
+    let count = 0;
+    for await (const _entry of glob(pattern, { cwd: targetDir, exclude: BASE_EXCLUDE_PATTERNS })) {
+      count++;
+    }
 
-    return files.length;
+    return count;
   } catch {
     return -1; // Error - skip consistency check
   }

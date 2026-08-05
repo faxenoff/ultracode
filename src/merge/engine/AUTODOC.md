@@ -60,7 +60,8 @@ The `merge/engine` module provides a comprehensive solution for resolving code c
 ## 🤖 Entity Listing
 
 ### Function
-- **addedIds** — Identifies added IDs in the merge `three-way-merger.ts:147-147`, `three-way-merger.ts:147-147`
+- **addedIds** — Identifies added IDs in the merge `three-way-merger.ts:147-147`
+- **addedIds** — Creates a set of IDs for added units from both branches `three-way-merger.ts:147-147`
 - **classifyInsertion** — Classifies insertion regions based on the lengths and equality of the lines in the arrays `diff3.ts:389-403`
 - **computeHunks** — Computes change hunks for a two-way diff `diff3.ts:204-252`
 - **computeLCS** — Computes the longest common subsequence between two arrays using dynamic programming `diff3.ts:186-202`
@@ -83,7 +84,8 @@ The `merge/engine` module provides a comprehensive solution for resolving code c
 - **renameNewPathsA** — Stores new paths for renamed units in branch A `three-way-merger.ts:399-399`
 - **renameNewPathsB** — Stores new paths for renamed units in branch B `three-way-merger.ts:400-400`
 - **splitLines** — Function to split lines of a string `diff3.ts:132-135`
-- **stats** — Tracks statistics during the merge process `three-way-merger.ts:198-198`, `three-way-merger.ts:199-199`
+- **stats** — Tracks statistics during the merge process `three-way-merger.ts:198-198`
+- **stats** — Counts the number of manual review actions in the merge actions `three-way-merger.ts:199-199`
 - **tempIndexB** — Temporarily indexes units from branch B `three-way-merger.ts:310-310`
 - **trimCommon** — Function to trim common prefix and suffix for LCS performance `diff3.ts:141-180`
 
@@ -168,37 +170,55 @@ The `merge/engine` module provides a comprehensive solution for resolving code c
 - **addedInA** — Units added in branch A `three-way-merger.ts:378-378`
 - **addedInB** — Units added in branch B `three-way-merger.ts:379-379`
 - **aiEnabled** — Boolean indicating whether AI is enabled for conflict resolution `conflict-resolver.ts:26-26`
-- **aiResolver** — AI resolver for semantic analysis, optional `conflict-resolver.ts:27-27`, `conflict-resolver.ts:37-37`
+- **aiResolver** — AI resolver for semantic analysis, optional `conflict-resolver.ts:27-27`
+- **aiResolver** — Represents an optional AI conflict resolver instance `conflict-resolver.ts:37-37`
 - **autoResolveConflicts** — Boolean indicating whether automatic conflict resolution is enabled `three-way-merger.ts:42-42`
 - **baseEnd** — End index of the base lines in the hunk `diff3.ts:48-48`
 - **baseLines** — Lines of the base branch `diff3.ts:28-28`
 - **baseStart** — Start index of the base lines in the hunk `diff3.ts:47-47`
-- **baseUnit** — Represents the base unit in the three-way merge `three-way-merger.ts:242-242`, `three-way-merger.ts:494-494`, `three-way-merger.ts:525-525`, `three-way-merger.ts:530-530`
-- **baseUnit** — Represents the base unit for the three-way merge `three-way-merger.ts:247-247`, `three-way-merger.ts:291-291`, `three-way-merger.ts:302-302`, `three-way-merger.ts:333-333`, `three-way-merger.ts:351-351`
-- **baseUnit** — Base unit of code used for comparison `three-way-merger.ts:381-381`, `three-way-merger.ts:390-390`
-- **branch** — Represents a branch in the version control system `three-way-merger.ts:385-385`, `three-way-merger.ts:394-394`
-- **branch** — Represents a branch in the three-way merge `three-way-merger.ts:534-534`
+- **baseUnit** — Represents the base unit in the three-way merge `three-way-merger.ts:242-242`
+- **baseUnit** — Represents the base unit for the three-way merge `three-way-merger.ts:247-247`
+- **baseUnit** — Base unit of code used for comparison `three-way-merger.ts:291-291`
+- **baseUnit** — Represents the base unit of code `three-way-merger.ts:302-302`
+- **baseUnit** — Represents the base unit in the three-way merger `three-way-merger.ts:333-333`, `three-way-merger.ts:525-525`
+- **baseUnit** — Represents a base unit in the code `three-way-merger.ts:351-351`
+- **baseUnit** — Represents a base unit of code `three-way-merger.ts:381-381`
+- **baseUnit** — Represents a base `three-way-merger.ts:390-390`
+- **baseUnit** — Represents the base unit of code for comparison `three-way-merger.ts:494-494`
+- **baseUnit** — Stores the base unit in the three-way merger `three-way-merger.ts:530-530`
+- **branch** — Represents a branch in the version control system `three-way-merger.ts:385-385`
+- **branch** — Represents a branch in the three-way merge `three-way-merger.ts:394-394`
+- **branch** — Represents the branch information for renamed units `three-way-merger.ts:534-534`
 - **branchADistance** — Semantic distance from base to branchA `ai-conflict-resolver.ts:39-39`
 - **branchAIntent** — Determines the intent of changes in branchA `three-way-merger.ts:162-162`
-- **branchAIntent** — Represents the intent of a unit from branch A `three-way-merger.ts:334-334`, `three-way-merger.ts:335-335`
-- **branchAIntent** — Determines the intent of changes in branch A `three-way-merger.ts:352-352`
+- **branchAIntent** — Represents the intent of a unit from branch A `three-way-merger.ts:334-334`
+- **branchAIntent** — Determines the intent of changes in branch A `three-way-merger.ts:335-335`
+- **branchAIntent** — Maps branch A intent to change intent `three-way-merger.ts:352-352`
 - **branchALines** — Lines of branch A `diff3.ts:29-29`
 - **branchAUnit** — Represents the branchA unit in the three-way merge `three-way-merger.ts:242-242`
-- **branchAUnit** — Represents a unit from branch A `three-way-merger.ts:248-248`, `three-way-merger.ts:291-291`, `three-way-merger.ts:303-303`, `three-way-merger.ts:333-333`
-- **branchAUnit** — Represents a unit of code from branch A `three-way-merger.ts:351-351`
-- **branchAUnit** — Represents the unit in branch A `three-way-merger.ts:525-525`
+- **branchAUnit** — Represents a unit from branch A `three-way-merger.ts:248-248`
+- **branchAUnit** — Represents a unit of code from branch A `three-way-merger.ts:291-291`
+- **branchAUnit** — Represents the unit in branch A `three-way-merger.ts:303-303`
+- **branchAUnit** — Represents the branch A unit of code `three-way-merger.ts:333-333`
+- **branchAUnit** — Represents the unit from branch A in the three-way merger `three-way-merger.ts:351-351`
+- **branchAUnit** — Represents a branch A unit in the code `three-way-merger.ts:525-525`
 - **branchBDistance** — Semantic distance from base to branchB `ai-conflict-resolver.ts:40-40`
 - **branchBIntent** — Determines the intent of changes in branchB `three-way-merger.ts:162-162`
-- **branchBIntent** — Represents the intent of a unit from branch B `three-way-merger.ts:334-334`, `three-way-merger.ts:335-335`
-- **branchBIntent** — Determines the intent of changes in branch B `three-way-merger.ts:352-352`
+- **branchBIntent** — Represents the intent of a unit from branch B `three-way-merger.ts:334-334`
+- **branchBIntent** — Determines the intent of changes in branch B `three-way-merger.ts:335-335`
+- **branchBIntent** — Maps branch B intent to change intent `three-way-merger.ts:352-352`
 - **branchBLines** — Lines of branch B `diff3.ts:30-30`
-- **branchBUnit** — Represents a unit from branch B `three-way-merger.ts:242-242`, `three-way-merger.ts:249-249`, `three-way-merger.ts:291-291`, `three-way-merger.ts:304-304`, `three-way-merger.ts:333-333`
-- **branchBUnit** — Represents a unit of code from branch B `three-way-merger.ts:351-351`
-- **branchBUnit** — Represents the unit in branch B `three-way-merger.ts:525-525`
+- **branchBUnit** — Represents a unit from branch B `three-way-merger.ts:242-242`
+- **branchBUnit** — Represents a unit of code from branch B `three-way-merger.ts:249-249`
+- **branchBUnit** — Represents the unit in branch B `three-way-merger.ts:291-291`
+- **branchBUnit** — Represents the branch B unit of code `three-way-merger.ts:304-304`
+- **branchBUnit** — Represents the unit from branch B in the three-way merger `three-way-merger.ts:333-333`
+- **branchBUnit** — Represents a branch B unit in the code `three-way-merger.ts:351-351`
+- **branchBUnit** — Stores the branch B unit in the matches array `three-way-merger.ts:525-525`
 - **branchEnd** — End index of the branch A lines in the hunk `diff3.ts:50-50`
 - **branchManager** — Manager for handling branches in the three-way merger `three-way-merger.ts:46-46`
 - **branchStart** — Start index of the branch A lines in the hunk `diff3.ts:49-49`
-- **classifyIntents** — Indicates whether to classify intents in the three-way merger `three-way-merger.ts:38-38`
+- **classifyIntents** — Determines whether to classify intents in the three-way merger `three-way-merger.ts:38-38`
 - **conductor** — Orchestrates the conductor for the three-way merger `three-way-merger.ts:48-48`
 - **confidence** — Confidence in the suggested strategy `ai-conflict-resolver.ts:46-46`
 - **confidence** — Represents the confidence level in the resolution strategy `ai-conflict-resolver.ts:170-170`
@@ -207,10 +227,12 @@ The `merge/engine` module provides a comprehensive solution for resolving code c
 - **config** — Configures the three-way merger with settings for fast path, semantic matching, intent classification, and conflict detection `three-way-merger.ts:49-49`
 - **conflictCount** — Number of conflicts in the merge `diff3.ts:36-36`
 - **conflictDetector** — Detects and resolves conflicts during the merge `three-way-merger.ts:56-56`
-- **deletedIn** — Units deleted in the merge `three-way-merger.ts:382-382`, `three-way-merger.ts:391-391`
-- **deletedIn** — Indicates whether a unit was deleted in a branch `three-way-merger.ts:495-495`, `three-way-merger.ts:531-531`
+- **deletedIn** — Units deleted in the merge `three-way-merger.ts:382-382`
+- **deletedIn** — Indicates whether a unit was deleted in a branch `three-way-merger.ts:391-391`
+- **deletedIn** — Indicates which branch the unit was deleted in `three-way-merger.ts:495-495`
+- **deletedIn** — Indicates whether the unit was deleted in branch A or branch B `three-way-merger.ts:531-531`
 - **deletedUnits** — Units deleted in the merge `three-way-merger.ts:380-384`
-- **detectConflicts** — Determines if conflicts should be detected during the three-way merger `three-way-merger.ts:41-41`
+- **detectConflicts** — Determines whether to detect conflicts in the three-way merger `three-way-merger.ts:41-41`
 - **embeddingCache** — Cache for embeddings to avoid redundant generation `ai-conflict-resolver.ts:57-57`
 - **embeddingGenerator** — Embedding generator used for semantic similarity analysis `ai-conflict-resolver.ts:19-19`
 - **embeddingGenerator** — Function for generating embeddings, optional `three-way-merger.ts:35-35`
@@ -236,13 +258,17 @@ The `merge/engine` module provides a comprehensive solution for resolving code c
 - **minConfidenceForAutoMerge** — Minimum confidence required for automatic merge `ai-conflict-resolver.ts:27-27`
 - **minConfidenceForSuggestion** — Minimum confidence required for merge suggestion `ai-conflict-resolver.ts:28-28`
 - **minConfidenceThreshold** — Minimum confidence threshold for AI resolution `conflict-resolver.ts:32-32`
-- **modifiedIn** — Units modified in the merge `three-way-merger.ts:383-383`, `three-way-merger.ts:392-392`
-- **modifiedIn** — Indicates whether a unit was modified in a branch `three-way-merger.ts:496-496`, `three-way-merger.ts:532-532`
+- **modifiedIn** — Units modified in the merge `three-way-merger.ts:383-383`
+- **modifiedIn** — Indicates whether a unit was modified in a branch `three-way-merger.ts:392-392`
+- **modifiedIn** — Specifies the branch where the unit was modified, or undefined if not specified `three-way-merger.ts:496-496`
+- **modifiedIn** — Indicates which branch the unit was modified in, or undefined if not modified `three-way-merger.ts:532-532`
 - **multiVersionIndexer** — Indexes the base, branchA, and branchB versions for the three-way merger `three-way-merger.ts:52-52`
-- **newPath** — New path of a unit after renaming `three-way-merger.ts:385-385`, `three-way-merger.ts:394-394`
-- **newPath** — Stores the new path of a unit `three-way-merger.ts:534-534`
-- **oldPath** — Old path of a unit before renaming `three-way-merger.ts:385-385`, `three-way-merger.ts:394-394`
-- **oldPath** — Stores the old path of a unit `three-way-merger.ts:534-534`
+- **newPath** — New path of a unit after renaming `three-way-merger.ts:385-385`
+- **newPath** — Stores the new path of a unit `three-way-merger.ts:394-394`
+- **newPath** — Stores the new path of a renamed unit in the three-way merger `three-way-merger.ts:534-534`
+- **oldPath** — Old path of a unit before renaming `three-way-merger.ts:385-385`
+- **oldPath** — Stores the old path of a unit `three-way-merger.ts:394-394`
+- **oldPath** — Stores the old path of a renamed unit in the three-way merger `three-way-merger.ts:534-534`
 - **preferBranchA** — Boolean indicating whether to prioritize branchA when conditions are equal `conflict-resolver.ts:30-30`
 - **preferNewerCode** — Boolean indicating whether to prioritize newer code `conflict-resolver.ts:31-31`
 - **prefix** — Common prefix of the base, branchA, and branchB lines `diff3.ts:146-146`
@@ -261,8 +287,9 @@ The `merge/engine` module provides a comprehensive solution for resolving code c
 - **trimmedB** — A contiguous change hunk from a two-way diff `diff3.ts:150-150`
 - **trimmedBase** — A contiguous change hunk from a two-way diff `diff3.ts:148-148`
 - **type** — Type of the region (unchanged, branchA, branchB, or conflict) `diff3.ts:27-27`
-- **unit** — Represents a unit of code `three-way-merger.ts:385-385`, `three-way-merger.ts:394-394`
-- **unit** — Represents a code unit `three-way-merger.ts:534-534`
+- **unit** — Represents a unit of code `three-way-merger.ts:385-385`
+- **unit** — Represents a code unit `three-way-merger.ts:394-394`
+- **unit** — Represents the unit that was renamed in the three-way merger `three-way-merger.ts:534-534`
 - **unmatchedA** — Stores units from branch A that do not match any units in branch B `three-way-merger.ts:243-243`
 - **unmatchedB** — Stores units from branch B that do not match any units in branch A `three-way-merger.ts:244-244`
 

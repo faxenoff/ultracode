@@ -170,7 +170,7 @@ The `faiss` module provides a high-performance vector indexing solution using th
 - **RemoveVectorResult** — Result of removing a vector from the index `layered-types.ts:156-161`
 
 ### Enum_decl
-- **MetricType** — Defines the types of metrics used in the FAISS library, including inner product and L2 distance `faiss-client.ts:25-28`
+- **MetricType** — Enumerates different types of metrics used in similarity calculations `faiss-client.ts:25-28`
 
 ### Constant
 - **METRIC_INNER_PRODUCT** — Metric type for inner product similarity `faiss-client.ts:26-26`
@@ -211,9 +211,10 @@ The `faiss` module provides a high-performance vector indexing solution using th
 - **autoSaveThreshold** — Threshold for auto-saving the index `layered-faiss-provider.ts:55-55`
 - **autoSaveThreshold** — Optional field for setting the auto-save threshold `provider-interface.ts:125-125`
 - **baseBranch** — Represents the base branch used for the full index `layered-faiss-provider.ts:100-100`
-- **baseBranch** — Branch name of the base index (null = not yet determined) `layered-types.ts:26-26`, `layered-types.ts:78-78`
-- **baseBranch** — Name of the base branch `layered-types.ts:100-100`
-- **baseBranch** — Represents the branch that was indexed to create the base index `layered-types.ts:178-178`
+- **baseBranch** — Branch name of the base index (null = not yet determined) `layered-types.ts:26-26`
+- **baseBranch** — Name of the base branch `layered-types.ts:78-78`
+- **baseBranch** — Represents the branch that was indexed to create the base index `layered-types.ts:100-100`
+- **baseBranch** — Stores the base branch name or null if not applicable `layered-types.ts:178-178`
 - **baseCommit** — Optional string representing the base commit hash `layered-types.ts:90-90`
 - **baseIdSet** — Stores the set of IDs for the base layer `layered-faiss-provider.ts:104-104`
 - **baseIdsPath** — Path for the base IDs `layered-types.ts:124-124`
@@ -246,13 +247,17 @@ The `faiss` module provides a high-performance vector indexing solution using th
 - **deltaVectorCount** — Number of vectors in the delta index `layered-types.ts:102-102`
 - **deltaVectors** — Represents the vectors in the delta index `layered-types.ts:172-172`
 - **details** — Provides additional details about the index `layered-types.ts:195-195`
-- **dimensions** — Vector dimensions (must match embedding model) `faiss-provider.ts:33-33`, `types.ts:39-39`, `types.ts:187-187`, `types.ts:203-203`
-- **dimensions** — The vector dimensions used in the Faiss index `faiss-provider.ts:612-612`, `faiss-provider.ts:620-620`
+- **dimensions** — The vector dimensions used in the Faiss index `faiss-provider.ts:612-612`
+- **dimensions** — Parses the data to extract the dimensions `faiss-provider.ts:620-620`
+- **dimensions** — Vector dimensions (must match embedding model) `faiss-provider.ts:33-33`
 - **dimensions** — Vector dimensions for the FAISS index `layered-faiss-provider.ts:45-45`
-- **dimensions** — Index dimensions (e.g., 384 for all-MiniLM-L6-v2) `layered-types.ts:32-32`, `layered-types.ts:86-86`
+- **dimensions** — Index dimensions (e.g., 384 for all-MiniLM-L6-v2) `layered-types.ts:32-32`
+- **dimensions** — Represents the number of dimensions in the data `layered-types.ts:86-86`
 - **dimensions** — Specifies the dimensionality of the vectors `provider-interface.ts:99-99`
 - **dimensions** — Optional field for specifying the dimensionality of the vectors `provider-interface.ts:115-115`
-- **dimensions** — Stores the number of dimensions in the vector space `types.ts:258-258`
+- **dimensions** — Represents the number of dimensions in a vector `types.ts:187-187`
+- **dimensions** — Indicates the number of dimensions `types.ts:203-203`
+- **dimensions** — Stores the number of dimensions in the vector space `types.ts:39-39`, `types.ts:258-258`
 - **dims** — Dimensions of the vectors in the index `faiss-client.ts:46-46`
 - **distance** — Distance between the query and the result `types.ts:166-166`
 - **distances** — Distances of the vectors in the index `faiss-client.ts:49-49`
@@ -279,25 +284,27 @@ The `faiss` module provides a high-performance vector indexing solution using th
 - **id** — Unique identifier for a search result `types.ts:165-165`
 - **idMap** — A map of vector IDs to their corresponding indices `faiss-client.ts:86-86`
 - **idMap** — Maps string IDs to internal FAISS IDs `types.ts:261-261`
-- **ids** — Vector IDs (must be unique) `types.ts:78-78`
 - **ids** — Represents vector IDs in Faiss requests `types.ts:106-106`
+- **ids** — Vector IDs (must be unique) `types.ts:78-78`
 - **idSet** — Stores a set of IDs `faiss-provider.ts:89-89`
 - **idSetSize** — The size of the ID set in the Faiss index `faiss-provider.ts:700-700`
-- **Index** — Faiss index interface with methods for adding, searching, and training vectors `faiss-client.ts:32-37`
 - **index** — An instance of a Faiss index used for vector operations `faiss-client.ts:80-80`
+- **Index** — Faiss index interface with methods for adding, searching, and training vectors `faiss-client.ts:32-37`
 - **IndexFlatIP** — Faiss index for inner product similarity `faiss-client.ts:39-39`
 - **IndexFlatL2** — Faiss index for L2 distance similarity `faiss-client.ts:38-38`
 - **IndexHNSW** — Faiss index for HNSW algorithm `faiss-client.ts:40-40`
+- **indexType** — The type of Faiss index used `faiss-provider.ts:612-612`
+- **indexType** — Parses the data to extract the index type `faiss-provider.ts:620-620`
 - **indexType** — Faiss index type, can be "flat", "hnsw", "ivf", "ivfpq", or "ivfsq" `faiss-provider.ts:35-35`
-- **indexType** — The type of Faiss index used `faiss-provider.ts:612-612`, `faiss-provider.ts:620-620`
 - **indexType** — Type of FAISS index to use `layered-faiss-provider.ts:47-47`
-- **indexType** — Index type (hnsw, flat, etc.) `layered-types.ts:34-34`, `layered-types.ts:88-88`
+- **indexType** — Index type (hnsw, flat, etc.) `layered-types.ts:34-34`
+- **indexType** — Specifies the type of index used for the data, such as hnsw, flat, ivf, ivfpq, or ivfsq `layered-types.ts:88-88`
 - **indexType** — Defines the type of index used, such as "flat", "hnsw", or "ivf" `provider-interface.ts:100-100`
 - **indexType** — Optional field for defining the type of index, such as "flat", "hnsw", or "ivf" `provider-interface.ts:117-117`
-- **indexType** — Index type: flat, hnsw, ivf, ivfpq, or ivfsq `types.ts:41-41`
 - **indexType** — Type of the Faiss index `types.ts:186-186`
 - **indexType** — Index type: flat, hnsw, ivf, ivfpq, ivfsq `types.ts:202-202`
 - **indexType** — Specifies the type of index used, which can be null `types.ts:257-257`
+- **indexType** — Index type: flat, hnsw, ivf, ivfpq, or ivfsq `types.ts:41-41`
 - **initializePromise** — Stores a promise for initialization or null `faiss-provider.ts:92-92`
 - **initializePromise** — A promise that resolves when the provider is initialized `layered-faiss-provider.ts:116-116`
 - **isInitialized** — A boolean indicating whether the Faiss client is initialized `faiss-client.ts:82-82`
@@ -313,7 +320,8 @@ The `faiss` module provides a high-performance vector indexing solution using th
 - **ivfNlist** — IVF: number of clusters `types.ts:51-51`, `types.ts:195-195`
 - **ivfNprobe** — IVF nprobe parameter `faiss-provider.ts:45-45`
 - **ivfNprobe** — IVF: number of clusters to search `types.ts:53-53`, `types.ts:196-196`
-- **k** — Specifies the number of nearest neighbors to search for `types.ts:88-88`, `types.ts:100-100`
+- **k** — Specifies the number of nearest neighbors to search for `types.ts:88-88`
+- **k** — Represents a number `types.ts:100-100`
 - **labels** — Labels of the vectors in the index `faiss-client.ts:49-49`
 - **lastCommit** — Last commit hash for the index `layered-types.ts:110-110`
 - **lastSaveTime** — Stores the timestamp of the last save operation `faiss-provider.ts:78-78`
@@ -330,9 +338,10 @@ The `faiss` module provides a high-performance vector indexing solution using th
 - **ntotal** — Number of vectors in the index `faiss-client.ts:45-45`
 - **numThreads** — OpenMP threads `types.ts:61-61`
 - **nVectors** — Number of vectors in the index `types.ts:126-126`
-- **path** — Represents the path to load an existing index in Faiss requests `types.ts:112-112`, `types.ts:118-118`
-- **path** — Path to save the index `types.ts:222-222`
-- **path** — Path to the file being loaded `types.ts:228-228`
+- **path** — Represents the path to load an existing index in Faiss requests `types.ts:112-112`
+- **path** — Path to save the index `types.ts:118-118`
+- **path** — Path to the file being loaded `types.ts:222-222`
+- **path** — Specifies the file path for loading or saving data `types.ts:228-228`
 - **pendingSave** — Stores a pending save promise or null `faiss-provider.ts:81-81`
 - **persistPath** — Path to persist Faiss index `faiss-provider.ts:51-51`
 - **pqM** — IVFPQ: number of subquantizers `types.ts:55-55`
@@ -345,13 +354,16 @@ The `faiss` module provides a high-performance vector indexing solution using th
 - **providerType** — Optional field for specifying the type of Faiss provider, either "standard" or "layered" `provider-interface.ts:127-127`
 - **read** — Method to read a Faiss index from a file `faiss-client.ts:36-36`
 - **removedCount** — Number of vectors removed `types.ts:216-216`
-- **requestId** — Unique identifier for a request `types.ts:155-155`, `types.ts:161-161`
-- **results** — List of search results `types.ts:172-172`, `types.ts:179-179`
+- **requestId** — Unique identifier for a request `types.ts:155-155`
+- **requestId** — Optionally stores a request ID as a string `types.ts:161-161`
+- **results** — List of search results `types.ts:172-172`
+- **results** — Stores an array of FaissSearchResult arrays `types.ts:179-179`
 - **reverseIdMap** — A map of indices to their corresponding vector IDs `faiss-client.ts:87-87`
 - **reverseIdMap** — Maps internal FAISS IDs back to string IDs `types.ts:262-262`
 - **saveScheduled** — Indicates whether a save is scheduled `faiss-provider.ts:82-82`
 - **score** — Score of the search result `types.ts:167-167`
-- **searchTimeMs** — Time taken for the search in milliseconds `types.ts:173-173`, `types.ts:180-180`
+- **searchTimeMs** — Time taken for the search in milliseconds `types.ts:173-173`
+- **searchTimeMs** — Stores the search time in milliseconds `types.ts:180-180`
 - **similarity** — Similarity score (0-1) `layered-types.ts:64-64`
 - **sizeBytes** — Size of the index in bytes `types.ts:223-223`
 - **source** — Source of the result `layered-types.ts:66-66`
@@ -359,8 +371,10 @@ The `faiss` module provides a high-performance vector indexing solution using th
 - **sqBits** — SQ bits for IVF,SQ quantization `faiss-provider.ts:47-47`
 - **sqBits** — IVF,SQ: scalar quantization bits `types.ts:59-59`
 - **stats** — Statistics information `types.ts:185-197`
-- **success** — Indicates if the vector was successfully added `layered-types.ts:146-146`, `layered-types.ts:158-158`
-- **success** — Indicates the success of a request `types.ts:154-154`, `types.ts:159-159`
+- **success** — Indicates if the vector was successfully added `layered-types.ts:146-146`
+- **success** — Indicates whether the operation was successful `layered-types.ts:158-158`
+- **success** — Indicates the success of a request `types.ts:154-154`
+- **success** — Stores a boolean indicating success `types.ts:159-159`
 - **target** — Target index for the vector addition `layered-types.ts:148-148`
 - **timestamp** — Indicates the timestamp when the index was last updated `layered-types.ts:194-194`
 - **tombstoneCount** — Number of tombstones in the delta index `layered-types.ts:104-104`
@@ -368,26 +382,42 @@ The `faiss` module provides a high-performance vector indexing solution using th
 - **tombstones** — IDs of entities that exist in base but should be excluded `layered-types.ts:46-46`
 - **tombstones** — Tracks IDs of entities that exist in the base index but should be excluded from the feature branch `layered-types.ts:174-174`
 - **tombstonesPath** — Path for the tombstones `layered-types.ts:134-134`
-- **totalVectors** — The total number of vectors in the Faiss index `faiss-client.ts:83-83`, `faiss-provider.ts:697-697`, `faiss-provider.ts:706-706`
-- **totalVectors** — Total number of vectors in the index `layered-types.ts:168-168`, `types.ts:188-188`, `types.ts:210-210`, `types.ts:217-217`
+- **totalVectors** — The total number of vectors in the Faiss index `faiss-client.ts:83-83`
+- **totalVectors** — Tracks the number of vectors added to the Faiss index `faiss-provider.ts:697-697`
+- **totalVectors** — Parses the total number of vectors from the faissStats object or defaults to 0 `faiss-provider.ts:706-706`
+- **totalVectors** — Total number of vectors in the index `layered-types.ts:168-168`
 - **totalVectors** — Stores the total number of vectors in the index `provider-interface.ts:98-98`
-- **totalVectors** — Keeps track of the total number of vectors in the index `types.ts:259-259`
+- **totalVectors** — Keeps track of the total number of vectors in the index `types.ts:188-188`
+- **totalVectors** — Stores the total number of vectors `types.ts:210-210`
+- **totalVectors** — Represents the total number of vectors `types.ts:217-217`, `types.ts:259-259`
 - **trainedOn** — Number of vectors trained on `types.ts:234-234`
 - **trainTimeMs** — Represents the time taken to train the model in milliseconds `types.ts:235-235`
 - **type** — Specifies the type of the index (e.g., hnsw, flat, etc.) `layered-types.ts:191-191`
-- **type** — Type of IPC request message `types.ts:69-69`, `types.ts:76-76`
-- **type** — Defines the message protocol between Bun and Node.js Faiss worker `types.ts:84-84`, `types.ts:94-94`, `types.ts:104-104`, `types.ts:110-110`, `types.ts:116-116`, `types.ts:122-122`, `types.ts:130-130`, `types.ts:134-134`, `types.ts:171-171`, `types.ts:177-177`, `types.ts:184-184`
-- **type** — Type of the Faiss index `types.ts:201-201`, `types.ts:208-208`, `types.ts:215-215`, `types.ts:221-221`
-- **type** — Indicates the type of operation, "load" `types.ts:227-227`
-- **type** — Indicates the type of operation, "train" `types.ts:233-233`
+- **type** — Defines the message protocol between Bun and Node.js Faiss worker `types.ts:76-76`, `types.ts:84-84`
+- **type** — Type of the Faiss index `types.ts:94-94`
+- **type** — Indicates the type of operation, "load" `types.ts:104-104`
+- **type** — Indicates the type of operation, "train" `types.ts:110-110`
+- **type** — Indicates the type as "train" `types.ts:116-116`
+- **type** — Indicates the type as "stats" `types.ts:122-122`
+- **type** — Indicates the type as "shutdown" `types.ts:130-130`
+- **type** — Indicates the type as "search" `types.ts:134-134`
+- **type** — Indicates the type as "batchSearch" `types.ts:171-171`
+- **type** — Indicates the type as "init" `types.ts:177-177`
+- **type** — Indicates the type of operation, specifically "add" `types.ts:184-184`
+- **type** — Indicates the type of operation, specifically "remove" `types.ts:201-201`
+- **type** — Indicates the type of operation, specifically "save" `types.ts:208-208`
+- **type** — Indicates the type of operation, specifically "load" `types.ts:215-215`
+- **type** — Indicates the type of operation, specifically "train" `types.ts:221-221`
+- **type** — Specifies the type as "train" `types.ts:227-227`
+- **type** — Type of IPC request message `types.ts:69-69`, `types.ts:233-233`
 - **unsavedCount** — Tracks the number of unsaved changes in the Faiss index `faiss-provider.ts:77-77`
 - **unsavedCount** — The count of unsaved changes in the Faiss index `faiss-provider.ts:698-698`
 - **updatedAt** — Represents the timestamp when the entity was last updated `layered-types.ts:84-84`
 - **updatedAt** — Timestamp when the index was last updated `layered-types.ts:108-108`
 - **vector** — Represents a vector embedding used in Faiss providers `types.ts:86-86`
 - **vectorCount** — Total vectors in base `layered-types.ts:80-80`
-- **vectors** — Vectors as flat Float32Array `types.ts:80-80`
-- **vectors** — Represents vectors as flat Float32Array in Faiss requests `types.ts:96-96`, `types.ts:124-124`
+- **vectors** — Represents vectors as flat Float32Array in Faiss requests `types.ts:96-96`
+- **vectors** — Vectors as flat Float32Array `types.ts:80-80`, `types.ts:124-124`
 
 ## Data Flow
 

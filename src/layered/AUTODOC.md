@@ -510,7 +510,8 @@ Layered Indexing Flow
 - **total_changes** — Stores the total number of changes in the branch delta `layered-cache-manager.ts:38-38`
 - **total_changes** — Represents the total number of changes made to the cache `layered-cache-manager.ts:43-43`
 - **total_changes** — Stores the total number of changes in the vector delta `vector-cache-manager.ts:36-36`
-- **total_changes** — Represents the total number of changes in the vector cache `vector-cache-manager.ts:43-43`, `vector-cache-manager.ts:49-49`
+- **total_changes** — Represents the total number of changes in the vector cache `vector-cache-manager.ts:43-43`
+- **total_changes** — Represents the total number of changes made to the vector cache `vector-cache-manager.ts:49-49`
 - **total_memory_usage** — Stores the total memory usage across all branches `vector-cache-manager.ts:44-44`
 - **totalBatches** — Tracks the number of batches processed `incremental-update-queue.ts:77-77`
 - **totalBranches** — Represents the total number of branches `layered-cache-manager.ts:363-363`

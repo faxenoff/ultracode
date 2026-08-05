@@ -44,61 +44,306 @@ Java20ParserVisitor.ts
 - **ABSTRACT** — Abstract modifier `Java20Parser.ts:18084-18086`
 - **ABSTRACT** — Represents the abstract modifier in the Java20Parser `Java20Parser.ts:18396-18398`
 - **ABSTRACT** — Represents the abstract modifier in the grammar `Java20Parser.ts:18614-18616`
-- **accept** — Accepts a rule in the Java20Parser `Java20Parser.ts:13681-13687`, `Java20Parser.ts:13710-13716`, `Java20Parser.ts:16961-16967`, `Java20Parser.ts:16990-16996`, `Java20Parser.ts:17019-17025`
-- **accept** — Accepts the current token `Java20Parser.ts:13739-13745`, `Java20Parser.ts:13768-13774`, `Java20Parser.ts:14981-14987`, `Java20Parser.ts:15010-15016`, `Java20Parser.ts:15056-15062`, `Java20Parser.ts:15091-15097`, `Java20Parser.ts:17577-17583`, `Java20Parser.ts:17603-17609`, `Java20Parser.ts:17638-17644`, `Java20Parser.ts:17688-17694`, `Java20Parser.ts:17720-17726`, `Java20Parser.ts:17761-17767`, `Java20Parser.ts:19216-19222`, `Java20Parser.ts:19245-19251`, `Java20Parser.ts:19274-19280`, `Java20Parser.ts:19315-19321`, `Java20Parser.ts:19353-19359`, `Java20Parser.ts:19505-19511`, `Java20Parser.ts:19534-19540`, `Java20Parser.ts:19578-19584`, `Java20Parser.ts:20242-20248`, `Java20Parser.ts:20295-20301`, `Java20Parser.ts:20324-20330`
-- **accept** — Accepts the current token as part of the current rule `Java20Parser.ts:13839-13845`, `Java20Parser.ts:13895-13901`, `Java20Parser.ts:16829-16835`, `Java20Parser.ts:16870-16876`, `Java20Parser.ts:16911-16917`, `Java20Parser.ts:22421-22427`, `Java20Parser.ts:22471-22477`, `Java20Parser.ts:22707-22713`, `Java20Parser.ts:22736-22742`, `Java20Parser.ts:22768-22774`
-- **accept** — Represents the method called to accept a rule `Java20Parser.ts:13963-13969`
-- **accept** — Accepts a rule and returns the result `Java20Parser.ts:14007-14013`, `Java20Parser.ts:14045-14051`, `Java20Parser.ts:14074-14080`, `Java20Parser.ts:14112-14118`, `Java20Parser.ts:14141-14147`, `Java20Parser.ts:14173-14179`, `Java20Parser.ts:14562-14568`, `Java20Parser.ts:14591-14597`, `Java20Parser.ts:14623-14629`, `Java20Parser.ts:14664-14670`, `Java20Parser.ts:15319-15325`, `Java20Parser.ts:15360-15366`, `Java20Parser.ts:15392-15398`, `Java20Parser.ts:15549-15555`, `Java20Parser.ts:15578-15584`, `Java20Parser.ts:15610-15616`, `Java20Parser.ts:16516-16522`, `Java20Parser.ts:16542-16548`, `Java20Parser.ts:16577-16583`, `Java20Parser.ts:18263-18269`, `Java20Parser.ts:18304-18310`, `Java20Parser.ts:18339-18345`, `Java20Parser.ts:20049-20055`, `Java20Parser.ts:20087-20093`, `Java20Parser.ts:20131-20137`, `Java20Parser.ts:20350-20356`, `Java20Parser.ts:20391-20397`, `Java20Parser.ts:20435-20441`, `Java20Parser.ts:22301-22307`, `Java20Parser.ts:22339-22345`, `Java20Parser.ts:22374-22380`, `Java20Parser.ts:22602-22608`, `Java20Parser.ts:22634-22640`, `Java20Parser.ts:22666-22672`
-- **accept** — Accepts a rule and returns a visitor `Java20Parser.ts:14217-14223`, `Java20Parser.ts:14264-14270`, `Java20Parser.ts:14311-14317`, `Java20Parser.ts:16084-16090`, `Java20Parser.ts:16131-16137`, `Java20Parser.ts:16172-16178`, `Java20Parser.ts:19938-19944`, `Java20Parser.ts:19985-19991`, `Java20Parser.ts:20011-20017`
-- **accept** — Accepts a rule in the Java20 grammar `Java20Parser.ts:14337-14343`, `Java20Parser.ts:14372-14378`, `Java20Parser.ts:14407-14413`, `Java20Parser.ts:18691-18697`, `Java20Parser.ts:18729-18735`, `Java20Parser.ts:18770-18776`, `Java20Parser.ts:20575-20581`, `Java20Parser.ts:20607-20613`
-- **accept** — Accepts a token in the parser `Java20Parser.ts:14457-14463`, `Java20Parser.ts:14495-14501`, `Java20Parser.ts:14521-14527`, `Java20Parser.ts:14795-14801`, `Java20Parser.ts:14827-14833`, `Java20Parser.ts:14859-14865`, `Java20Parser.ts:15147-15153`, `Java20Parser.ts:15173-15179`, `Java20Parser.ts:15208-15214`, `Java20Parser.ts:22800-22806`, `Java20Parser.ts:22859-22865`
-- **accept** — Accepts a rule `Java20Parser.ts:14693-14699`, `Java20Parser.ts:14731-14737`, `Java20Parser.ts:14763-14769`, `Java20Parser.ts:21590-21596`, `Java20Parser.ts:21628-21634`, `Java20Parser.ts:21666-21672`, `Java20Parser.ts:22891-22897`, `Java20Parser.ts:22926-22932`, `Java20Parser.ts:22976-22982`
-- **accept** — Accepts the current rule and moves to the next token `Java20Parser.ts:14891-14897`, `Java20Parser.ts:14923-14929`, `Java20Parser.ts:14949-14955`, `Java20Parser.ts:15748-15754`, `Java20Parser.ts:15789-15795`, `Java20Parser.ts:15818-15824`, `Java20Parser.ts:15847-15853`, `Java20Parser.ts:16204-16210`, `Java20Parser.ts:16233-16239`, `Java20Parser.ts:16262-16268`, `Java20Parser.ts:16291-16297`, `Java20Parser.ts:17173-17179`, `Java20Parser.ts:17214-17220`, `Java20Parser.ts:17249-17255`, `Java20Parser.ts:18141-18147`, `Java20Parser.ts:18185-18191`, `Java20Parser.ts:18225-18231`, `Java20Parser.ts:18465-18471`, `Java20Parser.ts:18505-18511`, `Java20Parser.ts:18543-18549`, `Java20Parser.ts:19117-19123`, `Java20Parser.ts:19149-19155`, `Java20Parser.ts:19178-19184`, `Java20Parser.ts:21094-21100`, `Java20Parser.ts:21120-21126`, `Java20Parser.ts:21149-21155`, `Java20Parser.ts:21178-21184`, `Java20Parser.ts:21698-21704`, `Java20Parser.ts:21739-21745`, `Java20Parser.ts:21780-21786`, `Java20Parser.ts:22108-22114`, `Java20Parser.ts:22149-22155`, `Java20Parser.ts:22178-22184`, `Java20Parser.ts:22207-22213`, `Java20Parser.ts:22248-22254`, `Java20Parser.ts:22506-22512`, `Java20Parser.ts:22538-22544`, `Java20Parser.ts:22570-22576`, `Java20Parser.ts:23017-23023`, `Java20Parser.ts:23046-23052`, `Java20Parser.ts:23075-23081`
-- **accept** — Represents the acceptance of a rule in Java20Parser `Java20Parser.ts:15240-15246`, `Java20Parser.ts:15278-15284`
-- **accept** — Represents accepting a rule in the grammar `Java20Parser.ts:15463-15469`, `Java20Parser.ts:18598-18604`, `Java20Parser.ts:18630-18636`, `Java20Parser.ts:18659-18665`
-- **accept** — Accepts a rule in the parser `Java20Parser.ts:15663-15669`, `Java20Parser.ts:15716-15722`, `Java20Parser.ts:15888-15894`, `Java20Parser.ts:15932-15938`, `Java20Parser.ts:15970-15976`, `Java20Parser.ts:16005-16011`, `Java20Parser.ts:16043-16049`, `Java20Parser.ts:16320-16326`, `Java20Parser.ts:16352-16358`, `Java20Parser.ts:17489-17495`, `Java20Parser.ts:17530-17536`, `Java20Parser.ts:17945-17951`, `Java20Parser.ts:17983-17989`, `Java20Parser.ts:18012-18018`, `Java20Parser.ts:18062-18068`, `Java20Parser.ts:18112-18118`, `Java20Parser.ts:18802-18808`, `Java20Parser.ts:18834-18840`, `Java20Parser.ts:18869-18875`, `Java20Parser.ts:18910-18916`, `Java20Parser.ts:18939-18945`, `Java20Parser.ts:18977-18983`, `Java20Parser.ts:19012-19018`, `Java20Parser.ts:19053-19059`, `Java20Parser.ts:19085-19091`, `Java20Parser.ts:19853-19859`, `Java20Parser.ts:19894-19900`, `Java20Parser.ts:21400-21406`, `Java20Parser.ts:21435-21441`
-- **accept** — Accepts a token and returns the corresponding node `Java20Parser.ts:16399-16405`, `Java20Parser.ts:16443-16449`, `Java20Parser.ts:16490-16496`
-- **accept** — Parses a method modifier context `Java20Parser.ts:16615-16621`, `Java20Parser.ts:16668-16674`
-- **accept** — Parses a method declarator context `Java20Parser.ts:16712-16718`, `Java20Parser.ts:16741-16747`, `Java20Parser.ts:16785-16791`
-- **accept** — Accepts the current rule `Java20Parser.ts:17060-17066`, `Java20Parser.ts:17089-17095`, `Java20Parser.ts:17118-17124`, `Java20Parser.ts:17144-17150`, `Java20Parser.ts:20160-20166`, `Java20Parser.ts:20189-20195`, `Java20Parser.ts:20753-20759`, `Java20Parser.ts:20791-20797`, `Java20Parser.ts:20835-20841`, `Java20Parser.ts:20864-20870`, `Java20Parser.ts:21927-21933`, `Java20Parser.ts:21986-21992`
-- **accept** — Accepts a token `Java20Parser.ts:17293-17299`, `Java20Parser.ts:17319-17325`, `Java20Parser.ts:17354-17360`
-- **accept** — Represents accepting a rule `Java20Parser.ts:17407-17413`, `Java20Parser.ts:17451-17457`
-- **accept** — Parses a record component modifier context `Java20Parser.ts:17802-17808`, `Java20Parser.ts:17852-17858`, `Java20Parser.ts:17878-17884`, `Java20Parser.ts:17916-17922`
-- **accept** — Represents the acceptance of a rule in the Java20Parser `Java20Parser.ts:18377-18383`, `Java20Parser.ts:18421-18427`
-- **accept** — Accepts the current token as part of the rule `Java20Parser.ts:19415-19421`, `Java20Parser.ts:19441-19447`, `Java20Parser.ts:19473-19479`, `Java20Parser.ts:19707-19713`, `Java20Parser.ts:19748-19754`, `Java20Parser.ts:19786-19792`, `Java20Parser.ts:21282-21288`, `Java20Parser.ts:21341-21347`
-- **accept** — Accepts a rule in the parsing process `Java20Parser.ts:19616-19622`, `Java20Parser.ts:19660-19666`
-- **accept** — Represents accepting a rule in the Java20 grammar `Java20Parser.ts:20479-20485`, `Java20Parser.ts:20511-20517`, `Java20Parser.ts:20543-20549`, `Java20Parser.ts:21824-21830`, `Java20Parser.ts:21886-21892`
-- **accept** — Parses a try statement `Java20Parser.ts:20645-20651`, `Java20Parser.ts:20683-20689`, `Java20Parser.ts:20715-20721`
-- **accept** — Method to accept a rule in the parser `Java20Parser.ts:20902-20908`, `Java20Parser.ts:20937-20943`
-- **accept** — Accepts a rule and returns a context `Java20Parser.ts:20978-20984`, `Java20Parser.ts:21007-21013`, `Java20Parser.ts:21036-21042`, `Java20Parser.ts:21068-21074`
-- **accept** — Accepts a parsed element `Java20Parser.ts:21479-21485`, `Java20Parser.ts:21532-21538`, `Java20Parser.ts:21561-21567`, `Java20Parser.ts:23113-23119`, `Java20Parser.ts:23139-23145`
-- **accept** — Represents the acceptance of a rule in the Java20 grammar `Java20Parser.ts:22018-22024`, `Java20Parser.ts:22050-22056`, `Java20Parser.ts:22079-22085`
-- **ADD** — Represents the addition operator `Java20Parser.ts:22124-22126`, `Java20Parser.ts:22355-22357`
+- **accept** — Accepts a rule in the Java20Parser `Java20Parser.ts:13681-13687`
+- **accept** — Accepts the current token `Java20Parser.ts:13710-13716`
+- **accept** — Accepts the current token as part of the current rule `Java20Parser.ts:13739-13745`
+- **accept** — Represents the method called to accept a rule `Java20Parser.ts:13768-13774`
+- **accept** — Accepts a rule and returns the result `Java20Parser.ts:13839-13845`
+- **accept** — Accepts a rule and returns a visitor `Java20Parser.ts:13895-13901`
+- **accept** — Accepts a rule in the Java20 grammar `Java20Parser.ts:13963-13969`
+- **accept** — Accepts a token in the parser `Java20Parser.ts:14007-14013`
+- **accept** — Accepts a rule `Java20Parser.ts:14045-14051`
+- **accept** — Accepts the current rule and moves to the next token `Java20Parser.ts:14074-14080`
+- **accept** — Represents the acceptance of a rule in Java20Parser `Java20Parser.ts:14112-14118`
+- **accept** — Represents accepting a rule in the grammar `Java20Parser.ts:14141-14147`
+- **accept** — Accepts a rule in the parser `Java20Parser.ts:14173-14179`
+- **accept** — Accepts a token and returns the corresponding node `Java20Parser.ts:14217-14223`
+- **accept** — Parses a method modifier context `Java20Parser.ts:14264-14270`
+- **accept** — Parses a method declarator context `Java20Parser.ts:14311-14317`
+- **accept** — Accepts the current rule `Java20Parser.ts:14337-14343`
+- **accept** — Accepts a token `Java20Parser.ts:14372-14378`
+- **accept** — Represents accepting a rule `Java20Parser.ts:14407-14413`
+- **accept** — Parses a record component modifier context `Java20Parser.ts:14457-14463`
+- **accept** — Represents the acceptance of a rule in the Java20Parser `Java20Parser.ts:14495-14501`
+- **accept** — Accepts the current token as part of the rule `Java20Parser.ts:14521-14527`
+- **accept** — Accepts a rule in the parsing process `Java20Parser.ts:14562-14568`
+- **accept** — Represents accepting a rule in the Java20 grammar `Java20Parser.ts:14591-14597`
+- **accept** — Parses a try statement `Java20Parser.ts:14623-14629`
+- **accept** — Method to accept a rule in the parser `Java20Parser.ts:14664-14670`
+- **accept** — Accepts a rule and returns a context `Java20Parser.ts:14693-14699`
+- **accept** — Accepts a parsed element `Java20Parser.ts:14731-14737`
+- **accept** — Represents the acceptance of a rule in the Java20 grammar `Java20Parser.ts:14763-14769`
+- **accept** — Returns the result of visiting the module name or children if the visitor does not visit the module name `Java20Parser.ts:14795-14801`
+- **accept** — Returns the result of visiting the package name or type name based on the visitor's method. `Java20Parser.ts:14827 `Java20Parser.ts:14827-14833`
+- **accept** — Returns the result of visiting the typeName if the visitor has a `Java20Parser.ts:14859-14865`
+- **accept** — Returns the result of visiting the package or type name `Java20Parser.ts:14891-14897`
+- **accept** — Returns the result of visiting the method name using the visitor or visiting children if the visitor does not support visiting method names. `Java20Parser.ts `Java20Parser.ts:14923-14929`
+- **accept** — Returns the result of visiting the method name or visiting children if `Java20Parser.ts:14949-14955`
+- **accept** — Accepts a visitor for the ambiguous name rule. `Java20Parser.ts `Java20Parser.ts:14981-14987`
+- **accept** — Accepts a visitor for the compilation unit and returns the result `Java20Parser.ts:15010-15016`
+- **accept** — Returns the `Java20Parser.ts:15056-15062`
+- **accept** — Returns the result of visiting the modular compilation unit or its children if the visitor does not have a visitModularCompilationUnit method `Java20Parser.ts:15091-15097`
+- **accept** — Returns the result of visiting the package modifier or visiting children if the visitor does not support visiting the package modifier `Java20Parser.ts:15147-15153`
+- **accept** — Accepts a visitor and returns the result of visiting the import declaration or its children `Java20Parser.ts:15173-15179`
+- **accept** — Returns the result of visiting the current node with the visitor or visiting its children if the visitor does not support the current rule `Java20Parser.ts:15208-15214`
+- **accept** — Parses and returns the result of visiting a type import on demand declaration or its children `Java20Parser.ts:15240-15246`
+- **accept** — Accepts a visitor and returns the result of visiting the static import on demand declaration or its children `Java20Parser.ts:15278-15284`
+- **accept** — Parses the top-level class or interface declaration using the visitor `Java20Parser.ts:15319-15325`
+- **accept** — Parses the module declaration using the visitor `Java20Parser.ts:15360-15366`
+- **accept** — Returns the result of visiting the class declaration or its children `Java20Parser.ts:15392-15398`
+- **accept** — Returns the result of visiting the normal class declaration or visiting children if the visitor does not have a visitNormalClassDeclaration method `Java20Parser.ts:15463-15469`
+- **accept** — Returns the result of visiting the class modifier or visiting children if the visitor does not support visiting the class modifier `Java20Parser.ts:15549-15555`
+- **accept** — Accepts the visitor for the type parameters rule `Java20Parser.ts:15578-15584`
+- **accept** — Returns the result of visiting the classExtends node or visiting its children if the visitor does not have a visitClassExtends method `Java20Parser.ts:15610-15616`
+- **accept** — Returns the result of visiting the class implements or visiting children if the visitor does not support visiting class implements `Java20Parser.ts:15663-15669`
+- **accept** — Returns the result of visiting the classPermits node or visiting its children if no visitor method is available `Java20Parser.ts:15716-15722`
+- **accept** — Returns the result of visiting the class body or visiting children `Java20Parser.ts:15748-15754`
+- **accept** — Returns the result of visiting the class body declaration or children if the visitor does not support visiting class body declarations `Java20Parser.ts:15789-15795`
+- **accept** — Returns the result of visiting the class member declaration or visiting children if the visitor does not have a visitClassMemberDeclaration method `Java20Parser.ts:15818-15824`
+- **accept** — Returns the result of visiting the field declaration or visiting children if the visitor does not support visiting field declarations `Java20Parser.ts:15847-15853`
+- **accept** — Returns the result of visiting the field modifier or visiting children if the visitor does not support visiting the field modifier `Java20Parser.ts:15888-15894`
+- **accept** — Returns the result of visiting the variable declarator list or visiting children if the visitor does not support visiting the variable declarator list. `Java20Parser.ts:161 `Java20Parser.ts:15932-15938`
+- **accept** — Returns the result of visiting the variable declarator or visiting children if the visitor does not support visiting the variable declarator `Java20Parser.ts:15970-15976`
+- **accept** — Returns the result of visiting the variable declarator ID or visiting children if the visitor does not support visiting the variable declarator ID `Java20Parser.ts:16005-16011`
+- **accept** — Returns the result of `Java20Parser.ts:16043-16049`
+- **accept** — Returns the result of visiting the method declaration or method header based on the visitor's method `Java20Parser.ts:16084-16090`
+- **accept** — Returns the result of visiting the method modifier if the visitor has a method for it, otherwise visits children. `Java20Parser.ts:166 `Java20Parser.ts:16131-16137`
+- **accept** — Accepts a visitor and returns the result of visiting the node or its children. `Java20Parser.ts:16741-1 `Java20Parser.ts:16172-16178`
+- **accept** — Parses the method declarator using the visitor `Java20Parser.ts:16204-16210`
+- **accept** — Returns the result of visiting the formal parameter or children if the visitor does not visit the formal parameter `Java20Parser.ts:16233-16239`
+- **accept** — Returns the result of visiting the variable modifier or visiting children if no visitor method exists. `Java20Parser.ts:16 `Java20Parser.ts:16262-16268`
+- **accept** — Accepts a visitor and returns the result of visiting the throwsT rule or its children `Java20Parser.ts:16291-16297`
+- **accept** — Accepts a visitor for instance initializer and returns the result `Java20Parser.ts:16320-16326`
+- **accept** — Returns the result of visiting the static initializer or visiting children if no visitor is available `Java20Parser.ts:16352-16358`
+- **accept** — Returns the result of visiting the constructor declaration or visiting children if the visitor does not support visiting constructor declarations `Java20Parser.ts:16399-16405`
+- **accept** — Accepts a visitor and returns the result of visiting the simple type name or its children. `Java20Parser.ts:17319-17325 `Java20Parser.ts:16443-16449`
+- **accept** — Returns the result of visiting the constructor body or visiting children if no visitor is available. `Java20Parser.ts:17 `Java20Parser.ts:16490-16496`
+- **accept** — Accepts a visitor `Java20Parser.ts:16516-16522`
+- **accept** — Accepts the enum declaration and returns `Java20Parser.ts:16542-16548`
+- **accept** — Returns the result of visiting the enum body or visiting children if the visitor does not support visiting the enum body `Java20Parser.ts:16577-16583`
+- **accept** — Returns the result of visiting the enum constant list or visiting children if the visitor does not have a visitEnumConstantList method. `Java20Parser.ts:17530-17 `Java20Parser.ts:16615-16621`
+- **accept** — Accepts a visitor and returns the result of visiting the enum constant modifier or visiting children if the visitor does not support visiting the enum constant modifier `Java20Parser.ts:16668-16674`
+- **accept** — Returns the result of visiting enum body declarations or visiting children if the visitor does not support visiting enum body declarations `Java20Parser.ts:16712-16718`
+- **accept** — Returns the result of visiting the record declaration or visiting children if no visitor method exists. `Java20Parser.ts:17688 `Java20Parser.ts:16741-16747`
+- **accept** — Accepts a visitor and returns the result of visiting record component list `Java20Parser.ts:16785-16791`
+- **accept** — Parses the variable arity record component using the visitor `Java20Parser.ts:16829-16835`
+- **accept** — Accepts a visitor and returns the result of visiting record component modifier or its children `Java20Parser.ts:16870-16876`
+- **accept** — Accepts a visitor and returns the result of visiting the record body declaration `Java20Parser.ts:16911-16917`
+- **accept** — Accepts a visitor and returns the result of visiting record body declaration or its children. `Java20Parser.ts:17945-17 `Java20Parser.ts:16961-16967`
+- **accept** — Returns the result of visiting the compact constructor declaration or visiting children if the visitor does not support it `Java20Parser.ts:16990-16996`
+- **accept** — Returns the result of visiting the interface declaration or its children `Java20Parser.ts:17019-17025`
+- **accept** — Returns the result of visiting the interface modifier or visiting children if the visitor does not have a visitInterfaceModifier method. `Java20Parser.ts:18112 `Java20Parser.ts:17060-17066`
+- **accept** — Accept `Java20Parser.ts:17089-17095`
+- **accept** — Returns the result of visiting the interface member declaration or visiting children if the visitor does not support it `Java20Parser.ts:17118-17124`
+- **accept** — Returns the result of visiting the constant declaration or visiting children if no visitor is available `Java20Parser.ts:17144-17150`
+- **accept** — Accepts the visitor and returns the result of visiting the static initializer or children `Java20Parser.ts:17173-17179`
+- **accept** — Returns the result of visiting the interface method declaration or visiting children if the visitor does not have a visitInterfaceMethodDeclaration method `Java20Parser.ts:17214-17220`
+- **accept** — Returns the result of visiting the annotation interface declaration or visiting children if the visitor does not support it `Java20Parser.ts:17249-17255`
+- **accept** — Accepts a visitor and returns the result of visiting the annotation interface element declaration or children `Java20Parser.ts:17293-17299`
+- **accept** — Returns the result of visiting the default value or visiting children if no visitor method is available `Java20Parser.ts:17319-17325`
+- **accept** — Returns the result of visiting the annotation or its children `Java20Parser.ts:17354-17360`
+- **accept** — Returns the result of visiting the normal annotation or visiting children if the visitor does not support visiting normal annotations `Java20Parser.ts:17407-17413`
+- **accept** — Accepts a visitor and returns the result of visiting the element value array initializer `Java20Parser.ts:17451-17457`
+- **accept** — Parses an element value array initializer or visits children if the visitor does not support it `Java20Parser.ts:17489-17495`
+- **accept** — Returns the result of visiting the element value list or visiting children if the visitor does not have a visitElementValueList method `Java20Parser.ts:17530-17536`
+- **accept** — Returns the result of visiting the marker annotation or children if the visitor does not support it `Java20Parser.ts:17577-17583`
+- **accept** — Returns the result of visiting the variable initializer list or visiting its children `Java20Parser.ts:17603-17609`
+- **accept** — Accepts a visitor and returns `Java20Parser.ts:17638-17644`
+- **accept** — Returns the result of visiting the block or visiting its children if no visitor method is available. `Java20Parser.ts:19085 `Java20Parser.ts:17688-17694`
+- **accept** — Returns the result of visiting the block statement or visiting its children if no visitor method is available `Java20Parser.ts:17720-17726`
+- **accept** — Accepts a visitor and returns the result of visiting the local variable declaration or visiting `Java20Parser.ts:17761-17767`
+- **accept** — Returns the result of visiting the local variable declaration statement or visiting children if the visitor does not support it `Java20Parser.ts:17802-17808`
+- **accept** — Accepts a visitor for the statement rule `Java20Parser.ts:17852-17858`
+- **accept** — Accepts a visitor and returns the result of visiting the statement without trailing substatement or its children `Java20Parser.ts:17878-17884`
+- **accept** — Returns the result of visiting the labeled statement or its children `Java20Parser.ts:17916-17922`
+- **accept** — Returns the result of visiting the labeled statement no short if or its children. `Java20 `Java20Parser.ts:17945-17951`
+- **accept** — Returns the result of visiting the expression statement or visiting children if the visitor does not support visiting the expression statement `Java20Parser.ts:17983-17989`
+- **accept** — Accepts a visitor and returns the result of visiting the statement expression or its children `Java20Parser.ts:18012-18018`
+- **accept** — Returns the result of visiting the if then statement or visiting children if the visitor does not support `Java20Parser.ts:18062-18068`
+- **accept** — Returns the result of visiting the switch statement or its children `Java20Parser.ts:18112-18118`
+- **accept** — Returns the result of visiting the switch rule or visiting children if no visitor is available `Java20Parser.ts:18141-18147`
+- **accept** — Returns the result of visiting the switch label or visiting children if no visitor is available. `Java20Parser.ts `Java20Parser.ts:18185-18191`
+- **accept** — Accepts the visitor `Java20Parser.ts:18225-18231`
+- **accept** — Returns the result of visiting a while statement or its children `Java20Parser.ts:18263-18269`
+- **accept** — Accepts a visitor and returns the result of visiting the while statement no short if rule or its children. `Java20Parser.ts:20087-2 `Java20Parser.ts:18304-18310`
+- **accept** — Accepts a visitor and `Java20Parser.ts:18339-18345`
+- **accept** — Accepts a visitor and returns the result of visiting the forStatement or its children. `Java20Parser.ts:20160-20166 `Java20Parser.ts:18377-18383`
+- **accept** — Returns the result of visiting the basic for statement or visiting its children if the visitor does not have a visitBasicForStatement method `Java20Parser.ts:18421-18427`
+- **accept** — Returns the result of visiting the basic for statement no short if if the visitor has a visitBasicForStatementNoShortIf method, otherwise visits children. `Java2 `Java20Parser.ts:18465-18471`
+- **accept** — Parses the `forUpdate` rule and returns the result or null `Java20Parser.ts:18505-18511`
+- **accept** — Accepts a visitor and returns the result of visiting the statement expression list or its children `Java20Parser.ts:18543-18549`
+- **accept** — Accepts a visitor and returns the result of visiting the enhanced for statement or its children `Java20Parser.ts:18598-18604`
+- **accept** — Accepts a visitor for the enhanced for statement no short if rule `Java20Parser.ts:18630-18636`
+- **accept** — Returns the result of visiting the break statement or visiting children if the visitor does not support visiting the break statement `Java20Parser.ts:18659-18665`
+- **accept** — Returns the result of visiting the try statement or children if the visitor does not support visiting the try statement `Java20Parser.ts:18691-18697`
+- **accept** — Returns the result of visiting the catch formal parameter or visiting children if the visitor does not support visiting the catch formal parameter `Java20Parser.ts:18729-18735`
+- **accept** — Returns the result of visiting the `finallyBlock` if the visitor has a method for it, otherwise visits children `Java20Parser.ts:18770-18776`
+- **accept** — Returns the result of visiting the `tryWithResourcesStatement` if the visitor has a method for it, `Java20Parser.ts:18802-18808`
+- **accept** — Determines the result of visiting a resource specification or resource list `Java20Parser.ts:18834-18840`
+- **accept** — Determines the result of visiting a yield statement or resource list `Java20Parser.ts:18869-18875`
+- **accept** — Returns the result of visiting the variable access or visiting children if no visitor is available `Java20Parser.ts:18910-18916`
+- **accept** — Determines the result of visiting a yield statement or resource list. `Java20 `Java20Parser.ts:18939-18945`
+- **accept** — Returns the result of visiting the pattern or visiting children if no visitor is available `Java20Parser.ts:18977-18983`
+- **accept** — Returns the result of visiting the type pattern or visiting children if no visitor is available. `Java20Parser.ts:21 `Java20Parser.ts:19012-19018`
+- **accept** — Returns the result of visiting the primary or children nodes based on the visitor's method `Java20Parser.ts:19053-19059`
+- **accept** — Accepts a visitor for the primary no new array rule `Java20Parser.ts:19085-19091`
+- **accept** — Returns the result of visiting the PNNA node or visiting its children if no visitor method exists `Java20Parser.ts:19117-19123`
+- **accept** — Accepts the visitor and returns the result of visiting the class `Java20Parser.ts:19149-19155`
+- **accept** — Accepts a visitor to visit the class instance creation expression `Java20Parser.ts:19178-19184`
+- **accept** — Accepts a visitor and returns the result of visiting the unqualified class instance creation expression `Java20Parser.ts:19216-19222`
+- **accept** — Accepts a visitor and returns the result of visiting type arguments or diamond `Java20Parser.ts:19245-19251`
+- **accept** — Accepts a visitor for the array creation expression rule `Java20Parser.ts:19274-19280`
+- **accept** — Accepts the visitor for dimExprs and `Java20Parser.ts:19315-19321`
+- **accept** — Returns the result of visiting the DimExpr context or visiting its children if no visitor is available `Java20Parser.ts:19353-19359`
+- **accept** — Accepts the visitor and returns the result of visiting the array access context or its children `Java20Parser.ts:19415-19421`
+- **accept** — Accepts the visitor and returns the result of visiting the field access context or its children `Java20Parser.ts:19441-19447`
+- **accept** — Accepts a visitor and returns the result `Java20Parser.ts:19473-19479`
+- **accept** — Accepts a visitor to visit the argument list or children `Java20Parser.ts:19505-19511`
+- **accept** — Accepts a visitor for method `Java20Parser.ts:19534-19540`
+- **accept** — Accepts a visitor for the postfix expression and returns the result `Java20Parser.ts:19578-19584`
+- **accept** — Returns the result of visiting PfE if the visitor has a visitPfE method, otherwise visits children `Java20Parser.ts:19616-19622`
+- **accept** — Accepts a visitor for the post-increment expression and returns the result `Java20Parser.ts:19660-19666`
+- **accept** — Returns the result of visiting the post-decrement expression or its children `Java20Parser.ts:19707-19713`
+- **accept** — Returns the result of visiting the unary expression or visiting its children if no visitor method is available `Java20Parser.ts:19748-19754`
+- **accept** — Returns the result of visiting the preDecrementExpression or visiting its children `Java20Parser.ts:19786-19792`
+- **accept** — Returns the result of visiting the preDecrementExpression if the visitor has a visitPreDecrementExpression method, otherwise visits children `Java20Parser.ts:19853-19859`
+- **accept** — Returns the result of visiting the `unaryExpressionNotPlusMinus` if the visitor supports it, otherwise visits children `Java20Parser.ts:19894-19900`
+- **accept** — Returns the result of visiting the castExpression or visiting its children `Java20Parser.ts:19938-19944`
+- **accept** — Returns the result of visiting the multiplicative expression or children if no visitor is available `Java20Parser.ts:19985-19991`
+- **accept** — Accepts a visitor and returns the result of visiting the additive expression. `Java20Parser.ts:22374-2 `Java20Parser.ts:20011-20017`
+- **accept** — Returns the result of visiting the shift expression or children if the visitor does not support visiting the shift expression `Java20Parser.ts:20049-20055`
+- **accept** — Returns the result of visiting the relational expression or visiting children if the visitor does not support visiting relational expressions `Java20Parser.ts:20087-20093`
+- **accept** — Accepts a visitor and returns the result of visiting equality expression or its children `Java20Parser.ts:20131-20137`
+- **accept** — Accepts the visitor and returns the result of visiting the andExpression or visiting children `Java20Parser.ts:20160-20166`
+- **accept** — Returns the result of visiting the exclusive or expression or visiting children if the visitor does not support it `Java20Parser.ts:20189-20195`
+- **accept** — Accepts a visitor and returns the result of visiting inclusive or expression or its children `Java20Parser.ts:20242-20248`
+- **accept** — Accepts a visitor and returns the result of visiting the conditionalAndExpression or its children `Java20Parser.ts:20295-20301`
+- **accept** — Returns the result of visiting the conditionalOrExpression or visiting its children if the visitor does not have a visitConditionalOrExpression method `Java20Parser.ts:20324-20330`
+- **accept** — Returns the result of visiting the conditional expression or visiting its children if no visitor is available `Java20Parser.ts:20350-20356`
+- **accept** — Returns the result of visiting assignmentExpression or visiting children if no visitor is available `Java20Parser.ts:20391-20397`
+- **accept** — Returns the result of visiting the assignment node or visiting its children if no visitor method exists `Java20Parser.ts:20435-20441`
+- **accept** — Returns the result of visiting the leftHandSide node or visiting its children if no visitor method exists `Java20Parser.ts:20479-20485`
+- **accept** — Accepts the assignment operator rule and returns the result of visiting it `Java20Parser.ts:20511-20517`
+- **accept** — Accepts the lambda expression rule and returns the result of visiting it `Java20Parser.ts:20543-20549`
+- **accept** — Returns the result of visiting lambda parameters or visiting children if the visitor does not have a visitLambdaParameters method `Java20Parser.ts:20575-20581`
+- **accept** — Returns the result of visiting lambda parameter list or visiting children if the visitor does not have a visitLambdaParameterList method `Java20Parser.ts:20607-20613`
+- **accept** — Returns the result of visiting the lambda parameter or visiting its children if the visitor does not have a visitLambdaParameter method `Java20Parser.ts:20645-20651`
+- **accept** — Returns the result of visiting the lambda parameter type or visiting its children if the visitor does not have a visitLambdaParameterType method `Java20Parser.ts:20683-20689`
+- **accept** — Returns the result of visiting the lambda body or visiting children if the visitor does not have a visitLambdaBody method `Java20Parser.ts:20715-20721`
+- **accept** — Returns the result of visiting the switch expression or visiting children if the visitor does not have a visitSwitchExpression method `Java20Parser.ts:20753-20759`
+- **accept** — Returns the result of visiting the constant expression or visiting its children if no visitor method exists `Java20Parser.ts:20791-20797`
+- **accept** — Returns the result of visiting the finally block or children if the visitor does not support visiting the finally block `Java20Parser.ts:20835-20841`
+- **accept** — Returns the result of visiting the try with resources statement or children if the visitor does not support visiting the try with resources statement. `Java20Parser.ts:20902 `Java20Parser.ts:20864-20870`
+- **accept** — Returns the result of visiting the resource specification or visiting children if the visitor does not support visiting the resource specification `Java20Parser.ts:20902-20908`
+- **accept** — Returns the result of visiting the resource or children based on the visitor's method `Java20Parser.ts:20937-20943`
+- **accept** — Returns the result of visiting the variable access or children based on the visitor's method `Java20Parser.ts:20978-20984`
+- **accept** — Accepts the yield statement and returns the result of visiting it `Java20Parser.ts:21007-21013`
+- **accept** — Returns the result of visiting the pattern or children based on the visitor's method `Java20Parser.ts:21036-21042`
+- **accept** — Accepts a visitor for type pattern rule `Java20Parser.ts:21068-21074`
+- **accept** — Returns the result of visiting the expression or children based on the visitor's method `Java20Parser.ts:21094-21100`
+- **accept** — Returns the result of visiting the primary `Java20Parser.ts:21120-21126`
+- **accept** — Accepts a visitor for the primary no new array rule, returning the result of visiting the rule or its children `Java20Parser.ts:21149-21155`
+- **accept** — Parses the class instance creation expression and returns the result or null `Java20Parser.ts:21178-21184`
+- **accept** — Returns the result of visiting the class instance creation expression or visiting children if the visitor does not support it `Java20Parser.ts:21282-21288`
+- **accept** — Returns the result of visiting the unqualified class instance creation expression or visiting children if the visitor does not support it `Java20Parser.ts:21341-21347`
+- **accept** — Returns the result of visiting the array creation expression or visiting children if no visitor is available `Java20Parser.ts:21400-21406`
+- **accept** — Returns the result of visiting the DimExprs context or visiting its children if no visitor method exists. `Java20Parser.ts:21698-21 `Java20Parser.ts:21435-21441`
+- **accept** — Returns the result of visiting the DimExpr or visiting children if no visitor is available. `Java20Parser.ts:2 `Java20Parser.ts:21479-21485`
+- **accept** — Accepts the visitor for the array access rule. `Java `Java20Parser.ts:21532-21538`
+- **accept** — Returns the result of visiting the field access or visiting children if no visitor method is available `Java20Parser.ts:21561-21567`
+- **accept** — Accepts a visitor and returns the result of visiting the argument list or its children `Java20Parser.ts:21590-21596`
+- **accept** — Returns the result of visiting the postfix expression or visiting children if the visitor does not have a visitPostfixExpression method `Java20Parser.ts:21628-21634`
+- **accept** — Returns the result of visiting the postDecrementExpression if the visitor has a visitPostDecrementExpression method, otherwise visits children `Java20Parser.ts:21666-21672`
+- **accept** — Returns the result of visiting the unary expression or visiting children if the visitor does not support visiting the unary expression `Java20Parser.ts:21698-21704`
+- **accept** — Returns the result of visiting the preincrement expression or visiting children if the visitor does not support it `Java20Parser.ts:21739-21745`
+- **accept** — Returns the result of visiting the unary expression not plus minus or visiting children if the visitor does not support visiting the unary expression not plus minus `Java20Parser.ts:21780-21786`
+- **accept** — Returns the result of visiting the multiplicative expression or visiting children if the visitor does not support multiplicative expression `Java20Parser.ts:21824-21830`
+- **accept** — Returns the result of visiting the additive expression or visiting children if the visitor does not support visiting the additive expression `Java20Parser.ts:21886-21892`
+- **accept** — Returns the result of visiting the relational expression or visiting children if the visitor does not support visiting the relational expression `Java20Parser.ts:21927-21933`
+- **accept** — Returns the result of visiting the conditional or expression using the visitor, or visits children if the visitor does not support conditional or expression `Java20Parser.ts:21986-21992`
+- **accept** — Returns the result of visiting the conditional expression or visiting children if the visitor does not support conditional expression `Java20Parser.ts:22018-22024`
+- **accept** — Returns the result of visiting assignmentExpression if the visitor has a visitAssignmentExpression method, otherwise visits children `Java20Parser.ts:22050-22056`
+- **accept** — Returns the result of visiting assignment if the visitor has a visitAssignment method, otherwise visits children `Java20Parser.ts:22079-22085`
+- **accept** — Returns the result of visiting the left-hand side or visiting children if no visitor is available. `Java20Parser.ts:22800-228 `Java20Parser.ts:22108-22114`
+- **accept** — Returns the result of visiting assignmentOperator if the visitor has a visitAssignmentOperator method, otherwise visits children `Java20Parser.ts:22149-22155`
+- **accept** — Returns the result of visiting the lambda expression or visiting its children if no visitor is available. `Java20Parser.ts:2 `Java20Parser.ts:22178-22184`
+- **accept** — Accepts the visitor and returns the result of visiting lambdaParameters or visiting children `Java20Parser.ts:22207-22213`
+- **accept** — Accepts the visitor and returns the result of visiting lambdaParameterList or visiting children `Java20Parser.ts:22248-22254`
+- **accept** — Returns the result of visiting the lambda parameter or visiting children if the visitor does not support visiting the lambda parameter `Java20Parser.ts:22301-22307`
+- **accept** — Accepts the visitor and returns the result of visiting lambdaParameterType or visiting children `Java20Parser.ts:22339-22345`
+- **accept** — Accepts the visitor and returns the result of visiting the lambda body `Java20Parser.ts:22374-22380`
+- **accept** — Accepts a visitor and returns the result of visiting the switchExpression or visiting its children `Java20Parser.ts:22421-22427`
+- **accept** — Accepts a visitor and returns the result of visiting the constantExpression or visiting its children `Java20Parser.ts:22471-22477`
+- **accept** — Returns the result of visiting the equality expression or visiting children if the visitor does not support equality expression `Java20Parser.ts:22506-22512`
+- **accept** — Accepts the and expression and returns the result of visiting it `Java20Parser.ts:22538-22544`
+- **accept** — Accepts the exclusive or expression and returns the result of visiting it `Java20Parser.ts:22570-22576`
+- **accept** — Accepts the visitor and returns the result of visiting `inclusiveOrExpression `Java20Parser.ts:22602-22608`
+- **accept** — Returns the result of visiting the conditional and expression or visiting children if the visitor does not support conditional and expression `Java20Parser.ts:22634-22640`
+- **accept** — Returns the result of visiting the conditional or expression or visiting children if the visitor does not support conditional or expression `Java20Parser.ts:22666-22672`
+- **accept** — Returns the result of visiting assignment or visiting children if no visitor is available `Java20Parser.ts:22707-22713`
+- **accept** — Returns the result of visiting leftHandSide or visiting children if no visitor is available `Java20Parser.ts:22736-22742`
+- **accept** — Accepts a visitor for the assignment operator rule `Java20Parser.ts:22768-22774`
+- **accept** — Accepts a visitor for the lambda expression rule `Java20Parser.ts:22800-22806`
+- **accept** — Returns the result of visiting lambda parameters or children based on the visitor's method `Java20Parser.ts:22859-22865`
+- **accept** — Parses the lambda parameter list and returns the result or null `Java20Parser.ts:22891-22897`
+- **accept** — Parses the lambda parameter and returns the result or null `Java20Parser.ts:22926-22932`
+- **accept** — Parses the lambda parameter type and returns the result or null `Java20Parser.ts:22976-22982`
+- **accept** — Accepts a visitor and returns the result of visiting the lambda body or its children `Java20Parser.ts:23017-23023`
+- **accept** — Accepts a visitor and returns the result of visiting the switch expression or its children `Java20Parser.ts:23046-23052`
+- **accept** — Accepts a visitor and returns the result of visiting the constant expression `Java20Parser.ts:23075-23081`
+- **accept** — Accepts a visitor and returns the result of visiting the switch expression or visiting children `Java20Parser.ts:23113-23119`
+- **accept** — Accepts a visitor and returns the result of visiting the constant expression or visiting children `Java20Parser.ts:23139-23145`
+- **ADD** — Represents the addition operator `Java20Parser.ts:22124-22126`
+- **ADD** — Returns the terminal node for the ADD token `Java20Parser.ts:22355-22357`
 - **ADD_ASSIGN** — Represents the addition assignment operator `Java20Parser.ts:22822-22824`
 - **additionalBound** — Represents an additional bound in Java `Java20Parser.ts:1854-1874`
 - **additionalBound** — Represents an additional bound in the parser `Java20Parser.ts:14542-14548`
 - **additionalBound** — Parses an additional bound `Java20Parser.ts:22278-22284`
 - **additiveExpression** — Represents an additive expression `Java20Parser.ts:11362-11436`
-- **additiveExpression** — Parses an additive expression `Java20Parser.ts:22352-22354`, `Java20Parser.ts:22384-22386`
+- **additiveExpression** — Parses an additive expression `Java20Parser.ts:22352-22354`
+- **additiveExpression** — Returns the context of an additive expression `Java20Parser.ts:22384-22386`
 - **additiveExpression_sempred** — Represents an additive expression with a semantic predicate in Java `Java20Parser.ts:12612-12620`
 - **ambiguousName** — Represents an ambiguous name in the Java 20 grammar `Java20Parser.ts:2213-2243`
-- **ambiguousName** — Parses an ambiguous name `Java20Parser.ts:14904-14906`, `Java20Parser.ts:14965-14967`
+- **ambiguousName** — Parses an ambiguous name `Java20Parser.ts:14904-14906`
+- **ambiguousName** — Returns the context of an ambiguous name rule `Java20Parser.ts:14965-14967`
 - **AND** — Represents the logical AND operator `Java20Parser.ts:22618-22620`
 - **AND_ASSIGN** — Represents the bitwise AND assignment operator `Java20Parser.ts:22837-22839`
 - **andExpression** — Represents an and expression `Java20Parser.ts:11752-11804`
-- **andExpression** — Parses an AND expression `Java20Parser.ts:22519-22521`, `Java20Parser.ts:22548-22550`
+- **andExpression** — Parses an AND expression `Java20Parser.ts:22519-22521`
+- **andExpression** — Returns the andExpression context from the parser `Java20Parser.ts:22548-22550`
 - **andExpression_sempred** — Represents an and expression with a semantic predicate in Java `Java20Parser.ts:12656-12662`
-- **annotation** — Represents an annotation `Java20Parser.ts:6361-6401`, `Java20Parser.ts:14025-14031`, `Java20Parser.ts:14238-14244`, `Java20Parser.ts:14279-14285`, `Java20Parser.ts:14708-14714`, `Java20Parser.ts:16094-16096`, `Java20Parser.ts:17587-17589`, `Java20Parser.ts:18314-18316`
-- **annotation** — Represents a context for an annotation `Java20Parser.ts:14191-14197`
-- **annotation** — Represents the context of an annotation in the Java20 grammar `Java20Parser.ts:14352-14358`
-- **annotation** — Represents an annotation in the Java20Parser `Java20Parser.ts:14437-14443`, `Java20Parser.ts:14505-14507`, `Java20Parser.ts:16941-16947`, `Java20Parser.ts:16971-16973`, `Java20Parser.ts:18387-18389`
-- **annotation** — Represents an annotation in the grammar `Java20Parser.ts:15157-15159`, `Java20Parser.ts:15422-15428`, `Java20Parser.ts:16379-16385`, `Java20Parser.ts:18608-18610`, `Java20Parser.ts:18818-18820`
-- **annotation** — Represents the context for annotations `Java20Parser.ts:15673-15675`
-- **annotation** — Represents an annotation in Java `Java20Parser.ts:16417-16423`, `Java20Parser.ts:16470-16476`
-- **annotation** — Parses an annotation `Java20Parser.ts:16625-16627`, `Java20Parser.ts:16692-16698`, `Java20Parser.ts:16803-16809`, `Java20Parser.ts:21500-21506`, `Java20Parser.ts:21719-21725`
-- **annotation** — Represents an annotation in the constructor `Java20Parser.ts:17224-17226`
-- **annotation** — Annotation `Java20Parser.ts:17832-17838`, `Java20Parser.ts:17862-17864`
-- **annotation** — Represents an annotation in the code `Java20Parser.ts:18072-18074`
+- **annotation** — Represents an annotation `Java20Parser.ts:6361-6401`
+- **annotation** — Represents a context for an annotation `Java20Parser.ts:14025-14031`
+- **annotation** — Represents the context of an annotation in the Java20 grammar `Java20Parser.ts:14191-14197`
+- **annotation** — Represents an annotation in the Java20Parser `Java20Parser.ts:14238-14244`
+- **annotation** — Represents an annotation in the grammar `Java20Parser.ts:14279-14285`
+- **annotation** — Represents the context for annotations `Java20Parser.ts:14352-14358`
+- **annotation** — Represents an annotation in Java `Java20Parser.ts:14437-14443`
+- **annotation** — Parses an annotation `Java20Parser.ts:14505-14507`
+- **annotation** — Represents an annotation in the constructor `Java20Parser.ts:14708-14714`
+- **annotation** — Annotation `Java20Parser.ts:15157-15159`
+- **annotation** — Represents an annotation in the code `Java20Parser.ts:15422-15428`
+- **annotation** — Returns the annotation `Java20Parser.ts:15673-15675`
+- **annotation** — Returns the annotation context if it exists `Java20Parser.ts:16094-16096`
+- **annotation** — Parses an annotation context based on an optional index `Java20Parser.ts:16379-16385`
+- **annotation** — Returns the annotation context or contexts. `Java20Parser.ts `Java20Parser.ts:16417-16423`
+- **annotation** — Returns the annotation context or an array of annotation contexts based on the provided index `Java20Parser.ts:16470-16476`
+- **annotation** — Retrieves the annotation context based on the provided index `Java20Parser.ts:16625-16627`
+- **annotation** — Parses an annotation context `Java20Parser.ts:16692-16698`
+- **annotation** — Returns the annotation context `Java20Parser.ts:16803-16809`
+- **annotation** — Retrieves the annotation context if it exists `Java20Parser.ts:16941-16947`
+- **annotation** — Returns the context of an annotation or null `Java20Parser.ts:16971-16973`
+- **annotation** — Returns the annotation context or null `Java20Parser.ts:17224-17226`
+- **annotation** — Returns the annotation context or contexts. `Java20Parser.ts:21500-21 `Java20Parser.ts:17587-17589`
+- **annotation** — Returns an array of annotation contexts or a single annotation context based on the provided index `Java20Parser.ts:17832-17838`
+- **annotation** — Returns an AnnotationContext `Java20Parser.ts:17862-17864`
+- **annotation** — Returns an AnnotationContext or null `Java20Parser.ts:18072-18074`
+- **annotation** — Returns an annotation context or null `Java20Parser.ts:18314-18316`
+- **annotation** — Returns an AnnotationContext or null. `Java20Parser.ts:18608-1 `Java20Parser.ts:18387-18389`
+- **annotation** — Returns the annotation context at the specified index `Java20Parser.ts:18608-18610`
+- **annotation** — Returns the context of an annotation, optionally by index `Java20Parser.ts:18818-18820`
+- **annotation** — Returns an array or a single AnnotationContext based on the index `Java20Parser.ts:21500-21506`
+- **annotation** — Returns an annotation context or contexts `Java20Parser.ts:21719-21725`
 - **annotationInterfaceBody** — Defines the body of an annotation interface `Java20Parser.ts:6150-6187`
 - **annotationInterfaceBody** — Represents the body of an annotation interface in the Java20Parser `Java20Parser.ts:18440-18442`
 - **annotationInterfaceDeclaration** — Declares an annotation interface `Java20Parser.ts:6112-6149`
@@ -110,11 +355,12 @@ Java20ParserVisitor.ts
 - **annotationInterfaceMemberDeclaration** — Declares a member of an annotation interface `Java20Parser.ts:6188-6242`
 - **annotationInterfaceMemberDeclaration** — Represents the context of an annotation interface member declaration `Java20Parser.ts:18483-18491`
 - **argumentList** — Represents an argument list for method invocations `Java20Parser.ts:10651-10682`
-- **argumentList** — Represents an argument list `Java20Parser.ts:17382-17384`, `Java20Parser.ts:21460-21462`
+- **argumentList** — Represents an argument list `Java20Parser.ts:17382-17384`
 - **argumentList** — Represents an argument list in the grammar `Java20Parser.ts:17561-17563`
 - **argumentList** — Represents an argument list in Java `Java20Parser.ts:21248-21250`
 - **argumentList** — Parses an argument list `Java20Parser.ts:21322-21324`
-- **argumentList** — Represents an argument list in the Java20 grammar `Java20Parser.ts:21843-21845`
+- **argumentList** — Represents an argument list in the Java20 grammar `Java20Parser.ts:21460-21462`
+- **argumentList** — Returns the argument list context `Java20Parser.ts:21843-21845`
 - **arrayAccess** — Represents an array access expression `Java20Parser.ts:10306-10364`
 - **arrayAccess** — Represents an array access in the Java20 grammar `Java20Parser.ts:22784-22786`
 - **arrayCreationExpression** — Represents an array creation expression `Java20Parser.ts:10098-10131`
@@ -122,15 +368,17 @@ Java20ParserVisitor.ts
 - **arrayCreationExpression** — Represents an array creation expression in Java `Java20Parser.ts:21227-21229`
 - **arrayCreationExpressionWithInitializer** — Represents an array creation expression with an initializer `Java20Parser.ts:10194-10239`
 - **arrayCreationExpressionWithInitializer** — Represents an array creation expression with an initializer in Java `Java20Parser.ts:21242-21244`
-- **arrayCreationExpressionWithInitializer** — Parses an array creation expression with an initializer `Java20Parser.ts:21574-21576`, `Java20Parser.ts:21764-21766`
+- **arrayCreationExpressionWithInitializer** — Parses an array creation expression with an initializer `Java20Parser.ts:21574-21576`
+- **arrayCreationExpressionWithInitializer** — Returns the context of an array creation expression with an initializer `Java20Parser.ts:21764-21766`
 - **arrayCreationExpressionWithoutInitializer** — Represents an array creation expression without an initializer `Java20Parser.ts:10132-10193`
 - **arrayCreationExpressionWithoutInitializer** — Parses an array creation expression without an initializer `Java20Parser.ts:21571-21573`
 - **arrayInitializer** — Initializes an array with multiple elements `Java20Parser.ts:6657-6699`
 - **arrayInitializer** — Parses an array initializer `Java20Parser.ts:16246-16248`
 - **arrayInitializer** — Represents an array initializer `Java20Parser.ts:21647-21649`
-- **arrayType** — Represents an array type in Java `Java20Parser.ts:1648-1694`, `Java20Parser.ts:21266-21268`
+- **arrayType** — Represents an array type in Java `Java20Parser.ts:1648-1694`
 - **arrayType** — Represents a context for an array type `Java20Parser.ts:14157-14159`
-- **arrayType** — Parses an array type `Java20Parser.ts:21970-21972`
+- **arrayType** — Parses an array type `Java20Parser.ts:21266-21268`
+- **arrayType** — Returns the context of an array type `Java20Parser.ts:21970-21972`
 - **ARROW** — Represents an arrow in a switch label `Java20Parser.ts:19866-19868`
 - **ARROW** — Represents the arrow in a lambda expression `Java20Parser.ts:22872-22874`
 - **ASSERT** — Token for the assert keyword `Java20Parser.ts:19717-19719`
@@ -148,30 +396,38 @@ Java20ParserVisitor.ts
 - **assignmentOperator** — Represents the assignment operator in the Java20 grammar `Java20Parser.ts:22749-22751`
 - **AT** — Represents the at keyword in the Java20Parser `Java20Parser.ts:18431-18433`
 - **AT** — Parses the '@' symbol in the Java20 grammar `Java20Parser.ts:18701-18703`
-- **AT** — Represents the '@' symbol `Java20Parser.ts:18920-18922`, `Java20Parser.ts:18949-18951`
+- **AT** — Represents the '@' symbol `Java20Parser.ts:18920-18922`
+- **AT** — Returns the terminal node for the AT token `Java20Parser.ts:18949-18951`
 - **BANG** — Represents the bang operator `Java20Parser.ts:22226-22228`
 - **basicForStatement** — Parses a basic for statement in Java `Java20Parser.ts:7925-7993`
 - **basicForStatement** — Parses a basic for statement `Java20Parser.ts:20141-20143`
 - **basicForStatementNoShortIf** — Parses a basic for statement without a short if clause in Java `Java20Parser.ts:7994-8062`
 - **basicForStatementNoShortIf** — Parses a basic for statement without a short if `Java20Parser.ts:20170-20172`
-- **BITAND** — Represents a bitwise AND operator `Java20Parser.ts:14572-14574`, `Java20Parser.ts:22522-22524`
+- **BITAND** — Represents a bitwise AND operator `Java20Parser.ts:14572-14574`
+- **BITAND** — Returns the terminal node for the BITAND token. `Java20 `Java20Parser.ts:22522-22524`
 - **BITOR** — Represents a bitwise OR operation `Java20Parser.ts:20806-20812`
 - **BITOR** — Represents a bitwise OR operator `Java20Parser.ts:22586-22588`
 - **block** — A block of statements `Java20Parser.ts:6734-6768`
-- **block** — Represents a block of code `Java20Parser.ts:17099-17101`, `Java20Parser.ts:17128-17130`, `Java20Parser.ts:17157-17159`, `Java20Parser.ts:20658-20660`, `Java20Parser.ts:20737-20739`, `Java20Parser.ts:20848-20850`
-- **block** — Represents a block of statements `Java20Parser.ts:19363-19365`
-- **block** — Represents a block of statements in the parser `Java20Parser.ts:19875-19877`
-- **block** — Parses a block in the Java20 grammar `Java20Parser.ts:20629-20631`
-- **block** — Block of code within a try-with-resources statement `Java20Parser.ts:20880-20882`
-- **block** — Parses a block `Java20Parser.ts:23059-23061`
+- **block** — Represents a block of code `Java20Parser.ts:17099-17101`
+- **block** — Represents a block of statements `Java20Parser.ts:17128-17130`
+- **block** — Represents a block of statements in the parser `Java20Parser.ts:17157-17159`
+- **block** — Parses a block in the Java20 grammar `Java20Parser.ts:19363-19365`
+- **block** — Block of code within a try-with-resources statement `Java20Parser.ts:19875-19877`
+- **block** — Parses a block `Java20Parser.ts:20629-20631`
+- **block** — Returns the block context `Java20Parser.ts:20658-20660`
+- **block** — Returns the block context from the parser `Java20Parser.ts:20737-20739`
+- **block** — Retrieves the block context from the parser `Java20Parser.ts:20848-20850`
+- **block** — Returns the context of a block `Java20Parser.ts:20880-20882`
+- **block** — Returns the block context or null `Java20Parser.ts:23059-23061`
 - **blockStatement** — A single statement within a block `Java20Parser.ts:6804-6844`
 - **blockStatement** — Retrieves or returns block statement contexts for Java 20 parsing `Java20Parser.ts:19097-19103`
 - **blockStatements** — Statements within a block `Java20Parser.ts:6769-6803`
 - **blockStatements** — Parses block statements `Java20Parser.ts:17338-17340`
 - **blockStatements** — Represents the statements within a block `Java20Parser.ts:19069-19071`
 - **blockStatements** — Represents a group of statements within a block `Java20Parser.ts:19922-19924`
-- **BOOLEAN** — Represents the boolean type `Java20Parser.ts:14020-14022`, `Java20Parser.ts:21381-21383`
+- **BOOLEAN** — Represents the boolean type `Java20Parser.ts:14020-14022`
 - **BOOLEAN** — Represents the boolean type in the grammar `Java20Parser.ts:16304-16306`
+- **BOOLEAN** — Returns a terminal node for the BOOLEAN token or null `Java20Parser.ts:21381-21383`
 - **BooleanLiteral** — Represents the context for parsing boolean literals `Java20Parser.ts:13979-13981`
 - **BREAK** — Represents a break keyword in the Java20 grammar `Java20Parser.ts:20489-20491`
 - **breakStatement** — Parses a break statement in Java `Java20Parser.ts:8210-8239`
@@ -186,8 +442,9 @@ Java20ParserVisitor.ts
 - **CATCH** — Represents the keyword "catch" `Java20Parser.ts:20725-20727`
 - **catchClause** — Represents a single catch clause `Java20Parser.ts:8454-8480`
 - **catchClause** — Represents a catch clause `Java20Parser.ts:20695-20701`
-- **catches** — Represents a list of catch clauses `Java20Parser.ts:8424-8453`, `Java20Parser.ts:20661-20663`
-- **catches** — List of catch clauses in a try-with-resources statement `Java20Parser.ts:20883-20885`
+- **catches** — Represents a list of catch clauses `Java20Parser.ts:8424-8453`
+- **catches** — List of catch clauses in a try-with-resources statement `Java20Parser.ts:20661-20663`
+- **catches** — Returns the context of the catches rule `Java20Parser.ts:20883-20885`
 - **catchFormalParameter** — Represents the formal parameter of a catch clause `Java20Parser.ts:8481-8512`
 - **catchFormalParameter** — Represents a formal parameter in a catch clause `Java20Parser.ts:20731-20733`
 - **catchType** — Represents the type of the catch clause `Java20Parser.ts:8513-8544`
@@ -198,21 +455,25 @@ Java20ParserVisitor.ts
 - **CLASS** — Represents the 'class' keyword `Java20Parser.ts:15620-15622`
 - **CLASS** — Represents a class keyword `Java20Parser.ts:21357-21359`
 - **classBody** — Represents a class body in the Java 20 grammar `Java20Parser.ts:3232-3268`
-- **classBody** — Represents the body of a class `Java20Parser.ts:15626-15628`, `Java20Parser.ts:17558-17560`
-- **classBody** — Represents the body of a class or interface `Java20Parser.ts:21463-21465`
+- **classBody** — Represents the body of a class `Java20Parser.ts:15626-15628`
+- **classBody** — Represents the body of a class or interface `Java20Parser.ts:17558-17560`
+- **classBody** — Returns the class body context `Java20Parser.ts:21463-21465`
 - **classBodyDeclaration** — Represents a declaration of a class body `Java20Parser.ts:3269-3316`
-- **classBodyDeclaration** — Represents a class body declaration `Java20Parser.ts:15950-15956`, `Java20Parser.ts:17618-17624`
-- **classBodyDeclaration** — Represents the context for a class body declaration `Java20Parser.ts:17926-17928`
+- **classBodyDeclaration** — Represents a class body declaration `Java20Parser.ts:15950-15956`
+- **classBodyDeclaration** — Represents the context for a class body declaration `Java20Parser.ts:17618-17624`
+- **classBodyDeclaration** — Returns the context of `Java20Parser.ts:17926-17928`
 - **classDeclaration** — Represents a class declaration in the Java 20 grammar `Java20Parser.ts:2866-2906`
-- **classDeclaration** — Represents a class declaration `Java20Parser.ts:15370-15372`, `Java20Parser.ts:19159-19161`
+- **classDeclaration** — Represents a class declaration `Java20Parser.ts:15370-15372`
 - **classDeclaration** — Represents the declaration of a class `Java20Parser.ts:16021-16023`
 - **classDeclaration** — Represents a class declaration in the grammar `Java20Parser.ts:18241-18243`
 - **classDeclaration** — Represents the context of a class declaration `Java20Parser.ts:18521-18523`
+- **classDeclaration** — Parses a class declaration context. `Java20Parser.ts:19159 `Java20Parser.ts:19159-19161`
 - **classExtends** — Represents a class extends clause in the Java 20 grammar `Java20Parser.ts:3124-3144`
 - **classExtends** — Represents the 'extends' keyword `Java20Parser.ts:15641-15643`
 - **classImplements** — Represents a class implements clause in the Java 20 grammar `Java20Parser.ts:3145-3165`
 - **classImplements** — Represents the context for class implements `Java20Parser.ts:15644-15646`
-- **classImplements** — Represents class implements `Java20Parser.ts:17435-17437`, `Java20Parser.ts:17672-17674`
+- **classImplements** — Represents class implements `Java20Parser.ts:17435-17437`
+- **classImplements** — Returns the context of the class implements rule `Java20Parser.ts:17672-17674`
 - **classInstanceCreationExpression** — Represents a class instance creation expression `Java20Parser.ts:9897-9945`
 - **classInstanceCreationExpression** — Parses a class instance creation expression `Java20Parser.ts:19562-19564`
 - **classLiteral** — Represents a class literal `Java20Parser.ts:9772-9896`
@@ -220,49 +481,71 @@ Java20ParserVisitor.ts
 - **classMemberDeclaration** — Represents a member declaration within a class `Java20Parser.ts:3317-3371`
 - **classMemberDeclaration** — Represents a class member declaration `Java20Parser.ts:15980-15982`
 - **classModifier** — Represents a class modifier in the Java 20 grammar `Java20Parser.ts:2977-3068`
-- **classModifier** — Represents a class modifier `Java20Parser.ts:15631-15637`, `Java20Parser.ts:17428-17434`, `Java20Parser.ts:17662-17668`
+- **classModifier** — Represents a class modifier `Java20Parser.ts:15631-15637`
+- **classModifier** — Returns a list or a single context for class modifiers `Java20Parser.ts:17428-17434`
+- **classModifier** — Returns the class modifier context or contexts `Java20Parser.ts:17662-17668`
 - **classOrInterfaceType** — Represents a class or interface type in Java `Java20Parser.ts:1436-1497`
 - **classOrInterfaceType** — Represents a context for a class or interface type `Java20Parser.ts:14151-14153`
-- **classOrInterfaceType** — Represents a class or interface type `Java20Parser.ts:14295-14297`, `Java20Parser.ts:21650-21652`
+- **classOrInterfaceType** — Represents a class or interface type `Java20Parser.ts:14295-14297`
 - **classOrInterfaceType** — Represents a class or interface type in the parser `Java20Parser.ts:14537-14539`
-- **classOrInterfaceTypeToInstantiate** — Represents the class or interface type to instantiate `Java20Parser.ts:10003-10061`, `Java20Parser.ts:21448-21450`
+- **classOrInterfaceType** — Returns the context of a class or interface type `Java20Parser.ts:21650-21652`
+- **classOrInterfaceTypeToInstantiate** — Represents the class or interface type to instantiate `Java20Parser.ts:10003-10061`
+- **classOrInterfaceTypeToInstantiate** — Returns the context of a class or interface type to instantiate `Java20Parser.ts:21448-21450`
 - **classPermits** — Represents a class permits clause in the Java 20 grammar `Java20Parser.ts:3198-3231`
 - **classPermits** — Represents the context for class permits `Java20Parser.ts:15647-15649`
-- **classType** — Represents a class type in Java `Java20Parser.ts:1498-1598`, `Java20Parser.ts:21260-21262`
-- **classType** — Represents the context of a class type in the Java20 grammar `Java20Parser.ts:14321-14323`, `Java20Parser.ts:14388-14390`
-- **classType** — Parses a class type `Java20Parser.ts:15802-15804`, `Java20Parser.ts:21964-21966`
-- **classType** — Represents the type of a class `Java20Parser.ts:17070-17072`
-- **classType** — Represents a class type `Java20Parser.ts:20815-20821`, `Java20Parser.ts:21612-21614`
+- **classType** — Represents a class type in Java `Java20Parser.ts:1498-1598`
+- **classType** — Represents the context of a class type in the Java20 grammar `Java20Parser.ts:14321-14323`
+- **classType** — Parses a class type `Java20Parser.ts:14388-14390`
+- **classType** — Represents the type of a class `Java20Parser.ts:15802-15804`
+- **classType** — Represents a class type `Java20Parser.ts:17070-17072`
+- **classType** — Returns the class type context at the specified index or all class type contexts if no index is provided. `Java20Parser.ts:208 `Java20Parser.ts:20815-20821`
+- **classType** — Returns the class type context. `Java20Parser.ts:2126 `Java20Parser.ts:21260-21262`
+- **classType** — Returns the class type context `Java20Parser.ts:21612-21614`
+- **classType** — Returns the context for the class type rule `Java20Parser.ts:21964-21966`
 - **coit** — Parses a coit rule in Java 20, handling annotations and type identifiers `Java20Parser.ts:1384-1435`
 - **coit** — Represents a context for a coit `Java20Parser.ts:14201-14203`
 - **coit** — Represents a context for a class or interface type `Java20Parser.ts:14248-14250`
-- **COLON** — Represents a colon in the Java20 grammar `Java20Parser.ts:19454-19456`, `Java20Parser.ts:19486-19488`, `Java20Parser.ts:20454-20456`
-- **COLON** — Token for the colon `Java20Parser.ts:19732-19734`
-- **COLON** — Represents a colon in a switch label `Java20Parser.ts:19833-19839`, `Java20Parser.ts:19915-19921`
-- **COLON** — Represents the colon in the grammar `Java20Parser.ts:20410-20412`
-- **COLON** — Represents the colon operator `Java20Parser.ts:22685-22687`
+- **COLON** — Represents a colon in the Java20 grammar `Java20Parser.ts:19454-19456`
+- **COLON** — Token for the colon `Java20Parser.ts:19486-19488`
+- **COLON** — Represents a colon in a switch label `Java20Parser.ts:19732-19734`
+- **COLON** — Represents the colon in the grammar `Java20Parser.ts:19833-19839`
+- **COLON** — Represents the colon operator `Java20Parser.ts:19915-19921`
+- **COLON** — Returns the COLON terminal node `Java20Parser.ts:20410-20412`
+- **COLON** — Returns the terminal node for the COLON token or null `Java20Parser.ts:20454-20456`
+- **COLON** — Returns the terminal node for the colon token. `Java20Parser.ts:2 `Java20Parser.ts:22685-22687`
 - **COLONCOLON** — Represents the double colon operator in Java `Java20Parser.ts:21254-21256`
 - **COLONCOLON** — Represents a colon-colon token `Java20Parser.ts:21325-21327`
 - **COLONCOLON** — Parses a double colon `Java20Parser.ts:21940-21942`
 - **COMMA** — Represents a comma operator `Java20Parser.ts:14644-14650`
 - **COMMA** — Represents the comma in the grammar `Java20Parser.ts:15508-15514`
 - **COMMA** — Parses a comma token `Java20Parser.ts:15769-15775`
-- **COMMA** — Represents a comma separator `Java20Parser.ts:15868-15874`, `Java20Parser.ts:15912-15918`, `Java20Parser.ts:18890-18896`
-- **COMMA** — Represents a comma `Java20Parser.ts:16152-16158`, `Java20Parser.ts:18853-18855`, `Java20Parser.ts:19962-19968`
-- **COMMA** — Parses a comma `Java20Parser.ts:16763-16765`
-- **COMMA** — Represents a comma in the Java20Parser `Java20Parser.ts:16850-16856`, `Java20Parser.ts:17040-17046`
-- **COMMA** — Represents the comma token `Java20Parser.ts:17274-17276`, `Java20Parser.ts:17741-17747`
-- **COMMA** — Represents a comma in the grammar `Java20Parser.ts:17470-17472`, `Java20Parser.ts:17510-17516`, `Java20Parser.ts:18996-18998`, `Java20Parser.ts:19033-19039`, `Java20Parser.ts:20371-20377`
-- **COMMA** — Comma token in the grammar `Java20Parser.ts:18165-18171`
-- **COMMA** — Parses the ',' symbol in the Java20 grammar `Java20Parser.ts:18750-18756`
-- **COMMA** — Parses a comma-separated list `Java20Parser.ts:21907-21913`
-- **COMMA** — Represents the comma `Java20Parser.ts:22947-22953`
+- **COMMA** — Represents a comma separator `Java20Parser.ts:15868-15874`
+- **COMMA** — Represents a comma `Java20Parser.ts:15912-15918`
+- **COMMA** — Parses a comma `Java20Parser.ts:16152-16158`
+- **COMMA** — Represents a comma in the Java20Parser `Java20Parser.ts:16763-16765`
+- **COMMA** — Represents the comma token `Java20Parser.ts:16850-16856`
+- **COMMA** — Represents a comma in the grammar `Java20Parser.ts:17040-17046`
+- **COMMA** — Comma token in the grammar `Java20Parser.ts:17274-17276`
+- **COMMA** — Parses the ',' symbol in the Java20 grammar `Java20Parser.ts:17470-17472`
+- **COMMA** — Parses a comma-separated list `Java20Parser.ts:17510-17516`
+- **COMMA** — Represents the comma `Java20Parser.ts:17741-17747`
+- **COMMA** — Returns the comma token or an array of comma tokens based on the provided index. `Java20Parser.ts `Java20Parser.ts:18165-18171`
+- **COMMA** — Returns the comma terminal node or `Java20Parser.ts:18750-18756`
+- **COMMA** — Returns a comma token or an array of `Java20Parser.ts:18853-18855`
+- **COMMA** — Returns the comma terminal node or null `Java20Parser.ts:18890-18896`
+- **COMMA** — Returns the COMMA terminal node or an array of COMMA terminal nodes. `Java20Parser.ts `Java20Parser.ts:18996-18998`
+- **COMMA** — Returns the comma terminal node or nodes `Java20Parser.ts:19033-19039`
+- **COMMA** — Returns a terminal node or an array of terminal nodes for the COMMA rule `Java20Parser.ts:19962-19968`
+- **COMMA** — Returns a comma token or an array of comma tokens based on the provided index `Java20Parser.ts:20371-20377`
+- **COMMA** — Returns the COMMA token at position i or all COMMA tokens `Java20Parser.ts:21907-21913`
+- **COMMA** — Returns the comma token or tokens `Java20Parser.ts:22947-22953`
 - **compactConstructorDeclaration** — Declares a compact constructor for a record `Java20Parser.ts:5560-5591`
 - **compactConstructorDeclaration** — Represents the context for a compact constructor declaration `Java20Parser.ts:17929-17931`
 - **compilationUnit** — Represents the top-level compilation unit in the Java 20 grammar `Java20Parser.ts:2244-2277`
 - **compilationUnit** — Represents the compilation unit context for the Java20Parser `Java20Parser.ts:13662-13664`
 - **conditionalAndExpression** — Represents a conditional and expression `Java20Parser.ts:11920-11972`
-- **conditionalAndExpression** — Parses a conditional and expression `Java20Parser.ts:22615-22617`, `Java20Parser.ts:22644-22646`
+- **conditionalAndExpression** — Parses a conditional and expression `Java20Parser.ts:22615-22617`
+- **conditionalAndExpression** — Returns the context of the conditionalAndExpression rule `Java20Parser.ts:22644-22646`
 - **conditionalAndExpression_sempred** — Represents a conditional and expression with a semantic predicate in Java `Java20Parser.ts:12683-12692`
 - **conditionalExpression** — Represents a conditional expression in Java `Java20Parser.ts:12029-12085`
 - **conditionalExpression** — Represents a conditional expression in the grammar `Java20Parser.ts:18812-18814`
@@ -270,7 +553,8 @@ Java20ParserVisitor.ts
 - **conditionalExpression** — Parses a conditional expression `Java20Parser.ts:22688-22690`
 - **conditionalExpression** — Represents a conditional expression in the Java20 grammar `Java20Parser.ts:22717-22719`
 - **conditionalOrExpression** — Represents a conditional or expression in Java `Java20Parser.ts:11976-12028`
-- **conditionalOrExpression** — Parses a conditional or expression `Java20Parser.ts:22647-22649`, `Java20Parser.ts:22676-22678`
+- **conditionalOrExpression** — Parses a conditional or expression `Java20Parser.ts:22647-22649`
+- **conditionalOrExpression** — Returns the context of the conditionalOrExpression rule `Java20Parser.ts:22676-22678`
 - **conditionalOrExpression_sempred** — Represents a conditional or expression with a semantic predicate in Java `Java20Parser.ts:12693-12702`
 - **constantDeclaration** — Declares a constant `Java20Parser.ts:5920-5953`
 - **constantDeclaration** — Represents a constant declaration in an interface `Java20Parser.ts:18235-18237`
@@ -300,8 +584,9 @@ Java20ParserVisitor.ts
 - **continueStatement** — Parses a continue statement in Java `Java20Parser.ts:8240-8269`
 - **continueStatement** — Represents a continue statement `Java20Parser.ts:19384-19386`
 - **createFailedPredicateException** — Creates an exception for failed predicates `Java20Parser.ts:913-915`
-- **DEC** — Represents the decrement operation in the Java20 grammar `Java20Parser.ts:22034-22036`, `Java20Parser.ts:22092-22094`
-- **DEC** — Represents the decrement operator `Java20Parser.ts:22188-22190`
+- **DEC** — Represents the decrement operation in the Java20 grammar `Java20Parser.ts:22034-22036`
+- **DEC** — Represents the decrement operator `Java20Parser.ts:22092-22094`
+- **DEC** — Returns the DEC terminal node `Java20Parser.ts:22188-22190`
 - **DEFAULT** — Represents the default modifier in the Java20Parser `Java20Parser.ts:18399-18401`
 - **DEFAULT** — Represents the default keyword in the grammar `Java20Parser.ts:18640-18642`
 - **DEFAULT** — Represents a default keyword `Java20Parser.ts:19969-19971`
@@ -309,48 +594,66 @@ Java20ParserVisitor.ts
 - **defaultValue** — Represents a default value in the grammar `Java20Parser.ts:18582-18584`
 - **dimExpr** — Represents a single dimension expression `Java20Parser.ts:10272-10305`
 - **dimExpr** — Represents a dimension expression `Java20Parser.ts:21678-21684`
-- **dimExprs** — Represents a list of dimension expressions `Java20Parser.ts:10240-10271`, `Java20Parser.ts:21606-21608`
+- **dimExprs** — Represents a list of dimension expressions `Java20Parser.ts:10240-10271`
+- **dimExprs** — Returns the context for dimExprs `Java20Parser.ts:21606-21608`
 - **dims** — Represents the dimensions of an array type `Java20Parser.ts:1695-1751`
 - **dims** — Represents the context of dimensions in the Java20 grammar `Java20Parser.ts:14385-14387`
-- **dims** — Parses dimensions `Java20Parser.ts:16217-16219`, `Java20Parser.ts:16769-16771`
+- **dims** — Parses dimensions `Java20Parser.ts:16217-16219`
 - **dims** — Stores the dimensions of an array `Java20Parser.ts:16552-16554`
-- **dims** — Represents dimensions in the grammar `Java20Parser.ts:18579-18581`
-- **dims** — Represents a list of dimensions `Java20Parser.ts:21609-21611`, `Java20Parser.ts:21644-21646`
+- **dims** — Represents dimensions in the grammar `Java20Parser.ts:16769-16771`
+- **dims** — Represents a list of dimensions `Java20Parser.ts:18579-18581`
+- **dims** — Returns the context for dims. `Java20Parser.ts:21 `Java20Parser.ts:21609-21611`
+- **dims** — Returns the DimsContext instance `Java20Parser.ts:21644-21646`
 - **DIV** — Represents the division operator `Java20Parser.ts:22320-22322`
 - **DIV_ASSIGN** — Represents the division assignment operator `Java20Parser.ts:22816-22818`
 - **DO** — Represents the keyword 'do' `Java20Parser.ts:20097-20099`
 - **doStatement** — Parses a do statement in Java `Java20Parser.ts:7826-7856`
 - **doStatement** — Represents a do statement `Java20Parser.ts:19378-19380`
 - **DOT** — Represents the keyword 'DOT' `Java20Parser.ts:14183-14185`
-- **DOT** — Represents a dot operator `Java20Parser.ts:14233-14235`, `Java20Parser.ts:14292-14294`
-- **DOT** — Represents a dot in the Java20Parser `Java20Parser.ts:14776-14778`, `Java20Parser.ts:14808-14810`, `Java20Parser.ts:14840-14842`, `Java20Parser.ts:14872-14874`
-- **DOT** — Parses a dot operator `Java20Parser.ts:14907-14909`, `Java20Parser.ts:14962-14964`, `Java20Parser.ts:21509-21515`
-- **DOT** — Represents a dot in the grammar `Java20Parser.ts:15127-15133`, `Java20Parser.ts:16368-16370`
-- **DOT** — Represents the dot in Java20Parser `Java20Parser.ts:15256-15258`, `Java20Parser.ts:15297-15299`
-- **DOT** — Represents the DOT operator `Java20Parser.ts:15338-15340`
-- **DOT** — Represents the dot operator in the grammar `Java20Parser.ts:15434-15440`
-- **DOT** — Represents a dot token in Java `Java20Parser.ts:16409-16411`, `Java20Parser.ts:16459-16461`
-- **DOT** — Represents a dot operator in the Java20Parser `Java20Parser.ts:16813-16815`
-- **DOT** — Represents a dot `Java20Parser.ts:17385-17387`
-- **DOT** — Represents the dot operator in Java `Java20Parser.ts:21205-21211`
-- **DOT** — Represents a dot token `Java20Parser.ts:21292-21294`, `Java20Parser.ts:21354-21356`
-- **DOT** — Represents the dot token `Java20Parser.ts:21416-21418`
-- **DOT** — Represents a dot operator in the Java20 grammar `Java20Parser.ts:21795-21801`, `Java20Parser.ts:21851-21857`
-- **DOT** — Parses a dot `Java20Parser.ts:21961-21963`
+- **DOT** — Represents a dot operator `Java20Parser.ts:14233-14235`
+- **DOT** — Represents a dot in the Java20Parser `Java20Parser.ts:14292-14294`
+- **DOT** — Parses a dot operator `Java20Parser.ts:14776-14778`
+- **DOT** — Represents a dot in the grammar `Java20Parser.ts:14808-14810`
+- **DOT** — Represents the dot in Java20Parser `Java20Parser.ts:14840-14842`
+- **DOT** — Represents the DOT operator `Java20Parser.ts:14872-14874`
+- **DOT** — Represents the dot operator in the grammar `Java20Parser.ts:14907-14909`
+- **DOT** — Represents a dot token in Java `Java20Parser.ts:14962-14964`
+- **DOT** — Represents a dot operator in the Java20Parser `Java20Parser.ts:15127-15133`
+- **DOT** — Represents a dot `Java20Parser.ts:15256-15258`
+- **DOT** — Represents the dot operator in Java `Java20Parser.ts:15297-15299`
+- **DOT** — Represents a dot token `Java20Parser.ts:15338-15340`
+- **DOT** — Represents the dot token `Java20Parser.ts:15434-15440`
+- **DOT** — Represents a dot operator in the Java20 grammar `Java20Parser.ts:16368-16370`
+- **DOT** — Parses a dot `Java20Parser.ts:16409-16411`
+- **DOT** — Returns the DOT terminal node `Java20Parser.ts:16459-16461`
+- **DOT** — Returns the terminal node for the DOT rule or an array of nodes if an index is provided `Java20Parser.ts:16813-16815`
+- **DOT** — Returns the terminal node for the DOT token `Java20Parser.ts:17385-17387`
+- **DOT** — Returns the terminal node for the dot operator or an array of such nodes based on the provided index `Java20Parser.ts:21205-21211`
+- **DOT** — Returns the DOT terminal node or nodes `Java20Parser.ts:21292-21294`
+- **DOT** — Returns a terminal node for the DOT token `Java20Parser.ts:21354-21356`
+- **DOT** — Returns the DOT terminal node or null `Java20Parser.ts:21416-21418`
+- **DOT** — Returns a terminal node or an array of terminal nodes for the DOT token `Java20Parser.ts:21509-21515`
+- **DOT** — Returns the terminal node for the dot operator `Java20Parser.ts:21795-21801`
+- **DOT** — Returns a terminal node or null for the DOT token `Java20Parser.ts:21851-21857`
+- **DOT** — Returns a terminal node for the dot operator in Java 20 parsing `Java20Parser.ts:21961-21963`
 - **DOUBLE** — Represents the keyword 'DOUBLE' `Java20Parser.ts:14125-14127`
 - **elementValue** — Represents a single value in an array or list `Java20Parser.ts:6491-6531`
-- **elementValue** — Represents an element value in the grammar `Java20Parser.ts:18643-18645`, `Java20Parser.ts:18786-18788`
-- **elementValue** — Represents a single element value `Java20Parser.ts:18881-18887`, `Java20Parser.ts:18958-18960`
+- **elementValue** — Represents an element value in the grammar `Java20Parser.ts:18643-18645`
+- **elementValue** — Represents a single element value `Java20Parser.ts:18786-18788`
+- **elementValue** — Returns an array of element value contexts or a single element value context based on the index provided `Java20Parser.ts:18881-18887`
+- **elementValue** — Returns an element value context `Java20Parser.ts:18958-18960`
 - **elementValueArrayInitializer** — Initializes an array with multiple element values `Java20Parser.ts:6532-6574`
 - **elementValueArrayInitializer** — Represents an element value array initializer `Java20Parser.ts:18815-18817`
-- **elementValueList** — Represents a list of element values `Java20Parser.ts:6575-6608`, `Java20Parser.ts:18850-18852`
+- **elementValueList** — Represents a list of element values `Java20Parser.ts:6575-6608`
+- **elementValueList** — Returns the context of the element value list `Java20Parser.ts:18850-18852`
 - **elementValuePair** — Represents an element-value pair `Java20Parser.ts:6468-6490`
 - **elementValuePair** — Parses an element-value pair in the Java20 grammar `Java20Parser.ts:18741-18747`
 - **elementValuePairList** — Represents a list of element-value pairs `Java20Parser.ts:6436-6467`
 - **elementValuePairList** — Parses a list of element-value pairs in the Java20 grammar `Java20Parser.ts:18713-18715`
 - **ELLIPSIS** — Represents an ellipsis in the Java20Parser `Java20Parser.ts:16924-16926`
 - **ELLIPSIS** — Ellipsis `Java20Parser.ts:17815-17817`
-- **ELSE** — Represents the 'else' keyword in the grammar `Java20Parser.ts:19641-19643`, `Java20Parser.ts:19691-19693`
+- **ELSE** — Represents the 'else' keyword in the grammar `Java20Parser.ts:19641-19643`
+- **ELSE** — Returns an antlr.TerminalNode `Java20Parser.ts:19691-19693`
 - **emptyStatement_** — An empty statement `Java20Parser.ts:7194-7212`
 - **emptyStatement_** — Represents an empty statement `Java20Parser.ts:19366-19368`
 - **enhancedForStatement** — Parses an enhanced for statement in Java `Java20Parser.ts:8148-8178`
@@ -358,31 +661,253 @@ Java20ParserVisitor.ts
 - **enhancedForStatementNoShortIf** — Parses an enhanced for statement without a short if clause in Java `Java20Parser.ts:8179-8209`
 - **enhancedForStatementNoShortIf** — Parses an enhanced for statement without a short if `Java20Parser.ts:20173-20175`
 - **enterEveryRule** — Enters every rule `Java20ParserListener.ts:2759-2759`
-- **enterRule** — Enters a rule in the Java20Parser `Java20Parser.ts:13671-13675`, `Java20Parser.ts:13700-13704`, `Java20Parser.ts:13729-13733`, `Java20Parser.ts:16951-16955`, `Java20Parser.ts:16980-16984`, `Java20Parser.ts:17009-17013`, `Java20Parser.ts:17050-17054`
-- **enterRule** — Enters the current rule `Java20Parser.ts:13758-13762`, `Java20Parser.ts:15000-15004`, `Java20Parser.ts:15046-15050`, `Java20Parser.ts:15081-15085`, `Java20Parser.ts:17079-17083`, `Java20Parser.ts:17108-17112`, `Java20Parser.ts:17134-17138`, `Java20Parser.ts:17593-17597`, `Java20Parser.ts:17628-17632`, `Java20Parser.ts:17678-17682`, `Java20Parser.ts:17710-17714`, `Java20Parser.ts:17751-17755`, `Java20Parser.ts:17792-17796`, `Java20Parser.ts:19235-19239`, `Java20Parser.ts:19264-19268`, `Java20Parser.ts:19305-19309`, `Java20Parser.ts:19343-19347`, `Java20Parser.ts:19524-19528`, `Java20Parser.ts:19568-19572`, `Java20Parser.ts:20285-20289`, `Java20Parser.ts:20314-20318`, `Java20Parser.ts:20781-20785`, `Java20Parser.ts:20825-20829`, `Java20Parser.ts:20854-20858`
-- **enterRule** — Invoked when entering a new rule in the parser `Java20Parser.ts:13829-13833`, `Java20Parser.ts:13885-13889`
-- **enterRule** — Represents the method called when entering a rule `Java20Parser.ts:13953-13957`
-- **enterRule** — Begins parsing a rule `Java20Parser.ts:13997-14001`, `Java20Parser.ts:14035-14039`, `Java20Parser.ts:14064-14068`, `Java20Parser.ts:14102-14106`, `Java20Parser.ts:14131-14135`, `Java20Parser.ts:14163-14167`, `Java20Parser.ts:14207-14211`, `Java20Parser.ts:14254-14258`, `Java20Parser.ts:14301-14305`, `Java20Parser.ts:14552-14556`, `Java20Parser.ts:14581-14585`, `Java20Parser.ts:14613-14617`, `Java20Parser.ts:14654-14658`, `Java20Parser.ts:15309-15313`, `Java20Parser.ts:15350-15354`, `Java20Parser.ts:15382-15386`, `Java20Parser.ts:15539-15543`, `Java20Parser.ts:15568-15572`, `Java20Parser.ts:15600-15604`, `Java20Parser.ts:16506-16510`, `Java20Parser.ts:16532-16536`, `Java20Parser.ts:16567-16571`, `Java20Parser.ts:16605-16609`, `Java20Parser.ts:19928-19932`, `Java20Parser.ts:19975-19979`, `Java20Parser.ts:20001-20005`, `Java20Parser.ts:20039-20043`, `Java20Parser.ts:20077-20081`, `Java20Parser.ts:20121-20125`, `Java20Parser.ts:20340-20344`, `Java20Parser.ts:20381-20385`, `Java20Parser.ts:20425-20429`, `Java20Parser.ts:21580-21584`, `Java20Parser.ts:21618-21622`, `Java20Parser.ts:21656-21660`, `Java20Parser.ts:22291-22295`, `Java20Parser.ts:22329-22333`, `Java20Parser.ts:22364-22368`, `Java20Parser.ts:22592-22596`, `Java20Parser.ts:22624-22628`, `Java20Parser.ts:22656-22660`, `Java20Parser.ts:22881-22885`, `Java20Parser.ts:22916-22920`, `Java20Parser.ts:22966-22970`
-- **enterRule** — Enters a rule in the Java20 grammar `Java20Parser.ts:14327-14331`, `Java20Parser.ts:14362-14366`, `Java20Parser.ts:14397-14401`, `Java20Parser.ts:18681-18685`, `Java20Parser.ts:18719-18723`, `Java20Parser.ts:18760-18764`, `Java20Parser.ts:20565-20569`, `Java20Parser.ts:20597-20601`, `Java20Parser.ts:20635-20639`
-- **enterRule** — Invoked when entering a parsing rule `Java20Parser.ts:14447-14451`, `Java20Parser.ts:14485-14489`, `Java20Parser.ts:14511-14515`
-- **enterRule** — Enters a rule `Java20Parser.ts:14683-14687`, `Java20Parser.ts:14721-14725`, `Java20Parser.ts:14753-14757`, `Java20Parser.ts:16658-16662`, `Java20Parser.ts:16702-16706`, `Java20Parser.ts:17842-17846`, `Java20Parser.ts:17868-17872`, `Java20Parser.ts:17906-17910`, `Java20Parser.ts:20673-20677`, `Java20Parser.ts:20705-20709`, `Java20Parser.ts:20743-20747`, `Java20Parser.ts:20997-21001`, `Java20Parser.ts:21026-21030`, `Java20Parser.ts:21058-21062`
-- **enterRule** — Enters a new rule in the parser `Java20Parser.ts:14785-14789`, `Java20Parser.ts:14817-14821`, `Java20Parser.ts:14849-14853`, `Java20Parser.ts:22411-22415`, `Java20Parser.ts:22461-22465`
-- **enterRule** — Begins parsing a new rule `Java20Parser.ts:14881-14885`, `Java20Parser.ts:14913-14917`, `Java20Parser.ts:14939-14943`, `Java20Parser.ts:14971-14975`, `Java20Parser.ts:15738-15742`, `Java20Parser.ts:15779-15783`, `Java20Parser.ts:15808-15812`, `Java20Parser.ts:15837-15841`, `Java20Parser.ts:16194-16198`, `Java20Parser.ts:16223-16227`, `Java20Parser.ts:16252-16256`, `Java20Parser.ts:16281-16285`, `Java20Parser.ts:17163-17167`, `Java20Parser.ts:17204-17208`, `Java20Parser.ts:17239-17243`, `Java20Parser.ts:18131-18135`, `Java20Parser.ts:18175-18179`, `Java20Parser.ts:18215-18219`, `Java20Parser.ts:18455-18459`, `Java20Parser.ts:18495-18499`, `Java20Parser.ts:18533-18537`, `Java20Parser.ts:19107-19111`, `Java20Parser.ts:19139-19143`, `Java20Parser.ts:19168-19172`, `Java20Parser.ts:19206-19210`, `Java20Parser.ts:19697-19701`, `Java20Parser.ts:19738-19742`, `Java20Parser.ts:19776-19780`, `Java20Parser.ts:21084-21088`, `Java20Parser.ts:21110-21114`, `Java20Parser.ts:21139-21143`, `Java20Parser.ts:21168-21172`, `Java20Parser.ts:21272-21276`, `Java20Parser.ts:21331-21335`, `Java20Parser.ts:21688-21692`, `Java20Parser.ts:21729-21733`, `Java20Parser.ts:21770-21774`, `Java20Parser.ts:22098-22102`, `Java20Parser.ts:22139-22143`, `Java20Parser.ts:22168-22172`, `Java20Parser.ts:22197-22201`, `Java20Parser.ts:22238-22242`, `Java20Parser.ts:22496-22500`, `Java20Parser.ts:22528-22532`, `Java20Parser.ts:22560-22564`, `Java20Parser.ts:23007-23011`, `Java20Parser.ts:23036-23040`, `Java20Parser.ts:23065-23069`
-- **enterRule** — Enters a rule in the parser `Java20Parser.ts:15137-15141`, `Java20Parser.ts:15163-15167`, `Java20Parser.ts:15198-15202`, `Java20Parser.ts:15653-15657`, `Java20Parser.ts:15706-15710`, `Java20Parser.ts:15878-15882`, `Java20Parser.ts:15922-15926`, `Java20Parser.ts:15960-15964`, `Java20Parser.ts:15995-15999`, `Java20Parser.ts:16033-16037`, `Java20Parser.ts:16074-16078`, `Java20Parser.ts:16310-16314`, `Java20Parser.ts:16342-16346`, `Java20Parser.ts:16389-16393`, `Java20Parser.ts:16433-16437`, `Java20Parser.ts:16480-16484`, `Java20Parser.ts:16731-16735`, `Java20Parser.ts:16775-16779`, `Java20Parser.ts:17479-17483`, `Java20Parser.ts:17520-17524`, `Java20Parser.ts:17567-17571`, `Java20Parser.ts:17935-17939`, `Java20Parser.ts:17973-17977`, `Java20Parser.ts:18002-18006`, `Java20Parser.ts:18052-18056`, `Java20Parser.ts:18102-18106`, `Java20Parser.ts:18792-18796`, `Java20Parser.ts:18824-18828`, `Java20Parser.ts:18859-18863`, `Java20Parser.ts:18900-18904`, `Java20Parser.ts:18929-18933`, `Java20Parser.ts:18967-18971`, `Java20Parser.ts:19002-19006`, `Java20Parser.ts:19043-19047`, `Java20Parser.ts:19075-19079`, `Java20Parser.ts:19843-19847`, `Java20Parser.ts:19884-19888`, `Java20Parser.ts:21390-21394`, `Java20Parser.ts:21425-21429`
-- **enterRule** — Represents the entry point for a rule in Java20Parser `Java20Parser.ts:15230-15234`, `Java20Parser.ts:15268-15272`
-- **enterRule** — Represents entering a rule in the grammar `Java20Parser.ts:15453-15457`, `Java20Parser.ts:18588-18592`, `Java20Parser.ts:18620-18624`, `Java20Parser.ts:18649-18653`
-- **enterRule** — Enters a rule and returns a visitor `Java20Parser.ts:16121-16125`, `Java20Parser.ts:16162-16166`
-- **enterRule** — Enters a new rule in the parsing process `Java20Parser.ts:16819-16823`, `Java20Parser.ts:16860-16864`, `Java20Parser.ts:16901-16905`, `Java20Parser.ts:19405-19409`, `Java20Parser.ts:19431-19435`, `Java20Parser.ts:19463-19467`, `Java20Parser.ts:19495-19499`
-- **enterRule** — Enters a parsing rule `Java20Parser.ts:17283-17287`, `Java20Parser.ts:17309-17313`, `Java20Parser.ts:17344-17348`, `Java20Parser.ts:21469-21473`, `Java20Parser.ts:21522-21526`, `Java20Parser.ts:21551-21555`, `Java20Parser.ts:22790-22794`, `Java20Parser.ts:22849-22853`, `Java20Parser.ts:23103-23107`, `Java20Parser.ts:23129-23133`
-- **enterRule** — Represents entering a rule `Java20Parser.ts:17397-17401`, `Java20Parser.ts:17441-17445`
-- **enterRule** — Invoked when entering a rule `Java20Parser.ts:18253-18257`, `Java20Parser.ts:18294-18298`, `Java20Parser.ts:18329-18333`
-- **enterRule** — Represents the entry point for a rule in the Java20Parser `Java20Parser.ts:18367-18371`, `Java20Parser.ts:18411-18415`
-- **enterRule** — Enters a rule in the parsing process `Java20Parser.ts:19606-19610`, `Java20Parser.ts:19650-19654`
-- **enterRule** — Enters a new rule `Java20Parser.ts:20150-20154`, `Java20Parser.ts:20179-20183`, `Java20Parser.ts:20232-20236`, `Java20Parser.ts:21917-21921`, `Java20Parser.ts:21976-21980`
-- **enterRule** — Represents entering a rule in the Java20 grammar `Java20Parser.ts:20469-20473`, `Java20Parser.ts:20501-20505`, `Java20Parser.ts:20533-20537`, `Java20Parser.ts:21814-21818`, `Java20Parser.ts:21876-21880`
-- **enterRule** — Method to enter a rule in the parser `Java20Parser.ts:20892-20896`, `Java20Parser.ts:20927-20931`, `Java20Parser.ts:20968-20972`
-- **enterRule** — Represents the entry point of a rule in the Java20 grammar `Java20Parser.ts:22008-22012`, `Java20Parser.ts:22040-22044`, `Java20Parser.ts:22069-22073`
-- **enterRule** — Invoked when entering a new rule in the parsing process `Java20Parser.ts:22697-22701`, `Java20Parser.ts:22726-22730`, `Java20Parser.ts:22758-22762`
+- **enterRule** — Enters a rule in the Java20Parser `Java20Parser.ts:13671-13675`
+- **enterRule** — Enters the current rule `Java20Parser.ts:13700-13704`
+- **enterRule** — Invoked when entering a new rule in the parser `Java20Parser.ts:13729-13733`
+- **enterRule** — Represents the method called when entering a rule `Java20Parser.ts:13758-13762`
+- **enterRule** — Begins parsing a rule `Java20Parser.ts:13829-13833`
+- **enterRule** — Enters a rule in the Java20 grammar `Java20Parser.ts:13885-13889`
+- **enterRule** — Invoked when entering a parsing rule `Java20Parser.ts:13953-13957`
+- **enterRule** — Enters a rule `Java20Parser.ts:13997-14001`
+- **enterRule** — Enters a new rule in the parser `Java20Parser.ts:14035-14039`
+- **enterRule** — Begins parsing a new rule `Java20Parser.ts:14064-14068`
+- **enterRule** — Enters a rule in the parser `Java20Parser.ts:14102-14106`
+- **enterRule** — Represents the entry point for a rule in Java20Parser `Java20Parser.ts:14131-14135`
+- **enterRule** — Represents entering a rule in the grammar `Java20Parser.ts:14163-14167`
+- **enterRule** — Enters a rule and returns a visitor `Java20Parser.ts:14207-14211`
+- **enterRule** — Enters a new rule in the parsing process `Java20Parser.ts:14254-14258`
+- **enterRule** — Enters a parsing rule `Java20Parser.ts:14301-14305`
+- **enterRule** — Represents entering a rule `Java20Parser.ts:14327-14331`
+- **enterRule** — Invoked when entering a rule `Java20Parser.ts:14362-14366`
+- **enterRule** — Represents the entry point for a rule in the Java20Parser `Java20Parser.ts:14397-14401`
+- **enterRule** — Enters a rule in the parsing process `Java20Parser.ts:14447-14451`
+- **enterRule** — Enters a new rule `Java20Parser.ts:14485-14489`
+- **enterRule** — Represents entering a rule in the Java20 grammar `Java20Parser.ts:14511-14515`
+- **enterRule** — Method to enter a rule in the parser `Java20Parser.ts:14552-14556`
+- **enterRule** — Represents the entry point of a rule in the Java20 grammar `Java20Parser.ts:14581-14585`
+- **enterRule** — Invoked when entering a new rule in the parsing process `Java20Parser.ts:14613-14617`
+- **enterRule** — Invokes the listener's enterTypeArgumentList method if it exists `Java20Parser.ts:14654-14658`
+- **enterRule** — Invokes the listener's enterTypeArgument method if it exists `Java20Parser.ts:14683-14687`
+- **enterRule** — Invokes the listener's enterWildcard method if it exists. `Java20Parser.ts:14721-14725 `Java20Parser.ts:14721-14725`
+- **enterRule** — Invokes the listener's enterWildcardBounds method if it exists `Java20Parser.ts:14753-14757`
+- **enterRule** — Invokes the enterModuleName method of the listener if it exists `Java20Parser.ts:14785-14789`
+- **enterRule** — Invokes the listener's enterPackageName method if it exists `Java20Parser.ts:14817-14821`
+- **enterRule** — Invokes the listener's enterTypeName method if it exists `Java20Parser.ts:14849-14853`
+- **enterRule** — Invokes the listener's enterPackageOrTypeName method if it exists. `Java `Java20Parser.ts:14881-14885`
+- **enterRule** — Invokes the listener's enterMethodName method if it exists `Java20Parser.ts:14913-14917`
+- **enterRule** — Invokes the enter method for the ambiguous name rule `Java20Parser.ts:14939-14943`
+- **enterRule** — Invokes the listener's enterCompilationUnit method if it exists. `Java20Parser.ts:15000-1500 `Java20Parser.ts:14971-14975`
+- **enterRule** — Invokes the listener's `enterOrdinaryCompilationUnit` method if it exists `Java20Parser.ts:15000-15004`
+- **enterRule** — Invokes the enter method for modular compilation unit. `Java20Parser.ts:150 `Java20Parser.ts:15046-15050`
+- **enterRule** — Invokes the listener's enterPackageDeclaration method if it exists `Java20Parser.ts:15081-15085`
+- **enterRule** — Invokes the listener's enter method for single type import declaration `Java20Parser.ts:15137-15141`
+- **enterRule** — Invokes the enter method of the listener for the type import on demand declaration rule `Java20Parser.ts:15163-15167`
+- **enterRule** — Invokes the listener's enter method for static import on demand declaration `Java20Parser.ts:15198-15202`
+- **enterRule** — Invokes the enterModuleDeclaration method of the listener if it exists `Java20Parser.ts:15230-15234`
+- **enterRule** — Invokes the `enterModuleDirective` method of the listener. `Java20Parser.ts `Java20Parser.ts:15268-15272`
+- **enterRule** — Invokes the listener's enter method for the class declaration rule. `Java20 `Java20Parser.ts:15309-15313`
+- **enterRule** — Invokes the listener's `enterNormalClassDeclaration` method if it exists `Java20Parser.ts:15350-15354`
+- **enterRule** — Invokes the listener's `enterClassModifier` method if it exists. `Java20Parser.ts:15706-157 `Java20Parser.ts:15382-15386`
+- **enterRule** — Invokes the enter method for the class extends rule `Java20Parser.ts:15453-15457`
+- **enterRule** — Invokes the enterInterfaceTypeList method of the listener if it exists. `Java20Parser.ts:15878 `Java20Parser.ts:15539-15543`
+- **enterRule** — Invokes the listener's `enterClassBody` method if it exists `Java20Parser.ts:15568-15572`
+- **enterRule** — Invokes the enter method for the class body declaration rule `Java20Parser.ts:15600-15604`
+- **enterRule** — Invokes the listener's enter method for class member declaration if the listener supports `Java20Parser.ts:15653-15657`
+- **enterRule** — Invokes the enter method for the variable declarator list rule `Java20Parser.ts:15706-15710`
+- **enterRule** — Invokes the enter method for the variable declarator id rule `Java20Parser.ts:15738-15742`
+- **enterRule** — Invokes the listener's enterUnannType method if it exists `Java20Parser.ts:15779-15783`
+- **enterRule** — Invokes the enter method for unannPrimitiveType `Java20Parser.ts:15808-15812`
+- **enterRule** — Invokes the enter method for unannClassOrInterfaceType `Java20Parser.ts:15837-15841`
+- **enterRule** — Invokes the enter method for unannInterfaceType `Java20Parser.ts:15878-15882`
+- **enterRule** — Invokes the listener's enterUnannTypeVariable method if it exists `Java20Parser.ts:15922-15926`
+- **enterRule** — Invokes the listener's enterMethodModifier method if it exists `Java20Parser.ts:15960-15964`
+- **enterRule** — Invokes the listener's enter method for the rule `Java20Parser.ts:15995-15999`
+- **enterRule** — Invokes the enter method declarator listener if it exists `Java20Parser.ts:16033-16037`
+- **enterRule** — Invokes the enter method for receiver parameter. `Java20Parser.ts:16819 `Java20Parser.ts:16074-16078`
+- **enterRule** — Invokes the enter method for the formal parameter list rule `Java20Parser.ts:16121-16125`
+- **enterRule** — Invokes the enter method for the variable arity parameter rule `Java20Parser.ts:16162-16166`
+- **enterRule** — Invokes the listener's enterVariableModifier method if it exists `Java20Parser.ts:16194-16198`
+- **enterRule** — Invokes the listener's enterThrowsT method if it exists `Java20Parser.ts:16223-16227`
+- **enterRule** — Invokes the listener's enterExceptionTypeList method if it exists `Java20Parser.ts:16252-16256`
+- **enterRule** — Invokes the enter method body listener if it exists `Java20Parser.ts:16281-16285`
+- **enterRule** — Invokes the enter method for instance initializer `Java20Parser.ts:16310-16314`
+- **enterRule** — Enters the constructor modifier rule. `Java20Parser.ts:17239 `Java20Parser.ts:16342-16346`
+- **enterRule** — Invokes the enterConstructorDeclarator method of the listener if it exists `Java20Parser.ts:16389-16393`
+- **enterRule** — Invokes the listener's enter method for the simple type name rule `Java20Parser.ts:16433-16437`
+- **enterRule** — Invokes the listener's enterConstructorBody method if it exists `Java20Parser.ts:16480-16484`
+- **enterRule** — Invokes the listener's enter method for the explicit constructor invocation rule `Java20Parser.ts:16506-16510`
+- **enterRule** — Invokes the enter method for the enum declaration rule `Java20Parser.ts:16532-16536`
+- **enterRule** — Invokes the listener's `enterEnumBody` method if it exists `Java20Parser.ts:16567-16571`
+- **enterRule** — Invokes the enter method for the enum constant list rule if the listener supports it. `Java20Parser.ts `Java20Parser.ts:16605-16609`
+- **enterRule** — Invokes the listener's enterEnumConstantModifier method if it exists `Java20Parser.ts:16658-16662`
+- **enterRule** — Invokes the listener's enterMethodHeader method if it exists `Java20Parser.ts:16702-16706`
+- **enterRule** — Invokes the listener's enterRecordDeclaration method if it exists `Java20Parser.ts:16731-16735`
+- **enterRule** — Invokes the enter method for the record header rule `Java20Parser.ts:16775-16779`
+- **enterRule** — Invokes the listener's enter method for record component list `Java20Parser.ts:16819-16823`
+- **enterRule** — Invokes the enter method for record component `Java20Parser.ts:16860-16864`
+- **enterRule** — Invokes the listener's enterVariableArityRecordComponent method if it exists `Java20Parser.ts:16901-16905`
+- **enterRule** — Enters the record component modifier rule `Java20Parser.ts:16951-16955`
+- **enterRule** — Invokes the listener's enter method for the record body declaration `Java20Parser.ts:16980-16984`
+- **enterRule** — Invokes the listener's enter method for record body declaration `Java20Parser.ts:17009-17013`
+- **enterRule** — Invokes the listener's enterInterfaceModifier method if it exists `Java20Parser.ts:17050-17054`
+- **enterRule** — Invokes the enter method for the interface extends rule `Java20Parser.ts:17079-17083`
+- **enterRule** — Invokes the listener's enterInterfaceBody method if it exists `Java20Parser.ts:17108-17112`
+- **enterRule** — Invokes the enterConstantDeclaration method of the listener if it exists `Java20Parser.ts:17134-17138`
+- **enterRule** — Invokes the listener's enterInterfaceMethodDeclaration method if it exists `Java20Parser.ts:17163-17167`
+- **enterRule** — Invokes the listener's enterInterfaceMethodModifier method if it exists. `Java20Parser.ts:18411-18 `Java20Parser.ts:17204-17208`
+- **enterRule** — Invokes the listener's enter method for the annotation interface body. `Java20Parser.ts:18495-18499 `Java20Parser.ts:17239-17243`
+- **enterRule** — Invokes the listener's enter method for the annotation interface member declaration rule `Java20Parser.ts:17283-17287`
+- **enterRule** — Invokes the enter method for annotation interface element declaration `Java20Parser.ts:17309-17313`
+- **enterRule** — Invokes the listener's enterDefaultValue method if it exists `Java20Parser.ts:17344-17348`
+- **enterRule** — Invokes the enterAnnotation method of the listener if it exists. `Java20Parser.ts:18681 `Java20Parser.ts:17397-17401`
+- **enterRule** — Invokes the enter method for the normal annotation rule `Java20Parser.ts:17441-17445`
+- **enterRule** — Invokes the enterElementValuePairList method of the listener if it exists `Java20Parser.ts:17479-17483`
+- **enterRule** — Invokes the enterElementValue method of the listener `Java20Parser.ts:17520-17524`
+- **enterRule** — Invokes the enterArrayInitializer method of the listener if it exists `Java20Parser.ts:17567-17571`
+- **enterRule** — Invokes the listener's enterBlock method if it exists `Java20Parser.ts:17593-17597`
+- **enterRule** — Invokes the enterBlockStatements method of the listener if it exists `Java20Parser.ts:17628-17632`
+- **enterRule** — Invokes the listener's enterBlockStatement method if it exists `Java20Parser.ts:17678-17682`
+- **enterRule** — Invokes the enter method for the local class or interface declaration rule `Java20Parser.ts:17710-17714`
+- **enterRule** — Invokes the listener's enterLocalVariableDeclaration method if it exists `Java20Parser.ts:17751-17755`
+- **enterRule** — Invokes the enter method for the local variable declaration statement rule `Java20Parser.ts:17792-17796`
+- **enterRule** — Invokes the enter method for the statement rule if the listener supports `Java20Parser.ts:17842-17846`
+- **enterRule** — Invokes the enter method for statementNoShortIf if the listener has it `Java20Parser.ts:17868-17872`
+- **enterRule** — Invokes the enter method for the empty statement rule `Java20Parser.ts:17906-17910`
+- **enterRule** — Invokes the enterLabeledStatement method of the listener if it exists `Java20Parser.ts:17935-17939`
+- **enterRule** — Invokes the enter method for labeled statement no short if. `Java20Parser.ts:19495-1 `Java20Parser.ts:17973-17977`
+- **enterRule** — Invokes the listener's enterStatementExpression method if it exists `Java20Parser.ts:18002-18006`
+- **enterRule** — Invokes the listener's enterIfThenStatement method if it exists `Java20Parser.ts:18052-18056`
+- **enterRule** — Invokes the enter method for ifThenElseStatementNoShortIf `Java20Parser.ts:18102-18106`
+- **enterRule** — Invokes the enter assert statement method of the listener `Java20Parser.ts:18131-18135`
+- **enterRule** — Invokes the enterSwitchStatement method of the listener if it exists `Java20Parser.ts:18175-18179`
+- **enterRule** — Invokes the enterSwitchRule method of the listener `Java20Parser.ts:18215-18219`
+- **enterRule** — Invokes the `Java20Parser.ts:18253-18257`
+- **enterRule** — Invokes the listener's enterSwitchLabel method if it exists `Java20Parser.ts:18294-18298`
+- **enterRule** — Invokes the enterCaseConstant method of the listener if it exists `Java20Parser.ts:18329-18333`
+- **enterRule** — Invokes the enterWhileStatement method of the listener. `Java20Parser.ts:20039-2 `Java20Parser.ts:18367-18371`
+- **enterRule** — Invokes the listener's enter method for the while statement no short if rule `Java20Parser.ts:18411-18415`
+- **enterRule** — Invokes the `enterDoStatement` method of the listener if it exists `Java20Parser.ts:18455-18459`
+- **enterRule** — Invokes the listener's enterForStatement method if it exists `Java20Parser.ts:18495-18499`
+- **enterRule** — Invokes the enter method for the for statement without a short if rule `Java20Parser.ts:18533-18537`
+- **enterRule** — Invokes the listener's enterBasicForStatement method if it exists `Java20Parser.ts:18588-18592`
+- **enterRule** — Invokes the listener's enterBasicForStatementNoShortIf method if it exists `Java20Parser.ts:18620-18624`
+- **enterRule** — Invokes the enter method for the for init rule. `Java20Parser.ts `Java20Parser.ts:18649-18653`
+- **enterRule** — Invokes the listener's enter method for update `Java20Parser.ts:18681-18685`
+- **enterRule** — Invokes the listener's enterEnhancedForStatement method if it exists `Java20Parser.ts:18719-18723`
+- **enterRule** — Invokes the listener's enterBreakStatement method if it exists `Java20Parser.ts:18760-18764`
+- **enterRule** — Invokes the listener's enterContinueStatement method if it exists. `Java20Parser.ts:205 `Java20Parser.ts:18792-18796`
+- **enterRule** — Invokes the enterReturnStatement method of the listener `Java20Parser.ts:18824-18828`
+- **enterRule** — Invokes the enter method for synchronized statement. `Java `Java20Parser.ts:18859-18863`
+- **enterRule** — Invokes the enterCatches method of the listener if it exists `Java20Parser.ts:18900-18904`
+- **enterRule** — Invokes the enter method for catch formal parameter rule `Java20Parser.ts:18929-18933`
+- **enterRule** — Invokes the enter method for finally block `Java20Parser.ts:18967-18971`
+- **enterRule** — Invokes the enterTryWithResourcesStatement method of the listener `Java20Parser.ts:19002-19006`
+- **enterRule** — Invokes the enterResourceList method of the listener `Java20Parser.ts:19043-19047`
+- **enterRule** — Invokes the enter method for the resource rule `Java20Parser.ts:19075-19079`
+- **enterRule** — Invokes the listener's `enterVariableAccess` method if it exists `Java20Parser.ts:19107-19111`
+- **enterRule** — Invokes the listener's `enterYieldStatement` method if it exists `Java20Parser.ts:19139-19143`
+- **enterRule** — Invokes the listener's enterPattern method if it exists `Java20Parser.ts:19168-19172`
+- **enterRule** — Invokes the enter method for the type pattern rule `Java20Parser.ts:19206-19210`
+- **enterRule** — Invokes the listener's enterExpression method if it exists `Java20Parser.ts:19235-19239`
+- **enterRule** — Invokes the listener's enterPrimaryNoNewArray method if it exists. `Java20 `Java20Parser.ts:19264-19268`
+- **enterRule** — Invokes the listener's enterPNNA method if it exists `Java20Parser.ts:19305-19309`
+- **enterRule** — Invokes the enterClassLiteral method of the listener if it exists `Java20Parser.ts:19343-19347`
+- **enterRule** — Invokes the enter method for the class instance creation expression `Java20Parser.ts:19405-19409`
+- **enterRule** — Invokes the listener's enter method for unqualified class instance creation expression `Java20Parser.ts:19431-19435`
+- **enterRule** — Invokes the listener's enter method for type arguments or diamond `Java20Parser.ts:19463-19467`
+- **enterRule** — Invokes the enter method for the array creation expression with initializer rule `Java20Parser.ts:19495-19499`
+- **enterRule** — Invokes the enter method for dimExprs on the listener `Java20Parser.ts:19524-19528`
+- **enterRule** — Invokes the listener's enterDimExpr method if it exists `Java20Parser.ts:19568-19572`
+- **enterRule** — Invokes the `enterArrayAccess` method of the listener if it exists `Java20Parser.ts:19606-19610`
+- **enterRule** — Invokes the enter method for field access `Java20Parser.ts:19650-19654`
+- **enterRule** — Invokes the enter method for the method invocation rule `Java20Parser.ts:19697-19701`
+- **enterRule** — Enters the argument list rule `Java20Parser.ts:19738-19742`
+- **enterRule** — Invokes the enter method reference listener `Java20Parser.ts:19776-19780`
+- **enterRule** — Invokes the enter method for the postfix expression rule `Java20Parser.ts:19843-19847`
+- **enterRule** — Invokes the listener's enterPfE method if it exists `Java20Parser.ts:19884-19888`
+- **enterRule** — Invokes the enter method for the post-increment expression rule `Java20Parser.ts:19928-19932`
+- **enterRule** — Invokes the enter method for the post-decrement expression rule `Java20Parser.ts:19975-19979`
+- **enterRule** — Invokes the listener's enterUnaryExpression method if it exists `Java20Parser.ts:20001-20005`
+- **enterRule** — Invokes the enter method for pre-increment expression `Java20Parser.ts:20039-20043`
+- **enterRule** — Invokes the listener's enterPreDecrementExpression method if it exists `Java20Parser.ts:20077-20081`
+- **enterRule** — Invokes the enterUnaryExpressionNotPlusMinus method of the listener `Java20Parser.ts:20121-20125`
+- **enterRule** — Invokes the enterCastExpression method of the listener `Java20Parser.ts:20150-20154`
+- **enterRule** — Invokes the enter method for the multiplicative expression rule `Java20Parser.ts:20179-20183`
+- **enterRule** — Invokes the enter method for the additive expression rule `Java20Parser.ts:20232-20236`
+- **enterRule** — Invokes the enterShiftExpression method of the listener if it exists `Java20Parser.ts:20285-20289`
+- **enterRule** — Invokes the enterRelationalExpression method of the listener if it exists `Java20Parser.ts:20314-20318`
+- **enterRule** — Invokes the enter method for the equality expression rule if the listener supports it. `Java2 `Java20Parser.ts:20340-20344`
+- **enterRule** — Invokes the enterAndExpression method of the listener if it exists `Java20Parser.ts:20381-20385`
+- **enterRule** — Invokes the listener's enterExclusiveOrExpression method if it exists `Java20Parser.ts:20425-20429`
+- **enterRule** — Invokes the enter method for the inclusive `Java20Parser.ts:20469-20473`
+- **enterRule** — Invokes the listener's enter method for conditional and expression. `Java20Parser.ts:22 `Java20Parser.ts:20501-20505`
+- **enterRule** — Invokes the listener's enterConditionalOrExpression method if it exists `Java20Parser.ts:20533-20537`
+- **enterRule** — Invokes the listener's enterConditionalExpression method if it exists `Java20Parser.ts:20565-20569`
+- **enterRule** — Invokes the enter method for the assignment expression rule `Java20Parser.ts:20597-20601`
+- **enterRule** — Invokes the listener's enterAssignment method if it exists `Java20Parser.ts:20635-20639`
+- **enterRule** — Invokes the listener's enterLeftHandSide method if it exists `Java20Parser.ts:20673-20677`
+- **enterRule** — Invokes the enter method for the assignment operator rule `Java20Parser.ts:20705-20709`
+- **enterRule** — Invokes the enter method for the lambda expression rule `Java20Parser.ts:20743-20747`
+- **enterRule** — Invokes the listener's enterLambdaParameters method if it exists `Java20Parser.ts:20781-20785`
+- **enterRule** — Invokes the listener's enterLambdaParameterList method if it exists `Java20Parser.ts:20825-20829`
+- **enterRule** — Invokes the listener's enterLambdaParameter method if it exists `Java20Parser.ts:20854-20858`
+- **enterRule** — Invokes the listener's enterLambdaParameterType method if it exists `Java20Parser.ts:20892-20896`
+- **enterRule** — Invokes the listener's enterLambdaBody method if it exists `Java20Parser.ts:20927-20931`
+- **enterRule** — Invokes the listener's enterSwitchExpression method if it exists `Java20Parser.ts:20968-20972`
+- **enterRule** — Invokes the listener's enterConstantExpression method if it exists `Java20Parser.ts:20997-21001`
+- **enterRule** — Invokes the listener's enterVariableAccess method if it exists `Java20Parser.ts:21026-21030`
+- **enterRule** — Invokes the enter method for the yield statement rule `Java20Parser.ts:21058-21062`
+- **enterRule** — Invokes the enter method for type pattern rule `Java20Parser.ts:21084-21088`
+- **enterRule** — Invokes the listener's enterPrimary method if it exists `Java20Parser.ts:21110-21114`
+- **enterRule** — Invokes the enter method for the class literal rule `Java20Parser.ts:21139-21143`
+- **enterRule** — Enters the class instance creation expression rule and notifies the listener `Java20Parser.ts:21168-21172`
+- **enterRule** — Invokes the enter method for unqualified class instance creation expression `Java20Parser.ts:21272-21276`
+- **enterRule** — Invokes the enter method for the type arguments or diamond rule `Java20Parser.ts:21331-21335`
+- **enterRule** — Invokes the listener's enterArrayCreationExpression method if it exists `Java20Parser.ts:21390-21394`
+- **enterRule** — Invokes the listener's enterArrayCreationExpressionWithoutInitializer method if it exists `Java20Parser.ts:21425-21429`
+- **enterRule** — Invokes the enterArrayCreationExpressionWithInitializer method of the listener `Java20Parser.ts:21469-21473`
+- **enterRule** — Invokes the listener's enterDimExprs method if it exists `Java20Parser.ts:21522-21526`
+- **enterRule** — Invokes the enter method for the array access rule `Java20Parser.ts:21551-21555`
+- **enterRule** — Invokes the enterArgumentList method of the listener if it exists. `Java20Parser.ts `Java20Parser.ts:21580-21584`
+- **enterRule** — Invokes the listener's enterPostfixExpression method if it exists `Java20Parser.ts:21618-21622`
+- **enterRule** — Invokes the enter method for the preIncrementExpression rule if the listener supports it `Java20Parser.ts:21656-21660`
+- **enterRule** — Invokes the enterPreDecrementExpression method of the listener if it exists. `Java20Parser `Java20Parser.ts:21688-21692`
+- **enterRule** — Invokes the listener's enterUnaryExpressionNotPlusMinus method if it exists `Java20Parser.ts:21729-21733`
+- **enterRule** — Invokes the listener's enterMultiplicativeExpression method if it exists `Java20Parser.ts:21770-21774`
+- **enterRule** — Invokes the enter additive expression method of the listener if it exists. `Java20 `Java20Parser.ts:21814-21818`
+- **enterRule** — Invokes the enter method for the shift expression rule if the listener supports it. `Java20Parser.ts:22411 `Java20Parser.ts:21876-21880`
+- **enterRule** — Invokes the listener's enter method for the relational expression rule `Java20Parser.ts:21917-21921`
+- **enterRule** — Invokes the enter method of the listener for the equality expression rule. `Java20 `Java20Parser.ts:21976-21980`
+- **enterRule** — Invokes the enter method for inclusive or expression if the listener supports it. `Java2 `Java20Parser.ts:22008-22012`
+- **enterRule** — Invokes the listener's enterConditionalAndExpression method if it exists `Java20Parser.ts:22040-22044`
+- **enterRule** — Invokes the enterAssignmentExpression method of the listener if it exists `Java20Parser.ts:22069-22073`
+- **enterRule** — Invokes the enterAssignment method of the listener `Java20Parser.ts:22098-22102`
+- **enterRule** — Invokes the listener's enterAssignmentOperator method if it exists `Java20Parser.ts:22139-22143`
+- **enterRule** — Invokes the listener's enterLambdaExpression method if it exists `Java20Parser.ts:22168-22172`
+- **enterRule** — Invokes the enter method for lambda parameters. `Java20Parser.ts:22 `Java20Parser.ts:22197-22201`
+- **enterRule** — Invokes the enterLambdaParameterList method of the listener if it exists `Java20Parser.ts:22238-22242`
+- **enterRule** — Invokes the enterLambdaParameter method of the listener if it exists `Java20Parser.ts:22291-22295`
+- **enterRule** — Invokes the enterLambdaParameterType method of the listener if it exists `Java20Parser.ts:22329-22333`
+- **enterRule** — Invokes the enterLambdaBody method of the listener `Java20Parser.ts:22364-22368`
+- **enterRule** — Invokes the enterSwitchExpression method of the listener if it exists `Java20Parser.ts:22411-22415`, `Java20Parser.ts:23103-23107`
+- **enterRule** — Invokes the enterConstantExpression method of the listener if it exists `Java20Parser.ts:22461-22465`, `Java20Parser.ts:23129-23133`
+- **enterRule** — Triggers the enter method for the equality expression rule `Java20Parser.ts:22496-22500`
+- **enterRule** — Triggers the enter method for the and expression rule `Java20Parser.ts:22528-22532`
+- **enterRule** — Triggers the enter method for the exclusive or expression rule `Java20Parser.ts:22560-22564`
+- **enterRule** — Invokes the `enterInclusiveOrExpression` method of the listener `Java20Parser.ts:22592-22596`
+- **enterRule** — Invokes the `enterConditionalAndExpression` method of the listener `Java20Parser.ts:22624-22628`
+- **enterRule** — Invokes the enterConditionalOrExpression method of the listener if it exists `Java20Parser.ts:22656-22660`
+- **enterRule** — Invokes the enterConditionalExpression method of the listener if it exists `Java20Parser.ts:22697-22701`
+- **enterRule** — Invokes the enter method of the constant expression rule listener `Java20Parser.ts:22726-22730`
+- **enterRule** — Invokes the enterLeftHandSide method of the listener `Java20Parser.ts:22758-22762`
+- **enterRule** — Invokes the enterAssignmentOperator method of the listener `Java20Parser.ts:22790-22794`
+- **enterRule** — Invokes the enterLambdaExpression method of the listener `Java20Parser.ts:22849-22853`
+- **enterRule** — Invokes the listener's enterLambdaParameters method `Java20Parser.ts:22881-22885`
+- **enterRule** — Invokes the listener's enterLambdaParameter method `Java20Parser.ts:22916-22920`
+- **enterRule** — Invokes the listener's enterLambdaParameterType method `Java20Parser.ts:22966-22970`
+- **enterRule** — Invokes the listener's `enterLambdaBody` method if it exists `Java20Parser.ts:23007-23011`
+- **enterRule** — Invokes the listener's `enterSwitchExpression` method if it exists `Java20Parser.ts:23036-23040`
+- **enterRule** — Invokes the listener's `enterConstantExpression` method if it exists `Java20Parser.ts:23065-23069`
 - **ENUM** — Represents the keyword 'enum' `Java20Parser.ts:17417-17419`
 - **enumBody** — Contains the body of an enum `Java20Parser.ts:5062-5107`
 - **enumBody** — Represents the body of an enum `Java20Parser.ts:17423-17425`
@@ -399,58 +924,308 @@ Java20ParserVisitor.ts
 - **EOF** — Represents the end-of-file context for the Java20Parser `Java20Parser.ts:13665-13667`
 - **EQUAL** — Represents the equal operator `Java20Parser.ts:22487-22489`
 - **equalityExpression** — Represents an equality expression `Java20Parser.ts:11674-11748`
-- **equalityExpression** — Parses an equality expression `Java20Parser.ts:22484-22486`, `Java20Parser.ts:22516-22518`
+- **equalityExpression** — Parses an equality expression `Java20Parser.ts:22484-22486`
+- **equalityExpression** — Returns the context of the equality expression rule `Java20Parser.ts:22516-22518`
 - **equalityExpression_sempred** — Represents an equality expression with a semantic predicate in Java `Java20Parser.ts:12647-12655`
 - **exceptionType** — Represents a specific type of exception `Java20Parser.ts:4582-4615`
 - **exceptionType** — Represents an exception type in the Java20Parser `Java20Parser.ts:17031-17037`
 - **exceptionTypeList** — Lists the types of exceptions that a method can throw `Java20Parser.ts:4550-4581`
 - **exceptionTypeList** — Represents a list of exception types in the Java20Parser `Java20Parser.ts:17003-17005`
 - **exclusiveOrExpression** — Represents an exclusive or expression `Java20Parser.ts:11808-11860`
-- **exclusiveOrExpression** — Parses an XOR expression `Java20Parser.ts:22551-22553`, `Java20Parser.ts:22580-22582`
+- **exclusiveOrExpression** — Parses an XOR expression `Java20Parser.ts:22551-22553`
+- **exclusiveOrExpression** — Returns the context of the exclusive or expression `Java20Parser.ts:22580-22582`
 - **exclusiveOrExpression_sempred** — Represents an exclusive or expression with a semantic predicate in Java `Java20Parser.ts:12663-12672`
 - **exitEveryRule** — Exits every rule `Java20ParserListener.ts:2760-2760`
-- **exitRule** — Exits a rule in the Java20Parser `Java20Parser.ts:13676-13680`, `Java20Parser.ts:13705-13709`, `Java20Parser.ts:16956-16960`, `Java20Parser.ts:16985-16989`, `Java20Parser.ts:17014-17018`
-- **exitRule** — Exits the current rule `Java20Parser.ts:13734-13738`, `Java20Parser.ts:13763-13767`, `Java20Parser.ts:14976-14980`, `Java20Parser.ts:15005-15009`, `Java20Parser.ts:15051-15055`, `Java20Parser.ts:15086-15090`, `Java20Parser.ts:17055-17059`, `Java20Parser.ts:17084-17088`, `Java20Parser.ts:17113-17117`, `Java20Parser.ts:17139-17143`, `Java20Parser.ts:17572-17576`, `Java20Parser.ts:17598-17602`, `Java20Parser.ts:17633-17637`, `Java20Parser.ts:17683-17687`, `Java20Parser.ts:17715-17719`, `Java20Parser.ts:17756-17760`, `Java20Parser.ts:17797-17801`, `Java20Parser.ts:19211-19215`, `Java20Parser.ts:19240-19244`, `Java20Parser.ts:19269-19273`, `Java20Parser.ts:19310-19314`, `Java20Parser.ts:19348-19352`, `Java20Parser.ts:19500-19504`, `Java20Parser.ts:19529-19533`, `Java20Parser.ts:19573-19577`, `Java20Parser.ts:20155-20159`, `Java20Parser.ts:20184-20188`, `Java20Parser.ts:20237-20241`, `Java20Parser.ts:20290-20294`, `Java20Parser.ts:20319-20323`, `Java20Parser.ts:20748-20752`, `Java20Parser.ts:20786-20790`, `Java20Parser.ts:20830-20834`, `Java20Parser.ts:20859-20863`, `Java20Parser.ts:21922-21926`, `Java20Parser.ts:21981-21985`
-- **exitRule** — Invoked when exiting a rule in the parser `Java20Parser.ts:13834-13838`, `Java20Parser.ts:13890-13894`
-- **exitRule** — Represents the method called when exiting a rule `Java20Parser.ts:13958-13962`
-- **exitRule** — Ends parsing a rule `Java20Parser.ts:14002-14006`, `Java20Parser.ts:14040-14044`, `Java20Parser.ts:14069-14073`, `Java20Parser.ts:14107-14111`, `Java20Parser.ts:14136-14140`, `Java20Parser.ts:14168-14172`, `Java20Parser.ts:14212-14216`, `Java20Parser.ts:14259-14263`, `Java20Parser.ts:14306-14310`, `Java20Parser.ts:14557-14561`, `Java20Parser.ts:14586-14590`, `Java20Parser.ts:14618-14622`, `Java20Parser.ts:14659-14663`, `Java20Parser.ts:15314-15318`, `Java20Parser.ts:15355-15359`, `Java20Parser.ts:15387-15391`, `Java20Parser.ts:15544-15548`, `Java20Parser.ts:15573-15577`, `Java20Parser.ts:15605-15609`, `Java20Parser.ts:16511-16515`, `Java20Parser.ts:16537-16541`, `Java20Parser.ts:16572-16576`, `Java20Parser.ts:16610-16614`, `Java20Parser.ts:19933-19937`, `Java20Parser.ts:19980-19984`, `Java20Parser.ts:20006-20010`, `Java20Parser.ts:20044-20048`, `Java20Parser.ts:20082-20086`, `Java20Parser.ts:20126-20130`, `Java20Parser.ts:20345-20349`, `Java20Parser.ts:20386-20390`, `Java20Parser.ts:20430-20434`, `Java20Parser.ts:21585-21589`, `Java20Parser.ts:21623-21627`, `Java20Parser.ts:21661-21665`, `Java20Parser.ts:22296-22300`, `Java20Parser.ts:22334-22338`, `Java20Parser.ts:22369-22373`, `Java20Parser.ts:22597-22601`, `Java20Parser.ts:22629-22633`, `Java20Parser.ts:22661-22665`, `Java20Parser.ts:22886-22890`, `Java20Parser.ts:22921-22925`, `Java20Parser.ts:22971-22975`
-- **exitRule** — Exits a rule in the Java20 grammar `Java20Parser.ts:14332-14336`, `Java20Parser.ts:14367-14371`, `Java20Parser.ts:14402-14406`, `Java20Parser.ts:18686-18690`, `Java20Parser.ts:18724-18728`, `Java20Parser.ts:18765-18769`, `Java20Parser.ts:20570-20574`, `Java20Parser.ts:20602-20606`, `Java20Parser.ts:20640-20644`
-- **exitRule** — Invoked when exiting a parsing rule `Java20Parser.ts:14452-14456`, `Java20Parser.ts:14490-14494`, `Java20Parser.ts:14516-14520`
-- **exitRule** — Exits a rule `Java20Parser.ts:14688-14692`, `Java20Parser.ts:14726-14730`, `Java20Parser.ts:14758-14762`, `Java20Parser.ts:16663-16667`, `Java20Parser.ts:16707-16711`, `Java20Parser.ts:17847-17851`, `Java20Parser.ts:17873-17877`, `Java20Parser.ts:17911-17915`, `Java20Parser.ts:20678-20682`, `Java20Parser.ts:20710-20714`, `Java20Parser.ts:21002-21006`, `Java20Parser.ts:21031-21035`, `Java20Parser.ts:21063-21067`
-- **exitRule** — Exits the current rule in the parser `Java20Parser.ts:14790-14794`, `Java20Parser.ts:14822-14826`, `Java20Parser.ts:14854-14858`, `Java20Parser.ts:22416-22420`, `Java20Parser.ts:22466-22470`
-- **exitRule** — Ends parsing the current rule `Java20Parser.ts:14886-14890`, `Java20Parser.ts:14918-14922`, `Java20Parser.ts:14944-14948`, `Java20Parser.ts:15743-15747`, `Java20Parser.ts:15784-15788`, `Java20Parser.ts:15813-15817`, `Java20Parser.ts:15842-15846`, `Java20Parser.ts:16199-16203`, `Java20Parser.ts:16228-16232`, `Java20Parser.ts:16257-16261`, `Java20Parser.ts:16286-16290`, `Java20Parser.ts:17168-17172`, `Java20Parser.ts:17209-17213`, `Java20Parser.ts:17244-17248`, `Java20Parser.ts:18136-18140`, `Java20Parser.ts:18180-18184`, `Java20Parser.ts:18220-18224`, `Java20Parser.ts:18460-18464`, `Java20Parser.ts:18500-18504`, `Java20Parser.ts:18538-18542`, `Java20Parser.ts:19112-19116`, `Java20Parser.ts:19144-19148`, `Java20Parser.ts:19173-19177`, `Java20Parser.ts:19702-19706`, `Java20Parser.ts:19743-19747`, `Java20Parser.ts:19781-19785`, `Java20Parser.ts:21089-21093`, `Java20Parser.ts:21115-21119`, `Java20Parser.ts:21144-21148`, `Java20Parser.ts:21173-21177`, `Java20Parser.ts:21277-21281`, `Java20Parser.ts:21336-21340`, `Java20Parser.ts:21693-21697`, `Java20Parser.ts:21734-21738`, `Java20Parser.ts:21775-21779`, `Java20Parser.ts:22103-22107`, `Java20Parser.ts:22144-22148`, `Java20Parser.ts:22173-22177`, `Java20Parser.ts:22202-22206`, `Java20Parser.ts:22243-22247`, `Java20Parser.ts:22501-22505`, `Java20Parser.ts:22533-22537`, `Java20Parser.ts:22565-22569`, `Java20Parser.ts:23012-23016`, `Java20Parser.ts:23041-23045`, `Java20Parser.ts:23070-23074`
-- **exitRule** — Exits a rule in the parser `Java20Parser.ts:15142-15146`, `Java20Parser.ts:15168-15172`, `Java20Parser.ts:15203-15207`, `Java20Parser.ts:15658-15662`, `Java20Parser.ts:15711-15715`, `Java20Parser.ts:15883-15887`, `Java20Parser.ts:15927-15931`, `Java20Parser.ts:15965-15969`, `Java20Parser.ts:16000-16004`, `Java20Parser.ts:16038-16042`, `Java20Parser.ts:16079-16083`, `Java20Parser.ts:16315-16319`, `Java20Parser.ts:16347-16351`, `Java20Parser.ts:16394-16398`, `Java20Parser.ts:16438-16442`, `Java20Parser.ts:16485-16489`, `Java20Parser.ts:16736-16740`, `Java20Parser.ts:16780-16784`, `Java20Parser.ts:17484-17488`, `Java20Parser.ts:17525-17529`, `Java20Parser.ts:17940-17944`, `Java20Parser.ts:17978-17982`, `Java20Parser.ts:18007-18011`, `Java20Parser.ts:18057-18061`, `Java20Parser.ts:18107-18111`, `Java20Parser.ts:18797-18801`, `Java20Parser.ts:18829-18833`, `Java20Parser.ts:18864-18868`, `Java20Parser.ts:18905-18909`, `Java20Parser.ts:18934-18938`, `Java20Parser.ts:18972-18976`, `Java20Parser.ts:19007-19011`, `Java20Parser.ts:19048-19052`, `Java20Parser.ts:19080-19084`, `Java20Parser.ts:19848-19852`, `Java20Parser.ts:19889-19893`, `Java20Parser.ts:21395-21399`, `Java20Parser.ts:21430-21434`
-- **exitRule** — Represents the exit point for a rule in Java20Parser `Java20Parser.ts:15235-15239`, `Java20Parser.ts:15273-15277`
-- **exitRule** — Represents exiting a rule in the grammar `Java20Parser.ts:15458-15462`, `Java20Parser.ts:18593-18597`, `Java20Parser.ts:18625-18629`, `Java20Parser.ts:18654-18658`
-- **exitRule** — Exits a rule and returns a visitor `Java20Parser.ts:16126-16130`, `Java20Parser.ts:16167-16171`
-- **exitRule** — Exits the current rule in the parsing process `Java20Parser.ts:16824-16828`, `Java20Parser.ts:16865-16869`, `Java20Parser.ts:16906-16910`, `Java20Parser.ts:19410-19414`, `Java20Parser.ts:19436-19440`, `Java20Parser.ts:19468-19472`
-- **exitRule** — Exits a parsing rule `Java20Parser.ts:17288-17292`, `Java20Parser.ts:17314-17318`, `Java20Parser.ts:17349-17353`, `Java20Parser.ts:21474-21478`, `Java20Parser.ts:21527-21531`, `Java20Parser.ts:21556-21560`, `Java20Parser.ts:22795-22799`, `Java20Parser.ts:22854-22858`, `Java20Parser.ts:23108-23112`, `Java20Parser.ts:23134-23138`
-- **exitRule** — Represents exiting a rule `Java20Parser.ts:17402-17406`, `Java20Parser.ts:17446-17450`
-- **exitRule** — Invoked when exiting a rule `Java20Parser.ts:18258-18262`, `Java20Parser.ts:18299-18303`, `Java20Parser.ts:18334-18338`
-- **exitRule** — Represents the exit point for a rule in the Java20Parser `Java20Parser.ts:18372-18376`, `Java20Parser.ts:18416-18420`
-- **exitRule** — Exits a rule in the parsing process `Java20Parser.ts:19611-19615`, `Java20Parser.ts:19655-19659`
-- **exitRule** — Represents exiting a rule in the Java20 grammar `Java20Parser.ts:20474-20478`, `Java20Parser.ts:20506-20510`, `Java20Parser.ts:20538-20542`, `Java20Parser.ts:21819-21823`, `Java20Parser.ts:21881-21885`
-- **exitRule** — Method to exit a rule in the parser `Java20Parser.ts:20897-20901`, `Java20Parser.ts:20932-20936`, `Java20Parser.ts:20973-20977`
-- **exitRule** — Represents the exit point of a rule in the Java20 grammar `Java20Parser.ts:22013-22017`, `Java20Parser.ts:22045-22049`, `Java20Parser.ts:22074-22078`
-- **exitRule** — Invoked when exiting a rule in the parsing process `Java20Parser.ts:22702-22706`, `Java20Parser.ts:22731-22735`, `Java20Parser.ts:22763-22767`
+- **exitRule** — Exits a rule in the Java20Parser `Java20Parser.ts:13676-13680`
+- **exitRule** — Exits the current rule `Java20Parser.ts:13705-13709`
+- **exitRule** — Invoked when exiting a rule in the parser `Java20Parser.ts:13734-13738`
+- **exitRule** — Represents the method called when exiting a rule `Java20Parser.ts:13763-13767`
+- **exitRule** — Ends parsing a rule `Java20Parser.ts:13834-13838`
+- **exitRule** — Exits a rule in the Java20 grammar `Java20Parser.ts:13890-13894`
+- **exitRule** — Invoked when exiting a parsing rule `Java20Parser.ts:13958-13962`
+- **exitRule** — Exits a rule `Java20Parser.ts:14002-14006`
+- **exitRule** — Exits the current rule in the parser `Java20Parser.ts:14040-14044`
+- **exitRule** — Ends parsing the current rule `Java20Parser.ts:14069-14073`
+- **exitRule** — Exits a rule in the parser `Java20Parser.ts:14107-14111`
+- **exitRule** — Represents the exit point for a rule in Java20Parser `Java20Parser.ts:14136-14140`
+- **exitRule** — Represents exiting a rule in the grammar `Java20Parser.ts:14168-14172`
+- **exitRule** — Exits a rule and returns a visitor `Java20Parser.ts:14212-14216`
+- **exitRule** — Exits the current rule in the parsing process `Java20Parser.ts:14259-14263`
+- **exitRule** — Exits a parsing rule `Java20Parser.ts:14306-14310`
+- **exitRule** — Represents exiting a rule `Java20Parser.ts:14332-14336`
+- **exitRule** — Invoked when exiting a rule `Java20Parser.ts:14367-14371`
+- **exitRule** — Represents the exit point for a rule in the Java20Parser `Java20Parser.ts:14402-14406`
+- **exitRule** — Exits a rule in the parsing process `Java20Parser.ts:14452-14456`
+- **exitRule** — Represents exiting a rule in the Java20 grammar `Java20Parser.ts:14490-14494`
+- **exitRule** — Method to exit a rule in the parser `Java20Parser.ts:14516-14520`
+- **exitRule** — Represents the exit point of a rule in the Java20 grammar `Java20Parser.ts:14557-14561`
+- **exitRule** — Invoked when exiting a rule in the parsing process `Java20Parser.ts:14586-14590`
+- **exitRule** — Invokes the listener's exitTypeArguments method if it exists `Java20Parser.ts:14618-14622`
+- **exitRule** — Invokes the listener's exitTypeArgumentList method if it exists `Java20Parser.ts:14659-14663`
+- **exitRule** — Invokes `Java20Parser.ts:14688-14692`
+- **exitRule** — Invokes the listener's exitWildcard method if it exists `Java20Parser.ts:14726-14730`
+- **exitRule** — Exits the wildcard rule by calling the listener's exitWildcardBounds method. `Java `Java20Parser.ts:14758-14762`
+- **exitRule** — Invokes the exitModuleName method of the listener if it exists. `Java20Parser.ts:14790 `Java20Parser.ts:14790-14794`
+- **exitRule** — Invokes the listener's exitPackageName method if it exists `Java20Parser.ts:14822-14826`
+- **exitRule** — Invokes the listener's exitTypeName method if it exists `Java20Parser.ts:14854-14858`
+- **exitRule** — Notifies the listener of the exit of the package or type name rule `Java20Parser.ts:14886-14890`
+- **exitRule** — Invokes the listener's exitMethodName method if it exists `Java20Parser.ts:14918-14922`
+- **exitRule** — Invokes the exit method for the ambiguous name rule `Java20Parser.ts:14944-14948`
+- **exitRule** — Triggers the exit rule for the compilation unit `Java20Parser.ts:14976-14980`
+- **exitRule** — Invokes the listener's `exitOrdinaryCompilationUnit` method if it exists `Java20Parser.ts:15005-15009`
+- **exitRule** — Invokes the listener's exitModularCompilationUnit method if it exists `Java20Parser.ts:15051-15055`
+- **exitRule** — Invokes the listener's exitPackageModifier method if it exists `Java20Parser.ts:15086-15090`
+- **exitRule** — Invokes the listener's exit method for import declaration `Java20Parser.ts:15142-15146`
+- **exitRule** — Invokes the listener `Java20Parser.ts:15168-15172`
+- **exitRule** — Invokes the listener's exit method for static import on demand declaration `Java20Parser.ts:15203-15207`
+- **exitRule** — Invokes the exitModuleDeclaration method of the listener if it exists `Java20Parser.ts:15235-15239`
+- **exitRule** — Invokes the listener's exitNormalClassDeclaration method if it exists `Java20Parser.ts:15273-15277`
+- **exitRule** — Invokes the listener's exitClassModifier method if it exists `Java20Parser.ts:15314-15318`
+- **exitRule** — Parses the exit of the type parameters rule `Java20Parser.ts:15355-15359`
+- **exitRule** — Invokes the listener's exitClassExtends method if it exists `Java20Parser.ts:15387-15391`
+- **exitRule** — Invokes the listener's exitClassPermits method if it exists `Java20Parser.ts:15458-15462`
+- **exitRule** — Invokes the listener's `exitClassBody` method if it exists `Java20Parser.ts:15544-15548`
+- **exitRule** — Invokes the exit method for the class body `Java20Parser.ts:15573-15577`
+- **exitRule** — Invokes the listener's exitClassMemberDeclaration method if it exists `Java20Parser.ts:15605-15609`
+- **exitRule** — Invokes the listener's exitFieldDeclaration method if it exists `Java20Parser.ts:15658-15662`
+- **exitRule** — Invokes the exit method for the variable declarator list rule `Java20Parser.ts:15711-15715`
+- **exitRule** — Invokes the exit method for the variable declarator id rule. `Java2 `Java20Parser.ts:15743-15747`
+- **exitRule** — Invokes the listener's exitUnannType method if it exists `Java20Parser.ts:15784-15788`
+- **exitRule** — Invokes the exit method for unannPrimitiveType. `Java20Parser.ts `Java20Parser.ts:15813-15817`
+- **exitRule** — Invokes the exit `Java20Parser.ts:15842-15846`
+- **exitRule** — Invokes the exit method for unannInterfaceType. `Java20Parser.ts:165 `Java20Parser.ts:15883-15887`
+- **exitRule** — Invokes the listener's exitUnannTypeVariable method if it exists `Java20Parser.ts:15927-15931`
+- **exitRule** — Invokes the listener's exitMethodModifier method if it exists `Java20Parser.ts:15965-15969`
+- **exitRule** — Invokes the listener's exit method for the rule `Java20Parser.ts:16000-16004`
+- **exitRule** — Invokes the exit method declarator listener if it exists `Java20Parser.ts:16038-16042`
+- **exitRule** — Notifies the listener about the exit of the receiver parameter rule. `Java20Parser.ts:16824-1 `Java20Parser.ts:16079-16083`
+- **exitRule** — Invokes the exit method for the formal parameter list rule `Java20Parser.ts:16126-16130`
+- **exitRule** — Invokes the exit method for the variable arity parameter rule `Java20Parser.ts:16167-16171`
+- **exitRule** — Invokes the listener's exitVariableModifier method if it exists `Java20Parser.ts:16199-16203`
+- **exitRule** — Invokes the listener's exit method for the throwsT rule `Java20Parser.ts:16228-16232`
+- **exitRule** — Invokes the listener's exitExceptionTypeList method if it exists `Java20Parser.ts:16257-16261`
+- **exitRule** — Invokes the exit method body listener if it exists. `Java20Parser.ts:17113 `Java20Parser.ts:16286-16290`
+- **exitRule** — Invokes the exit method for instance initializer `Java20Parser.ts:16315-16319`
+- **exitRule** — Invokes the listener's `exitStaticInitializer` method if it exists `Java20Parser.ts:16347-16351`
+- **exitRule** — Invokes the listener's exitConstructorDeclaration method if it exists `Java20Parser.ts:16394-16398`
+- **exitRule** — Invokes the listener's exitConstructorModifier method if it exists. `Java20Parser.ts:17244-172 `Java20Parser.ts:16438-16442`
+- **exitRule** — Invokes the exitConstructorDeclarator method of the listener if it exists `Java20Parser.ts:16485-16489`
+- **exitRule** — Invokes the listener's exit method for the simple type name rule `Java20Parser.ts:16511-16515`
+- **exitRule** — Invokes the listener's exitConstructorBody method if it exists `Java20Parser.ts:16537-16541`
+- **exitRule** — Invokes the listener's exit method for the explicit constructor invocation rule `Java20Parser.ts:16572-16576`
+- **exitRule** — Invokes the exit method for the enum declaration rule `Java20Parser.ts:16610-16614`
+- **exitRule** — Invokes the listener's exitEnumBody method if it exists `Java20Parser.ts:16663-16667`
+- **exitRule** — Invokes the listener's exitEnumConstantList method if it exists `Java20Parser.ts:16707-16711`
+- **exitRule** — Invokes the listener's exitEnumConstantModifier method if it exists `Java20Parser.ts:16736-16740`
+- **exitRule** — Invokes the listener's exitEnumBodyDeclarations method if it exists `Java20Parser.ts:16780-16784`
+- **exitRule** — Invokes the listener's exitRecordDeclaration method if it exists `Java20Parser.ts:16824-16828`
+- **exitRule** — Invokes the exit method for the record `Java20Parser.ts:16865-16869`
+- **exitRule** — Invokes the listener's exit method for record component list `Java20Parser.ts:16906-16910`
+- **exitRule** — Invokes the exit method for record component `Java20Parser.ts:16956-16960`
+- **exitRule** — Invokes the listener's exitVariableArityRecordComponent method if it exists `Java20Parser.ts:16985-16989`
+- **exitRule** — Invokes the listener's exit method for record component modifier `Java20Parser.ts:17014-17018`
+- **exitRule** — Invokes the listener's exit method for the record body declaration `Java20Parser.ts:17055-17059`
+- **exitRule** — Invokes the listener's exit method for record body declaration `Java20Parser.ts:17084-17088`
+- **exitRule** — Invokes the listener's exitCompactConstructorDeclaration method if it exists `Java20Parser.ts:17113-17117`
+- **exitRule** — Exits the rule by calling the listener's exitInstanceInitializer method `Java20Parser.ts:17139-17143`
+- **exitRule** — Invokes the listener's exitInterfaceModifier method if it exists `Java20Parser.ts:17168-17172`
+- **exitRule** — Invokes the `exitInterfaceExtends` method of the listener if it exists `Java20Parser.ts:17209-17213`
+- **exitRule** — Invokes the listener's exitInterfaceBody method if it exists `Java20Parser.ts:17244-17248`
+- **exitRule** — Invokes the listener's exitInterfaceMemberDeclaration method if it exists `Java20Parser.ts:17288-17292`
+- **exitRule** — Invokes the listener's exitConstantDeclaration method if it exists `Java20Parser.ts:17314-17318`
+- **exitRule** — Invokes the listener's exitInterfaceMethodDeclaration method if it exists `Java20Parser.ts:17349-17353`
+- **exitRule** — Invokes the listener's exit method for the annotation interface member declaration rule. `Java20Parser.ts:18538 `Java20Parser.ts:17402-17406`
+- **exitRule** — Invokes the exit method for annotation `Java20Parser.ts:17446-17450`
+- **exitRule** — Invokes the listener's exitDefaultValue method if it exists `Java20Parser.ts:17484-17488`
+- **exitRule** — Invokes the listener's exitAnnotation method if it exists `Java20Parser.ts:17525-17529`
+- **exitRule** — Inv `Java20Parser.ts:17572-17576`
+- **exitRule** — Invokes the exitElementValuePairList method of the listener if it exists `Java20Parser.ts:17598-17602`
+- **exitRule** — Invokes the listener's exit method for the element value array initializer `Java20Parser.ts:17633-17637`
+- **exitRule** — Invokes the listener's exitElementValueList method if it exists `Java20Parser.ts:17683-17687`
+- **exitRule** — Invokes the exitArrayInitializer method of the listener if it exists. `Java20Parser.ts:19007-190 `Java20Parser.ts:17715-17719`
+- **exitRule** — Invokes the listener's exitBlock method if it exists `Java20Parser.ts:17756-17760`
+- **exitRule** — Invokes the exitBlockStatements method of the listener if it exists `Java20Parser.ts:17797-17801`
+- **exitRule** — Invokes the listener's exitBlockStatement method if it exists `Java20Parser.ts:17847-17851`
+- **exitRule** — Invokes the exit method for the local class or interface declaration rule. `Java20Parser.ts:19173 `Java20Parser.ts:17873-17877`
+- **exitRule** — Invokes the listener's exitLocalVariableDeclaration method if it exists `Java20Parser.ts:17911-17915`
+- **exitRule** — Invokes the exit method for the local variable declaration statement rule. `Java20Parser.ts:19269-192 `Java20Parser.ts:17940-17944`
+- **exitRule** — Invokes the exit method for the statement rule `Java20Parser.ts:17978-17982`
+- **exitRule** — Invokes the exit method for statementNoShortIf if the listener has it. `Java20Parser `Java20Parser.ts:18007-18011`
+- **exitRule** — Invokes the listener's exit method for a statement without trailing substatement `Java20Parser.ts:18057-18061`
+- **exitRule** — Invokes the exit method for the empty statement rule `Java20Parser.ts:18107-18111`
+- **exitRule** — Invokes the exitLabeledStatement method of the listener if it exists. `Java20Parser.ts:19468-194 `Java20Parser.ts:18136-18140`
+- **exitRule** — Invokes the exit method for the labeled statement no short if rule `Java20Parser.ts:18180-18184`
+- **exitRule** — Invokes the listener's exit method for the statement expression `Java20Parser.ts:18220-18224`
+- **exitRule** — Invokes the listener's exitIfThenStatement method if it exists. `Java20Parser.ts:19611-1 `Java20Parser.ts:18258-18262`
+- **exitRule** — Invokes the exit method for ifThenElseStatementNoShortIf `Java20Parser.ts:18299-18303`
+- **exitRule** — Invokes the exit assert statement method of the listener `Java20Parser.ts:18334-18338`
+- **exitRule** — Invokes the exitSwitchStatement method of the listener if it exists. `Java20Parser.ts:19781 `Java20Parser.ts:18372-18376`
+- **exitRule** — Invokes the listener's exitSwitchRule method if it exists `Java20Parser.ts:18416-18420`
+- **exitRule** — Invokes the listener's exitSwitchLabel method if it exists `Java20Parser.ts:18460-18464`
+- **exitRule** — Invokes the exitCaseConstant method of the listener if it exists `Java20Parser.ts:18500-18504`
+- **exitRule** — Invokes the listener's exit method for the while statement no short if rule `Java20Parser.ts:18538-18542`
+- **exitRule** — Invokes the `exitDoStatement` method of the listener if it exists `Java20Parser.ts:18593-18597`
+- **exitRule** — Invokes the listener's exitForStatement method if it exists `Java20Parser.ts:18625-18629`
+- **exitRule** — Invokes the exit method for the for statement without a short if rule `Java20Parser.ts:18654-18658`
+- **exitRule** — Invokes the listener's exitBasicForStatement method if it exists `Java20Parser.ts:18686-18690`
+- **exitRule** — Invokes the listener's exitBasicForStatementNoShortIf method if it exists `Java20Parser.ts:18724-18728`
+- **exitRule** — Invokes the listener's exit method for initialization `Java20Parser.ts:18765-18769`
+- **exitRule** — Invokes the listener's exit method for update `Java20Parser.ts:18797-18801`
+- **exitRule** — Invokes the listener's exit method for the statement expression list `Java20Parser.ts:18829-18833`
+- **exitRule** — Invokes the listener's exitEnhancedForStatement method if it exists `Java20Parser.ts:18864-18868`
+- **exitRule** — Invokes the exit method for the enhanced for statement no short if rule `Java20Parser.ts:18905-18909`
+- **exitRule** — Invokes the listener's exitBreakStatement method if it exists `Java20Parser.ts:18934-18938`
+- **exitRule** — Invokes the exitReturnStatement `Java20Parser.ts:18972-18976`
+- **exitRule** — Invokes the exitCatches method of the listener if it exists. `Java2 `Java20Parser.ts:19007-19011`
+- **exitRule** — Invokes the exit method for catch formal parameter rule. `Java20Parser.ts:20786-2 `Java20Parser.ts:19048-19052`
+- **exitRule** — Invokes the listener's `exitFinallyBlock` method if it exists `Java20Parser.ts:19080-19084`
+- **exitRule** — Invokes the exitTryWithResourcesStatement method of the listener. `Java20Parser.ts:20 `Java20Parser.ts:19112-19116`
+- **exitRule** — Invokes the listener's exitResourceSpecification method if it exists `Java20Parser.ts:19144-19148`
+- **exitRule** — Invokes the exitResourceList method of the listener. `Java20Parser.ts `Java20Parser.ts:19173-19177`
+- **exitRule** — Invokes the exit method for the resource rule `Java20Parser.ts:19211-19215`
+- **exitRule** — Invokes the listener's exitVariableAccess method if it exists `Java20Parser.ts:19240-19244`
+- **exitRule** — Invokes the listener's `exitYield `Java20Parser.ts:19269-19273`
+- **exitRule** — Invokes the listener's exitPattern method if it exists `Java20Parser.ts:19310-19314`
+- **exitRule** — Invokes the exit method for the type pattern rule. `Java20Parser.ts:21115 `Java20Parser.ts:19348-19352`
+- **exitRule** — Invokes the listener's exitPrimary method if it exists `Java20Parser.ts:19410-19414`
+- **exitRule** — Invokes the exit method for the primary no new array rule `Java20Parser.ts:19436-19440`
+- **exitRule** — Invokes the listener's exitPNNA method if it exists `Java20Parser.ts:19468-19472`
+- **exitRule** — Invokes the exitClassLiteral method of the listener if it exists `Java20Parser.ts:19500-19504`
+- **exitRule** — Invokes the exit method for the class instance creation expression `Java20Parser.ts:19529-19533`
+- **exitRule** — Invokes the listener's exit method for unqualified class instance creation expression `Java20Parser.ts:19573-19577`
+- **exitRule** — Invokes the listener's exit method for type arguments or diamond `Java20Parser.ts:19611-19615`
+- **exitRule** — Invokes the exit method for the array creation expression rule `Java20Parser.ts:19655-19659`
+- **exitRule** — Invokes the exit method for the array creation expression with initializer rule. `Java20Parser.ts:216 `Java20Parser.ts:19702-19706`
+- **exitRule** — Invokes the exit method for dimExprs on the listener `Java20Parser.ts:19743-19747`
+- **exitRule** — Invokes the listener's exitDimExpr method if it exists `Java20Parser.ts:19781-19785`
+- **exitRule** — Invokes the `exitArrayAccess` method of the listener if it exists `Java20Parser.ts:19848-19852`
+- **exitRule** — Invokes the exit method for field access `Java20Parser.ts:19889-19893`
+- **exitRule** — Invokes the exit method for the method invocation rule. `Java20Parser.ts:21881-2 `Java20Parser.ts:19933-19937`
+- **exitRule** — Overrides the exit method to handle argument list exit `Java20Parser.ts:19980-19984`
+- **exitRule** — Invokes the exit method reference listener `Java20Parser.ts:20006-20010`
+- **exitRule** — Invokes the exit method for the postfix expression rule `Java20Parser.ts:20044-20048`
+- **exitRule** — Invokes the listener's exitPfE method if it exists `Java20Parser.ts:20082-20086`
+- **exitRule** — Invokes the exit method for the post-increment expression rule `Java20Parser.ts:20126-20130`
+- **exitRule** — Invokes the post-decrement expression exit method if available `Java20Parser.ts:20155-20159`
+- **exitRule** — Invokes the listener's exitUnaryExpression method if it exists `Java20Parser.ts:20184-20188`
+- **exitRule** — Invokes the exit method for pre-increment expression. `Java20Parser.ts:22173-2217 `Java20Parser.ts:20237-20241`
+- **exitRule** — Invokes the listener's exitPreDecrementExpression method if it exists `Java20Parser.ts:20290-20294`
+- **exitRule** — Invokes the listener's `exitUnaryExpressionNotPlusMinus` method if it exists `Java20Parser.ts:20319-20323`
+- **exitRule** — Invokes the exitCastExpression method of the listener `Java20Parser.ts:20345-20349`
+- **exitRule** — Invokes the exit method for the multiplicative expression rule `Java20Parser.ts:20386-20390`
+- **exitRule** — Invokes the exit method for the additive expression rule `Java20Parser.ts:20430-20434`
+- **exitRule** — Invokes the exitShiftExpression method of the listener if it exists `Java20Parser.ts:20474-20478`
+- **exitRule** — Invokes the exitRelationalExpression method of the listener if it exists `Java20Parser.ts:20506-20510`
+- **exitRule** — Invokes the listener's exit method for equality expression `Java20Parser.ts:20538-20542`
+- **exitRule** — Invokes the exitAndExpression method of the listener if it exists `Java20Parser.ts:20570-20574`
+- **exitRule** — Invokes the listener's exitExclusiveOrExpression method if it exists `Java20Parser.ts:20602-20606`
+- **exitRule** — Invokes the listener's exit method for inclusive or expression `Java20Parser.ts:20640-20644`
+- **exitRule** — Invokes the listener's exitConditionalAndExpression method if it exists `Java20Parser.ts:20678-20682`
+- **exitRule** — Invokes the listener's exitConditionalOrExpression method if it exists `Java20Parser.ts:20710-20714`
+- **exitRule** — Invokes the listener's exitConditionalExpression method if it exists `Java20Parser.ts:20748-20752`
+- **exitRule** — Invokes the listener's exitAssignmentExpression method if it exists `Java20Parser.ts:20786-20790`
+- **exitRule** — Invokes the listener's exitAssignment method if it exists `Java20Parser.ts:20830-20834`
+- **exitRule** — Invokes the listener's exitLeftHandSide method if it exists `Java20Parser.ts:20859-20863`
+- **exitRule** — Invokes the exit method for the assignment operator rule `Java20Parser.ts:20897-20901`
+- **exitRule** — Invokes the exit method for the lambda expression rule `Java20Parser.ts:20932-20936`
+- **exitRule** — Invokes the listener's exitLambdaParameters method if it exists `Java20Parser.ts:20973-20977`
+- **exitRule** — Invokes the listener's exitLambdaParameterList method if it exists `Java20Parser.ts:21002-21006`
+- **exitRule** — Invokes the listener's exitLambdaParameter method if it exists `Java20Parser.ts:21031-21035`
+- **exitRule** — Invokes the listener's exitLambdaParameterType method if it exists `Java20Parser.ts:21063-21067`
+- **exitRule** — Invokes the listener's exitLambdaBody method if it exists `Java20Parser.ts:21089-21093`
+- **exitRule** — Invokes the listener's exitSwitchExpression method if it exists `Java20Parser.ts:21115-21119`
+- **exitRule** — Invokes the listener's exitConstantExpression method if it exists `Java20Parser.ts:21144-21148`
+- **exitRule** — Invokes the exit method for the class literal rule `Java20Parser.ts:21173-21177`
+- **exitRule** — Invokes the listener's exit method for class instance creation expression `Java20Parser.ts:21277-21281`
+- **exitRule** — Invokes the exit method for unqualified class instance creation expression. `Java20Parser.ts:214 `Java20Parser.ts:21336-21340`
+- **exitRule** — Invokes the exit method for the type arguments or diamond rule. `Java20Parser.ts:21556 `Java20Parser.ts:21395-21399`
+- **exitRule** — Invokes the exitArrayCreationExpression method if the listener has it `Java20Parser.ts:21430-21434`
+- **exitRule** — Invokes the listener's exitDimExprs method if it exists `Java20Parser.ts:21474-21478`
+- **exitRule** — Invokes the exit method for the array access rule `Java20Parser.ts:21527-21531`
+- **exitRule** — Invokes the listener's exitFieldAccess method if it exists `Java20Parser.ts:21556-21560`
+- **exitRule** — Triggers the exit method for the argument list rule `Java20Parser.ts:21585-21589`
+- **exitRule** — Invokes the listener's exitPostfixExpression method if it exists `Java20Parser.ts:21623-21627`
+- **exitRule** — Invokes the listener's exitPostDecrementExpression method if it exists `Java20Parser.ts:21661-21665`
+- **exitRule** — Invokes the listener's exitUnaryExpressionNotPlusMinus method if it exists `Java20Parser.ts:21693-21697`
+- **exitRule** — Invokes the listener's exitMultiplicativeExpression method if it exists `Java20Parser.ts:21734-21738`
+- **exitRule** — Invokes the listener's exitAdditiveExpression method if it exists. `Java20Parser.ts:22 `Java20Parser.ts:21775-21779`
+- **exitRule** — Invokes the listener's exit method for the relational expression rule `Java20Parser.ts:21819-21823`
+- **exitRule** — Invokes the listener's exitConditionalAndExpression method if it exists. `Java20Parser.ts:22 `Java20Parser.ts:21881-21885`
+- **exitRule** — Invokes the listener's exitAssignmentOperator method if it exists `Java20Parser.ts:21922-21926`
+- **exitRule** — Invokes the listener's exitLambdaExpression method if it exists `Java20Parser.ts:21981-21985`
+- **exitRule** — Invokes the exitLambdaParameters method of the listener if it exists `Java20Parser.ts:22013-22017`
+- **exitRule** — Invokes the exitLambdaParameterList method of the listener if it exists `Java20Parser.ts:22045-22049`
+- **exitRule** — Invokes the exitLambdaParameter method of the listener if it exists `Java20Parser.ts:22074-22078`
+- **exitRule** — Invokes the exitLambdaParameterType method of the listener if it exists `Java20Parser.ts:22103-22107`
+- **exitRule** — Invokes the exitLambdaBody method of the listener `Java20Parser.ts:22144-22148`
+- **exitRule** — Invokes the exitSwitchExpression method of the listener if it exists `Java20Parser.ts:22173-22177`
+- **exitRule** — Invokes the exitConstantExpression method of the listener if it exists `Java20Parser.ts:22202-22206`, `Java20Parser.ts:23134-23138`
+- **exitRule** — Triggers the exit rule for unary expression not plus minus `Java20Parser.ts:22243-22247`
+- **exitRule** — Invokes the listener's `exitCastExpression` method if it exists `Java20Parser.ts:22296-22300`
+- **exitRule** — Triggers the exit rule for multiplicative expression `Java20Parser.ts:22334-22338`
+- **exitRule** — Triggers the exit rule for additive expression `Java20Parser.ts:22369-22373`
+- **exitRule** — Triggers the exit rule for shift expression `Java20Parser.ts:22416-22420`
+- **exitRule** — Triggers the exit method for the relational expression rule `Java20Parser.ts:22466-22470`
+- **exitRule** — Triggers the exit method for the equality expression rule `Java20Parser.ts:22501-22505`
+- **exitRule** — Triggers the exit method for the and expression rule `Java20Parser.ts:22533-22537`
+- **exitRule** — Triggers the exit method for the exclusive or expression rule `Java20Parser.ts:22565-22569`
+- **exitRule** — Invokes the `exitInclusiveOrExpression` method of the listener `Java20Parser.ts:22597-22601`
+- **exitRule** — Invokes the `exitConditionalAndExpression` method of the listener `Java20Parser.ts:22629-22633`
+- **exitRule** — Invokes the exitConditionalOrExpression method of the listener if it exists `Java20Parser.ts:22661-22665`
+- **exitRule** — Invokes the exitConditionalExpression method of the listener if it exists `Java20Parser.ts:22702-22706`
+- **exitRule** — Invokes the exit method of the constant expression rule listener `Java20Parser.ts:22731-22735`
+- **exitRule** — Invokes the exitAssignment method of the listener `Java20Parser.ts:22763-22767`
+- **exitRule** — Invokes the exitLeftHandSide method of the listener `Java20Parser.ts:22795-22799`
+- **exitRule** — Invokes the listener's `exitAssignmentOperator` method if it exists `Java20Parser.ts:22854-22858`
+- **exitRule** — Invokes the exitLambdaExpression method of the listener `Java20Parser.ts:22886-22890`
+- **exitRule** — Invokes the listener's exitLambdaParameters method `Java20Parser.ts:22921-22925`
+- **exitRule** — Invokes the listener's exitLambdaParameterList method if it exists. `Java20Parser.ts:2297 `Java20Parser.ts:22971-22975`
+- **exitRule** — Invokes the listener's exitLambdaParameter method `Java20Parser.ts:23012-23016`
+- **exitRule** — Invokes the listener's `exitLambdaParameterType` method if it exists `Java20Parser.ts:23041-23045`
+- **exitRule** — Invokes the listener's `exitLambdaBody` method if it exists `Java20Parser.ts:23070-23074`
+- **exitRule** — Invokes the listener's `exitSwitchExpression` method if it exists `Java20Parser.ts:23108-23112`
 - **explicitConstructorInvocation** — Invokes a constructor explicitly `Java20Parser.ts:4903-5015`
 - **explicitConstructorInvocation** — Parses an explicit constructor invocation `Java20Parser.ts:17335-17337`
 - **EXPORTS** — Represents the EXPORTS keyword `Java20Parser.ts:13778-13780`
-- **EXPORTS** — Represents the keyword 'exports' in the Java 20 parser `Java20Parser.ts:13849-13851`, `Java20Parser.ts:13905-13907`
-- **EXPORTS** — Represents the exports keyword in the grammar `Java20Parser.ts:15497-15499`
-- **expression** — Represents an expression `Java20Parser.ts:8800-8833`, `Java20Parser.ts:20027-20029`, `Java20Parser.ts:20223-20225`, `Java20Parser.ts:20276-20278`, `Java20Parser.ts:20413-20415`, `Java20Parser.ts:21049-21051`
-- **expression** — Parses an expression `Java20Parser.ts:16243-16245`, `Java20Parser.ts:19594-19596`, `Java20Parser.ts:19722-19728`, `Java20Parser.ts:19764-19766`, `Java20Parser.ts:20065-20067`, `Java20Parser.ts:20109-20111`, `Java20Parser.ts:21307-21309`, `Java20Parser.ts:21711-21713`, `Java20Parser.ts:21755-21757`, `Java20Parser.ts:21898-21904`, `Java20Parser.ts:22682-22684`, `Java20Parser.ts:23056-23058`, `Java20Parser.ts:23091-23093`, `Java20Parser.ts:23123-23125`
-- **expression** — Parses an expression in the grammar `Java20Parser.ts:19632-19634`, `Java20Parser.ts:19676-19678`
-- **expression** — Represents an expression in the parser `Java20Parser.ts:19869-19871`
-- **expression** — Represents an expression in the Java20 grammar `Java20Parser.ts:20457-20459`, `Java20Parser.ts:22752-22754`
-- **expression** — Parses an expression in the Java20 grammar `Java20Parser.ts:20559-20561`, `Java20Parser.ts:20588-20590`, `Java20Parser.ts:20623-20625`
-- **expression** — Represents an expression in Java `Java20Parser.ts:21215-21217`
-- **expressionName** — Represents an expression name in Java `Java20Parser.ts:2163-2193`, `Java20Parser.ts:21224-21226`
-- **expressionName** — Represents an expression name `Java20Parser.ts:17388-17390`, `Java20Parser.ts:21017-21019`
-- **expressionName** — Represents the name of an expression `Java20Parser.ts:21413-21415`, `Java20Parser.ts:22778-22780`
-- **expressionName** — Parses an expression name `Java20Parser.ts:21749-21751`, `Java20Parser.ts:21937-21939`
-- **expressionName** — Represents an expression name in the Java20 grammar `Java20Parser.ts:21864-21866`
-- **expressionName** — Represents the name of an expression in the Java20 grammar `Java20Parser.ts:22002-22004`
+- **EXPORTS** — Represents the keyword 'exports' in the Java 20 parser `Java20Parser.ts:13849-13851`
+- **EXPORTS** — Represents the exports keyword in the grammar `Java20Parser.ts:13905-13907`
+- **EXPORTS** — Returns the terminal node for the `EXPORTS` rule `Java20Parser.ts:15497-15499`
+- **expression** — Represents an expression `Java20Parser.ts:8800-8833`
+- **expression** — Parses an expression `Java20Parser.ts:16243-16245`
+- **expression** — Parses an expression in the grammar `Java20Parser.ts:19594-19596`
+- **expression** — Represents an expression in the parser `Java20Parser.ts:19632-19634`
+- **expression** — Represents an expression in the Java20 grammar `Java20Parser.ts:19676-19678`
+- **expression** — Parses an expression in the Java20 grammar `Java20Parser.ts:19722-19728`
+- **expression** — Represents an expression in Java `Java20Parser.ts:19764-19766`
+- **expression** — Returns the context of an expression `Java20Parser.ts:19869-19871`
+- **expression** — Returns the expression context `Java20Parser.ts:20027-20029`
+- **expression** — Returns the context of the expression rule `Java20Parser.ts:20065-20067`
+- **expression** — Returns the root context of an expression `Java20Parser.ts:20109-20111`
+- **expression** — Returns the expression context or contexts `Java20Parser.ts:20223-20225`
+- **expression** — Returns the context of the expression rule or null `Java20Parser.ts:20276-20278`
+- **expression** — Retrieves the expression context from the parser `Java20Parser.ts:20413-20415`
+- **expression** — Returns an ExpressionContext or null `Java20Parser.ts:20457-20459`, `Java20Parser.ts:23056-23058`
+- **expression** — Returns an ExpressionContext `Java20Parser.ts:20559-20561`, `Java20Parser.ts:23091-23093`, `Java20Parser.ts:23123-23125`
+- **expression** — Returns an array or a single ExpressionContext based on the provided index `Java20Parser.ts:20588-20590`
+- **expression** — Returns the context of the expression `Java20Parser.ts:20623-20625`
+- **expression** — Returns the root expression context `Java20Parser.ts:21049-21051`
+- **expression** — Returns the first ExpressionContext `Java20Parser.ts:21215-21217`
+- **expression** — Returns an array or a single ExpressionContext based on the index `Java20Parser.ts:21307-21309`
+- **expression** — Returns the expression context or null `Java20Parser.ts:21711-21713`
+- **expression** — Returns an expression context `Java20Parser.ts:21755-21757`
+- **expression** — Returns an expression context or contexts `Java20Parser.ts:21898-21904`
+- **expression** — Returns the root context for an expression `Java20Parser.ts:22682-22684`
+- **expression** — Returns a context for an expression in Java 20 parsing `Java20Parser.ts:22752-22754`
+- **expressionName** — Represents an expression name in Java `Java20Parser.ts:2163-2193`
+- **expressionName** — Represents an expression name `Java20Parser.ts:17388-17390`
+- **expressionName** — Represents the name of an expression `Java20Parser.ts:21017-21019`
+- **expressionName** — Parses an expression name `Java20Parser.ts:21224-21226`
+- **expressionName** — Represents an expression name in the Java20 grammar `Java20Parser.ts:21413-21415`
+- **expressionName** — Represents the name of an expression in the Java20 grammar `Java20Parser.ts:21749-21751`
+- **expressionName** — Returns the context of an expression name `Java20Parser.ts:21864-21866`
+- **expressionName** — Returns the context of the expression name if it exists `Java20Parser.ts:21937-21939`
+- **expressionName** — Returns the expression name context `Java20Parser.ts:22002-22004`
+- **expressionName** — Returns the context of the expressionName rule or null if not found `Java20Parser.ts:22778-22780`
 - **expressionStatement** — A statement that is an expression `Java20Parser.ts:7259-7279`
 - **expressionStatement** — Represents an expression statement `Java20Parser.ts:19369-19371`
 - **EXTENDS** — Represents the 'extends' keyword in the parser `Java20Parser.ts:14531-14533`
@@ -462,10 +1237,13 @@ Java20ParserVisitor.ts
 - **fieldAccess** — Represents a field access in the Java20 grammar `Java20Parser.ts:22781-22783`
 - **fieldDeclaration** — Represents a field declaration in a class `Java20Parser.ts:3372-3405`
 - **fieldDeclaration** — Represents the declaration of a field `Java20Parser.ts:16015-16017`
-- **fieldModifier** — Represents a modifier for a field `Java20Parser.ts:3406-3483`, `Java20Parser.ts:16064-16070`
-- **FINAL** — Represents the final modifier `Java20Parser.ts:15691-15693`, `Java20Parser.ts:16109-16111`, `Java20Parser.ts:18323-18325`
-- **FINAL** — Represents the final method modifier `Java20Parser.ts:16643-16645`
-- **FINAL** — Represents the keyword 'final' in the Java20Parser `Java20Parser.ts:16974-16976`
+- **fieldModifier** — Represents a modifier for a field `Java20Parser.ts:3406-3483`
+- **fieldModifier** — Returns the field modifier context or contexts `Java20Parser.ts:16064-16070`
+- **FINAL** — Represents the final modifier `Java20Parser.ts:15691-15693`
+- **FINAL** — Represents the final method modifier `Java20Parser.ts:16109-16111`
+- **FINAL** — Represents the keyword 'final' in the Java20Parser `Java20Parser.ts:16643-16645`
+- **FINAL** — Returns a terminal node for the keyword "final" `Java20Parser.ts:16974-16976`
+- **FINAL** — Returns the FINAL terminal node if it `Java20Parser.ts:18323-18325`
 - **FINALLY** — Represents the keyword 'finally' `Java20Parser.ts:20845-20847`
 - **finallyBlock** — Represents the finally block of a try statement `Java20Parser.ts:8545-8565`
 - **finallyBlock** — Represents a finally block `Java20Parser.ts:20664-20666`
@@ -474,12 +1252,15 @@ Java20ParserVisitor.ts
 - **FloatingPointLiteral** — Represents the context for parsing floating-point literals `Java20Parser.ts:13976-13978`
 - **floatingPointType** — Represents a floating-point type in Java `Java20Parser.ts:1317-1342`
 - **floatingPointType** — Represents a floating-point type `Java20Parser.ts:14058-14060`
-- **FOR** — Represents the keyword "for" `Java20Parser.ts:20199-20201`, `Java20Parser.ts:20252-20254`
-- **FOR** — Represents the keyword 'for' in the grammar `Java20Parser.ts:20401-20403`, `Java20Parser.ts:20445-20447`
+- **FOR** — Represents the keyword "for" `Java20Parser.ts:20199-20201`
+- **FOR** — Represents the keyword 'for' in the grammar `Java20Parser.ts:20252-20254`
+- **FOR** — Returns the terminal node for the FOR keyword `Java20Parser.ts:20401-20403`
+- **FOR** — Returns `Java20Parser.ts:20445-20447`
 - **forInit** — Parses the initialization part of a for statement in Java `Java20Parser.ts:8063-8096`
 - **forInit** — Represents the initialization part of a for statement `Java20Parser.ts:20220-20222`
 - **forInit** — Represents the initialization part of a for loop `Java20Parser.ts:20273-20275`
-- **formalParameter** — Represents a single formal parameter `Java20Parser.ts:4402-4448`, `Java20Parser.ts:16841-16847`
+- **formalParameter** — Represents a single formal parameter `Java20Parser.ts:4402-4448`
+- **formalParameter** — Returns the formal parameter context based on the provided index or all contexts if no index is provided. `Java20Parser.ts `Java20Parser.ts:16841-16847`
 - **formalParameterList** — Represents a list of formal parameters `Java20Parser.ts:4370-4401`
 - **formalParameterList** — Parses a formal parameter list `Java20Parser.ts:16766-16768`
 - **formalParameterList** — Parses the formal parameter list `Java20Parser.ts:17277-17279`
@@ -495,22 +1276,44 @@ Java20ParserVisitor.ts
 - **grammarFileName** — Stores the name of the grammar file `Java20Parser.ts:897-899`
 - **GT** — Represents a greater-than operator `Java20Parser.ts:14607-14609`
 - **GT** — Represents the greater-than symbol `Java20Parser.ts:15732-15734`
-- **GT** — Represents a greater-than comparison `Java20Parser.ts:22401-22407`, `Java20Parser.ts:22440-22442`
-- **identifier** — Parses an identifier `Java20Parser.ts:947-997`, `Java20Parser.ts:14901-14903`, `Java20Parser.ts:14959-14961`, `Java20Parser.ts:16214-16216`, `Java20Parser.ts:16751-16753`, `Java20Parser.ts:16810-16812`, `Java20Parser.ts:21301-21303`, `Java20Parser.ts:21491-21497`, `Java20Parser.ts:21943-21945`
-- **Identifier** — Represents an identifier in the Java20Parser `Java20Parser.ts:13691-13693`, `Java20Parser.ts:13720-13722`
-- **Identifier** — Represents an identifier `Java20Parser.ts:13749-13751`
-- **identifier** — Represents an identifier `Java20Parser.ts:14773-14775`, `Java20Parser.ts:15407-15413`, `Java20Parser.ts:17774-17776`, `Java20Parser.ts:22910-22912`, `Java20Parser.ts:22956-22962`
-- **identifier** — Parses an identifier in the Java20Parser `Java20Parser.ts:14805-14807`, `Java20Parser.ts:14869-14871`
-- **identifier** — Identifies a variable or method name `Java20Parser.ts:15106-15112`
-- **identifier** — Represents the identifier in Java20Parser `Java20Parser.ts:15300-15302`
-- **identifier** — Represents an identifier in the Java20Parser `Java20Parser.ts:16927-16929`
-- **identifier** — Represents an identifier in the grammar `Java20Parser.ts:17540-17542`, `Java20Parser.ts:18780-18782`
-- **identifier** — Identifier `Java20Parser.ts:17818-17820`
-- **identifier** — Represents the context of an identifier `Java20Parser.ts:18556-18558`
-- **identifier** — Represents an identifier in the Java20 grammar `Java20Parser.ts:19451-19453`, `Java20Parser.ts:19483-19485`, `Java20Parser.ts:20495-20497`, `Java20Parser.ts:20527-20529`, `Java20Parser.ts:21802-21804`, `Java20Parser.ts:21858-21860`
-- **identifier** — Represents an identifier in Java `Java20Parser.ts:21230-21232`
+- **GT** — Represents a greater-than comparison `Java20Parser.ts:22401-22407`
+- **GT** — Returns the terminal node for the GT token. `Java20Parser `Java20Parser.ts:22440-22442`
+- **identifier** — Parses an identifier `Java20Parser.ts:947-997`
+- **Identifier** — Represents an identifier in the Java20Parser `Java20Parser.ts:13691-13693`
+- **Identifier** — Represents an identifier `Java20Parser.ts:13720-13722`
+- **Identifier** — Parses an identifier token `Java20Parser.ts:13749-13751`
+- **identifier** — Represents an identifier `Java20Parser.ts:14773-14775`
+- **identifier** — Parses an identifier in the Java20Parser `Java20Parser.ts:14805-14807`
+- **identifier** — Identifies a variable or method name `Java20Parser.ts:14869-14871`
+- **identifier** — Represents the identifier in Java20Parser `Java20Parser.ts:14901-14903`
+- **identifier** — Represents an identifier in the Java20Parser `Java20Parser.ts:14959-14961`
+- **identifier** — Represents an identifier in the grammar `Java20Parser.ts:15106-15112`
+- **identifier** — Identifier `Java20Parser.ts:15300-15302`
+- **identifier** — Represents the context of an identifier `Java20Parser.ts:15407-15413`
+- **identifier** — Represents an identifier in the Java20 grammar `Java20Parser.ts:16214-16216`
+- **identifier** — Represents an identifier in Java `Java20Parser.ts:16751-16753`
+- **identifier** — Returns the identifier context `Java20Parser.ts:16810-16812`
+- **identifier** — Returns the identifier context at the current position `Java20Parser.ts:16927-16929`
+- **identifier** — Returns the context of the identifier rule `Java20Parser.ts:17540-17542`
+- **identifier** — Returns the context of an identifier `Java20Parser.ts:17774-17776`
+- **identifier** — Returns the identifier context. `Java `Java20Parser.ts:17818-17820`
+- **identifier** — Returns the identifier context or null `Java20Parser.ts:18556-18558`
+- **identifier** — Returns the identifier `Java20Parser.ts:18780-18782`
+- **identifier** — Returns a context for the identifier rule or an array of contexts if the index is provided `Java20Parser.ts:19451-19453`
+- **identifier** — Returns an IdentifierContext `Java20Parser.ts:19483-19485`
+- **identifier** — Returns the context of an identifier or null `Java20Parser.ts:20495-20497`
+- **identifier** — Returns an IdentifierContext or null `Java20Parser.ts:20527-20529`
+- **identifier** — Returns the identifier context at the specified index or all identifier contexts if no index is provided `Java20Parser.ts:21230-21232`
+- **identifier** — Returns the identifier context at position i or all identifier contexts `Java20Parser.ts:21301-21303`
+- **identifier** — Returns an array or a single IdentifierContext based on the index `Java20Parser.ts:21491-21497`
+- **identifier** — Returns the first IdentifierContext `Java20Parser.ts:21802-21804`
+- **identifier** — Returns an identifier context or null `Java20Parser.ts:21858-21860`
+- **identifier** — Returns the first IdentifierContext or null `Java20Parser.ts:21943-21945`
+- **identifier** — Returns a context or an array of contexts for the identifier rule `Java20Parser.ts:22910-22912`
+- **identifier** — Returns the identifier context or contexts `Java20Parser.ts:22956-22962`
 - **IF** — Represents an if keyword `Java20Parser.ts:19588-19590`
-- **IF** — Represents the 'if' keyword in the grammar `Java20Parser.ts:19626-19628`, `Java20Parser.ts:19670-19672`
+- **IF** — Represents the 'if' keyword in the grammar `Java20Parser.ts:19626-19628`
+- **IF** — Returns an antlr.TerminalNode `Java20Parser.ts:19670-19672`
 - **ifThenElseStatement** — An if-then-else statement `Java20Parser.ts:7376-7406`
 - **ifThenElseStatement** — Represents an if-then-else statement `Java20Parser.ts:19293-19295`
 - **ifThenElseStatementNoShortIf** — An if-then-else statement that does not contain a short if `Java20Parser.ts:7407-7437`
@@ -518,12 +1321,16 @@ Java20ParserVisitor.ts
 - **ifThenStatement** — An if-then statement `Java20Parser.ts:7349-7375`
 - **ifThenStatement** — Represents an if-then statement `Java20Parser.ts:19290-19292`
 - **IMPLEMENTS** — Parses the implements keyword `Java20Parser.ts:15828-15830`
-- **IMPORT** — Represents the import statement in Java20Parser `Java20Parser.ts:15218-15220`, `Java20Parser.ts:15250-15252`, `Java20Parser.ts:15288-15290`
-- **IMPORT** — Represents the IMPORT keyword `Java20Parser.ts:15329-15331`
+- **IMPORT** — Represents the import statement in Java20Parser `Java20Parser.ts:15218-15220`
+- **IMPORT** — Represents the IMPORT keyword `Java20Parser.ts:15250-15252`
+- **IMPORT** — Returns the terminal node for the IMPORT keyword `Java20Parser.ts:15288-15290`
+- **IMPORT** — Returns the IMPORT terminal node `Java20Parser.ts:15329-15331`
 - **importDeclaration** — Represents an import declaration in the Java 20 grammar `Java20Parser.ts:2426-2473`
-- **importDeclaration** — Represents an import declaration `Java20Parser.ts:15025-15031`, `Java20Parser.ts:15071-15077`
-- **INC** — Represents the increment operation in the Java20 grammar `Java20Parser.ts:22028-22030`, `Java20Parser.ts:22063-22065`
-- **INC** — Represents the increment operator `Java20Parser.ts:22159-22161`
+- **importDeclaration** — Represents an import declaration `Java20Parser.ts:15025-15031`
+- **importDeclaration** — Returns the import declaration context or null if not provided `Java20Parser.ts:15071-15077`
+- **INC** — Represents the increment operation in the Java20 grammar `Java20Parser.ts:22028-22030`
+- **INC** — Represents the increment operator `Java20Parser.ts:22063-22065`
+- **INC** — Returns the terminal node for the ' `Java20Parser.ts:22159-22161`
 - **inclusiveOrExpression** — Represents an inclusive or expression `Java20Parser.ts:11864-11916`
 - **inclusiveOrExpression** — Parses an OR expression `Java20Parser.ts:22583-22585`
 - **inclusiveOrExpression** — Parses an inclusive or expression `Java20Parser.ts:22612-22614`
@@ -541,8 +1348,9 @@ Java20ParserVisitor.ts
 - **interfaceBody** — Represents the body of an interface `Java20Parser.ts:18028-18030`
 - **interfaceDeclaration** — Declares an interface `Java20Parser.ts:5592-5625`
 - **interfaceDeclaration** — Represents an interface declaration `Java20Parser.ts:15373-15375`
-- **interfaceDeclaration** — Represents the declaration of an interface `Java20Parser.ts:16024-16026`, `Java20Parser.ts:18244-18246`
-- **interfaceDeclaration** — Represents the context of an interface declaration `Java20Parser.ts:18524-18526`
+- **interfaceDeclaration** — Represents the declaration of an interface `Java20Parser.ts:16024-16026`
+- **interfaceDeclaration** — Represents the context of an interface declaration `Java20Parser.ts:18244-18246`
+- **interfaceDeclaration** — Returns an InterfaceDeclarationContext or null `Java20Parser.ts:18524-18526`
 - **interfaceExtends** — Extends an interface `Java20Parser.ts:5773-5793`
 - **interfaceExtends** — Specifies the interfaces that the current interface extends `Java20Parser.ts:18043-18045`
 - **interfaceMemberDeclaration** — Declares a member of an interface `Java20Parser.ts:5865-5919`
@@ -582,17 +1390,21 @@ Java20ParserVisitor.ts
 - **lambdaParameterType** — Represents the type of a lambda parameter `Java20Parser.ts:22986-22988`
 - **LBRACE** — Represents the left brace in the grammar `Java20Parser.ts:15414-15416`
 - **LBRACE** — Represents an opening curly brace `Java20Parser.ts:15942-15944`
-- **LBRACE** — Represents the left brace token `Java20Parser.ts:17329-17331`, `Java20Parser.ts:18475-18477`
-- **LBRACE** — Represents the opening curly brace in the grammar `Java20Parser.ts:17461-17463`, `Java20Parser.ts:18987-18989`, `Java20Parser.ts:19063-19065`
+- **LBRACE** — Represents the left brace token `Java20Parser.ts:17329-17331`
+- **LBRACE** — Represents the opening curly brace in the grammar `Java20Parser.ts:17461-17463`
 - **LBRACE** — Left brace `Java20Parser.ts:17888-17890`
 - **LBRACE** — Left brace token in the grammar `Java20Parser.ts:18195-18197`
-- **LBRACE** — Represents an opening brace `Java20Parser.ts:18844-18846`
-- **LBRACE** — Token for the left brace `Java20Parser.ts:19796-19798`
+- **LBRACE** — Represents an opening brace `Java20Parser.ts:18475-18477`
+- **LBRACE** — Token for the left brace `Java20Parser.ts:18844-18846`
+- **LBRACE** — Returns the LBRACE terminal node `Java20Parser.ts:18987-18989`
+- **LBRACE** — Returns the left brace terminal node `Java20Parser.ts:19063-19065`
+- **LBRACE** — Returns an antlr.TerminalNode `Java20Parser.ts:19796-19798`
 - **LBRACK** — Represents the left bracket in the Java20 grammar `Java20Parser.ts:14419-14425`
 - **LBRACK** — Represents the left square bracket in Java `Java20Parser.ts:21236-21238`
 - **LBRACK** — Represents a left bracket token `Java20Parser.ts:21304-21306`
 - **LBRACK** — Represents the left bracket token `Java20Parser.ts:21362-21368`
-- **LBRACK** — Left bracket token `Java20Parser.ts:21708-21710`, `Java20Parser.ts:21752-21754`
+- **LBRACK** — Left bracket token `Java20Parser.ts:21708-21710`
+- **LBRACK** — Returns the LBRACK terminal node. `Java20Parser.ts:217 `Java20Parser.ts:21752-21754`
 - **LE** — Represents a less-than-or-equal comparison `Java20Parser.ts:22443-22445`
 - **leftHandSide** — Represents the left-hand side of an assignment in Java `Java20Parser.ts:12143-12183`
 - **leftHandSide** — Represents the left-hand side of an assignment `Java20Parser.ts:22746-22748`
@@ -602,11 +1414,13 @@ Java20ParserVisitor.ts
 - **literalNames** — Stores names of literals `Java20Parser.ts:900-902`
 - **localClassOrInterfaceDeclaration** — Declares a local class or interface `Java20Parser.ts:6845-6878`
 - **localClassOrInterfaceDeclaration** — Represents a local class or interface declaration `Java20Parser.ts:19127-19129`
-- **localVariableDeclaration** — Declares a local variable `Java20Parser.ts:6879-6910`, `Java20Parser.ts:20988-20990`
+- **localVariableDeclaration** — Declares a local variable `Java20Parser.ts:6879-6910`
 - **localVariableDeclaration** — Represents the local variable declaration `Java20Parser.ts:19255-19257`
-- **localVariableDeclaration** — Represents a local variable declaration `Java20Parser.ts:20308-20310`, `Java20Parser.ts:20407-20409`
-- **localVariableDeclaration** — Represents a local variable declaration in the Java20 grammar `Java20Parser.ts:20451-20453`
-- **localVariableDeclaration** — Context for parsing local variable declarations `Java20Parser.ts:21104-21106`
+- **localVariableDeclaration** — Represents a local variable declaration `Java20Parser.ts:20308-20310`
+- **localVariableDeclaration** — Represents a local variable declaration in the Java20 grammar `Java20Parser.ts:20407-20409`
+- **localVariableDeclaration** — Context for parsing local variable declarations `Java20Parser.ts:20451-20453`
+- **localVariableDeclaration** — Returns the context of a local variable declaration `Java20Parser.ts:20988-20990`
+- **localVariableDeclaration** — Returns a LocalVariableDeclarationContext `Java20Parser.ts:21104-21106`
 - **localVariableDeclarationStatement** — A statement that declares a local variable `Java20Parser.ts:6945-6965`
 - **localVariableDeclarationStatement** — Represents a local variable declaration statement `Java20Parser.ts:19130-19132`
 - **localVariableType** — The type of a local variable `Java20Parser.ts:6911-6944`
@@ -615,24 +1429,37 @@ Java20ParserVisitor.ts
 - **LPAREN** — Parses a left parenthesis `Java20Parser.ts:16754-16756`
 - **LPAREN** — Represents the left parenthesis in the constructor `Java20Parser.ts:17262-17264`
 - **LPAREN** — Represents an opening parenthesis `Java20Parser.ts:17364-17366`
-- **LPAREN** — Represents the opening parenthesis in the grammar `Java20Parser.ts:17552-17554`, `Java20Parser.ts:19629-19631`, `Java20Parser.ts:19673-19675`
-- **LPAREN** — Represents the left parenthesis token `Java20Parser.ts:17698-17700`, `Java20Parser.ts:21451-21453`
+- **LPAREN** — Represents the opening parenthesis in the grammar `Java20Parser.ts:17552-17554`
+- **LPAREN** — Represents the left parenthesis token `Java20Parser.ts:17698-17700`
 - **LPAREN** — Represents a left parenthesis in the grammar `Java20Parser.ts:18559-18561`
 - **LPAREN** — Parses the '(' symbol in the Java20 grammar `Java20Parser.ts:18707-18709`
 - **LPAREN** — Represents the '(' symbol `Java20Parser.ts:18955-18957`
-- **LPAREN** — Represents a left parenthesis token `Java20Parser.ts:19591-19593`, `Java20Parser.ts:21313-21315`
-- **LPAREN** — Token for the left parenthesis `Java20Parser.ts:19761-19763`
-- **LPAREN** — Represents a left parenthesis `Java20Parser.ts:20024-20026`
-- **LPAREN** — Represents the left parenthesis `Java20Parser.ts:20062-20064`, `Java20Parser.ts:20106-20108`, `Java20Parser.ts:20202-20204`, `Java20Parser.ts:20255-20257`, `Java20Parser.ts:20728-20730`, `Java20Parser.ts:22258-22260`, `Java20Parser.ts:22901-22903`, `Java20Parser.ts:23088-23090`
-- **LPAREN** — Represents the left parenthesis in the grammar `Java20Parser.ts:20404-20406`, `Java20Parser.ts:20448-20450`
-- **LPAREN** — Matches the left parenthesis character in the Java20 grammar `Java20Parser.ts:20620-20622`
-- **LPAREN** — Left parenthesis in a resource specification `Java20Parser.ts:20912-20914`
-- **LPAREN** — Represents the left parenthesis in Java `Java20Parser.ts:21212-21214`
-- **LPAREN** — Represents an open parenthesis in the Java20 grammar `Java20Parser.ts:21837-21839`
+- **LPAREN** — Represents a left parenthesis token `Java20Parser.ts:19591-19593`
+- **LPAREN** — Token for the left parenthesis `Java20Parser.ts:19629-19631`
+- **LPAREN** — Represents a left parenthesis `Java20Parser.ts:19673-19675`
+- **LPAREN** — Represents the left parenthesis `Java20Parser.ts:19761-19763`
+- **LPAREN** — Represents the left parenthesis in the grammar `Java20Parser.ts:20024-20026`
+- **LPAREN** — Matches the left parenthesis character in the Java20 grammar `Java20Parser.ts:20062-20064`
+- **LPAREN** — Left parenthesis in a resource specification `Java20Parser.ts:20106-20108`
+- **LPAREN** — Represents the left parenthesis in Java `Java20Parser.ts:20202-20204`
+- **LPAREN** — Represents an open parenthesis in the Java20 grammar `Java20Parser.ts:20255-20257`
+- **LPAREN** — Returns the LPAREN terminal node `Java20Parser.ts:20404-20406`
+- **LPAREN** — Returns the left parenthesis token `Java20Parser.ts:20448-20450`
+- **LPAREN** — Returns the left parenthesis terminal node `Java20Parser.ts:20620-20622`
+- **LPAREN** — Returns the terminal node for the LPAREN rule. `Java2 `Java20Parser.ts:20728-20730`
+- **LPAREN** — Returns the left parenthesis terminal node. `Java20Parser.ts:214 `Java20Parser.ts:20912-20914`
+- **LPAREN** — Returns the `LPAREN` terminal node `Java20Parser.ts:21212-21214`
+- **LPAREN** — Returns the LPAREN terminal node. `Java20Parser.ts:21 `Java20Parser.ts:21313-21315`
+- **LPAREN** — Returns the LPAREN token at position 0 `Java20Parser.ts:21451-21453`
+- **LPAREN** — Returns a left parenthesis terminal node `Java20Parser.ts:21837-21839`
+- **LPAREN** — Returns the left parenthesis token or null `Java20Parser.ts:22258-22260`
+- **LPAREN** — Returns a terminal node for the left parenthesis in Java 20 parsing `Java20Parser.ts:22901-22903`
+- **LPAREN** — Returns an antlr.TerminalNode for the LPAREN token `Java20Parser.ts:23088-23090`
 - **LSHIFT_ASSIGN** — Represents the left shift assignment operator `Java20Parser.ts:22828-22830`
 - **LT** — Represents a less-than operator `Java20Parser.ts:14601-14603`
 - **LT** — Represents the less-than symbol `Java20Parser.ts:15726-15728`
-- **LT** — Represents a less-than comparison `Java20Parser.ts:22392-22398`, `Java20Parser.ts:22437-22439`
+- **LT** — Represents a less-than comparison `Java20Parser.ts:22392-22398`
+- **LT** — Returns the terminal node for the LT token `Java20Parser.ts:22437-22439`
 - **markerAnnotation** — An annotation that does not contain any values `Java20Parser.ts:6609-6629`
 - **markerAnnotation** — Parses a marker annotation in the Java20 grammar `Java20Parser.ts:18672-18674`
 - **methodBody** — Contains the body of a method `Java20Parser.ts:4616-4651`
@@ -649,16 +1476,19 @@ Java20ParserVisitor.ts
 - **methodInvocation** — Parses a method invocation `Java20Parser.ts:19559-19561`
 - **methodModifier** — Represents a modifier for a method `Java20Parser.ts:4073-4164`
 - **methodModifier** — Represents the modifier of a method declaration `Java20Parser.ts:16595-16601`
-- **methodName** — Represents a method name in Java `Java20Parser.ts:2194-2212`, `Java20Parser.ts:21245-21247`
-- **methodName** — Represents a method name in the Java20 grammar `Java20Parser.ts:21834-21836`
+- **methodName** — Represents a method name in Java `Java20Parser.ts:2194-2212`
+- **methodName** — Represents a method name in the Java20 grammar `Java20Parser.ts:21245-21247`
+- **methodName** — Returns the method name context `Java20Parser.ts:21834-21836`
 - **methodReference** — Represents a method reference `Java20Parser.ts:10683-10832`
 - **MOD** — Represents the modulo operator `Java20Parser.ts:22323-22325`
 - **MOD_ASSIGN** — Represents the modulo assignment operator `Java20Parser.ts:22819-22821`
 - **modeNames** — Stores mode names for the Java20Lexer `Java20Lexer.ts:601-603`
 - **modularCompilationUnit** — Represents a modular compilation unit in the Java 20 grammar `Java20Parser.ts:2331-2360`
 - **modularCompilationUnit** — Represents a modular compilation unit `Java20Parser.ts:14994-14996`
-- **MODULE** — Represents the MODULE keyword `Java20Parser.ts:13781-13783`, `Java20Parser.ts:15402-15404`
-- **MODULE** — Represents the keyword 'module' in the Java 20 parser `Java20Parser.ts:13852-13854`, `Java20Parser.ts:13908-13910`
+- **MODULE** — Represents the MODULE keyword `Java20Parser.ts:13781-13783`
+- **MODULE** — Represents the keyword 'module' in the Java 20 parser `Java20Parser.ts:13852-13854`
+- **MODULE** — Parses a MODULE token `Java20Parser.ts:13908-13910`
+- **MODULE** — Returns the MODULE terminal node `Java20Parser.ts:15402-15404`
 - **moduleDeclaration** — Represents a module declaration in the Java 20 grammar `Java20Parser.ts:2623-2688`
 - **moduleDeclaration** — Represents a module declaration `Java20Parser.ts:15066-15068`
 - **moduleDirective** — Represents a module directive in the Java 20 grammar `Java20Parser.ts:2689-2839`
@@ -671,17 +1501,20 @@ Java20ParserVisitor.ts
 - **MUL** — Represents the multiplication operator `Java20Parser.ts:22317-22319`
 - **MUL_ASSIGN** — Represents the multiplication assignment operator `Java20Parser.ts:22813-22815`
 - **multiplicativeExpression** — Represents a multiplicative expression `Java20Parser.ts:11270-11358`
-- **multiplicativeExpression** — Parses a multiplicative expression `Java20Parser.ts:22314-22316`, `Java20Parser.ts:22349-22351`
+- **multiplicativeExpression** — Parses a multiplicative expression `Java20Parser.ts:22314-22316`
+- **multiplicativeExpression** — Returns the context of the multiplicative expression `Java20Parser.ts:22349-22351`
 - **multiplicativeExpression_sempred** — Represents a multiplicative expression with a semantic predicate in Java `Java20Parser.ts:12598-12611`
 - **NATIVE** — Represents the native method modifier `Java20Parser.ts:16649-16651`
 - **NEW** — Represents the `new` keyword in Java `Java20Parser.ts:21263-21265`
 - **NEW** — Represents the new keyword `Java20Parser.ts:21445-21447`
-- **NEW** — Represents the keyword 'new' `Java20Parser.ts:21600-21602`, `Java20Parser.ts:21638-21640`
-- **NEW** — Parses the 'new' keyword `Java20Parser.ts:21967-21969`
+- **NEW** — Represents the keyword 'new' `Java20Parser.ts:21600-21602`
+- **NEW** — Parses the 'new' keyword `Java20Parser.ts:21638-21640`
+- **NEW** — Returns the NEW terminal node `Java20Parser.ts:21967-21969`
 - **NONSEALED** — Represents the NONSEALED keyword `Java20Parser.ts:13784-13786`
-- **NONSEALED** — Represents the keyword 'nonsealed' in the Java 20 parser `Java20Parser.ts:13855-13857`, `Java20Parser.ts:13911-13913`
-- **NONSEALED** — Represents the non-sealed modifier `Java20Parser.ts:15697-15699`
-- **NONSEALED** — Non-sealed modifier `Java20Parser.ts:18093-18095`
+- **NONSEALED** — Represents the keyword 'nonsealed' in the Java 20 parser `Java20Parser.ts:13855-13857`
+- **NONSEALED** — Represents the non-sealed modifier `Java20Parser.ts:13911-13913`
+- **NONSEALED** — Non-sealed modifier `Java20Parser.ts:15697-15699`
+- **NONSEALED** — Returns the terminal node for the `NONSEAILED` keyword `Java20Parser.ts:18093-18095`
 - **normalAnnotation** — Represents a normal annotation `Java20Parser.ts:6402-6435`
 - **normalAnnotation** — Parses a normal annotation in the Java20 grammar `Java20Parser.ts:18669-18671`
 - **normalClassDeclaration** — Represents a normal class declaration in the Java 20 grammar `Java20Parser.ts:2907-2976`
@@ -693,7 +1526,8 @@ Java20ParserVisitor.ts
 - **NullLiteral** — Represents the context for parsing null literals `Java20Parser.ts:13991-13993`
 - **numericType** — Parses a numeric type `Java20Parser.ts:1250-1290`
 - **numericType** — Represents a numeric type `Java20Parser.ts:14017-14019`
-- **numericType** — Represents a numeric type in the grammar `Java20Parser.ts:16301-16303`, `Java20Parser.ts:21378-21380`
+- **numericType** — Represents a numeric type in the grammar `Java20Parser.ts:16301-16303`
+- **numericType** — Returns a context for the numeric type rule `Java20Parser.ts:21378-21380`
 - **OACA** — Represents a specific rule or context `Java20Parser.ts:21545-21547`
 - **OPEN** — Represents the OPEN keyword `Java20Parser.ts:13787-13789`
 - **OPEN** — Represents the keyword 'open' in the Java 20 parser `Java20Parser.ts:13858-13860`
@@ -712,11 +1546,14 @@ Java20ParserVisitor.ts
 - **packageDeclaration** — Represents a package declaration `Java20Parser.ts:15020-15022`
 - **packageModifier** — Represents a package modifier in the Java 20 grammar `Java20Parser.ts:2407-2425`
 - **packageModifier** — Modifies the package declaration `Java20Parser.ts:15118-15124`
-- **packageName** — Represents a package name in Java `Java20Parser.ts:2070-2100`, `Java20Parser.ts:16462-16464`
-- **packageName** — Represents a package name `Java20Parser.ts:14230-14232`, `Java20Parser.ts:14289-14291`
-- **packageName** — Parses a package name in the Java20Parser `Java20Parser.ts:14811-14813`, `Java20Parser.ts:14837-14839`
-- **packageName** — Represents the package name in the grammar `Java20Parser.ts:15500-15502`
-- **packageName** — Represents a package name in the grammar `Java20Parser.ts:16365-16367`
+- **packageName** — Represents a package name in Java `Java20Parser.ts:2070-2100`
+- **packageName** — Represents a package name `Java20Parser.ts:14230-14232`
+- **packageName** — Parses a package name in the Java20Parser `Java20Parser.ts:14289-14291`
+- **packageName** — Represents the package name in the grammar `Java20Parser.ts:14811-14813`
+- **packageName** — Represents a package name in the grammar `Java20Parser.ts:14837-14839`
+- **packageName** — Returns the context for the `packageName` rule `Java20Parser.ts:15500-15502`
+- **packageName** — Returns the package name context `Java20Parser.ts:16365-16367`
+- **packageName** — Returns a PackageNameContext or null `Java20Parser.ts:16462-16464`
 - **packageOrTypeName** — Represents a package or type name in Java `Java20Parser.ts:2132-2162`
 - **packageOrTypeName** — Represents a package or type name in the Java20Parser `Java20Parser.ts:14875-14877`
 - **packageOrTypeName** — Represents the package or type name in Java20Parser `Java20Parser.ts:15253-15255`
@@ -727,15 +1564,17 @@ Java20ParserVisitor.ts
 - **PERMITS** — Represents the permits keyword `Java20Parser.ts:15898-15900`
 - **PERMITS** — Keyword for permits clause in an interface `Java20Parser.ts:18151-18153`
 - **pfE** — Represents a postfix expression `Java20Parser.ts:10887-10942`
-- **pfE** — Represents the post-fix expression in the Java20 grammar `Java20Parser.ts:21999-22001`, `Java20Parser.ts:22031-22033`
+- **pfE** — Represents the post-fix expression in the Java20 grammar `Java20Parser.ts:21999-22001`
+- **pfE** — Returns the context of a post-increment expression `Java20Parser.ts:22031-22033`
 - **pNNA** — Represents a primary expression that is not a new array `Java20Parser.ts:9621-9771`
 - **pNNA** — Returns a PNNA context for Java 20 parsing `Java20Parser.ts:21191-21193`
 - **pNNA** — Parses a non-nullable array `Java20Parser.ts:21298-21300`
 - **postDecrementExpression** — Represents a post-decrement expression `Java20Parser.ts:10964-10984`
 - **postDecrementExpression** — Parses a post-decrement expression `Java20Parser.ts:19556-19558`
 - **postfixExpression** — Represents a postfix expression `Java20Parser.ts:10833-10886`
-- **postfixExpression** — Represents the postfix expression in the Java20 grammar `Java20Parser.ts:22060-22062`, `Java20Parser.ts:22089-22091`
-- **postfixExpression** — Parses a postfix expression `Java20Parser.ts:22217-22219`
+- **postfixExpression** — Represents the postfix expression in the Java20 grammar `Java20Parser.ts:22060-22062`
+- **postfixExpression** — Parses a postfix expression `Java20Parser.ts:22089-22091`
+- **postfixExpression** — Returns the PostfixExpressionContext or null `Java20Parser.ts:22217-22219`
 - **postIncrementExpression** — Represents a post-increment expression `Java20Parser.ts:10943-10963`
 - **postIncrementExpression** — Parses a post-increment expression `Java20Parser.ts:19553-19555`
 - **preDecrementExpression** — Represents a pre-decrement expression `Java20Parser.ts:11107-11127`
@@ -744,47 +1583,63 @@ Java20ParserVisitor.ts
 - **preIncrementExpression** — Represents a pre-increment expression `Java20Parser.ts:11086-11106`
 - **preIncrementExpression** — Parses a pre-increment expression `Java20Parser.ts:19547-19549`
 - **preIncrementExpression** — Context for parsing a pre-increment expression `Java20Parser.ts:22118-22120`
-- **primary** — Represents a primary expression `Java20Parser.ts:8834-8867`, `Java20Parser.ts:17391-17393`, `Java20Parser.ts:21419-21421`
-- **primary** — Represents a primary expression in the Java20 grammar `Java20Parser.ts:21790-21792`, `Java20Parser.ts:21867-21869`
-- **primary** — Parses a primary expression `Java20Parser.ts:21949-21951`
-- **primary** — Represents the primary expression in the Java20 grammar `Java20Parser.ts:21996-21998`
+- **primary** — Represents a primary expression `Java20Parser.ts:8834-8867`
+- **primary** — Represents a primary expression in the Java20 grammar `Java20Parser.ts:17391-17393`
+- **primary** — Parses a primary expression `Java20Parser.ts:21419-21421`
+- **primary** — Represents the primary expression in the Java20 grammar `Java20Parser.ts:21790-21792`
+- **primary** — Returns the context of a primary expression `Java20Parser.ts:21867-21869`
+- **primary** — Returns the primary context `Java20Parser.ts:21949-21951`
+- **primary** — Returns a context for a primary expression in Java 20 parsing `Java20Parser.ts:21996-21998`
 - **primaryNoNewArray** — Represents a primary expression that is not a new array `Java20Parser.ts:8868-9620`
 - **primaryNoNewArray** — Context for parsing primary expressions without new array `Java20Parser.ts:21159-21161`
 - **primaryNoNewArray** — Parses a primary expression that is not a new array `Java20Parser.ts:21761-21763`
-- **primitiveType** — Parses a primitive type `Java20Parser.ts:1198-1249`, `Java20Parser.ts:22261-22263`
+- **primitiveType** — Parses a primitive type `Java20Parser.ts:1198-1249`
 - **primitiveType** — Represents the context of a primitive type in the Java20 grammar `Java20Parser.ts:14382-14384`
-- **primitiveType** — Represents a primitive type `Java20Parser.ts:21603-21605`, `Java20Parser.ts:21641-21643`
-- **PRIVATE** — Represents the private modifier `Java20Parser.ts:15682-15684`, `Java20Parser.ts:16103-16105`, `Java20Parser.ts:17233-17235`
-- **PRIVATE** — Represents the private method modifier `Java20Parser.ts:16634-16636`
-- **PRIVATE** — Private modifier `Java20Parser.ts:18081-18083`
-- **PRIVATE** — Represents the private modifier in the Java20Parser `Java20Parser.ts:18393-18395`
-- **PROTECTED** — Represents the protected modifier `Java20Parser.ts:15679-15681`, `Java20Parser.ts:16100-16102`, `Java20Parser.ts:17230-17232`
-- **PROTECTED** — Represents the protected method modifier `Java20Parser.ts:16631-16633`
-- **PROTECTED** — Protected modifier `Java20Parser.ts:18078-18080`
+- **primitiveType** — Represents a primitive type `Java20Parser.ts:21603-21605`
+- **primitiveType** — Returns the `PrimitiveTypeContext` if `Java20Parser.ts:21641-21643`
+- **primitiveType** — Returns the primitive type context or null. `Java20Parser.ts `Java20Parser.ts:22261-22263`
+- **PRIVATE** — Represents the private modifier `Java20Parser.ts:15682-15684`
+- **PRIVATE** — Represents the private method modifier `Java20Parser.ts:16103-16105`
+- **PRIVATE** — Private modifier `Java20Parser.ts:16634-16636`
+- **PRIVATE** — Represents the private modifier in the Java20Parser `Java20Parser.ts:17233-17235`
+- **PRIVATE** — Returns the terminal node for the `PRIVATE` keyword `Java20Parser.ts:18081-18083`
+- **PRIVATE** — Returns the PRIVATE terminal node if it exists `Java20Parser.ts:18393-18395`
+- **PROTECTED** — Represents the protected modifier `Java20Parser.ts:15679-15681`
+- **PROTECTED** — Represents the protected method modifier `Java20Parser.ts:16100-16102`
+- **PROTECTED** — Protected modifier `Java20Parser.ts:16631-16633`
+- **PROTECTED** — Returns a protected terminal node `Java20Parser.ts:17230-17232`
+- **PROTECTED** — Returns a TerminalNode or null for the PROTECTED keyword. `Java20Parser.ts `Java20Parser.ts:18078-18080`
 - **PROVIDES** — Represents the PROVIDES keyword `Java20Parser.ts:13796-13798`
 - **PROVIDES** — Represents the keyword 'provides' in the Java 20 parser `Java20Parser.ts:13864-13866`
 - **PROVIDES** — Represents the keyword used to provide services in a module `Java20Parser.ts:13923-13925`
 - **PROVIDES** — Represents the provides keyword in the grammar `Java20Parser.ts:15530-15532`
-- **PUBLIC** — Represents the public modifier `Java20Parser.ts:15676-15678`, `Java20Parser.ts:16097-16099`, `Java20Parser.ts:17227-17229`, `Java20Parser.ts:18317-18319`
-- **PUBLIC** — Represents the public method modifier `Java20Parser.ts:16628-16630`
-- **PUBLIC** — Public modifier `Java20Parser.ts:18075-18077`
-- **PUBLIC** — Represents the public modifier in the Java20Parser `Java20Parser.ts:18390-18392`
-- **PUBLIC** — Represents the public modifier in the grammar `Java20Parser.ts:18611-18613`
+- **PUBLIC** — Represents the public modifier `Java20Parser.ts:15676-15678`
+- **PUBLIC** — Represents the public method modifier `Java20Parser.ts:16097-16099`
+- **PUBLIC** — Public modifier `Java20Parser.ts:16628-16630`
+- **PUBLIC** — Represents the public modifier in the Java20Parser `Java20Parser.ts:17227-17229`
+- **PUBLIC** — Represents the public modifier in the grammar `Java20Parser.ts:18075-18077`
+- **PUBLIC** — Returns `Java20Parser.ts:18317-18319`
+- **PUBLIC** — Returns the PUBLIC terminal node if it exists `Java20Parser.ts:18390-18392`
+- **PUBLIC** — Returns the PUBLIC terminal node. `Java20Parser.ts:18611-18613 `Java20Parser.ts:18611-18613`
 - **QUESTION** — Represents a question mark `Java20Parser.ts:14703-14705`
 - **QUESTION** — Represents the question mark operator `Java20Parser.ts:22679-22681`
 - **RBRACE** — Represents the right brace in the grammar `Java20Parser.ts:15417-15419`
 - **RBRACE** — Represents a closing curly brace `Java20Parser.ts:15945-15947`
-- **RBRACE** — Represents the right brace token `Java20Parser.ts:17332-17334`, `Java20Parser.ts:18478-18480`
-- **RBRACE** — Represents the closing curly brace in the grammar `Java20Parser.ts:17464-17466`, `Java20Parser.ts:18990-18992`, `Java20Parser.ts:19066-19068`
+- **RBRACE** — Represents the right brace token `Java20Parser.ts:17332-17334`
+- **RBRACE** — Represents the closing curly brace in the grammar `Java20Parser.ts:17464-17466`
 - **RBRACE** — Right brace `Java20Parser.ts:17891-17893`
 - **RBRACE** — Right brace token in the grammar `Java20Parser.ts:18198-18200`
-- **RBRACE** — Represents a closing brace `Java20Parser.ts:18847-18849`
-- **RBRACE** — Represents the closing brace of a switch statement `Java20Parser.ts:19808-19810`
+- **RBRACE** — Represents a closing brace `Java20Parser.ts:18478-18480`
+- **RBRACE** — Represents the closing brace of a switch statement `Java20Parser.ts:18847-18849`
+- **RBRACE** — Returns the right brace terminal node `Java20Parser.ts:18990-18992`
+- **RBRACE** — Returns a right brace terminal node `Java20Parser.ts:19066-19068`
+- **RBRACE** — Returns an antlr.TerminalNode `Java20Parser.ts:19808-19810`
 - **RBRACK** — Represents the right bracket in the Java20 grammar `Java20Parser.ts:14428-14434`
 - **RBRACK** — Represents the right square bracket in Java `Java20Parser.ts:21239-21241`
 - **RBRACK** — Represents a right bracket token `Java20Parser.ts:21310-21312`
 - **RBRACK** — Represents the right bracket token `Java20Parser.ts:21371-21377`
-- **RBRACK** — Right bracket token `Java20Parser.ts:21714-21716`, `Java20Parser.ts:21758-21760`
+- **RBRACK** — Right bracket token `Java20Parser.ts:21714-21716`
+- **RBRACK** — Returns the right square bracket terminal node `Java20Parser.ts:21758-21760`
 - **receiverParameter** — Represents the receiver parameter of a method `Java20Parser.ts:4328-4369`
 - **receiverParameter** — Parses a receiver parameter `Java20Parser.ts:16760-16762`
 - **receiverParameter** — Parses the receiver parameter `Java20Parser.ts:17271-17273`
@@ -799,17 +1654,23 @@ Java20ParserVisitor.ts
 - **recordComponent** — Represents a record component `Java20Parser.ts:17732-17738`
 - **recordComponentList** — Lists the components of a record `Java20Parser.ts:5347-5378`
 - **recordComponentList** — Represents a list of record components `Java20Parser.ts:17704-17706`
-- **recordComponentModifier** — Represents a modifier for a record component `Java20Parser.ts:5470-5488`, `Java20Parser.ts:17779-17785`
-- **recordComponentModifier** — Record component modifier `Java20Parser.ts:17823-17829`
+- **recordComponentModifier** — Represents a modifier for a record component `Java20Parser.ts:5470-5488`
+- **recordComponentModifier** — Record component modifier `Java20Parser.ts:17779-17785`
+- **recordComponentModifier** — Returns a RecordComponentModifierContext or null based on the provided index `Java20Parser.ts:17823-17829`
 - **recordDeclaration** — Declares a record `Java20Parser.ts:5256-5311`
 - **recordDeclaration** — Represents a record declaration `Java20Parser.ts:15594-15596`
 - **recordHeader** — Contains the header of a record `Java20Parser.ts:5312-5346`
 - **recordHeader** — Represents the header of a record `Java20Parser.ts:17654-17656`
-- **referenceType** — Represents a reference type in Java `Java20Parser.ts:1343-1383`, `Java20Parser.ts:21257-21259`
-- **referenceType** — Represents a reference type `Java20Parser.ts:14674-14676`, `Java20Parser.ts:14744-14746`
-- **referenceType** — Parses a reference type `Java20Parser.ts:21952-21954`, `Java20Parser.ts:22270-22272`, `Java20Parser.ts:22452-22454`
+- **referenceType** — Represents a reference type in Java `Java20Parser.ts:1343-1383`
+- **referenceType** — Represents a reference type `Java20Parser.ts:14674-14676`
+- **referenceType** — Parses a reference type `Java20Parser.ts:14744-14746`
+- **referenceType** — Returns the reference type context `Java20Parser.ts:21257-21259`
+- **referenceType** — Returns the reference type context. `Java `Java20Parser.ts:21952-21954`
+- **referenceType** — Parses a reference type context `Java20Parser.ts:22270-22272`
+- **referenceType** — Retrieves the referenceType context from the parser `Java20Parser.ts:22452-22454`
 - **relationalExpression** — Represents a relational expression `Java20Parser.ts:11540-11670`
-- **relationalExpression** — Parses a relational expression `Java20Parser.ts:22434-22436`, `Java20Parser.ts:22481-22483`
+- **relationalExpression** — Parses a relational expression `Java20Parser.ts:22434-22436`
+- **relationalExpression** — Returns the context of the relational expression `Java20Parser.ts:22481-22483`
 - **relationalExpression_sempred** — Represents a relational expression with a semantic predicate in Java `Java20Parser.ts:12632-12646`
 - **REQUIRES** — Represents the REQUIRES keyword `Java20Parser.ts:13802-13804`
 - **REQUIRES** — Represents the keyword 'requires' in the Java 20 parser `Java20Parser.ts:13867-13869`
@@ -829,50 +1690,283 @@ Java20ParserVisitor.ts
 - **returnStatement** — Parses a return statement in Java `Java20Parser.ts:8270-8304`
 - **returnStatement** — Represents a return statement `Java20Parser.ts:19387-19389`
 - **RPAREN** — Parses a right parenthesis `Java20Parser.ts:16757-16759`
-- **RPAREN** — Represents the right parenthesis token `Java20Parser.ts:17265-17267`, `Java20Parser.ts:17701-17703`, `Java20Parser.ts:21454-21456`
+- **RPAREN** — Represents the right parenthesis token `Java20Parser.ts:17265-17267`
 - **RPAREN** — Represents a closing parenthesis `Java20Parser.ts:17367-17369`
-- **RPAREN** — Represents the closing parenthesis in the grammar `Java20Parser.ts:17555-17557`, `Java20Parser.ts:19597-19599`, `Java20Parser.ts:19635-19637`, `Java20Parser.ts:19679-19681`
-- **RPAREN** — Represents a right parenthesis in the grammar `Java20Parser.ts:18562-18564`
-- **RPAREN** — Parses the ')' symbol in the Java20 grammar `Java20Parser.ts:18710-18712`
-- **RPAREN** — Represents the ')' symbol `Java20Parser.ts:18961-18963`
-- **RPAREN** — Token for the right parenthesis `Java20Parser.ts:19767-19769`
-- **RPAREN** — Represents a right parenthesis `Java20Parser.ts:20030-20032`
-- **RPAREN** — Represents the right parenthesis `Java20Parser.ts:20068-20070`, `Java20Parser.ts:20112-20114`, `Java20Parser.ts:20214-20216`, `Java20Parser.ts:20267-20269`, `Java20Parser.ts:20734-20736`, `Java20Parser.ts:22264-22266`, `Java20Parser.ts:22904-22906`, `Java20Parser.ts:23094-23096`
-- **RPAREN** — Represents the right parenthesis in the grammar `Java20Parser.ts:20416-20418`
-- **RPAREN** — Represents a right parenthesis in the Java20 grammar `Java20Parser.ts:20460-20462`
-- **RPAREN** — Matches the right parenthesis character in the Java20 grammar `Java20Parser.ts:20626-20628`
-- **RPAREN** — Right parenthesis in a resource specification `Java20Parser.ts:20918-20920`
-- **RPAREN** — Represents the right parenthesis in Java `Java20Parser.ts:21218-21220`
-- **RPAREN** — Represents a right parenthesis token `Java20Parser.ts:21316-21318`
-- **RPAREN** — Represents a close parenthesis in the Java20 grammar `Java20Parser.ts:21840-21842`
+- **RPAREN** — Represents the closing parenthesis in the grammar `Java20Parser.ts:17555-17557`
+- **RPAREN** — Represents a right parenthesis in the grammar `Java20Parser.ts:17701-17703`
+- **RPAREN** — Parses the ')' symbol in the Java20 grammar `Java20Parser.ts:18562-18564`
+- **RPAREN** — Represents the ')' symbol `Java20Parser.ts:18710-18712`
+- **RPAREN** — Token for the right parenthesis `Java20Parser.ts:18961-18963`
+- **RPAREN** — Represents a right parenthesis `Java20Parser.ts:19597-19599`
+- **RPAREN** — Represents the right parenthesis `Java20Parser.ts:19635-19637`
+- **RPAREN** — Represents the right parenthesis in the grammar `Java20Parser.ts:19679-19681`
+- **RPAREN** — Represents a right parenthesis in the Java20 grammar `Java20Parser.ts:19767-19769`
+- **RPAREN** — Matches the right parenthesis character in the Java20 grammar `Java20Parser.ts:20030-20032`
+- **RPAREN** — Right parenthesis in a resource specification `Java20Parser.ts:20068-20070`
+- **RPAREN** — Represents the right parenthesis in Java `Java20Parser.ts:20112-20114`
+- **RPAREN** — Represents a right parenthesis token `Java20Parser.ts:20214-20216`
+- **RPAREN** — Represents a close parenthesis in the Java20 grammar `Java20Parser.ts:20267-20269`
+- **RPAREN** — Returns the RPAREN terminal node. `Java20Parser.ts:204 `Java20Parser.ts:20416-20418`
+- **RPAREN** — Returns the right parenthesis terminal node `Java20Parser.ts:20460-20462`
+- **RPAREN** — Returns the right parenthesis token `Java20Parser.ts:20626-20628`
+- **RPAREN** — Returns the RPAREN terminal node `Java20Parser.ts:20734-20736`
+- **RPAREN** — Returns the right parenthesis terminal node. `Java2 `Java20Parser.ts:20918-20920`
+- **RPAREN** — Returns the RPAREN token `Java20Parser.ts:21218-21220`
+- **RPAREN** — Returns a TerminalNode or null for the RPAREN token `Java20Parser.ts:21316-21318`
+- **RPAREN** — Returns a right parenthesis terminal node `Java20Parser.ts:21454-21456`
+- **RPAREN** — Returns the right parenthesis `Java20Parser.ts:21840-21842`
+- **RPAREN** — Returns a terminal node for the right parenthesis in Java 20 parsing `Java20Parser.ts:22264-22266`, `Java20Parser.ts:22904-22906`
+- **RPAREN** — Returns an antlr.TerminalNode for the RPAREN token `Java20Parser.ts:23094-23096`
 - **RSHIFT_ASSIGN** — Represents the right shift assignment operator `Java20Parser.ts:22831-22833`
-- **ruleIndex** — Represents the index of the current rule being parsed `Java20Parser.ts:13668-13670`, `Java20Parser.ts:13697-13699`, `Java20Parser.ts:13726-13728`, `Java20Parser.ts:13950-13952`, `Java20Parser.ts:13994-13996`, `Java20Parser.ts:15735-15737`, `Java20Parser.ts:15776-15778`, `Java20Parser.ts:15805-15807`, `Java20Parser.ts:15834-15836`, `Java20Parser.ts:17160-17162`, `Java20Parser.ts:17201-17203`, `Java20Parser.ts:17236-17238`, `Java20Parser.ts:18452-18454`, `Java20Parser.ts:18492-18494`, `Java20Parser.ts:18530-18532`, `Java20Parser.ts:19694-19696`, `Java20Parser.ts:19735-19737`, `Java20Parser.ts:19773-19775`, `Java20Parser.ts:21081-21083`, `Java20Parser.ts:21107-21109`, `Java20Parser.ts:21136-21138`, `Java20Parser.ts:21165-21167`, `Java20Parser.ts:21269-21271`, `Java20Parser.ts:21328-21330`, `Java20Parser.ts:21685-21687`, `Java20Parser.ts:21726-21728`, `Java20Parser.ts:21767-21769`, `Java20Parser.ts:22095-22097`, `Java20Parser.ts:22136-22138`, `Java20Parser.ts:22165-22167`, `Java20Parser.ts:22194-22196`, `Java20Parser.ts:22235-22237`, `Java20Parser.ts:22288-22290`, `Java20Parser.ts:22493-22495`, `Java20Parser.ts:22525-22527`, `Java20Parser.ts:22557-22559`, `Java20Parser.ts:22589-22591`, `Java20Parser.ts:23004-23006`, `Java20Parser.ts:23033-23035`, `Java20Parser.ts:23062-23064`, `Java20Parser.ts:23100-23102`
-- **ruleIndex** — Represents the index of the current rule `Java20Parser.ts:13755-13757`, `Java20Parser.ts:17076-17078`, `Java20Parser.ts:17105-17107`, `Java20Parser.ts:17131-17133`, `Java20Parser.ts:17590-17592`, `Java20Parser.ts:17625-17627`, `Java20Parser.ts:17675-17677`, `Java20Parser.ts:17707-17709`, `Java20Parser.ts:17748-17750`, `Java20Parser.ts:17789-17791`, `Java20Parser.ts:19232-19234`, `Java20Parser.ts:19261-19263`, `Java20Parser.ts:19302-19304`, `Java20Parser.ts:19340-19342`, `Java20Parser.ts:20282-20284`, `Java20Parser.ts:20311-20313`, `Java20Parser.ts:20337-20339`, `Java20Parser.ts:20670-20672`, `Java20Parser.ts:20702-20704`, `Java20Parser.ts:20740-20742`, `Java20Parser.ts:20778-20780`, `Java20Parser.ts:20822-20824`, `Java20Parser.ts:20851-20853`
-- **ruleIndex** — Tracks the index of the current rule being parsed `Java20Parser.ts:13826-13828`, `Java20Parser.ts:13882-13884`, `Java20Parser.ts:14878-14880`, `Java20Parser.ts:14910-14912`, `Java20Parser.ts:14936-14938`, `Java20Parser.ts:14968-14970`, `Java20Parser.ts:16816-16818`, `Java20Parser.ts:16857-16859`, `Java20Parser.ts:16898-16900`, `Java20Parser.ts:18128-18130`, `Java20Parser.ts:18172-18174`, `Java20Parser.ts:18212-18214`, `Java20Parser.ts:22408-22410`, `Java20Parser.ts:22458-22460`, `Java20Parser.ts:22694-22696`, `Java20Parser.ts:22723-22725`, `Java20Parser.ts:22755-22757`, `Java20Parser.ts:22787-22789`
-- **ruleIndex** — Represents the index of a rule `Java20Parser.ts:14032-14034`, `Java20Parser.ts:14061-14063`, `Java20Parser.ts:14099-14101`, `Java20Parser.ts:14251-14253`, `Java20Parser.ts:14298-14300`, `Java20Parser.ts:14680-14682`, `Java20Parser.ts:14718-14720`, `Java20Parser.ts:14750-14752`, `Java20Parser.ts:15347-15349`, `Java20Parser.ts:15379-15381`, `Java20Parser.ts:15875-15877`, `Java20Parser.ts:15919-15921`, `Java20Parser.ts:15957-15959`, `Java20Parser.ts:18789-18791`, `Java20Parser.ts:18821-18823`, `Java20Parser.ts:18856-18858`, `Java20Parser.ts:18897-18899`, `Java20Parser.ts:18926-18928`, `Java20Parser.ts:18964-18966`, `Java20Parser.ts:20378-20380`, `Java20Parser.ts:20422-20424`, `Java20Parser.ts:21387-21389`, `Java20Parser.ts:21422-21424`, `Java20Parser.ts:21615-21617`, `Java20Parser.ts:21653-21655`, `Java20Parser.ts:22913-22915`, `Java20Parser.ts:22963-22965`
-- **ruleIndex** — Stores the index of the current rule `Java20Parser.ts:14128-14130`, `Java20Parser.ts:14160-14162`, `Java20Parser.ts:14204-14206`, `Java20Parser.ts:14997-14999`, `Java20Parser.ts:15043-15045`, `Java20Parser.ts:15078-15080`, `Java20Parser.ts:15565-15567`, `Java20Parser.ts:15597-15599`, `Java20Parser.ts:16118-16120`, `Java20Parser.ts:16159-16161`, `Java20Parser.ts:16430-16432`, `Java20Parser.ts:16477-16479`, `Java20Parser.ts:16503-16505`, `Java20Parser.ts:16529-16531`, `Java20Parser.ts:16564-16566`, `Java20Parser.ts:16602-16604`, `Java20Parser.ts:16728-16730`, `Java20Parser.ts:16772-16774`, `Java20Parser.ts:20074-20076`, `Java20Parser.ts:20118-20120`, `Java20Parser.ts:21914-21916`, `Java20Parser.ts:21973-21975`, `Java20Parser.ts:22326-22328`, `Java20Parser.ts:22361-22363`, `Java20Parser.ts:22621-22623`, `Java20Parser.ts:22653-22655`, `Java20Parser.ts:22846-22848`, `Java20Parser.ts:22878-22880`, `Java20Parser.ts:23126-23128`
-- **ruleIndex** — Represents the index of a rule in the Java20 grammar `Java20Parser.ts:14324-14326`, `Java20Parser.ts:14359-14361`, `Java20Parser.ts:14394-14396`, `Java20Parser.ts:22005-22007`, `Java20Parser.ts:22037-22039`, `Java20Parser.ts:22066-22068`
-- **ruleIndex** — Manages the index of parsing rules `Java20Parser.ts:14444-14446`, `Java20Parser.ts:14482-14484`, `Java20Parser.ts:14508-14510`, `Java20Parser.ts:14549-14551`, `Java20Parser.ts:21466-21468`, `Java20Parser.ts:21519-21521`, `Java20Parser.ts:21548-21550`, `Java20Parser.ts:21577-21579`
-- **ruleIndex** — Tracks the index of the current rule `Java20Parser.ts:14578-14580`, `Java20Parser.ts:14610-14612`, `Java20Parser.ts:14651-14653`, `Java20Parser.ts:14782-14784`, `Java20Parser.ts:14814-14816`, `Java20Parser.ts:14846-14848`, `Java20Parser.ts:16655-16657`, `Java20Parser.ts:16699-16701`, `Java20Parser.ts:19521-19523`, `Java20Parser.ts:19565-19567`, `Java20Parser.ts:20147-20149`, `Java20Parser.ts:20176-20178`, `Java20Parser.ts:20229-20231`
-- **ruleIndex** — Tracks the index of a rule `Java20Parser.ts:15134-15136`, `Java20Parser.ts:15160-15162`, `Java20Parser.ts:15195-15197`
-- **ruleIndex** — Represents the rule index in Java20Parser `Java20Parser.ts:15227-15229`, `Java20Parser.ts:15265-15267`, `Java20Parser.ts:15306-15308`
-- **ruleIndex** — Represents the rule index in the grammar `Java20Parser.ts:15450-15452`, `Java20Parser.ts:15536-15538`
-- **ruleIndex** — Represents the index of the rule `Java20Parser.ts:15650-15652`, `Java20Parser.ts:15703-15705`
-- **ruleIndex** — Represents the index of a rule in the parser `Java20Parser.ts:15992-15994`, `Java20Parser.ts:16030-16032`, `Java20Parser.ts:16071-16073`, `Java20Parser.ts:16307-16309`, `Java20Parser.ts:16339-16341`, `Java20Parser.ts:16386-16388`, `Java20Parser.ts:17476-17478`, `Java20Parser.ts:17517-17519`, `Java20Parser.ts:17564-17566`, `Java20Parser.ts:18999-19001`, `Java20Parser.ts:19040-19042`, `Java20Parser.ts:19072-19074`, `Java20Parser.ts:19840-19842`, `Java20Parser.ts:19881-19883`, `Java20Parser.ts:19925-19927`
-- **ruleIndex** — Represents the index of the current rule in the parser `Java20Parser.ts:16191-16193`, `Java20Parser.ts:16220-16222`, `Java20Parser.ts:16249-16251`, `Java20Parser.ts:16278-16280`, `Java20Parser.ts:19104-19106`, `Java20Parser.ts:19136-19138`, `Java20Parser.ts:19165-19167`, `Java20Parser.ts:19203-19205`
-- **ruleIndex** — Represents the index of a rule in the Java20Parser `Java20Parser.ts:16948-16950`, `Java20Parser.ts:16977-16979`, `Java20Parser.ts:17006-17008`, `Java20Parser.ts:17047-17049`, `Java20Parser.ts:18364-18366`, `Java20Parser.ts:18408-18410`
-- **ruleIndex** — Manages the index for parsing rules `Java20Parser.ts:17280-17282`, `Java20Parser.ts:17306-17308`, `Java20Parser.ts:17341-17343`, `Java20Parser.ts:18250-18252`, `Java20Parser.ts:18291-18293`, `Java20Parser.ts:18326-18328`, `Java20Parser.ts:19603-19605`, `Java20Parser.ts:19647-19649`
-- **ruleIndex** — Represents a rule index `Java20Parser.ts:17394-17396`, `Java20Parser.ts:17438-17440`, `Java20Parser.ts:19972-19974`, `Java20Parser.ts:19998-20000`, `Java20Parser.ts:20036-20038`
-- **ruleIndex** — Rule index `Java20Parser.ts:17839-17841`, `Java20Parser.ts:17865-17867`, `Java20Parser.ts:17903-17905`
-- **ruleIndex** — Represents the index for a rule `Java20Parser.ts:17932-17934`, `Java20Parser.ts:17970-17972`, `Java20Parser.ts:17999-18001`
-- **ruleIndex** — Indexes the rules in the parser `Java20Parser.ts:18049-18051`, `Java20Parser.ts:18099-18101`
-- **ruleIndex** — Represents a rule index in the grammar `Java20Parser.ts:18585-18587`, `Java20Parser.ts:18617-18619`, `Java20Parser.ts:18646-18648`
-- **ruleIndex** — Manages the index for parsing rules in the Java20 grammar `Java20Parser.ts:18678-18680`, `Java20Parser.ts:18716-18718`, `Java20Parser.ts:18757-18759`
-- **ruleIndex** — Manages the index of the current rule being parsed `Java20Parser.ts:19402-19404`, `Java20Parser.ts:19428-19430`, `Java20Parser.ts:19460-19462`, `Java20Parser.ts:19492-19494`
-- **ruleIndex** — Represents a rule index in the Java20 grammar `Java20Parser.ts:20466-20468`, `Java20Parser.ts:20498-20500`, `Java20Parser.ts:20530-20532`, `Java20Parser.ts:21811-21813`, `Java20Parser.ts:21873-21875`
-- **ruleIndex** — Stores the index of the current rule in the Java20 grammar `Java20Parser.ts:20562-20564`, `Java20Parser.ts:20594-20596`, `Java20Parser.ts:20632-20634`
-- **ruleIndex** — Index for a rule in the parser `Java20Parser.ts:20889-20891`, `Java20Parser.ts:20924-20926`, `Java20Parser.ts:20965-20967`
-- **ruleIndex** — Stores the index of a rule `Java20Parser.ts:20994-20996`, `Java20Parser.ts:21023-21025`, `Java20Parser.ts:21055-21057`
+- **ruleIndex** — Represents the index of the current rule being parsed `Java20Parser.ts:13668-13670`
+- **ruleIndex** — Represents the index of the current rule `Java20Parser.ts:13697-13699`
+- **ruleIndex** — Tracks the index of the current rule being parsed `Java20Parser.ts:13726-13728`
+- **ruleIndex** — Represents the index of a rule `Java20Parser.ts:13755-13757`
+- **ruleIndex** — Stores the index of the current rule `Java20Parser.ts:13826-13828`
+- **ruleIndex** — Represents the index of a rule in the Java20 grammar `Java20Parser.ts:13882-13884`
+- **ruleIndex** — Manages the index of parsing rules `Java20Parser.ts:13950-13952`
+- **ruleIndex** — Tracks the index of the current rule `Java20Parser.ts:13994-13996`
+- **ruleIndex** — Tracks the index of a rule `Java20Parser.ts:14032-14034`
+- **ruleIndex** — Represents the rule index in Java20Parser `Java20Parser.ts:14061-14063`
+- **ruleIndex** — Represents the rule index in the grammar `Java20Parser.ts:14099-14101`
+- **ruleIndex** — Represents the index of the rule `Java20Parser.ts:14128-14130`
+- **ruleIndex** — Represents the index of a rule in the parser `Java20Parser.ts:14160-14162`
+- **ruleIndex** — Represents the index of the current rule in the parser `Java20Parser.ts:14204-14206`
+- **ruleIndex** — Represents the index of a rule in the Java20Parser `Java20Parser.ts:14251-14253`
+- **ruleIndex** — Manages the index for parsing rules `Java20Parser.ts:14298-14300`
+- **ruleIndex** — Represents a rule index `Java20Parser.ts:14324-14326`
+- **ruleIndex** — Rule index `Java20Parser.ts:14359-14361`
+- **ruleIndex** — Represents the index for a rule `Java20Parser.ts:14394-14396`
+- **ruleIndex** — Indexes the rules in the parser `Java20Parser.ts:14444-14446`
+- **ruleIndex** — Represents a rule index in the grammar `Java20Parser.ts:14482-14484`
+- **ruleIndex** — Manages the index for parsing rules in the Java20 grammar `Java20Parser.ts:14508-14510`
+- **ruleIndex** — Manages the index of the current rule being parsed `Java20Parser.ts:14549-14551`
+- **ruleIndex** — Represents a rule index in the Java20 grammar `Java20Parser.ts:14578-14580`
+- **ruleIndex** — Stores the index of the current rule in the Java20 grammar `Java20Parser.ts:14610-14612`
+- **ruleIndex** — Index for a rule in the parser `Java20Parser.ts:14651-14653`
+- **ruleIndex** — Stores the index of a rule `Java20Parser.ts:14680-14682`
+- **ruleIndex** — Returns the rule index for wildcard `Java20Parser.ts:14718-14720`
+- **ruleIndex** — Returns the index of the wildcardBounds rule `Java20Parser.ts:14750-14752`
+- **ruleIndex** — Returns the index of the module name rule `Java20Parser.ts:14782-14784`
+- **ruleIndex** — Returns the index of the rule for package name `Java20Parser.ts:14814-14816`
+- **ruleIndex** — Returns the rule index for typeName `Java20Parser.ts:14846-14848`
+- **ruleIndex** — Returns the rule index for packageOrTypeName `Java20Parser.ts:14878-14880`
+- **ruleIndex** — Returns the index of the ambiguous name rule `Java20Parser.ts:14910-14912`
+- **ruleIndex** — Returns the index of the compilation unit rule `Java20Parser.ts:14936-14938`
+- **ruleIndex** — Returns the index of the rule for ordinary compilation unit `Java20Parser.ts:14968-14970`
+- **ruleIndex** — Returns the index of the rule for modular compilation unit `Java20Parser.ts:14997-14999`
+- **ruleIndex** — Returns the index of the package declaration rule `Java20Parser.ts:15043-15045`
+- **ruleIndex** — Returns the rule index for importDeclaration. `Java20Parser `Java20Parser.ts:15078-15080`
+- **ruleIndex** — Returns the index of the rule for single type import declaration `Java20Parser.ts:15134-15136`
+- **ruleIndex** — Returns the index of the rule for type import on demand declaration `Java20Parser.ts:15160-15162`
+- **ruleIndex** — Returns the rule index for the single static import declaration `Java20Parser.ts:15195-15197`
+- **ruleIndex** — Returns the index of the rule `Java20Parser.ts:15227-15229`
+- **ruleIndex** — Returns the index of the module declaration rule `Java20Parser.ts:15265-15267`
+- **ruleIndex** — Returns the rule index for the `moduleDirective` rule `Java20Parser.ts:15306-15308`
+- **ruleIndex** — Returns the index of the class declaration rule `Java20Parser.ts:15347-15349`
+- **ruleIndex** — Returns the index of the rule for class modifiers `Java20Parser.ts:15379-15381`
+- **ruleIndex** — Returns the index `Java20Parser.ts:15450-15452`
+- **ruleIndex** — Returns the index of the type parameter list rule `Java20Parser.ts:15536-15538`
+- **ruleIndex** — Returns the index of the rule for class extends `Java20Parser.ts:15565-15567`
+- **ruleIndex** — Returns the index of the rule for class implements. `Java20Parser.ts:15 `Java20Parser.ts:15597-15599`
+- **ruleIndex** — Returns the rule index for interface type list `Java20Parser.ts:15650-15652`
+- **ruleIndex** — Returns the index of the class body declaration rule `Java20Parser.ts:15703-15705`
+- **ruleIndex** — Returns the index of the rule for class member declaration `Java20Parser.ts:15735-15737`
+- **ruleIndex** — Returns the index of the variable declarator list rule `Java20Parser.ts:15776-15778`
+- **ruleIndex** — Returns the index of the variable declarator id rule `Java20Parser.ts:15805-15807`
+- **ruleIndex** — Returns the index of the rule for unannPrimitiveType `Java20Parser.ts:15834-15836`
+- **ruleIndex** — Returns the index of the rule for unannClassOrInterfaceType `Java20Parser.ts:15875-15877`
+- **ruleIndex** — Returns the rule index for uCOIT. `Java20Parser.ts:16430-16432 `Java20Parser.ts:15919-15921`
+- **ruleIndex** — Returns the index of the rule for unannInterfaceType `Java20Parser.ts:15957-15959`
+- **ruleIndex** — Returns the rule index for unannArrayType `Java20Parser.ts:15992-15994`
+- **ruleIndex** — Returns the index of the method modifier rule. `Java2 `Java20Parser.ts:16030-16032`
+- **ruleIndex** — Returns the index of the method declarator rule `Java20Parser.ts:16071-16073`
+- **ruleIndex** — Returns the rule index for receiver parameter `Java20Parser.ts:16118-16120`
+- **ruleIndex** — Returns the index of the formal parameter list rule `Java20Parser.ts:16159-16161`
+- **ruleIndex** — Returns the index of the variable arity parameter rule `Java20Parser.ts:16191-16193`
+- **ruleIndex** — Returns the rule index for variable modifier `Java20Parser.ts:16220-16222`
+- **ruleIndex** — Returns the index of the exceptionTypeList rule. `Java20Parser.ts:17047-170 `Java20Parser.ts:16249-16251`
+- **ruleIndex** — Returns the index of the method body rule `Java20Parser.ts:16278-16280`
+- **ruleIndex** — Returns the index of the rule for instance initializer `Java20Parser.ts:16307-16309`
+- **ruleIndex** — Returns the rule index for constructor declaration. `Java20Parser.ts:17201 `Java20Parser.ts:16339-16341`
+- **ruleIndex** — Returns the rule index for constructor modifier `Java20Parser.ts:16386-16388`
+- **ruleIndex** — Returns the index of the constructor declarator rule `Java20Parser.ts:16430-16432`
+- **ruleIndex** — Returns the index of the explicit constructor invocation rule `Java20Parser.ts:16477-16479`
+- **ruleIndex** — Returns the index of the enum declaration rule `Java20Parser.ts:16503-16505`
+- **ruleIndex** — Returns the index of the enum constant list rule `Java20Parser.ts:16529-16531`
+- **ruleIndex** — Returns the rule index for `enumConstant `Java20Parser.ts:16564-16566`
+- **ruleIndex** — Returns the index of the record declaration rule `Java20Parser.ts:16602-16604`
+- **ruleIndex** — Returns the index of the record header rule `Java20Parser.ts:16655-16657`
+- **ruleIndex** — Returns the rule index for methodHeader `Java20Parser.ts:16699-16701`
+- **ruleIndex** — Returns the rule index for record component `Java20Parser.ts:16728-16730`
+- **ruleIndex** — Returns the rule index for record component modifier `Java20Parser.ts:16772-16774`
+- **ruleIndex** — Returns the rule index for record body `Java20Parser.ts:16816-16818`
+- **ruleIndex** — Returns the rule index for recordBodyDeclaration `Java20Parser.ts:16857-16859`
+- **ruleIndex** — Returns the index of the rule for interface declaration. `Java20Parser.ts:1799 `Java20Parser.ts:16898-16900`
+- **ruleIndex** — Returns the rule index for normal interface declaration. `Java `Java20Parser.ts:16948-16950`
+- **ruleIndex** — Returns the index of the interface modifier rule `Java20Parser.ts:16977-16979`
+- **ruleIndex** — Returns the index of the interface extends rule `Java20Parser.ts:17006-17008`
+- **ruleIndex** — Returns the index of the rule for interface body `Java20Parser.ts:17047-17049`
+- **ruleIndex** — Returns the index of the constant declaration rule `Java20Parser.ts:17076-17078`
+- **ruleIndex** — Returns the index of the rule for interface method declaration `Java20Parser.ts:17105-17107`
+- **ruleIndex** — Returns the rule index for interface method modifier. `Java20Parser.ts:18408-1 `Java20Parser.ts:17131-17133`
+- **ruleIndex** — Returns the rule index for the annotation interface body `Java20Parser.ts:17160-17162`
+- **ruleIndex** — Returns the index of the annotation interface member declaration rule `Java20Parser.ts:17201-17203`
+- **ruleIndex** — Returns the rule index for annotation interface element declaration `Java20Parser.ts:17236-17238`
+- **ruleIndex** — Returns the index of the default value rule `Java20Parser.ts:17280-17282`
+- **ruleIndex** — Returns the index of the annotation rule `Java20Parser.ts:17306-17308`
+- **ruleIndex** — Returns the index of the normal annotation rule `Java20Parser.ts:17341-17343`
+- **ruleIndex** — Returns the index of the rule for elementValuePairList `Java20Parser.ts:17394-17396`
+- **ruleIndex** — Returns the rule index for elementValue `Java20Parser.ts:17438-17440`
+- **ruleIndex** — Returns the index of the array initializer rule `Java20Parser.ts:17476-17478`
+- **ruleIndex** — Returns the index of the blockStatements rule `Java20Parser.ts:17517-17519`
+- **ruleIndex** — Returns the index of the local class or interface declaration rule `Java20Parser.ts:17564-17566`
+- **ruleIndex** — Returns the index of the local variable declaration statement rule `Java20Parser.ts:17590-17592`
+- **ruleIndex** — Returns the index of the rule for the statement `Java20Parser.ts:17625-17627`
+- **ruleIndex** — Returns the index of the rule for statementNoShortIf `Java20Parser.ts:17675-17677`
+- **ruleIndex** — Returns the index of the empty statement rule `Java20Parser.ts:17707-17709`
+- **ruleIndex** — Returns the index of the labeled statement rule `Java20Parser.ts:17748-17750`
+- **ruleIndex** — Returns the rule index for labeled statement no short if `Java20Parser.ts:17789-17791`
+- **ruleIndex** — Returns the index of the rule for the statement expression `Java20Parser.ts:17839-17841`
+- **ruleIndex** — Returns the index of the rule for the ifThenStatement. `Java2 `Java20Parser.ts:17865-17867`
+- **ruleIndex** — Returns the index of the rule for ifThenElseStatementNoShortIf `Java20Parser.ts:17903-17905`
+- **ruleIndex** — Returns the index of the assert statement rule `Java20Parser.ts:17932-17934`
+- **ruleIndex** — Returns the index of the switch statement rule `Java20Parser.ts:17970-17972`
+- **ruleIndex** — Returns the rule index for the switch block. `Java20Parser.ts:1984 `Java20Parser.ts:17999-18001`
+- **ruleIndex** — Returns the rule index for switchRule `Java20Parser.ts:18049-18051`
+- **ruleIndex** — Returns the index of the `Java20Parser.ts:18099-18101`
+- **ruleIndex** — Returns the index of the rule for caseConstant `Java20Parser.ts:18128-18130`
+- **ruleIndex** — Returns the index of the rule for whileStatement `Java20Parser.ts:18172-18174`
+- **ruleIndex** — Returns the index of the rule for a while statement `Java20Parser.ts:18212-18214`
+- **ruleIndex** — Returns the index of the rule for `doStatement `Java20Parser.ts:18250-18252`
+- **ruleIndex** — Returns the index of the rule for a for statement without a short if `Java20Parser.ts:18291-18293`
+- **ruleIndex** — Returns the index of the basic for statement rule `Java20Parser.ts:18326-18328`
+- **ruleIndex** — Returns the index of the rule for basic for statement no short if `Java20Parser.ts:18364-18366`
+- **ruleIndex** — Returns the index of the rule for for init `Java20Parser.ts:18408-18410`
+- **ruleIndex** — Returns the index of the `forUpdate` rule `Java20Parser.ts:18452-18454`
+- **ruleIndex** — Returns the rule index for enhanced for statement no `Java20Parser.ts:18492-18494`
+- **ruleIndex** — Returns `Java20Parser.ts:18530-18532`
+- **ruleIndex** — Returns the rule index for returnStatement `Java20Parser.ts:18585-18587`
+- **ruleIndex** — Returns the rule index for synchronized statement `Java20Parser.ts:18617-18619`
+- **ruleIndex** — Returns the index of the rule for catches `Java20Parser.ts:18646-18648`
+- **ruleIndex** — Returns the index of the rule for catch formal parameter `Java20Parser.ts:18678-18680`
+- **ruleIndex** — Returns the rule index for finally block `Java20Parser.ts:18716-18718`
+- **ruleIndex** — Returns the index of the rule for tryWithResourcesStatement `Java20Parser.ts:18757-18759`
+- **ruleIndex** — Returns the index of the rule for resourceList `Java20Parser.ts:18789-18791`
+- **ruleIndex** — Returns the index of the rule for resource `Java20Parser.ts:18821-18823`
+- **ruleIndex** — Returns the rule index for variable access `Java20Parser.ts:18856-18858`
+- **ruleIndex** — Returns the rule index for `yieldStatement `Java20Parser.ts:18897-18899`
+- **ruleIndex** — Returns the rule index for pattern `Java20Parser.ts:18926-18928`
+- **ruleIndex** — Returns the index of the rule for type pattern `Java20Parser.ts:18964-18966`
+- **ruleIndex** — Returns the rule index for expression `Java20Parser.ts:18999-19001`
+- **ruleIndex** — Returns the index of the primaryNoNewArray rule `Java20Parser.ts:19040-19042`
+- **ruleIndex** — Returns the rule index for the parser `Java20Parser.ts:19072-19074`
+- **ruleIndex** — Returns the index of the rule for class literal `Java20Parser.ts:19104-19106`
+- **ruleIndex** — Returns the rule index for the class instance creation expression `Java20Parser.ts:19136-19138`
+- **ruleIndex** — Returns the rule index for unqualified class instance creation expression `Java20Parser.ts:19165-19167`
+- **ruleIndex** — Returns the rule index for array creation expression `Java20Parser.ts:19203-19205`
+- **ruleIndex** — Returns the index of the rule for array creation expression with initializer `Java20Parser.ts:19232-19234`
+- **ruleIndex** — Returns the index of the rule for dimExprs `Java20Parser.ts:19261-19263`
+- **ruleIndex** — Returns the rule index for the `dimExpr` rule `Java20Parser.ts:19302-19304`
+- **ruleIndex** — Returns the rule index for the `arrayAccess` rule `Java20Parser.ts:19340-19342`
+- **ruleIndex** — Returns the rule index for field access `Java20Parser.ts:19402-19404`
+- **ruleIndex** — Returns the rule index for method invocation. `Java `Java20Parser.ts:19428-19430`
+- **ruleIndex** — Returns the rule index for the argument list `Java20Parser.ts:19460-19462`
+- **ruleIndex** — Returns the index of the method reference rule `Java20Parser.ts:19492-19494`
+- **ruleIndex** — Returns the rule index for postfix expression `Java20Parser.ts:19521-19523`
+- **ruleIndex** — Returns the rule index for post-increment expression `Java20Parser.ts:19565-19567`
+- **ruleIndex** — Returns the rule index for post-decrement expression `Java20Parser.ts:19603-19605`
+- **ruleIndex** — Returns the index of the unary expression rule `Java20Parser.ts:19647-19649`
+- **ruleIndex** — Returns the rule index for pre-increment expression `Java20Parser.ts:19694-19696`
+- **ruleIndex** — Returns the rule index for preDecrementExpression `Java20Parser.ts:19735-19737`
+- **ruleIndex** — Returns the rule index for unaryExpressionNotPlusMinus `Java20Parser.ts:19773-19775`
+- **ruleIndex** — Returns the rule index for cast expression. `Java20Parser.ts:22288-222 `Java20Parser.ts:19840-19842`
+- **ruleIndex** — Returns the index of the multiplicative expression rule `Java20Parser.ts:19881-19883`
+- **ruleIndex** — Returns the index of the additive expression rule `Java20Parser.ts:19925-19927`
+- **ruleIndex** — Returns the index of the rule for shiftExpression `Java20Parser.ts:19972-19974`
+- **ruleIndex** — Returns the index of the rule for relationalExpression `Java20Parser.ts:19998-20000`
+- **ruleIndex** — Returns the index of the rule for equality expression `Java20Parser.ts:20036-20038`
+- **ruleIndex** — Returns the index of the rule for andExpression `Java20Parser.ts:20074-20076`
+- **ruleIndex** — Returns the index of the rule for exclusiveOrExpression `Java20Parser.ts:20118-20120`
+- **ruleIndex** — Returns the index of the rule for the inclusive or expression `Java20Parser.ts:20147-20149`
+- **ruleIndex** — Returns the rule index for conditional and expression `Java20Parser.ts:20176-20178`
+- **ruleIndex** — Returns the index of the rule for conditionalOrExpression `Java20Parser.ts:20229-20231`
+- **ruleIndex** — Returns the index of the rule for conditionalExpression `Java20Parser.ts:20282-20284`
+- **ruleIndex** — Returns the index of the assignment expression rule. `Java20Parser.ts `Java20Parser.ts:20311-20313`
+- **ruleIndex** — Returns the index of the assignment rule. `Java20Parser.ts `Java20Parser.ts:20337-20339`
+- **ruleIndex** — Returns the index of the rule for leftHandSide `Java20Parser.ts:20378-20380`
+- **ruleIndex** — Returns the index of the assignment operator rule `Java20Parser.ts:20422-20424`
+- **ruleIndex** — Returns the index of the lambda expression rule `Java20Parser.ts:20466-20468`
+- **ruleIndex** — Returns the index of the lambda parameters rule `Java20Parser.ts:20498-20500`
+- **ruleIndex** — Returns the index of the lambdaParameterList rule `Java20Parser.ts:20530-20532`
+- **ruleIndex** — Returns the index of the lambdaParameter rule `Java20Parser.ts:20562-20564`
+- **ruleIndex** — Returns the rule index for lambdaParameterType `Java20Parser.ts:20594-20596`
+- **ruleIndex** — Returns the rule index for lambdaBody `Java20Parser.ts:20632-20634`
+- **ruleIndex** — Returns the rule index for the switch expression `Java20Parser.ts:20670-20672`
+- **ruleIndex** — Returns the rule index for the constant expression `Java20Parser.ts:20702-20704`
+- **ruleIndex** — Returns the index of the finally block rule `Java20Parser.ts:20740-20742`
+- **ruleIndex** — Returns the rule index for the try with resources statement `Java20Parser.ts:20778-20780`
+- **ruleIndex** — Returns the index of the resource specification rule. `Java20Parser.ts:2 `Java20Parser.ts:20822-20824`
+- **ruleIndex** — Returns the rule index for the resource list rule. `Java20Parser.ts:20965-20967 `Java20Parser.ts:20851-20853`
+- **ruleIndex** — Returns the index of the rule for variable access `Java20Parser.ts:20889-20891`
+- **ruleIndex** — Returns the index of the yield statement rule `Java20Parser.ts:20924-20926`
+- **ruleIndex** — Returns the index of the rule for expression. `Java `Java20Parser.ts:20965-20967`
+- **ruleIndex** — Returns the index of the primary rule `Java20Parser.ts:20994-20996`
+- **ruleIndex** — Returns the index of the class literal rule `Java20Parser.ts:21023-21025`
+- **ruleIndex** — Returns the rule index for class instance creation expression `Java20Parser.ts:21055-21057`
+- **ruleIndex** — Returns the index of the rule for unqualified class instance creation expression `Java20Parser.ts:21081-21083`
+- **ruleIndex** — Returns the rule index for class or interface type to instantiate `Java20Parser.ts:21107-21109`
+- **ruleIndex** — Returns the index of the rule for type arguments or diamond `Java20Parser.ts:21136-21138`
+- **ruleIndex** — Returns the index of the array creation expression rule `Java20Parser.ts:21165-21167`
+- **ruleIndex** — Returns the rule index for array creation expression without initializer. `Java20 `Java20Parser.ts:21269-21271`
+- **ruleIndex** — Returns the rule index for array creation expression with initializer `Java20Parser.ts:21328-21330`
+- **ruleIndex** — Returns the index of the rule for dimension expression `Java20Parser.ts:21387-21389`
+- **ruleIndex** — Returns the index of the array access rule `Java20Parser.ts:21422-21424`
+- **ruleIndex** — Returns the rule index `Java20Parser.ts:21466-21468`
+- **ruleIndex** — Returns the rule index for the argument list rule `Java20Parser.ts:21519-21521`
+- **ruleIndex** — Returns the rule index for the postfix expression. `Java20Parser.ts:22037 `Java20Parser.ts:21548-21550`
+- **ruleIndex** — Returns the index of the unaryExpression rule. `Java20Parser.ts:221 `Java20Parser.ts:21577-21579`
+- **ruleIndex** — Returns the index of the rule for preIncrementExpression `Java20Parser.ts:21615-21617`
+- **ruleIndex** — Returns the index of the predecrement expression rule `Java20Parser.ts:21653-21655`
+- **ruleIndex** — Returns the index of the rule for shift expression `Java20Parser.ts:21685-21687`
+- **ruleIndex** — Returns the index of the relational expression rule `Java20Parser.ts:21726-21728`
+- **ruleIndex** — Returns the index of the equality expression rule `Java20Parser.ts:21767-21769`
+- **ruleIndex** — Returns the index of the rule for inclusive or expression `Java20Parser.ts:21811-21813`
+- **ruleIndex** — Returns the index of the rule for conditional and expression `Java20Parser.ts:21873-21875`
+- **ruleIndex** — Returns the rule index for assignment expression `Java20Parser.ts:21914-21916`
+- **ruleIndex** — Returns the index of the assignment rule `Java20Parser.ts:21973-21975`
+- **ruleIndex** — Returns the index of the rule as leftHandSide `Java20Parser.ts:22005-22007`
+- **ruleIndex** — Returns the index of the rule as assignmentOperator `Java20Parser.ts:22037-22039`
+- **ruleIndex** — Returns the index of the rule as lambdaExpression `Java20Parser.ts:22066-22068`
+- **ruleIndex** — Returns the rule index for lambda parameters `Java20Parser.ts:22095-22097`
+- **ruleIndex** — Returns the rule index for lambdaParameterList `Java20Parser.ts:22136-22138`
+- **ruleIndex** — Returns the index of the lambda parameter rule `Java20Parser.ts:22165-22167`
+- **ruleIndex** — Returns the rule index for lambda parameter type. `Java20Parser.ts:230 `Java20Parser.ts:22194-22196`
+- **ruleIndex** — Returns the index of the lambda body rule `Java20Parser.ts:22235-22237`
+- **ruleIndex** — Returns the index of the switchExpression rule `Java20Parser.ts:22288-22290`
+- **ruleIndex** — Returns the index of the constantExpression rule `Java20Parser.ts:22326-22328`
+- **ruleIndex** — Returns the rule index for additive expression `Java20Parser.ts:22361-22363`
+- **ruleIndex** — Returns the rule index for shift expression `Java20Parser.ts:22408-22410`
+- **ruleIndex** — Returns the index of the rule for andExpression. `Java20Parser.ts `Java20Parser.ts:22458-22460`
+- **ruleIndex** — Returns the index of the exclusive or expression rule `Java20Parser.ts:22493-22495`
+- **ruleIndex** — Returns the rule index for `inclusiveOrExpression `Java20Parser.ts:22525-22527`
+- **ruleIndex** — Returns the rule index for `conditionalAndExpression `Java20Parser.ts:22557-22559`
+- **ruleIndex** — Returns the index of the conditional or expression rule `Java20Parser.ts:22589-22591`
+- **ruleIndex** — Returns the index of the conditional expression rule `Java20Parser.ts:22621-22623`
+- **ruleIndex** — Returns the index of the assignment expression rule `Java20Parser.ts:22653-22655`
+- **ruleIndex** — Returns the index of the leftHandSide rule `Java20Parser.ts:22694-22696`
+- **ruleIndex** — Returns the index of the lambda parameter list rule `Java20Parser.ts:22723-22725`
+- **ruleIndex** — Returns the index of the lambda parameter type rule `Java20Parser.ts:22755-22757`
+- **ruleIndex** — Returns the index of the switch expression rule `Java20Parser.ts:22787-22789`
+- **ruleIndex** — Returns the index of the constant expression rule `Java20Parser.ts:22846-22848`
+- **ruleIndex** — Returns the index of the lambda expression rule. `Java20Parser.ts:22878-22 `Java20Parser.ts:22878-22880`
+- **ruleIndex** — Returns the rule index for lambda parameter list `Java20Parser.ts:22913-22915`
+- **ruleIndex** — Returns the rule index for lambda parameter `Java20Parser.ts:22963-22965`
+- **ruleIndex** — Returns the rule index for lambda parameter type `Java20Parser.ts:23004-23006`
+- **ruleIndex** — Returns the rule index for lambda body `Java20Parser.ts:23033-23035`
+- **ruleIndex** — Returns the rule index for switch expression `Java20Parser.ts:23062-23064`
+- **ruleIndex** — Returns the rule index for constant expression `Java20Parser.ts:23100-23102`
+- **ruleIndex** — Returns the rule index for constantExpression `Java20Parser.ts:23126-23128`
 - **ruleNames** — Stores rule names for the Java20Lexer `Java20Lexer.ts:589-591`
 - **ruleNames** — Stores names of rules `Java20Parser.ts:906-908`
 - **SEALED** — Represents the SEALED keyword `Java20Parser.ts:13805-13807`
@@ -880,25 +1974,42 @@ Java20ParserVisitor.ts
 - **SEALED** — Represents the sealed modifier `Java20Parser.ts:15694-15696`
 - **SEALED** — Sealed modifier `Java20Parser.ts:18090-18092`
 - **SEMI** — Marks the end of a statement `Java20Parser.ts:15113-15115`
-- **SEMI** — Represents the semicolon in Java20Parser `Java20Parser.ts:15224-15226`, `Java20Parser.ts:15262-15264`, `Java20Parser.ts:15303-15305`
-- **SEMI** — Represents the SEMI operator `Java20Parser.ts:15344-15346`, `Java20Parser.ts:15376-15378`
-- **SEMI** — Represents the semicolon in the grammar `Java20Parser.ts:15485-15487`
-- **SEMI** — Represents a semicolon in the grammar `Java20Parser.ts:16027-16029`, `Java20Parser.ts:16059-16061`, `Java20Parser.ts:18565-18567`
-- **SEMI** — Represents a semicolon `Java20Parser.ts:17102-17104`, `Java20Parser.ts:17370-17372`, `Java20Parser.ts:17613-17615`
-- **SEMI** — Represents a semicolon token `Java20Parser.ts:18247-18249`, `Java20Parser.ts:18279-18281`, `Java20Parser.ts:19518-19520`
-- **SEMI** — Represents the semicolon token `Java20Parser.ts:18527-18529`, `Java20Parser.ts:19258-19260`
-- **SEMI** — Represents a semicolon in the Java20 grammar `Java20Parser.ts:19425-19427`, `Java20Parser.ts:20492-20494`, `Java20Parser.ts:20524-20526`
-- **SEMI** — Token for the semicolon `Java20Parser.ts:19729-19731`
-- **SEMI** — Represents a semicolon in the parser `Java20Parser.ts:19872-19874`
-- **SEMI** — Represents the semicolon `Java20Parser.ts:20115-20117`, `Java20Parser.ts:20207-20213`, `Java20Parser.ts:20260-20266`
-- **SEMI** — Matches the semicolon character in the Java20 grammar `Java20Parser.ts:20556-20558`, `Java20Parser.ts:20591-20593`
-- **SEMI** — Semicolon in a resource specification `Java20Parser.ts:20921-20923`, `Java20Parser.ts:20958-20964`
-- **SEMI** — Represents the SEMI token `Java20Parser.ts:21052-21054`
+- **SEMI** — Represents the semicolon in Java20Parser `Java20Parser.ts:15224-15226`
+- **SEMI** — Represents the SEMI operator `Java20Parser.ts:15262-15264`
+- **SEMI** — Represents the semicolon in the grammar `Java20Parser.ts:15303-15305`
+- **SEMI** — Represents a semicolon in the grammar `Java20Parser.ts:15344-15346`
+- **SEMI** — Represents a semicolon `Java20Parser.ts:15376-15378`
+- **SEMI** — Represents a semicolon token `Java20Parser.ts:15485-15487`
+- **SEMI** — Represents the semicolon token `Java20Parser.ts:16027-16029`
+- **SEMI** — Represents a semicolon in the Java20 grammar `Java20Parser.ts:16059-16061`
+- **SEMI** — Token for the semicolon `Java20Parser.ts:17102-17104`
+- **SEMI** — Represents a semicolon in the parser `Java20Parser.ts:17370-17372`
+- **SEMI** — Represents the semicolon `Java20Parser.ts:17613-17615`
+- **SEMI** — Matches the semicolon character in the Java20 grammar `Java20Parser.ts:18247-18249`
+- **SEMI** — Semicolon in a resource specification `Java20Parser.ts:18279-18281`
+- **SEMI** — Represents the SEMI token `Java20Parser.ts:18527-18529`
+- **SEMI** — Returns the SEMI terminal node `Java20Parser.ts:18565-18567`
+- **SEMI** — Returns the SEMI token `Java20Parser.ts:19258-19260`
+- **SEMI** — Returns the SEMI terminal node. `Java `Java20Parser.ts:19425-19427`
+- **SEMI** — Returns the SEMI token or null `Java20Parser.ts:19518-19520`
+- **SEMI** — Returns the terminal node for the SEMI token or an array of such nodes. `Java20Parser `Java20Parser.ts:19729-19731`
+- **SEMI** — Returns a terminal node or an array of terminal nodes for the SEMI token `Java20Parser.ts:19872-19874`
+- **SEMI** — Returns the SEMI terminal node. `Java20Parser.ts:21052 `Java20Parser.ts:20115-20117`
+- **SEMI** — Returns a terminal node or an array of terminal nodes for the SEMI rule `Java20Parser.ts:20207-20213`
+- **SEMI** — Returns a terminal node for the SEMI rule `Java20Parser.ts:20260-20266`
+- **SEMI** — Returns a terminal node for the SEMI token `Java20Parser.ts:20492-20494`
+- **SEMI** — Returns a terminal node for the SEMI token. `Java20Parser.ts:205 `Java20Parser.ts:20524-20526`
+- **SEMI** — Returns the semicolon terminal node or null `Java20Parser.ts:20556-20558`
+- **SEMI** — Returns the terminal node for the SEMI token at the current position or a list of terminal nodes if an index is provided `Java20Parser.ts:20591-20593`
+- **SEMI** — Returns a TerminalNode or null for the SEMI token `Java20Parser.ts:20921-20923`
+- **SEMI** — Returns a TerminalNode or an array of TerminalNodes for the SEMI token `Java20Parser.ts:20958-20964`
+- **SEMI** — Returns a TerminalNode for the SEMI token `Java20Parser.ts:21052-21054`
 - **sempred** — Represents a semantic predicate in Java `Java20Parser.ts:12573-12597`
 - **serializedATN** — Serializes the ATN for the Java20Lexer `Java20Lexer.ts:593-595`
 - **serializedATN** — Serializes the ATN (ANTLR Transition Network) `Java20Parser.ts:909-911`
 - **shiftExpression** — Represents a shift expression `Java20Parser.ts:11440-11536`
-- **shiftExpression** — Parses a shift expression `Java20Parser.ts:22387-22389`, `Java20Parser.ts:22431-22433`
+- **shiftExpression** — Parses a shift expression `Java20Parser.ts:22387-22389`
+- **shiftExpression** — Returns the context of the shift expression `Java20Parser.ts:22431-22433`
 - **shiftExpression_sempred** — Represents a shift expression with a semantic predicate in Java `Java20Parser.ts:12621-12631`
 - **SHORT** — Represents the short type `Java20Parser.ts:14087-14089`
 - **simpleTypeName** — Represents a simple type name `Java20Parser.ts:4839-4857`
@@ -912,30 +2023,40 @@ Java20ParserVisitor.ts
 - **singleTypeImportDeclaration** — Represents a single type import declaration `Java20Parser.ts:15183-15185`
 - **start_** — Starts the parsing process `Java20Parser.ts:926-946`
 - **statement** — A single statement `Java20Parser.ts:6966-7027`
-- **statement** — Represents a statement in the Java20 grammar `Java20Parser.ts:19133-19135`, `Java20Parser.ts:19457-19459`
-- **statement** — Parses a statement in the Java20 grammar `Java20Parser.ts:19600-19602`, `Java20Parser.ts:19644-19646`
-- **statement** — Represents a statement `Java20Parser.ts:20033-20035`, `Java20Parser.ts:20217-20219`, `Java20Parser.ts:20419-20421`
-- **statement** — Parses a statement `Java20Parser.ts:20100-20102`
+- **statement** — Represents a statement in the Java20 grammar `Java20Parser.ts:19133-19135`
+- **statement** — Parses a statement in the Java20 grammar `Java20Parser.ts:19457-19459`
+- **statement** — Represents a statement `Java20Parser.ts:19600-19602`
+- **statement** — Parses a statement `Java20Parser.ts:19644-19646`
+- **statement** — Returns the context of a statement `Java20Parser.ts:20033-20035`
+- **statement** — Returns the context `Java20Parser.ts:20100-20102`
+- **statement** — Returns the context for `Java20Parser.ts:20217-20219`
+- **statement** — Returns the root context of a statement. `Java20Parser.ts:20419-204 `Java20Parser.ts:20419-20421`
 - **statementExpression** — A statement that is an expression `Java20Parser.ts:7280-7348`
 - **statementExpression** — Parses a statement expression `Java20Parser.ts:19515-19517`
 - **statementExpression** — Represents a single statement expression `Java20Parser.ts:20362-20368`
 - **statementExpressionList** — Parses a list of statements or expressions in Java `Java20Parser.ts:8116-8147`
-- **statementExpressionList** — Represents a list of statements and expressions `Java20Parser.ts:20305-20307`, `Java20Parser.ts:20334-20336`
+- **statementExpressionList** — Represents a list of statements and expressions `Java20Parser.ts:20305-20307`
+- **statementExpressionList** — Returns the context of the `statementExpressionList` rule `Java20Parser.ts:20334-20336`
 - **statementNoShortIf** — A statement that does not contain a short if `Java20Parser.ts:7028-7082`
-- **statementNoShortIf** — Represents a statement without a short if in the Java20 grammar `Java20Parser.ts:19489-19491`, `Java20Parser.ts:20463-20465`
-- **statementNoShortIf** — Parses a statement without a short if clause `Java20Parser.ts:19638-19640`, `Java20Parser.ts:19684-19690`
-- **statementNoShortIf** — Parses a statement without a short if `Java20Parser.ts:20071-20073`
-- **statementNoShortIf** — Represents a statement without a short if `Java20Parser.ts:20270-20272`
+- **statementNoShortIf** — Represents a statement without a short if in the Java20 grammar `Java20Parser.ts:19489-19491`
+- **statementNoShortIf** — Parses a statement without a short if clause `Java20Parser.ts:19638-19640`
+- **statementNoShortIf** — Parses a statement without a short if `Java20Parser.ts:19684-19690`
+- **statementNoShortIf** — Represents a statement without a short if `Java20Parser.ts:20071-20073`
+- **statementNoShortIf** — Returns the context of the statement no short if rule. `Java20Parser.ts:20270-20272 `Java20Parser.ts:20270-20272`
+- **statementNoShortIf** — Returns the context of a statement without a short if `Java20Parser.ts:20463-20465`
 - **statementWithoutTrailingSubstatement** — A statement that does not have a trailing substatement `Java20Parser.ts:7083-7193`
-- **statementWithoutTrailingSubstatement** — Represents a statement without a trailing substatement `Java20Parser.ts:19284-19286`, `Java20Parser.ts:19325-19327`
+- **statementWithoutTrailingSubstatement** — Represents a statement without a trailing substatement `Java20Parser.ts:19284-19286`
+- **statementWithoutTrailingSubstatement** — Returns the context of a statement without a trailing substatement `Java20Parser.ts:19325-19327`
 - **STATIC** — Represents the static keyword in Java20Parser `Java20Parser.ts:15291-15293`
 - **STATIC** — Represents the STATIC keyword `Java20Parser.ts:15332-15334`
 - **STATIC** — Represents the 'static' keyword `Java20Parser.ts:15562-15564`
-- **STATIC** — Represents the static modifier `Java20Parser.ts:15688-15690`, `Java20Parser.ts:16106-16108`, `Java20Parser.ts:18320-18322`
-- **STATIC** — Represents the static method modifier `Java20Parser.ts:16640-16642`
-- **STATIC** — Represents the keyword "STATIC" `Java20Parser.ts:17154-17156`
-- **STATIC** — Static modifier `Java20Parser.ts:18087-18089`
-- **STATIC** — Represents the static modifier in the Java20Parser `Java20Parser.ts:18402-18404`
+- **STATIC** — Represents the static modifier `Java20Parser.ts:15688-15690`
+- **STATIC** — Represents the static method modifier `Java20Parser.ts:16106-16108`
+- **STATIC** — Represents the keyword "STATIC" `Java20Parser.ts:16640-16642`
+- **STATIC** — Static modifier `Java20Parser.ts:17154-17156`
+- **STATIC** — Represents the static modifier in the Java20Parser `Java20Parser.ts:18087-18089`
+- **STATIC** — Returns the STATIC terminal node if it exists `Java20Parser.ts:18320-18322`
+- **STATIC** — Returns the STATIC terminal node if it exists. `Java20 `Java20Parser.ts:18402-18404`
 - **staticImportOnDemandDeclaration** — Represents a static import on demand declaration in the Java 20 grammar `Java20Parser.ts:2553-2581`
 - **staticImportOnDemandDeclaration** — Represents a static import on demand declaration `Java20Parser.ts:15192-15194`
 - **staticInitializer** — Initializes static members of a class `Java20Parser.ts:4671-4691`
@@ -945,13 +2066,15 @@ Java20ParserVisitor.ts
 - **STRICTFP** — Strictfp modifier `Java20Parser.ts:18096-18098`
 - **STRICTFP** — Represents the strictfp modifier in the Java20Parser `Java20Parser.ts:18405-18407`
 - **StringLiteral** — Represents the context for parsing string literals `Java20Parser.ts:13985-13987`
-- **SUB** — Represents the subtraction operator `Java20Parser.ts:22130-22132`, `Java20Parser.ts:22358-22360`
+- **SUB** — Represents the subtraction operator `Java20Parser.ts:22130-22132`
+- **SUB** — Returns the terminal node for the SUB token. `Java20Parser.ts `Java20Parser.ts:22358-22360`
 - **SUB_ASSIGN** — Represents the subtraction assignment operator `Java20Parser.ts:22825-22827`
 - **SUPER** — Represents the super keyword `Java20Parser.ts:14747-14749`
 - **SUPER** — Represents the keyword 'super' `Java20Parser.ts:17376-17378`
 - **SUPER** — Represents the `super` keyword in Java `Java20Parser.ts:21233-21235`
-- **SUPER** — Represents the 'super' keyword in the Java20 grammar `Java20Parser.ts:21805-21807`, `Java20Parser.ts:21870-21872`
-- **SUPER** — Parses the 'super' keyword `Java20Parser.ts:21955-21957`
+- **SUPER** — Represents the 'super' keyword in the Java20 grammar `Java20Parser.ts:21805-21807`
+- **SUPER** — Parses the 'super' keyword `Java20Parser.ts:21870-21872`
+- **SUPER** — Returns the terminal node for the keyword "SUPER" `Java20Parser.ts:21955-21957`
 - **SWITCH** — Token for the switch keyword `Java20Parser.ts:19758-19760`
 - **SWITCH** — Represents the keyword 'switch' `Java20Parser.ts:23085-23087`
 - **switchBlock** — Parses a switch block in Java `Java20Parser.ts:7499-7574`
@@ -962,7 +2085,9 @@ Java20ParserVisitor.ts
 - **switchExpression** — Represents a switch expression in Java `Java20Parser.ts:12526-12552`
 - **switchExpression** — Parses a switch expression `Java20Parser.ts:22232-22234`
 - **switchLabel** — Parses a label within a switch statement in Java `Java20Parser.ts:7702-7752`
-- **switchLabel** — Represents a label in a switch statement `Java20Parser.ts:19824-19830`, `Java20Parser.ts:19863-19865`, `Java20Parser.ts:19906-19912`
+- **switchLabel** — Represents a label in a switch statement `Java20Parser.ts:19824-19830`
+- **switchLabel** — Returns the switch label context or contexts based on the provided index `Java20Parser.ts:19863-19865`
+- **switchLabel** — Returns SwitchLabelContext or null. `Java20Parser.ts:19906-1991 `Java20Parser.ts:19906-19912`
 - **switchRule** — Parses a switch rule in Java `Java20Parser.ts:7575-7665`
 - **switchRule** — Represents a switch statement in the Java20 grammar `Java20Parser.ts:19801-19807`
 - **switchStatement** — Parses a switch statement in Java `Java20Parser.ts:7472-7498`
@@ -1001,43 +2126,64 @@ Java20ParserVisitor.ts
 - **TRY** — Keyword for starting a try block in Java `Java20Parser.ts:20874-20876`
 - **tryStatement** — Parses a try statement in Java `Java20Parser.ts:8355-8423`
 - **tryStatement** — Represents a try statement `Java20Parser.ts:19396-19398`
-- **tryWithResourcesStatement** — Represents a try-with-resources statement `Java20Parser.ts:8566-8604`, `Java20Parser.ts:20667-20669`
+- **tryWithResourcesStatement** — Represents a try-with-resources statement `Java20Parser.ts:8566-8604`
+- **tryWithResourcesStatement** — Returns the context of a try-with-resources statement. `Java20Parser.ts `Java20Parser.ts:20667-20669`
 - **typeArgument** — Represents a single type argument in Java `Java20Parser.ts:1930-1963`
 - **typeArgument** — Parses a single type argument `Java20Parser.ts:14635-14641`
 - **typeArgumentList** — Represents a list of type arguments in Java `Java20Parser.ts:1898-1929`
 - **typeArgumentList** — Parses a list of type arguments `Java20Parser.ts:14604-14606`
-- **typeArguments** — Represents type arguments in Java `Java20Parser.ts:1875-1897`, `Java20Parser.ts:16424-16426`, `Java20Parser.ts:16456-16458`, `Java20Parser.ts:21251-21253`
+- **typeArguments** — Represents type arguments in Java `Java20Parser.ts:1875-1897`
 - **typeArguments** — Represents a context for type arguments `Java20Parser.ts:14198-14200`
-- **typeArguments** — Represents type arguments `Java20Parser.ts:14245-14247`, `Java20Parser.ts:14286-14288`, `Java20Parser.ts:17379-17381`, `Java20Parser.ts:21457-21459`
-- **typeArguments** — Represents type arguments in the grammar `Java20Parser.ts:16371-16373`
-- **typeArguments** — Parses type arguments `Java20Parser.ts:21319-21321`, `Java20Parser.ts:21542-21544`, `Java20Parser.ts:21946-21948`
-- **typeArguments** — Represents type arguments in the Java20 grammar `Java20Parser.ts:21861-21863`
+- **typeArguments** — Represents type arguments `Java20Parser.ts:14245-14247`
+- **typeArguments** — Represents type arguments in the grammar `Java20Parser.ts:14286-14288`
+- **typeArguments** — Parses type arguments `Java20Parser.ts:16371-16373`
+- **typeArguments** — Represents type arguments in the Java20 grammar `Java20Parser.ts:16424-16426`
+- **typeArguments** — Returns the type arguments context `Java20Parser.ts:16456-16458`
+- **typeArguments** — Returns the context of type arguments `Java20Parser.ts:17379-17381`
+- **typeArguments** — Returns the context `Java20Parser.ts:21251-21253`
+- **typeArguments** — Returns the type arguments context if it exists `Java20Parser.ts:21319-21321`
+- **typeArguments** — Returns the type arguments context or null if not present. `Java20 `Java20Parser.ts:21457-21459`
+- **typeArguments** — Returns the context of the type arguments rule `Java20Parser.ts:21542-21544`
+- **typeArguments** — Returns the TypeArgumentsContext or null `Java20Parser.ts:21861-21863`
+- **typeArguments** — Returns a context for type arguments in Java 20 parsing `Java20Parser.ts:21946-21948`
 - **typeArgumentsOrDiamond** — Represents type arguments or diamond notation `Java20Parser.ts:10062-10097`
 - **typeArgumentsOrDiamond** — Parses type arguments or diamond operator `Java20Parser.ts:21516-21518`
 - **typeBound** — Represents a type bound in Java `Java20Parser.ts:1808-1853`
 - **typeBound** — Defines a bound for a type parameter `Java20Parser.ts:14479-14481`
-- **typeIdentifier** — Parses a type identifier `Java20Parser.ts:998-1043`, `Java20Parser.ts:17303-17305`
+- **typeIdentifier** — Parses a type identifier `Java20Parser.ts:998-1043`
 - **typeIdentifier** — Represents a context for a type identifier `Java20Parser.ts:14186-14188`
-- **typeIdentifier** — Identifies a type `Java20Parser.ts:14227-14229`, `Java20Parser.ts:14274-14276`
-- **typeIdentifier** — Represents the context of a type identifier in the Java20 grammar `Java20Parser.ts:14347-14349`
-- **typeIdentifier** — Identifies a type in the parser `Java20Parser.ts:14467-14469`
-- **typeIdentifier** — Parses a type identifier in the Java20Parser `Java20Parser.ts:14843-14845`
-- **typeIdentifier** — Represents a type identifier `Java20Parser.ts:15623-15625`, `Java20Parser.ts:17420-17422`, `Java20Parser.ts:17651-17653`
-- **typeIdentifier** — Represents a type identifier in the grammar `Java20Parser.ts:16362-16364`
-- **typeIdentifier** — Identifies a type in Java `Java20Parser.ts:16412-16414`, `Java20Parser.ts:16453-16455`
-- **typeIdentifier** — Identifies a type identifier `Java20Parser.ts:16526-16528`
-- **typeIdentifier** — Represents the context for a type identifier `Java20Parser.ts:18025-18027`
-- **typeIdentifier** — Represents a type identifier in the Java20Parser `Java20Parser.ts:18437-18439`
+- **typeIdentifier** — Identifies a type `Java20Parser.ts:14227-14229`
+- **typeIdentifier** — Represents the context of a type identifier in the Java20 grammar `Java20Parser.ts:14274-14276`
+- **typeIdentifier** — Identifies a type in the parser `Java20Parser.ts:14347-14349`
+- **typeIdentifier** — Parses a type identifier in the Java20Parser `Java20Parser.ts:14467-14469`
+- **typeIdentifier** — Represents a type identifier `Java20Parser.ts:14843-14845`
+- **typeIdentifier** — Represents a type identifier in the grammar `Java20Parser.ts:15623-15625`
+- **typeIdentifier** — Identifies a type in Java `Java20Parser.ts:16362-16364`
+- **typeIdentifier** — Identifies a type identifier `Java20Parser.ts:16412-16414`
+- **typeIdentifier** — Represents the context for a type identifier `Java20Parser.ts:16453-16455`
+- **typeIdentifier** — Represents a type identifier in the Java20Parser `Java20Parser.ts:16526-16528`
+- **typeIdentifier** — Returns the type identifier context at the current position `Java20Parser.ts:17303-17305`
+- **typeIdentifier** — Returns the type identifier context `Java20Parser.ts:17420-17422`
+- **typeIdentifier** — Returns a TypeIdentifierContext `Java20Parser.ts:17651-17653`
+- **typeIdentifier** — Returns a type identifier context `Java20Parser.ts:18025-18027`
+- **typeIdentifier** — Returns a context for a type identifier in Java 20 parsing `Java20Parser.ts:18437-18439`
 - **typeImportOnDemandDeclaration** — Represents a type import on demand declaration in the Java 20 grammar `Java20Parser.ts:2497-2523`
 - **typeImportOnDemandDeclaration** — Represents a type import on demand declaration `Java20Parser.ts:15186-15188`
-- **typeName** — Represents a type name in Java `Java20Parser.ts:2101-2131`, `Java20Parser.ts:21200-21202`
-- **typeName** — Represents the type name in Java20Parser `Java20Parser.ts:15221-15223`, `Java20Parser.ts:15294-15296`
-- **typeName** — Represents a type name `Java20Parser.ts:15335-15337`, `Java20Parser.ts:15903-15909`, `Java20Parser.ts:18923-18925`, `Java20Parser.ts:18952-18954`
-- **typeName** — Represents the type name in the grammar `Java20Parser.ts:15523-15529`
-- **typeName** — Represents a type name in the grammar `Java20Parser.ts:18156-18162`
-- **typeName** — Parses a type name in the Java20 grammar `Java20Parser.ts:18704-18706`
-- **typeName** — Parses a type name `Java20Parser.ts:21351-21353`, `Java20Parser.ts:21958-21960`
-- **typeName** — Represents a type name in the Java20 grammar `Java20Parser.ts:21808-21810`, `Java20Parser.ts:21846-21848`
+- **typeName** — Represents a type name in Java `Java20Parser.ts:2101-2131`
+- **typeName** — Represents the type name in Java20Parser `Java20Parser.ts:15221-15223`
+- **typeName** — Represents a type name `Java20Parser.ts:15294-15296`
+- **typeName** — Represents the type name in the grammar `Java20Parser.ts:15335-15337`
+- **typeName** — Represents a type name in the grammar `Java20Parser.ts:15523-15529`
+- **typeName** — Parses a type name in the Java20 grammar `Java20Parser.ts:15903-15909`
+- **typeName** — Parses a type name `Java20Parser.ts:18156-18162`
+- **typeName** — Represents a type name in the Java20 grammar `Java20Parser.ts:18704-18706`
+- **typeName** — Returns the context of the type name rule. `Java20Parser.ts:189 `Java20Parser.ts:18923-18925`
+- **typeName** — Returns the context for the type name `Java20Parser.ts:18952-18954`
+- **typeName** — Returns the context of the type name rule `Java20Parser.ts:21200-21202`
+- **typeName** — Returns the TypeNameContext if it exists. `Java20Parser.ts:21351 `Java20Parser.ts:21351-21353`
+- **typeName** — Returns the type name context or null `Java20Parser.ts:21808-21810`
+- **typeName** — Returns the type name context `Java20Parser.ts:21846-21848`
+- **typeName** — Returns the context for the type name rule `Java20Parser.ts:21958-21960`
 - **typeParameter** — Represents a type parameter in Java `Java20Parser.ts:1752-1788`
 - **typeParameter** — Parses a single type parameter `Java20Parser.ts:15760-15766`
 - **typeParameterList** — Represents a type parameter list in the Java 20 grammar `Java20Parser.ts:3092-3123`
@@ -1045,9 +2191,11 @@ Java20ParserVisitor.ts
 - **typeParameterModifier** — Represents a type parameter modifier in Java `Java20Parser.ts:1789-1807`
 - **typeParameterModifier** — Modifies a type parameter in the parser `Java20Parser.ts:14472-14478`
 - **typeParameters** — Represents type parameters in the Java 20 grammar `Java20Parser.ts:3069-3091`
-- **typeParameters** — Represents type parameters `Java20Parser.ts:15638-15640`, `Java20Parser.ts:17669-17671`
-- **typeParameters** — Parses type parameters `Java20Parser.ts:16684-16686`, `Java20Parser.ts:17268-17270`
-- **typeParameters** — Defines type parameters for the interface `Java20Parser.ts:18040-18042`
+- **typeParameters** — Represents type parameters `Java20Parser.ts:15638-15640`
+- **typeParameters** — Parses type parameters `Java20Parser.ts:16684-16686`
+- **typeParameters** — Defines type parameters for the interface `Java20Parser.ts:17268-17270`
+- **typeParameters** — Returns a context for type parameters `Java20Parser.ts:17669-17671`
+- **typeParameters** — Returns the type parameters context or null `Java20Parser.ts:18040-18042`
 - **typePattern** — Represents a type pattern in a switch statement `Java20Parser.ts:8781-8799`
 - **typePattern** — Represents a type pattern `Java20Parser.ts:21078-21080`
 - **typeVariable** — Represents a type variable in Java `Java20Parser.ts:1618-1647`
@@ -1055,31 +2203,55 @@ Java20ParserVisitor.ts
 - **typeVariable** — Represents the context of a type variable in the Java20 grammar `Java20Parser.ts:14391-14393`
 - **typeVariable** — Represents a type variable in the parser `Java20Parser.ts:14534-14536`
 - **typeVariable** — Represents a type variable `Java20Parser.ts:17073-17075`
-- **uCOIT** — Represents an unannotated class or interface type `Java20Parser.ts:3835-3884`, `Java20Parser.ts:16374-16376`
-- **uCOIT** — Represents a UCOIT (Unann Class or Interface Type) in Java `Java20Parser.ts:16427-16429`
-- **unannArrayType** — Represents an unannotated array type `Java20Parser.ts:4000-4040`, `Java20Parser.ts:16336-16338`
-- **unannClassOrInterfaceType** — Represents an unannotated class or interface type `Java20Parser.ts:3775-3834`, `Java20Parser.ts:16330-16332`, `Java20Parser.ts:16558-16560`
-- **unannClassOrInterfaceType** — Represents an unann class or interface type in Java `Java20Parser.ts:16465-16467`
-- **unannClassType** — Represents an unannotated class type `Java20Parser.ts:3885-3961`, `Java20Parser.ts:20801-20803`
+- **uCOIT** — Represents an unannotated class or interface type `Java20Parser.ts:3835-3884`
+- **uCOIT** — Represents a UCOIT (Unann Class or Interface Type) in Java `Java20Parser.ts:16374-16376`
+- **uCOIT** — Returns the UCOIT context `Java20Parser.ts:16427-16429`
+- **unannArrayType** — Represents an unannotated array type `Java20Parser.ts:4000-4040`
+- **unannArrayType** — Returns the unannArrayType context or null. `Java20Parser.ts:16336-163 `Java20Parser.ts:16336-16338`
+- **unannClassOrInterfaceType** — Represents an unannotated class or interface type `Java20Parser.ts:3775-3834`
+- **unannClassOrInterfaceType** — Represents an unann class or interface type in Java `Java20Parser.ts:16330-16332`
+- **unannClassOrInterfaceType** — Returns the unann class or interface type context `Java20Parser.ts:16465-16467`
+- **unannClassOrInterfaceType** — Returns the context of an unannClassOrInterfaceType `Java20Parser.ts:16558-16560`
+- **unannClassType** — Represents an unannotated class type `Java20Parser.ts:3885-3961`
 - **unannClassType** — Represents an unann class type in Java `Java20Parser.ts:16500-16502`
+- **unannClassType** — Returns the unann class type context at the root of the parse tree `Java20Parser.ts:20801-20803`
 - **unannInterfaceType** — Represents an unannotated interface type `Java20Parser.ts:3962-3980`
-- **unannPrimitiveType** — Represents an unannotated primitive type `Java20Parser.ts:3692-3733`, `Java20Parser.ts:16555-16557`
+- **unannPrimitiveType** — Represents an unannotated primitive type `Java20Parser.ts:3692-3733`
 - **unannPrimitiveType** — Parses an unannotated primitive type `Java20Parser.ts:16272-16274`
+- **unannPrimitiveType** — Returns the unannPrimitiveType context `Java20Parser.ts:16555-16557`
 - **unannReferenceType** — Represents an unannotated reference type `Java20Parser.ts:3734-3774`
 - **unannReferenceType** — Parses an unannotated reference type `Java20Parser.ts:16275-16277`
-- **unannType** — Represents an unannotated type `Java20Parser.ts:3658-3691`, `Java20Parser.ts:16053-16055`, `Java20Parser.ts:16880-16882`, `Java20Parser.ts:16921-16923`, `Java20Parser.ts:17771-17773`, `Java20Parser.ts:18273-18275`, `Java20Parser.ts:19226-19228`
-- **unannType** — Unannotated type `Java20Parser.ts:16722-16724`, `Java20Parser.ts:16795-16797`, `Java20Parser.ts:17812-17814`
-- **unannType** — Represents the context of an unannotated type `Java20Parser.ts:18553-18555`
-- **unannType** — Unannotated type context `Java20Parser.ts:23027-23029`
-- **unannTypeVariable** — Represents an unannotated type variable `Java20Parser.ts:3981-3999`, `Java20Parser.ts:16333-16335`, `Java20Parser.ts:16561-16563`
+- **unannType** — Represents an unannotated type `Java20Parser.ts:3658-3691`
+- **unannType** — Unannotated type `Java20Parser.ts:16053-16055`
+- **unannType** — Represents the context of an unannotated type `Java20Parser.ts:16722-16724`
+- **unannType** — Unannotated type context `Java20Parser.ts:16795-16797`
+- **unannType** — Returns the unannType context at the current position `Java20Parser.ts:16880-16882`
+- **unannType** — Returns the un `Java20Parser.ts:16921-16923`
+- **unannType** — Returns the unannType context from the parser. `Java20Parser.ts:182 `Java20Parser.ts:17771-17773`
+- **unannType** — Retrieves the unannType context from the parser `Java20Parser.ts:17812-17814`
+- **unannType** — Returns an UnannTypeContext `Java20Parser.ts:18273-18275`
+- **unannType** — Returns a context for an unannounced type or null. `Java20Parser.ts:19226 `Java20Parser.ts:18553-18555`
+- **unannType** — Returns the unannType context if it exists `Java20Parser.ts:19226-19228`
+- **unannType** — Returns the unannType context or null `Java20Parser.ts:23027-23029`
+- **unannTypeVariable** — Represents an unannotated type variable `Java20Parser.ts:3981-3999`
+- **unannTypeVariable** — Returns the context of an unannTypeVariable `Java20Parser.ts:16333-16335`
+- **unannTypeVariable** — Returns the unannTypeVariable context `Java20Parser.ts:16561-16563`
 - **unaryExpression** — Represents a unary expression `Java20Parser.ts:10985-11085`
-- **unaryExpression** — Parses a unary expression `Java20Parser.ts:22127-22129`, `Java20Parser.ts:22162-22164`, `Java20Parser.ts:22191-22193`, `Java20Parser.ts:22223-22225`, `Java20Parser.ts:22267-22269`, `Java20Parser.ts:22311-22313`
+- **unaryExpression** — Parses a unary expression `Java20Parser.ts:22127-22129`
+- **unaryExpression** — Returns the context of a unary expression `Java20Parser.ts:22162-22164`
+- **unaryExpression** — Returns the UnaryExpressionContext `Java20Parser.ts:22191-22193`
+- **unaryExpression** — Returns the UnaryExpressionContext or null `Java20Parser.ts:22223-22225`
+- **unaryExpression** — Parses a unary expression context `Java20Parser.ts:22267-22269`
+- **unaryExpression** — Returns the context of the unary expression. `Java20Parser.ts:2231 `Java20Parser.ts:22311-22313`
 - **unaryExpressionNotPlusMinus** — Represents a unary expression that is not a plus or minus `Java20Parser.ts:11128-11186`
-- **unaryExpressionNotPlusMinus** — Parses a unary expression that is not a plus or minus `Java20Parser.ts:22133-22135`, `Java20Parser.ts:22273-22275`
-- **unqualifiedClassInstanceCreationExpression** — Represents an unqualified class instance creation expression `Java20Parser.ts:9946-10002`, `Java20Parser.ts:21410-21412`
+- **unaryExpressionNotPlusMinus** — Parses a unary expression that is not a plus or minus `Java20Parser.ts:22133-22135`
+- **unaryExpressionNotPlusMinus** — Parses a unary expression not plus minus context `Java20Parser.ts:22273-22275`
+- **unqualifiedClassInstanceCreationExpression** — Represents an unqualified class instance creation expression `Java20Parser.ts:9946-10002`
 - **unqualifiedClassInstanceCreationExpression** — Represents an unqualified class instance creation expression in Java `Java20Parser.ts:21221-21223`
 - **unqualifiedClassInstanceCreationExpression** — Parses an unqualified class instance creation expression `Java20Parser.ts:21295-21297`
-- **unqualifiedMethodIdentifier** — Parses an unqualified method identifier `Java20Parser.ts:1044-1093`, `Java20Parser.ts:14933-14935`
+- **unqualifiedClassInstanceCreationExpression** — Returns the context of an unqualified class instance creation expression `Java20Parser.ts:21410-21412`
+- **unqualifiedMethodIdentifier** — Parses an unqualified method identifier `Java20Parser.ts:1044-1093`
+- **unqualifiedMethodIdentifier** — Returns the unqualified method identifier context `Java20Parser.ts:14933-14935`
 - **URSHIFT_ASSIGN** — Represents the unsigned right shift assignment operator `Java20Parser.ts:22834-22836`
 - **USES** — Represents the USES keyword `Java20Parser.ts:13814-13816`
 - **USES** — Represents the keyword 'uses' in the Java 20 parser `Java20Parser.ts:13876-13878`
@@ -1087,7 +2259,8 @@ Java20ParserVisitor.ts
 - **USES** — Represents the uses keyword in the grammar `Java20Parser.ts:15518-15520`
 - **VAR** — Represents the VAR keyword `Java20Parser.ts:13817-13819`
 - **VAR** — Represents the keyword used to declare a variable `Java20Parser.ts:13944-13946`
-- **VAR** — Represents the keyword 'var' `Java20Parser.ts:19229-19231`, `Java20Parser.ts:23030-23032`
+- **VAR** — Represents the keyword 'var' `Java20Parser.ts:19229-19231`
+- **VAR** — Returns the VAR terminal node if it exists `Java20Parser.ts:23030-23032`
 - **variableAccess** — Represents a variable access expression `Java20Parser.ts:8705-8738`
 - **variableAccess** — Accesses a variable `Java20Parser.ts:20991-20993`
 - **variableArityParameter** — Represents a parameter with variable arity `Java20Parser.ts:4449-4492`
@@ -1097,15 +2270,20 @@ Java20ParserVisitor.ts
 - **variableArityRecordComponent** — Represents a variable arity record component `Java20Parser.ts:17786-17788`
 - **variableDeclarator** — Represents a single variable declarator `Java20Parser.ts:3518-3548`
 - **variableDeclarator** — Represents a variable declarator `Java20Parser.ts:16143-16149`
-- **variableDeclaratorId** — Represents the identifier of a variable declarator `Java20Parser.ts:3549-3577`, `Java20Parser.ts:16182-16184`, `Java20Parser.ts:20766-20768`
-- **variableDeclaratorId** — Represents a variable declarator identifier `Java20Parser.ts:16883-16885`
-- **variableDeclaratorId** — Represents the variable declarator identifier `Java20Parser.ts:22989-22991`
-- **variableDeclaratorList** — Represents a list of variable declarators `Java20Parser.ts:3484-3517`, `Java20Parser.ts:16056-16058`, `Java20Parser.ts:19191-19193`
-- **variableDeclaratorList** — List of variable declarators `Java20Parser.ts:18276-18278`
+- **variableDeclaratorId** — Represents the identifier of a variable declarator `Java20Parser.ts:3549-3577`
+- **variableDeclaratorId** — Represents a variable declarator identifier `Java20Parser.ts:16182-16184`
+- **variableDeclaratorId** — Represents the variable declarator identifier `Java20Parser.ts:16883-16885`
+- **variableDeclaratorId** — Returns the context of a variable declarator identifier `Java20Parser.ts:20766-20768`
+- **variableDeclaratorId** — Returns the context for the variable declarator id rule `Java20Parser.ts:22989-22991`
+- **variableDeclaratorList** — Represents a list of variable declarators `Java20Parser.ts:3484-3517`
+- **variableDeclaratorList** — List of variable declarators `Java20Parser.ts:16056-16058`
+- **variableDeclaratorList** — Returns a variable declarator list context `Java20Parser.ts:18276-18278`
+- **variableDeclaratorList** — Returns a context for a variable declarator list `Java20Parser.ts:19191-19193`
 - **variableInitializer** — Represents the initializer of a variable declarator `Java20Parser.ts:3578-3657`
 - **variableInitializer** — Represents the initializer of a variable `Java20Parser.ts:16188-16190`
 - **variableInitializer** — Represents a variable initializer `Java20Parser.ts:19024-19030`
-- **variableInitializerList** — Represents a list of variable initializers `Java20Parser.ts:6700-6733`, `Java20Parser.ts:18993-18995`
+- **variableInitializerList** — Represents a list of variable initializers `Java20Parser.ts:6700-6733`
+- **variableInitializerList** — Returns the variable initializer list context or null `Java20Parser.ts:18993-18995`
 - **variableModifier** — Modifies a variable to indicate it can be assigned multiple times `Java20Parser.ts:4493-4528`
 - **variableModifier** — Represents a variable modifier `Java20Parser.ts:16888-16894`
 - **variableModifier** — Represents a variable modifier in the Java20Parser `Java20Parser.ts:16932-16938`
@@ -1120,7 +2298,8 @@ Java20ParserVisitor.ts
 - **VOID** — Represents the void type `Java20Parser.ts:21384-21386`
 - **VOLATILE** — Represents the volatile modifier `Java20Parser.ts:16115-16117`
 - **WHILE** — Represents a while keyword `Java20Parser.ts:20021-20023`
-- **WHILE** — Represents the keyword 'while' `Java20Parser.ts:20059-20061`, `Java20Parser.ts:20103-20105`
+- **WHILE** — Represents the keyword 'while' `Java20Parser.ts:20059-20061`
+- **WHILE** — Returns the terminal node for the WHILE keyword `Java20Parser.ts:20103-20105`
 - **whileStatement** — Parses a while statement in Java `Java20Parser.ts:7772-7798`
 - **whileStatement** — Represents a while statement `Java20Parser.ts:19296-19298`
 - **whileStatementNoShortIf** — Parses a while statement without a short if clause in Java `Java20Parser.ts:7799-7825`
@@ -1409,19 +2588,19 @@ Java20ParserVisitor.ts
 - **_serializedATN** — Serializes the ATN for the Java20Lexer `Java20Lexer.ts:605-1034`
 - **_serializedATN** — Represents the serialized ATN (Alternative Tree Network) for the Java20Parser `Java20Parser.ts:12704-13639`
 - **ABSTRACT** — Represents the keyword for abstract classes `Java20Lexer.ts:24-24`
-- **ABSTRACT** — Marks a class or method as abstract. `Java `Java20Parser.ts:31-31`
+- **ABSTRACT** — Represents a constant value for abstract classes `Java20Parser.ts:31-31`
 - **ADD** — Represents the '+' operator `Java20Lexer.ts:110-110`
-- **ADD** — Represents the addition operation `Java20Parser.ts:117-117`
+- **ADD** — Represents the addition operation with a value of 104 `Java20Parser.ts:117-117`
 - **ADD_ASSIGN** — Represents the '+=', '+=', '+=', '+=', '+=', '+=', '+=', '+=', '+=', '+=', '+=', '+=', '+=', '+=', '+=', '+=', '+=', '+=', '+=', '+=', '+=', '+=', '+=', '+=', '+=', '+=', '+=', '+=', '+=', '+=', '+=', '+=', '+=', '+=', '+=', '+=', '+=', '+=', '+=', '+=', '+=', '+=', '+=', '+=', '+=', '+=', '+=', '+=', '+=', '+=', '+=', '+=', '+=', '+=', '+=', '+=', '+=', '+=', '+=', '+=', '+=', '+=', '+=', '+=', '+=', '+=', '+=', '+=', '+=', '+=', '+=', '+=', '+=', '+=', '+=', '+=', '+=', '+=', '+=', '+=', '+=', '+=', '+=', '+=', '+=', '+=', '+=', '+=', '+=', '+=', '+=', '+=', '+=', '+=', '+=', '+=', '+=', '+=', '+=', '+=', '+=', '+=', '+=', '+=', '+=', '+=', '+=', '+=', '+=', '+=', '+=', '+=', '+=', '+=', '+=', '+=', '+=', '+=', '+=', '+=', '+=', '+=', '+=', '+=', '+=', '+=', '+=', '+=', '+=', '+=', '+=', '+=', '+=', '+=', '+=', '+=', '+=', '+=', '+=', '+=', '+=', '+=', '+=', '+=', '+=', '+=', '+=', '+=', '+=', '+=', '+=', '+=', '+=', '+=', '+=', '+=', '+=', '+=', '+=', '+=', '+=', '+=', '+=', '+=', '+=', '+=', '+=', '+=', '+=', '+=', '+=', '+=', '+=', '+=', '+=', '+=', '+=', '+=', '+=', '+=', '+=', '+=', '+=', '+=', '+=', '+=', '+=', '+=', '+=', '+=', '+=', '+=', '+=', '+=', '+=', '+=', '+=', '+=', '+=', '+=', '+=', '+=', '+=', '+=', '+=', '+=', '+=', '+=', '+=', '+=', '+=', '+=', '+=', '+=', '+=', '+=', '+=', '+=', '+=', '+=', '+=', '+=', '+=', '+=', '+=', '+=', '+=', '+=', '+=', '+=', '+=', '+=', '+=', '+=', '+=', '+=', '+=', '+=', '+=', '+=', '+=', '+=', '+=', '+=', '+=', '+=', '+=', '+=', '+=', '+=', '+=', '+=', '+=', '+=', '+=', '+=', '+=', '+=', '+=', '+=', '+=', '+=', '+=', '+=', '+=', '+=', '+=', '+=', '+=', '+=', '+=', '+=', '+=', '+=', '+=', '+=', '+=', '+=', '+=', '+=', '+=', '+=', '+=', '+=', '+=', '+=', '+=', '+=', '+=', '+=', '+=', '+=', '+=', '+=', '+=', '+=', '+=', '+=', '+=', '+=', '+=', '+=', '+=', '+=', '+=', '+=', '+=', '+=', '+=', '+=', '+=', '+=', '+=', '+=', '+=', '+=', '+=', '+=', '+=', '+=', '+=', '+=', '+=', '+=', '+=', '+=', '+=', '+=', '+=', '+=', '+=', '+=', '+=', '+=', '+=', '+=', '+=', '+=', '+=', '+=', '+=', '+=', '+=', '+=', '+=', '+=', '+=', '+=', '+=', '+=', '+=', '+=', '+=', '+=', '+=', '+=', '+=', '+=', '+=', '+=', '+=', '+=', '+=', '+=', '+=', '+=', '+=', '+=', '+=', '+=', '+=', '+=', '+=', '+=', '+=', '+=', '+=', '+=', '+=', '+=', '+=', '+=', '+=', '+=', '+=', '+=', '+=', '+=', '+=', '+=', '+=', '+=', '+=', '+=', '+=', '+=', '+=', '+=', '+=', '+=', '+=', '+=', '+=', '+=', '+=', '+=', '+=', '+=', '+=', '+=', '+=', '+=', '+=', '+=', '+=', '+=', '+=', '+=', '+=', '+=', '+=', '+=', '+=', '+=', '+=', '+=', '+=', '+=', '+=', '+=', '+=', '+=', '+=', '+=', '+=', '+=', '+=', '+=', '+=', '+=', '+=', '+=', '+=', '+=', '+=', '+=', '+=', '+=', '+=', '+=', '+=', '+=', '+=', '+= `Java20Lexer.ts:118-118`
 - **ADD_ASSIGN** — Represents the assignment operator for addition `Java20Parser.ts:125-125`
 - **AND** — Represents the '&&' operator `Java20Lexer.ts:106-106`
-- **AND** — Represents the bitwise AND operation `Java20Parser.ts:113-113`
+- **AND** — Represents the bitwise AND operation with a value of 100 `Java20Parser.ts:113-113`
 - **AND_ASSIGN** — Represents the bitwise AND assignment operator `Java20Lexer.ts:122-122`
 - **AND_ASSIGN** — Represents the assignment operator for bitwise AND `Java20Parser.ts:129-129`
 - **ARROW** — Represents an arrow operator in Java `Java20Lexer.ts:101-101`
 - **ARROW** — Represents the arrow operator `Java20Parser.ts:108-108`
 - **ASSERT** — Represents the keyword for assert statements `Java20Lexer.ts:25-25`
-- **ASSERT** — Represents the assertion keyword in Java 20 `Java20Parser.ts:32-32`
+- **ASSERT** — Represents a constant value for assert statements `Java20Parser.ts:32-32`
 - **ASSIGN** — Represents an assignment operator in Java `Java20Lexer.ts:94-94`
 - **ASSIGN** — Represents the assignment operator `Java20Parser.ts:101-101`
 - **AT** — Represents an at symbol in Java `Java20Lexer.ts:92-92`
@@ -1429,34 +2608,34 @@ Java20ParserVisitor.ts
 - **BANG** — Represents a bang operator in Java `Java20Lexer.ts:97-97`
 - **BANG** — Represents the negation operator `Java20Parser.ts:104-104`
 - **BITAND** — Represents the '&' operator `Java20Lexer.ts:114-114`
-- **BITAND** — Represents the bitwise AND operation `Java20Parser.ts:121-121`
+- **BITAND** — Represents the bitwise AND operation with a value of 108 `Java20Parser.ts:121-121`
 - **BITOR** — Represents the '|' operator `Java20Lexer.ts:115-115`
-- **BITOR** — Represents the bitwise OR operation `Java20Parser.ts:122-122`
+- **BITOR** — Represents the bitwise OR operation with a value of 109 `Java20Parser.ts:122-122`
 - **BOOLEAN** — Represents the keyword for boolean types `Java20Lexer.ts:26-26`
-- **BOOLEAN** — Represents the boolean keyword in Java 20 `Java20Parser.ts:33-33`
+- **BOOLEAN** — Represents a constant value for boolean types `Java20Parser.ts:33-33`
 - **BooleanLiteral** — Represents boolean literals `Java20Lexer.ts:77-77`
-- **BooleanLiteral** — Represents the BooleanLiteral with a value of 71 `Java20Parser.ts:84-84`
+- **BooleanLiteral** — Represents the boolean literal in Java 20 `Java20Parser.ts:84-84`
 - **BREAK** — Represents the keyword for break statements `Java20Lexer.ts:27-27`
-- **BREAK** — Represents the break keyword in Java 20 `Java20Parser.ts:34-34`
+- **BREAK** — Represents a constant value for break statements. `Java `Java20Parser.ts:34-34`
 - **BYTE** — Represents the keyword for byte types `Java20Lexer.ts:28-28`
-- **BYTE** — Represents the byte keyword in Java 2 `Java20Parser.ts:35-35`
+- **BYTE** — Represents the byte literal in Java 20 `Java20Parser.ts:35-35`
 - **CARET** — Represents the '^' operator `Java20Lexer.ts:116-116`
-- **CARET** — Represents the bitwise XOR operation `Java20Parser.ts:123-123`
+- **CARET** — Represents the bitwise XOR operation with a value of 110 `Java20Parser.ts:123-123`
 - **CASE** — Represents the keyword for case statements `Java20Lexer.ts:29-29`
-- **CASE** — Represents the CASE keyword with a value of 23 `Java20Parser.ts:36-36`
+- **CASE** — Represents the case keyword in Java 20 `Java20Parser.ts:36-36`
 - **CATCH** — Represents the keyword used in exception handling `Java20Lexer.ts:30-30`
-- **CATCH** — Represents the CATCH keyword with a value of 24 `Java20Parser.ts:37-37`
-- **channelNames** — Stores the names of the token channels `Java20Lexer.ts:134-134`
+- **CATCH** — Represents the catch keyword in Java 20 `Java20Parser.ts:37-37`
+- **channelNames** — Represents the names of different token channels `Java20Lexer.ts:134-134`
 - **CHAR** — Represents the keyword used to declare a character type `Java20Lexer.ts:31-31`
-- **CHAR** — Represents the character constant in the Java20Parser `Java20Parser.ts:38-38`
+- **CHAR** — Represents the character constant in the parser `Java20Parser.ts:38-38`
 - **CharacterLiteral** — Represents character literals `Java20Lexer.ts:78-78`
-- **CharacterLiteral** — Represents the CharacterLiteral with a value of 72. `Java `Java20Parser.ts:85-85`
+- **CharacterLiteral** — Represents the character literal in Java 20 `Java20Parser.ts:85-85`
 - **CLASS** — Represents the keyword used to define a class `Java20Lexer.ts:32-32`
-- **CLASS** — Represents the class keyword in the Java20Parser `Java20Parser.ts:39-39`
+- **CLASS** — Represents the class keyword in the parser `Java20Parser.ts:39-39`
 - **COLON** — Represents a colon in Java `Java20Lexer.ts:100-100`
 - **COLON** — Represents the colon operator `Java20Parser.ts:107-107`
 - **COLONCOLON** — Represents a colon colon in Java `Java20Lexer.ts:93-93`
-- **COLONCOLON** — Represents the double colon character `Java20Parser.ts:100-100`
+- **COLONCOLON** — Represents the colon colon character `Java20Parser.ts:100-100`
 - **COMMA** — Represents a comma in Java `Java20Lexer.ts:89-89`
 - **COMMA** — Represents the comma character `Java20Parser.ts:96-96`
 - **COMMENT** — Represents a comment in the Java20Lexer `Java20Lexer.ts:131-131`
@@ -1464,27 +2643,27 @@ Java20ParserVisitor.ts
 - **CONST** — Represents the keyword used to declare a constant `Java20Lexer.ts:33-33`
 - **CONST** — Represents a constant declaration in Java `Java20Parser.ts:40-40`
 - **CONTINUE** — Represents the keyword used to skip the current iteration of a loop `Java20Lexer.ts:34-34`
-- **CONTINUE** — Represents the continue keyword in the Java20Parser `Java20Parser.ts:41-41`
+- **CONTINUE** — Represents the continue keyword in the parser `Java20Parser.ts:41-41`
 - **DEC** — Represents the '--' operator `Java20Lexer.ts:109-109`
-- **DEC** — Represents the decrement operation `Java20Parser.ts:116-116`
+- **DEC** — Represents the decrement operation with a value of 103 `Java20Parser.ts:116-116`
 - **decisionsToDFA** — Stores decisions to DFA for the Java20Lexer `Java20Lexer.ts:1051-1053`
 - **decisionsToDFA** — Maps decisions to deterministic finite automata (DFA) for the Java20Parser `Java20Parser.ts:13656-13658`
 - **DEFAULT** — Represents the keyword used to specify a default case in a switch statement `Java20Lexer.ts:35-35`
-- **DEFAULT** — Represents the default keyword in the Java `Java20Parser.ts:42-42`
+- **DEFAULT** — Represents the default keyword in the parser `Java20Parser.ts:42-42`
 - **DIV** — Represents the '/' operator `Java20Lexer.ts:113-113`
-- **DIV** — Represents the division operation `Java20Parser.ts:120-120`
+- **DIV** — Represents the division operation with a value of 107 `Java20Parser.ts:120-120`
 - **DIV_ASSIGN** — Represents the division assignment operator `Java20Lexer.ts:121-121`
 - **DIV_ASSIGN** — Represents the assignment operator for division `Java20Parser.ts:128-128`
 - **DO** — Represents the keyword used in a do-while loop `Java20Lexer.ts:36-36`
-- **DO** — Represents the DO keyword with a value of 30 `Java20Parser.ts:43-43`
+- **DO** — Represents the do keyword in the parser `Java20Parser.ts:43-43`
 - **DOT** — Represents a dot in Java `Java20Lexer.ts:90-90`
 - **DOT** — Represents the dot character `Java20Parser.ts:97-97`
 - **DOUBLE** — Represents the keyword used to declare a double-precision floating-point type `Java20Lexer.ts:37-37`
-- **DOUBLE** — Represents the DOUBLE keyword with a value of 31 `Java20Parser.ts:44-44`
+- **DOUBLE** — Represents the double keyword in the parser `Java20Parser.ts:44-44`
 - **ELLIPSIS** — Represents an ellipsis in Java `Java20Lexer.ts:91-91`
 - **ELLIPSIS** — Represents the ellipsis character `Java20Parser.ts:98-98`
 - **ELSE** — Represents the keyword used in conditional statements `Java20Lexer.ts:38-38`
-- **ELSE** — Represents the ELSE keyword with a value of 32 `Java20Parser.ts:45-45`
+- **ELSE** — Represents the else keyword in the parser `Java20Parser.ts:45-45`
 - **enterAdditionalBound** — Parses the start of an additional bound `Java20ParserListener.ts:500-500`
 - **enterAdditiveExpression** — Enters the parsing of an additive expression `Java20ParserListener.ts:2540-2540`
 - **enterAmbiguousName** — Enters the ambiguous name context `Java20ParserListener.ts:620-620`
@@ -1735,7 +2914,7 @@ Java20ParserVisitor.ts
 - **enterWildcardBounds** — Enters the wildcard bounds context `Java20ParserListener.ts:550-550`
 - **enterYieldStatement** — Parses the start of a yield statement `Java20ParserListener.ts:2220-2220`
 - **ENUM** — Represents the keyword used to define an enumeration `Java20Lexer.ts:39-39`
-- **ENUM** — Represents the ENUM keyword with a value of 33 `Java20Parser.ts:46-46`
+- **ENUM** — Represents the enum keyword in the parser `Java20Parser.ts:46-46`
 - **EQUAL** — Represents an equal sign in Java `Java20Lexer.ts:102-102`
 - **EQUAL** — Represents the equality operator `Java20Parser.ts:109-109`
 - **exitAdditionalBound** — Exits the additional bound context `Java20ParserListener.ts:505-505`
@@ -1990,17 +3169,17 @@ Java20ParserVisitor.ts
 - **EXPORTS** — Represents the keyword for exporting modules `Java20Lexer.ts:7-7`
 - **EXPORTS** — Represents the export flag in Java 20 `Java20Parser.ts:14-14`
 - **EXTENDS** — Represents the keyword used to indicate inheritance `Java20Lexer.ts:40-40`
-- **EXTENDS** — Represents the EXTENDS keyword with a value of 34 `Java20Parser.ts:47-47`
+- **EXTENDS** — Represents the extends keyword in the parser `Java20Parser.ts:47-47`
 - **FINAL** — Represents the keyword used to declare a final variable or method `Java20Lexer.ts:41-41`
-- **FINAL** — Represents the FINAL keyword with a value of 35 `Java20Parser.ts:48-48`
+- **FINAL** — Represents the final keyword in the parser `Java20Parser.ts:48-48`
 - **FINALLY** — Represents the keyword used in exception handling to ensure a block of code is executed `Java20Lexer.ts:42-42`
-- **FINALLY** — Represents the finally keyword in Java 20 `Java20Parser.ts:49-49`
+- **FINALLY** — Represents the finally keyword in the parser `Java20Parser.ts:49-49`
 - **FLOAT** — Represents the keyword used to declare a single-precision floating-point type `Java20Lexer.ts:43-43`
-- **FLOAT** — Represents the float keyword in Java 20 `Java20Parser.ts:50-50`
+- **FLOAT** — Represents the float keyword in the parser. `Java `Java20Parser.ts:50-50`
 - **FloatingPointLiteral** — Represents floating-point literals `Java20Lexer.ts:76-76`
-- **FloatingPointLiteral** — Represents the floating-point literal in Java 2 `Java20Parser.ts:83-83`
+- **FloatingPointLiteral** — Represents the floating-point literal in Java 20 `Java20Parser.ts:83-83`
 - **FOR** — Represents the keyword used in a for loop `Java20Lexer.ts:44-44`
-- **FOR** — Represents the keyword 'for' with a value of 38 `Java20Parser.ts:51-51`
+- **FOR** — Represents the keyword 'for' in Java 20 `Java20Parser.ts:51-51`
 - **GE** — Represents a greater than or equal to operator in Java `Java20Lexer.ts:104-104`
 - **GE** — Represents the greater than or equal to operator `Java20Parser.ts:111-111`
 - **GOTO** — Represents the keyword used to jump to a labeled statement `Java20Lexer.ts:46-46`
@@ -2009,21 +3188,21 @@ Java20ParserVisitor.ts
 - **GT** — Represents the greater than operator `Java20Parser.ts:102-102`
 - **Identifier** — Represents the identifier token `Java20Lexer.ts:129-129`, `Java20Parser.ts:136-136`
 - **IF** — Represents the keyword used in conditional statements `Java20Lexer.ts:45-45`
-- **IF** — Represents the keyword 'if' with a value of 39 `Java20Parser.ts:52-52`
+- **IF** — Represents the keyword 'if' in Java 20 `Java20Parser.ts:52-52`
 - **IMPLEMENTS** — Represents the keyword used to indicate that a class implements an interface `Java20Lexer.ts:47-47`
-- **IMPLEMENTS** — Represents the keyword 'implements' with a value of 41 `Java20Parser.ts:54-54`
+- **IMPLEMENTS** — Represents the keyword 'implements' in Java 20 `Java20Parser.ts:54-54`
 - **IMPORT** — Represents the keyword used to import classes or packages `Java20Lexer.ts:48-48`
-- **IMPORT** — Represents the keyword 'import' with a value of 42 `Java20Parser.ts:55-55`
+- **IMPORT** — Represents the keyword 'import' in Java 20 `Java20Parser.ts:55-55`
 - **INC** — Represents the '++' operator `Java20Lexer.ts:108-108`
-- **INC** — Represents the increment operation `Java20Parser.ts:115-115`
+- **INC** — Represents the increment operation with a value of 102 `Java20Parser.ts:115-115`
 - **INSTANCEOF** — Represents the keyword used to check if an object is an instance of a class `Java20Lexer.ts:49-49`
-- **INSTANCEOF** — Represents the keyword 'instanceof' with a value of 43 `Java20Parser.ts:56-56`
+- **INSTANCEOF** — Represents the keyword 'instanceof' in Java 20 `Java20Parser.ts:56-56`
 - **INT** — Represents the keyword used to declare an integer type `Java20Lexer.ts:50-50`
-- **INT** — Represents the keyword 'int' with a value of 44 `Java20Parser.ts:57-57`
+- **INT** — Represents the keyword 'int' in Java 20 `Java20Parser.ts:57-57`
 - **IntegerLiteral** — Represents integer literals `Java20Lexer.ts:75-75`
 - **IntegerLiteral** — Represents the integer literal in Java 20 `Java20Parser.ts:82-82`
 - **INTERFACE** — Represents the keyword used to define an interface `Java20Lexer.ts:51-51`
-- **INTERFACE** — Represents the keyword 'interface' with a value of 45 `Java20Parser.ts:58-58`
+- **INTERFACE** — Represents the keyword 'interface' in Java 20 `Java20Parser.ts:58-58`
 - **LBRACE** — Represents a left curly brace in Java `Java20Lexer.ts:84-84`
 - **LBRACE** — Represents the left curly brace character `Java20Parser.ts:91-91`
 - **LBRACK** — Represents a left square bracket in Java `Java20Lexer.ts:86-86`
@@ -2032,10 +3211,10 @@ Java20ParserVisitor.ts
 - **LE** — Represents the less than or equal to operator `Java20Parser.ts:110-110`
 - **LINE_COMMENT** — Represents a line comment in the Java20Lexer `Java20Lexer.ts:132-132`
 - **LINE_COMMENT** — Represents a line comment in the Java20 grammar `Java20Parser.ts:139-139`
-- **literalNames** — Represents a list of string literals used in the Java 20 lexer `Java20Lexer.ts:136-260`
-- **literalNames** — Represents a list of literal names used in Java 20 parsing `Java20Parser.ts:390-514`
+- **literalNames** — Contains the names of literal tokens used in the Java 20 lexer `Java20Lexer.ts:136-260`
+- **literalNames** — Represents a list of string literals used in Java 20 parsing `Java20Parser.ts:390-514`
 - **LONG** — Represents the keyword used to declare a long type `Java20Lexer.ts:52-52`
-- **LONG** — Represents the keyword 'long' with a value of 46 `Java20Parser.ts:59-59`
+- **LONG** — Represents the keyword 'long' in Java 20 `Java20Parser.ts:59-59`
 - **LPAREN** — Represents a left parenthesis in Java `Java20Lexer.ts:82-82`
 - **LPAREN** — Represents the left parenthesis character `Java20Parser.ts:89-89`
 - **LSHIFT_ASSIGN** — Represents the left shift assignment operator `Java20Lexer.ts:126-126`
@@ -2043,48 +3222,48 @@ Java20ParserVisitor.ts
 - **LT** — Represents a less than operator in Java `Java20Lexer.ts:96-96`
 - **LT** — Represents the less than operator `Java20Parser.ts:103-103`
 - **MOD** — Represents the '%' operator `Java20Lexer.ts:117-117`
-- **MOD** — Represents the modulo operation `Java20Parser.ts:124-124`
+- **MOD** — Represents the modulo operation with a value of 111 `Java20Parser.ts:124-124`
 - **MOD_ASSIGN** — Represents the modulo assignment operator `Java20Lexer.ts:125-125`
 - **MOD_ASSIGN** — Represents the assignment operator for modulus `Java20Parser.ts:132-132`
-- **modeNames** — Defines the default mode for the Java 20 lexer `Java20Lexer.ts:392-392`
+- **modeNames** — Defines the names of different modes used in the Java 20 lexer `Java20Lexer.ts:392-392`
 - **MODULE** — Represents the keyword for defining modules `Java20Lexer.ts:8-8`
 - **MODULE** — Represents the module flag in Java 20 `Java20Parser.ts:15-15`
 - **MUL** — Represents the '*' operator `Java20Lexer.ts:112-112`
-- **MUL** — Represents the multiplication operation `Java20Parser.ts:119-119`
+- **MUL** — Represents the multiplication operation with a value of 106 `Java20Parser.ts:119-119`
 - **MUL_ASSIGN** — Represents the multiplication assignment operator `Java20Lexer.ts:120-120`
 - **MUL_ASSIGN** — Represents the assignment operator for multiplication `Java20Parser.ts:127-127`
 - **NATIVE** — Represents the keyword used to indicate that a method is native `Java20Lexer.ts:53-53`
-- **NATIVE** — Represents the keyword 'native' with a value of 47 `Java20Parser.ts:60-60`
+- **NATIVE** — Represents the keyword 'native' in Java 20 `Java20Parser.ts:60-60`
 - **NEW** — Represents the keyword used to create an instance of a class `Java20Lexer.ts:54-54`
-- **NEW** — Represents the keyword 'new' with a value of 48 `Java20Parser.ts:61-61`
+- **NEW** — Represents the keyword 'new' in Java 20 `Java20Parser.ts:61-61`
 - **NONSEALED** — Represents the keyword for non-sealed classes `Java20Lexer.ts:9-9`
 - **NONSEALED** — Represents the non-sealed flag in Java 20 `Java20Parser.ts:16-16`
 - **NOTEQUAL** — Represents the '!=' operator `Java20Lexer.ts:105-105`
 - **NOTEQUAL** — Represents the not equal to operator `Java20Parser.ts:112-112`
 - **NullLiteral** — Represents a null literal in Java `Java20Lexer.ts:81-81`
-- **NullLiteral** — Represents the null literal value as a constant `Java20Parser.ts:88-88`
+- **NullLiteral** — Represents the null literal in Java 20 `Java20Parser.ts:88-88`
 - **OACA** — Represents the keyword for open classes `Java20Lexer.ts:10-10`
-- **OACA** — Represents the open class access flag in Java 20 `Java20Parser.ts:17-17`
+- **OACA** — Represents the open access control flag in Java 20 `Java20Parser.ts:17-17`
 - **OPEN** — Represents the keyword for open classes `Java20Lexer.ts:11-11`
 - **OPEN** — Represents the open flag in Java 20 `Java20Parser.ts:18-18`
 - **OPENS** — Represents the keyword for open classes `Java20Lexer.ts:12-12`
 - **OPENS** — Represents the opens flag in Java 20 `Java20Parser.ts:19-19`
 - **OR** — Represents the '||' operator `Java20Lexer.ts:107-107`
-- **OR** — Represents the bitwise OR operation `Java20Parser.ts:114-114`
+- **OR** — Represents the bitwise OR operation with a value of 101 `Java20Parser.ts:114-114`
 - **OR_ASSIGN** — Represents the bitwise OR assignment operator `Java20Lexer.ts:123-123`
 - **OR_ASSIGN** — Represents the assignment operator for bitwise OR `Java20Parser.ts:130-130`
 - **PACKAGE** — Represents the keyword for package declarations `Java20Lexer.ts:55-55`
-- **PACKAGE** — Represents the keyword 'package' with a value of 49 `Java20Parser.ts:62-62`
+- **PACKAGE** — Represents the keyword 'package' in Java 20 `Java20Parser.ts:62-62`
 - **PERMITS** — Represents the keyword for permitting access `Java20Lexer.ts:13-13`
 - **PERMITS** — Represents the permits flag in Java 20 `Java20Parser.ts:20-20`
 - **PRIVATE** — Represents the keyword for private access modifiers `Java20Lexer.ts:56-56`
-- **PRIVATE** — Represents the keyword 'private' with a value of 50 `Java20Parser.ts:63-63`
+- **PRIVATE** — Represents the keyword 'private' in Java 20 `Java20Parser.ts:63-63`
 - **PROTECTED** — Represents the keyword for protected access modifiers `Java20Lexer.ts:57-57`
-- **PROTECTED** — Represents a protected access modifier `Java20Parser.ts:64-64`
+- **PROTECTED** — Represents a constant value for protected access `Java20Parser.ts:64-64`
 - **PROVIDES** — Represents the keyword for providing services `Java20Lexer.ts:14-14`
 - **PROVIDES** — Represents the provides flag in Java 20 `Java20Parser.ts:21-21`
 - **PUBLIC** — Represents the keyword for public access modifiers `Java20Lexer.ts:58-58`
-- **PUBLIC** — Represents a public access modifier `Java20Parser.ts:65-65`
+- **PUBLIC** — Represents a constant value for public access `Java20Parser.ts:65-65`
 - **QUESTION** — Represents a question mark in Java `Java20Lexer.ts:99-99`
 - **QUESTION** — Represents the question mark operator `Java20Parser.ts:106-106`
 - **RBRACE** — Represents a right curly brace in Java `Java20Lexer.ts:85-85`
@@ -2096,7 +3275,7 @@ Java20ParserVisitor.ts
 - **REQUIRES** — Represents the keyword for requiring modules `Java20Lexer.ts:16-16`
 - **REQUIRES** — Represents the requires flag in Java 20 `Java20Parser.ts:23-23`
 - **RETURN** — Represents the keyword for return statements `Java20Lexer.ts:59-59`
-- **RETURN** — Represents a return statement `Java20Parser.ts:66-66`
+- **RETURN** — Represents a constant value for return statements `Java20Parser.ts:66-66`
 - **RPAREN** — Represents a right parenthesis in Java `Java20Lexer.ts:83-83`
 - **RPAREN** — Represents the right parenthesis character `Java20Parser.ts:90-90`
 - **RSHIFT_ASSIGN** — Represents the right shift assignment operator `Java20Lexer.ts:127-127`
@@ -2350,40 +3529,40 @@ Java20ParserVisitor.ts
 - **RULE_wildcard** — Represents a wildcard in type arguments `Java20Parser.ts:167-167`
 - **RULE_wildcardBounds** — Specifies bounds for a wildcard `Java20Parser.ts:168-168`
 - **RULE_yieldStatement** — Represents a yield statement in the Java20 grammar `Java20Parser.ts:335-335`
-- **ruleNames** — Lists the names of the rules used in the Java 20 lexer `Java20Lexer.ts:394-567`
+- **ruleNames** — Specifies the names of lexical rules used in the Java 20 lexer `Java20Lexer.ts:394-567`
 - **ruleNames** — Defines the names of parsing rules for Java 20 `Java20Parser.ts:645-895`
 - **SEALED** — Represents the keyword for sealed classes `Java20Lexer.ts:17-17`
 - **SEALED** — Represents the sealed flag in Java 20 `Java20Parser.ts:24-24`
 - **SEMI** — Represents a semicolon in Java `Java20Lexer.ts:88-88`
 - **SEMI** — Represents the semicolon character `Java20Parser.ts:95-95`
 - **SHORT** — Represents the keyword for short data types `Java20Lexer.ts:60-60`
-- **SHORT** — Represents a short access modifier `Java20Parser.ts:67-67`
+- **SHORT** — Represents a constant value for short access `Java20Parser.ts:67-67`
 - **STATIC** — Represents the keyword for static modifiers `Java20Lexer.ts:61-61`
-- **STATIC** — Represents a static modifier `Java20Parser.ts:68-68`
+- **STATIC** — Represents a constant value for static access `Java20Parser.ts:68-68`
 - **STRICTFP** — Represents the keyword for strictfp modifiers `Java20Lexer.ts:62-62`
-- **STRICTFP** — Represents a strictfp modifier `Java20Parser.ts:69-69`
+- **STRICTFP** — Represents a constant value for strictfp access `Java20Parser.ts:69-69`
 - **StringLiteral** — Represents string literals `Java20Lexer.ts:79-79`
-- **StringLiteral** — Represents a string literal with a value of 73 `Java20Parser.ts:86-86`
+- **StringLiteral** — Represents the string literal in Java 20 `Java20Parser.ts:86-86`
 - **SUB** — Represents the '-' operator `Java20Lexer.ts:111-111`
-- **SUB** — Represents the subtraction operation `Java20Parser.ts:118-118`
+- **SUB** — Represents the subtraction operation with a value of 105 `Java20Parser.ts:118-118`
 - **SUB_ASSIGN** — Represents the subtraction assignment operator `Java20Lexer.ts:119-119`
 - **SUB_ASSIGN** — Represents the assignment operator for subtraction `Java20Parser.ts:126-126`
 - **SUPER** — Represents the keyword for super references `Java20Lexer.ts:63-63`
-- **SUPER** — Represents a super keyword `Java20Parser.ts:70-70`
+- **SUPER** — Represents a constant value for super access `Java20Parser.ts:70-70`
 - **SWITCH** — Represents the keyword for switch statements `Java20Lexer.ts:64-64`
-- **SWITCH** — Represents a switch statement `Java20Parser.ts:71-71`
-- **symbolicNames** — Contains symbolic names for tokens in the Java 20 lexer `Java20Lexer.ts:262-390`
+- **SWITCH** — Represents a constant value for switch access `Java20Parser.ts:71-71`
+- **symbolicNames** — Lists the names of symbolic tokens used in the Java 20 lexer `Java20Lexer.ts:262-390`
 - **symbolicNames** — Contains symbolic names for Java 20 keywords and identifiers `Java20Parser.ts:516-644`
 - **SYNCHRONIZED** — Represents the keyword for synchronized blocks `Java20Lexer.ts:65-65`
-- **SYNCHRONIZED** — Represents a synchronized modifier `Java20Parser.ts:72-72`
+- **SYNCHRONIZED** — Represents a constant value for synchronized access `Java20Parser.ts:72-72`
 - **TextBlock** — Represents a text block literal in Java `Java20Lexer.ts:80-80`
-- **TextBlock** — Represents a text block with a value of 74 `Java20Parser.ts:87-87`
+- **TextBlock** — Represents the text block literal in Java 20 `Java20Parser.ts:87-87`
 - **THIS** — Represents the keyword for this references `Java20Lexer.ts:66-66`
-- **THIS** — Represents a this keyword `Java20Parser.ts:73-73`
+- **THIS** — Represents a constant value for this access `Java20Parser.ts:73-73`
 - **THROW** — Represents the keyword for throw statements `Java20Lexer.ts:67-67`
-- **THROW** — Represents a throw statement `Java20Parser.ts:74-74`
+- **THROW** — Represents a constant value for throw statements `Java20Parser.ts:74-74`
 - **THROWS** — Represents the keyword for throws clauses `Java20Lexer.ts:68-68`
-- **THROWS** — Represents a throws clause `Java20Parser.ts:75-75`
+- **THROWS** — Represents a constant value for throws statements `Java20Parser.ts:75-75`
 - **TILDE** — Represents a tilde operator in Java `Java20Lexer.ts:98-98`
 - **TILDE** — Represents the bitwise negation operator `Java20Parser.ts:105-105`
 - **TO** — Represents the keyword for specifying the target of a module `Java20Lexer.ts:18-18`
@@ -2391,7 +3570,7 @@ Java20ParserVisitor.ts
 - **TRANSIENT** — Represents the keyword for transient modifiers `Java20Lexer.ts:69-69`
 - **TRANSIENT** — Represents the transient keyword in Java 20 `Java20Parser.ts:76-76`
 - **TRANSITIVE** — Represents the keyword for transitive module dependencies `Java20Lexer.ts:19-19`
-- **TRANSITIVE** — Represents a transitive relationship `Java20Parser.ts:26-26`
+- **TRANSITIVE** — Represents a constant value for transitive relationships `Java20Parser.ts:26-26`
 - **TRY** — Represents the keyword for try blocks `Java20Lexer.ts:70-70`
 - **TRY** — Represents the try keyword in Java 20 `Java20Parser.ts:77-77`
 - **UNDER_SCORE** — Represents the keyword for underscores `Java20Lexer.ts:74-74`
@@ -2399,9 +3578,9 @@ Java20ParserVisitor.ts
 - **URSHIFT_ASSIGN** — Represents the unsigned right shift assignment operator `Java20Lexer.ts:128-128`
 - **URSHIFT_ASSIGN** — Represents the assignment operator for unsigned right shift `Java20Parser.ts:135-135`
 - **USES** — Represents the keyword for using modules `Java20Lexer.ts:20-20`
-- **USES** — Indicates the use of a resource `Java20Parser.ts:27-27`
+- **USES** — Represents a constant value for usage relationships `Java20Parser.ts:27-27`
 - **VAR** — Represents the keyword for variable declarations `Java20Lexer.ts:21-21`
-- **VAR** — Denotes a variable declaration `Java20Parser.ts:28-28`
+- **VAR** — Represents a constant value for variable declarations `Java20Parser.ts:28-28`
 - **visitAdditionalBound** — Parses an additional bound in a type declaration `Java20ParserVisitor.ts:410-410`
 - **visitAdditiveExpression** — Parses an additive expression `Java20ParserVisitor.ts:1634-1634`
 - **visitAmbiguousName** — Parses an ambiguous name in a method or field declaration `Java20ParserVisitor.ts:482-482`
@@ -2651,7 +3830,7 @@ Java20ParserVisitor.ts
 - **visitWildcard** — Parses a wildcard in a type declaration `Java20ParserVisitor.ts:434-434`
 - **visitWildcardBounds** — Parses bounds for a wildcard in a type declaration `Java20ParserVisitor.ts:440-440`
 - **visitYieldStatement** — Parses a yield statement `Java20ParserVisitor.ts:1442-1442`
-- **vocabulary** — Initializes the vocabulary for the Java 20 lexer with literal and symbolic names `Java20Lexer.ts:1045-1045`
+- **vocabulary** — Initializes a vocabulary object for the Java 20 lexer using literal and symbolic names `Java20Lexer.ts:1045-1045`
 - **vocabulary** — Initializes a vocabulary object with literal and symbolic names for Java 20 parsing `Java20Parser.ts:13650-13650`
 - **VOID** — Represents the keyword for void return types `Java20Lexer.ts:71-71`
 - **VOID** — Represents the void keyword in Java 20 `Java20Parser.ts:78-78`
@@ -2660,13 +3839,13 @@ Java20ParserVisitor.ts
 - **WHILE** — Represents the keyword for while loops `Java20Lexer.ts:73-73`
 - **WHILE** — Represents the while keyword in Java 20 `Java20Parser.ts:80-80`
 - **WITH** — Represents the keyword for with expressions `Java20Lexer.ts:22-22`
-- **WITH** — Specifies a context or scope `Java20Parser.ts:29-29`
+- **WITH** — Represents a constant value for with statements `Java20Parser.ts:29-29`
 - **WS** — Represents whitespace in the Java20Lexer `Java20Lexer.ts:130-130`
 - **WS** — Represents whitespace in the Java20 grammar `Java20Parser.ts:137-137`
 - **XOR_ASSIGN** — Represents the bitwise XOR assignment operator `Java20Lexer.ts:124-124`
 - **XOR_ASSIGN** — Represents the assignment operator for bitwise XOR `Java20Parser.ts:131-131`
 - **YIELD** — Represents the keyword for yield expressions `Java20Lexer.ts:23-23`
-- **YIELD** — Returns a value from a generator `Java20Parser.ts:30-30`
+- **YIELD** — Represents a constant value for yield expressions `Java20Parser.ts:30-30`
 
 ## Dependencies
 

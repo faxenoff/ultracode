@@ -94,7 +94,9 @@ The `callback-arg.ts` file is responsible for detecting callback patterns in cod
 - **generateDecoratorHypotheses** — Generates hypotheses based on decorator patterns `string-key.ts:28-58`
 - **generateForPair** — Generates proximity-based hypotheses for a specific source→target pair `proximity-bridge.ts:28-110`
 - **generateNameMatchHypotheses** — Generates hypotheses based on name-based register/dispatch matching `string-key.ts:61-126`
-- **nextId** — Generates a unique identifier for hypotheses `callback-arg.ts:17-19`, `interface-narrow.ts:16-18`, `proximity-bridge.ts:23-25`
+- **nextId** — Generates a unique identifier for hypotheses `callback-arg.ts:17-19`
+- **nextId** — Returns a unique identifier for hypothesis entities `interface-narrow.ts:16-18`
+- **nextId** — Generates a unique identifier for proximity-based hypotheses `proximity-bridge.ts:23-25`
 - **nextId** — Returns a unique identifier for hypotheses `string-key.ts:16-18`
 - **scorePair** — Computes the score for a pair of nodes based on shared lexemes and file/dir relationships `proximity-bridge.ts:113-135`
 - **sharesMeaningfulLexeme** — Determines if two nodes share a meaningful lexeme `proximity-bridge.ts:138-147`
@@ -107,8 +109,10 @@ The `callback-arg.ts` file is responsible for detecting callback patterns in cod
 
 ### Property
 - **bwdId** — Represents a node in the backward BFS frontier `proximity-bridge.ts:72-72`
-- **callerFile** — Not present in the provided code `string-key.ts:66-66`, `string-key.ts:67-67`
-- **callerId** — Not present in the provided code `string-key.ts:66-66`, `string-key.ts:67-67`
+- **callerFile** — Not present in the provided code `string-key.ts:66-66`
+- **callerFile** — Stores the file name associated with each dispatch call `string-key.ts:67-67`
+- **callerId** — Not present in the provided code `string-key.ts:66-66`
+- **callerId** — Stores the caller ID associated with each dispatch call `string-key.ts:67-67`
 - **fwdId** — Represents a node in the forward BFS frontier `proximity-bridge.ts:72-72`
 - **score** — Calculates the score for a pair of nodes based on their proximity `proximity-bridge.ts:72-72`
 

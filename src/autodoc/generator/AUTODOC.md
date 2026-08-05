@@ -174,7 +174,8 @@ The `autodoc/generator` module generates AUTODOC.md templates for changed direct
 - **changes** — Stores an array of objects containing file names and their respective change strings `general-docs.ts:250-250`
 - **changes** — Contains the changes made to the documentation `generate-handler-utils.ts:104-104`
 - **changes** — Represents an incremental update change `generate-handler-utils.ts:251-251`
-- **changes** — Represents an array of changes `generate-handler-utils.ts:254-254`, `generate-handler-utils.ts:360-360`
+- **changes** — Represents an array of changes `generate-handler-utils.ts:254-254`
+- **changes** — Represents an array of incremental changes `generate-handler-utils.ts:360-360`
 - **changes** — An array of changes made to the documentation `incremental-updater.ts:65-68`
 - **concurrency** — Number of parallel operations for directory scanning `doc-generator.ts:60-60`
 - **concurrency** — The number of parallel operations to perform `doc-generator.ts:33-33`
@@ -245,8 +246,8 @@ The `autodoc/generator` module generates AUTODOC.md templates for changed direct
 - **language** — Language for documentation generation `generate-handler-utils.ts:26-26`
 - **line** — Line number of a location `batch-autodoc.ts:98-98`
 - **line** — Not applicable `batch-autodoc.ts:98-98`
-- **line** — Represents a location with optional start and end line numbers `batch-autodoc.ts:125-125`
 - **line** — Represents the location of a line in a file, either as a string or an object with start and end line numbers `batch-autodoc.ts:125-125`
+- **line** — Represents a location with optional start and end line numbers `batch-autodoc.ts:125-125`
 - **line** — Line number of an entity `doc-generator.ts:228-228`
 - **line** — Represents a line in a file `doc-generator.ts:246-246`
 - **line** — Stores the line number of an entity `doc-generator.ts:287-287`
@@ -286,7 +287,12 @@ The `autodoc/generator` module generates AUTODOC.md templates for changed direct
 - **path** — Stores the path of a file `doc-generator.ts:41-41`
 - **path** — Represents the file path for documentation generation `generate-handler-utils.ts:51-51`
 - **path** — Represents the file path for the documentation generation `generate-handler-utils.ts:60-60`
-- **path** — Represents the path of a file `generate-handler-utils.ts:104-104`, `generate-handler-utils.ts:107-107`, `generate-handler-utils.ts:112-112`, `generate-handler-utils.ts:251-251`, `generate-handler-utils.ts:254-254`, `generate-handler-utils.ts:360-360`
+- **path** — Represents the path of a file `generate-handler-utils.ts:104-104`
+- **path** — Represents the file path `generate-handler-utils.ts:107-107`
+- **path** — Represents the file path as a string `generate-handler-utils.ts:112-112`
+- **path** — Returns a promise containing the number of files written and an array of incremental changes `generate-handler-utils.ts:251-251`
+- **path** — Initializes an array to store incremental changes `generate-handler-utils.ts:254-254`
+- **path** — Stores an array of incremental changes for paths and their associated changes `generate-handler-utils.ts:360-360`
 - **preview** — Specifies whether the documentation generation is in preview mode `generate-handler-utils.ts:96-96`
 - **preview** — Indicates whether a preview is enabled for the documentation `generate-handler-utils.ts:114-114`
 - **preview** — Boolean indicating whether to preview documentation `generate-handler-utils.ts:24-24`

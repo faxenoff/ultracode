@@ -99,16 +99,21 @@ output-formatter
 - **assignments** — Filters usages to find assignments `state-tracker.ts:377-377`
 - **awaits** — Counts the number of await steps in the path `path-enrichment.ts:79-79`
 - **best** — Selects the best matching entity `trace-engine.ts:757-761`
-- **blockingConditions** — Blocking conditions in the graph `trace-engine.ts:539-539`, `trace-engine.ts:540-545`
+- **blockingConditions** — Blocking conditions in the graph `trace-engine.ts:539-539`
+- **blockingConditions** — Maps conditions to their respective information `trace-engine.ts:540-545`
 - **branches** — Stores the branches of the path `graphology-path-builder.ts:1153-1153`
 - **buildCfgFromSource** — Builds a control flow graph from a source code string `cfg-builder.ts:132-237`
 - **buildNodeContext** — Function to build node context from entity and caller/callee IDs `trace-engine.ts:64-85`
 - **calculateConfidence** — Calculates the confidence score for a path `path-enrichment.ts:50-64`
-- **callChains** — Call chains in the graph `trace-engine.ts:548-553`, `trace-engine.ts:622-657`
-- **callChains** — Represents a sequence of method calls in a code flow `trace-engine.ts:649-652`
-- **calleeIds** — Stores callee IDs for a given entity `path-builder.ts:674-674`, `path-builder.ts:674-674`
-- **callerIds** — Stores caller IDs for a given entity `path-builder.ts:647-647`, `path-builder.ts:647-647`
-- **callers** — Callers in the graph `trace-engine.ts:529-535`, `trace-engine.ts:585-604`
+- **callChains** — Call chains in the graph `trace-engine.ts:548-553`
+- **callChains** — Represents a sequence of method calls in a code flow `trace-engine.ts:622-657`
+- **callChains** — Extracts chain names from entity IDs `trace-engine.ts:649-652`
+- **calleeIds** — Stores callee IDs for a given entity `path-builder.ts:674-674`
+- **calleeIds** — Filters and maps callee IDs from relationships `path-builder.ts:674-674`
+- **callerIds** — Stores caller IDs for a given entity `path-builder.ts:647-647`
+- **callerIds** — Filters and maps caller IDs from relationships `path-builder.ts:647-647`
+- **callers** — Callers in the graph `trace-engine.ts:529-535`
+- **callers** — Maps callers with probability to their respective information `trace-engine.ts:585-604`
 - **candidateIds** — Stores candidate entity IDs for further processing `trace-engine.ts:846-846`
 - **classifyLine** — Classifies a line of source code into a control flow strategy `cfg-builder.ts:78-89`
 - **classifyLine** — Determines the kind of line based on variable name and line content `condition-trace.ts:110-124`
@@ -125,13 +130,16 @@ output-formatter
 - **dfs** — Performs depth-first search on the graph `path-builder.ts:486-522`
 - **directMatches** — Finds direct matches for a given entity `trace-engine.ts:779-779`
 - **doInvalidateAndPreload** — Invalidates a graph cache entry and optionally preloads it based on usage count `graph-cache.ts:168-199`
-- **edgeTypeSummary** — Summarizes edge types in the graph `graphology-path-builder.ts:420-420`, `graphology-path-builder.ts:421-421`
+- **edgeTypeSummary** — Summarizes edge types in the graph `graphology-path-builder.ts:420-420`
+- **edgeTypeSummary** — Maps edge types and counts to a string summary `graphology-path-builder.ts:421-421`
 - **enrichPath** — Enriches a raw path into a detailed trace path with steps, confidence, summary, and warnings `path-enrichment.ts:137-182`
 - **enrichPaths** — Enriches multiple raw paths into detailed trace paths `path-enrichment.ts:187-189`
 - **entityMap** — Not present in the provided code `path-builder.ts:101-101`
-- **entryPoints** — Identifies entry points in a code flow `trace-engine.ts:1131-1131`, `trace-engine.ts:1131-1131`
+- **entryPoints** — Identifies entry points in a code flow `trace-engine.ts:1131-1131`
+- **entryPoints** — Filters chains to extract entry points `trace-engine.ts:1131-1131`
 - **escapeRegex** — Escapes a string for use in a regular expression `condition-trace.ts:162-164`
-- **exact** — Matches exactly a pattern `path-builder.ts:627-627`, `path-builder.ts:633-633`
+- **exact** — Matches exactly a pattern `path-builder.ts:627-627`
+- **exact** — Finds an entity by name or name ending `path-builder.ts:633-633`
 - **extractCondition** — Extracts conditions from source text `condition-types.ts:103-248`
 - **extractConditionsBackward** — Extracts condition lines backward from a target line, ensuring they are at less indentation `condition-trace.ts:136-160`
 - **extractContext** — Extracts the ProjectContext from the storage `graph-cache.ts:47-49`
@@ -179,16 +187,20 @@ output-formatter
 - **persistUsageToDb** — Persists the trace usage count to the database `graph-cache.ts:74-85`
 - **pointsPromises** — Promises for collecting decision points in parallel `condition-analyzer.ts:77-80`
 - **predecessors** — Represents the predecessors of a CFG node `reaching-definitions.ts:300-300`
-- **prioritized** — Prioritizes entities based on a specific criterion `trace-engine.ts:800-804`, `trace-engine.ts:817-821`
+- **prioritized** — Prioritizes entities based on a specific criterion `trace-engine.ts:800-804`
+- **prioritized** — Sorts suffix matches based on real code types `trace-engine.ts:817-821`
 - **queue** — Not present in the provided code `path-builder.ts:92-92`
-- **relevantPoints** — Filters cached decision points by entry points `condition-analyzer.ts:69-69`, `condition-analyzer.ts:69-69`
+- **relevantPoints** — Filters cached decision points by entry points `condition-analyzer.ts:69-69`
+- **relevantPoints** — Filters cached points to include only those that start with entry points' file paths `condition-analyzer.ts:69-69`
 - **resolveNgRxTarget** — Resolves the target entity ID for a given phantom entity by searching for a real entity with the same name `ngrx-resolution.ts:159-181`
 - **sameNameReal** — Identifies entities with the same name and real code type `trace-engine.ts:747-747`
 - **solveReachingDefinitions** — Solves the reaching definitions problem using iterative fixed-point analysis `reaching-definitions.ts:251-343`
 - **sorted** — Sorts entities based on a specific criterion `trace-engine.ts:782-786`
-- **steps** — Stores the steps taken during graph traversal `graphology-path-builder.ts:1006-1016`, `graphology-path-builder.ts:1032-1044`
+- **steps** — Stores the steps taken during graph traversal `graphology-path-builder.ts:1006-1016`
+- **steps** — Builds an array of trace steps from entity IDs, including attributes and conditions `graphology-path-builder.ts:1032-1044`
 - **suffixMatches** — Finds entities that match a given suffix `trace-engine.ts:814-814`
-- **summary** — Summary of the data flow analysis `data-flow-analyzer.ts:109-109`, `data-flow-analyzer.ts:109-109`
+- **summary** — Summary of the data flow analysis `data-flow-analyzer.ts:109-109`
+- **summary** — Calculates the total number of branching points in the data flows `data-flow-analyzer.ts:109-109`
 - **tracePath** — Traces path in the graph `trace-engine.ts:257-265`
 - **validBatch** — Not present in the provided code `path-builder.ts:96-96`
 
@@ -241,7 +253,8 @@ output-formatter
 - **determineStepType** — Determines the type of a step in the NgRx flow `ngrx-trace-engine.ts:292-317`
 - **difference** — Computes the bitwise difference between the current BitSet and another BitSet `reaching-definitions.ts:84-90`
 - **empty** — Creates an empty BitSet with a given size `reaching-definitions.ts:54-56`
-- **enrichPaths** — Enriches paths with additional information `graphology-path-builder.ts:1030-1054`, `path-builder.ts:557-559`
+- **enrichPaths** — Enriches paths with additional information `graphology-path-builder.ts:1030-1054`
+- **enrichPaths** — Builds adjacency graph from storage for efficient traversal using batch loading and caching `path-builder.ts:557-559`
 - **ensureLoaded** — Ensures that the graph is loaded `graphology-path-builder.ts:1060-1064`
 - **entityHandlesData** — Handles data flow analysis by tracing how data moves through the codebase `data-flow-analyzer.ts:357-385`
 - **entityToNode** — Converts an entity to a graph node `path-builder.ts:259-295`
@@ -477,8 +490,8 @@ output-formatter
 - **action** — Specifies the type of action associated with the entity `types.ts:120-120`
 - **action** — Describes the action in a step of data flow analysis `types.ts:370-370`
 - **action** — Action taken at a decision point `types.ts:549-549`
-- **actionChain** — An array of action types traversed in the flow path `ngrx-trace-engine.ts:60-60`
 - **actionChain** — Represents the chain of actions in the NgRx flow `ngrx-trace-engine.ts:155-155`
+- **actionChain** — An array of action types traversed in the flow path `ngrx-trace-engine.ts:60-60`
 - **actionFlow** — Represents the flow of actions in the NgRx trace `ngrx-trace-engine.ts:86-90`
 - **actionType** — The type of action associated with the step `ngrx-trace-engine.ts:47-47`
 - **adjacencyCache** — Cache for adjacency graphs `path-builder.ts:65-65`
@@ -496,10 +509,11 @@ output-formatter
 - **blockedPaths** — Paths that are blocked or unreachable from a given state `types.ts:477-477`
 - **blockingConditions** — Identifies conditions that block a function or method `types.ts:334-334`
 - **branches** — Represents a collection of decision paths with their conditions and branches `condition-analyzer.ts:390-390`
-- **branches** — Represents an array of conditional branches for the path builder `graphology-path-builder.ts:39-39`
-- **branches** — Represents the different branches in the trace flow `types.ts:126-126`, `types.ts:186-186`
-- **branches** — Indicates different paths or branches in the code flow `types.ts:382-382`
-- **branches** — Type of decision point `types.ts:620-620`
+- **branches** — Represents an array of conditional branches with a target string or undefined `graphology-path-builder.ts:39-39`
+- **branches** — Represents the different branches in the trace flow `types.ts:126-126`
+- **branches** — Indicates different paths or branches in the code flow `types.ts:186-186`
+- **branches** — Type of decision point `types.ts:382-382`
+- **branches** — Represents the branches of a reference `types.ts:620-620`
 - **branchingPoints** — Represents the points in the code flow where branching occurs `types.ts:431-431`
 - **builder** — A GraphologyPathBuilder instance used for building paths in a graph `graph-cache.ts:27-27`
 - **callChains** — Represents the chain of function calls `types.ts:338-338`
@@ -522,19 +536,23 @@ output-formatter
 - **combinations** — Stores combinations of behavior types for data flow analysis `data-flow-analyzer.ts:397-397`
 - **combinations** — Represents combinations of behaviors in the code flow `types.ts:426-426`
 - **complexity** — Type of action in a trace step `types.ts:628-631`
-- **condition** — Represents a condition in the analysis `condition-analyzer.ts:293-293`, `condition-analyzer.ts:313-313`
-- **condition** — Analyzes branching conditions, guards, and decision points `condition-analyzer.ts:390-390`
+- **condition** — Represents a condition in the analysis `condition-analyzer.ts:293-293`
+- **condition** — Analyzes branching conditions, guards, and decision points `condition-analyzer.ts:313-313`
+- **condition** — Represents a path with steps that include actions, conditions, and branches `condition-analyzer.ts:390-390`
 - **condition** — Evaluates conditions for data flow analysis `data-flow-analyzer.ts:401-401`
-- **condition** — Node condition `graphology-path-builder.ts:39-39`, `graphology-path-builder.ts:40-40`
-- **condition** — Condition string for branch annotations `graphology-path-builder.ts:69-69`
+- **condition** — Condition string for branch annotations `graphology-path-builder.ts:40-40`, `graphology-path-builder.ts:69-69`
+- **condition** — Node condition `graphology-path-builder.ts:39-39`
 - **condition** — Represents a conditional statement in the trace flow `types.ts:124-124`
-- **condition** — Condition that must be met for a trace to occur `types.ts:259-259`, `types.ts:271-271`
-- **condition** — Represents a logical condition in the code flow `types.ts:380-380`
-- **condition** — Condition associated with a decision point `types.ts:547-547`
-- **condition** — Type of action in a trace step `types.ts:620-620`, `types.ts:621-621`
+- **condition** — Condition that must be met for a trace to occur `types.ts:259-259`
+- **condition** — Represents a logical condition in the code flow `types.ts:271-271`
+- **condition** — Condition associated with a decision point `types.ts:380-380`
+- **condition** — Type of action in a trace step `types.ts:547-547`
+- **condition** — Represents a condition for branches `types.ts:620-620`
+- **condition** — Represents a condition for loops `types.ts:621-621`
 - **conditionalHint** — Property indicating conditional hint in the NodeFlowContext `trace-engine.ts:59-59`
-- **conditionCount** — Count of conditional paths in the current traversal `path-builder.ts:48-48`
-- **conditionCount** — Counts the number of conditional paths in the graph traversal `path-builder.ts:356-356`, `path-builder.ts:421-421`, `path-builder.ts:429-429`
+- **conditionCount** — Counts the number of conditional paths in the graph traversal `path-builder.ts:356-356`
+- **conditionCount** — Represents a numeric value `path-builder.ts:421-421`
+- **conditionCount** — Count of conditional paths in the current traversal `path-builder.ts:48-48`, `path-builder.ts:429-429`
 - **conditionCount** — Type of decision point `types.ts:602-602`
 - **conditions** — Array of conditions for a variable dependency `condition-trace.ts:26-26`
 - **conditions** — Stores an array of conditions `condition-types.ts:74-74`
@@ -567,23 +585,29 @@ output-formatter
 - **decisionPointCache** — Caches decision points for efficient retrieval `condition-analyzer.ts:37-37`
 - **decisionPoints** — Type of decision point `types.ts:573-573`
 - **definitions** — An array of definitions `reaching-definitions.ts:32-32`
-- **depth** — Represents the depth of a node in the graph `graphology-path-builder.ts:777-777`, `graphology-path-builder.ts:778-778`, `graphology-path-builder.ts:784-784`, `graphology-path-builder.ts:785-785`
-- **depth** — Indicates the depth of a node in the graph traversal `graphology-path-builder.ts:792-792`, `graphology-path-builder.ts:920-920`, `graphology-path-builder.ts:937-937`
+- **depth** — Represents the depth of a node in the graph `graphology-path-builder.ts:777-777`
+- **depth** — Indicates the depth of a node in the graph traversal `graphology-path-builder.ts:778-778`
+- **depth** — Stores the depth of an entry point in an array `graphology-path-builder.ts:784-784`
+- **depth** — Stores the depth of a caller in an array `graphology-path-builder.ts:785-785`
+- **depth** — Stores the depth of a node in a queue `graphology-path-builder.ts:792-792`
+- **depth** — Initializes a forward queue with a node and its depth `graphology-path-builder.ts:920-920`
+- **depth** — Initializes a backward queue with a node and its depth `graphology-path-builder.ts:937-937`
 - **depth** — Represents the depth of the NgRx flow trace `ngrx-trace-engine.ts:156-156`
-- **depth** — Depth of the current traversal `path-builder.ts:46-46`, `path-builder.ts:92-92`
-- **depth** — Tracks the current depth in the graph traversal `path-builder.ts:146-146`
+- **depth** — Tracks the current depth in the graph traversal `path-builder.ts:92-92`, `path-builder.ts:146-146`
+- **depth** — Depth of the current traversal `path-builder.ts:46-46`
 - **depth** — Represents the depth of a node in a tree structure `types.ts:239-239`
 - **description** — Description of the side effect `graphology-path-builder.ts:78-78`
 - **description** — A description of the step `ngrx-trace-engine.ts:49-49`
 - **description** — A description of a state or scenario `types.ts:489-489`
-- **dfs** — Defines a function to perform depth-first search on a node with specified depth, weight, and condition count `path-builder.ts:56-56`
+- **dfs** — Parses a node and its attributes to build a path `path-builder.ts:56-56`
 - **diagnosis** — Provides a diagnosis of a code issue `types.ts:340-340`
 - **directEffects** — Parses state usages to count direct and indirect effects `state-tracker.ts:409-409`
 - **directEffects** — Indicates direct effects of a decision point `types.ts:512-512`
 - **dispatched** — Indicates actions that have been dispatched `ngrx-trace-engine.ts:87-87`
 - **dispatched** — Indicates an action has been dispatched `ngrx-trace-engine.ts:370-370`
 - **documentation** — Represents documentation for the trace flow `types.ts:144-144`
-- **edges** — Array of edges in the method's control flow graph `cfg-builder.ts:48-48`, `cfg-builder.ts:97-97`
+- **edges** — Array of edges in the method's control flow graph `cfg-builder.ts:48-48`
+- **edges** — Stores an array of configuration graph edges `cfg-builder.ts:97-97`
 - **edges** — Number of edges in the graph `graphology-path-builder.ts:101-101`
 - **edges** — Edges in the trace flow result `output-formatter.ts:47-47`
 - **edges** — Edges in the graph `trace-engine.ts:135-135`
@@ -591,13 +615,15 @@ output-formatter
 - **effects** — Effects of a decision point `types.ts:553-553`
 - **enabledFeatures** — Features that are enabled in the current state `types.ts:479-479`
 - **entity** — Entity identifier in the trace `graphology-path-builder.ts:61-61`
-- **entity** — Represents an entity in the graph `path-builder.ts:643-643`, `path-builder.ts:651-651`
+- **entity** — Represents an entity in the graph `path-builder.ts:643-643`
+- **entity** — Represents an entity with a probability `path-builder.ts:651-651`
 - **entity** — Represents the entity name in the trace step `types.ts:112-112`
 - **entityId** — Entity ID for semantic search results `data-flow-analyzer.ts:26-26`
 - **entityId** — Unique identifier for the entity `graphology-path-builder.ts:62-62`
-- **entityId** — The ID of the entity associated with the step `ngrx-trace-engine.ts:44-44`
 - **entityId** — Identifies an entity in the NgRx flow `ngrx-trace-engine.ts:153-153`
-- **entityId** — Property representing the entity ID in the NodeFlowContext `trace-engine.ts:34-34`, `trace-engine.ts:54-54`
+- **entityId** — The ID of the entity associated with the step `ngrx-trace-engine.ts:44-44`
+- **entityId** — Property representing the entity ID in the NodeFlowContext `trace-engine.ts:34-34`
+- **entityId** — Represents the unique identifier for an entity `trace-engine.ts:54-54`
 - **entityId** — Represents the unique identifier of an entity `types.ts:114-114`
 - **entityId** — Unique identifier for an entity `types.ts:253-253`
 - **entityId** — Identifies an entity uniquely `types.ts:327-327`
@@ -614,14 +640,16 @@ output-formatter
 - **exceptions** — Type of action in a trace step `types.ts:623-623`
 - **existenceDeps** — Array of variable dependencies indicating existence `condition-trace.ts:34-34`
 - **exitId** — ID of the exit node in the method's control flow graph `cfg-builder.ts:50-50`
-- **file** — Node file `graphology-path-builder.ts:34-34`
-- **file** — File path where the entity is located `graphology-path-builder.ts:63-63`, `types.ts:255-255`
+- **file** — File path where the entity is located `graphology-path-builder.ts:63-63`
 - **file** — Stores the file path associated with a node or edge `graphology-path-builder.ts:367-367`
-- **file** — Represents the file where a node or edge is located `graphology-path-builder.ts:777-777`, `graphology-path-builder.ts:784-784`
+- **file** — Represents the file where a node or edge is located `graphology-path-builder.ts:777-777`
+- **file** — Node file `graphology-path-builder.ts:34-34`, `graphology-path-builder.ts:784-784`
 - **file** — The file where the step is defined `ngrx-trace-engine.ts:45-45`
 - **file** — Stores the name of the file associated with an entity `types.ts:116-116`
-- **file** — References the file where an entity is defined `types.ts:328-328`
-- **file** — Type of decision point `types.ts:571-571`, `types.ts:612-612`
+- **file** — References the file where an entity is defined `types.ts:255-255`
+- **file** — Type of decision point `types.ts:328-328`
+- **file** — Represents the entry points of a reference `types.ts:571-571`
+- **file** — Represents the file of a reference `types.ts:612-612`
 - **flow** — Represents the sequence of data flow steps `types.ts:395-395`
 - **flowDiagram** — Type of decision point `types.ts:575-577`
 - **format** — The output format for the trace `ngrx-trace-engine.ts:76-76`
@@ -630,12 +658,16 @@ output-formatter
 - **found** — Found status in the trace `graphology-path-builder.ts:88-88`
 - **found** — Indicates whether a node was found `types.ts:216-216`
 - **from** — Source node ID of the edge `cfg-builder.ts:41-41`
-- **from** — The starting point for the trace `ngrx-trace-engine.ts:68-68`
 - **from** — Specifies the starting point of the NgRx flow trace `ngrx-trace-engine.ts:83-83`
-- **from** — Starting point (semantic search query or entity name) `types.ts:78-78`, `types.ts:98-98`, `types.ts:196-196`
+- **from** — The starting point for the trace `ngrx-trace-engine.ts:68-68`
+- **from** — Starting point (semantic search query or entity name) `types.ts:78-78`
+- **from** — Represents the source of a reference `types.ts:98-98`
+- **from** — Specifies the source of a reference `types.ts:196-196`
 - **fromCondition** — Represents the CFG node ID from which the narrowing originates `condition-types.ts:69-69`
-- **getProjectContext** — Extracts the ProjectContext from the storage `graph-cache.ts:39-39`, `graph-cache.ts:48-48`
-- **getProjectContext** — Retrieves the project context `graphology-path-builder.ts:189-189`, `graphology-path-builder.ts:190-190`
+- **getProjectContext** — Extracts the ProjectContext from the storage `graph-cache.ts:39-39`
+- **getProjectContext** — Returns the project context from the storage object `graph-cache.ts:48-48`
+- **getProjectContext** — Retrieves the project context `graphology-path-builder.ts:189-189`
+- **getProjectContext** — Retrieves the project context from storage if available `graphology-path-builder.ts:190-190`
 - **graph** — Represents the graph structure `graphology-path-builder.ts:146-146`
 - **graph** — Adjacency graph for efficient traversal `path-builder.ts:55-55`
 - **graphologyBuilder** — Builder for graphology `trace-engine.ts:99-99`
@@ -648,11 +680,17 @@ output-formatter
 - **hasConditionalLogic** — Property indicating whether the node has conditional logic `trace-engine.ts:58-58`
 - **hasTransformation** — Indicates whether a transformation is present `trace-engine.ts:57-57`
 - **id** — Unique identifier for a node `cfg-builder.ts:32-32`
-- **id** — Represents an identifier for a node or edge `graphology-path-builder.ts:367-367`, `graphology-path-builder.ts:777-777`, `graphology-path-builder.ts:778-778`, `graphology-path-builder.ts:784-784`, `graphology-path-builder.ts:785-785`
-- **id** — Represents the unique identifier for a node in the graph `graphology-path-builder.ts:792-792`, `graphology-path-builder.ts:920-920`, `graphology-path-builder.ts:937-937`
+- **id** — Represents an identifier for a node or edge `graphology-path-builder.ts:367-367`
+- **id** — Represents the unique identifier for a node in the graph `graphology-path-builder.ts:777-777`
+- **id** — Stores the ID of a caller in an array `graphology-path-builder.ts:778-778`
+- **id** — Stores the ID of an entry point in an array `graphology-path-builder.ts:784-784`
+- **id** — Stores the ID of a node in a queue `graphology-path-builder.ts:785-785`
+- **id** — Stores the ID of a node in a forward queue `graphology-path-builder.ts:792-792`
+- **id** — Initializes a backward queue with a node and its depth `graphology-path-builder.ts:920-920`
+- **id** — Initializes a backward queue with an initial node and depth `graphology-path-builder.ts:937-937`
 - **id** — The unique identifier for the flow path `ngrx-trace-engine.ts:56-56`
-- **id** — Not present in the provided code `path-builder.ts:92-92`
 - **id** — Represents a unique identifier for a graph node `path-builder.ts:146-146`
+- **id** — Not present in the provided code `path-builder.ts:92-92`
 - **id** — Represents an identifier for a trace element `types.ts:156-156`
 - **id** — Unique identifier for a decision point `types.ts:541-541`
 - **id** — Type of decision point `types.ts:609-609`
@@ -679,11 +717,12 @@ output-formatter
 - **likelihood** — Likelihood of a trace occurring `types.ts:303-303`
 - **limit** — Limit parameter for semantic search `data-flow-analyzer.ts:26-26`
 - **limit** — Constant for limiting search results `trace-engine.ts:34-34`
+- **line** — Line number in the file where the entity is located `graphology-path-builder.ts:64-64`
 - **line** — Node line number `graphology-path-builder.ts:35-35`
-- **line** — Line number in the file where the entity is located `graphology-path-builder.ts:64-64`, `types.ts:257-257`
 - **line** — The line number in the file where the step is defined `ngrx-trace-engine.ts:46-46`
 - **line** — Indicates the line number within the file where the entity is defined `types.ts:118-118`
-- **line** — Type of decision point `types.ts:613-613`
+- **line** — Type of decision point `types.ts:257-257`
+- **line** — Represents the line number of a reference `types.ts:613-613`
 - **linearTraceSummary** — Provides a summary of the linear trace `types.ts:214-214`
 - **loaded** — Indicates whether the graph is loaded `graphology-path-builder.ts:147-147`
 - **loadedEdgeTypes** — Stores the types of edges that have been loaded `graphology-path-builder.ts:148-148`
@@ -693,8 +732,9 @@ output-formatter
 - **loadTimeMs** — Stores the load time of the graph in milliseconds `types.ts:213-213`
 - **location** — Location in the code where the trace occurs `types.ts:273-273`
 - **location** — Specifies the location of a step in data flow analysis `types.ts:368-368`
-- **location** — The location or position in the code where a state is used `types.ts:461-461`, `types.ts:491-491`
-- **location** — Location of a decision point in the code `types.ts:543-543`
+- **location** — The location or position in the code where a state is used `types.ts:461-461`
+- **location** — Location of a decision point in the code `types.ts:491-491`
+- **location** — Represents the location of a reference `types.ts:543-543`
 - **loops** — Node loops information `graphology-path-builder.ts:40-40`
 - **loops** — Type of action in a trace step `types.ts:621-621`
 - **maxDepth** — The maximum depth of the trace `ngrx-trace-engine.ts:72-72`
@@ -706,29 +746,35 @@ output-formatter
 - **mermaid** — Outputs the NgRx flow trace in Mermaid format `ngrx-trace-engine.ts:91-91`
 - **mermaid** — Optionally stores a Mermaid diagram string `types.ts:206-206`
 - **mermaid** — Type of decision point `types.ts:576-576`
-- **metadata** — Node metadata `graphology-path-builder.ts:36-36`
 - **metadata** — Node attributes in graphology graph `graphology-path-builder.ts:53-53`
+- **metadata** — Node metadata `graphology-path-builder.ts:36-36`
 - **minSimilarity** — Minimum similarity threshold for semantic search `data-flow-analyzer.ts:26-26`
 - **minSimilarity** — Constant for minimum similarity threshold `trace-engine.ts:34-34`
 - **modified** — Represents whether a trace element has been modified `types.ts:172-172`
 - **modifiedBy** — Entity or user that modified the state `types.ts:287-287`
 - **mostLikely** — Indicates the most likely cause of a code issue `types.ts:317-317`
-- **name** — Represents the name of the entity being analyzed `data-flow-analyzer.ts:369-369`, `data-flow-analyzer.ts:370-370`
-- **name** — Node name `graphology-path-builder.ts:32-32`
-- **name** — Represents the name of a node or edge `graphology-path-builder.ts:777-777`, `graphology-path-builder.ts:778-778`, `graphology-path-builder.ts:784-784`, `graphology-path-builder.ts:785-785`
+- **name** — Represents the name of the entity being analyzed `data-flow-analyzer.ts:369-369`
+- **name** — Extracts the name of a property and checks if it includes the data variable name `data-flow-analyzer.ts:370-370`
+- **name** — Represents the name of a node or edge `graphology-path-builder.ts:777-777`
+- **name** — Stores the name of an entry point in an array `graphology-path-builder.ts:778-778`
+- **name** — Stores the name of a caller in an array `graphology-path-builder.ts:784-784`
+- **name** — Node name `graphology-path-builder.ts:32-32`, `graphology-path-builder.ts:785-785`
 - **name** — Represents the name of a graph node `path-builder.ts:286-286`
 - **name** — Extracts the name from a call object `state-tracker.ts:158-158`
 - **name** — Filters usages to find assignments `state-tracker.ts:288-288`
 - **name** — Name of an entity or function `types.ts:251-251`
 - **name** — Represents the name of an entity `types.ts:326-326`
-- **name** — Type of action in a trace step `types.ts:571-571`, `types.ts:610-610`, `types.ts:626-626`
+- **name** — Type of action in a trace step `types.ts:571-571`
+- **name** — Represents the name of a reference `types.ts:610-610`
+- **name** — Represents a name for calls `types.ts:626-626`
 - **narrowedTo** — Represents the type to which the variable is narrowed `condition-types.ts:68-68`
 - **narrowedTypes** — Holds an array of narrowed types `condition-types.ts:77-77`
 - **negated** — Indicates whether the condition is negated `condition-types.ts:53-53`
 - **nextId** — Next available ID for a new node `cfg-builder.ts:98-98`
 - **nodeCache** — Cache for graph nodes `path-builder.ts:66-66`
 - **nodeIdToIdx** — A map from CFG node IDs to indices in reachingIn and reachingOut arrays `reaching-definitions.ts:38-38`
-- **nodes** — Array of nodes in the method's control flow graph `cfg-builder.ts:47-47`, `cfg-builder.ts:96-96`
+- **nodes** — Array of nodes in the method's control flow graph `cfg-builder.ts:47-47`
+- **nodes** — Stores an array of configuration graph nodes `cfg-builder.ts:96-96`
 - **nodes** — Number of nodes in the graph `graphology-path-builder.ts:100-100`
 - **nodes** — Nodes in the trace flow result `output-formatter.ts:47-47`
 - **nodes** — Nodes in the graph `trace-engine.ts:135-135`
@@ -748,7 +794,9 @@ output-formatter
 - **outputType** — Property representing output type in the NodeFlowContext `trace-engine.ts:56-56`
 - **paramMutationCount** — Count of parameter mutations in the data flow `data-flow-analyzer.ts:220-220`
 - **path** — Represents a path in the NgRx flow `ngrx-trace-engine.ts:154-154`
-- **path** — Represents a path in the graph traversal `path-builder.ts:353-353`, `path-builder.ts:418-418`, `path-builder.ts:426-426`
+- **path** — Represents a path in the graph traversal `path-builder.ts:353-353`
+- **path** — Represents a list of strings `path-builder.ts:418-418`
+- **path** — Represents a list of nodes in a path `path-builder.ts:426-426`
 - **path** — Represents the path taken in the code flow `types.ts:411-411`
 - **pathBuilder** — Builder for path in graphology `trace-engine.ts:98-98`
 - **pathFeasibility** — Represents the feasibility of a path in the control flow graph `condition-types.ts:73-73`
@@ -761,8 +809,10 @@ output-formatter
 - **postconditions** — Represents the conditions that must be met after a trace step `types.ts:142-142`
 - **preconditions** — Represents the conditions that must be met before a trace step `types.ts:140-140`
 - **probability** — Probability of the branch `graphology-path-builder.ts:71-71`
-- **probability** — Represents the probability of a node being called `graphology-path-builder.ts:778-778`, `graphology-path-builder.ts:785-785`
-- **probability** — Represents the probability of a path `path-builder.ts:643-643`, `path-builder.ts:651-651`
+- **probability** — Represents the probability of a node being called `graphology-path-builder.ts:778-778`
+- **probability** — Stores the probability of a caller in an array `graphology-path-builder.ts:785-785`
+- **probability** — Represents the probability of a path `path-builder.ts:643-643`
+- **probability** — Represents a probability value `path-builder.ts:651-651`
 - **probability** — Probability that a call will occur `types.ts:261-261`
 - **question** — Represents a backwards question `types.ts:237-237`
 - **reachablePaths** — Paths that can be reached from a given state `types.ts:475-475`
@@ -773,14 +823,17 @@ output-formatter
 - **recommendation** — Recommendation or suggestion for improving the code `types.ts:277-277`
 - **recommendation** — A recommendation or suggestion for resolving a state or scenario issue `types.ts:495-495`
 - **reducerId** — Identifier for a reducer `ngrx-resolution.ts:26-26`
-- **relationships** — Represents relationships between nodes in the graph `path-builder.ts:354-354`, `path-builder.ts:419-419`, `path-builder.ts:427-427`
+- **relationships** — Represents relationships between nodes in the graph `path-builder.ts:354-354`
+- **relationships** — Stores a list of strings `path-builder.ts:419-419`
+- **relationships** — Stores a list of relationships between nodes `path-builder.ts:427-427`
 - **relationships** — Type of decision point `types.ts:598-598`
 - **requiredValue** — Required value for a state or condition `types.ts:289-289`
 - **resolveEntityCache** — Resolves entity cache `trace-engine.ts:103-103`
 - **result** — Represents the result of a trace flow analysis `types.ts:409-409`
 - **rippleEffects** — Describes the ripple effects of a decision point `types.ts:511-515`
 - **risk** — The risk associated with a state or scenario `types.ts:493-493`
-- **scenario** — Defines a scenario for analysis `types.ts:527-527`, `types.ts:569-569`
+- **scenario** — Defines a scenario for analysis `types.ts:527-527`
+- **scenario** — Represents the scenario of a reference `types.ts:569-569`
 - **scenarioAnalysis** — The analysis of a scenario `types.ts:507-507`
 - **scenarios** — A collection of scenarios to analyze `types.ts:448-451`
 - **scope** — The scope or context in which a state or scenario is analyzed `types.ts:453-453`
@@ -801,7 +854,8 @@ output-formatter
 - **sourceLine** — The source line number where a variable is defined `reaching-definitions.ts:27-27`
 - **sourceStart** — Start index of the source line for the node `cfg-builder.ts:35-35`
 - **state** — State of the system at a particular point in time `types.ts:285-285`
-- **state** — Represents the current state of the system `types.ts:446-446`, `types.ts:503-503`
+- **state** — Represents the current state of the system `types.ts:446-446`
+- **state** — Represents the current state of a reference `types.ts:503-503`
 - **stateChanges** — Tracks changes in the state during the NgRx trace `ngrx-trace-engine.ts:89-89`
 - **stateChanges** — Tracks changes in the state during an NgRx flow `ngrx-trace-engine.ts:372-372`
 - **stateChanges** — Represents changes in the state during the trace flow `types.ts:130-130`
@@ -815,7 +869,7 @@ output-formatter
 - **stateType** — Type of state (e.g., boolean, number, string) `types.ts:291-291`
 - **step** — Represents a step in data flow analysis `types.ts:366-366`
 - **steps** — Represents steps in the analysis process `condition-analyzer.ts:390-390`
-- **steps** — Stores an array of linear trace steps for the path builder `graphology-path-builder.ts:87-87`
+- **steps** — Stores an array of linear trace steps `graphology-path-builder.ts:87-87`
 - **steps** — An array of steps in the flow path `ngrx-trace-engine.ts:58-58`
 - **steps** — Represents steps in the trace flow `types.ts:160-160`
 - **storage** — Stores graph data for analysis `condition-analyzer.ts:36-36`
@@ -832,14 +886,17 @@ output-formatter
 - **summary** — Represents a summary of the trace flow `types.ts:162-162`
 - **summary** — Represents a summary of the code flow analysis `types.ts:429-434`
 - **summary** — Type of decision point `types.ts:579-584`
-- **target** — Represents a target in the analysis `condition-analyzer.ts:293-293`, `condition-analyzer.ts:313-313`
-- **target** — Node target `graphology-path-builder.ts:39-39`, `graphology-path-builder.ts:41-41`
-- **target** — Target string for branch annotations `graphology-path-builder.ts:70-70`
+- **target** — Represents a target in the analysis `condition-analyzer.ts:293-293`
+- **target** — Evaluates the impact of a decision point based on its type and target condition `condition-analyzer.ts:313-313`
+- **target** — Target string for branch annotations `graphology-path-builder.ts:41-41`, `graphology-path-builder.ts:70-70`
+- **target** — Node target `graphology-path-builder.ts:39-39`
 - **target** — Represents the target node in a graph relationship `path-builder.ts:286-286`
 - **target** — Extracts the target from a call object `state-tracker.ts:158-158`
 - **target** — Represents the target string `types.ts:235-235`
 - **target** — Specifies the target entity for analysis `types.ts:325-330`
-- **target** — Type of decision point `types.ts:620-620`, `types.ts:622-622`, `types.ts:626-626`
+- **target** — Type of decision point `types.ts:620-620`
+- **target** — Represents a target for awaits `types.ts:622-622`
+- **target** — Represents a target for calls `types.ts:626-626`
 - **targetEntityId** — Stores the unique identifier of the target entity `types.ts:211-211`
 - **targetEntityName** — Represents the name of the target entity `types.ts:212-212`
 - **targetState** — Identifies the target state for data flow analysis `types.ts:354-354`
@@ -848,9 +905,11 @@ output-formatter
 - **timeMs** — Represents the time in milliseconds for a node or edge `graphology-path-builder.ts:779-779`
 - **timeMs** — Stores the time taken in milliseconds `types.ts:217-217`
 - **to** — Destination node ID of the edge `cfg-builder.ts:42-42`
-- **to** — The ending point for the trace `ngrx-trace-engine.ts:70-70`
 - **to** — Specifies the ending point of the NgRx flow trace `ngrx-trace-engine.ts:84-84`
-- **to** — Ending point (semantic search query or entity name) `types.ts:80-80`, `types.ts:100-100`, `types.ts:198-198`
+- **to** — The ending point for the trace `ngrx-trace-engine.ts:70-70`
+- **to** — Ending point (semantic search query or entity name) `types.ts:80-80`
+- **to** — Represents the destination of a reference `types.ts:100-100`
+- **to** — Specifies the destination of a reference `types.ts:198-198`
 - **totalDecisionPoints** — Counts the total number of decision points in the analysis `condition-analyzer.ts:468-468`
 - **totalDecisionPoints** — Type of decision point `types.ts:580-580`
 - **totalDefs** — Total number of variable definitions found `condition-trace.ts:37-37`
@@ -859,13 +918,17 @@ output-formatter
 - **trackTransformations** — Tracks transformations in data flow analysis `types.ts:358-358`
 - **transformation** — Describes the process of changing data from one form to another `types.ts:376-376`
 - **triggeredBy** — Triggers of a decision point `types.ts:559-559`
-- **type** — Type of the node `cfg-builder.ts:33-33`, `cfg-builder.ts:43-43`
-- **type** — Node type `graphology-path-builder.ts:33-33`, `graphology-path-builder.ts:40-40`, `graphology-path-builder.ts:42-42`, `graphology-path-builder.ts:51-51`
-- **type** — Type of side effect `graphology-path-builder.ts:77-77`
+- **type** — Type of the node `cfg-builder.ts:33-33`
+- **type** — Represents the type of a configuration graph edge `cfg-builder.ts:43-43`
+- **type** — Represents a string type `graphology-path-builder.ts:51-51`, `graphology-path-builder.ts:77-77`
+- **type** — Node type `graphology-path-builder.ts:33-33`
+- **type** — Type of side effect `graphology-path-builder.ts:40-40`
+- **type** — Represents an optional array of exception types `graphology-path-builder.ts:42-42`
 - **type** — The type of the step in the flow `ngrx-trace-engine.ts:42-42`
 - **type** — Type of a decision point `types.ts:545-545`
 - **type** — Type of decision point `types.ts:611-611`
-- **type** — Type of action in a trace step `types.ts:621-621`, `types.ts:623-623`
+- **type** — Type of action in a trace step `types.ts:621-621`
+- **type** — Represents a type for exceptions `types.ts:623-623`
 - **unconditionalDefs** — Array of variable dependencies indicating unconditional assignment `condition-trace.ts:36-36`
 - **unsafeCastCount** — Count of unsafe casts in the data flow `data-flow-analyzer.ts:233-233`
 - **usage** — The usage or application of a state in the code `types.ts:463-463`
@@ -875,13 +938,15 @@ output-formatter
 - **value** — Represents the value in a condition `condition-types.ts:52-52`
 - **value** — The value associated with a state or scenario `types.ts:449-449`
 - **valueDeps** — Array of variable dependencies indicating value `condition-trace.ts:35-35`
-- **variable** — Represents the variable in a condition `condition-types.ts:50-50`, `condition-types.ts:67-67`
+- **variable** — Represents the variable in a condition `condition-types.ts:50-50`
+- **variable** — Represents a string variable `condition-types.ts:67-67`
 - **variable** — A variable name in a definition `reaching-definitions.ts:25-25`
 - **variable** — Represents the variable name in a state change `types.ts:96-96`
 - **warnings** — Represents warnings related to the trace flow `types.ts:164-164`
 - **weight** — Edge weight `graphology-path-builder.ts:52-52`
-- **weight** — Weight of the current traversal `path-builder.ts:47-47`
-- **weight** — Represents the weight of a path in the graph traversal `path-builder.ts:355-355`, `path-builder.ts:420-420`, `path-builder.ts:428-428`
+- **weight** — Represents the weight of a path in the graph traversal `path-builder.ts:355-355`
+- **weight** — Represents a numeric value `path-builder.ts:420-420`
+- **weight** — Weight of the current traversal `path-builder.ts:47-47`, `path-builder.ts:428-428`
 - **weight** — Type of decision point `types.ts:600-600`
 - **weights** — Type of action in a trace step `types.ts:645-645`
 - **weightThreshold** — Defines the threshold weight for a node in a tree structure `types.ts:661-661`

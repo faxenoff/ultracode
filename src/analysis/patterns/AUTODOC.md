@@ -90,8 +90,10 @@ The `patterns` module is structured around several key components: an exemplar s
 ## 🤖 Entity Listing
 
 ### Function
-- **a** — Represents a variable or value `structural-detector.ts:557-560`, `structural-detector.ts:605-608`, `structural-detector.ts:666-669`
-- **a** — Represents an entity `structural-detector.ts:711-714`
+- **a** — Represents a variable or value `structural-detector.ts:557-560`
+- **a** — Represents an entity `structural-detector.ts:605-608`
+- **a** — Adds the total and passed counts from another object to the current object `structural-detector.ts:666-669`
+- **a** — Adds the total and passed counts from another object `structural-detector.ts:711-714`
 - **add** — Adds an entity to the evaluation `structural-detector.ts:487-490`
 - **antiPatterns** — Identifies anti-patterns in the code `pattern-engine.ts:295-295`
 - **applyPagination** — Applies pagination to the results of pattern detection `pattern-engine.ts:313-313`
@@ -112,7 +114,8 @@ The `patterns` module is structured around several key components: an exemplar s
 - **needsSemantic** — Filters structural candidates that require semantic validation `semantic-validator.ts:34-34`
 - **noGraph** — Indicates if a graph is not needed for evaluation `structural-detector.ts:310-310`
 - **optimizations** — Identifies optimization opportunities in the code `pattern-engine.ts:298-298`
-- **patternMap** — Maps detected patterns to their respective entities `pattern-engine.ts:258-258`, `pattern-engine.ts:365-365`
+- **patternMap** — Maps detected patterns to their respective entities `pattern-engine.ts:258-258`
+- **patternMap** — Maps pattern IDs to their respective pattern objects `pattern-engine.ts:365-365`
 - **registerDetector** — Registers a custom detector function with a given name `structural-detector.ts:25-27`
 - **registerDetectors** — Registers multiple custom detectors at once `structural-detector.ts:29-33`
 - **stripCandidates** — Removes candidates that do not meet the criteria for pattern detection `pattern-engine.ts:182-193`
@@ -263,9 +266,12 @@ The `patterns` module is structured around several key components: an exemplar s
 - **codeSnippet** — Represents a snippet of code `types.ts:198-198`
 - **cognitiveComplexity** — Evaluates the mental effort required to understand a function or method `structural-detector.ts:85-85`
 - **combinedScore** — Represents the combined score of a pattern match `types.ts:195-195`
-- **confidence** — Stores the confidence level of a match `structural-detector.ts:206-206`, `structural-detector.ts:253-253`
-- **confidence** — Confidence level of a detected pattern `types.ts:241-241`, `types.ts:256-256`
-- **count** — Counts the number of detected patterns `pattern-engine.ts:421-421`, `pattern-engine.ts:422-422`
+- **confidence** — Stores the confidence level of a match `structural-detector.ts:206-206`
+- **confidence** — Stores the confidence level of a structural detection `structural-detector.ts:253-253`
+- **confidence** — Confidence level of a detected pattern `types.ts:241-241`
+- **confidence** — Indicates the confidence level of a match `types.ts:256-256`
+- **count** — Counts the number of detected patterns `pattern-engine.ts:421-421`
+- **count** — Stores counts and severities for patterns `pattern-engine.ts:422-422`
 - **count** — Counts the occurrences of a pattern `types.ts:214-214`
 - **crossFileRatio** — Defines the ratio of relationships crossing file boundaries `types.ts:21-21`
 - **csharpHints** — Counts C# syntax hints `structural-detector.ts:112-122`
@@ -278,7 +284,8 @@ The `patterns` module is structured around several key components: an exemplar s
 - **decoratorNames** — Stores the names of decorators `structural-detector.ts:88-88`
 - **deleteCount** — Counts the number of delete operations in a function or method `structural-detector.ts:91-91`
 - **description** — A brief description of an exemplar `exemplar-store.ts:25-25`
-- **description** — Represents the description of an exemplar `exemplar-store.ts:146-146`, `exemplar-store.ts:150-150`
+- **description** — Represents the description of an exemplar `exemplar-store.ts:146-146`
+- **description** — Stores the description of a result `exemplar-store.ts:150-150`
 - **description** — Provides a description of the closest exemplar `semantic-validator.ts:97-97`
 - **description** — Description of the pattern `types.ts:147-147`
 - **description** — Represents a description of the pattern `types.ts:180-180`
@@ -288,7 +295,8 @@ The `patterns` module is structured around several key components: an exemplar s
 - **dunderMethods** — Counts the number of `__` methods in the code `structural-detector.ts:144-144`
 - **dynamicPropAccessCount** — Counts the number of dynamic property accesses `structural-detector.ts:95-95`
 - **embedded** — A boolean indicating whether the exemplar embeddings have been generated `exemplar-store.ts:41-41`
-- **embeddings** — A map of base64 Float32Array embeddings for each exemplar ID `exemplar-store.ts:31-31`, `exemplar-store.ts:39-39`
+- **embeddings** — A map of base64 Float32Array embeddings for each exemplar ID `exemplar-store.ts:31-31`
+- **embeddings** — Stores a map of embeddings `exemplar-store.ts:39-39`
 - **emptyCatchCount** — Counts empty catch blocks `structural-detector.ts:121-121`
 - **enabled** — Indicates if the pattern is enabled `types.ts:157-157`
 - **enabledOnly** — Filters patterns to only include enabled ones `pattern-registry.ts:213-213`
@@ -305,7 +313,8 @@ The `patterns` module is structured around several key components: an exemplar s
 - **exceptions** — Counts the number of exception handling blocks in a function or method `structural-detector.ts:86-86`
 - **exceptPassCount** — Counts `except pass` blocks `structural-detector.ts:125-125`
 - **exemplarIds** — Optional array of exemplar IDs `types.ts:166-166`
-- **exemplars** — A map of pattern IDs to an array of PatternExemplar objects `exemplar-store.ts:20-26`, `exemplar-store.ts:37-37`
+- **exemplars** — A map of pattern IDs to an array of PatternExemplar objects `exemplar-store.ts:20-26`
+- **exemplars** — Stores a map of pattern exemplars `exemplar-store.ts:37-37`
 - **exemplarsByPattern** — A map of pattern IDs to an array of PatternExemplar objects `exemplar-store.ts:38-38`
 - **exemplarStore** — Stores exemplar patterns `pattern-engine.ts:61-61`
 - **filePath** — Represents the file path of an entity `types.ts:191-191`
@@ -348,10 +357,12 @@ The `patterns` module is structured around several key components: an exemplar s
 - **hasWithStatement** — Indicates whether the entity contains with statements `types.ts:78-78`
 - **healthScore** — Evaluates the health score of the code `types.ts:215-215`
 - **id** — A unique identifier for an exemplar `exemplar-store.ts:21-21`
-- **id** — Represents the unique identifier of an exemplar `exemplar-store.ts:146-146`, `exemplar-store.ts:150-150`
+- **id** — Represents the unique identifier of an exemplar `exemplar-store.ts:146-146`
+- **id** — Stores the ID of a result `exemplar-store.ts:150-150`
 - **id** — Represents the ID of the closest exemplar `semantic-validator.ts:97-97`
 - **id** — Unique identifier for a pattern `types.ts:142-142`
-- **id** — Represents an identifier for a pattern `types.ts:176-176`, `types.ts:197-197`
+- **id** — Represents an identifier for a pattern `types.ts:176-176`
+- **id** — Optionally holds the ID and similarity of the closest exemplar, along with its description `types.ts:197-197`
 - **initCallCount** — Counts the number of `__init__` calls in the code `structural-detector.ts:146-146`
 - **initialized** — Indicates whether the engine has been initialized `pattern-engine.ts:64-64`
 - **innerHtmlAssignCount** — Counts occurrences of innerHTML assignment in the code `structural-detector.ts:102-102`
@@ -376,7 +387,8 @@ The `patterns` module is structured around several key components: an exemplar s
 - **matchedCriteria** — Indicates which criteria were matched `structural-detector.ts:206-206`
 - **matchedCriteria** — Represents the count of matched criteria `structural-detector.ts:922-922`
 - **matchedCriteria** — Represents the criteria matched by a pattern `types.ts:196-196`
-- **matchedCriteria** — Criteria matched by a detected pattern `types.ts:242-242`, `types.ts:257-257`
+- **matchedCriteria** — Criteria matched by a detected pattern `types.ts:242-242`
+- **matchedCriteria** — Contains an array of matched criteria strings `types.ts:257-257`
 - **max** — Not applicable in this context `types.ts:21-21`
 - **maxCount** — Sets the maximum count of relationships to consider `types.ts:19-19`
 - **maxCyclomatic** — Sets the maximum cyclomatic complexity `types.ts:44-44`
@@ -424,8 +436,9 @@ The `patterns` module is structured around several key components: an exemplar s
 - **missingPySlots** — Indicates if the pattern is missing slots `types.ts:128-128`
 - **missingPyStr** — Indicates if the pattern is missing __str__ method `types.ts:130-130`
 - **modifiers** — An array of modifier strings for an entity `structural-detector.ts:82-82`
-- **name** — Represents an array of parameter objects, each containing a name and an optional type `structural-detector.ts:84-84`
-- **name** — Represents the name of an entity `structural-detector.ts:160-160`, `structural-detector.ts:161-161`, `structural-detector.ts:167-167`
+- **name** — Represents the name of an entity `structural-detector.ts:160-160`
+- **name** — Represents the parameters of a method `structural-detector.ts:161-161`
+- **name** — Represents an array of parameter objects, each containing a name and an optional type `structural-detector.ts:84-84`, `structural-detector.ts:167-167`
 - **name** — Name of the pattern `types.ts:146-146`
 - **nameMatch** — Regular expression pattern for entity names `types.ts:72-72`
 - **nameMatchRe** — A regular expression for matching names `structural-detector.ts:46-46`
@@ -451,14 +464,25 @@ The `patterns` module is structured around several key components: an exemplar s
 - **paramTypeRequired** — Specifies a required parameter type `types.ts:39-39`
 - **paramTypeRequiredRe** — A regular expression for required parameter types `structural-detector.ts:41-41`
 - **passed** — Number of entities that passed the evaluation `structural-detector.ts:210-210`
-- **passed** — Represents a boolean indicating whether a condition is met `structural-detector.ts:487-487`, `structural-detector.ts:554-554`, `structural-detector.ts:557-557`, `structural-detector.ts:602-602`, `structural-detector.ts:605-605`, `structural-detector.ts:633-633`, `structural-detector.ts:663-663`
-- **passed** — Represents the number of passed criteria `structural-detector.ts:666-666`, `structural-detector.ts:708-708`, `structural-detector.ts:711-711`, `structural-detector.ts:818-818`, `structural-detector.ts:922-922`
+- **passed** — Represents a boolean indicating whether a condition is met `structural-detector.ts:487-487`
+- **passed** — Represents the number of passed criteria `structural-detector.ts:554-554`
+- **passed** — Returns the total and passed counts of a structural detection `structural-detector.ts:557-557`
+- **passed** — Returns a boolean indicating whether the criteria were met `structural-detector.ts:602-602`, `structural-detector.ts:922-922`
+- **passed** — Parses a function that takes an object with total and passed properties and returns an object with updated total and passed values `structural-detector.ts:605-605`
+- **passed** — Returns an object with total and passed properties `structural-detector.ts:633-633`
+- **passed** — Parses a function that takes an object with total and passed properties and returns an object with updated total and passed values. `structural `structural-detector.ts:663-663`
+- **passed** — Returns a boolean indicating if the criteria are met `structural-detector.ts:666-666`
+- **passed** — Returns a function that takes an object with total and passed properties and returns a new object with the same properties `structural-detector.ts:708-708`
+- **passed** — Represents a function that takes an object with total and passed properties and returns a new object with the same properties `structural-detector.ts:711-711`
+- **passed** — Returns a function that takes an object with passed and matchedCriteria properties and returns a new object with the same properties `structural-detector.ts:818-818`
 - **pattern** — Pattern definition for structural detection `structural-detector.ts:252-252`
 - **pattern** — Represents the pattern itself `types.ts:187-187`
 - **pattern** — Pattern being matched against an entity `types.ts:255-255`
 - **patternId** — The ID of the pattern associated with an exemplar `exemplar-store.ts:22-22`
-- **patternId** — Identifies the ID of a detected pattern `pattern-engine.ts:421-421`, `types.ts:214-214`
-- **patternId** — Represents an identifier for a pattern `types.ts:177-177`, `types.ts:186-186`
+- **patternId** — Identifies the ID of a detected pattern `pattern-engine.ts:421-421`
+- **patternId** — Represents an identifier for a pattern `types.ts:177-177`
+- **patternId** — Represents a unique identifier for a pattern `types.ts:186-186`
+- **patternId** — Stores an array of top issues, each with a pattern ID, count, and severity `types.ts:214-214`
 - **patterns** — Stores all loaded pattern definitions `pattern-registry.ts:146-146`
 - **projectPath** — Specifies the path to the project `types.ts:222-222`
 - **properties** — Represents the properties of an entity `structural-detector.ts:145-145`
@@ -477,11 +501,13 @@ The `patterns` module is structured around several key components: an exemplar s
 - **returnTypeNotMatchRe** — A regular expression for not matching return types `structural-detector.ts:40-40`
 - **semanticSimilarity** — Represents the semantic similarity of a pattern match `types.ts:194-194`
 - **semanticValidator** — Validates semantic patterns `pattern-engine.ts:63-63`
-- **severity** — Determines the severity of a detected pattern `pattern-engine.ts:421-421`, `pattern-engine.ts:422-422`
+- **severity** — Determines the severity of a detected pattern `pattern-engine.ts:421-421`
+- **severity** — Stores counts and severities for patterns `pattern-engine.ts:422-422`
 - **severity** — Severity level of the pattern `types.ts:145-145`
 - **severity** — Determines the severity of a detected issue `types.ts:214-214`
 - **severity** — Severity level of a detected pattern `types.ts:228-228`
-- **similarity** — Represents the similarity score between exemplars `exemplar-store.ts:146-146`, `exemplar-store.ts:150-150`
+- **similarity** — Represents the similarity score between exemplars `exemplar-store.ts:146-146`
+- **similarity** — Stores the similarity score of a result `exemplar-store.ts:150-150`
 - **similarity** — Indicates the similarity score of the closest exemplar `semantic-validator.ts:97-97`
 - **similarity** — Measures the similarity between code entities `types.ts:197-197`
 - **spreadInCallCount** — Counts the number of spread operators in function calls `structural-detector.ts:94-94`
@@ -501,10 +527,11 @@ The `patterns` module is structured around several key components: an exemplar s
 - **throwExCount** — Counts `throw new Exception()` usage `structural-detector.ts:120-120`
 - **throwNonErrorCount** — Counts the number of non-error throws `structural-detector.ts:101-101`
 - **topIssues** — Lists the top issues found in the code `types.ts:214-214`
-- **total** — A type alias for an object containing total and passed counts `structural-detector.ts:210-210`
+- **total** — Represents the total number of evaluations `structural-detector.ts:210-210`
 - **totalCriteriaCount** — The total number of criteria in the compiled pattern `structural-detector.ts:50-50`
 - **totalEntitiesScanned** — Counts the total number of entities scanned `types.ts:209-209`
-- **type** — Represents the type of an entity `structural-detector.ts:84-84`, `structural-detector.ts:167-167`
+- **type** — Represents the type of an entity `structural-detector.ts:84-84`
+- **type** — Represents the parameters of a method `structural-detector.ts:167-167`
 - **type** — Specifies the type of relationship, such as calls, imports, or extends `types.ts:16-16`
 - **typeAssertionCount** — Counts the number of type assertions `structural-detector.ts:98-98`
 - **typeIgnoreCount** — Counts type ignore statements `structural-detector.ts:128-128`

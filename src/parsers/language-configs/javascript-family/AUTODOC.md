@@ -37,8 +37,10 @@ The `javascript-family` module provides language-specific configurations for Jav
 ## 🤖 Entity Listing
 
 ### Function
-- **JAVASCRIPT_CONFIG** — Defines the configuration for the JavaScript language, including keywords, node types, and extractors for parsing and analyzing JavaScript code `javascript.ts:33-45`, `javascript.ts:46-48`
-- **TYPESCRIPT_CONFIG** — Represents the TypeScript language configuration with details on keywords, node types, and extractors `typescript.ts:41-57`, `typescript.ts:58-60`
+- **JAVASCRIPT_CONFIG** — Defines the configuration for the JavaScript language, including keywords, node types, and extractors for parsing and analyzing JavaScript code `javascript.ts:33-45`
+- **JAVASCRIPT_CONFIG** — Returns an array of modifiers for JavaScript nodes `javascript.ts:46-48`
+- **TYPESCRIPT_CONFIG** — Represents the TypeScript language configuration with details on keywords, node types, and extractors `typescript.ts:41-57`
+- **TYPESCRIPT_CONFIG** — Parses and returns a list of TypeScript modifier keywords `typescript.ts:58-60`
 
 ### Import_decl
 - **../shared/keywords.js** — Imports `../shared/keywords.js` from `../shared/keywords.js`. `javascript.ts:5-5`, `jsx.ts:5-5`, `tsx.ts:5-5`, `typescript.ts:5-5`

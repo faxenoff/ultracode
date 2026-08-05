@@ -2,7 +2,36 @@
 
 ## 🤖 Overview
 
-This module supports Rust code analysis with two components. The AST helpers provide functions for node traversal, text extraction, visibility/modifier checking, generic/lifetime extraction, derive/attribute parsing, type extraction (function parameters, return types, fields, aliases, constants, statics), macro rule extraction, and use tree resolution. The pattern identifier detects Rust-specific design and language patterns including Builder, Iterator, error handling (Result/Option chains), ownership patterns, and unsafe code blocks.
+The `rust` module provides utility functions for parsing and traversing Rust Abstract Syntax Trees (ASTs), primarily through the `ast-helpers.ts` file. It is used by developers and tools that need to analyze or manipulate Rust code structures.
+
+## 🤖 Architecture
+
+```
+  +---------------------+
+  |     AST Node       |
+  +---------------------+
+  |     findNodes      |
+  |     getNodeText    |
+  |     extractVisibility |
+  |     hasModifier    |
+  +---------------------+
+  |     pattern-identifier.ts |
+  +---------------------+
+```
+
+## 🤖 Flow
+
+```
+  +---------------------+
+  |     parse AST       |
+  +---------------------+
+  |     extract visibility |
+  |     find nodes       |
+  |     check modifiers  |
+  +---------------------+
+  |     pattern-identifier.ts |
+  +---------------------+
+```
 
 ## 🤖 Entity Listing
 

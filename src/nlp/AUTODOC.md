@@ -28,7 +28,7 @@
 - **expandWithoutPrf** — Expands a query without using PRF terms `query-expander.ts:156-158`
 - **extractPairs** — Extracts term pairs within a sliding window `cooccurrence-index.ts:143-165`
 - **extractPrfTerms** — Extracts PRF terms from results, excluding specified terms `query-expander.ts:185-193`
-- **extractTopTerms** — Extracts top terms from a list of documents using BM25 scoring and excludes specified terms `tfidf.ts:61-115`
+- **extractTopTerms** — Parses and processes documents to extract top terms based on BM25 scores, excluding specified terms and filtering by document frequency `tfidf.ts:61-115`
 - **extractWithPrecomputedIdf** — Calculates TF-IDF scores for a document using precomputed IDF values `tfidf.ts:126-156`
 - **getConfig** — Returns the current configuration `query-expander.ts:205-207`
 - **getCooccurrenceTerms** — Retrieves co-occurrence terms for a query, excluding specified terms `query-expander.ts:163-180`
@@ -90,14 +90,14 @@
 - **prfWeight** — Weight for PRF terms `query-expander.ts:26-26`
 - **score** — Returns an array of terms with their scores `query-expander.ts:166-166`
 - **score** — The score of a term in the TF-IDF context `tfidf.ts:21-21`
-- **term** — Term in co-occurrence or PRF expansion `query-expander.ts:45-45`, `query-expander.ts:47-47`
-- **term** — Stores co-occurrence terms with their weights `query-expander.ts:102-102`
-- **term** — Stores PRF terms with their scores `query-expander.ts:117-117`
-- **term** — Returns an array of terms with their scores `query-expander.ts:166-166`
+- **term** — Stores PRF terms with their scores `query-expander.ts:102-102`
+- **term** — Returns an array of terms with their scores `query-expander.ts:117-117`
+- **term** — Stores co-occurrence terms with their weights `query-expander.ts:47-47`, `query-expander.ts:166-166`
+- **term** — Term in co-occurrence or PRF expansion `query-expander.ts:45-45`
 - **term** — A term in the document `tfidf.ts:20-20`
 - **tf** — The term frequency of a term in a document `tfidf.ts:22-22`
 - **tfidfExtractor** — TfIdfExtractor instance for term scoring `query-expander.ts:58-58`
-- **weight** — Weight of a term in co-occurrence or PRF expansion `query-expander.ts:45-45`, `query-expander.ts:47-47`
-- **weight** — Stores co-occurrence terms with their weights `query-expander.ts:102-102`
-- **weight** — Stores PRF terms with their scores `query-expander.ts:117-117`
+- **weight** — Stores PRF terms with their scores `query-expander.ts:102-102`
+- **weight** — Stores co-occurrence terms with their weights `query-expander.ts:47-47`, `query-expander.ts:117-117`
+- **weight** — Weight of a term in co-occurrence or PRF expansion `query-expander.ts:45-45`
 - **windowSize** — Sliding window size for co-occurrence (default: 5) `cooccurrence-index.ts:22-22`

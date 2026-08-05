@@ -116,7 +116,8 @@ This module provides a comprehensive set of operations for managing data in a Li
 - **alternatives** — Represents alternative entities `entity-ops.ts:564-568`
 - **baseEntities** — Filters entities to exclude delta and tombstone IDs `entity-ops.ts:953-953`
 - **baseEntities** — Filters out entities not in the delta and not tombstoned `entity-ops.ts:1160-1160`
-- **baseEntities** — Represents entities in the database `entity-ops.ts:1235-1239`, `entity-ops.ts:1240-1240`
+- **baseEntities** — Represents entities in the database `entity-ops.ts:1235-1239`
+- **baseEntities** — Filters entities to exclude those with IDs in deltaIds or tombstones `entity-ops.ts:1240-1240`
 - **baseIds** — Maps rows to their IDs `entity-ops.ts:1089-1089`
 - **baseIds** — Filters base IDs to exclude those in deltaIds and tombstones `entity-ops.ts:1090-1090`
 - **batchPromises** — Processes batches of embeddings, attempting to write them to the database and logging errors `vector-ops.ts:129-138`
@@ -152,12 +153,14 @@ This module provides a comprehensive set of operations for managing data in a Li
 - **parseLocation** — Deserialize location string — handles both compact format and legacy JSON `entity-ops.ts:40-55`
 - **placeholders** — Placeholder for SQL query parameters `cache-ops.ts:62-62`
 - **placeholders** — Generates placeholders for SQL query parameters `cooccurrence-ops.ts:220-220`
-- **placeholders** — Generates placeholders for SQL queries by joining "?" strings `entity-ops.ts:330-330`, `entity-ops.ts:458-458`
-- **placeholders** — Represents placeholders for entity names `entity-ops.ts:579-579`, `entity-ops.ts:772-772`
-- **placeholders** — Joins placeholders into a comma-separated string `entity-ops.ts:1012-1012`
+- **placeholders** — Generates placeholders for SQL queries by joining "?" strings `entity-ops.ts:330-330`
+- **placeholders** — Represents placeholders for entity names `entity-ops.ts:458-458`
+- **placeholders** — Joins placeholders into a comma-separated string `entity-ops.ts:579-579`
+- **placeholders** — Creates a string of placeholders for SQL queries `entity-ops.ts:772-772`, `entity-ops.ts:1012-1012`
 - **placeholders** — Represents placeholders for SQL queries `vector-ops.ts:516-516`
+- **quoted** — Quotes a string for use in SQL queries `relationship-ops.ts:299-299`
+- **quoted** — Maps each ID to a quoted string and joins them with commas `relationship-ops.ts:319-319`
 - **quoted** — Quotes and joins relation types into a comma-separated string `relationship-ops.ts:279-279`
-- **quoted** — Quotes a string for use in SQL queries `relationship-ops.ts:299-299`, `relationship-ops.ts:319-319`
 - **rowToEntity** — Converts an EntityRow from the database to an Entity domain object `row-mappers.ts:59-74`
 - **rowToRelationship** — Converts a RelationshipRow from the database to a Relationship domain object `row-mappers.ts:79-89`
 - **runWithRequestContext** — Run a function with a request-scoped project context, ensuring all async operations within the function see this context `request-context.ts:23-25`
@@ -165,8 +168,8 @@ This module provides a comprehensive set of operations for managing data in a Li
 - **splitToTokens** — Split an entity name into searchable tokens (camelCase, PascalCase, snake_case, kebab-case) `entity-ops.ts:71-81`
 - **statements** — Maps each entry to an SQL statement for inserting or replacing an embedding in the cache `cache-ops.ts:122-131`
 - **statements** — Maps file info to SQL statements for batch update `metadata-ops.ts:68-78`
-- **statements** — Parses and maps embeddings to SQL statements for insertion `vector-ops.ts:103-119`
 - **statements** — Represents SQL statements for vector operations `vector-ops.ts:252-268`
+- **statements** — Parses and maps embeddings to SQL statements for insertion `vector-ops.ts:103-119`
 - **stmts** — Represents SQL statements for creating tables `schema-manager.ts:521-521`
 - **stmts** — Represents SQL statements for versioned storage operations `versioning-ops.ts:430-430`
 - **stringToVector** — Not present in the provided code `row-mappers.ts:106-110`
@@ -176,16 +179,18 @@ This module provides a comprehensive set of operations for managing data in a Li
 - **valuePlaceholders** — Generates placeholders for SQL queries with multiple values, joining "(?, ?, ?, ?)" strings `entity-ops.ts:343-343`
 - **valuePlaceholders** — Creates a string of placeholders for batch operations `generation-ops.ts:105-105`
 - **valuePlaceholders** — Creates placeholders for SQL statements based on a batch of values `relationship-ops.ts:145-145`
-- **values** — Not present in the provided code `row-mappers.ts:99-99`, `row-mappers.ts:108-108`
+- **values** — Not present in the provided code `row-mappers.ts:99-99`
+- **values** — Parses a string into an array of floats `row-mappers.ts:108-108`
 - **vectorToString** — Not present in the provided code `row-mappers.ts:98-101`
 - **withLang** — Counts the number of entities with a language specified. `entity `entity-ops.ts:223-223`
 
 ### Method
 - **_r** — Wraps a function to route read operations through a per-DB mutex if available, otherwise executes directly `entity-ops.ts:136-138`
 - **_r** — Method to route read through per-DB mutex if available — serialized with writes `relationship-ops.ts:66-68`
-- **_w** — Routes write operations through a per-DB mutex if available `cache-ops.ts:22-24`, `metadata-ops.ts:26-28`
+- **_w** — Routes write operations through a per-DB mutex if available `cache-ops.ts:22-24`
 - **_w** — Wraps a function in a write mutex if available `cooccurrence-ops.ts:42-44`
 - **_w** — Wraps a function to route write operations through a per-DB mutex if available, otherwise executes directly `entity-ops.ts:130-132`
+- **_w** — Route write through per-DB mutex if available `metadata-ops.ts:26-28`
 - **_w** — Method to route write through per-DB mutex if available `relationship-ops.ts:61-63`
 - **_wv** — Returns a promise that executes a function within a versioning context `versioning-ops.ts:108-110`
 - **abortStaging** — Aborts staging changes and rolls back to the previous state `versioning-ops.ts:369-385`
@@ -342,10 +347,10 @@ This module provides a comprehensive set of operations for managing data in a Li
 - **DbMutexFn** — Function for database mutex `types.ts:173-173`
 - **MetadataDecoder** — Parses a buffer or string into a record of metadata `types.ts:183-183`
 - **MetadataEncoder** — Encoder for metadata `types.ts:178-178`
-- **RowToEntityMapper** — Not described in the provided excerpt `entity-ops.ts:90-90`
+- **RowToEntityMapper** — Maps a database row to an entity object `entity-ops.ts:90-90`
 - **RowToRelationshipMapper** — Delegate type for converting database row to Relationship `relationship-ops.ts:22-22`
 - **SupportedDimension** — Supported embedding dimensions `types.ts:48-48`
-- **TombstoneAdder** — Not described in the provided excerpt `entity-ops.ts:95-95`
+- **TombstoneAdder** — Adds a tombstone for an entity or relationship `entity-ops.ts:95-95`
 - **TombstoneAdder** — Delegate type for adding tombstone when relationship is deleted on feature branch `relationship-ops.ts:27-27`
 - **TombstoneGetter** — Returns a promise containing a set of tombstone IDs for a given entity type `entity-ops.ts:100-100`
 - **TombstoneGetter** — Delegate type for getting all tombstoned IDs for current branch `relationship-ops.ts:32-32`
@@ -374,7 +379,8 @@ This module provides a comprehensive set of operations for managing data in a Li
 - **avgPairCount** — Average number of pairs per term `cooccurrence-ops.ts:27-27`
 - **baseBranch** — Base branch for layered reads `types.ts:80-80`
 - **branchDiffCache** — Optimizes branch diff reads for versioned storage `versioning-ops.ts:28-28`
-- **branchName** — Represents the name of the branch `entity-ops.ts:514-514`, `entity-ops.ts:760-760`
+- **branchName** — Represents the name of the branch `entity-ops.ts:514-514`
+- **branchName** — Represents a branch name as a string `entity-ops.ts:760-760`
 - **branchName** — Represents the branch name for a project `metadata-ops.ts:346-346`
 - **branchName** — Branch name `types.ts:78-78`
 - **cache** — In-memory cache storing active generation numbers for files `generation-ops.ts:24-24`
@@ -389,11 +395,13 @@ This module provides a comprehensive set of operations for managing data in a Li
 - **count** — The count of occurrences for a related term `cooccurrence-ops.ts:21-21`
 - **count** — Asynchronously counts entities by language and returns a map of counts and file counts `entity-ops.ts:1171-1171`
 - **count** — Initializes a map to store counts of entities by language and file count `entity-ops.ts:1196-1196`
-- **count** — Counts the number of entities `entity-ops.ts:1244-1244`, `entity-ops.ts:1257-1257`
-- **created_at** — Timestamp when the entity was created `row-mappers.ts:35-35`
+- **count** — Counts the number of entities `entity-ops.ts:1244-1244`
+- **count** — Initializes a map to store counts of entities and file counts `entity-ops.ts:1257-1257`
 - **created_at** — Stores the timestamp when an entity or relationship was created `row-mappers.ts:49-49`
+- **created_at** — Timestamp when the entity was created `row-mappers.ts:35-35`
 - **decodeMetadata** — Decodes metadata for embeddings `vector-ops.ts:38-38`
-- **dimensions** — Vector dimensions (default: 384 for all-MiniLM-L6-v2) `types.ts:20-20`, `types.ts:82-82`
+- **dimensions** — Vector dimensions (default: 384 for all-MiniLM-L6-v2) `types.ts:20-20`
+- **dimensions** — Represents the dimensions of a supported dimension or is undefined `types.ts:82-82`
 - **embedding** — Embedded data stored in the cache `cache-ops.ts:112-112`
 - **embeddingCache** — LRU cache for embedding results `vector-ops.ts:39-39`
 - **encodeMetadata** — Encodes metadata for embeddings `vector-ops.ts:37-37`
@@ -412,7 +420,10 @@ This module provides a comprehensive set of operations for managing data in a Li
 - **fileCount** — Initializes a map to store counts of entities by language and file count `entity-ops.ts:1196-1196`
 - **fileCount** — Counts the number of files `entity-ops.ts:1257-1257`
 - **fileCount** — Counts the number of files in a project `metadata-ops.ts:350-350`
-- **filePath** — Represents the file path of an entity `entity-ops.ts:509-509`, `entity-ops.ts:616-616`, `entity-ops.ts:757-757`, `entity-ops.ts:808-808`
+- **filePath** — Represents the file path of an entity `entity-ops.ts:509-509`
+- **filePath** — Represents a file path as a string or an array of strings `entity-ops.ts:616-616`
+- **filePath** — Represents a file path as a string `entity-ops.ts:757-757`
+- **filePath** — Represents an optional string for file paths `entity-ops.ts:808-808`
 - **files** — Stores file-related information `entity-ops.ts:1244-1244`
 - **filters** — Filters entities based on specific conditions `entity-ops.ts:613-619`
 - **filters** — Represents the filters used to find relationships `relationship-ops.ts:328-334`
@@ -430,7 +441,8 @@ This module provides a comprehensive set of operations for managing data in a Li
 - **GRAPH_INDEXES** — Represents graph indexes for versioned storage `versioning-ops.ts:391-407`
 - **has_docs** — Indicates if the entity has documentation, optional `row-mappers.ts:33-33`
 - **hash** — Hash of the entity, optional `row-mappers.ts:27-27`
-- **id** — Unique identifier for an entity `row-mappers.ts:20-20`, `row-mappers.ts:43-43`
+- **id** — Unique identifier for an entity `row-mappers.ts:20-20`
+- **id** — Represents a string identifier `row-mappers.ts:43-43`
 - **incrementalChangesCount** — Represents the count of incremental changes `metadata-ops.ts:251-251`
 - **index** — Represents an index in a start object `entity-ops.ts:28-28`
 - **index** — Represents the end position of an index in a file `entity-ops.ts:29-29`
@@ -453,16 +465,19 @@ This module provides a comprehensive set of operations for managing data in a Li
 - **location** — Location of the entity `row-mappers.ts:24-24`
 - **maxNeighbors** — DiskANN max neighbors `types.ts:30-30`
 - **maxSize** — Returns the maximum size of the metadata cache `cbor-utils.ts:146-146`
-- **metadata** — Metadata of the entity, optional `row-mappers.ts:26-26`
 - **metadata** — Stores metadata for an entity or relationship, which can be a CBOR BLOB or legacy JSON TEXT `row-mappers.ts:47-47`
+- **metadata** — Metadata of the entity, optional `row-mappers.ts:26-26`
 - **metric** — Distance metric for vector search `types.ts:22-22`
 - **model** — Represents the model associated with an embedding in the `cache-ops.ts:112-112`
-- **name** — Represents the name of an entity `entity-ops.ts:510-510`, `entity-ops.ts:617-617`
+- **name** — Represents the name of an entity `entity-ops.ts:510-510`
+- **name** — Represents a name as a string or a regular expression `entity-ops.ts:617-617`
 - **name** — Name of the entity `row-mappers.ts:21-21`
-- **namePattern** — Represents a pattern for entity names `entity-ops.ts:755-755`, `entity-ops.ts:806-806`
+- **namePattern** — Represents a pattern for entity names `entity-ops.ts:755-755`
+- **namePattern** — Represents a name pattern as a string `entity-ops.ts:806-806`
 - **offset** — Specifies the starting point for the entities to be returned `entity-ops.ts:621-621`
 - **offset** — Represents the offset for the number of relationships to skip `relationship-ops.ts:336-336`
-- **projectHash** — Represents the hash of the project `entity-ops.ts:514-514`, `entity-ops.ts:760-760`
+- **projectHash** — Represents the hash of the project `entity-ops.ts:514-514`
+- **projectHash** — Represents a project hash as a string `entity-ops.ts:760-760`
 - **projectHash** — Stores the hash of the project `metadata-ops.ts:345-345`
 - **projectHash** — Project hash `types.ts:77-77`
 - **projectPath** — Represents the path of the project `metadata-ops.ts:347-347`
@@ -480,7 +495,8 @@ This module provides a comprehensive set of operations for managing data in a Li
 - **sql** — Stores SQL statements and their corresponding arguments in an array `relationship-ops.ts:139-139`
 - **start** — Represents the start position with `entity-ops.ts:28-28`
 - **stringToVector** — Converts a string to a vector `vector-ops.ts:36-36`
-- **term** — A term in the co-occurrence context `cooccurrence-ops.ts:19-19`, `cooccurrence-ops.ts:106-106`
+- **term** — A term in the co-occurrence context `cooccurrence-ops.ts:19-19`
+- **term** — Updates term frequencies in the database based on provided entries `cooccurrence-ops.ts:106-106`
 - **textPreview** — Represents a text preview for an entry in the cache `cache-ops.ts:112-112`
 - **to_id** — ID of the entity to which the relationship points `row-mappers.ts:45-45`
 - **toId** — Represents the to_id of a relationship `relationship-ops.ts:332-332`
@@ -489,16 +505,20 @@ This module provides a comprehensive set of operations for managing data in a Li
 - **tombstoneAdder** — Property to store the tombstone adder delegate `relationship-ops.ts:39-39`
 - **tombstoneGetter** — Represents a getter for tombstone entities `entity-ops.ts:108-108`
 - **tombstoneGetter** — Property to store the tombstone getter delegate `relationship-ops.ts:40-40`
-- **totalEmbeddings** — Returns the total number of embeddings in a project `metadata-ops.ts:404-404`, `metadata-ops.ts:450-450`
-- **totalEntities** — Returns the total number of entities in a project `metadata-ops.ts:401-401`, `metadata-ops.ts:447-447`
-- **totalFiles** — Represents the total number of files `metadata-ops.ts:252-252`
-- **totalFiles** — Returns the total number of files in a project `metadata-ops.ts:403-403`, `metadata-ops.ts:449-449`
+- **totalEmbeddings** — Returns the total number of embeddings in a project `metadata-ops.ts:404-404`
+- **totalEmbeddings** — Represents the count of embeddings in the metadata `metadata-ops.ts:450-450`
+- **totalEntities** — Returns the total number of entities in a project `metadata-ops.ts:401-401`
+- **totalEntities** — Represents the count of entities in the metadata `metadata-ops.ts:447-447`
+- **totalFiles** — Returns the total number of files in a project `metadata-ops.ts:403-403`
+- **totalFiles** — Represents the total number of files `metadata-ops.ts:252-252`, `metadata-ops.ts:449-449`
 - **totalPairs** — Total number of co-occurrence pairs `cooccurrence-ops.ts:25-25`
-- **totalRelationships** — Returns the total number of relationships in a project `metadata-ops.ts:402-402`, `metadata-ops.ts:448-448`
+- **totalRelationships** — Returns the total number of relationships in a project `metadata-ops.ts:402-402`
+- **totalRelationships** — Represents the count of relationships in the metadata `metadata-ops.ts:448-448`
 - **totalTerms** — Total number of terms involved in co-occurrence `cooccurrence-ops.ts:26-26`
-- **type** — Type of the entity `row-mappers.ts:22-22`
 - **type** — Represents the type of an entity or relationship `row-mappers.ts:46-46`
-- **types** — Represents the types of entities `entity-ops.ts:756-756`, `entity-ops.ts:807-807`
+- **type** — Type of the entity `row-mappers.ts:22-22`
+- **types** — Represents the types of entities `entity-ops.ts:756-756`
+- **types** — Represents types as an array of entity types `entity-ops.ts:807-807`
 - **updated_at** — Timestamp when the entity was last updated `row-mappers.ts:36-36`
 - **vectorToString** — Converts a vector to a string `vector-ops.ts:35-35`
 - **weight** — Represents the weight of a relationship `row-mappers.ts:48-48`
@@ -578,8 +598,8 @@ This module provides a comprehensive set of operations for managing data in a Li
 - **DELETE FROM embeddings WHERE id = ? AND project_hash = ? AND branch_name = ?** — Deletes a record from the embeddings table based on specific conditions `vector-ops.ts:457-457`
 - **DELETE FROM entities** — Deletes all entities `metadata-ops.ts:580-580`
 - **DELETE FROM entities WHERE (project_hash, branch_name) IN (SELECT DISTINCT project_hash, branch_name** — Deletes entities where the project_hash and branch_name match those in the _staging_entities table `versioning-ops.ts:288-289`
-- **DELETE FROM entities WHERE id = ? AND project_hash = ? AND branch_name = ?** — `entity-ops.ts:977-977`
-- **DELETE FROM entities WHERE id IN (${placeholders}) AND project_hash = ? AND branch_name = ?** — `entity-ops.ts:1016-1016`
+- **DELETE FROM entities WHERE id = ? AND project_hash = ? AND branch_name = ?** — Deletes entities with specific id, project hash, and branch name `entity-ops.ts:977-977`
+- **DELETE FROM entities WHERE id IN (${placeholders}) AND project_hash = ? AND branch_name = ?** — Deletes entities with ids in a list, project hash, and branch name `entity-ops.ts:1016-1016`
 - **DELETE FROM entities WHERE project_hash = ? AND branch_name = ?** — Deletes entities where project_hash and branch_name match given values `metadata-ops.ts:513-513`
 - **DELETE FROM entities WHERE rowid IN ( SELECT e.rowid FROM entities e JOIN file_generations fg ON e.f** — Deletes entities where their file generation is not the active generation in file_generations `generation-ops.ts:162-171`
 - **DELETE FROM file_generations WHERE project_hash = ? AND branch_name = ? AND active_gen = -1 AND file** — Deletes file generations where the active generation is -1 and the file path is not in the list of entities `generation-ops.ts:180-189`
@@ -590,9 +610,9 @@ This module provides a comprehensive set of operations for managing data in a Li
 - **DELETE FROM name_tokens** — Executes a SQL DELETE statement to remove all records from the name_tokens table `metadata-ops.ts:583-583`
 - **DELETE FROM name_tokens WHERE (project_hash, branch_name) IN (SELECT DISTINCT project_hash, branch_n** — Deletes name tokens where the project_hash and branch_name match those in the _staging_name_tokens table `versioning-ops.ts:292-293`
 - **DELETE FROM name_tokens WHERE entity_id = ? AND project_hash = ? AND branch_name = ?** — Executes a SQL query to delete name tokens based on entity ID, project hash, and branch name `entity-ops.ts:193-193`
-- **DELETE FROM name_tokens WHERE entity_id = ? AND project_hash = ? AND branch_name = ?** — `entity-ops.ts:983-983`
+- **DELETE FROM name_tokens WHERE entity_id = ? AND project_hash = ? AND branch_name = ?** — Deletes name tokens associated with specific entity id, project hash, and branch name `entity-ops.ts:983-983`
 - **DELETE FROM name_tokens WHERE entity_id IN (${placeholders}) AND project_hash = ? AND branch_name = ?** — Deletes name tokens based on entity IDs, project hash, and branch name `entity-ops.ts:332-332`
-- **DELETE FROM name_tokens WHERE entity_id IN (${placeholders}) AND project_hash = ? AND branch_name = ?** — `entity-ops.ts:1022-1022`
+- **DELETE FROM name_tokens WHERE entity_id IN (${placeholders}) AND project_hash = ? AND branch_name = ?** — Deletes name tokens with entity ids in a list, project hash, and branch name `entity-ops.ts:1022-1022`
 - **DELETE FROM name_tokens WHERE project_hash = ? AND branch_name = ?** — Deletes name_tokens where project_hash and branch_name match given values `metadata-ops.ts:520-520`
 - **DELETE FROM name_tokens WHERE rowid IN ( SELECT nt.rowid FROM name_tokens nt LEFT JOIN entities e ON** — Deletes name_tokens where the entity is not found or the file generation is not active `generation-ops.ts:214-227`
 - **DELETE FROM project_metadata** — Executes a SQL DELETE statement to remove all records from the project_metadata table `metadata-ops.ts:582-582`
@@ -609,11 +629,15 @@ This module provides a comprehensive set of operations for managing data in a Li
 - **DROP INDEX IF EXISTS ${idx}** — Drops an index if it exists in the database `schema-manager.ts:521-521`
 - **DROP INDEX IF EXISTS ${name}** — Drops an index if it exists `versioning-ops.ts:430-430`
 - **DROP INDEX IF EXISTS ${partialIndexName}** — Drops an index if it exists `vector-ops.ts:179-179`
-- **DROP TABLE IF EXISTS _staging_entities** — Drops the _staging_entities table if it exists `schema-manager.ts:170-170`, `versioning-ops.ts:355-355`, `versioning-ops.ts:376-376`
-- **DROP TABLE IF EXISTS _staging_files** — Drops the _staging_files table if it exists `schema-manager.ts:173-173`, `versioning-ops.ts:379-379`
+- **DROP TABLE IF EXISTS _staging_entities** — Drops the _staging_entities table if it exists `schema-manager.ts:170-170`, `versioning-ops.ts:376-376`
+- **DROP TABLE IF EXISTS _staging_entities** — Executes a SQL command to drop the _staging_entities table if it exists `versioning-ops.ts:355-355`
+- **DROP TABLE IF EXISTS _staging_files** — Drops the _staging_files table if it exists `schema-manager.ts:173-173`
 - **DROP TABLE IF EXISTS _staging_files** — Drops the _staging_files table if it exists. `versioning-ops.ts:358 `versioning-ops.ts:358-358`
-- **DROP TABLE IF EXISTS _staging_name_tokens** — Drops the _staging_name_tokens table if it exists `schema-manager.ts:172-172`, `versioning-ops.ts:357-357`, `versioning-ops.ts:378-378`
-- **DROP TABLE IF EXISTS _staging_relationships** — Drops the _staging_relationships table if it exists `schema-manager.ts:171-171`, `versioning-ops.ts:356-356`, `versioning-ops.ts:377-377`
+- **DROP TABLE IF EXISTS _staging_files** — Executes a SQL command to drop the _staging_files table if it exists `versioning-ops.ts:379-379`
+- **DROP TABLE IF EXISTS _staging_name_tokens** — Drops the _staging_name_tokens table if it exists `schema-manager.ts:172-172`, `versioning-ops.ts:378-378`
+- **DROP TABLE IF EXISTS _staging_name_tokens** — Executes a SQL command to drop the _staging_name_tokens table if it exists `versioning-ops.ts:357-357`
+- **DROP TABLE IF EXISTS _staging_relationships** — Drops the _staging_relationships table if it exists `schema-manager.ts:171-171`, `versioning-ops.ts:377-377`
+- **DROP TABLE IF EXISTS _staging_relationships** — Executes a SQL command to drop the _staging_relationships table if it exists `versioning-ops.ts:356-356`
 - **INSERT INTO cooccurrence (term1, term2, project_hash, branch_name, count) VALUES ${values.join(", ")** — Inserts co-occurrence records into the database `cooccurrence-ops.ts:88-93`
 - **INSERT INTO entities (id, project_hash, branch_name, name, type, file_path, location, language, meta** — Inserts entities into the entities table, aggregating data from the _staging_entities table `versioning-ops.ts:310-317`
 - **INSERT INTO entities SELECT * FROM _staging_entities** — Inserts entities from the staging table into the main entities table `versioning-ops.ts:338-338`
@@ -622,13 +646,16 @@ This module provides a comprehensive set of operations for managing data in a Li
 - **INSERT INTO relationships (id, project_hash, branch_name, from_id, to_id, type, file_path, weight, m** — Inserts relationships into the relationships table, aggregating data from the _staging_relationships table `versioning-ops.ts:318-323`
 - **INSERT INTO relationships SELECT * FROM _staging_relationships** — Inserts relationships from the staging table into the main relationships table `versioning-ops.ts:339-339`
 - **INSERT INTO term_frequency (term, entity_id, project_hash, branch_name, frequency) VALUES ${values.j** — Inserts term frequency records into the database `cooccurrence-ops.ts:129-134`
-- **SELECT ${selectCols} FROM entities e JOIN file_generations fg ON e.file_path = fg.file_path AND e.pr** — Builds a SQL query to select specific columns from entities joined with file_generations based on project hash, branch name, and file generation `entity-ops.ts:654-657`, `entity-ops.ts:693-696`
-- **SELECT ${selectCols} FROM entities e JOIN file_generations fg ON e.file_path = fg.file_path AND e.pr** — Constructs a SQL query to select specific columns from entities joined with file generations based on file path, project hash, and branch name `entity-ops.ts:719-722`
+- **SELECT ${selectCols} FROM entities e JOIN file_generations fg ON e.file_path = fg.file_path AND e.pr** — Builds a SQL query to select specific columns from entities joined with file_generations based on project hash, branch name, and file generation `entity-ops.ts:654-657`
+- **SELECT ${selectCols} FROM entities e JOIN file_generations fg ON e.file_path = fg.file_path AND e.pr** — Constructs a SQL query to select specific columns from entities joined with file generations based on file path, project hash, and branch name `entity-ops.ts:693-696`
+- **SELECT ${selectCols} FROM entities e JOIN file_generations fg ON e.file_path = fg.file_path AND e.pr** — Constructs a SQL query to select specific columns from entities joined with file generations `entity-ops.ts:719-722`
 - **SELECT (SELECT COUNT(*) FROM _staging_entities) - (SELECT COUNT(DISTINCT id || '|' || project_hash |** — Calculates the number of duplicate entities in the _staging_entities table `versioning-ops.ts:302-302`
 - **SELECT * FROM files WHERE path = ? AND project_hash = ? AND branch_name = ?** — Selects all files matching the given path, project hash, and branch name `metadata-ops.ts:93-93`
 - **SELECT * FROM files WHERE project_hash = ? AND branch_name = ? AND last_indexed < ?** — Parses a SQL query to select files based on project hash, branch name, and last indexed timestamp `metadata-ops.ts:117-120`
 - **SELECT * FROM relationships WHERE project_hash = ? AND branch_name = ?** — Constructs an SQL query to select relationships based on project hash and branch name `relationship-ops.ts:352-352`
-- **SELECT * FROM relationships WHERE project_hash = ? AND branch_name = ? AND (from_id = ? OR to_id = ?** — Constructs an SQL query to select relationships based on project hash, branch name, and either from_id or to_id `relationship-ops.ts:208-211`, `relationship-ops.ts:227-230`, `relationship-ops.ts:243-246`
+- **SELECT * FROM relationships WHERE project_hash = ? AND branch_name = ? AND (from_id = ? OR to_id = ?** — Constructs an SQL query to select relationships based on project hash, branch name, and either from_id or to_id `relationship-ops.ts:208-211`
+- **SELECT * FROM relationships WHERE project_hash = ? AND branch_name = ? AND (from_id = ? OR to_id = ?** — Builds a SQL query to select relationships based on project hash, branch name, and either from_id or to_id `relationship-ops.ts:227-230`
+- **SELECT * FROM relationships WHERE project_hash = ? AND branch_name = ? AND (from_id = ? OR to_id = ?** — Constructs a SQL query to select relationships based on project hash, branch name, and either from_id or to_id `relationship-ops.ts:243-246`
 - **SELECT * FROM relationships WHERE project_hash = ? AND branch_name = ? LIMIT ? OFFSET ?** — Retrieves a limited number of relationships from the database based on project hash and branch name `relationship-ops.ts:493-493`
 - **SELECT 1 FROM entities WHERE project_hash != ? LIMIT 1** — Selects one row from entities where project_hash is not equal to a given value `metadata-ops.ts:487-487`
 - **SELECT AVG(count) as avg FROM cooccurrence WHERE project_hash = ? AND branch_name = ?** — Parses a SQL query to calculate the average count in cooccurrence `cooccurrence-ops.ts:295-295`
@@ -649,12 +676,18 @@ This module provides a comprehensive set of operations for managing data in a Li
 - **SELECT created_at FROM project_metadata WHERE project_hash = ? AND branch_name = ?** — Builds a SQL query to select the created_at timestamp from project metadata based on project hash and branch name `metadata-ops.ts:218-218`
 - **SELECT DISTINCT branch_name FROM project_metadata WHERE project_hash = ? ORDER BY branch_name** — Builds a SQL query to select distinct branch names from project metadata based on project hash, ordered by branch name `metadata-ops.ts:381-385`
 - **SELECT e.* FROM entities e JOIN file_generations fg ON e.file_path = fg.file_path AND e.project_hash** — Selects entity details joined with file generations based on file path, project hash, and branch name. `entity-ops.ts:397-4 `entity-ops.ts:397-401`
-- **SELECT e.* FROM entities e JOIN file_generations fg ON e.file_path = fg.file_path AND e.project_hash** — Executes a SQL query to select entities joined with file generations based on file path, project hash, and branch name `entity-ops.ts:412-416`, `entity-ops.ts:462-466`, `entity-ops.ts:481-485`, `entity-ops.ts:825-828`, `entity-ops.ts:845-848`
-- **SELECT e.* FROM entities e JOIN file_generations fg ON e.file_path = fg.file_path AND e.project_hash** — `entity-ops.ts:870-873`, `entity-ops.ts:917-923`
-- **SELECT e.* FROM entities e JOIN file_generations fg ON e.file_path = fg.file_path AND e.project_hash** — Selects all entity details based on file path, project hash, and `entity-ops.ts:1128-1131`
-- **SELECT e.id FROM entities e JOIN file_generations fg ON e.file_path = fg.file_path AND e.project_has** — `entity-ops.ts:1045-1052`
-- **SELECT e.id FROM entities e JOIN file_generations fg ON e.file_path = fg.file_path AND e.project_has** — Selects entity IDs based on file path, project hash, and branch name conditions `entity-ops.ts:1064-1071`, `entity-ops.ts:1078-1085`
-- **SELECT e.id, e.language, e.file_path FROM entities e JOIN file_generations fg ON e.file_path = fg.fi** — `entity-ops.ts:1212-1216`, `entity-ops.ts:1227-1231`
+- **SELECT e.* FROM entities e JOIN file_generations fg ON e.file_path = fg.file_path AND e.project_hash** — Executes a SQL query to select entities joined with file generations based on file path, project hash, and branch name `entity-ops.ts:412-416`
+- **SELECT e.* FROM entities e JOIN file_generations fg ON e.file_path = fg.file_path AND e.project_hash** — Selects all entity details based on file path, project hash, and `entity-ops.ts:462-466`
+- **SELECT e.* FROM entities e JOIN file_generations fg ON e.file_path = fg.file_path AND e.project_hash** — Constructs a SQL query to select entities joined with file generations `entity-ops.ts:481-485`
+- **SELECT e.* FROM entities e JOIN file_generations fg ON e.file_path = fg.file_path AND e.project_hash** — Builds a SQL query to select entities joined with file generations based on project hash and branch name `entity-ops.ts:825-828`
+- **SELECT e.* FROM entities e JOIN file_generations fg ON e.file_path = fg.file_path AND e.project_hash** — Constructs a SQL query to select entities joined with file generations, filtering by file path `entity-ops.ts:845-848`
+- **SELECT e.* FROM entities e JOIN file_generations fg ON e.file_path = fg.file_path AND e.project_hash** — Constructs a SQL query to select entities joined with file generations, filtering by project hash and branch name `entity-ops.ts:870-873`
+- **SELECT e.* FROM entities e JOIN file_generations fg ON e.file_path = fg.file_path AND e.project_hash** — Constructs a SQL query to select entities joined with file generations based on specific conditions `entity-ops.ts:917-923`, `entity-ops.ts:1128-1131`
+- **SELECT e.id FROM entities e JOIN file_generations fg ON e.file_path = fg.file_path AND e.project_has** — Selects entity IDs based on file path, project hash, and branch name conditions `entity-ops.ts:1045-1052`
+- **SELECT e.id FROM entities e JOIN file_generations fg ON e.file_path = fg.file_path AND e.project_has** — Builds a SQL query to select entity ids joined with file generations based on project hash and branch name `entity-ops.ts:1064-1071`
+- **SELECT e.id FROM entities e JOIN file_generations fg ON e.file_path = fg.file_path AND e.project_has** — Constructs a SQL query to select entity IDs joined with file generations, filtering by file path `entity-ops.ts:1078-1085`
+- **SELECT e.id, e.language, e.file_path FROM entities e JOIN file_generations fg ON e.file_path = fg.fi** — Builds a SQL query to select entity ids, languages, and file paths joined with file generations based on project hash and branch name `entity-ops.ts:1212-1216`
+- **SELECT e.id, e.language, e.file_path FROM entities e JOIN file_generations fg ON e.file_path = fg.fi** — Selects entity IDs, languages, and file paths from entities joined with file generations where conditions are met `entity-ops.ts:1227-1231`
 - **SELECT embedding FROM embedding_cache WHERE key = ?** — Executes a SQL query to fetch an embedding from the cache based on a key `cache-ops.ts:36-36`
 - **SELECT file_gen FROM entities LIMIT 0** — Selects file_gen from entities with a limit of 0 `schema-manager.ts:308-308`
 - **SELECT file_path, active_gen FROM file_generations WHERE project_hash = ? AND branch_name = ?** — Selects file paths and active generations from file_generations where project_hash and branch_name match the given parameters `generation-ops.ts:45-46`

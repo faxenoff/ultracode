@@ -61,8 +61,8 @@ The `autodoc-watcher` module is used by developers to monitor and update documen
 - **escapeRegex** — Escapes regular expressions for safe string manipulation `autodoc-updater.ts:417-419`
 - **exampleExport** — An example of an exported name `autodoc-updater.ts:573-573`
 - **exportsList** — Represents the list of exported names from a file `autodoc-updater.ts:568-568`
-- **exportsList** — Maps exports to a list of strings `autodoc-updater.ts:569-569`
 - **exportsList** — Maps each function's exports to a string representation and joins them with newlines `autodoc-updater.ts:569-569`
+- **exportsList** — Maps exports to a list of strings `autodoc-updater.ts:569-569`
 - **extractEntitiesFromContent** — Extracts entities from the content of a module `module-resolver.ts:184-253`
 - **extractExportedNames** — Extracts exported names from a file `autodoc-updater.ts:756-806`
 - **extractExportsFromContent** — Extracts export names from the content of a module `module-resolver.ts:96-144`
@@ -154,7 +154,7 @@ The `autodoc-watcher` module is used by developers to monitor and update documen
 - **_llmExportDescs** — Stores descriptions for exported functions from LLM `autodoc-watcher.ts:43-43`
 - **_llmFileDescs** — Record of LLM-generated file descriptions `autodoc-updater.ts:37-37`
 - **_llmFileDescs** — Stores descriptions for files from LLM `autodoc-watcher.ts:44-44`
-- **added** — Returns an object with arrays of added and removed exports `autodoc-updater.ts:424-424`
+- **added** — Returns an object containing arrays of added and removed exports `autodoc-updater.ts:424-424`
 - **AUTODOC_CHECK_TTL** — Represents the time-to-live for checking the availability of LLM `autodoc-watcher.ts:105-105`
 - **autodocCheckTime** — Time interval for checking for changes `autodoc-watcher.ts:103-103`
 - **autodocEnabled** — Boolean indicating if auto-doc is enabled `autodoc-watcher.ts:102-102`
@@ -217,7 +217,7 @@ The `autodoc-watcher` module is used by developers to monitor and update documen
 - **provider** — LLM provider, either "ollama", "openai", or "tgi" `autodoc-updater.ts:25-25`
 - **provider** — Specifies the LLM provider for documentation generation `autodoc-watcher.ts:67-67`
 - **rawContent** — Raw content of the AUTODOC.md file `autodoc-updater.ts:44-44`
-- **removed** — Returns an object with arrays of added and removed exports `autodoc-updater.ts:424-424`
+- **removed** — Returns an object containing arrays of added and removed exports `autodoc-updater.ts:424-424`
 - **rootDir** — Root directory to watch for changes `autodoc-watcher.ts:88-88`
 - **rootDir** — Root directory to watch `autodoc-watcher.ts:59-59`
 - **running** — Indicates whether the AutoDoc Watcher is currently running `autodoc-watcher.ts:910-910`

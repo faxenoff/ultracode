@@ -42,7 +42,8 @@ types.ts
 - **findGeneratedMarkers** — Finds markers in generated protobuf files `protobuf-code-linker.ts:386-396`
 - **getProtobufCodegenConfigFiles** — Gets protobuf code generation configuration files `protobuf-code-linker.ts:413-415`
 - **getProtobufGeneratedCodeMarkers** — Gets markers in generated protobuf files `protobuf-code-linker.ts:418-420`
-- **isGenerated** — Determines if a protobuf file is generated `protobuf-code-linker.ts:273-273`, `protobuf-code-linker.ts:328-328`
+- **isGenerated** — Determines if a protobuf file is generated `protobuf-code-linker.ts:273-273`
+- **isGenerated** — Checks if the file path matches any generated file patterns `protobuf-code-linker.ts:328-328`
 - **matching** — Represents the matching of protobuf types to code entities `protobuf-code-linker.ts:356-356`
 - **matchProtoTypesToCode** — Matches protobuf types to code entities `protobuf-code-linker.ts:312-380`
 - **nameMatches** — Represents name matches between protobuf types and code entities `protobuf-code-linker.ts:437-447`
@@ -95,9 +96,10 @@ types.ts
 - **codeEntityName** — Name of the implementation/type in code `types.ts:17-17`
 - **codeFilePath** — File path of the code entity `types.ts:19-19`
 - **codegenConfigs** — Codegen config files found `types.ts:43-43`
-- **column** — The column number of an error or a parsed entity in the .proto file `protobuf-parser.ts:17-17`
 - **column** — Represents a column in a .proto file `protobuf-parser.ts:90-90`
-- **confidence** — Confidence score 0-1 `types.ts:25-25`, `types.ts:56-56`
+- **column** — The column number of an error or a parsed entity in the .proto file `protobuf-parser.ts:17-17`
+- **confidence** — Confidence score 0-1 `types.ts:25-25`
+- **confidence** — Represents an optional numeric value `types.ts:56-56`
 - **consumers** — gRPC client stubs `types.ts:37-37`
 - **context** — Context of the protobuf entity `types.ts:61-61`
 - **depth** — The depth of a block in the .proto file `protobuf-parser.ts:30-30`
@@ -105,29 +107,33 @@ types.ts
 - **entities** — An array of parsed entities such as services, rpcs, messages, and enums `protobuf-parser.ts:15-15`
 - **errorCount** — The number of errors encountered during parsing `protobuf-parser.ts:40-40`
 - **errors** — An array of error messages with their locations in the .proto file `protobuf-parser.ts:17-17`
-- **evidence** — Evidence for why these were linked `types.ts:27-27`, `types.ts:57-57`
+- **evidence** — Evidence for why these were linked `types.ts:27-27`
+- **evidence** — Represents an optional array of string values `types.ts:57-57`
 - **filesParsed** — The number of .proto files parsed `protobuf-parser.ts:38-38`
 - **fromFile** — File path of the entity in the relationship `types.ts:53-53`
 - **fromName** — Name of the entity in the relationship `types.ts:50-50`
 - **generatedFileMarkers** — Markers found in generated files `types.ts:41-41`
 - **generatedTypes** — Generated message types `types.ts:39-39`
 - **keyword** — The keyword that starts a block in the .proto file `protobuf-parser.ts:25-25`
-- **line** — The line number of an error or a parsed entity in the .proto file `protobuf-parser.ts:17-17`
 - **line** — Represents a line in a .proto file `protobuf-parser.ts:90-90`
+- **line** — The line number of an error or a parsed entity in the .proto file `protobuf-parser.ts:17-17`
 - **linkType** — Type of link `types.ts:23-23`
-- **location** — The location of an error or a parsed entity in the .proto file `protobuf-parser.ts:17-17`
 - **location** — Represents the location of a token in a .proto file `protobuf-parser.ts:90-90`
+- **location** — The location of an error or a parsed entity in the .proto file `protobuf-parser.ts:17-17`
 - **mapKey** — Key type of the map field `types.ts:74-74`
 - **mapValue** — Value type of the map field `types.ts:75-75`
-- **message** — A parsed message or service definition `protobuf-parser.ts:17-17`
 - **message** — Represents a message in a .proto file `protobuf-parser.ts:90-90`
+- **message** — A parsed message or service definition `protobuf-parser.ts:17-17`
 - **messageType** — Type of the message in the protobuf specification `types.ts:60-60`
 - **metadata** — Metadata for the relationship `types.ts:55-62`
 - **method** — Represents a method in a .proto file `protobuf-parser.ts:562-562`
-- **name** — Represents the name of an entity `protobuf-code-linker.ts:352-352`, `protobuf-code-linker.ts:353-353`
+- **name** — Represents the name of an entity `protobuf-code-linker.ts:352-352`
+- **name** — Extracts the names of code members from the metadata `protobuf-code-linker.ts:353-353`
 - **name** — The name of a block or entity in the .proto file `protobuf-parser.ts:26-26`
-- **name** — Name of the field `types.ts:69-69`, `types.ts:83-83`
-- **number** — Number of the field `types.ts:71-71`, `types.ts:84-84`
+- **name** — Name of the field `types.ts:69-69`
+- **name** — Represents a string value `types.ts:83-83`
+- **number** — Number of the field `types.ts:71-71`
+- **number** — Represents a numeric value `types.ts:84-84`
 - **oneofGroup** — Group of the oneof field `types.ts:76-76`
 - **optional** — Indicates if the field is optional `types.ts:73-73`
 - **path** — Represents the path of a method in a .proto file `protobuf-parser.ts:562-562`
@@ -142,8 +148,8 @@ types.ts
 - **toFile** — File path of the entity in the relationship `types.ts:54-54`
 - **toName** — Name of the entity in the relationship `types.ts:51-51`
 - **totalParseTimeMs** — The total time taken to parse all .proto files in milliseconds `protobuf-parser.ts:39-39`
-- **type** — Type of the relationship `types.ts:52-52`
 - **type** — Type of the field `types.ts:70-70`
+- **type** — Type of the relationship `types.ts:52-52`
 
 ## Entities
 

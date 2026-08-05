@@ -43,7 +43,8 @@ User can also time travel using TimeTravel.
 - **entriesB** — Represents entries in tree B `prolly-tree.ts:521-521`
 - **entry** — Represents an entry in a probabilistic B-Tree `prolly-tree.ts:278-278`
 - **existing** — Checks if an entry exists in a probabilistic B-Tree `prolly-tree.ts:313-313`
-- **existingCheck** — Checks if a node already exists in the store `node-store.ts:186-186`, `node-store.ts:187-187`
+- **existingCheck** — Checks if a node already exists in the store `node-store.ts:186-186`
+- **existingCheck** — Maps the hash of each inserted node to an array of hashes `node-store.ts:187-187`
 - **existingHashes** — Stores hashes of nodes that have been previously stored `node-store.ts:189-189`
 - **filtered** — Filters entries in a probabilistic B-Tree `prolly-tree.ts:330-330`
 - **fromSet** — Not present in the provided code `commit-manager.ts:237-237`
@@ -52,7 +53,8 @@ User can also time travel using TimeTravel.
 - **keepHashes** — Keeps specific hashes in the commit history `commit-manager.ts:469-469`
 - **newNodes** — Represents nodes that are being added to the store `node-store.ts:191-191`
 - **orphaned** — Identifies orphaned nodes that are not referenced by any other nodes `node-store.ts:441-441`
-- **result** — Represents the result of a database operation `commit-manager.ts:475-475`, `node-store.ts:375-375`
+- **result** — Represents the result of a database operation `commit-manager.ts:475-475`
+- **result** — Represents the result of a node store operation, typically a ProllyNode instance `node-store.ts:375-375`
 - **serializeEntity** — Serializes a tree entity `prolly-tree.ts:729-731`
 - **sorted** — A sorted array of entries `prolly-tree.ts:88-88`
 - **totalChanges** — Calculates the total number of changes across recent commits `time-travel.ts:389-389`
@@ -217,13 +219,16 @@ User can also time travel using TimeTravel.
 - **baseBranch** — Base branch for the diff `branch-diff-cache.ts:188-188`
 - **baseBranch** — Base branch in the Prolly Tree `types.ts:308-308`
 - **branchCount** — Returns the number of branches `commit-manager.ts:390-390`
-- **branchName** — Name of the branch `commit-manager.ts:26-26`, `types.ts:104-104`, `types.ts:124-124`, `types.ts:369-369`
+- **branchName** — Name of the branch `commit-manager.ts:26-26`
+- **branchName** — Represents a branch in the Prolly Tree, identified by content hash and type `types.ts:104-104`
+- **branchName** — Represents a branch in the Prolly Tree, identified by content hash and level `types.ts:124-124`
+- **branchName** — Stores the name of the branch `types.ts:369-369`
 - **cache** — Branch Diff Cache data structure `branch-diff-cache.ts:30-30`
 - **cache** — An LRU cache for storing nodes `node-store.ts:44-44`
 - **cacheAge** — Represents the age of the branch diff cache in milliseconds `branch-diff-cache.ts:193-193`
 - **cacheHits** — Tracks the number of cache hits `node-store.ts:460-460`
-- **cacheSize** — The maximum number of nodes to keep in the cache `node-store.ts:27-27`
 - **cacheSize** — Represents the maximum size of the cache `node-store.ts:459-459`
+- **cacheSize** — The maximum number of nodes to keep in the cache `node-store.ts:27-27`
 - **cacheSize** — Size of the cache `types.ts:284-284`
 - **changed** — Indicates whether the entity has changed `time-travel.ts:318-318`
 - **changedIds** — Set of entity IDs that were changed (added or modified) `recently-changed.ts:23-23`
@@ -237,8 +242,9 @@ User can also time travel using TimeTravel.
 - **client** — A reference to the database client used for storing nodes `node-store.ts:42-42`
 - **commit** — Represents a commit in the graph `time-travel.ts:270-270`, `time-travel.ts:278-278`
 - **commit** — Commit information `types.ts:337-337`
-- **commitHash** — Content hash of the commit `types.ts:98-98`, `types.ts:125-125`
-- **commitHash** — Content hash (xxHash64) - serves as the node's identity `types.ts:347-347`
+- **commitHash** — Content hash of the commit `types.ts:98-98`
+- **commitHash** — Content hash (xxHash64) - serves as the node's identity `types.ts:125-125`
+- **commitHash** — Represents the commit hash `types.ts:347-347`
 - **commitManager** — Commit Manager instance used for getting branch heads `branch-diff-cache.ts:29-29`
 - **commitManager** — Manages commits, allowing retrieval of commit details `time-travel.ts:25-25`
 - **commitPath** — Represents the path of the commit `types.ts:204-204`
@@ -246,8 +252,10 @@ User can also time travel using TimeTravel.
 - **config** — The configuration object for the Prolly Node Store `node-store.ts:43-43`
 - **config** — Configuration for the Prolly Tree `prolly-tree.ts:35-35`
 - **contentHash** — Content hash (xxHash64) - serves as the node's identity `types.ts:28-28`
-- **count** — The count of entries in a range `prolly-tree.ts:116-116`
-- **count** — Counts the number of entries in a probabilistic B-Tree `prolly-tree.ts:119-119`, `prolly-tree.ts:198-198`, `prolly-tree.ts:199-199`, `prolly-tree.ts:202-202`
+- **count** — Counts the number of entries in a probabilistic B-Tree `prolly-tree.ts:119-119`
+- **count** — Represents the count of occurrences for a key in a hash map `prolly-tree.ts:198-198`
+- **count** — Stores the count of occurrences for a key in an array of internal nodes `prolly-tree.ts:199-199`
+- **count** — The count of entries in a range `prolly-tree.ts:116-116`, `prolly-tree.ts:202-202`
 - **createdAt** — Timestamp when node was created. Not in Zig schema `types.ts:53-53`
 - **createdAt** — Timestamp when the commit was created `types.ts:116-116`
 - **createdAt** — Timestamp when the node was created `types.ts:326-326`
@@ -264,14 +272,16 @@ User can also time travel using TimeTravel.
 - **dirsSkipped** — Represents the number of directories skipped `types.ts:182-182`
 - **enableCache** — A boolean indicating whether the cache is enabled `node-store.ts:29-29`
 - **enableCache** — Boolean indicating whether caching is enabled `types.ts:278-278`
-- **end** — Represents the end of a range `prolly-tree.ts:613-613`, `prolly-tree.ts:614-614`
+- **end** — Represents the end of a range `prolly-tree.ts:613-613`
+- **end** — Stores the end of a key in a map `prolly-tree.ts:614-614`
 - **entityA** — Stores a nullable entity of type T `time-travel.ts:316-316`
 - **entityB** — Stores a nullable entity of type T `time-travel.ts:317-317`
 - **entityCount** — Not present in the provided code `commit-manager.ts:106-106`
 - **entityCount** — Count of entities in the graph `types.ts:338-338`
 - **entries** — Entries in the leaf node `types.ts:74-74`
 - **entryCount** — Represents the number of entries in the tree `prolly-tree.ts:658-658`
-- **entryCount** — Number of entries in this subtree. Computed in memory, not persisted `types.ts:51-51`, `types.ts:85-85`
+- **entryCount** — Number of entries in this subtree. Computed in memory, not persisted `types.ts:51-51`
+- **entryCount** — Represents the count of entries `types.ts:85-85`
 - **errors** — Represents the number of errors `types.ts:228-228`
 - **fileCount** — Count of files in the graph `types.ts:340-340`
 - **fileDiff** — Represents the difference between two files `types.ts:201-201`
@@ -279,23 +289,32 @@ User can also time travel using TimeTravel.
 - **hasCache** — Checks if the cache is initialized `branch-diff-cache.ts:187-187`
 - **hash** — Computes the hash of a node's content `node-store.ts:171-171`
 - **hash** — Parses a hash value and returns an array of objects containing hash, key start, key end, and count `prolly-tree.ts:116-116`
-- **hash** — Content hash for integrity verification `types.ts:43-43`, `types.ts:82-82`, `types.ts:375-375`, `types.ts:395-395`
+- **hash** — Content hash for integrity verification `types.ts:43-43`
+- **hash** — Represents the hash value `types.ts:82-82`, `types.ts:395-395`
+- **hash** — Stores the hash value `types.ts:375-375`
 - **id** — Unique identifier for the entity `types.ts:363-363`
 - **internalNodes** — Returns the number of internal nodes in the store `node-store.ts:458-458`
 - **isInitialized** — Indicates if the commit manager is initialized `commit-manager.ts:27-27`
 - **isInitialized** — A boolean indicating whether the store has been initialized `node-store.ts:45-45`
 - **isLeaf** — Boolean indicating if the entity is a leaf node `types.ts:381-381`
-- **key** — The key of an entry `prolly-tree.ts:72-72`, `prolly-tree.ts:115-115`
-- **key** — Represents a key in the tree `prolly-tree.ts:337-337`, `prolly-tree.ts:349-349`, `prolly-tree.ts:360-360`
+- **key** — Represents the key in an array of entries `prolly-tree.ts:337-337`
+- **key** — Represents a key in the tree `prolly-tree.ts:115-115`, `prolly-tree.ts:349-349`
+- **key** — The key of an entry `prolly-tree.ts:72-72`, `prolly-tree.ts:360-360`
 - **key** — Retrieves rollback data for a target commit hash `time-travel.ts:363-363`
 - **key** — Unique key for this entry (entity ID, file path, etc.) `types.ts:61-61`
 - **key** — Unique key for the entry `types.ts:137-137`
-- **keyEnd** — The end key of a range `prolly-tree.ts:116-116`
-- **keyEnd** — Represents the end of a key in a probabilistic B-Tree `prolly-tree.ts:119-119`, `prolly-tree.ts:198-198`, `prolly-tree.ts:199-199`, `prolly-tree.ts:202-202`
-- **keyRangeEnd** — B-tree key range: end key (inclusive). Computed in memory, not persisted `types.ts:49-49`, `types.ts:84-84`
-- **keyRangeStart** — B-tree key range: start key (inclusive). Computed in memory, not persisted `types.ts:47-47`, `types.ts:83-83`
-- **keyStart** — The start key of a range `prolly-tree.ts:116-116`
-- **keyStart** — Represents the start of a key in a probabilistic B-Tree `prolly-tree.ts:119-119`, `prolly-tree.ts:198-198`, `prolly-tree.ts:199-199`, `prolly-tree.ts:202-202`
+- **keyEnd** — Represents the end of a key in a probabilistic B-Tree `prolly-tree.ts:119-119`
+- **keyEnd** — Represents the end of a key in a hash map `prolly-tree.ts:198-198`
+- **keyEnd** — Stores the end of a key in an array of internal nodes `prolly-tree.ts:199-199`
+- **keyEnd** — The end key of a range `prolly-tree.ts:116-116`, `prolly-tree.ts:202-202`
+- **keyRangeEnd** — B-tree key range: end key (inclusive). Computed in memory, not persisted `types.ts:49-49`
+- **keyRangeEnd** — Represents the end of the key range `types.ts:84-84`
+- **keyRangeStart** — B-tree key range: start key (inclusive). Computed in memory, not persisted `types.ts:47-47`
+- **keyRangeStart** — Represents the start of the key range `types.ts:83-83`
+- **keyStart** — Represents the start of a key in a probabilistic B-Tree `prolly-tree.ts:119-119`
+- **keyStart** — Represents the start of a key in a hash map `prolly-tree.ts:198-198`
+- **keyStart** — Stores the start of a key in an array of internal nodes `prolly-tree.ts:199-199`
+- **keyStart** — The start key of a range `prolly-tree.ts:116-116`, `prolly-tree.ts:202-202`
 - **lastCommits** — Number of commits to consider `recently-changed.ts:16-16`
 - **leafNodes** — Returns the number of leaf nodes in the store `node-store.ts:457-457`
 - **level** — Tree level: 0 = leaf, >0 = internal `types.ts:40-40`
@@ -334,19 +353,22 @@ User can also time travel using TimeTravel.
 - **parentHash** — Content hash of the parent commit `types.ts:107-107`
 - **parentHash** — Content hash of the parent node `types.ts:240-240`
 - **parentPath** — Optional path of the parent entity `types.ts:378-378`
-- **path** — Represents the file path `types.ts:169-169`, `types.ts:394-394`
+- **path** — Represents the file path `types.ts:169-169`
 - **path** — Path of the entity `types.ts:372-372`
+- **path** — Stores the file path `types.ts:394-394`
 - **projectHash** — Hash of the project `commit-manager.ts:25-25`
-- **projectHash** — Content hash of the project `types.ts:101-101`, `types.ts:123-123`
-- **projectHash** — Hash representing the project `types.ts:366-366`
+- **projectHash** — Content hash of the project `types.ts:101-101`
+- **projectHash** — Hash representing the project `types.ts:123-123`
+- **projectHash** — Represents the project hash `types.ts:366-366`
 - **relationshipCount** — Not present in the provided code `commit-manager.ts:106-106`
 - **relationshipCount** — Count of relationships in the graph `types.ts:339-339`
-- **rootHash** — The hash of the root node of the Prolly Tree `prolly-tree.ts:36-36`
 - **rootHash** — Represents the root hash of the tree `prolly-tree.ts:657-657`
+- **rootHash** — The hash of the root node of the Prolly Tree `prolly-tree.ts:36-36`
 - **rootNodeHash** — Content hash of the root node `types.ts:110-110`
 - **sinceTimestamp** — Unix timestamp for commits since `recently-changed.ts:18-18`
 - **size** — Optional field for file size `types.ts:396-396`
-- **start** — Represents the start of a range `prolly-tree.ts:613-613`, `prolly-tree.ts:614-614`
+- **start** — Represents the start of a range `prolly-tree.ts:613-613`
+- **start** — Stores the start of a key in a map `prolly-tree.ts:614-614`
 - **stats** — Statistics about the tree diff `types.ts:158-162`
 - **stats** — Represents statistics related to the file `types.ts:180-184`
 - **timeMs** — Time taken in milliseconds to analyze commits `recently-changed.ts:28-28`
@@ -364,8 +386,9 @@ User can also time travel using TimeTravel.
 - **updatedAt** — Timestamp of the last update `types.ts:387-387`
 - **valid** — Indicates whether the node is valid `types.ts:216-216`
 - **validUntilCommit** — Timestamp until which the branch is valid `types.ts:323-323`
-- **value** — The value of an entry `prolly-tree.ts:72-72`, `prolly-tree.ts:115-115`
-- **value** — Represents a value in the tree `prolly-tree.ts:337-337`, `prolly-tree.ts:349-349`, `prolly-tree.ts:360-360`
+- **value** — Represents the value in an array of entries `prolly-tree.ts:337-337`
+- **value** — Represents a value in the tree `prolly-tree.ts:115-115`, `prolly-tree.ts:349-349`
+- **value** — The value of an entry `prolly-tree.ts:72-72`, `prolly-tree.ts:360-360`
 - **value** — Parses a rollback data promise `time-travel.ts:363-363`
 - **value** — Serialized value (CBOR encoded) `types.ts:64-64`
 - **valueHash** — Hash of the value (for change detection) `types.ts:67-67`
@@ -387,7 +410,8 @@ User can also time travel using TimeTravel.
 - **SELECT * FROM commits WHERE project_hash = ? AND branch_name = ? ORDER BY created_at DESC LIMIT ?** — Retrieves commits for a specific project and branch, ordered by creation time `commit-manager.ts:176-179`
 - **SELECT * FROM prolly_nodes WHERE id = ?** — Selects all columns from the prolly_nodes table where the id matches the given value `node-store.ts:250-250`
 - **SELECT * FROM prolly_nodes WHERE id IN (${toFetch.map(() => "?").join(",")})** — Selects all columns from the prolly_nodes table where the ids are in the provided list `node-store.ts:318-318`
-- **SELECT 1 FROM prolly_nodes WHERE id = ?** — Selects a row from the prolly_nodes table where the id matches the given value `node-store.ts:130-130`, `node-store.ts:344-344`
+- **SELECT 1 FROM prolly_nodes WHERE id = ?** — Selects a row from the prolly_nodes table where the id matches the given value `node-store.ts:130-130`
+- **SELECT 1 FROM prolly_nodes WHERE id = ?** — Defines a SQL query to check the existence of a node by its ID `node-store.ts:344-344`
 - **SELECT commit_hash FROM branch_heads WHERE project_hash = ? AND branch_name = ?** — Retrieves the commit hash for a specific project and branch `commit-manager.ts:294-294`
 - **SELECT COUNT(DISTINCT branch_name) as branches FROM branch_heads WHERE project_hash = ?** — Counts the number of distinct branches for a specific project `commit-manager.ts:407-407`
 - **SELECT DISTINCT root_id FROM commits** — Executes a query to select distinct root IDs from the commits table `commit-manager.ts:448-448`

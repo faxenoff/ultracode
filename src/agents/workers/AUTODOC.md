@@ -478,8 +478,8 @@ The `src/agents/workers` module provides a set of worker processes for language 
 - **id** — Optional property for message identification `generic-language-worker.ts:44-44`
 - **id** — Unique identifier for the task `generic-language-worker.ts:63-63`
 - **id** — Unique identifier for a worker or task `language-worker-pool.ts:77-77`
-- **id** — Unique identifier for a task or worker `language-worker-pool.ts:60-60`, `language-worker-pool.ts:92-92`
-- **id** — Stores the unique identifier for the worker pool `language-worker-pool.ts:101-101`
+- **id** — Stores the unique identifier for the worker pool `language-worker-pool.ts:92-92`
+- **id** — Unique identifier for a task or worker `language-worker-pool.ts:60-60`, `language-worker-pool.ts:101-101`
 - **id** — Worker result message ID `language-worker-pool.ts:50-50`, `language-worker-pool.ts:125-125`
 - **id** — Unique identifier for a task `parser-worker.ts:17-17`
 - **id** — Identifies a specific task or worker `parsing-subprocess-pool.ts:1156-1156`
@@ -671,18 +671,19 @@ The `src/agents/workers` module provides a set of worker processes for language 
 - **type** — Specifies the type of worker message `embedding-processor.ts:28-28`
 - **type** — Represents the type of the entity as "embeddings.ready" `embedding-processor.ts:47-47`
 - **type** — Represents the type of the entity as "embeddings.texts" `embedding-processor.ts:65-65`
-- **type** — Indicates the type of the language worker as "parse" `generic-language-worker.ts:62-62`, `generic-language-worker.ts:76-76`
-- **type** — Represents the type of the worker, either "shutdown" or "ping" `generic-language-worker.ts:58-58`, `generic-language-worker.ts:294-294`
+- **type** — Represents the type of the language worker as "parse" `generic-language-worker.ts:67-67`, `generic-language-worker.ts:76-76`
+- **type** — Indicates the type of the language worker as "parse" `generic-language-worker.ts:62-62`, `generic-language-worker.ts:294-294`
 - **type** — Property indicating the type of the message `generic-language-worker.ts:43-43`
 - **type** — Type of message `generic-language-worker.ts:48-48`
 - **type** — Specifies the type of entity `generic-language-worker.ts:53-53`
-- **type** — Represents the type of the language worker as "parse" `generic-language-worker.ts:67-67`
+- **type** — Represents the type of the worker, either "shutdown" or "ping" `generic-language-worker.ts:58-58`
 - **type** — Worker ready message type `language-worker-pool.ts:41-41`
 - **type** — Represents the type of message as "result" `language-worker-pool.ts:49-49`
 - **type** — Represents the type of message as "error" `language-worker-pool.ts:58-58`
 - **type** — Represents the type of message as "embeddings.ready" `language-worker-pool.ts:68-68`
 - **type** — Type of the message, such as initialization or task processing `parser-worker.ts:33-33`
-- **type** — Represents the types of messages a worker can receive `parser-worker.ts:33-33`, `parser-worker.ts:33-33`
+- **type** — Represents the types of messages a worker can receive `parser-worker.ts:33-33`
+- **type** — Represents the types of messages that can be sent to a worker thread `parser-worker.ts:33-33`
 - **type** — Worker initialized response (with embeddings configured) `parsing-subprocess-pool.ts:61-61`
 - **type** — Represents the type of message as "embeddings.texts" `parsing-subprocess-pool.ts:69-69`
 - **type** — type is set to "embeddings.texts" `parsing-subprocess-pool.ts:84-84`

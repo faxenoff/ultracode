@@ -84,8 +84,8 @@ This module contains a collection of test files for various tools and agents, pr
 - **adapter** — Represents a mock adapter with methods for getting Prolly node store and commit manager `history-tool-handlers.test.ts:42-42`
 - **adapter** — Returns the commit manager instance `history-tool-handlers.test.ts:43-43`
 - **agent** — Not applicable in this context `base-tool-handler.test.ts:186-186`
-- **agent** — getVectorStore returns an object with getProjectContext method that returns null `base-tool-handler.test.ts:187-187`
 - **agent** — Returns a mock vector store with a method to get project context `base-tool-handler.test.ts:187-187`
+- **agent** — getVectorStore returns an object with getProjectContext method that returns null `base-tool-handler.test.ts:187-187`
 - **bm** — Creates a mock branch manager with active branches and current branch `branch-tool-handlers.test.ts:16-19`
 - **bm** — Mocks the current branch to be "main" `branch-tool-handlers.test.ts:20-20`
 - **bm** — Mocks the active branches to include a single branch named "main" with metadata `branch-tool-handlers.test.ts:34-36`
@@ -105,12 +105,12 @@ This module contains a collection of test files for various tools and agents, pr
 - **conductor** — A mock conductor used in tests `graph-tool-handlers.test.ts:37-37`
 - **conductor** — Returns a mock agent by type `graph-tool-handlers.test.ts:51-51`
 - **conductor** — Initializes the conductor mock `graph-tool-handlers.test.ts:52-52`
+- **conductor** — Mocks the getAgentByType method to return a devAgent `metrics-tool-handlers.test.ts:250-250`
 - **conductor** — Mocks conductor for testing GetMetricsToolHandler `metrics-tool-handlers.test.ts:62-64`
 - **conductor** — Mocks the getAgentByType method to return the devAgent `metrics-tool-handlers.test.ts:107-110`
 - **conductor** — Returns all agent metrics with dev tasks processed and last activity `metrics-tool-handlers.test.ts:125-127`
 - **conductor** — Returns all agent metrics as an empty object `metrics-tool-handlers.test.ts:139-139`
 - **conductor** — Creates a mock conductor with a getAgentByType function that returns null `metrics-tool-handlers.test.ts:227-227`
-- **conductor** — Mocks the getAgentByType method to return a devAgent `metrics-tool-handlers.test.ts:250-250`
 - **createMockBranchManager** — Returns a mock branch manager object with methods for managing branches `_test-helpers.ts:55-66`
 - **createMockConductor** — Returns a mock conductor object with methods for orchestrating tasks `_test-helpers.ts:80-87`
 - **createMockGraphStorage** — Returns a mock graph storage object with various methods stubbed `_test-helpers.ts:13-34`
@@ -118,61 +118,67 @@ This module contains a collection of test files for various tools and agents, pr
 - **createMockSemanticAgent** — Returns a mock semantic agent object with methods for semantic search and embedding `_test-helpers.ts:37-52`
 - **createMockSnapshotManager** — Returns a mock snapshot manager object with methods for creating, rolling back, and listing snapshots `_test-helpers.ts:69-77`
 - **createMockToolContext** — Constructs a mock ToolContext with various internal components and overrides `_test-helpers.ts:105-129`
+- **ctx** — Creates a mock tool context with a graph storage that returns the storage object `analysis-tool-handlers.test.ts:135-135`
 - **ctx** — Represents a mock tool context `analysis-tool-handlers.test.ts:42-42`
 - **ctx** — Creates a mock tool context with a graph storage override `analysis-tool-handlers.test.ts:79-79`
-- **ctx** — Creates a mock tool context with a graph storage mock `analysis-tool-handlers.test.ts:100-100`, `entity-tool-handlers.test.ts:91-91`, `entity-tool-handlers.test.ts:106-106`, `entity-tool-handlers.test.ts:118-118`, `entity-tool-handlers.test.ts:134-134`, `entity-tool-handlers.test.ts:151-151`, `entity-tool-handlers.test.ts:168-168`, `entity-tool-handlers.test.ts:186-186`, `entity-tool-handlers.test.ts:199-199`, `entity-tool-handlers.test.ts:211-211`, `entity-tool-handlers.test.ts:225-225`, `file-tool-handlers.test.ts:97-97`, `file-tool-handlers.test.ts:142-142`, `file-tool-handlers.test.ts:157-157`, `file-tool-handlers.test.ts:176-176`, `file-tool-handlers.test.ts:190-190`, `graph-tool-handlers.test.ts:81-81`, `graph-tool-handlers.test.ts:95-95`, `graph-tool-handlers.test.ts:109-109`, `graph-tool-handlers.test.ts:118-118`, `graph-tool-handlers.test.ts:139-139`, `graph-tool-handlers.test.ts:154-154`, `graph-tool-handlers.test.ts:175-175`, `graph-tool-handlers.test.ts:194-194`
-- **ctx** — Creates a mock tool context with a graph storage that returns the storage object `analysis-tool-handlers.test.ts:135-135`, `entity-tool-handlers.test.ts:69-69`
-- **ctx** — Represents a session object with project path and resolvePath function `base-tool-handler.test.ts:142-142`
+- **ctx** — Creates a mock tool context with a graph storage mock `analysis-tool-handlers.test.ts:100-100`, `entity-tool-handlers.test.ts:91-91`, `entity-tool-handlers.test.ts:106-106`, `entity-tool-handlers.test.ts:118-118`, `entity-tool-handlers.test.ts:134-134`, `entity-tool-handlers.test.ts:151-151`, `entity-tool-handlers.test.ts:168-168`
 - **ctx** — Represents a mock tool context used in testing `base-tool-handler.test.ts:161-161`
 - **ctx** — getSemanticAgent: async () => agent as any, `base-tool-handler.test.ts:190-190`
-- **ctx** — Creates a mock tool context with a branch manager `branch-tool-handlers.test.ts:22-22`, `branch-tool-handlers.test.ts:88-88`, `branch-tool-handlers.test.ts:107-107`, `branch-tool-handlers.test.ts:135-135`
+- **ctx** — Represents a session object with project path and resolvePath function `base-tool-handler.test.ts:142-142`
+- **ctx** — Creates a mock tool context with a branch manager `branch-tool-handlers.test.ts:22-22`
 - **ctx** — Creates a mock tool context with a branch manager that returns the mock branch manager `branch-tool-handlers.test.ts:39-39`
-- **ctx** — Creates a mock tool context with a branch manager that returns null `branch-tool-handlers.test.ts:49-49`
+- **ctx** — Creates a mock tool context with a branch manager that returns null `branch-tool-handlers.test.ts:49-49`, `branch-tool-handlers.test.ts:145-145`
 - **ctx** — Creates a mock tool context with a branch manager that returns a branch database `branch-tool-handlers.test.ts:63-63`
-- **ctx** — Creates a mock tool context with a branch manager that returns a branch manager instance `branch-tool-handlers.test.ts:74-74`
-- **ctx** — Creates a mock tool context with a branch manager set to null `branch-tool-handlers.test.ts:118-118`
-- **ctx** — Creates a mock tool context with a branch manager set to null. `branch-tool-handlers.test `branch-tool-handlers.test.ts:145-145`
-- **ctx** — Creates a mock tool context with a getGraphStorage method that returns the mock graph storage `entity-tool-handlers.test.ts:25-25`
-- **ctx** — Creates a mock tool context for testing `entity-tool-handlers.test.ts:40-40`
-- **ctx** — Creates a mock tool context with a graph storage that returns a mock storage `entity-tool-handlers.test.ts:51-51`
+- **ctx** — Creates a mock tool context with a branch manager that returns a branch manager instance `branch-tool-handlers.test.ts:74-74`, `branch-tool-handlers.test.ts:135-135`
+- **ctx** — Creates a mock tool context with a branch manager set to null `branch-tool-handlers.test.ts:88-88`
+- **ctx** — Creates a mock tool context with a branch manager set to null. `branch-tool-handlers.test `branch-tool-handlers.test.ts:107-107`
+- **ctx** — Creates a mock tool context with a null branch manager `branch-tool-handlers.test.ts:118-118`
+- **ctx** — Creates a mock tool context with a graph storage getter `entity-tool-handlers.test.ts:69-69`, `entity-tool-handlers.test.ts:186-186`, `graph-tool-handlers.test.ts:95-95`, `graph-tool-handlers.test.ts:109-109`, `graph-tool-handlers.test.ts:118-118`, `graph-tool-handlers.test.ts:139-139`
+- **ctx** — Creates a mock tool context with a graph storage that returns a mock storage `entity-tool-handlers.test.ts:51-51`, `entity-tool-handlers.test.ts:199-199`
+- **ctx** — Creates a mock tool context for testing `entity-tool-handlers.test.ts:40-40`, `entity-tool-handlers.test.ts:211-211`
+- **ctx** — Creates a mock tool context with a getGraphStorage method that returns the mock graph storage `entity-tool-handlers.test.ts:25-25`, `entity-tool-handlers.test.ts:225-225`
+- **ctx** — Creates a mock tool context with a graph storage function `file-tool-handlers.test.ts:142-142`, `file-tool-handlers.test.ts:157-157`, `file-tool-handlers.test.ts:176-176`, `file-tool-handlers.test.ts:190-190`, `file-tool-handlers.test.ts:210-210`
 - **ctx** — Creates a mock tool context with a graph storage `file-tool-handlers.test.ts:39-39`
-- **ctx** — Creates a mock tool context with a graph storage getter `file-tool-handlers.test.ts:81-81`, `file-tool-handlers.test.ts:210-210`
+- **ctx** — Creates a mock tool context with a graph storage mock. `file-tool-handlers.test `file-tool-handlers.test.ts:81-81`
+- **ctx** — Creates a mock tool context with a getGraphStorage method that returns the storage `file-tool-handlers.test.ts:97-97`
+- **ctx** — Creates a mock tool context with a graph storage getter. `graph-tool-handlers.test `graph-tool-handlers.test.ts:81-81`, `graph-tool-handlers.test.ts:154-154`
+- **ctx** — Creates a mock tool context with a graph storage mock. `graph `graph-tool-handlers.test.ts:56-56`, `graph-tool-handlers.test.ts:175-175`
+- **ctx** — Returns a graph storage mock `graph-tool-handlers.test.ts:55-55`, `graph-tool-handlers.test.ts:194-194`
 - **ctx** — A mock tool context used in tests `graph-tool-handlers.test.ts:22-22`
 - **ctx** — Creates a mock tool context instance `graph-tool-handlers.test.ts:39-39`
 - **ctx** — Returns a conductor mock `graph-tool-handlers.test.ts:40-40`
-- **ctx** — Returns a graph storage mock `graph-tool-handlers.test.ts:55-55`
-- **ctx** — Creates a mock tool context with a graph storage mock. `graph `graph-tool-handlers.test.ts:56-56`
 - **ctx** — Creates a mock tool context for testing the IndexToolHandler `index-tool-handler.test.ts:11-18`
 - **ctx** — Returns a mock graph storage object `index-tool-handler.test.ts:13-13`
 - **ctx** — Returns null for the semantic agent `index-tool-handler.test.ts:14-14`
 - **ctx** — Returns a mock conductor object `index-tool-handler.test.ts:15-15`
 - **ctx** — Normalizes the input path by returning the path itself `index-tool-handler.test.ts:16-16`
+- **ctx** — Creates a mock tool context with a conductor set to a specific conductor instance `metrics-tool-handlers.test.ts:167-167`, `metrics-tool-handlers.test.ts:252-252`
 - **ctx** — Creates mock tool context for testing GetMetricsToolHandler `metrics-tool-handlers.test.ts:38-38`
 - **ctx** — Creates a mock tool context with a conductor mock `metrics-tool-handlers.test.ts:49-51`
-- **ctx** — Creates a mock tool context with a conductor `metrics-tool-handlers.test.ts:66-66`, `metrics-tool-handlers.test.ts:228-228`, `metrics-tool-handlers.test.ts:252-252`
+- **ctx** — Creates a mock tool context with a conductor `metrics-tool-handlers.test.ts:66-66`, `metrics-tool-handlers.test.ts:228-228`
 - **ctx** — Creates a mock tool context with a knowledge bus `metrics-tool-handlers.test.ts:112-112`, `metrics-tool-handlers.test.ts:179-179`, `metrics-tool-handlers.test.ts:204-204`
 - **ctx** — Creates a mock tool context with a knowledge bus set to null `metrics-tool-handlers.test.ts:129-129`, `metrics-tool-handlers.test.ts:214-214`
 - **ctx** — Creates a mock tool context with a conductor set to the mock conductor `metrics-tool-handlers.test.ts:141-141`
 - **ctx** — Creates a mock tool context with a knowledge bus. `metrics-tool-handlers.test `metrics-tool-handlers.test.ts:157-157`
-- **ctx** — Creates a mock tool context with a conductor set to a specific conductor instance `metrics-tool-handlers.test.ts:167-167`
 - **ctx** — Represents a mock tool context used in the test cases `pattern-tool-handlers.test.ts:69-69`
+- **ctx** — Returns a mock graph storage `semantic-tool-handlers.test.ts:85-85`, `semantic-tool-handlers.test.ts:184-184`
+- **ctx** — Returns a mock tool context with a semantic agent `semantic-tool-handlers.test.ts:64-64`, `semantic-tool-handlers.test.ts:86-86`, `semantic-tool-handlers.test.ts:106-106`, `semantic-tool-handlers.test.ts:107-107`, `semantic-tool-handlers.test.ts:202-202`
 - **ctx** — Creates a mock tool context for semantic search `semantic-tool-handlers.test.ts:30-30`
-- **ctx** — Creates a mock tool context with a semantic agent `semantic-tool-handlers.test.ts:31-31`, `semantic-tool-handlers.test.ts:124-124`, `semantic-tool-handlers.test.ts:137-137`, `semantic-tool-handlers.test.ts:163-163`, `semantic-tool-handlers.test.ts:174-174`, `semantic-tool-handlers.test.ts:184-184`, `semantic-tool-handlers.test.ts:202-202`
-- **ctx** — Returns a mock semantic agent `semantic-tool-handlers.test.ts:47-47`, `semantic-tool-handlers.test.ts:85-85`, `semantic-tool-handlers.test.ts:106-106`
+- **ctx** — Creates a mock tool context with a semantic agent `semantic-tool-handlers.test.ts:31-31`, `semantic-tool-handlers.test.ts:124-124`, `semantic-tool-handlers.test.ts:137-137`, `semantic-tool-handlers.test.ts:163-163`, `semantic-tool-handlers.test.ts:174-174`
+- **ctx** — Returns a mock semantic agent `semantic-tool-handlers.test.ts:47-47`
 - **ctx** — Mocks the graph storage retrieval `semantic-tool-handlers.test.ts:63-63`
-- **ctx** — Returns a mock tool context with a semantic agent `semantic-tool-handlers.test.ts:64-64`
-- **ctx** — Returns a mock graph storage `semantic-tool-handlers.test.ts:86-86`, `semantic-tool-handlers.test.ts:107-107`
+- **ctx** — Creates a mock tool context with a snapshot manager that returns the previously created snapshot manager instance `snapshot-tool-handlers.test.ts:106-106`, `snapshot-tool-handlers.test.ts:175-175`
 - **ctx** — A mock tool context used to simulate the environment for testing snapshot handlers `snapshot-tool-handlers.test.ts:15-15`
-- **ctx** — Creates a mock tool context with a snapshot manager that returns null `snapshot-tool-handlers.test.ts:26-26`, `snapshot-tool-handlers.test.ts:88-88`, `snapshot-tool-handlers.test.ts:117-117`, `snapshot-tool-handlers.test.ts:175-175`
+- **ctx** — Creates a mock tool context with a snapshot manager that returns null `snapshot-tool-handlers.test.ts:26-26`
 - **ctx** — Creates a mock tool context with a snapshot manager that returns the mock snapshot manager `snapshot-tool-handlers.test.ts:40-40`
 - **ctx** — Creates a mock tool context that returns the mock snapshot manager `snapshot-tool-handlers.test.ts:54-54`
-- **ctx** — Creates a mock tool context with a snapshot manager `snapshot-tool-handlers.test.ts:68-68`
-- **ctx** — Creates a mock tool context with a snapshot manager that returns a snapshot manager instance `snapshot-tool-handlers.test.ts:79-79`, `snapshot-tool-handlers.test.ts:106-106`, `snapshot-tool-handlers.test.ts:127-127`, `snapshot-tool-handlers.test.ts:152-152`
-- **ctx** — Creates a mock tool context with a snapshot manager that returns the mock snapshot manager instance `snapshot-tool-handlers.test.ts:165-165`
+- **ctx** — Creates a mock tool context with a snapshot manager `snapshot-tool-handlers.test.ts:68-68`, `snapshot-tool-handlers.test.ts:117-117`, `snapshot-tool-handlers.test.ts:127-127`, `snapshot-tool-handlers.test.ts:152-152`, `snapshot-tool-handlers.test.ts:165-165`
+- **ctx** — Creates a mock tool context with a snapshot manager that returns a snapshot manager instance `snapshot-tool-handlers.test.ts:79-79`
+- **ctx** — Creates a mock tool context with a snapshot manager that returns the mock snapshot manager instance `snapshot-tool-handlers.test.ts:88-88`
 - **devAgent** — A mock DevAgent used in tests `graph-tool-handlers.test.ts:49-49`
 - **devAgent** — Creates a mock agent that returns the indexer agent `metrics-tool-handlers.test.ts:248-248`
-- **entities** — Represents entities returned by the findEntities method `entity-tool-handlers.test.ts:61-67`
 - **entities** — Not applicable in this context `entity-tool-handlers.test.ts:220-220`
+- **entities** — Represents entities returned by the findEntities method `entity-tool-handlers.test.ts:61-67`
 - **expectError** — Validates that a ToolResult indicates an error and returns the parsed data `_test-helpers.ts:155-165`
 - **expectSuccess** — Validates that a ToolResult indicates success and returns the parsed data `_test-helpers.ts:141-152`
 - **findEntities** — Mocks the findEntities method to return entities for a file path `entity-tool-handlers.test.ts:38-38`
@@ -180,12 +186,12 @@ This module contains a collection of test files for various tools and agents, pr
 - **findRelationships** — Not applicable in this context `entity-tool-handlers.test.ts:197-197`
 - **findRelationships** — Mocks an asynchronous function that returns an empty array `entity-tool-handlers.test.ts:209-209`
 - **findRelationships** — A mock function to find relationships in the graph storage `graph-tool-handlers.test.ts:104-104`
-- **indexerAgent** — Returns a status indicating the file watcher exists `metrics-tool-handlers.test.ts:239-239`
 - **indexerAgent** — Returns a mock object with methods to check if the git watcher is watching and to get the current branch `metrics-tool-handlers.test.ts:240-243`
 - **indexerAgent** — Returns a mock object with methods to check if the git watcher is watching and to get the current branch. `metrics `metrics-tool-handlers.test.ts:241-241`
 - **indexerAgent** — Returns an object with indexing stats `metrics-tool-handlers.test.ts:242-242`
 - **indexerAgent** — Returns indexing stats with 100 files processed `metrics-tool-handlers.test.ts:244-244`
 - **indexerAgent** — Returns indexing stats with files processed set to 100 `metrics-tool-handlers.test.ts:246-246`
+- **indexerAgent** — Returns a status indicating the file watcher exists `metrics-tool-handlers.test.ts:239-239`
 - **main** — Represents the main repository path used in tests `git-worktree.test.ts:97-97`
 - **mainWt** — Represents the main worktree in the current repository `worktree-tool-handlers.test.ts:60-60`
 - **makeCtx** — Creates a mock tool context with a storage override `file-tool-handlers.test.ts:14-21`
@@ -199,6 +205,8 @@ This module contains a collection of test files for various tools and agents, pr
 - **makeSnapshots** — Not applicable in this context `snapshot-tool-handlers.test.ts:140-148`
 - **makeSnapshots** — Generates an array of snapshot objects with specified properties `snapshot-tool-handlers.test.ts:141-148`
 - **parseJsonResult** — Parses the text content of a ToolResult into a JSON object `_test-helpers.ts:134-138`
+- **sa** — Creates a mock semantic agent with a clone detection mock `semantic-tool-handlers.test.ts:183-183`
+- **sa** — Sets up a mock semantic agent with a cross-language search mock `semantic-tool-handlers.test.ts:198-200`
 - **sa** — Creates a mock semantic agent for semantic search `semantic-tool-handlers.test.ts:20-26`
 - **sa** — Mocks an error in the embedding initialization `semantic-tool-handlers.test.ts:45-45`
 - **sa** — Mocks the semantic search results for a Python handler `semantic-tool-handlers.test.ts:59-59`
@@ -208,8 +216,6 @@ This module contains a collection of test files for various tools and agents, pr
 - **sa** — Creates a mock semantic agent with a specific `detectClones` method `semantic-tool-handlers.test.ts:135-135`
 - **sa** — Mocks the detectClones method of a semantic agent to return a specific clone detection result `semantic-tool-handlers.test.ts:152-161`
 - **sa** — Creates a mock semantic agent with a detectClones method that returns an empty array `semantic-tool-handlers.test.ts:173-173`
-- **sa** — Creates a mock semantic agent with a clone detection mock `semantic-tool-handlers.test.ts:183-183`
-- **sa** — Sets up a mock semantic agent with a cross-language search mock `semantic-tool-handlers.test.ts:198-200`
 - **scores** — The test checks if the recommendations are sorted by score in descending order `get-tools-for-task-handler.test.ts:24-24`
 - **searchEntities** — Not applicable in this context `entity-tool-handlers.test.ts:196-196`
 - **searchEntities** — Mocks an asynchronous function that returns an empty array `entity-tool-handlers.test.ts:208-208`
@@ -219,7 +225,8 @@ This module contains a collection of test files for various tools and agents, pr
 - **sm** — Creates a mock snapshot manager with a listSnapshots method that returns an empty array `snapshot-tool-handlers.test.ts:78-78`
 - **sm** — Creates a mock snapshot manager with a listSnapshots method that returns a predefined array of snapshots `snapshot-tool-handlers.test.ts:105-105`
 - **sm** — Creates a mock snapshot manager with a list of snapshots `snapshot-tool-handlers.test.ts:126-126`
-- **sm** — Creates a mock snapshot manager that lists 15 snapshots `snapshot-tool-handlers.test.ts:151-151`, `snapshot-tool-handlers.test.ts:164-164`
+- **sm** — Creates a mock snapshot manager that lists 15 snapshots `snapshot-tool-handlers.test.ts:151-151`
+- **sm** — Creates a mock snapshot manager with a list snapshots method that returns 15 snapshots `snapshot-tool-handlers.test.ts:164-164`
 - **storage** — Represents a mock graph storage for testing `analysis-tool-handlers.test.ts:22-22`
 - **storage** — Returns an empty array when getAllEntities is called `analysis-tool-handlers.test.ts:23-23`
 - **storage** — Returns an empty array when getAllRelationships is called `analysis-tool-handlers.test.ts:24-24`
@@ -232,7 +239,7 @@ This module contains a collection of test files for various tools and agents, pr
 - **storage** — Mocks the getAllEntities method to return a list of entities `analysis-tool-handlers.test.ts:76-76`
 - **storage** — Mocks the getEntity method to return a specific entity `analysis-tool-handlers.test.ts:77-77`
 - **storage** — Mocks the findEntities method to return a list of entities `analysis-tool-handlers.test.ts:95-95`
-- **storage** — Mocks the getRelationshipsForEntity method to return an empty array `analysis-tool-handlers.test.ts:96-96`, `file-tool-handlers.test.ts:155-155`
+- **storage** — Mocks the getRelationshipsForEntity method to return an empty array `analysis-tool-handlers.test.ts:96-96`
 - **storage** — Returns an empty array of relationships for an entity `analysis-tool-handlers.test.ts:97-97`
 - **storage** — Returns an array containing one entity and another entity with specific properties `analysis-tool-handlers.test.ts:98-98`
 - **storage** — Returns an entity object `analysis-tool-handlers.test.ts:131-131`
@@ -240,19 +247,21 @@ This module contains a collection of test files for various tools and agents, pr
 - **storage** — Returns an empty array for getRelationshipsForEntity `analysis-tool-handlers.test.ts:133-133`
 - **storage** — Not applicable in this context `base-tool-handler.test.ts:159-159`
 - **storage** — Represents a mock storage object with methods to set and clear project context `base-tool-handler.test.ts:159-159`
+- **storage** — Mocks the findRelationships method to return a list of relationships `entity-tool-handlers.test.ts:183-183`
+- **storage** — Mocks the searchEntities method to return entities `entity-tool-handlers.test.ts:184-184`
+- **storage** — Mocks the findRelationships method to return an empty array `entity-tool-handlers.test.ts:222-222`
+- **storage** — Mocks the searchEntities method to return a list of entities `entity-tool-handlers.test.ts:166-166`, `entity-tool-handlers.test.ts:223-223`
 - **storage** — Creates a mock graph storage with a findEntities method that returns entities for a file path `entity-tool-handlers.test.ts:14-23`
 - **storage** — Creates a mock graph storage for testing `entity-tool-handlers.test.ts:50-50`
 - **storage** — Represents a mock graph storage with a method to find entities that returns a mock array `entity-tool-handlers.test.ts:68-68`
 - **storage** — Represents a mock graph storage with a method to find relationships for entities that returns a mock array `entity-tool-handlers.test.ts:89-89`
-- **storage** — Mocks the findEntities method to return an empty array `entity-tool-handlers.test.ts:103-103`, `file-tool-handlers.test.ts:174-174`
+- **storage** — Mocks the findEntities method to return an empty array `entity-tool-handlers.test.ts:103-103`
 - **storage** — Mocks the getRelationshipsForEntity method to return a specific set of relationships `entity-tool-handlers.test.ts:104-104`
 - **storage** — Represents a mock graph storage with a method to find relationships for entities that returns an empty array `entity-tool-handlers.test.ts:116-116`
 - **storage** — Mocks the getRelationshipsForEntity method to return a predefined set of relationships `entity-tool-handlers.test.ts:132-132`
-- **storage** — Mocks the getRelationshipsForEntity method to return a list of relationships `entity-tool-handlers.test.ts:149-149`, `entity-tool-handlers.test.ts:166-166`
-- **storage** — Mocks the searchEntities method to return a list of entities `entity-tool-handlers.test.ts:183-183`
-- **storage** — Mocks the findRelationships method to return a list of relationships `entity-tool-handlers.test.ts:184-184`
-- **storage** — Mocks the searchEntities method to return entities `entity-tool-handlers.test.ts:222-222`
-- **storage** — Mocks the findRelationships method to return an empty array `entity-tool-handlers.test.ts:223-223`
+- **storage** — Mocks the getRelationshipsForEntity method to return a list of relationships `entity-tool-handlers.test.ts:149-149`
+- **storage** — Mocks the findEntities method to return an array containing a specific entity `file-tool-handlers.test.ts:207-207`
+- **storage** — Mocks the findEntities method to return a single entity `file-tool-handlers.test.ts:188-188`, `file-tool-handlers.test.ts:208-208`
 - **storage** — Creates a mock graph storage instance with specific entity find and get entity mocks `file-tool-handlers.test.ts:16-16`
 - **storage** — Creates a mock graph storage for testing file tool handlers `file-tool-handlers.test.ts:17-17`
 - **storage** — Mocks the `findEntities` method to return an empty array `file-tool-handlers.test.ts:37-37`
@@ -262,22 +271,24 @@ This module contains a collection of test files for various tools and agents, pr
 - **storage** — Mocks the `getEntity` method to return an entity `file-tool-handlers.test.ts:140-140`
 - **storage** — Mocks the `findEntities` method to return an array containing one entity `file-tool-handlers.test.ts:153-153`
 - **storage** — Mocks the `getRelationshipsForEntity` method to return an empty array `file-tool-handlers.test.ts:154-154`
-- **storage** — Mocks the getEntity method to return null `file-tool-handlers.test.ts:173-173`
-- **storage** — Mocks the getEntity method to return an entity `file-tool-handlers.test.ts:187-187`, `file-tool-handlers.test.ts:207-207`
-- **storage** — Mocks the findEntities method to return an array containing the entity `file-tool-handlers.test.ts:188-188`, `file-tool-handlers.test.ts:208-208`
+- **storage** — Mocks the getEntity method to return null `file-tool-handlers.test.ts:155-155`
+- **storage** — Mocks the getEntity method to return an entity `file-tool-handlers.test.ts:173-173`
+- **storage** — Mocks the findEntities method to return an array containing the entity `file-tool-handlers.test.ts:174-174`
+- **storage** — Mocks the findEntities method to return a list containing a specific entity `file-tool-handlers.test.ts:187-187`
 - **storage** — Represents a mock graph storage used in testing `graph-metrics-tool-handlers.test.ts:13-13`
-- **storage** — Returns an empty array when called `graph-metrics-tool-handlers.test.ts:14-14`, `graph-metrics-tool-handlers.test.ts:15-15`, `graph-metrics-tool-handlers.test.ts:16-16`, `taint-tool-handlers.test.ts:9-9`, `taint-tool-handlers.test.ts:10-10`
+- **storage** — Returns an empty array when called `graph-metrics-tool-handlers.test.ts:14-14`, `taint-tool-handlers.test.ts:9-9`, `taint-tool-handlers.test.ts:10-10`
+- **storage** — Returns an empty array `graph-metrics-tool-handlers.test.ts:15-15`, `graph-metrics-tool-handlers.test.ts:16-16`
+- **storage** — Returns a mock object with all entities `graph-tool-handlers.test.ts:152-152`
+- **storage** — Mocks the getAllEntities method to return a predefined list of entities `graph-tool-handlers.test.ts:169-173`
+- **storage** — Mocks the getAllRelationships method to return an empty list `graph-tool-handlers.test.ts:190-190`
+- **storage** — Mocks the getAllEntities method to return entities `graph-tool-handlers.test.ts:191-191`
+- **storage** — Mocks the getAllRelationships method to return an empty array `graph-tool-handlers.test.ts:192-192`
 - **storage** — A mock graph storage used in tests `graph-tool-handlers.test.ts:78-78`
 - **storage** — Creates a mock graph storage instance `graph-tool-handlers.test.ts:79-79`
-- **storage** — Returns an empty array `graph-tool-handlers.test.ts:106-106`
-- **storage** — Mocks the getStatistics method to return specific statistics `graph-tool-handlers.test.ts:133-137`
-- **storage** — Mocks the getStatistics method to return a different set of statistics `graph-tool-handlers.test.ts:151-151`
-- **storage** — Mocks the getCooccurrenceOps method to return a specific cooccurrence operation `graph-tool-handlers.test.ts:152-152`
-- **storage** — Returns a mock object with statistics for entities and relationships `graph-tool-handlers.test.ts:152-152`
-- **storage** — Returns a mock object with all entities `graph-tool-handlers.test.ts:169-173`
-- **storage** — Returns a mock object with no relationships `graph-tool-handlers.test.ts:190-190`
-- **storage** — Mocks the getAllEntities method to return a predefined list of entities `graph-tool-handlers.test.ts:191-191`
-- **storage** — Mocks the getAllRelationships method to return an empty list `graph-tool-handlers.test.ts:192-192`
+- **storage** — Mocks the getStatistics method to return specific statistics `graph-tool-handlers.test.ts:106-106`
+- **storage** — Mocks the getStatistics method to return a different set of statistics `graph-tool-handlers.test.ts:133-137`
+- **storage** — Returns a mock object with statistics for entities and relationships `graph-tool-handlers.test.ts:151-151`
+- **storage** — Returns a mock object with no relationships `graph-tool-handlers.test.ts:152-152`
 - **storage** — Mocks storage for testing GetMetricsToolHandler `metrics-tool-handlers.test.ts:35-35`
 - **storage** — Sets project with no arguments `metrics-tool-handlers.test.ts:36-36`
 - **storage** — Represents a mock graph storage used in the test cases `pattern-tool-handlers.test.ts:15-15`
@@ -295,20 +306,21 @@ This module contains a collection of test files for various tools and agents, pr
 - **constructor** — Initializes a DummyAgent instance with specified agent type and resource constraints `agent-metrics.test.ts:11-17`
 - **constructor** — Initializes the handler with a context and payload size `base-tool-handler.test.ts:33-38`
 - **constructor** — Initializes the tool handler with a context and payload size `base-tool-handler.test.ts:51-56`
+- **execute** — protected async execute(): Promise<ToolResult> { const s = await this.ensureGraphStorageForProject("/test/dir"); return { content: [{ type: "text", text: JSON.stringify({ ok: true }) }] }; }, `base-tool-handler.test.ts:170-173`
+- **execute** — protected async execute(): Promise<ToolResult> { await this.ensureSemanticAgentForProject("/test/dir"); return { content: [{ type: "text", text: JSON.stringify({ ok: true }) }] }; }, `base-tool-handler.test.ts:197-200`
 - **execute** — Executes the handler to echo the message and returns a ToolResult `base-tool-handler.test.ts:15-19`
 - **execute** — Executes the tool handler and returns a result `base-tool-handler.test.ts:27-29`
 - **execute** — Executes the tool handler and returns a tool result with a large text content `base-tool-handler.test.ts:44-47`
 - **execute** — Executes the tool handler and returns a tool result with a text content `base-tool-handler.test.ts:62-64`
-- **execute** — protected async execute(): Promise<ToolResult> { const s = await this.ensureGraphStorageForProject("/test/dir"); return { content: [{ type: "text", text: JSON.stringify({ ok: true }) }] }; }, `base-tool-handler.test.ts:170-173`
-- **execute** — protected async execute(): Promise<ToolResult> { await this.ensureSemanticAgentForProject("/test/dir"); return { content: [{ type: "text", text: JSON.stringify({ ok: true }) }] }; }, `base-tool-handler.test.ts:197-200`
 - **handleMessage** — An empty method that does nothing `agent-metrics.test.ts:30-30`
 - **onInitialize** — An empty method that does nothing `agent-metrics.test.ts:19-19`
 - **onShutdown** — An empty method that does nothing `agent-metrics.test.ts:20-20`
+- **parseArgs** — protected parseArgs() { return {}; }, `base-tool-handler.test.ts:167-169`
+- **parseArgs** — Returns an empty object `base-tool-handler.test.ts:194-196`
 - **parseArgs** — Parses the input arguments to extract the message `base-tool-handler.test.ts:9-13`
 - **parseArgs** — Parses arguments for a tool handler `base-tool-handler.test.ts:23-25`
 - **parseArgs** — Parses arguments and returns an empty object `base-tool-handler.test.ts:40-42`
 - **parseArgs** — parseArgs method returns an empty object `base-tool-handler.test.ts:58-60`
-- **parseArgs** — protected parseArgs() { return {}; }, `base-tool-handler.test.ts:167-169`, `base-tool-handler.test.ts:194-196`
 - **processTask** — Processes a task and returns an object with ok: true `agent-metrics.test.ts:26-28`
 
 ### Class

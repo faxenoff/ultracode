@@ -191,8 +191,8 @@ The `stacktrace` module provides a comprehensive analysis of stack traces, enabl
 - **limit** — Not explicitly defined in the provided code `frame-resolver.ts:19-19`
 - **line** — Represents the line number for the start and end locations `frame-resolver.ts:97-97`
 - **line** — Represents the start and end line numbers of a location `frame-resolver.ts:97-97`
-- **line** — Not explicitly defined in the provided code `frame-resolver.ts:26-26`, `frame-resolver.ts:164-164`
 - **line** — Line number where the entity starts `frame-resolver.ts:26-26`, `frame-resolver.ts:164-164`
+- **line** — Not explicitly defined in the provided code `frame-resolver.ts:26-26`, `frame-resolver.ts:164-164`
 - **line** — A single frame in a stacktrace `types.ts:112-112`
 - **lineNumber** — The line number of the function in the stack frame `types.ts:22-22`
 - **location** — Location within the file where the entity is defined `frame-resolver.ts:97-97`

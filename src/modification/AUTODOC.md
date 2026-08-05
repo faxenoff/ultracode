@@ -173,61 +173,77 @@ The `modification` module provides a robust framework for safe code modification
 - **diff** — Represents the unified diff format of the file changes `preview-manager.ts:52-52`
 - **embeddingsToUpdate** — Counts the number of embeddings that need to be updated `preview-manager.ts:43-43`
 - **embeddingsUpdated** — Number of embeddings updated `code-modifier.ts:45-45`
-- **embeddingsUpdated** — The number of embeddings updated by the operation `file-operations.ts:39-39`
 - **embeddingsUpdated** — Embeddings updated by a file operation `file-operations.ts:326-326`
-- **entitiesAffected** — The number of entities affected by the operation `file-operations.ts:38-38`
+- **embeddingsUpdated** — The number of embeddings updated by the operation `file-operations.ts:39-39`
 - **entitiesAffected** — Entities affected by a file operation `file-operations.ts:325-325`
+- **entitiesAffected** — The number of entities affected by the operation `file-operations.ts:38-38`
 - **entitiesAffected** — Counts the number of entities affected by the operation `preview-manager.ts:42-42`
 - **entitiesUpdated** — Array of entity IDs updated `code-modifier.ts:44-44`
 - **entityId** — Entity ID from the graph storage `code-modifier.ts:33-33`
 - **entityIds** — IDs of entities affected by the operation `preview-manager.ts:149-149`
-- **entityIds** — Stores IDs of entities affected by the preview `preview-manager.ts:165-165`, `preview-manager.ts:166-166`
+- **entityIds** — Stores IDs of entities affected by the preview `preview-manager.ts:165-165`
+- **entityIds** — Extracts the entity IDs from the parameters `preview-manager.ts:166-166`
 - **estimatedImpact** — Estimates the impact of the operation on entities, embeddings, and relationships `preview-manager.ts:41-45`
 - **filePath** — File path for the operation `preview-manager.ts:149-149`
-- **filePath** — Stores the file path for preview operations `preview-manager.ts:165-165`, `preview-manager.ts:166-166`
+- **filePath** — Stores the file path for preview operations `preview-manager.ts:165-165`
+- **filePath** — Extracts the file path from the parameters `preview-manager.ts:166-166`
 - **files** — Files affected by the operation `preview-manager.ts:150-150`
-- **files** — Stores a list of files affected by the preview `preview-manager.ts:170-170`, `preview-manager.ts:171-171`
-- **filesAffected** — An array of file paths affected by the operation `file-operations.ts:35-35`
+- **files** — Stores a list of files affected by the preview `preview-manager.ts:170-170`
+- **files** — Extracts the file paths from the parameters `preview-manager.ts:171-171`
 - **filesAffected** — Files affected by a file operation `file-operations.ts:324-324`
+- **filesAffected** — An array of file paths affected by the operation `file-operations.ts:35-35`
 - **filesAffected** — Lists the files affected by the operation `preview-manager.ts:34-34`
 - **filesModified** — Array of file paths modified `code-modifier.ts:43-43`
-- **fromId** — Retrieves an entity by its ID `code-modifier.ts:159-159`, `code-modifier.ts:162-162`
+- **fromId** — Retrieves an entity by its ID `code-modifier.ts:159-159`
+- **fromId** — Filters based on the type and fromId of the object `code-modifier.ts:162-162`
 - **hunks** — Contains the hunks of the diff `preview-manager.ts:53-53`
 - **lines** — Array of lines in the code `preview-manager.ts:61-61`
 - **modifications** — Counts the number of modifications in the diff `preview-manager.ts:39-39`
 - **newCode** — New code for replacement `code-modifier.ts:34-34`
 - **newLines** — Number of lines in the new code `preview-manager.ts:60-60`
-- **newPath** — New path for the file operation `preview-manager.ts:148-148`, `preview-manager.ts:160-160`
-- **newPath** — Represents the new file path after modification `preview-manager.ts:161-161`
+- **newPath** — New path for the file operation `preview-manager.ts:148-148`
+- **newPath** — Represents the new file path after modification `preview-manager.ts:160-160`
+- **newPath** — Extracts the new path from the parameters `preview-manager.ts:161-161`
 - **newStart** — Starting index of the new code `preview-manager.ts:59-59`
 - **oldLines** — Number of lines in the original code `preview-manager.ts:58-58`
-- **oldPath** — Old path for the file operation `preview-manager.ts:148-148`, `preview-manager.ts:160-160`
-- **oldPath** — Represents the original file path before modification `preview-manager.ts:161-161`
+- **oldPath** — Old path for the file operation `preview-manager.ts:148-148`
+- **oldPath** — Represents the original file path before modification `preview-manager.ts:160-160`
+- **oldPath** — Extracts the old path from the parameters `preview-manager.ts:161-161`
 - **oldStart** — Represents the starting position of the old preview `preview-manager.ts:57-57`
 - **operation** — The type of file operation performed, such as copy, rename, split, or synthesize `file-operations.ts:36-36`
 - **operation** — Specifies the type of operation being previewed `preview-manager.ts:33-33`
 - **path** — Specifies the path of the file being diffed `preview-manager.ts:49-49`
 - **preserveComments** — Boolean flag to preserve comments during code modification `code-modifier.ts:35-35`
-- **preview** — Boolean flag to enable preview mode `code-modifier.ts:37-37`, `code-modifier.ts:47-47`
-- **preview** — An optional preview of the operation's changes `file-operations.ts:37-37`, `file-operations.ts:43-43`, `file-operations.ts:48-48`, `file-operations.ts:54-54`
-- **preview** — Preview mode for file operations `file-operations.ts:59-59`
+- **preview** — Boolean flag to enable preview mode `code-modifier.ts:37-37`
+- **preview** — Indicates whether a preview is enabled or not `code-modifier.ts:47-47`
+- **preview** — Represents a boolean flag indicating whether a preview is enabled `file-operations.ts:54-54`, `file-operations.ts:59-59`
+- **preview** — An optional preview of the operation's changes `file-operations.ts:37-37`
+- **preview** — Preview mode for file operations `file-operations.ts:43-43`
+- **preview** — Indicates whether to preview the file operation `file-operations.ts:48-48`
 - **previewManager** — Manages previews for code modifications `code-modifier.ts:59-59`
 - **relationshipsAffected** — Counts the number of relationships affected by the operation `preview-manager.ts:44-44`
 - **relationshipsUpdated** — Number of relationships updated `code-modifier.ts:46-46`
 - **skipValidation** — Boolean flag to skip validation `code-modifier.ts:38-38`
 - **snapshotId** — Snapshot ID for rollback if versioning is enabled `code-modifier.ts:49-49`
-- **source** — Source path for the file operation `preview-manager.ts:147-147`, `preview-manager.ts:155-155`, `preview-manager.ts:156-156`
+- **source** — Source path for the file operation `preview-manager.ts:147-147`
+- **source** — Extracts the source path from the parameters `preview-manager.ts:155-155`
+- **source** — Extracts the source parameter from the provided object `preview-manager.ts:156-156`
 - **src** — Source directory or file for file operations `file-operations.ts:332-332`
 - **stats** — Provides statistics on the number of additions, deletions, and modifications `preview-manager.ts:36-40`
 - **success** — Boolean indicating whether the modification was successful `code-modifier.ts:42-42`
 - **success** — Indicates whether the file operation was successful `file-operations.ts:34-34`
 - **swaggerWarning** — Represents a warning if the entity is related to the swagger contract `code-modifier.ts:50-50`
-- **target** — Target path for the file operation `preview-manager.ts:147-147`, `preview-manager.ts:155-155`, `preview-manager.ts:156-156`
+- **target** — Target path for the file operation `preview-manager.ts:147-147`
+- **target** — Extracts the target path from the parameters `preview-manager.ts:155-155`
+- **target** — Extracts the target parameter from the provided object `preview-manager.ts:156-156`
 - **targetPath** — Target path for the file operation `preview-manager.ts:150-150`
-- **targetPath** — Stores the target path for file operations `preview-manager.ts:170-170`, `preview-manager.ts:171-171`
-- **type** — Represents the type of the entity `code-modifier.ts:159-159`, `code-modifier.ts:162-162`
-- **updateGraph** — Indicates whether the graph should be updated after the operation `file-operations.ts:44-44`, `file-operations.ts:50-50`, `file-operations.ts:55-55`
-- **updateGraph** — Option to update the graph after file operations `file-operations.ts:61-61`
+- **targetPath** — Stores the target path for file operations `preview-manager.ts:170-170`
+- **targetPath** — Extracts the target path from the parameters. `preview `preview-manager.ts:171-171`
+- **type** — Represents the type of the entity `code-modifier.ts:159-159`
+- **type** — Filters based on the type and fromId of the object `code-modifier.ts:162-162`
+- **updateGraph** — Indicates whether to update the graph after the file operation `file-operations.ts:55-55`, `file-operations.ts:61-61`
+- **updateGraph** — Indicates whether the graph should be updated after the operation `file-operations.ts:44-44`
+- **updateGraph** — Option to update the graph after file operations `file-operations.ts:50-50`
 - **updateImports** — Boolean flag to update imports if the signature changes `code-modifier.ts:36-36`
 - **updateImports** — Indicates whether imports should be updated after the operation `file-operations.ts:49-49`
 - **validationReport** — BeforeAfterReport object if validation is performed `code-modifier.ts:48-48`

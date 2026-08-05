@@ -50,7 +50,10 @@ The `src/config` module provides a comprehensive configuration system for the ap
 - **pickStr** — Picks a string value from YAML or environment variables, with a fallback `yaml-config.ts:129-134`
 - **resolveModelDimensions** — Resolves the dimensions of the model `worker-embedding-config.ts:335-346`
 - **resolveProviderConfig** — Resolves the provider configuration based on the provider kind `worker-embedding-config.ts:203-330`
-- **selectedModel** — Represents the selected model `worker-embedding-config.ts:217-217`, `worker-embedding-config.ts:243-243`, `worker-embedding-config.ts:290-290`, `worker-embedding-config.ts:313-313`
+- **selectedModel** — Represents the selected model `worker-embedding-config.ts:217-217`
+- **selectedModel** — Finds the selected model entry based on the provided model ID `worker-embedding-config.ts:243-243`
+- **selectedModel** — Parses the model entry based on the given modelName from the llama.cpp configuration `worker-embedding-config.ts:290-290`
+- **selectedModel** — Parses the model entry based on the given modelName from the mlx configuration `worker-embedding-config.ts:313-313`
 - **validateConfig** — Validates the configuration against predefined constraints `yaml-config.ts:781-809`
 
 ### Method
@@ -126,8 +129,12 @@ The `src/config` module provides a comprehensive configuration system for the ap
 - **agent** — Specifies the agent for parser operations `config-types.ts:237-246`
 - **agents** — Manages agent configurations `config-types.ts:84-89`
 - **apiKey** — Stores the API key for the embedding provider `config-types.ts:16-16`
-- **apiKey** — API key for the provider `config-types.ts:54-54`, `config-types.ts:62-62`, `config-types.ts:69-69`, `config-types.ts:173-173`, `config-types.ts:182-182`
-- **apiKey** — Stores the API key for the specified provider `config-types.ts:126-126`, `config-types.ts:163-163`
+- **apiKey** — API key for the provider `config-types.ts:54-54`
+- **apiKey** — Stores the API key for the specified provider `config-types.ts:62-62`
+- **apiKey** — Represents an optional string for API key `config-types.ts:69-69`
+- **apiKey** — Represents a required string for API key `config-types.ts:126-126`
+- **apiKey** — Stores the API key for authentication `config-types.ts:163-163`
+- **apiKey** — Represents the API key for authentication `config-types.ts:173-173`, `config-types.ts:182-182`
 - **apiKey** — Stores the API key for embedding generation `worker-embedding-config.ts:60-60`
 - **architecture** — Architecture for embedding configuration `worker-embedding-config.ts:28-28`
 - **autodoc** — Enables automatic documentation generation `config-types.ts:94-115`
@@ -138,21 +145,29 @@ The `src/config` module provides a comprehensive configuration system for the ap
 - **autoReindex** — Boolean indicating whether to automatically reindex the database `config-types.ts:329-329`
 - **autoSwitchOnBranchChange** — Automatically switch on branch change `config-types.ts:307-307`
 - **baseUrl** — Sets the base URL for the Ollama provider `config-types.ts:42-42`
-- **baseUrl** — Base URL for the provider `config-types.ts:53-53`, `config-types.ts:61-61`, `config-types.ts:70-70`, `config-types.ts:77-77`, `config-types.ts:172-172`, `config-types.ts:183-183`, `config-types.ts:192-192`
-- **baseUrl** — Stores the base URL for the provider `config-types.ts:149-149`, `config-types.ts:162-162`
+- **baseUrl** — Base URL for the provider `config-types.ts:53-53`
+- **baseUrl** — Stores the base URL for the provider `config-types.ts:61-61`
+- **baseUrl** — Represents an optional string for base URL `config-types.ts:70-70`
+- **baseUrl** — Defines the base URL for API requests `config-types.ts:77-77`
+- **baseUrl** — Represents the base URL for API requests `config-types.ts:149-149`, `config-types.ts:172-172`, `config-types.ts:183-183`, `config-types.ts:192-192`
+- **baseUrl** — Represents the base `config-types.ts:162-162`
 - **baseUrl** — Base URL for provider-specific configurations `worker-embedding-config.ts:32-32`
 - **baseUrl** — Sets the base URL for embedding generation `worker-embedding-config.ts:59-59`
 - **batch_size** — Batch size for provider-specific configurations `worker-embedding-config.ts:45-45`
 - **batch_size** — Specifies the batch size for embedding generation `worker-embedding-config.ts:67-67`
-- **batchSize** — Controls request pressure during indexing `config-types.ts:242-242`, `config-types.ts:253-253`, `config-types.ts:279-279`
+- **batchSize** — Controls request pressure during indexing `config-types.ts:242-242`
+- **batchSize** — Represents the maximum number of items to process in a batch `config-types.ts:253-253`
+- **batchSize** — Determines the size of the batch of operations to process at once `config-types.ts:279-279`
 - **batchSize** — Batch size for provider-specific configurations `worker-embedding-config.ts:36-36`
-- **batchSize** — Specifies the batch size for embedding generation `worker-embedding-config.ts:46-46`, `worker-embedding-config.ts:58-58`
-- **batchSize** — Represents the batch size for the model `worker-embedding-config.ts:207-207`
+- **batchSize** — Specifies the batch size for embedding generation `worker-embedding-config.ts:46-46`
+- **batchSize** — Represents the batch size for the model `worker-embedding-config.ts:58-58`
+- **batchSize** — Sets the batch size for embedding operations `worker-embedding-config.ts:207-207`
 - **bufferSize** — Specifies the buffer size for parser operations `config-types.ts:232-232`
 - **bulkModeThreshold** — Threshold for switching to bulk mode `config-types.ts:335-335`
 - **cacheSize** — Cache size for the database `config-types.ts:207-207`
 - **cacheSize** — Sets the size of the parser cache `config-types.ts:235-235`
-- **cacheSize** — Represents the size of the cache `config-types.ts:243-243`, `config-types.ts:254-254`
+- **cacheSize** — Represents the size of the cache `config-types.ts:243-243`
+- **cacheSize** — Represents the maximum size of the cache `config-types.ts:254-254`
 - **cacheTTL** — Sets the time-to-live for cached parser results `config-types.ts:235-235`
 - **cacheTTL** — Represents the time-to-live for cache entries, which is optional `config-types.ts:255-255`
 - **cacheWarmupLimit** — Sets the limit for cache warmup `config-types.ts:91-91`
@@ -170,17 +185,26 @@ The `src/config` module provides a comprehensive configuration system for the ap
 - **complexQueryTimeout** — Specifies the timeout for complex queries `config-types.ts:273-273`
 - **compression** — Compression configuration `config-types.ts:345-345`
 - **concurrency** — Sets the concurrency level for the Ollama provider `config-types.ts:45-45`
-- **concurrency** — Maximum number of concurrent requests `config-types.ts:57-57`, `config-types.ts:65-65`, `config-types.ts:73-73`, `config-types.ts:79-79`
-- **concurrency** — Sets the concurrency level for the provider `config-types.ts:152-152`
-- **concurrency** — Controls the number of concurrent HTTP requests `config-types.ts:166-166`, `config-types.ts:176-176`, `config-types.ts:186-186`, `config-types.ts:194-194`
+- **concurrency** — Maximum number of concurrent requests `config-types.ts:57-57`
+- **concurrency** — Sets the concurrency level for the provider `config-types.ts:65-65`
+- **concurrency** — Controls the number of concurrent HTTP requests `config-types.ts:73-73`
+- **concurrency** — Represents an optional number for concurrency `config-types.ts:79-79`
+- **concurrency** — Specifies the maximum number of concurrent requests allowed `config-types.ts:152-152`
+- **concurrency** — Represents the maximum number of concurrent operations `config-types.ts:166-166`
+- **concurrency** — Represents the maximum number of concurrent API requests `config-types.ts:176-176`
+- **concurrency** — Specifies the number of concurrent operations allowed `config-types.ts:186-186`
+- **concurrency** — Represents an optional number for concurrency level `config-types.ts:194-194`
 - **concurrency** — Concurrency for provider-specific configurations `worker-embedding-config.ts:38-38`
-- **concurrency** — Determines the concurrency level for embedding generation `worker-embedding-config.ts:53-53`, `worker-embedding-config.ts:62-62`, `worker-embedding-config.ts:71-71`
+- **concurrency** — Determines the concurrency level for embedding generation `worker-embedding-config.ts:53-53`
+- **concurrency** — Defines the maximum number of concurrent worker processes `worker-embedding-config.ts:62-62`
+- **concurrency** — Specifies the number of workers that can run simultaneously `worker-embedding-config.ts:71-71`
 - **conductor** — Configures the conductor settings `config-types.ts:369-369`
 - **config** — Holds the loaded configuration object `yaml-config.ts:145-145`
 - **configPath** — Stores the path to the configuration file `yaml-config.ts:146-146`
 - **context_size** — Sets the context size for embedding generation `worker-embedding-config.ts:68-68`
 - **context_tokens** — Represents the context tokens for the model `worker-embedding-config.ts:84-84`
-- **contextTokens** — Represents the context tokens for the model `worker-embedding-config.ts:85-85`, `worker-embedding-config.ts:338-338`
+- **contextTokens** — Represents the context tokens for the model `worker-embedding-config.ts:85-85`
+- **contextTokens** — Returns the number of context tokens for the embedding model `worker-embedding-config.ts:338-338`
 - **coordinator** — Configures the coordinator settings `config-types.ts:368-368`
 - **creating** — Indicates whether the ConfigLoader is currently being created `yaml-config.ts:144-144`
 - **database** — Database configuration `config-types.ts:357-357`
@@ -193,7 +217,8 @@ The `src/config` module provides a comprehensive configuration system for the ap
 - **devIndexBatch** — Controls the batch size for development indexing `config-types.ts:88-88`
 - **diffMode** — Boolean indicating whether to use diff mode for indexing `config-types.ts:330-330`
 - **dimension** — Dimension of the embedding model `models-catalog.ts:25-25`
-- **dimensions** — Represents the dimensions for the model `worker-embedding-config.ts:83-83`, `worker-embedding-config.ts:338-338`
+- **dimensions** — Represents the dimensions for the model `worker-embedding-config.ts:83-83`
+- **dimensions** — Returns the dimensions of the embedding output `worker-embedding-config.ts:338-338`
 - **disabled** — Boolean indicating if the model is disabled `models-catalog.ts:31-31`
 - **disabledReason** — Reason for disabling the model, if applicable `models-catalog.ts:32-32`
 - **doraAgent** — Dora agent configuration `config-types.ts:365-365`
@@ -202,12 +227,14 @@ The `src/config` module provides a comprehensive configuration system for the ap
 - **enableConsole** — Enables or disables console logging `config-types.ts:219-219`
 - **enabled** — Indicates whether the embedding model is enabled `config-types.ts:17-17`
 - **enabled** — Indicates whether the provider is enabled `config-types.ts:127-127`
-- **enabled** — Indicates whether the parser is enabled `config-types.ts:228-228`, `config-types.ts:235-235`
-- **enabled** — Enabled status `config-types.ts:321-321`
+- **enabled** — Indicates whether the parser is enabled `config-types.ts:228-228`
+- **enabled** — Enabled status `config-types.ts:235-235`
+- **enabled** — Represents whether a feature is enabled or not `config-types.ts:321-321`
 - **encodingFormat** — Specifies the encoding format for embeddings `worker-embedding-config.ts:49-49`
 - **endpoint** — Sets the endpoint for large language models `config-types.ts:111-111`
-- **endpoint** — Endpoint for provider-specific configurations `worker-embedding-config.ts:31-31`, `worker-embedding-config.ts:42-42`
-- **endpoint** — Defines the endpoint for embedding generation `worker-embedding-config.ts:65-65`
+- **endpoint** — Endpoint for provider-specific configurations `worker-embedding-config.ts:31-31`
+- **endpoint** — Defines the endpoint for embedding generation `worker-embedding-config.ts:42-42`
+- **endpoint** — Indicates the URL endpoint for worker communication `worker-embedding-config.ts:65-65`
 - **endpoints** — Defines the endpoints for embedding generation `worker-embedding-config.ts:47-47`
 - **environment** — Specifies the environment for the configuration `config-types.ts:370-370`
 - **errors** — Stores any errors encountered during configuration validation `yaml-config.ts:781-781`
@@ -241,46 +268,58 @@ The `src/config` module provides a comprehensive configuration system for the ap
 - **mandatoryDelegation** — Mandatory delegation setting `config-types.ts:298-298`
 - **max_batch_size** — Represents the maximum batch size for the mlx provider `worker-embedding-config.ts:77-77`
 - **max_client_batch_size** — Maximum client batch size for provider-specific configurations `worker-embedding-config.ts:35-35`
-- **maxBatchSize** — Maximum number of texts per HTTP request `config-types.ts:58-58`, `config-types.ts:66-66`
-- **maxBatchSize** — Sets the maximum number of texts per HTTP request `config-types.ts:167-167`, `config-types.ts:177-177`
+- **maxBatchSize** — Maximum number of texts per HTTP request `config-types.ts:58-58`
+- **maxBatchSize** — Sets the maximum number of texts per HTTP request `config-types.ts:66-66`
+- **maxBatchSize** — Determines the maximum number of items in a batch request `config-types.ts:167-167`
+- **maxBatchSize** — Specifies the maximum size of a batch of operations `config-types.ts:177-177`
 - **maxBranchesPerRepo** — Maximum branches per repository `config-types.ts:308-308`
 - **maxConcurrency** — Sets the maximum number of concurrent parser operations `config-types.ts:239-239`
-- **maxConcurrency** — Represents the maximum concurrency level for agents, which is optional `config-types.ts:250-250`, `config-types.ts:263-263`
+- **maxConcurrency** — Represents the maximum concurrency level for agents, which is optional `config-types.ts:250-250`
+- **maxConcurrency** — Represents the maximum number of concurrent operations allowed `config-types.ts:263-263`
 - **maxConcurrent** — Limits the maximum number of concurrent requests `config-types.ts:85-85`
 - **maxConcurrentAgents** — Maximum number of concurrent agents `config-types.ts:286-286`
-- **maxConcurrentAgents** — Represents the maximum number of concurrent agents `yaml-config.ts:407-407`, `yaml-config.ts:412-412`
+- **maxConcurrentAgents** — Represents the maximum number of concurrent agents `yaml-config.ts:407-407`
+- **maxConcurrentAgents** — Represents the maximum number of concurrent agents for the configuration `yaml-config.ts:412-412`
 - **maxCpuPercent** — Maximum CPU percentage usage for the system `config-types.ts:285-285`
-- **maxCpuPercent** — Represents the maximum CPU percentage `yaml-config.ts:407-407`, `yaml-config.ts:412-412`
+- **maxCpuPercent** — Represents the maximum CPU percentage `yaml-config.ts:407-407`
+- **maxCpuPercent** — Represents the maximum CPU percentage for the configuration `yaml-config.ts:412-412`
 - **maxDebounceMs** — Sets the maximum debounce time in milliseconds `config-types.ts:103-103`
 - **maxFiles** — Defines the maximum number of log files to retain `config-types.ts:218-218`
-- **maxFileSize** — Sets the maximum size of log files `config-types.ts:217-217`, `config-types.ts:230-230`
+- **maxFileSize** — Sets the maximum size of log files `config-types.ts:217-217`
+- **maxFileSize** — Specifies the maximum file size for uploads `config-types.ts:230-230`
 - **maxMemoryMB** — Maximum memory in MB for the system `config-types.ts:284-284`
-- **maxMemoryMB** — Represents the maximum memory in MB `yaml-config.ts:407-407`, `yaml-config.ts:412-412`
+- **maxMemoryMB** — Represents the maximum memory in MB `yaml-config.ts:407-407`
+- **maxMemoryMB** — Represents the maximum memory in megabytes for the configuration `yaml-config.ts:412-412`
 - **maxTaskQueueSize** — Maximum size of the task queue `config-types.ts:287-287`
-- **maxTaskQueueSize** — Represents the maximum task queue size `yaml-config.ts:407-407`, `yaml-config.ts:412-412`
+- **maxTaskQueueSize** — Represents the maximum task queue size `yaml-config.ts:407-407`
+- **maxTaskQueueSize** — Represents the maximum size of the task queue for the configuration `yaml-config.ts:412-412`
 - **maxTokens** — Maximum number of tokens the model can handle `models-catalog.ts:26-26`
 - **maxTokens** — Represents the maximum tokens for the model `worker-embedding-config.ts:86-86`
 - **maxTotalBranches** — Maximum total branches `config-types.ts:309-309`
 - **mcp** — MCP configuration `config-types.ts:356-356`
 - **memoryLimit** — Sets the memory limit for parser operations `config-types.ts:240-240`
-- **memoryLimit** — Represents the memory limit for agents, which is optional `config-types.ts:251-251`, `config-types.ts:264-264`
+- **memoryLimit** — Represents the memory limit for agents, which is optional `config-types.ts:251-251`
+- **memoryLimit** — Represents the maximum memory usage allowed `config-types.ts:264-264`
 - **metric** — Metric configuration `config-types.ts:344-344`
 - **minDebounceMs** — Defines the minimum debounce time in milliseconds `config-types.ts:101-101`
 - **mlx** — Represents the model directory for the mlx provider `worker-embedding-config.ts:74-79`
 - **mmapSize** — Represents the size of memory-mapped files used for temporary storage `config-types.ts:208-208`
 - **mode** — Mode of the database `config-types.ts:206-206`
 - **model** — Specifies the model to be used for embeddings `config-types.ts:14-14`
-- **model** — Defines the model for large language models `config-types.ts:110-110`, `config-types.ts:124-124`
-- **model** — Model for provider-specific configurations `worker-embedding-config.ts:34-34`, `worker-embedding-config.ts:44-44`
-- **model** — Specifies the model for embedding generation `worker-embedding-config.ts:57-57`
-- **model** — Represents the model for the mlx provider `worker-embedding-config.ts:80-80`
+- **model** — Defines the model for large language models `config-types.ts:110-110`
+- **model** — Represents a required string for model `config-types.ts:124-124`
+- **model** — Model for provider-specific configurations `worker-embedding-config.ts:34-34`
+- **model** — Specifies the model for embedding generation `worker-embedding-config.ts:44-44`
+- **model** — Represents the model for the mlx provider `worker-embedding-config.ts:57-57`
+- **model** — Represents a single model entry for embedding operations `worker-embedding-config.ts:80-80`
 - **modelDir** — Represents the model directory for the mlx provider `worker-embedding-config.ts:75-75`
 - **modelName** — Represents the name of the model `worker-embedding-config.ts:206-206`
 - **modelPath** — Indicates the path to the model file `config-types.ts:280-280`
 - **models** — Array of embedding models in the catalog `models-catalog.ts:39-39`
 - **models** — Models for provider-specific configurations `worker-embedding-config.ts:39-39`
-- **models** — Contains model configurations for embedding generation `worker-embedding-config.ts:54-54`, `worker-embedding-config.ts:72-72`
-- **models** — Represents the list of models for the mlx provider `worker-embedding-config.ts:78-78`
+- **models** — Contains model configurations for embedding generation `worker-embedding-config.ts:54-54`
+- **models** — Represents the list of models for the mlx provider `worker-embedding-config.ts:72-72`
+- **models** — Contains an array of model entries for embedding operations `worker-embedding-config.ts:78-78`
 - **mtebScore** — MTEB score for the model, if available `models-catalog.ts:30-30`
 - **n_gpu_layers** — Specifies the number of GPU layers for embedding generation `worker-embedding-config.ts:69-69`
 - **name** — Name of the embedding model `models-catalog.ts:21-21`
@@ -313,18 +352,22 @@ The `src/config` module provides a comprehensive configuration system for the ap
 - **pullTimeoutMs** — Sets the pull timeout in milliseconds for the Ollama provider `config-types.ts:50-50`
 - **pullTimeoutMs** — Sets the pull timeout in milliseconds for the provider `config-types.ts:157-157`
 - **queryAgent** — Query agent configuration `config-types.ts:366-366`
-- **queryLanguage** — Specifies the language for query optimization `config-types.ts:26-26`, `config-types.ts:136-136`
+- **queryLanguage** — Specifies the language for query optimization `config-types.ts:26-26`
+- **queryLanguage** — Represents a required string for query language, either "english" or "multilingual" `config-types.ts:136-136`
 - **queueBatchSize** — Controls the number of texts per HTTP request `config-types.ts:29-29`
 - **queueBatchSize** — Controls request pressure during indexing `config-types.ts:278-278`
-- **rerankerFinalK** — Sets the final K value for reranking `config-types.ts:23-23`, `config-types.ts:133-133`
+- **rerankerFinalK** — Sets the final K value for reranking `config-types.ts:23-23`
+- **rerankerFinalK** — Represents a required number for reranker final K `config-types.ts:133-133`
 - **rerankerModel** — Specifies the reranker model to be used `config-types.ts:21-21`
 - **rerankerModel** — Specifies the model used for reranking `config-types.ts:131-131`
-- **rerankerTopK** — Sets the top K value for reranking `config-types.ts:22-22`, `config-types.ts:132-132`
+- **rerankerTopK** — Sets the top K value for reranking `config-types.ts:22-22`
+- **rerankerTopK** — Represents a required number for reranker top K `config-types.ts:132-132`
 - **resourceConstraints** — Resource constraints for the system `config-types.ts:293-293`
 - **searchL** — Search configuration `config-types.ts:346-346`
-- **selected_model** — Selected model for provider-specific configurations `worker-embedding-config.ts:33-33`, `worker-embedding-config.ts:43-43`
-- **selected_model** — Specifies the selected model for embedding generation `worker-embedding-config.ts:66-66`
-- **selected_model** — Represents the selected model for the mlx provider `worker-embedding-config.ts:76-76`
+- **selected_model** — Selected model for provider-specific configurations `worker-embedding-config.ts:33-33`
+- **selected_model** — Specifies the selected model for embedding generation `worker-embedding-config.ts:43-43`
+- **selected_model** — Represents the selected model for the mlx provider `worker-embedding-config.ts:66-66`
+- **selected_model** — Represents the selected model for embedding operations `worker-embedding-config.ts:76-76`
 - **semantic** — Configures semantic-related settings `config-types.ts:90-93`
 - **semanticAgent** — Represents the configuration for the semantic agent, including model, provider, and API key settings `config-types.ts:367-367`
 - **server** — Represents the server configuration `config-types.ts:83-83`
@@ -337,20 +380,32 @@ The `src/config` module provides a comprehensive configuration system for the ap
 - **tei** — Provider-specific configurations for TEI `worker-embedding-config.ts:30-40`
 - **tempStore** — Configures temporary storage settings `config-types.ts:210-210`
 - **timeout** — Sets the timeout for the Ollama provider `config-types.ts:43-43`
-- **timeout** — Timeout for requests in seconds `config-types.ts:55-55`, `config-types.ts:63-63`, `config-types.ts:71-71`
-- **timeout** — Sets the timeout duration for server requests `config-types.ts:83-83`
-- **timeout** — Sets the timeout for the provider `config-types.ts:150-150`, `config-types.ts:164-164`
-- **timeout** — Timeout for HTTP requests in seconds `config-types.ts:174-174`, `config-types.ts:184-184`
-- **timeout** — Sets the timeout for parser operations `config-types.ts:231-231`
+- **timeout** — Timeout for requests in seconds `config-types.ts:55-55`
+- **timeout** — Sets the timeout duration for server requests `config-types.ts:63-63`
+- **timeout** — Sets the timeout for the provider `config-types.ts:71-71`
+- **timeout** — Timeout for HTTP requests in seconds `config-types.ts:83-83`
+- **timeout** — Sets the timeout for parser operations `config-types.ts:150-150`
+- **timeout** — Sets the timeout duration for a request in seconds `config-types.ts:164-164`
+- **timeout** — Sets the timeout duration for API requests `config-types.ts:174-174`
+- **timeout** — Represents the timeout duration for API requests `config-types.ts:184-184`
+- **timeout** — Defines the maximum time in milliseconds for a timeout `config-types.ts:231-231`
 - **timeoutMs** — Sets the timeout in milliseconds for the Ollama provider `config-types.ts:44-44`
-- **timeoutMs** — Timeout for requests in milliseconds `config-types.ts:56-56`, `config-types.ts:64-64`, `config-types.ts:72-72`, `config-types.ts:78-78`
-- **timeoutMs** — Sets the timeout in milliseconds for the provider `config-types.ts:151-151`, `config-types.ts:165-165`
-- **timeoutMs** — Timeout for HTTP requests in milliseconds `config-types.ts:175-175`, `config-types.ts:185-185`, `config-types.ts:193-193`
+- **timeoutMs** — Timeout for requests in milliseconds `config-types.ts:56-56`
+- **timeoutMs** — Sets the timeout in milliseconds for the provider `config-types.ts:64-64`
+- **timeoutMs** — Timeout for HTTP requests in milliseconds `config-types.ts:72-72`
+- **timeoutMs** — Represents an optional number for timeout in milliseconds `config-types.ts:78-78`
+- **timeoutMs** — Represents the timeout duration in milliseconds for a request `config-types.ts:151-151`
+- **timeoutMs** — Sets the timeout duration in milliseconds for API requests `config-types.ts:165-165`
+- **timeoutMs** — Represents the timeout duration in milliseconds for API requests `config-types.ts:175-175`, `config-types.ts:193-193`
+- **timeoutMs** — Represents the maximum time in milliseconds for a timeout `config-types.ts:185-185`
 - **timeoutMs** — Timeout in milliseconds for provider-specific configurations `worker-embedding-config.ts:37-37`
-- **timeoutMs** — Sets the timeout in milliseconds for embedding generation `worker-embedding-config.ts:52-52`, `worker-embedding-config.ts:61-61`, `worker-embedding-config.ts:70-70`
+- **timeoutMs** — Sets the timeout in milliseconds for embedding generation `worker-embedding-config.ts:52-52`
+- **timeoutMs** — Specifies the timeout duration in milliseconds for worker operations `worker-embedding-config.ts:61-61`
+- **timeoutMs** — Sets the maximum time in milliseconds for a worker to complete a task `worker-embedding-config.ts:70-70`
 - **tokenizerFile** — Path to the tokenizer file for the embedding model `models-catalog.ts:24-24`
 - **treeSitter** — Specifies the parser to use for parsing `config-types.ts:227-233`
-- **twoPhaseMode** — Enables two-phase mode for embedding and DB insertion `config-types.ts:34-34`, `config-types.ts:140-140`
+- **twoPhaseMode** — Enables two-phase mode for embedding and DB insertion `config-types.ts:34-34`
+- **twoPhaseMode** — Represents a required boolean for two-phase mode `config-types.ts:140-140`
 - **uncommittedPollIntervalMs** — Interval in milliseconds for polling uncommitted changes `config-types.ts:326-326`
 - **useEmbeddingsApi** — Indicates whether to use the embeddings API `worker-embedding-config.ts:48-48`
 - **useLayeredIndex** — Uses a layered FAISS index for embeddings `config-types.ts:38-38`

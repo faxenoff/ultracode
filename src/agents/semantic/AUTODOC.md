@@ -67,7 +67,8 @@ The `semantic` module provides a suite of tools for semantic analysis, including
 - **pLog** — Function to log detailed profiling information for comment processing `comment-processor.ts:57-60`
 - **processPreGeneratedEmbeddings** — Processes pre-generated embeddings from workers `embedding-processor.ts:307-354`
 - **processStandaloneComments** — Function to process standalone comments and create comment entities and relationships `comment-processor.ts:47-161`
-- **results** — Results from fetching entities for comment processing `comment-processor.ts:79-79`, `comment-processor.ts:79-79`
+- **results** — Results from fetching entities for comment processing `comment-processor.ts:79-79`
+- **results** — Parses a batch of file paths and maps each to a list of entities found in storage, limited to 10000 per query `comment-processor.ts:79-79`
 - **results** — Maps and filters entity IDs to get entities from storage `vector-index-manager.ts:106-112`
 - **shouldExcludeFromEmbedding** — Not specified in the excerpt `embedding-processor.ts:95-103`
 - **vectorEmbeddings** — Generates vector embeddings for comment entities, including metadata and timestamps `comment-processor.ts:129-142`
@@ -126,18 +127,18 @@ The `semantic` module provides a suite of tools for semantic analysis, including
 - **bareExceptCount** — Counts entities that are excluded from embedding generation `embedding-processor.ts:279-279`
 - **baseUrl** — Base URL for the provider `provider-config.ts:77-77`
 - **baseUrl** — Represents the base URL for the provider `provider-config.ts:109-109`
-- **batch_size** — Defines the batch size for the provider `provider-config.ts:30-30`
 - **batch_size** — Size of the batch `provider-config.ts:63-63`
+- **batch_size** — Defines the batch size for the provider `provider-config.ts:30-30`
 - **cache** — Semantic cache for storing embeddings `cache-warmup.ts:26-26`
 - **cacheHits** — Counts cache hits during embedding generation `embedding-processor.ts:364-364`
 - **checkServer** — Function to check the server status `provider-config.ts:82-82`
 - **complexity** — Extracts the complexity from an entity object `vector-index-manager.ts:199-199`
-- **concurrency** — Defines the concurrency level for the provider `provider-config.ts:40-40`
-- **concurrency** — Level of concurrency for the provider `provider-config.ts:66-66`, `provider-config.ts:80-80`
-- **concurrency** — Defines the number of concurrent requests `provider-config.ts:112-112`
+- **concurrency** — Level of concurrency for the provider `provider-config.ts:66-66`
+- **concurrency** — Defines the number of concurrent requests `provider-config.ts:80-80`
+- **concurrency** — Defines the concurrency level for the provider `provider-config.ts:40-40`, `provider-config.ts:112-112`
 - **context_size** — Defines the context size for llama.cpp `provider-config.ts:57-57`
-- **contextSize** — Represents the context size for llama.cpp `provider-config.ts:58-58`
 - **contextSize** — Represents the context size for the model `provider-config.ts:118-118`
+- **contextSize** — Represents the context size for llama.cpp `provider-config.ts:58-58`
 - **dumpBatchIndex** — Index for dumping batches `embedding-processor.ts:75-75`
 - **embedding** — Embedding configuration `provider-config.ts:96-100`
 - **embeddingBase64** — Base64 encoded embedding `embedding-processor.ts:28-28`
@@ -152,12 +153,12 @@ The `semantic` module provides a suite of tools for semantic analysis, including
 - **embeddingMutex** — Mutex for managing embedding generation `comment-processor.ts:31-31`
 - **embeddingMutex** — Mutex for thread safety `embedding-processor.ts:79-79`
 - **embeddingText** — Text representation of the embedding `embedding-processor.ts:29-29`
-- **encodingFormat** — Specifies the encoding format for the provider `provider-config.ts:36-36`
 - **encodingFormat** — Specifies the encoding format for embeddings `provider-config.ts:115-115`
-- **endLine** — Ending line number of the code snippet `vector-index-manager.ts:26-26`
+- **encodingFormat** — Specifies the encoding format for the provider `provider-config.ts:36-36`
 - **endLine** — Represents the end line of a code snippet `vector-index-manager.ts:124-124`
-- **endpoint** — Specifies the endpoint for the provider `provider-config.ts:29-29`, `provider-config.ts:56-56`
-- **endpoint** — Endpoint URL for the provider `provider-config.ts:76-76`
+- **endLine** — Ending line number of the code snippet `vector-index-manager.ts:26-26`
+- **endpoint** — Endpoint URL for the provider `provider-config.ts:56-56`, `provider-config.ts:76-76`
+- **endpoint** — Specifies the endpoint for the provider `provider-config.ts:29-29`
 - **endpoints** — Lists multiple endpoints for the provider `provider-config.ts:34-34`
 - **entities** — Number of comment entities created `comment-processor.ts:52-52`
 - **entity** — Entity used in hotspot analysis `vector-index-manager.ts:40-40`
@@ -167,21 +168,21 @@ The `semantic` module provides a suite of tools for semantic analysis, including
 - **filePath** — Path to the file containing the entity `vector-index-manager.ts:18-18`
 - **globalCache** — Global embedding cache `embedding-processor.ts:67-67`
 - **globalCacheHitCount** — Counts global cache hits `embedding-processor.ts:367-367`
-- **grpcPort** — Specifies the gRPC port for the provider `provider-config.ts:38-38`
 - **grpcPort** — Sets the gRPC port for communication `provider-config.ts:117-117`
-- **items** — Stores an array of HotspotItem objects `vector-index-manager.ts:34-34`
+- **grpcPort** — Specifies the gRPC port for the provider `provider-config.ts:38-38`
+- **items** — Represents a collection of hotspot items `vector-index-manager.ts:34-34`
 - **language** — Programming language of the entity `vector-index-manager.ts:20-20`
-- **length** — Length of the code snippet `vector-index-manager.ts:27-27`
 - **length** — Represents the length of a code snippet `vector-index-manager.ts:124-124`
-- **max_batch_size** — Defines the maximum batch size for MLX `provider-config.ts:48-48`
+- **length** — Length of the code snippet `vector-index-manager.ts:27-27`
 - **max_batch_size** — Maximum batch size `provider-config.ts:64-64`
+- **max_batch_size** — Defines the maximum batch size for MLX `provider-config.ts:48-48`
 - **max_batch_tokens** — Maximum number of tokens per batch `provider-config.ts:78-78`
 - **max_client_batch_size** — Maximum client batch size `provider-config.ts:79-79`
 - **maxBatchSize** — Determines the maximum batch size for requests `provider-config.ts:113-113`
 - **mcp** — Model configuration provider `provider-config.ts:94-102`
 - **metric** — Metric used in the hotspot analysis `vector-index-manager.ts:33-33`
-- **modelDir** — Specifies the model directory for MLX `provider-config.ts:47-47`
 - **modelDir** — Specifies the directory for model files `provider-config.ts:110-110`
+- **modelDir** — Specifies the model directory for MLX `provider-config.ts:47-47`
 - **modelPath** — Path to the model `provider-config.ts:91-91`
 - **n_gpu_layers** — Specifies the number of GPU layers for llama.cpp `provider-config.ts:59-59`
 - **name** — Name of the entity `vector-index-manager.ts:19-19`
@@ -191,19 +192,19 @@ The `semantic` module provides a suite of tools for semantic analysis, including
 - **onMetricsUpdate** — Not specified in the excerpt `embedding-processor.ts:84-84`
 - **onVectorsStoredUpdate** — Not specified in the excerpt `embedding-processor.ts:85-85`
 - **openWithoutWithCount** — Counts entities that are opened without using `with `embedding-processor.ts:279-279`
-- **originalIndexToHash** — Stores a list of original indices mapped to their corresponding hash values `embedding-processor.ts:362-362`
+- **originalIndexToHash** — Stores a mapping from original indices to their corresponding hash values `embedding-processor.ts:362-362`
 - **ovms_mini_batch** — Specifies the mini batch size for OVMS `provider-config.ts:31-31`
 - **parallel_slots** — Number of parallel slots for the model `provider-config.ts:61-61`
 - **path** — Extracts the path from an entity object `vector-index-manager.ts:199-199`
 - **persistentCacheHitCount** — Counts persistent cache hits `embedding-processor.ts:368-368`
 - **processed** — Indicates the status of processed entities `embedding-processor.ts:311-311`
-- **protocol** — Defines the protocol for the provider `provider-config.ts:37-37`
 - **protocol** — Defines the communication protocol `provider-config.ts:116-116`
+- **protocol** — Defines the protocol for the provider `provider-config.ts:37-37`
 - **relationships** — Number of comment relationships created `comment-processor.ts:52-52`
 - **score** — Extracts the score from an entity object `vector-index-manager.ts:199-199`
 - **seenHashes** — Tracks seen text hashes `embedding-processor.ts:363-363`
-- **selected_model** — Indicates the selected model for the provider `provider-config.ts:32-32`, `provider-config.ts:49-49`
-- **selected_model** — Selected model for the provider `provider-config.ts:69-69`
+- **selected_model** — Selected model for the provider `provider-config.ts:49-49`, `provider-config.ts:69-69`
+- **selected_model** — Indicates the selected model for the provider `provider-config.ts:32-32`
 - **semantic** — Semantic analysis of the entity `vector-index-manager.ts:22-22`
 - **semanticAgent** — Semantic agent configuration `provider-config.ts:89-93`
 - **semanticMetrics** — Semantic metrics for tracking cache warmup performance `cache-warmup.ts:27-27`
@@ -212,8 +213,8 @@ The `semantic` module provides a suite of tools for semantic analysis, including
 - **setEmbeddingMutex** — Function to set the embedding mutex `comment-processor.ts:32-32`
 - **setEmbeddingMutex** — Sets the embedding mutex `embedding-processor.ts:80-80`
 - **snippet** — Code snippet details including start and end lines and length `vector-index-manager.ts:23-29`
-- **startLine** — Starting line number of the code snippet `vector-index-manager.ts:25-25`
 - **startLine** — Represents the start line of a code snippet `vector-index-manager.ts:124-124`
+- **startLine** — Starting line number of the code snippet `vector-index-manager.ts:25-25`
 - **strategy** — Strategy used for rebuilding the vector index `vector-index-manager.ts:64-64`
 - **structuralScore** — Score indicating the structural complexity of the entity `vector-index-manager.ts:21-21`
 - **target_device** — Specifies the target device for the provider `provider-config.ts:33-33`
@@ -221,15 +222,15 @@ The `semantic` module provides a suite of tools for semantic analysis, including
 - **textsNeedingGeneration** — Stores texts that need embedding generation `embedding-processor.ts:365-365`
 - **textsNeedingGenerationHashes** — Stores hashes of texts needing generation `embedding-processor.ts:366-366`
 - **timeMs** — Time taken in milliseconds for the vector index rebuild `vector-index-manager.ts:64-64`
-- **timeoutMs** — Sets the timeout in milliseconds for the provider `provider-config.ts:39-39`
-- **timeoutMs** — Timeout in milliseconds for the provider `provider-config.ts:65-65`, `provider-config.ts:81-81`
-- **timeoutMs** — Sets the timeout duration in milliseconds `provider-config.ts:111-111`
+- **timeoutMs** — Timeout in milliseconds for the provider `provider-config.ts:65-65`
+- **timeoutMs** — Sets the timeout duration in milliseconds `provider-config.ts:81-81`
+- **timeoutMs** — Sets the timeout in milliseconds for the provider `provider-config.ts:39-39`, `provider-config.ts:111-111`
 - **twoPhaseMode** — Boolean indicating two-phase mode `embedding-processor.ts:72-72`
 - **ubatch_size** — Size of the unbatched batch `provider-config.ts:62-62`
 - **uniqueTexts** — Stores unique texts for deduplication `embedding-processor.ts:361-361`
 - **usedFaiss** — Boolean indicating whether FAISS was used during the rebuild `vector-index-manager.ts:64-64`
-- **useEmbeddingsApi** — Determines whether to use the embeddings API `provider-config.ts:35-35`
 - **useEmbeddingsApi** — Indicates whether to use the embeddings API `provider-config.ts:114-114`
+- **useEmbeddingsApi** — Determines whether to use the embeddings API `provider-config.ts:35-35`
 - **vectorStore** — Vector store for storing comment embeddings `comment-processor.ts:29-29`
 - **vectorStore** — Vector store for storing embeddings `embedding-processor.ts:66-66`
 

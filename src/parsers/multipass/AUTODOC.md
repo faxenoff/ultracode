@@ -38,7 +38,8 @@ Parsed Results
 
 ### Function
 - **calculateComplexity** — Calculates the complexity score based on entities, imports, and other factors `oxc-fast-parser.ts:433-476`
-- **chunkResults** — Maps a file to a QuickParseResult object, handling errors and parsing `oxc-fast-parser.ts:190-213`, `oxc-fast-parser.ts:192-212`
+- **chunkResults** — Maps a file to a QuickParseResult object, handling errors and parsing `oxc-fast-parser.ts:190-213`
+- **chunkResults** — Processes and returns a result object with parsed file information, including error messages `oxc-fast-parser.ts:192-212`
 - **complexityMap** — Creates a map of file paths to their complexity totals from quick results `multipass-orchestrator.ts:208-208`
 - **createEntity** — Creates a QuickEntity object from an AST node `oxc-fast-parser.ts:411-427`
 - **extractExports** — Not `oxc-fast-parser.ts:252-279`
@@ -103,8 +104,9 @@ Parsed Results
 - **oxc-parser** — Imports `oxc-parser` from `oxc-parser`. `oxc-fast-parser.ts:21-21`
 
 ### Property
-- **body** — Body of the statement `oxc-fast-parser.ts:39-41`, `oxc-fast-parser.ts:40-40`, `oxc-fast-parser.ts:59-67`
-- **body** — Represents the body of a statement or class node `oxc-fast-parser.ts:60-66`
+- **body** — Contains an array of body elements with type, key, decorators, and position information `oxc-fast-parser.ts:59-67`, `oxc-fast-parser.ts:60-66`
+- **body** — Body of the statement `oxc-fast-parser.ts:39-41`
+- **body** — Represents the body of a statement or class node `oxc-fast-parser.ts:40-40`
 - **cacheQuickResults** — Caches quick results for reuse `types.ts:117-117`
 - **complexity** — Complexity analysis for prioritization `types.ts:41-41`
 - **config** — Configuration for the MultiPassOrchestrator `multipass-orchestrator.ts:39-39`
@@ -113,19 +115,20 @@ Parsed Results
 - **declaration** — Declaration of the statement `oxc-fast-parser.ts:42-42`
 - **declarations** — Declarations of the statement `oxc-fast-parser.ts:43-46`
 - **decorated** — Has decorators? `types.ts:65-65`
-- **decorators** — Decorators of the declaration `oxc-fast-parser.ts:47-47`
 - **decorators** — Represents the decorators of a statement or class node `oxc-fast-parser.ts:63-63`
 - **decorators** — Represents an array of unknown decorators `oxc-fast-parser.ts:393-393`
+- **decorators** — Decorators of the declaration `oxc-fast-parser.ts:47-47`
 - **detailed** — Indicates if detailed processing is used `types.ts:97-97`
 - **detailedCache** — Map to cache detailed parse results `multipass-orchestrator.ts:42-42`
 - **detailedThreshold** — Threshold for detailed pass processing `types.ts:109-109`
 - **enableFastPass** — Enables fast pass processing `types.ts:107-107`
-- **end** — End position of the declaration `oxc-fast-parser.ts:52-52`
 - **end** — Indicates the end position of a node `oxc-fast-parser.ts:65-65`
 - **end** — Represents the end position of a key `oxc-fast-parser.ts:392-392`
+- **end** — End position of the declaration `oxc-fast-parser.ts:52-52`
 - **endLine** — End line `types.ts:61-61`
 - **entities** — Basic entities (name, type, location only) `types.ts:39-39`
-- **error** — Represents an error message in the QuickParseResult `oxc-fast-parser.ts:137-137`, `oxc-fast-parser.ts:212-212`
+- **error** — Represents an error message in the QuickParseResult `oxc-fast-parser.ts:137-137`
+- **error** — Represents an error message in the QuickParseResult object `oxc-fast-parser.ts:212-212`
 - **exported** — Exported? `types.ts:63-63`
 - **exports** — Exports for API surface `types.ts:45-45`
 - **fastOnly** — Indicates if only fast processing is used `types.ts:95-95`
@@ -134,21 +137,23 @@ Parsed Results
 - **hasDecorators** — Has decorators (Angular, etc.) `types.ts:26-26`
 - **hasGenerics** — Has generics/complex types `types.ts:24-24`
 - **hasJsx** — Has JSX/TSX `types.ts:28-28`
-- **id** — Identifier of the statement `oxc-fast-parser.ts:38-38`, `oxc-fast-parser.ts:44-44`
+- **id** — Identifier of the statement `oxc-fast-parser.ts:38-38`
+- **id** — Stores an identifier with a name `oxc-fast-parser.ts:44-44`
 - **imports** — Imports for dependency graph `types.ts:43-43`
 - **init** — Initializer of the declaration `oxc-fast-parser.ts:45-45`
 - **isDefault** — Indicates if the export is a default export `types.ts:85-85`
 - **isDynamic** — Indicates if the import is dynamic `types.ts:77-77`
-- **isTypeOnly** — Indicates if the import is type-only `types.ts:76-76`, `types.ts:86-86`
+- **isTypeOnly** — Indicates if the import is type-only `types.ts:76-76`
+- **isTypeOnly** — Indicates whether the type is only `types.ts:86-86`
 - **jsx** — Indicates whether JSX is enabled `oxc-fast-parser.ts:91-91`
 - **keepContent** — Determines if content should be kept `oxc-fast-parser.ts:93-93`
 - **key** — Represents the key of a property in a class node `oxc-fast-parser.ts:62-62`
 - **key** — Represents a key with name and value `oxc-fast-parser.ts:390-390`
 - **lines** — Line count `types.ts:30-30`
 - **maxNesting** — Estimated nesting depth `types.ts:22-22`
-- **name** — Name of the identifier `oxc-fast-parser.ts:38-38`, `oxc-fast-parser.ts:44-44`
-- **name** — Represents the name of a property or identifier `oxc-fast-parser.ts:62-62`
+- **name** — Represents the name of a property or identifier `oxc-fast-parser.ts:44-44`, `oxc-fast-parser.ts:62-62`
 - **name** — Represents the name of a key `oxc-fast-parser.ts:390-390`
+- **name** — Name of the identifier `oxc-fast-parser.ts:38-38`
 - **name** — Name `types.ts:58-58`
 - **name** — Name of the exported entity `types.ts:84-84`
 - **needsDetailedPass** — Whether detailed pass is recommended `types.ts:49-49`
@@ -161,26 +166,27 @@ Parsed Results
 - **quickCache** — Map to cache quick parse results `multipass-orchestrator.ts:41-41`
 - **simpleFileThreshold** — Threshold for simple files `types.ts:121-121`
 - **skipDetailedForSimple** — Skips detailed pass for simple files `types.ts:119-119`
-- **source** — Source of the import `types.ts:74-74`, `types.ts:87-87`
+- **source** — Source of the import `types.ts:74-74`
+- **source** — Represents the source string or undefined `types.ts:87-87`
 - **specifiers** — List of specifiers for the import `types.ts:75-75`
-- **start** — Start position of the declaration `oxc-fast-parser.ts:51-51`
 - **start** — Indicates the start position of a node `oxc-fast-parser.ts:64-64`
 - **start** — Represents the start position of a key `oxc-fast-parser.ts:391-391`
+- **start** — Start position of the declaration `oxc-fast-parser.ts:51-51`
 - **startLine** — Start line `types.ts:60-60`
 - **stats** — Statistics for the MultiPassOrchestrator `multipass-orchestrator.ts:45-51`
 - **total** — Overall complexity (0-100) `types.ts:16-16`
 - **tsConcurrency** — Concurrency setting for TypeScript parser `types.ts:113-113`
 - **tsParser** — TypeScript parser instance `multipass-orchestrator.ts:40-40`
-- **type** — Type of the statement `oxc-fast-parser.ts:37-37`, `oxc-fast-parser.ts:45-45`
-- **type** — Specifies the type of a statement or class node `oxc-fast-parser.ts:61-61`
+- **type** — Specifies the type of a statement or class node `oxc-fast-parser.ts:45-45`, `oxc-fast-parser.ts:61-61`
 - **type** — Extended Statement node with common properties from ESTree `oxc-fast-parser.ts:389-389`
+- **type** — Type of the statement `oxc-fast-parser.ts:37-37`
 - **type** — Type `types.ts:59-59`
 - **typeCount** — Number of classes/interfaces `types.ts:18-18`
 - **typeParameters** — Type parameters of the declaration `oxc-fast-parser.ts:48-50`
 - **typescript** — Indicates whether TypeScript is enabled `oxc-fast-parser.ts:89-89`
-- **value** — Value of the identifier `oxc-fast-parser.ts:38-38`
 - **value** — Represents the value of a property or identifier `oxc-fast-parser.ts:62-62`
 - **value** — Represents the value of a key `oxc-fast-parser.ts:390-390`
+- **value** — Value of the identifier `oxc-fast-parser.ts:38-38`
 - **workerPoolSize** — Size of the worker pool `types.ts:115-115`
 - **workers** — Number of workers for parallel processing `types.ts:99-99`
 

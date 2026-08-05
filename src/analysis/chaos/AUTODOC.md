@@ -49,18 +49,21 @@ The `chaos` module is designed for detecting state sprawl and race conditions in
 ## 🤖 Entity Listing
 
 ### Function
-- **allCode** — Joins code snippets from operations into a single string `chaos-analyzer.ts:496-496`, `chaos-analyzer.ts:530-530`
+- **allCode** — Joins code snippets from operations into a single string `chaos-analyzer.ts:496-496`
+- **allCode** — Parses the code from each operation and joins them into a single string `chaos-analyzer.ts:530-530`
 - **allUnprotected** — Represents all unprotected conditions `race-detector.ts:596-596`
 - **asyncMutations** — Represents asynchronous mutations `race-detector.ts:510-510`
 - **asyncResults** — Waits for all writer operations to be checked for asynchronous context `race-detector.ts:215-215`
 - **buildRelationshipLookup** — Build O(1) relationship lookup from flat array `state-detector.ts:26-46`
 - **conditionalWrites** — Represents conditional writes in state mutations `race-detector.ts:477-477`
-- **conditions** — Represents conditions for race condition detection `race-detector.ts:389-389`, `race-detector.ts:389-389`
+- **conditions** — Represents conditions for race condition detection `race-detector.ts:389-389`
+- **conditions** — Filters and maps mutations to their conditions `race-detector.ts:389-389`
 - **detectCSharpChaosPatterns** — Detects C# anti-patterns in the code `csharp-patterns.ts:162-292`
 - **existing** — Checks if a hotspot exists for a given file and entity name `chaos-analyzer.ts:451-451`
 - **fileCount** — Counts the number of unique files in pattern operations `chaos-analyzer.ts:416-416`
 - **files** — Represents a set of files involved in a pattern `chaos-analyzer.ts:71-71`
-- **files** — Counts the number of unique files in pattern operations `chaos-analyzer.ts:558-558`, `chaos-analyzer.ts:597-597`
+- **files** — Counts the number of unique files in pattern operations `chaos-analyzer.ts:558-558`
+- **files** — Counts the number of unique files referenced in the operations `chaos-analyzer.ts:597-597`
 - **files** — Not applicable in this context `state-detector.ts:484-484`
 - **fileScore** — Calculates a score based on the number of unique files in pattern operations `chaos-analyzer.ts:394-394`
 - **handlerMutations** — Represents handler mutations `race-detector.ts:538-538`
@@ -135,7 +138,8 @@ The `chaos` module is designed for detecting state sprawl and race conditions in
 
 ### Interface
 - **CSharpChaosPattern** — Represents a detected C# anti-pattern with its severity, entity details, and a suggestion `csharp-patterns.ts:19-28`
-- **EntityWithCode** — Extended entity with optional code content `race-detector.ts:27-29`, `state-detector.ts:56-58`
+- **EntityWithCode** — Extended entity with optional code content `race-detector.ts:27-29`
+- **EntityWithCode** — Extended entity with optional code content (code may come from metadata or file reading) `state-detector.ts:56-58`
 - **StatePatternWithRaces** — State pattern with race analysis `state-detector.ts:60-62`
 
 ### Type_alias

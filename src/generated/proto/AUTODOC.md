@@ -150,8 +150,9 @@ This module is a Protocol Buffers loader and serializer, designed to dynamically
 - **from_id** — Represents the identifier of the entity from which the relationship originates `index.ts:131-131`
 - **hash** — Hash of the entity `index.ts:112-112`
 - **id** — Unique identifier for the entity `index.ts:106-106`
-- **id** — Represents the unique identifier of an entity `index.ts:130-130`, `index.ts:169-169`
+- **id** — Represents the unique identifier of an entity `index.ts:130-130`
 - **id** — Identifies the message `index.ts:162-162`
+- **id** — Represents a unique identifier as a string `index.ts:169-169`
 - **import_data** — Data for importing the entity `index.ts:98-98`
 - **imported** — The imported name of an import specifier `index.ts:78-78`
 - **index** — The index of a token `index.ts:61-61`

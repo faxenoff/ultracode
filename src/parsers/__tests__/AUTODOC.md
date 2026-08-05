@@ -66,7 +66,8 @@ The `HelmParser` module is designed to parse and extract entities from Helm char
 ### Property
 - **indentFunction** — Stores the indent function as a string `helm-parser.test.ts:537-537`
 - **indentFunction** — Parses indentation levels in YAML content `helm-parser.test.ts:553-553`
-- **indentFunction** — Represents the indentation function as a string `helm-parser.test.ts:569-569`, `helm-parser.test.ts:599-599`
+- **indentFunction** — Represents the indentation function as a string `helm-parser.test.ts:569-569`
+- **indentFunction** — Represents the indentation level for a function in the test file `helm-parser.test.ts:599-599`
 - **indentValue** — Stores the indent value as a number `helm-parser.test.ts:538-538`
 - **indentValue** — Represents a value with its indentation level `helm-parser.test.ts:554-554`
 - **indentValue** — Represents the indentation value as a number `helm-parser.test.ts:600-600`

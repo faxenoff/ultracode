@@ -2,7 +2,48 @@
 
 ## 🤖 Overview
 
-The i18n module manages all user-facing text strings for the setup command. It stores translations in a structured `SetupStrings` interface covering banners, hardware descriptions, provider/model selection prompts, installation messages, and status indicators. The module provides three lookup functions: `t()` for plain strings, `ti()` for strings with parameter interpolation, and `ta()` for string arrays. It defaults to English and falls back to English for missing keys in other languages.
+The `i18n` module for the setup command provides translation functions for UI strings, supporting multiple languages such as English and Russian. It is used by developers to manage and access localized strings for the setup interface.
+
+## 🤖 Architecture
+
+```
+  +-------------------+
+  |   i18n Module     |
+  +-------------------+
+  |   - translations  |
+  |     +-------------+     |
+  |     | en.ts        |     |
+  |     | ru.ts        |     |
+  |     +-------------+     |
+  |   - currentLanguage |
+  |   - t()            |
+  |   - ti()           |
+  |   - ta()           |
+  +-------------------+
+```
+
+## 🤖 Flow
+
+```
+  +-------------------+
+  |   Set Language    |
+  +-------------------+
+  |   +-------------------+     |
+  |   |   Get Translation  |     |
+  |   +-------------------+     |
+  |       +-------------------+
+  |       |   Translate Key  |     |
+  |       +-------------------+
+  |           +-------------------+
+  |           |   Interpolate    |     |
+  |           +-------------------+
+  |               +-------------------+
+  |               |   Get String     |     |
+  |               +-------------------+
+  |                           |
+  |                           v
+  +---------------------------+
+```
 
 ## 🤖 Entity Listing
 
@@ -37,7 +78,8 @@ The i18n module manages all user-facing text strings for the setup command. It s
 - **api_key_from_env** — Represents a string for retrieving an API key from the environment `types.ts:101-101`
 - **api_key_optional** — Represents a string indicating that an API key is optional `types.ts:105-105`
 - **api_key_prompt** — Represents a string for prompting the user to enter an API key `types.ts:102-102`
-- **auto_start_hint** — Provides a hint for automatic start `types.ts:306-306`, `types.ts:374-374`
+- **auto_start_hint** — Provides a hint for automatic start `types.ts:306-306`
+- **auto_start_hint** — Represents the auto start hint string `types.ts:374-374`
 - **auto_stop_hint** — Provides a hint for automatic stop `types.ts:307-307`
 - **banner** — Banner strings interface `types.ts:21-24`
 - **batch_config** — Configures batch settings `types.ts:322-322`
@@ -188,7 +230,8 @@ The i18n module manages all user-facing text strings for the setup command. It s
 - **model** — Embedding model selection strings interface `types.ts:57-68`
 - **model_converted_no_mediapipe** — Represents the conversion of a model without MediaPipe `types.ts:295-295`
 - **model_download_failed** — Indicates that a model download has failed `types.ts:368-368`
-- **model_downloaded** — Indicates that a model has been successfully downloaded `types.ts:169-169`, `types.ts:367-367`
+- **model_downloaded** — Indicates that a model has been successfully downloaded `types.ts:169-169`
+- **model_downloaded** — Represents the model downloaded string `types.ts:367-367`
 - **model_downloading** — Represents the downloading of a model `types.ts:167-167`
 - **model_exists** — Model exists for the backend `types.ts:363-363`
 - **model_exported_mediapipe** — Represents the successful export of a model using MediaPipe `types.ts:279-279`
@@ -266,15 +309,17 @@ The i18n module manages all user-facing text strings for the setup command. It s
 - **server_started** — Indicates that the server has started `types.ts:268-268`
 - **server_starting** — Indicates that a server is starting `types.ts:172-172`
 - **setup** — Represents the setup process `types.ts:245-245`
-- **setup** — Defines setup command strings `types.ts:317-317`, `types.ts:332-332`
-- **setup** — Type definitions for setup command i18n strings `types.ts:339-339`
+- **setup** — Defines setup command strings `types.ts:317-317`
+- **setup** — Type definitions for setup command i18n strings `types.ts:332-332`
+- **setup** — Represents the setup string `types.ts:339-339`
 - **setup_complete** — Indicates that the setup is complete `types.ts:270-270`
 - **setup_complete** — Indicates that the setup process is complete `types.ts:373-373`
 - **setup_complete_full** — Marks the completion of a full setup `types.ts:301-301`
 - **size_mb** — Represents the size of the model in megabytes `types.ts:272-272`
 - **size_mb** — Indicates the size of the model in megabytes `types.ts:366-366`
 - **skip** — Represents a string indicating to skip a step `types.ts:67-67`
-- **skip** — Represents a string for skipping a step in the setup process `types.ts:90-90`, `types.ts:97-97`
+- **skip** — Represents a string for skipping a step in the setup process `types.ts:90-90`
+- **skip** — Indicates a skip value `types.ts:97-97`
 - **skipped** — Represents a string indicating a skipped step `types.ts:81-81`
 - **source** — Represents the source of the model `types.ts:281-281`
 - **starting_service** — Represents the starting of a service `types.ts:266-266`
@@ -291,9 +336,12 @@ The i18n module manages all user-facing text strings for the setup command. It s
 - **tgi** — Represents the TGI provider `types.ts:87-87`
 - **tgi_no_models** — Indicates no models are available for TGI `types.ts:124-124`
 - **tgi_vram_available** — Indicates the available VRAM for TGI `types.ts:123-123`
-- **title** — Banner title `types.ts:22-22`, `types.ts:26-26`, `types.ts:33-33`, `types.ts:44-44`
-- **title** — Represents the title of a section or string `types.ts:58-58`, `types.ts:74-74`
-- **title** — Represents a title string `types.ts:134-134`
+- **title** — Banner title `types.ts:22-22`
+- **title** — Represents the title of a section or string `types.ts:26-26`
+- **title** — Represents a title string `types.ts:33-33`
+- **title** — Represents the title of a model `types.ts:44-44`
+- **title** — Represents the title of a document `types.ts:58-58`
+- **title** — Represents the title of a document or item `types.ts:74-74`, `types.ts:134-134`
 - **toolkit_not_configured** — Indicates that the toolkit is not properly configured `types.ts:219-219`
 - **toolkit_now_works** — States that the toolkit is now working `types.ts:232-232`
 - **toolkit_works** — Represents the state where the toolkit is functioning correctly `types.ts:218-218`

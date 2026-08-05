@@ -177,7 +177,8 @@ The `merge/models` module provides a framework for semantic code merge, focusing
 - **autoResolvable** — Можно ли автоматически разрешить конфликт `semantic-conflict.ts:49-49`
 - **baseContent** — Контент из base (если есть) `semantic-conflict.ts:65-65`
 - **baseIndex** — Индекс основной ветки `merge-result.ts:69-69`
-- **baseUnit** — Единица основной ветки `merge-result.ts:75-75`, `merge-result.ts:88-88`
+- **baseUnit** — Единица основной ветки `merge-result.ts:75-75`
+- **baseUnit** — Stores the base code unit for the merge operation `merge-result.ts:88-88`
 - **baseUnit** — Unit в base (может не быть для новых) `semantic-conflict.ts:36-36`
 - **branch** — Ветка `merge-result.ts:98-98`
 - **branch** — Имя ветки (например, "main", "feature/auth") `versioned-index.ts:11-11`
@@ -213,7 +214,8 @@ The `merge/models` module provides a framework for semantic code merge, focusing
 - **deletedCount** — Количество удалённых файлов `merge-result.ts:56-56`
 - **deletedIn** — Удалённые единицы `merge-result.ts:89-89`
 - **deletedUnits** — Удалённые единицы `merge-result.ts:87-91`
-- **description** — Человекочитаемое описание `change-intent.ts:26-26`, `change-intent.ts:34-34`
+- **description** — Человекочитаемое описание `change-intent.ts:26-26`
+- **description** — Stores a string description of the evidence `change-intent.ts:34-34`
 - **description** — Описание merge действия `merge-result.ts:24-24`
 - **description** — Человекочитаемое описание конфликта `semantic-conflict.ts:45-45`
 - **embedding** — Vector embedding, generated on-demand (Slow Path) `code-unit.ts:28-28`
@@ -245,9 +247,11 @@ The `merge/models` module provides a framework for semantic code merge, focusing
 - **metadata** — Extra language-specific data `code-unit.ts:39-39`
 - **modifiedIn** — Изменённые единицы `merge-result.ts:90-90`
 - **name** — Simple name (e.g., "UserService") `code-unit.ts:16-16`
-- **newPath** — Новый путь файла `merge-result.ts:38-38`, `merge-result.ts:96-96`
+- **newPath** — Новый путь файла `merge-result.ts:38-38`
+- **newPath** — Indicates the new file path after the merge `merge-result.ts:96-96`
 - **normalizedAst** — Normalized AST representation of the code unit `code-unit.ts:61-61`
-- **oldPath** — Старый путь файла `merge-result.ts:37-37`, `merge-result.ts:95-95`
+- **oldPath** — Старый путь файла `merge-result.ts:37-37`
+- **oldPath** — Indicates the old file path before the merge `merge-result.ts:95-95`
 - **parentId** — Parent unit ID (e.g., class for method) `code-unit.ts:34-34`
 - **renamedCount** — Количество переименованных файлов `merge-result.ts:57-57`
 - **renamedUnits** — Переименованные единицы `merge-result.ts:94-99`
@@ -256,7 +260,8 @@ The `merge/models` module provides a framework for semantic code merge, focusing
 - **signature** — FQN + params for functions (Fast Path Level 3) `code-unit.ts:25-25`
 - **signatureIndex** — Индекс для быстрого поиска по подписи `versioned-index.ts:21-21`
 - **snippet** — Фрагмент кода `change-intent.ts:36-36`
-- **sourceBranch** — Источная ветка для add actions `merge-result.ts:33-33`, `merge-result.ts:39-39`
+- **sourceBranch** — Источная ветка для add actions `merge-result.ts:33-33`
+- **sourceBranch** — Represents the source branch of the merge operation `merge-result.ts:39-39`
 - **startLine** — 1-based line number `code-unit.ts:18-18`
 - **startLine** — Начальная строка конфликта `semantic-conflict.ts:61-61`
 - **stats** — Статистика merge `merge-result.ts:107-107`
@@ -270,7 +275,8 @@ The `merge/models` module provides a framework for semantic code merge, focusing
 - **totalUnitsInA** — Общее количество unit в branchA `merge-result.ts:48-48`
 - **totalUnitsInB** — Общее количество unit в branchB `merge-result.ts:49-49`
 - **totalUnitsInBase** — Общее количество unit в базе `merge-result.ts:47-47`
-- **type** — Тип изменения `change-intent.ts:23-23`, `change-intent.ts:33-33`
+- **type** — Тип изменения `change-intent.ts:23-23`
+- **type** — Represents the type of evidence `change-intent.ts:33-33`
 - **type** — Тип кодовой единицы `code-unit.ts:12-12`
 - **type** — Тип merge действия `merge-result.ts:22-22`
 - **type** — Тип конфликта `semantic-conflict.ts:32-32`

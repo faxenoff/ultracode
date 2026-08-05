@@ -95,14 +95,15 @@ This module provides installer functions for various AI model providers, includi
 - **detectTargetDevice** — Detects the target device for model compilation based on CPU and GPU information `ovms-installer.ts:25-75`
 - **dllFiles** — Stores the list of DLL files required for the llama.cpp installation `llamacpp-installer.ts:451-451`
 - **dlls** — Stores the list of DLL files required for the llama.cpp installation `llamacpp-installer.ts:521-521`
-- **doGet** — Not present in the provided code `ovms-installer.ts:278-292`, `ovms-installer.ts:334-348`
+- **doGet** — Not present in the provided code `ovms-installer.ts:278-292`
+- **doGet** — Parses a URL using HTTPS and handles redirects, then writes the response to a file `ovms-installer.ts:334-348`
 - **downloadAndInstallBinary** — Downloads and installs the llama.cpp binary `llamacpp-installer.ts:408-489`
 - **downloadFile** — Downloads a file from a given URL `llamacpp-installer.ts:257-284`
 - **downloadGGUFModel** — Downloads a GGUF model for the llama.cpp binary `llamacpp-installer.ts:289-328`
 - **downloadOvmsBinary** — Downloads the OVMS binary for the specified platform `ovms-installer.ts:77-148`
 - **ensureModel** — Ensures a model is downloaded and stored in the specified directory, returning the model directory if successful `mlx-installer.ts:37-73`
-- **exitCode** — Not present in the provided code `ovms-installer.ts:184-192`
 - **exitCode** — Captures the exit code of a Docker command execution `ovms-installer.ts:427-434`
+- **exitCode** — Not present in the provided code `ovms-installer.ts:184-192`
 - **exportModelDocker** — Attempts to export a model using Docker, falling back to CDN if available `ovms-installer.ts:361-460`
 - **exportModelNative** — Not present in the provided code `ovms-installer.ts:150-229`
 - **exportModelPy** — Finds the path to the export model script if it exists `ovms-installer.ts:572-572`
@@ -151,7 +152,8 @@ This module provides installer functions for various AI model providers, includi
 - **dimensions** — Detects model dimensions based on the hidden size in the model's configuration file `ovms-installer.ts:462-462`
 - **dtype** — Indicates the data type for operations in TEI `tei-installer.ts:127-127`
 - **filename** — Asynchronously fetches the download URL for a specific backend. `llamac `llamacpp-installer.ts:123-123`
-- **filename** — Stores the filename for the llama.cpp binary download `llamacpp-installer.ts:199-199`, `llamacpp-installer.ts:241-241`
+- **filename** — Stores the filename for the llama.cpp binary download `llamacpp-installer.ts:199-199`
+- **filename** — Returns the filename for downloading cuDNN `llamacpp-installer.ts:241-241`
 - **gguf_file** — Represents the path to a GGUF file `llamacpp-installer.ts:24-24`
 - **gguf_repo** — GitHub repo for llama.cpp (moved from ggerganov to ggml-org) `llamacpp-installer.ts:23-23`
 - **hasIntelIGPU** — Checks if the system has an Intel iGPU `ovms-installer.ts:18-18`
@@ -167,7 +169,8 @@ This module provides installer functions for various AI model providers, includi
 - **targetDevice** — Determines the target device for model compilation based on CPU and GPU information `ovms-installer.ts:17-17`
 - **tei_config** — Represents a configuration object for TEI with optional properties for batch tokens, client batch size, and data type `tei-installer.ts:127-127`
 - **url** — Asynchronously fetches the download URL for a specific backend `llamacpp-installer.ts:123-123`
-- **url** — Stores the URL for the llama.cpp binary download `llamacpp-installer.ts:199-199`, `llamacpp-installer.ts:241-241`
+- **url** — Stores the URL for the llama.cpp binary download `llamacpp-installer.ts:199-199`
+- **url** — Returns the URL for downloading cuDNN `llamacpp-installer.ts:241-241`
 
 ## Data Flow
 

@@ -128,7 +128,8 @@ The `src/semantic/gpu` module provides a unified interface for GPU operations, i
 - **cleanup** — Cleans up resources used by the GPU client `gpu-client.ts:191-212`
 - **configureThresholds** — Updates the current adaptive thresholds with provided overrides `adaptive-thresholds.ts:95-117`
 - **createPacket** — Creates a packet for sending over the named pipe `named-pipe-transport.ts:411-431`
-- **currentRequest** — The current request being processed `gpu-client.ts:609-609`, `gpu-client.ts:610-610`
+- **currentRequest** — The current request being processed `gpu-client.ts:609-609`
+- **currentRequest** — Sends a named pipe request internally after a promise resolves `gpu-client.ts:610-610`
 - **dbArr** — Maps database vectors to arrays, converting Float32Array instances to arrays `gpu-client.ts:797-797`
 - **dbArrs** — Converts database arrays to Float32Array if they are not already, and maps them `request-helpers.ts:138-138`
 - **evictIfNeeded** — Evicts the least recently used index entries if the pool is full `faiss-handlers.ts:186-233`
@@ -214,10 +215,13 @@ The `src/semantic/gpu` module provides a unified interface for GPU operations, i
 - **shouldUseFaissSearch** — Determines if Faiss should be used for search operations `adaptive-thresholds.ts:202-214`
 - **shutdownGpuClient** — Stops and closes the GPU client `gpu-client.ts:916-921`
 - **syncLegacyState** — Synchronizes the state of the GPU worker with the index entry `faiss-handlers.ts:235-244`
-- **timeoutPromise** — A promise for the timeout of the GPU client `gpu-client.ts:588-596`, `gpu-client.ts:592-592`
-- **timeoutPromise** — Represents a promise for a timeout event `named-pipe-transport.ts:382-390`, `named-pipe-transport.ts:386-386`
+- **timeoutPromise** — A promise for the timeout of the GPU client `gpu-client.ts:588-596`
+- **timeoutPromise** — Returns a new promise that resolves immediately `gpu-client.ts:592-592`
+- **timeoutPromise** — Represents a promise for a timeout event `named-pipe-transport.ts:382-390`
+- **timeoutPromise** — Returns a promise that resolves to a buffer after a timeout `named-pipe-transport.ts:386-386`
 - **totalLen** — Calculates the total length of query array and database arrays combined `request-helpers.ts:141-141`
-- **wrapper** — A wrapper for the GPU client `gpu-client.ts:350-350`, `gpu-client.ts:351-355`
+- **wrapper** — A wrapper for the GPU client `gpu-client.ts:350-350`
+- **wrapper** — Wraps an event handler for "exit" and "close" events, invoking a handler when the process exits or closes `gpu-client.ts:351-355`
 
 ### Method
 - **adaptiveBatchCosineSimilarity** — Computes cosine similarity between multiple pairs of vectors using adaptive thresholds `gpu-client.ts:825-851`
@@ -225,8 +229,8 @@ The `src/semantic/gpu` module provides a unified interface for GPU operations, i
 - **append** — Appends bytes to the buffer `named-pipe-transport.ts:95-99`
 - **connect** — Establishes a connection to the named pipe `named-pipe-transport.ts:286-326`
 - **constructor** — Initializes the GPU client `gpu-client.ts:180-188`
-- **constructor** — Constructor for the GrowableBuffer class `named-pipe-transport.ts:71-74`
-- **constructor** — Initializes a new instance of the NamedPipeServer `named-pipe-transport.ts:144-147`, `named-pipe-transport.ts:270-276`
+- **constructor** — Initializes a new instance of the NamedPipeServer `named-pipe-transport.ts:144-147`
+- **constructor** — Constructor for the GrowableBuffer class `named-pipe-transport.ts:71-74`, `named-pipe-transport.ts:270-276`
 - **consume** — Processes incoming data from the named pipe `named-pipe-transport.ts:117-125`
 - **cudaBatchCosineSimilarity** — Computes cosine similarity between multiple pairs of vectors using CUDA `gpu-client.ts:792-802`
 - **cudaCosineSimilarity** — Computes cosine similarity between two vectors using CUDA `gpu-client.ts:783-790`
@@ -255,7 +259,8 @@ The `src/semantic/gpu` module provides a unified interface for GPU operations, i
 - **isConnected** — Checks if the named pipe client is connected `named-pipe-transport.ts:282-284`
 - **isCudaAvailable** — Checks if CUDA is available `gpu-client.ts:779-781`
 - **isRunning** — Checks if the GPU client is running `gpu-client.ts:557-559`
-- **path** — The path to the named pipe used for communication `named-pipe-transport.ts:149-151`, `named-pipe-transport.ts:278-280`
+- **path** — The path to the named pipe used for communication `named-pipe-transport.ts:149-151`
+- **path** — Getter method that returns the path to the named pipe `named-pipe-transport.ts:278-280`
 - **processResponseBuffer** — Processes the response buffer from the GPU client `gpu-client.ts:425-443`
 - **readUInt32LE** — Reads a 32-bit unsigned integer from the buffer `named-pipe-transport.ts:107-109`
 - **registerCleanupHandlers** — Registers cleanup handlers for the GPU client `gpu-client.ts:190-217`
@@ -384,8 +389,10 @@ The `src/semantic/gpu` module provides a unified interface for GPU operations, i
 ### Property
 - **_captureResponse** — Captures the response from a CUDA operation `gpu-worker.ts:192-192`
 - **_cudaAvailable** — Boolean indicating whether CUDA is available `gpu-client.ts:167-167`
-- **a** — Vector A for cosine similarity `cuda-handlers.ts:158-158`, `cuda-handlers.ts:222-222`
-- **a** — Represents the first vector for cosine similarity computation `types.ts:115-115`, `types.ts:127-127`
+- **a** — Vector A for cosine similarity `cuda-handlers.ts:158-158`
+- **a** — A number array used in the Euclidean distance calculation `cuda-handlers.ts:222-222`
+- **a** — Represents the first vector for cosine similarity computation `types.ts:115-115`
+- **a** — Stores an array of numbers `types.ts:127-127`
 - **abortController** — Controller for aborting ongoing operations `gpu-client.ts:155-155`
 - **activeProjectKey** — Stores the key of the active project `types.ts:564-564`
 - **activeSockets** — Tracks active sockets for the named pipe server `named-pipe-transport.ts:142-142`
@@ -398,7 +405,8 @@ The `src/semantic/gpu` module provides a unified interface for GPU operations, i
 - **autoRestart** — Boolean indicating whether the GPU client should automatically restart on failure `gpu-client.ts:132-132`
 - **available** — Indicates whether the index is available `types.ts:308-308`
 - **available** — Indicates whether the CUDA device is available `types.ts:395-395`
-- **b** — Vector B for cosine similarity `cuda-handlers.ts:158-158`, `cuda-handlers.ts:222-222`
+- **b** — Vector B for cosine similarity `cuda-handlers.ts:158-158`
+- **b** — A number array used in the Euclidean distance calculation `cuda-handlers.ts:222-222`
 - **b** — Represents the second vector for cosine similarity computation `types.ts:116-116`
 - **b** — Stores a number array `types.ts:128-128`
 - **batchQueryThreshold** — Batch search threshold - use Faiss if query count exceeds this `adaptive-thresholds.ts:51-51`
@@ -435,27 +443,43 @@ The `src/semantic/gpu` module provides a unified interface for GPU operations, i
 - **deviceInfo** — Stores the device information for CUDA `types.ts:396-396`
 - **deviceName** — Returns the name of the CUDA device `cuda-handlers.ts:34-34`
 - **deviceName** — Provides the name of a CUDA device `types.ts:35-35`
-- **dim1024** — Minimum vectors for CUDA batch cosine similarity (per dimension tier) `adaptive-thresholds.ts:24-24`, `adaptive-thresholds.ts:32-32`, `adaptive-thresholds.ts:134-134`
-- **dim384** — Minimum vectors for CUDA batch cosine similarity (per dimension tier) `adaptive-thresholds.ts:22-22`, `adaptive-thresholds.ts:30-30`, `adaptive-thresholds.ts:134-134`
-- **dim768** — Minimum vectors for CUDA batch cosine similarity (per dimension tier) `adaptive-thresholds.ts:23-23`, `adaptive-thresholds.ts:31-31`, `adaptive-thresholds.ts:134-134`
-- **dim8192** — Minimum vectors for CUDA batch cosine similarity (per dimension tier) `adaptive-thresholds.ts:25-25`, `adaptive-thresholds.ts:33-33`
-- **dim8192** — Minimum vectors for CUDA batch cosine similarity in 8192-dim vectors `adaptive-thresholds.ts:134-134`
+- **dim1024** — Minimum vectors for CUDA batch cosine similarity (per dimension tier) `adaptive-thresholds.ts:24-24`
+- **dim1024** — Represents a dimension threshold value `adaptive-thresholds.ts:32-32`
+- **dim1024** — Represents a dimension threshold value within the thresholds object `adaptive-thresholds.ts:134-134`
+- **dim384** — Minimum vectors for CUDA batch cosine similarity (per dimension tier) `adaptive-thresholds.ts:22-22`
+- **dim384** — Represents a dimension threshold value `adaptive-thresholds.ts:30-30`
+- **dim384** — Represents a dimension threshold value within the thresholds object `adaptive-thresholds.ts:134-134`
+- **dim768** — Minimum vectors for CUDA batch cosine similarity (per dimension tier) `adaptive-thresholds.ts:23-23`
+- **dim768** — Represents a dimension threshold value `adaptive-thresholds.ts:31-31`
+- **dim768** — Represents a dimension threshold value within the thresholds object `adaptive-thresholds.ts:134-134`
+- **dim8192** — Minimum vectors for CUDA batch cosine similarity (per dimension tier) `adaptive-thresholds.ts:25-25`
+- **dim8192** — Minimum vectors for CUDA batch cosine similarity in 8192-dim vectors `adaptive-thresholds.ts:33-33`
+- **dim8192** — Represents a dimension threshold value within the thresholds object `adaptive-thresholds.ts:134-134`
 - **dimensions** — Stores the dimensions of a vector `gpu-worker.ts:472-472`
 - **dimensions** — Specifies the number of dimensions for the vectors in the Faiss index `types.ts:15-15`
 - **dimensions** — The number of dimensions in the Faiss index `types.ts:242-242`
 - **dimensions** — Indicates the number of dimensions in the vectors `types.ts:293-293`
-- **dimensions** — Specifies the dimensions of the vectors `types.ts:369-369`, `types.ts:388-388`
-- **dimensions** — Specifies the dimensionality of the vectors `types.ts:544-544`
-- **dims** — Stores the dimensions of the vectors in the GPU FAISS index `cuda-handlers.ts:53-53`, `cuda-handlers.ts:64-64`
-- **dims** — Stores the dimensions of the vectors in a GPU index `cuda-handlers.ts:117-117`, `cuda-handlers.ts:125-125`
+- **dimensions** — Specifies the dimensions of the vectors `types.ts:369-369`
+- **dimensions** — Specifies the dimensionality of the vectors `types.ts:388-388`
+- **dimensions** — Represents the number of dimensions `types.ts:544-544`
+- **dims** — Stores the dimensions of the vectors in the GPU FAISS index `cuda-handlers.ts:53-53`
+- **dims** — Stores the dimensions of the vectors in a GPU index `cuda-handlers.ts:64-64`
+- **dims** — Stores a number representing the dimensions `cuda-handlers.ts:117-117`
+- **dims** — Represents the number of dimensions `cuda-handlers.ts:125-125`
 - **dims** — Stores the dimensions of the vectors in the Faiss index `types.ts:456-456`
-- **dims** — Specifies the dimensions of the vectors `types.ts:509-509`, `types.ts:517-517`
-- **distance** — Distance metric used for searching `faiss-handlers.ts:543-543`, `faiss-handlers.ts:627-627`, `faiss-handlers.ts:630-630`
+- **dims** — Specifies the dimensions of the vectors `types.ts:509-509`
+- **dims** — Represents the dimensions of the index `types.ts:517-517`
+- **distance** — Distance metric used for searching `faiss-handlers.ts:543-543`
+- **distance** — Stores the distance between a query vector and a stored vector `faiss-handlers.ts:627-627`
+- **distance** — Stores the distance between a query vector and a stored vector in the query results `faiss-handlers.ts:630-630`
 - **distance** — The distance between the query vector and the result vector `types.ts:235-235`
 - **distance** — Represents the distance between vectors `types.ts:326-326`
-- **distances** — Stores distances from GPU FAISS search results `cuda-handlers.ts:43-43`, `cuda-handlers.ts:49-49`
-- **distances** — Stores the distances between the query vector and the nearest neighbors `cuda-handlers.ts:94-94`, `cuda-handlers.ts:104-104`
-- **distances** — Stores distances between vectors in the Faiss index `types.ts:486-486`, `types.ts:496-496`
+- **distances** — Stores distances from GPU FAISS search results `cuda-handlers.ts:43-43`
+- **distances** — Stores the distances between the query vector and the nearest neighbors `cuda-handlers.ts:49-49`
+- **distances** — Stores a `Float32Array` of distances `cuda-handlers.ts:94-94`
+- **distances** — Stores an array of 32-bit floating-point numbers `cuda-handlers.ts:104-104`
+- **distances** — Stores distances between vectors in the Faiss index `types.ts:486-486`
+- **distances** — Stores the distances as a Float32Array `types.ts:496-496`
 - **error** — Contains the error message in the response `types.ts:227-227`
 - **factory** — Stores the factory string for the native FAISS index `cuda-handlers.ts:65-65`
 - **factory** — Represents the factory string used in creating a GPU index `cuda-handlers.ts:127-127`
@@ -490,41 +514,50 @@ The `src/semantic/gpu` module provides a unified interface for GPU operations, i
 - **hnswM** — Sets the number of neighbors to consider during construction of the HNSW index `types.ts:18-18`
 - **hnswM** — Represents the maximum number of neighbors in the HNSW index `types.ts:297-297`
 - **id** — Identifier for an embedding `embeddings-handlers.ts:199-199`
-- **id** — ID of the vector being searched `faiss-handlers.ts:543-543`, `faiss-handlers.ts:627-627`, `faiss-handlers.ts:630-630`
+- **id** — ID of the vector being searched `faiss-handlers.ts:543-543`
+- **id** — Stores the unique identifier of a vector `faiss-handlers.ts:627-627`
+- **id** — Stores the unique identifier of a vector in the query results `faiss-handlers.ts:630-630`
 - **id** — Identifies a specific item or request `gpu-worker.ts:474-474`
 - **id** — Stores a string representing an identifier `types.ts:141-141`
 - **id** — The ID of the search result `types.ts:234-234`
 - **id** — Identifies the item `types.ts:339-339`
 - **idMap** — Maps IDs to vectors in the Faiss index `types.ts:538-538`
 - **ids** — Array of identifiers for embeddings `embeddings-handlers.ts:297-297`
-- **ids** — List of IDs for the vectors being added `faiss-handlers.ts:368-368`, `faiss-handlers.ts:661-661`
-- **ids** — Array of IDs for the vectors being added `types.ts:55-55`, `types.ts:78-78`
-- **ids** — Contains an array of string IDs `types.ts:170-170`
-- **ids** — Stores the IDs of the vectors in the Faiss index `types.ts:532-532`
+- **ids** — List of IDs for the vectors being added `faiss-handlers.ts:368-368`
+- **ids** — Contains the list of IDs to be removed from the Faiss project `faiss-handlers.ts:661-661`
+- **ids** — Array of IDs for the vectors being added `types.ts:55-55`
+- **ids** — Contains an array of string IDs `types.ts:78-78`
+- **ids** — Stores the IDs of the vectors in the Faiss index `types.ts:170-170`
+- **ids** — Stores an array of string IDs `types.ts:532-532`
 - **includeContent** — Indicates whether to include content in the search results `types.ts:157-157`
 - **incrementalDeltaPercent** — Use Faiss for incremental updates if delta exceeds this % of total `adaptive-thresholds.ts:43-43`
 - **indexPool** — Manages a pool of indices `types.ts:553-553`
 - **indexPoolKeys** — Stores the keys of the index pool `types.ts:392-392`
 - **indexStrategy** — Strategy for index building `adaptive-thresholds.ts:224-224`
 - **indexType** — Stores the type of the native FAISS index `cuda-handlers.ts:66-66`
-- **indexType** — Specifies the type of index used in a GPU index `cuda-handlers.ts:118-118`, `cuda-handlers.ts:126-126`
+- **indexType** — Specifies the type of index used in a GPU index `cuda-handlers.ts:118-118`
+- **indexType** — Specifies the type of index used `cuda-handlers.ts:126-126`
 - **indexType** — Defines the type of index used in Faiss, such as flat, hnsw, ivf, ivfpq, or ivfsq `types.ts:16-16`
 - **indexType** — The type of the Faiss index `types.ts:241-241`
 - **indexType** — Specifies the type of the Faiss index `types.ts:292-292`
-- **indexType** — Defines the type of index used in Faiss `types.ts:370-370`, `types.ts:387-387`
-- **indexType** — Specifies the type of Faiss index `types.ts:458-458`
-- **indexType** — Defines the type of the Faiss index `types.ts:510-510`, `types.ts:518-518`
-- **indexType** — Defines the type of index used (e.g., flat, hnsw, ivf) `types.ts:545-545`
+- **indexType** — Defines the type of index used in Faiss `types.ts:370-370`
+- **indexType** — Specifies the type of Faiss index `types.ts:387-387`
+- **indexType** — Defines the type of the Faiss index `types.ts:458-458`
+- **indexType** — Defines the type of index used (e.g., flat, hnsw, ivf) `types.ts:510-510`
+- **indexType** — Represents the type of the index `types.ts:518-518`
+- **indexType** — Represents the type of the Faiss index `types.ts:545-545`
 - **initialized** — Indicates whether the Faiss index is initialized `types.ts:386-386`
 - **initialSize** — Initial size of the buffer `named-pipe-transport.ts:69-69`
 - **isDirty** — Indicates whether the index has been modified since the last save `types.ts:542-542`
 - **isShuttingDown** — Boolean indicating whether the GPU client is shutting down `gpu-client.ts:164-164`
-- **isTrained** — Indicates whether the native FAISS index is trained `cuda-handlers.ts:67-67`, `cuda-handlers.ts:76-76`
-- **isTrained** — Indicates whether a GPU index is trained `cuda-handlers.ts:116-116`
-- **isTrained** — Indicates whether the FAISS index is trained `cuda-handlers.ts:129-129`
-- **isTrained** — Indicates whether the index is trained `faiss-handlers.ts:66-66`, `types.ts:296-296`
-- **isTrained** — Indicates whether the Faiss index is trained `types.ts:459-459`, `types.ts:468-468`, `types.ts:508-508`, `types.ts:521-521`
-- **isTrained** — Determines if the index has been trained `types.ts:543-543`
+- **isTrained** — Indicates whether the native FAISS index is trained `cuda-handlers.ts:67-67`
+- **isTrained** — Indicates whether a GPU index is trained `cuda-handlers.ts:76-76`
+- **isTrained** — Indicates whether the FAISS index is trained `cuda-handlers.ts:116-116`
+- **isTrained** — Indicates whether the model is trained `cuda-handlers.ts:129-129`, `types.ts:508-508`, `types.ts:521-521`, `types.ts:543-543`
+- **isTrained** — Indicates whether the index is trained `faiss-handlers.ts:66-66`
+- **isTrained** — Indicates whether the Faiss index is trained `types.ts:296-296`
+- **isTrained** — Determines if the index has been trained `types.ts:459-459`
+- **isTrained** — Indicates whether the model is trained as a boolean `types.ts:468-468`
 - **items** — Represents a collection of items `gpu-worker.ts:474-474`
 - **items** — Stores an array of EmbeddingItem objects `types.ts:150-150`
 - **ivfNlist** — Sets the number of clusters for the IVF index `types.ts:21-21`
@@ -532,13 +565,19 @@ The `src/semantic/gpu` module provides a unified interface for GPU operations, i
 - **ivfNprobe** — Sets the number of clusters to probe during the search in the IVF index `types.ts:22-22`
 - **ivfNprobe** — Represents the number of probes per list in the IVF index `types.ts:300-300`
 - **k** — Specifies the number of nearest neighbors to find in a search `cuda-handlers.ts:106-106`
-- **k** — Number of nearest neighbors to return `faiss-handlers.ts:464-464`, `faiss-handlers.ts:574-574`, `types.ts:63-63`, `types.ts:72-72`
-- **k** — Specifies the number of nearest neighbors to consider `types.ts:156-156`
-- **k** — Stores the number of nearest neighbors to find in a search request `types.ts:498-498`
+- **k** — Number of nearest neighbors to return `faiss-handlers.ts:464-464`
+- **k** — Represents the number of nearest neighbors to find `faiss-handlers.ts:574-574`
+- **k** — Specifies the number of nearest neighbors to consider `types.ts:63-63`
+- **k** — Stores the number of nearest neighbors to find in a search request `types.ts:72-72`
+- **k** — Represents a number `types.ts:156-156`
+- **k** — Represents the number of nearest neighbors to consider `types.ts:498-498`
 - **kill** — () => void — method to kill the Bun subprocess `gpu-client.ts:62-62`
-- **labels** — Stores labels from GPU FAISS search results `cuda-handlers.ts:43-43`, `cuda-handlers.ts:49-49`
-- **labels** — Contains the labels of the nearest neighbors found during a search `cuda-handlers.ts:93-93`, `cuda-handlers.ts:103-103`
-- **labels** — Stores labels associated with vectors in the Faiss index `types.ts:485-485`, `types.ts:495-495`
+- **labels** — Stores labels from GPU FAISS search results `cuda-handlers.ts:43-43`
+- **labels** — Contains the labels of the nearest neighbors found during a search `cuda-handlers.ts:49-49`
+- **labels** — Stores a `BigInt64Array` of labels `cuda-handlers.ts:93-93`
+- **labels** — Represents an array of 64-bit signed integers `cuda-handlers.ts:103-103`
+- **labels** — Stores labels associated with vectors in the Faiss index `types.ts:485-485`
+- **labels** — Stores the labels as a BigInt64Array `types.ts:495-495`
 - **lastAccessedAt** — Stores the timestamp of the last access to the index `types.ts:541-541`
 - **length** — Current length of the buffer `named-pipe-transport.ts:68-68`
 - **loadContentCache** — Loads the content cache `faiss-handlers.ts:47-47`
@@ -549,13 +588,16 @@ The `src/semantic/gpu` module provides a unified interface for GPU operations, i
 - **loadedVectors** — Stores the vectors loaded into the Faiss index `types.ts:507-507`
 - **loadPath** — Specifies the path to load the FAISS index from `faiss-handlers.ts:251-251`
 - **loadPath** — Specifies the path to load the Faiss index from `types.ts:49-49`
-- **log** — Logs messages to the console `embeddings-handlers.ts:38-38`, `faiss-handlers.ts:42-42`
-- **logError** — Logs error messages to the console `embeddings-handlers.ts:39-39`, `faiss-handlers.ts:43-43`
+- **log** — Logs messages to the console `embeddings-handlers.ts:38-38`
+- **log** — Logs a message to the console `faiss-handlers.ts:42-42`
+- **logError** — Logs error messages to the console `embeddings-handlers.ts:39-39`
+- **logError** — Logs an error message to the console `faiss-handlers.ts:43-43`
 - **maxLoadedIndexes** — Specifies the maximum number of indices that can be loaded `types.ts:554-554`
 - **maxRestarts** — Maximum number of restarts allowed for the GPU client `gpu-client.ts:134-134`
 - **memoryMB** — Stores the memory usage in megabytes for a GPU index `cuda-handlers.ts:128-128`
 - **memoryMB** — Stores the memory usage in megabytes for the Faiss index `types.ts:520-520`
-- **memoryUsageMB** — Stores the memory usage in megabytes `types.ts:295-295`, `types.ts:390-390`
+- **memoryUsageMB** — Stores the memory usage in megabytes `types.ts:295-295`
+- **memoryUsageMB** — Represents the memory usage in megabytes `types.ts:390-390`
 - **metadata** — Metadata associated with an embedding `embeddings-handlers.ts:202-202`
 - **metadata** — Stores metadata associated with a packet `gpu-worker.ts:474-474`
 - **metadata** — Optionally stores a record of key-value pairs `types.ts:145-145`
@@ -572,7 +614,7 @@ The `src/semantic/gpu` module provides a unified interface for GPU operations, i
 - **nlist** — Number of list elements in GPU FAISS `cuda-handlers.ts:130-130`
 - **nlist** — Represents the number of lists in the Faiss index `types.ts:522-522`
 - **nodePath** — Path to the Node.js executable `gpu-client.ts:126-126`
-- **normalized** — Normalizes vectors using CUDA and returns a promise containing a Float32Array of normalized vectors and a boolean indicating if CUDA was used `gpu-client.ts:108-108`
+- **normalized** — Parses and normalizes vectors using CUDA if available `gpu-client.ts:108-108`
 - **nprobe** — Number of probes for GPU FAISS `cuda-handlers.ts:131-131`
 - **nprobe** — Represents the number of probes used in the Faiss index `types.ts:523-523`
 - **nQueries** — Represents the number of queries performed in a batch search `cuda-handlers.ts:105-105`
@@ -588,33 +630,53 @@ The `src/semantic/gpu` module provides a unified interface for GPU operations, i
 - **on** — (event: "exit" | "close", handler: (code: number | null) => void) => void — event handler for exit and close events of the Bun subprocess `gpu-client.ts:63-63`
 - **onConnect** — Called on connection `named-pipe-transport.ts:46-46`
 - **onDisconnect** — Called on disconnect `named-pipe-transport.ts:48-48`
-- **onError** — Called on error `named-pipe-transport.ts:37-37`, `named-pipe-transport.ts:50-50`
+- **onError** — Called on error `named-pipe-transport.ts:37-37`
+- **onError** — Optional callback function to handle errors during the named pipe transport `named-pipe-transport.ts:50-50`
 - **onReady** — Called when server is ready `named-pipe-transport.ts:35-35`
 - **onRequest** — Request handler - receives raw packet, returns raw response `named-pipe-transport.ts:33-33`
-- **options** — Configuration options for the named pipe server `named-pipe-transport.ts:140-140`, `named-pipe-transport.ts:261-261`
-- **path** — Stores the file path for GPU index operations `cuda-handlers.ts:108-108`, `cuda-handlers.ts:114-114`
-- **path** — Specifies the file path where the Faiss index will be saved or loaded `faiss-handlers.ts:712-712`, `faiss-handlers.ts:776-776`
+- **options** — Configuration options for the named pipe server `named-pipe-transport.ts:140-140`
+- **options** — Represents the configuration options for the named pipe transport `named-pipe-transport.ts:261-261`
+- **path** — Stores the file path for GPU index operations `cuda-handlers.ts:108-108`
+- **path** — Stores a string representing the file path `cuda-handlers.ts:114-114`
+- **path** — Specifies the file path where the Faiss index will be saved or loaded `faiss-handlers.ts:712-712`
+- **path** — Specifies the file path for the Faiss operation `faiss-handlers.ts:776-776`
 - **path** — Stores a string representing a file path `types.ts:84-84`
 - **path** — Provides the path to the Faiss index file `types.ts:90-90`
-- **path** — Stores the path to the saved index `types.ts:273-273`, `types.ts:279-279`
-- **path** — Represents the path to the Faiss index `types.ts:500-500`, `types.ts:506-506`
+- **path** — Stores the path to the saved index `types.ts:273-273`
+- **path** — Represents the path to the Faiss index `types.ts:279-279`
+- **path** — Stores the file path `types.ts:500-500`
+- **path** — Represents the file path as a string `types.ts:506-506`
 - **pendingRequest** — Stores pending requests for the named pipe client `named-pipe-transport.ts:264-267`
 - **pendingRequests** — List of pending requests to the GPU client `gpu-client.ts:161-161`
 - **pid** — number — process ID of the Bun subprocess `gpu-client.ts:61-61`
-- **pipeId** — Unique identifier for the pipe (appended to prefix) `named-pipe-transport.ts:31-31`, `named-pipe-transport.ts:42-42`
-- **pipePath** — The path to the named pipe used for communication `named-pipe-transport.ts:141-141`, `named-pipe-transport.ts:262-262`
+- **pipeId** — Unique identifier for the pipe (appended to prefix) `named-pipe-transport.ts:31-31`
+- **pipeId** — Stores the unique identifier for the named pipe `named-pipe-transport.ts:42-42`
+- **pipePath** — The path to the named pipe used for communication `named-pipe-transport.ts:141-141`
+- **pipePath** — Stores the path to the named pipe used for communication `named-pipe-transport.ts:262-262`
 - **pqM** — Sets the number of PQ subspaces for the IVFPQ index `types.ts:23-23`
 - **pqNbits** — Sets the number of bits per PQ subspace for the IVFPQ index `types.ts:24-24`
-- **projectKey** — Stores the project key for GPU FAISS operations `cuda-handlers.ts:53-53`, `cuda-handlers.ts:63-63`
-- **projectKey** — Identifies the project key for GPU index operations `cuda-handlers.ts:123-123`
-- **projectKey** — Represents the key for the FAISS index `faiss-handlers.ts:251-251`
-- **projectKey** — Identifier for the project or index `faiss-handlers.ts:368-368`, `faiss-handlers.ts:464-464`, `faiss-handlers.ts:574-574`, `faiss-handlers.ts:661-661`
-- **projectKey** — Represents the unique identifier for a project in the Faiss index management `faiss-handlers.ts:712-712`, `faiss-handlers.ts:776-776`, `faiss-handlers.ts:851-851`
+- **projectKey** — Stores the project key for GPU FAISS operations `cuda-handlers.ts:53-53`
+- **projectKey** — Identifies the project key for GPU index operations `cuda-handlers.ts:63-63`
+- **projectKey** — Represents the key for the current project `cuda-handlers.ts:123-123`
+- **projectKey** — Identifier for the project or index `faiss-handlers.ts:368-368`
+- **projectKey** — Represents the unique identifier for a project in the Faiss index management `faiss-handlers.ts:464-464`
+- **projectKey** — Specifies the project key for the Faiss operation `faiss-handlers.ts:574-574`
+- **projectKey** — Represents the key for the project in the request object `faiss-handlers.ts:661-661`
+- **projectKey** — Parses the project key from the request object `faiss-handlers.ts:712-712`
+- **projectKey** — Extracts the project key from the request object `faiss-handlers.ts:776-776`
+- **projectKey** — Represents the key for the FAISS index `faiss-handlers.ts:251-251`, `faiss-handlers.ts:851-851`
 - **projectKey** — Represents a project key `gpu-worker.ts:410-410`
 - **projectKey** — Identifies the project key for the Faiss request `types.ts:47-47`
-- **projectKey** — Identifies the project key for the request `types.ts:54-54`, `types.ts:61-61`, `types.ts:69-69`, `types.ts:77-77`, `types.ts:83-83`, `types.ts:89-89`, `types.ts:95-95`, `types.ts:102-102`
-- **projectKey** — Identifies the project key for Faiss operations `types.ts:455-455`
-- **projectKey** — Identifies the project key for the Faiss index `types.ts:515-515`
+- **projectKey** — Identifies the project key for the request `types.ts:54-54`
+- **projectKey** — Identifies the project key for Faiss operations `types.ts:61-61`
+- **projectKey** — Identifies the project key for the Faiss index `types.ts:69-69`
+- **projectKey** — Represents a string key for a project `types.ts:77-77`
+- **projectKey** — Holds the project key as a string `types.ts:83-83`
+- **projectKey** — Represents the key of the project `types.ts:89-89`
+- **projectKey** — Represents the project key `types.ts:95-95`
+- **projectKey** — Stores the project key as a string `types.ts:102-102`
+- **projectKey** — Represents the unique identifier for a project `types.ts:455-455`
+- **projectKey** — Represents the project key as a string `types.ts:515-515`
 - **query** — Query vector for GPU FAISS operations `cuda-handlers.ts:185-185`
 - **query** — Represents the query vector for cosine similarity computation `types.ts:121-121`
 - **queryCount** — Counts the number of queries `gpu-worker.ts:473-473`
@@ -625,23 +687,29 @@ The `src/semantic/gpu` module provides a unified interface for GPU operations, i
 - **removedCount** — Stores the number of vectors removed `types.ts:267-267`
 - **removedCount** — Stores the count of removed embeddings `types.ts:377-377`
 - **requestId** — Unique identifier for a request `gpu-client.ts:162-162`
-- **requestId** — Identifies the request in the response `types.ts:222-222`, `types.ts:228-228`
+- **requestId** — Identifies the request in the response `types.ts:222-222`
+- **requestId** — Optional string or undefined `types.ts:228-228`
 - **resolve** — Resolves a promise with a value `gpu-client.ts:153-153`
 - **resolve** — Resolves a pending request for the named pipe client `named-pipe-transport.ts:265-265`
 - **responseBuffer** — Buffer for storing responses from the GPU client `gpu-client.ts:166-166`
 - **responseBuffer** — Stores the response buffer for the named pipe client `named-pipe-transport.ts:268-268`
 - **restartCount** — Count of restarts attempted by the GPU client `gpu-client.ts:163-163`
-- **results** — Contains the search results `types.ts:255-255`, `types.ts:261-261`, `types.ts:354-354`
+- **results** — Contains the search results `types.ts:255-255`
+- **results** — Array of FaissSearchResult `types.ts:261-261`
+- **results** — Contains an array of EmbeddingsSearchResultItem objects `types.ts:354-354`
 - **reverseIdMap** — Maps vectors to IDs in the Faiss index `types.ts:539-539`
 - **saveContentCache** — Saves the content cache to disk `embeddings-handlers.ts:42-42`
 - **saveContentCache** — Saves the content cache `faiss-handlers.ts:48-48`
 - **score** — Score associated with an embedding `embeddings-handlers.ts:200-200`
-- **score** — Score metric used for searching `faiss-handlers.ts:543-543`, `faiss-handlers.ts:627-627`, `faiss-handlers.ts:630-630`
+- **score** — Score metric used for searching `faiss-handlers.ts:543-543`
+- **score** — Stores the score of a query vector relative to a stored vector `faiss-handlers.ts:627-627`
+- **score** — Stores the score of a query vector relative to a stored vector in the query results `faiss-handlers.ts:630-630`
 - **score** — The score of the search result `types.ts:236-236`
 - **score** — Represents the similarity score `types.ts:340-340`
 - **searchStrategy** — Strategy for search operations `adaptive-thresholds.ts:225-225`
-- **searchTimeMs** — Stores the time taken for the search operation in milliseconds `types.ts:256-256`, `types.ts:262-262`
-- **searchTimeMs** — Stores the time in milliseconds for the search operation `types.ts:355-355`
+- **searchTimeMs** — Stores the time taken for the search operation in milliseconds `types.ts:256-256`
+- **searchTimeMs** — Stores the time in milliseconds for the search operation `types.ts:262-262`
+- **searchTimeMs** — Represents the time taken for a search operation in milliseconds `types.ts:355-355`
 - **sendError** — Sends an error response to the client `cuda-handlers.ts:139-139`
 - **sendError** — Sends an error message to the GPU worker `embeddings-handlers.ts:41-41`, `faiss-handlers.ts:45-45`
 - **sendResponse** — Sends a response to the client `cuda-handlers.ts:138-138`
@@ -664,23 +732,31 @@ The `src/semantic/gpu` module provides a unified interface for GPU operations, i
 - **stderr** — NonNullable<ChildProcess["stderr"]> — stderr for the Bun subprocess `gpu-client.ts:60-60`
 - **stdin** — NonNullable<ChildProcess["stdin"]> — stdin for the Bun subprocess `gpu-client.ts:58-58`
 - **stdout** — NonNullable<ChildProcess["stdout"]> — stdout for the Bun subprocess `gpu-client.ts:59-59`
-- **success** — Indicates the success status of GPU FAISS operations `cuda-handlers.ts:62-62`, `cuda-handlers.ts:74-74`
-- **success** — Indicates the success status of a CUDA operation `cuda-handlers.ts:83-83`, `cuda-handlers.ts:108-108`, `cuda-handlers.ts:113-113`, `cuda-handlers.ts:120-120`, `cuda-handlers.ts:121-121`
-- **success** — Indicates success in the response `types.ts:221-221`, `types.ts:226-226`
-- **success** — Indicates whether an operation was successful `types.ts:454-454`, `types.ts:466-466`, `types.ts:475-475`, `types.ts:500-500`
-- **success** — Indicates the success status of an operation `types.ts:505-505`, `types.ts:512-512`, `types.ts:513-513`
-- **timeMs** — Stores the time in milliseconds `types.ts:315-315`, `types.ts:321-321`, `types.ts:327-327`, `types.ts:333-333`
+- **success** — Indicates the success status of GPU FAISS operations `cuda-handlers.ts:62-62`
+- **success** — Indicates the success status of a CUDA operation `cuda-handlers.ts:74-74`
+- **success** — Represents a boolean indicating success `cuda-handlers.ts:83-83`
+- **success** — Returns a boolean indicating success `cuda-handlers.ts:108-108`, `cuda-handlers.ts:121-121`, `types.ts:513-513`
+- **success** — Returns a boolean indicating success. `cuda `cuda-handlers.ts:113-113`
+- **success** — Returns a boolean indicating the success of the operation `cuda-handlers.ts:120-120`
+- **success** — Indicates success in the response `types.ts:221-221`
+- **success** — Indicates whether an operation was successful `types.ts:226-226`
+- **success** — Indicates the success status of an operation `types.ts:454-454`
+- **success** — Indicates whether the operation was successful `types.ts:466-466`, `types.ts:475-475`, `types.ts:500-500`, `types.ts:505-505`
+- **success** — Returns a boolean indicating the success of the Faiss index removal operation `types.ts:512-512`
+- **timeMs** — Stores the time in milliseconds `types.ts:315-315`
+- **timeMs** — Represents the time in milliseconds `types.ts:321-321`, `types.ts:327-327`, `types.ts:333-333`
 - **timeout** — Timeout duration for GPU client operations `gpu-client.ts:130-130`
 - **timeout** — Request timeout in ms `named-pipe-transport.ts:44-44`
 - **totalMemoryMB** — Returns the total memory in MB of the CUDA device `cuda-handlers.ts:36-36`
 - **totalMemoryMB** — Indicates the total memory in megabytes of a CUDA device `types.ts:37-37`
 - **totalVectors** — Stores the total number of vectors in a GPU index `cuda-handlers.ts:85-85`
 - **totalVectors** — The total number of vectors in the Faiss index `types.ts:249-249`
-- **totalVectors** — Stores the total number of vectors in the index `types.ts:268-268`, `types.ts:294-294`
-- **totalVectors** — Stores the total number of vectors `types.ts:348-348`
-- **totalVectors** — Indicates the total number of vectors in the Faiss index `types.ts:367-367`, `types.ts:378-378`, `types.ts:389-389`
-- **totalVectors** — Stores the total number of vectors in the Faiss index `types.ts:477-477`
-- **totalVectors** — Represents the total number of vectors in the index `types.ts:540-540`
+- **totalVectors** — Stores the total number of vectors in the index `types.ts:268-268`
+- **totalVectors** — Stores the total number of vectors `types.ts:294-294`, `types.ts:540-540`
+- **totalVectors** — Indicates the total number of vectors in the Faiss index `types.ts:348-348`
+- **totalVectors** — Stores the total number of vectors in the Faiss index `types.ts:367-367`
+- **totalVectors** — Represents the total number of vectors in the index `types.ts:378-378`
+- **totalVectors** — Represents the total number of vectors `types.ts:389-389`, `types.ts:477-477`
 - **totalWithContent** — Represents the total number of vectors with content `types.ts:368-368`
 - **trainedOn** — Stores the number of vectors trained on the native FAISS index `cuda-handlers.ts:75-75`
 - **trainedOn** — Stores the data used to train the index `types.ts:285-285`
@@ -689,37 +765,68 @@ The `src/semantic/gpu` module provides a unified interface for GPU operations, i
 - **trainTimeMs** — Stores the time taken for the training operation in milliseconds `types.ts:286-286`
 - **type** — Represents a type definition for GPU operations `gpu-worker.ts:458-458`
 - **type** — Specifies the type of request, such as "faiss.init" `types.ts:46-46`
-- **type** — Specifies the type of request `types.ts:53-53`, `types.ts:60-60`, `types.ts:68-68`, `types.ts:76-76`, `types.ts:82-82`, `types.ts:88-88`, `types.ts:94-94`, `types.ts:101-101`, `types.ts:110-110`, `types.ts:114-114`, `types.ts:120-120`, `types.ts:126-126`
-- **type** — Specifies the type of operation as "cuda.normalize" `types.ts:132-132`
-- **type** — Specifies the type of operation as "embeddings.addBatch" `types.ts:149-149`
-- **type** — Represents the type of embeddings operation `types.ts:154-154`, `types.ts:161-161`, `types.ts:165-165`, `types.ts:169-169`
-- **type** — Represents the type of GPU worker request `types.ts:178-178`, `types.ts:182-182`, `types.ts:240-240`, `types.ts:247-247`
-- **type** — Indicates the type of Faiss operation `types.ts:254-254`, `types.ts:260-260`, `types.ts:266-266`, `types.ts:272-272`, `types.ts:278-278`, `types.ts:284-284`
-- **type** — Represents the type of the Faiss index `types.ts:290-290`, `types.ts:307-307`, `types.ts:313-313`, `types.ts:319-319`, `types.ts:325-325`
-- **type** — Specifies the type of operation or entity `types.ts:331-331`, `types.ts:346-346`, `types.ts:353-353`, `types.ts:359-359`
-- **type** — Represents the type of Faiss index `types.ts:365-365`, `types.ts:376-376`, `types.ts:384-384`
+- **type** — Specifies the type of request `types.ts:53-53`
+- **type** — Specifies the type of operation as "cuda.normalize" `types.ts:60-60`
+- **type** — Specifies the type of operation as "embeddings.addBatch" `types.ts:68-68`
+- **type** — Represents the type of embeddings operation `types.ts:76-76`
+- **type** — Represents the type of GPU worker request `types.ts:82-82`
+- **type** — Indicates the type of Faiss operation `types.ts:88-88`
+- **type** — Represents the type of the Faiss index `types.ts:94-94`
+- **type** — Specifies the type of operation or entity `types.ts:101-101`
+- **type** — Represents the type of Faiss index `types.ts:110-110`
+- **type** — Specifies the type as "cuda.cosine" `types.ts:114-114`
+- **type** — Specifies the type as "cuda.batchCosine" `types.ts:120-120`
+- **type** — Specifies the type as "cuda.euclidean" `types.ts:126-126`
+- **type** — Specifies the type as "cuda.normalize" `types.ts:132-132`
+- **type** — Specifies the type as "embeddings.addBatch" `types.ts:149-149`
+- **type** — Specifies the type as "embeddings.search" `types.ts:154-154`
+- **type** — Indicates the type as "embeddings.flush" `types.ts:161-161`
+- **type** — Indicates the type as "embeddings.stats" `types.ts:165-165`
+- **type** — Indicates the type as "embeddings.remove" `types.ts:169-169`
+- **type** — Indicates the type as "stats" `types.ts:178-178`
+- **type** — Indicates the type as "shutdown" `types.ts:182-182`
+- **type** — Indicates the type as "faiss.init" `types.ts:240-240`
+- **type** — Indicates the type as "faiss.add" `types.ts:247-247`
+- **type** — Indicates the type as "faiss.search" `types.ts:254-254`
+- **type** — Indicates the type as "faiss.batchSearch" `types.ts:260-260`
+- **type** — Indicates the type of operation as "embeddings.addBatch" `types.ts:266-266`
+- **type** — Indicates the type of operation as "embeddings.search" `types.ts:272-272`
+- **type** — Indicates the type of operation as "embeddings.flush" `types.ts:278-278`, `types.ts:359-359`
+- **type** — Indicates the type of operation as "embeddings.stats" `types.ts:284-284`, `types.ts:365-365`
+- **type** — Indicates the type of operation as "embeddings.remove" `types.ts:290-290`, `types.ts:376-376`
+- **type** — Indicates the type of operation as "stats" `types.ts:307-307`, `types.ts:384-384`
+- **type** — Specifies the type as "embeddings.search". `types `types.ts:313-313`
+- **type** — Specifies the type of operation as "embeddings.flush" `types.ts:319-319`
+- **type** — Specifies the type of operation as "embeddings.stats" `types.ts:325-325`
+- **type** — Specifies the type of operation as "embeddings.remove" `types.ts:331-331`
+- **type** — Specifies the type of operation as "stats" `types.ts:346-346`
+- **type** — Specifies the type of operation as "embeddings.search" `types.ts:353-353`
 - **uptime** — Represents the time elapsed since the start of the process `types.ts:399-399`
 - **useCudaForReranking** — Determines if CUDA should be used for reranking operations `adaptive-thresholds.ts:226-226`
-- **usedCuda** — Returns a promise containing a Float32Array of similarities and a boolean indicating if CUDA was used `gpu-client.ts:107-107`, `gpu-client.ts:828-828`
-- **usedCuda** — Returns a promise containing a Float32Array of normalized vectors and a boolean indicating if CUDA was used `gpu-client.ts:108-108`
-- **usedCuda** — Asynchronously normalizes vectors using CUDA and returns a promise containing a Float32Array of normalized vectors and a boolean indicating if CUDA was used `gpu-client.ts:853-853`
+- **usedCuda** — Asynchronously normalizes vectors using CUDA and returns a promise containing a Float32Array of normalized vectors and a boolean indicating if CUDA was used `gpu-client.ts:828-828`
+- **usedCuda** — Returns a promise containing a Float32Array of normalized vectors and a boolean indicating if CUDA was used `gpu-client.ts:108-108`, `gpu-client.ts:853-853`
+- **usedCuda** — Returns a promise containing a Float32Array of similarities and a boolean indicating if CUDA was used `gpu-client.ts:107-107`
 - **useNamedPipe** — Boolean indicating whether to use a named pipe for communication `gpu-client.ts:172-172`
 - **vector** — Single vector to be searched in the Faiss index `faiss-handlers.ts:464-464`
-- **vector** — Represents a vector in the context of GPU operations `gpu-worker.ts:522-522`, `gpu-worker.ts:632-632`
+- **vector** — Represents a vector in the context of GPU operations `gpu-worker.ts:522-522`
+- **vector** — Parses the request to include a vector property `gpu-worker.ts:632-632`
 - **vector** — Array of numerical vector to be searched `types.ts:62-62`
 - **vector** — Stores a Float32Array or a number array `types.ts:143-143`
 - **vector** — Stores a vector of numbers `types.ts:155-155`
 - **vectors** — Vectors for normalization `cuda-handlers.ts:248-248`
-- **vectors** — List of vectors to be added to the Faiss index `faiss-handlers.ts:368-368`, `faiss-handlers.ts:574-574`
-- **vectors** — Represents the set of vectors used to train the Faiss index `faiss-handlers.ts:851-851`
-- **vectors** — Stores a collection of vectors `gpu-worker.ts:563-563`, `gpu-worker.ts:632-632`
+- **vectors** — List of vectors to be added to the Faiss index `faiss-handlers.ts:368-368`
+- **vectors** — Represents the set of vectors used to train the Faiss index `faiss-handlers.ts:574-574`
+- **vectors** — Contains the array of vectors for the request `faiss-handlers.ts:851-851`
+- **vectors** — Stores a collection of vectors `gpu-worker.ts:563-563`
+- **vectors** — Parses the request to include a vectors property `gpu-worker.ts:632-632`
 - **vectors** — Extracts the vectors from a packet `named-pipe-transport.ts:438-438`
 - **vectors** — Extracted vectors in Float32Array format, may be undefined for requests without vectors `request-helpers.ts:28-28`
-- **vectors** — Array of numerical vectors to be added `types.ts:56-56`, `types.ts:70-70`
-- **vectors** — Contains the vectors for training the Faiss index `types.ts:96-96`
-- **vectors** — Stores an array of number arrays `types.ts:133-133`
-- **vectors** — Contains an array of vectors `types.ts:332-332`
-- **vectors** — Stores the vectors in the Faiss index `types.ts:533-533`
+- **vectors** — Array of numerical vectors to be added `types.ts:56-56`
+- **vectors** — Contains the vectors for training the Faiss index `types.ts:70-70`
+- **vectors** — Stores an array of number arrays `types.ts:96-96`
+- **vectors** — Contains an array of vectors `types.ts:133-133`
+- **vectors** — Stores the vectors in the Faiss index `types.ts:332-332`
+- **vectors** — Stores a flat array of vectors `types.ts:533-533`
 - **worker** — Worker process for the GPU client `gpu-client.ts:160-160`
 - **workerPath** — Path to the worker script for the GPU client `gpu-client.ts:128-128`
 

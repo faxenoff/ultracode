@@ -64,7 +64,8 @@ The `indexer` module is structured around several key files, each handling speci
 - **buildRelationships** — Builds relationships from parsed entities and storage entities `relationship-builder.ts:16-207`
 - **containers** — Filters candidates to those with types that are containers `entity-resolution.ts:132-132`
 - **createExternalPlaceholder** — Creates a placeholder entity for an external reference `external-placeholder.ts:60-99`
-- **files** — List of changed files `git-event-handlers.ts:118-118`, `git-event-handlers.ts:119-119`
+- **files** — List of changed files `git-event-handlers.ts:118-118`
+- **files** — Maps each file to its full path by joining the repository path `git-event-handlers.ts:119-119`
 - **fileStem** — File stem for generating semIds `sem-id.ts:86-90`
 - **generateRefId** — Function to generate reference IDs `sem-id.ts:145-147`
 - **generateSemId** — Function to generate semantic IDs `sem-id.ts:108-139`
@@ -115,7 +116,8 @@ The `indexer` module is structured around several key files, each handling speci
 
 ### Property
 - **abortController** — Represents the abort controller for managing the cancellation of embedding generation `git-event-handlers.ts:184-184`
-- **agentId** — Stores the ID of the agent handling the Git event `git-event-handlers.ts:20-20`, `git-event-handlers.ts:182-182`
+- **agentId** — Stores the ID of the agent handling the Git event `git-event-handlers.ts:20-20`
+- **agentId** — Stores the agent ID as a string `git-event-handlers.ts:182-182`
 - **branchManager** — Stores the branch manager for managing branches `git-event-handlers.ts:22-22`
 - **currentRepositoryPath** — Stores the current path of the repository `git-event-handlers.ts:21-21`
 - **debouncePeriodMs** — Represents the debounce period in milliseconds for scheduling embedding generation `git-event-handlers.ts:183-183`
@@ -125,7 +127,8 @@ The `indexer` module is structured around several key files, each handling speci
 - **fromId** — Returns a promise of an array of objects containing placeholder details `external-placeholder.ts:198-198`
 - **getAllEntities** — Retrieves all entities from the storage `external-placeholder.ts:195-195`
 - **getRelationships** — Retrieves relationships from the storage based on the toId `external-placeholder.ts:196-198`
-- **id** — Represents the ID of an entity `external-placeholder.ts:112-112`, `external-placeholder.ts:198-198`
+- **id** — Represents the ID of an entity `external-placeholder.ts:112-112`
+- **id** — Parses a function that returns a promise of an array of objects with id, fromId, toId, and type `external-placeholder.ts:198-198`
 - **name** — Name of the entity `sem-id.ts:24-24`
 - **pendingGeneration** — Indicates whether embedding generation is pending `git-event-handlers.ts:185-185`
 - **relationshipsUpdated** — Counts the number of relationships that were updated during placeholder resolution `external-placeholder.ts:191-191`
@@ -135,13 +138,13 @@ The `indexer` module is structured around several key files, each handling speci
 - **setPendingGeneration** — Sets the pending generation flag `git-event-handlers.ts:186-186`
 - **source** — Represents the source component of an external ID `external-placeholder.ts:19-19`
 - **symbol** — Represents the symbol component of an external ID `external-placeholder.ts:19-19`
+- **toId** — Updates a relationship by changing the toId of a placeholder `external-placeholder.ts:199-199`
 - **toId** — Represents the toId property in the relationship type `external-placeholder.ts:112-112`
 - **toId** — Represents a string identifier for a placeholder `external-placeholder.ts:197-197`
 - **toId** — Returns a promise of an array of objects containing placeholder details `external-placeholder.ts:198-198`
-- **toId** — Updates a relationship by changing the toId of a placeholder `external-placeholder.ts:199-199`
 - **totalPlaceholders** — Counts the total number of placeholders `external-placeholder.ts:188-188`
-- **type** — Represents the type of an entity `external-placeholder.ts:112-112`
 - **type** — Represents the type of an entity, specifically an import type `external-placeholder.ts:198-198`
+- **type** — Represents the type of an entity `external-placeholder.ts:112-112`
 - **unresolved** — Stores the names of placeholders that could not be resolved `external-placeholder.ts:190-190`
 - **updateRelationship** — Updates a relationship by changing the toId of a placeholder `external-placeholder.ts:199-199`
 

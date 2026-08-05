@@ -1282,7 +1282,9 @@ Agent
 - **nodeType** — Represents the type of the AST node `parser-ast-types.ts:77-77`
 - **nonNullAssertionCount** — Counts the number of non-null assertions `parser.ts:402-402`
 - **ntotal** — Number of vectors in the index `faiss-node.d.ts:21-21`
-- **ntotal** — Represents the total number of elements `faiss-node.d.ts:31-31`, `faiss-node.d.ts:42-42`, `faiss-node.d.ts:53-53`
+- **ntotal** — Represents the total number of elements `faiss-node.d.ts:31-31`
+- **ntotal** — Represents the total number of elements in the index `faiss-node.d.ts:42-42`
+- **ntotal** — Represents the total number of vectors in the index `faiss-node.d.ts:53-53`
 - **nullChecks** — Identifies null checks in the code `chaos-analysis.ts:159-159`
 - **offset** — Specifies the starting point for a query `storage.ts:151-151`
 - **offset** — Stores the offset for pagination `storage.ts:165-165`
@@ -1626,7 +1628,7 @@ Agent
 - **toolName** — Name of the tool or system generating the performance metric `storage.ts:275-275`
 - **total** — The total number of embeddings in the pool `semantic.ts:268-268`
 - **total** — Total number of connections in the pool `storage.ts:266-266`
-- **totalChanges** — Returns the total number of changes made to the branch `layered.ts:66-66`
+- **totalChanges** — Represents the total number of changes in the layer `layered.ts:66-66`
 - **totalEmbeddings** — The total number of embeddings in the storage `storage.ts:237-237`
 - **totalEntities** — Counts the total number of entities processed `parser-python-types.ts:295-295`
 - **totalEntities** — Represents the total number of entities `storage.ts:186-186`
@@ -1653,7 +1655,8 @@ Agent
 - **tryCatch** — Identifies try-catch blocks in the code `chaos-analysis.ts:162-162`
 - **ttl** — The time-to-live duration for a cache entry `storage.ts:255-255`
 - **type** — Type of the agent, such as parser, indexer, etc `agent.ts:35-35`
-- **type** — Specifies the type of the agent `agent.ts:45-45`, `agent.ts:57-57`
+- **type** — Specifies the type of the agent `agent.ts:45-45`
+- **type** — Specifies the type of the agent, which is an enum value of AgentType `agent.ts:57-57`
 - **type** — TypeScript type `chaos-analysis.ts:74-74`
 - **type** — The type of the state variable `chaos-analysis.ts:92-92`
 - **type** — Type of the refactoring operation `chaos-analysis.ts:124-124`

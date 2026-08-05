@@ -53,15 +53,17 @@ This module contains test suites for various language analyzers, including C, C+
 - **actorEntity** — Represents an actor entity in the TypeScript parser `native-parsers.test.ts:868-868`
 - **addCol** — Represents the addition of an email column to the users table `migration-detector.test.ts:177-177`
 - **addFunc** — Represents the private function in the Go code `go-analyzer.test.ts:68-68`
-- **addFunc** — Not present in the provided code `native-parsers.test.ts:95-95`, `native-parsers.test.ts:205-205`
-- **addFunc** — Not applicable in this context `native-parsers.test.ts:457-457`, `native-parsers.test.ts:590-590`, `native-parsers.test.ts:784-784`
+- **addFunc** — Finds a function entity named "add" in the result entities `native-parsers.test.ts:457-457`
+- **addFunc** — Not applicable in this context `native-parsers.test.ts:205-205`, `native-parsers.test.ts:590-590`
+- **addFunc** — Not present in the provided code `native-parsers.test.ts:95-95`, `native-parsers.test.ts:784-784`
 - **address** — Represents the Address message with fields street, city, and country `protobuf-parser.test.ts:97-97`
 - **adminEmbeds** — Not present in the provided code `go-analyzer.test.ts:216-216`
 - **analyticsCall** — Represents a call to analytics in the TypeScript parser `native-parsers.test.ts:963-963`
 - **areaMethod** — Represents a specific method in the interface `go-analyzer.test.ts:136-136`
-- **asyncFunc** — Not present in the provided code `native-parsers.test.ts:100-100`, `native-parsers.test.ts:208-208`
-- **asyncFunc** — Not applicable in this context `native-parsers.test.ts:594-594`, `native-parsers.test.ts:788-788`
-- **attr** — Represents an attribute node `rust-analyzer.test.ts:403-415`, `rust-analyzer.test.ts:411-411`
+- **asyncFunc** — Not applicable in this context `native-parsers.test.ts:208-208`, `native-parsers.test.ts:594-594`
+- **asyncFunc** — Not present in the provided code `native-parsers.test.ts:100-100`, `native-parsers.test.ts:788-788`
+- **attr** — Represents an attribute node `rust-analyzer.test.ts:403-415`
+- **attr** — Creates a mock node for an identifier with a specific name `rust-analyzer.test.ts:411-411`
 - **auth** — A directive that requires a specific role to access a field `graphql-parser.test.ts:103-103`
 - **avatarDrift** — Not present in the provided code `schema-drift-detector.test.ts:121-121`
 - **avatarField** — Represents the field for storing avatar URLs in the users table `sql-parser.test.ts:159-159`
@@ -71,12 +73,16 @@ This module contains test suites for various language analyzers, including C, C+
 - **builderPattern** — Not applicable in the provided context `rust-analyzer.test.ts:210-210`
 - **callOperator** — Represents the call operator in the C++ code `cpp-analyzer.test.ts:174-174`
 - **callRelations** — Not present in the provided code `go-analyzer.test.ts:255-255`
-- **callsRelationships** — Represents calls to relationships in the TypeScript parser `native-parsers.test.ts:908-908`, `native-parsers.test.ts:956-956`
+- **callsRelationships** — Represents calls to relationships in the TypeScript parser `native-parsers.test.ts:908-908`
+- **callsRelationships** — Filters relationships to find those of type "calls" `native-parsers.test.ts:956-956`
 - **child** — Represents the child relationship in the users table `sql-parser.test.ts:104-104`
 - **classA** — Represents a class named A `cpp-analyzer.test.ts:407-407`
 - **classEntity** — Represents a class entity in the C++ code `cpp-analyzer.test.ts:46-46`
-- **classEntity** — Represents a class declaration in TypeScript `native-parsers.test.ts:64-64`, `native-parsers.test.ts:191-191`, `native-parsers.test.ts:296-296`, `native-parsers.test.ts:411-411`, `native-parsers.test.ts:427-427`, `native-parsers.test.ts:725-725`
-- **classEntity** — Represents a class declaration in the TypeScript parser `native-parsers.test.ts:829-829`, `native-parsers.test.ts:848-848`
+- **classEntity** — Finds a class entity named "MyViewController" in the result entities `native-parsers.test.ts:411-411`, `native-parsers.test.ts:427-427`
+- **classEntity** — Finds a class entity named "Config" in the result entities `native-parsers.test.ts:725-725`
+- **classEntity** — Finds a class entity named "MyClass" in the result entities `native-parsers.test.ts:296-296`, `native-parsers.test.ts:829-829`
+- **classEntity** — Represents a class declaration in the TypeScript parser `native-parsers.test.ts:191-191`, `native-parsers.test.ts:848-848`
+- **classEntity** — Represents a class declaration in TypeScript `native-parsers.test.ts:64-64`
 - **colorEnum** — Not present in the provided code `c-analyzer.test.ts:102-102`
 - **colorEnum** — Represents an enum for colors `cpp-analyzer.test.ts:308-308`
 - **complexMethod** — Represents a complex method in a class `cpp-analyzer.test.ts:281-281`
@@ -118,9 +124,11 @@ This module contains test suites for various language analyzers, including C, C+
 - **emailField** — Represents an email field in the Prisma schema `prisma-parser.test.ts:89-89`
 - **embedRelations** — Represents the embedded relations in the Go code `go-analyzer.test.ts:213-213`
 - **enableIfFunc** — Represents a function with conditional compilation `cpp-analyzer.test.ts:242-242`
-- **entity** — Tests the extraction of entities such as structs, enums, and traits `rust-analyzer.test.ts:128-128`, `rust-analyzer.test.ts:136-136`, `rust-analyzer.test.ts:144-144`
-- **enumEntity** — Not present in the provided code `native-parsers.test.ts:138-138`, `native-parsers.test.ts:328-328`
-- **enumEntity** — Not applicable in this context `native-parsers.test.ts:561-561`, `native-parsers.test.ts:767-767`
+- **entity** — Tests the extraction of entities such as structs, enums, and traits `rust-analyzer.test.ts:128-128`
+- **entity** — Finds a struct entity in the result entities `rust-analyzer.test.ts:136-136`
+- **entity** — rust-analyzer.test.ts:144-144` — Finds the entity of type "struct" from the result entities `rust-analyzer.test.ts:144-144`
+- **enumEntity** — Not applicable in this context `native-parsers.test.ts:328-328`, `native-parsers.test.ts:561-561`
+- **enumEntity** — Not present in the provided code `native-parsers.test.ts:138-138`, `native-parsers.test.ts:767-767`
 - **enumEntity** — Tests the extraction of enum entities `rust-analyzer.test.ts:169-169`
 - **enums** — Not present in the provided code `c-analyzer.test.ts:99-99`
 - **enums** — Defines enums in the GraphQL schema `graphql-parser.test.ts:308-308`
@@ -140,33 +148,45 @@ This module contains test suites for various language analyzers, including C, C+
 - **finalClass** — Represents a final class in the inheritance hierarchy `cpp-analyzer.test.ts:111-111`
 - **finalMethod** — Represents a final method in the derived class `cpp-analyzer.test.ts:98-98`
 - **fkRel** — Represents a foreign key relationship `sql-parser.test.ts:185-185`
-- **func** — Tests the extraction of functions, including both synchronous and asynchronous functions `rust-analyzer.test.ts:50-50`, `rust-analyzer.test.ts:59-59`, `rust-analyzer.test.ts:161-161`
+- **func** — Tests the extraction of functions, including both synchronous and asynchronous functions `rust-analyzer.test.ts:50-50`
+- **func** — Finds a function entity in the result entities `rust-analyzer.test.ts:59-59`
+- **func** — rust-analyzer.test.ts:161-161` — Finds the entity of type "function" from the result entities `rust-analyzer.test.ts:161-161`
 - **func** — Represents the function in the SQL schema `sql-parser.test.ts:138-138`
-- **functionNames** — Filters entities to extract function names `c-analyzer.test.ts:49-49`, `c-analyzer.test.ts:49-49`
-- **functionNames** — Contains the names of the functions in the Go code `go-analyzer.test.ts:58-58`, `go-analyzer.test.ts:58-58`
-- **functionNames** — Not present in the provided code `go-analyzer.test.ts:260-260`
-- **functions** — Not present in the provided code `c-analyzer.test.ts:182-182`, `go-analyzer.test.ts:259-259`
+- **functionNames** — Filters entities to extract function names `c-analyzer.test.ts:49-49`
+- **functionNames** — Filters and maps function entities from the result `c-analyzer.test.ts:49-49`
+- **functionNames** — Maps each function to its name `go-analyzer.test.ts:260-260`
+- **functionNames** — Contains the names of the functions in the Go code `go-analyzer.test.ts:58-58`
+- **functionNames** — Not present in the provided code `go-analyzer.test.ts:58-58`
+- **functions** — Not present in the provided code `c-analyzer.test.ts:182-182`
+- **functions** — Tests the GoAnalyzer to parse basic Go functions and packages, checking for correct entities and their metadata `go-analyzer.test.ts:259-259`
 - **gen** — Represents a generator entity in the Prisma schema `prisma-parser.test.ts:65-65`
-- **getUser** — Represents a request to get a user by ID `protobuf-parser.test.ts:176-176`, `protobuf-parser.test.ts:243-243`
+- **getUser** — Represents a request to get a user by ID `protobuf-parser.test.ts:176-176`
+- **getUser** — Finds the entity named "GetUser" in the result entities `protobuf-parser.test.ts:243-243`
 - **globalCounterVar** — Represents a specific variable in the Go code `go-analyzer.test.ts:179-179`
-- **hasAB** — Not present in the provided code snippet `python-analyzer.test.ts:131-134`, `python-analyzer.test.ts:177-180`
+- **hasAB** — Not present in the provided code snippet `python-analyzer.test.ts:131-134`
+- **hasAB** — Parses the results to check if any cycle contains both "A" and "B" `python-analyzer.test.ts:177-180`
 - **idField** — Not applicable in this context `graphql-parser.test.ts:133-133`
 - **idField** — Represents an ID field in the Prisma schema `prisma-parser.test.ts:85-85`
 - **idField** — Represents the id field in the organization table `sql-parser.test.ts:73-73`
 - **idx** — Represents the index in the users table `sql-parser.test.ts:116-116`
 - **implBlocks** — Not applicable in this context `native-parsers.test.ts:638-638`
-- **implRels** — Not applicable in this context `graphql-parser.test.ts:150-150`
 - **implRels** — Implements relationships in the GraphQL schema `graphql-parser.test.ts:248-248`
+- **implRels** — Not applicable in this context `graphql-parser.test.ts:150-150`
 - **importPaths** — Contains the import paths in the Go code `go-analyzer.test.ts:75-75`
 - **imports** — Contains the import paths in the Go code `go-analyzer.test.ts:73-73`
-- **imports** — Imports necessary modules for testing TypeScript parsers `native-parsers.test.ts:113-113`, `native-parsers.test.ts:222-222`, `native-parsers.test.ts:344-344`
-- **imports** — Imports necessary modules for testing `native-parsers.test.ts:477-477`, `native-parsers.test.ts:607-607`, `native-parsers.test.ts:801-801`
-- **inc1** — Contains the import "stdio.h" from the first parsed code `parser-cache.test.ts:40-40`, `parser-cache.test.ts:40-40`
-- **inc2** — Contains the import "stdlib.h" from the second parsed code `parser-cache.test.ts:41-41`, `parser-cache.test.ts:41-41`
+- **imports** — Filters entities to find those of type "import" `native-parsers.test.ts:344-344`, `native-parsers.test.ts:477-477`
+- **imports** — Imports necessary modules for testing `native-parsers.test.ts:222-222`, `native-parsers.test.ts:607-607`
+- **imports** — Imports necessary modules for testing TypeScript parsers `native-parsers.test.ts:113-113`, `native-parsers.test.ts:801-801`
+- **inc1** — Contains the import "stdio.h" from the first parsed code `parser-cache.test.ts:40-40`
+- **inc1** — Filters and maps import relationships from r1 to their targets `parser-cache.test.ts:40-40`
+- **inc2** — Contains the import "stdlib.h" from the second parsed code `parser-cache.test.ts:41-41`
+- **inc2** — Filters and maps import relationships from r2 to their targets `parser-cache.test.ts:41-41`
 - **includePaths** — Not present in the provided code `c-analyzer.test.ts:251-251`
-- **includes** — Filters relationships to find include statements `c-analyzer.test.ts:60-60`, `c-analyzer.test.ts:248-248`
+- **includes** — Filters relationships to find include statements `c-analyzer.test.ts:60-60`
+- **includes** — Filters import relationships from the result `c-analyzer.test.ts:248-248`
 - **innerNamespace** — Represents an inner namespace within another namespace `cpp-analyzer.test.ts:146-146`
-- **interfaceEntity** — Represents an interface declaration in TypeScript `native-parsers.test.ts:79-79`, `native-parsers.test.ts:312-312`, `native-parsers.test.ts:443-443`
+- **interfaceEntity** — Finds an interface entity named "Service" in the result entities `native-parsers.test.ts:312-312`, `native-parsers.test.ts:443-443`
+- **interfaceEntity** — Represents an interface declaration in TypeScript `native-parsers.test.ts:79-79`
 - **interfaces** — Represents the interface definitions in the Go code `go-analyzer.test.ts:126-126`
 - **isLoadingState** — Represents the loading state in the TypeScript parser `native-parsers.test.ts:990-990`
 - **iteratorPattern** — Not applicable in the provided context `rust-analyzer.test.ts:219-219`
@@ -206,7 +226,8 @@ This module contains test suites for various language analyzers, including C, C+
 - **noexceptMethod** — Represents a noexcept method in a class `cpp-analyzer.test.ts:278-278`
 - **objectEntity** — Not applicable in this context `native-parsers.test.ts:490-490`
 - **operations** — Defines operations in the GraphQL schema `graphql-parser.test.ts:292-295`
-- **org** — Represents the organization table in the SQL schema `sql-parser.test.ts:60-60`, `sql-parser.test.ts:71-71`
+- **org** — Represents the organization table in the SQL schema `sql-parser.test.ts:60-60`
+- **org** — Finds the entity named "organizations" in the result `sql-parser.test.ts:71-71`
 - **ormLink** — Creates an ORM link between a database entity and a code entity `schema-drift-detector.test.ts:45-55`
 - **overrideMethod** — Represents an overridden method in the derived class `cpp-analyzer.test.ts:95-95`
 - **packageEntity** — Not present in the provided code `native-parsers.test.ts:356-356`
@@ -228,7 +249,8 @@ This module contains test suites for various language analyzers, including C, C+
 - **queries** — Not applicable in this context `linq-parser.test.ts:105-105`
 - **query** — A type representing a query operation `graphql-parser.test.ts:184-184`
 - **queryEntity** — Extracts LINQ query syntax referenced tables from the parsed entities `linq-parser.test.ts:47-47`
-- **rawSql** — Extracts raw SQL string referenced tables from the parsed entities `linq-parser.test.ts:66-66`, `linq-parser.test.ts:79-79`
+- **rawSql** — Extracts raw SQL string referenced tables from the parsed entities `linq-parser.test.ts:66-66`
+- **rawSql** — Finds the entity with metadata indicating it is raw SQL `linq-parser.test.ts:79-79`
 - **rectangle** — Not present in the provided code `c-analyzer.test.ts:93-93`
 - **redValue** — Represents a value for the red color `cpp-analyzer.test.ts:312-312`
 - **rels** — Represents relationships in the Prisma schema `prisma-parser.test.ts:95-95`
@@ -254,39 +276,46 @@ This module contains test suites for various language analyzers, including C, C+
 - **status** — Represents the status column in the users table `sql-parser.test.ts:91-91`
 - **statusDrift** — Not present in the provided code `schema-drift-detector.test.ts:159-159`
 - **statusEnum** — Represents an enum for statuses `cpp-analyzer.test.ts:317-317`
-- **structEntity** — Not applicable in this context `native-parsers.test.ts:546-546`, `native-parsers.test.ts:740-740`
+- **structEntity** — Not applicable in this context `native-parsers.test.ts:546-546`
+- **structEntity** — Finds a struct entity named "User" in the result entities `native-parsers.test.ts:740-740`
 - **structs** — Not present in the provided code `c-analyzer.test.ts:89-89`
 - **structs** — Represents the struct definitions in the Go code `go-analyzer.test.ts:110-110`
 - **sub** — Not applicable in this context `graphql-parser.test.ts:200-200`
 - **suspendFunc** — Not applicable in this context `native-parsers.test.ts:461-461`
 - **swapFunc** — Represents a function to swap two values `cpp-analyzer.test.ts:217-217`
-- **table** — Represents a database table `sql-parser.test.ts:171-171`, `sql-parser.test.ts:209-209`
+- **table** — Represents a database table `sql-parser.test.ts:171-171`
+- **table** — Finds the entity named "events" in the result `sql-parser.test.ts:209-209`
 - **tagsField** — Represents the tags field in the User message `protobuf-parser.test.ts:123-123`
 - **templateClass** — Represents a template class in the C++ code `cpp-analyzer.test.ts:194-194`
 - **trackEvent** — Represents a function to track events in the TypeScript parser `native-parsers.test.ts:951-951`
 - **traitEntity** — Not applicable in this context `native-parsers.test.ts:574-574`
 - **trigger** — Represents the trigger in the SQL schema `sql-parser.test.ts:147-147`
-- **typedefs** — Not present in the provided code `c-analyzer.test.ts:110-110`, `c-analyzer.test.ts:178-178`
+- **typedefs** — Not present in the provided code `c-analyzer.test.ts:110-110`
+- **typedefs** — Filters type entities from the result `c-analyzer.test.ts:178-178`
 - **typedefs** — Represents the type definitions in the Go code `go-analyzer.test.ts:206-206`
 - **typeDrift** — Not present in the provided code `schema-drift-detector.test.ts:176-176`
-- **typeEntity** — Not present in the provided code `native-parsers.test.ts:124-124`
 - **typeEntity** — Represents a type entity in the TypeScript parser `native-parsers.test.ts:879-879`
+- **typeEntity** — Not present in the provided code `native-parsers.test.ts:124-124`
 - **types** — Defines types in the GraphQL schema `graphql-parser.test.ts:302-302`
 - **union** — A union type representing a search result that can be either a user or a post `graphql-parser.test.ts:165-165`
-- **unionRefs** — Not applicable in this context `graphql-parser.test.ts:177-177`
 - **unionRefs** — References unions in the GraphQL schema `graphql-parser.test.ts:258-258`
+- **unionRefs** — Not applicable in this context `graphql-parser.test.ts:177-177`
 - **unions** — Not present in the provided code `c-analyzer.test.ts:156-156`
 - **uniqueIdx** — Represents the unique index in the users table `sql-parser.test.ts:122-122`
 - **unsafePattern** — Not applicable in the provided context `rust-analyzer.test.ts:243-243`
 - **updateUser** — Represents a request to update a user `protobuf-parser.test.ts:192-192`
-- **user** — A type representing a user with various fields and relationships `graphql-parser.test.ts:140-140`
 - **user** — Defines the User type in the GraphQL schema `graphql-parser.test.ts:281-281`
-- **user** — Represents a user model in the Prisma schema `prisma-parser.test.ts:72-72`, `prisma-parser.test.ts:101-101`
-- **user** — Represents the User message with fields id, name, email, status, address, tags, metadata, created_at, and contact `protobuf-parser.test.ts:112-112`, `protobuf-parser.test.ts:149-149`
+- **user** — A type representing a user with various fields and relationships `graphql-parser.test.ts:140-140`
+- **user** — Represents a user model in the Prisma schema `prisma-parser.test.ts:72-72`
+- **user** — Finds the User entity in the result entities with a specific dbType `prisma-parser.test.ts:101-101`
+- **user** — Represents the User message with fields id, name, email, status, address, tags, metadata, created_at, and contact `protobuf-parser.test.ts:112-112`
+- **user** — Finds the entity named "User" in the result entities `protobuf-parser.test.ts:149-149`
 - **userDataState** — Represents user data state in the TypeScript parser `native-parsers.test.ts:994-994`
 - **userIDType** — Represents a specific type definition in the Go code `go-analyzer.test.ts:209-209`
-- **users** — Represents the users table in the SQL schema `sql-parser.test.ts:79-79`, `sql-parser.test.ts:157-157`
-- **usersField** — A field representing a list of users `graphql-parser.test.ts:210-210`, `graphql-parser.test.ts:226-226`
+- **users** — Represents the users table in the SQL schema `sql-parser.test.ts:79-79`
+- **users** — Finds the entity named "users" in the result `sql-parser.test.ts:157-157`
+- **usersField** — A field representing a list of users `graphql-parser.test.ts:210-210`
+- **usersField** — Finds the field named "users" with metadata type "field" `graphql-parser.test.ts:226-226`
 - **userStatus** — Represents the enum entity with values USER_STATUS_UNSPECIFIED, ACTIVE, and INACTIVE `protobuf-parser.test.ts:81-81`
 - **variables** — Represents the variable definitions in the Go code `go-analyzer.test.ts:172-172`
 - **variadicFunc** — Represents a function with variable arguments `cpp-analyzer.test.ts:245-245`
@@ -331,25 +360,40 @@ This module contains test suites for various language analyzers, including C, C+
 - **isNonNull** — Not applicable in this context `graphql-parser.test.ts:131-131`
 - **mapKey** — Represents the map key field in the User message `protobuf-parser.test.ts:119-119`
 - **mapValue** — Represents the map value field in the User message `protobuf-parser.test.ts:120-120`
-- **name** — A field representing the name of a user `graphql-parser.test.ts:131-131`, `graphql-parser.test.ts:214-214`
-- **name** — Represents a field name in the Prisma schema `prisma-parser.test.ts:77-77`, `prisma-parser.test.ts:102-102`
-- **name** — Represents the name field in the User message `protobuf-parser.test.ts:87-87`, `protobuf-parser.test.ts:103-103`, `protobuf-parser.test.ts:116-116`, `protobuf-parser.test.ts:141-141`, `protobuf-parser.test.ts:151-151`
-- **name** — Represents the name of a column or table `schema-drift-detector.test.ts:24-24`, `schema-drift-detector.test.ts:24-24`, `schema-drift-detector.test.ts:28-28`
-- **name** — Represents the name column in the organization table `sql-parser.test.ts:64-64`, `sql-parser.test.ts:72-72`, `sql-parser.test.ts:81-81`
-- **name** — Represents the name of a database entity `sql-parser.test.ts:158-158`
-- **nullable** — Indicates whether a column is nullable `schema-drift-detector.test.ts:24-24`, `schema-drift-detector.test.ts:28-28`
+- **name** — A field representing the name of a user `graphql-parser.test.ts:131-131`
+- **name** — Extracts the name of the argument from the metadata `graphql-parser.test.ts:214-214`
+- **name** — Represents a field name in the Prisma schema `prisma-parser.test.ts:77-77`
+- **name** — Extracts the name of the index from the user's metadata `prisma-parser.test.ts:102-102`
+- **name** — Represents the name field in the User message `protobuf-parser.test.ts:87-87`
+- **name** — Extracts the name field from the fields array `protobuf-parser.test.ts:103-103`
+- **name** — Represents the name field as a string `protobuf-parser.test.ts:116-116`
+- **name** — Extracts fields from metadata `protobuf-parser.test.ts:141-141`
+- **name** — Represents a field name `protobuf-parser.test.ts:151-151`
+- **name** — Represents the name of a column or table `schema-drift-detector.test.ts:24-24`
+- **name** — Represents a map of column names to their types and nullable status `schema-drift-detector.test.ts:24-24`
+- **name** — Initializes a map to store column names, types, and nullable status `schema-drift-detector.test.ts:28-28`
+- **name** — Represents a string property `sql-parser.test.ts:81-81`, `sql-parser.test.ts:158-158`
+- **name** — Represents the name column in the organization table `sql-parser.test.ts:64-64`
+- **name** — Represents the name of a database entity `sql-parser.test.ts:72-72`
+- **nullable** — Indicates whether a column is nullable `schema-drift-detector.test.ts:24-24`
+- **nullable** — Represents a nullable boolean in a column definition `schema-drift-detector.test.ts:28-28`
 - **nullable** — Indicates whether the name column is nullable in the users table `sql-parser.test.ts:82-82`
-- **number** — Represents the number field in the User message `protobuf-parser.test.ts:87-87`, `protobuf-parser.test.ts:103-103`
+- **number** — Represents the number field in the User message `protobuf-parser.test.ts:87-87`
+- **number** — Extracts the number field from the fields array `protobuf-parser.test.ts:103-103`
 - **onDelete** — Represents the on delete constraint in the child relationship `sql-parser.test.ts:107-107`
 - **oneofGroup** — Represents the oneofGroup in the User message `protobuf-parser.test.ts:152-152`
 - **primaryKey** — Represents a primary key field in the Prisma schema `prisma-parser.test.ts:79-79`
 - **primaryKey** — Indicates the primary key field in the organization table `sql-parser.test.ts:72-72`
 - **refTable** — Represents the referenced table in the child relationship `sql-parser.test.ts:106-106`
 - **repeated** — Represents the repeated field in the User message `protobuf-parser.test.ts:118-118`
-- **type** — A field representing the type of a user `graphql-parser.test.ts:131-131`, `graphql-parser.test.ts:214-214`
+- **type** — A field representing the type of a user `graphql-parser.test.ts:131-131`
+- **type** — Extracts the type of the argument from the metadata `graphql-parser.test.ts:214-214`
 - **type** — Represents a field type in the Prisma schema `prisma-parser.test.ts:78-78`
-- **type** — Represents the type field in the User message `protobuf-parser.test.ts:103-103`, `protobuf-parser.test.ts:117-117`, `protobuf-parser.test.ts:141-141`
-- **type** — Represents the data type of a column `schema-drift-detector.test.ts:24-24`, `schema-drift-detector.test.ts:28-28`
+- **type** — Represents the type field in the User message `protobuf-parser.test.ts:103-103`
+- **type** — Represents the type field as a string `protobuf-parser.test.ts:117-117`
+- **type** — Extracts the type field from the fields array `protobuf-parser.test.ts:141-141`
+- **type** — Represents the data type of a column `schema-drift-detector.test.ts:24-24`
+- **type** — Represents a map of column names to their types and nullable status `schema-drift-detector.test.ts:28-28`
 - **type** — Represents the type of the organization table `sql-parser.test.ts:64-64`
 - **unique** — Represents a unique constraint field in the Prisma schema `prisma-parser.test.ts:80-80`
 - **unique** — Indicates whether the name column is unique in the users table `sql-parser.test.ts:83-83`
@@ -357,7 +401,8 @@ This module contains test suites for various language analyzers, including C, C+
 ### embedded_sql
 - **ALTER TABLE users ADD COLUMN email VARCHAR(255);** — Parses the SQL statement to extract migration operations `migration-detector.test.ts:176-176`
 - **CREATE TABLE events ( event_date Date, user_id UInt64, action String ) ENGINE = MergeTree() ORDER BY** — Parses a SQL statement with a MergeTree engine and ordering `sql-parser.test.ts:199-207`
-- **CREATE TABLE parent (id INT PRIMARY KEY); CREATE TABLE child ( id INT PRIMARY KEY, parent_id INT, FO** — Parses a SQL statement with a foreign key constraint `sql-parser.test.ts:96-102`, `sql-parser.test.ts:176-182`
+- **CREATE TABLE parent (id INT PRIMARY KEY); CREATE TABLE child ( id INT PRIMARY KEY, parent_id INT, FO** — Parses a SQL statement with a foreign key constraint `sql-parser.test.ts:96-102`
+- **CREATE TABLE parent (id INT PRIMARY KEY); CREATE TABLE child ( id INT PRIMARY KEY, parent_id INT, FO** — Defines SQL statements for creating tables parent and child with a foreign key constraint `sql-parser.test.ts:176-182`
 - **CREATE TABLE products (id INT PRIMARY KEY, name TEXT)** — Parses a SQL statement to create a products table with id and name columns `db-code-linker.test.ts:92-92`
 - **CREATE TABLE users (id INT); CREATE TABLE posts (id INT);** — Parses the SQL statements to extract migration operations `migration-detector.test.ts:163-163`
 - **DROP TABLE IF EXISTS users;** — Parses the SQL statement to extract migration operations `migration-detector.test.ts:169-169`

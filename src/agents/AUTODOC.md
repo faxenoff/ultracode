@@ -80,8 +80,12 @@ The `src/agents` module contains a collection of agents responsible for various 
 - **buildResponse** — A function that builds a response for a task `dora-agent.ts:19-21`
 - **cacheEntries** — Stores cache entries for entities `semantic-agent.ts:1457-1465`
 - **callsRels** — Calls relationship builders for entities `indexer-agent.ts:970-970`
-- **changedFiles** — Tracks files that have been changed `indexer-agent.ts:1651-1651`, `indexer-agent.ts:1651-1651`
-- **checks** — A collection of checks or validation steps `dev-agent.ts:1609-1609`, `dev-agent.ts:1610-1610`, `dev-agent.ts:1611-1611`, `dev-agent.ts:1612-1612`
+- **changedFiles** — Tracks files that have been changed `indexer-agent.ts:1651-1651`
+- **changedFiles** — Filters events to find changed files and maps them to their paths `indexer-agent.ts:1651-1651`
+- **checks** — A collection of checks or validation steps `dev-agent.ts:1609-1609`
+- **checks** — Checks if any entity has a protobuf metadata `dev-agent.ts:1610-1610`
+- **checks** — Checks if any entity has a GraphQL metadata `dev-agent.ts:1611-1611`
+- **checks** — Checks if any entity has a database schema or type metadata `dev-agent.ts:1612-1612`
 - **chunkResults** — A function to chunk and process results `dev-agent.ts:2029-2035`
 - **collectAll** — Filters files to only supported extensions `parser-agent.ts:404-409`
 - **computeTargetWorkers** — Computes the target number of workers for the parser agent `parser-agent.ts:1180-1189`
@@ -91,17 +95,22 @@ The `src/agents` module contains a collection of agents responsible for various 
 - **csEntityIds** — Stores IDs of entities with stable IDs `indexer-agent.ts:1174-1174`
 - **ctx** — Represents the context for the agent `indexer-agent.ts:1514-1514`
 - **currentFilesSet** — Represents the current set of files being processed `dev-agent.ts:433-433`
-- **deletedFiles** — Tracks files that have been deleted `indexer-agent.ts:1653-1653`, `indexer-agent.ts:1653-1653`
-- **directImpact** — Represents direct impact of a given entity `query-agent.ts:174-174`, `query-agent.ts:174-174`
+- **deletedFiles** — Tracks files that have been deleted `indexer-agent.ts:1653-1653`
+- **deletedFiles** — Filters events to find deleted files and maps them to their paths `indexer-agent.ts:1653-1653`
+- **directImpact** — Represents direct impact of a given entity `query-agent.ts:174-174`
+- **directImpact** — Filters and maps the direct impact entities based on the entityId `query-agent.ts:174-174`
 - **dumpedEmbeddings** — Contains embeddings that have been dumped to disk `semantic-agent.ts:1570-1576`
 - **embeddingIds** — Stores the IDs of embeddings `dev-agent.ts:675-675`
 - **entitiesToFetch** — Identifies entities to fetch `semantic-agent.ts:1485-1485`
-- **entitiesWithPath** — Stores entities along with their file paths `indexer-agent.ts:624-628`, `indexer-agent.ts:1133-1137`
+- **entitiesWithPath** — Stores entities along with their file paths `indexer-agent.ts:624-628`
+- **entitiesWithPath** — Maps entities to include their file path and a stable ID, updating the entities' id if necessary `indexer-agent.ts:1133-1137`
 - **entityResult** — Stores the result of processing an entity `indexer-agent.ts:607-609`
-- **existingContains** — Creates a set of existing contains relationships `parser-agent.ts:412-412`, `parser-agent.ts:412-412`
+- **existingContains** — Creates a set of existing contains relationships `parser-agent.ts:412-412`
+- **existingContains** — Parses relationships to create a set of existing contains `parser-agent.ts:412-412`
 - **faissFlushPromise** — Represents a promise for flushing FAISS index `dev-agent.ts:708-729`
 - **fileEntries** — Represents the entries in the file `dev-agent.ts:1202-1202`
-- **filesToParse** — Tracks the list of files to be parsed `parser-agent.ts:1093-1093`, `parser-agent.ts:1093-1093`
+- **filesToParse** — Tracks the list of files to be parsed `parser-agent.ts:1093-1093`
+- **filesToParse** — Filters changes to get files that are not deleted `parser-agent.ts:1093-1093`
 - **filtered** — Filters entities based on certain criteria `semantic-agent.ts:1867-1871`
 - **filterSupportedFiles** — Filters files to only include those with supported extensions `parser-agent.ts:81-83`
 - **flatten** — Flattens a nested structure into a single-level structure `parser-agent.ts:290-348`
@@ -116,7 +125,8 @@ The `src/agents` module contains a collection of agents responsible for various 
 - **hasAnyChildren** — Checks if an entity has any children `parser-agent.ts:353-353`
 - **hasAnyParentId** — Checks if an entity has any parent IDs `parser-agent.ts:354-354`
 - **idle** — Indicates if the coordinator is idle `coordinator.ts:289-289`
-- **ids** — Stores IDs for entities `semantic-agent.ts:1487-1487`, `semantic-agent.ts:1487-1487`
+- **ids** — Stores IDs for entities `semantic-agent.ts:1487-1487`
+- **ids** — Filters and maps entities to their IDs, ensuring only defined IDs are included `semantic-agent.ts:1487-1487`
 - **indexPromises** — Manages promises for indexing tasks `dev-agent.ts:2056-2067`
 - **isBunRuntime** — Function to check if the runtime is Bun `conductor-orchestrator.ts:37-39`
 - **isBunRuntime** — Determines if the runtime is Bun `coordinator.ts:108-110`
@@ -148,22 +158,29 @@ The `src/agents` module contains a collection of agents responsible for various 
 - **result** — Not implemented in the provided code `query-agent.ts:99-99`
 - **results** — Stores the results of semantic analysis tasks `semantic-agent.ts:1492-1492`
 - **resultsWithErrors** — Stores results along with any errors encountered during parsing `parser-agent.ts:871-871`
-- **samples** — Represents a collection of sample entities `indexer-agent.ts:1186-1195`, `indexer-agent.ts:1193-1193`
-- **shutdownPromises** — Manages promises for shutdown operations `conductor-orchestrator.ts:147-148`, `conductor-orchestrator.ts:148-148`
+- **samples** — Represents a collection of sample entities `indexer-agent.ts:1186-1195`
+- **samples** — Maps relational samples to a string representation, truncating IDs to the first 8 characters `indexer-agent.ts:1193-1193`
+- **shutdownPromises** — Manages promises for shutdown operations `conductor-orchestrator.ts:147-148`
+- **shutdownPromises** — Logs an error if the agent shutdown fails and catches the error `conductor-orchestrator.ts:148-148`
 - **shutdownPromises** — Manages promises for shutting down the embedding pool `parser-agent.ts:1458-1465`
 - **skippedLanguages** — Tracks the languages that were skipped during parsing `parser-agent.ts:1154-1157`
 - **successCount** — Tracks the number of successful parsing tasks `parser-agent.ts:1208-1208`
 - **summaries** — Stores summaries of parsed entities `parser-agent.ts:875-878`
-- **taskHandlers** — A map of task handlers for different types of tasks `dora-agent.ts:26-44`, `dora-agent.ts:48-64`, `dora-agent.ts:68-79`, `dora-agent.ts:83-104`
+- **taskHandlers** — A map of task handlers for different types of tasks `dora-agent.ts:26-44`
+- **taskHandlers** — Parses a task payload and returns a response with exploration insights `dora-agent.ts:48-64`
+- **taskHandlers** — Parses a task payload and returns a response with documentation sections `dora-agent.ts:68-79`
+- **taskHandlers** — Parses a task payload and returns a response with discovered patterns `dora-agent.ts:83-104`
 - **testEmbedding** — Tests the embedding generation process `semantic-agent.ts:230-232`
 - **totalEntities** — Tracks the total number of entities parsed `parser-agent.ts:1071-1071`
-- **vectorEmbeddings** — Manages vector embeddings for semantic search and analysis `semantic-agent.ts:1503-1566`, `semantic-agent.ts:1918-1924`
+- **vectorEmbeddings** — Manages vector embeddings for semantic search and analysis `semantic-agent.ts:1503-1566`
+- **vectorEmbeddings** — Converts dumped embeddings into a structured array of vector embeddings with additional metadata `semantic-agent.ts:1918-1924`
 - **withCalls** — Represents a task with function calls `parser-agent.ts:1530-1530`
 - **withChildren** — Filters entities with children `parser-agent.ts:448-448`
 - **withChildren** — Represents a task with child tasks `parser-agent.ts:1529-1529`
 - **withLang** — Applies language processing `indexer-agent.ts:512-512`
 - **withParentId** — Filters entities with a parent ID `parser-agent.ts:449-449`
-- **yieldToEventLoop** — Helper function to yield to the event loop between indexing chunks `dev-agent.ts:36-36`, `dev-agent.ts:36-36`
+- **yieldToEventLoop** — Helper function to yield to the event loop between indexing chunks `dev-agent.ts:36-36`
+- **yieldToEventLoop** — Returns a promise that resolves after yielding to the event loop `dev-agent.ts:36-36`
 
 ### Method
 - **"embeddingGen.generateBatch"** — Generates a batch of embeddings `semantic-agent.ts:391-393`
@@ -255,7 +272,8 @@ The `src/agents` module contains a collection of agents responsible for various 
 - **getEmbeddingProvider** — Retrieves the embedding provider instance `semantic-agent.ts:2137-2139`
 - **getEmbeddingsCallback** — Returns a callback to handle embeddings accumulation `parser-agent.ts:549-564`
 - **getEmbeddingSchedulerContext** — Retrieves the context for embedding scheduling `indexer-agent.ts:1349-1362`
-- **getEmbeddingStats** — Retrieves statistics related to embedding operations `dev-agent.ts:2092-2094`, `parser-agent.ts:1879-1904`
+- **getEmbeddingStats** — Retrieves statistics related to embedding operations `dev-agent.ts:2092-2094`
+- **getEmbeddingStats** — Returns statistics related to embedding pools and worker configurations `parser-agent.ts:1879-1904`
 - **getEmbeddingTextsCallback** — Returns a callback to handle embedding texts accumulation `parser-agent.ts:571-588`
 - **getFileWatcherStatus** — Retrieves the status of the file watcher `indexer-agent.ts:1553-1562`
 - **getGitEventContext** — Retrieves the context for a Git event `indexer-agent.ts:1482-1484`
@@ -293,11 +311,13 @@ The `src/agents` module contains a collection of agents responsible for various 
 - **handleIncrementalReindex** — A function to handle incremental reindexing tasks `dev-agent.ts:1703-2000`
 - **handleIndexTask** — Handles indexing tasks `dev-agent.ts:232-290`
 - **handleMessage** — Processes incoming messages from agents `conductor-orchestrator.ts:337-352`
-- **handleMessage** — Handles incoming messages `coordinator.ts:234-250`, `dev-agent.ts:200-203`, `query-agent.ts:68-68`
+- **handleMessage** — Handles incoming messages `coordinator.ts:234-250`
+- **handleMessage** — Processes incoming messages and delegates tasks to appropriate agents `dev-agent.ts:200-203`
 - **handleMessage** — A method to handle incoming messages `dora-agent.ts:140-142`
 - **handleMessage** — Processes messages from the knowledge bus `indexer-agent.ts:1422-1466`
 - **handleMessage** — Handles a message for the merge agent `merge-agent.ts:136-139`
 - **handleMessage** — Handles messages related to parsing tasks `parser-agent.ts:939-978`
+- **handleMessage** — Handles incoming messages by dispatching tasks based on the message type `query-agent.ts:68-68`
 - **handleMessage** — Handles a message from the agent `semantic-agent.ts:712-725`
 - **handleNewEntities** — Processes new entities for semantic analysis `semantic-agent.ts:1620-1820`
 - **handleParseTask** — Parses code files and extracts entities and relationships `dev-agent.ts:329-373`
@@ -336,8 +356,9 @@ The `src/agents` module contains a collection of agents responsible for various 
 - **modelName** — Stores the name of the model being used `semantic-agent.ts:208-210`
 - **onInitialize** — Initializes the orchestrator's internal state `conductor-orchestrator.ts:103-120`
 - **onInitialize** — Initializes the coordinator agent `coordinator.ts:180-183`
-- **onInitialize** — Initializes the agent `dev-agent.ts:122-187`, `indexer-agent.ts:311-382`
+- **onInitialize** — Initializes the agent `dev-agent.ts:122-187`
 - **onInitialize** — A method to initialize the DoraAgent `dora-agent.ts:120-134`
+- **onInitialize** — Initializes the indexer agent with necessary configurations and dependencies `indexer-agent.ts:311-382`
 - **onInitialize** — Initializes the merge agent `merge-agent.ts:145-184`
 - **onInitialize** — Initializes the parser agent with necessary configurations and resources `parser-agent.ts:721-734`
 - **onInitialize** — Initializes the QueryAgent and sets up event listeners `query-agent.ts:70-82`
@@ -371,8 +392,10 @@ The `src/agents` module contains a collection of agents responsible for various 
 - **processIncremental** — Processes incremental changes to files `parser-agent.ts:1088-1110`
 - **processStandaloneComments** — Processes standalone comments for semantic analysis `semantic-agent.ts:1992-2006`
 - **processTask** — Processes a task using registered agents `conductor-orchestrator.ts:163-168`
-- **processTask** — Processes a task `coordinator.ts:208-228`, `dev-agent.ts:205-230`, `indexer-agent.ts:471-494`
+- **processTask** — Processes a task `coordinator.ts:208-228`
+- **processTask** — Executes tasks such as indexing, implementation, and refactoring based on the task payload `dev-agent.ts:205-230`
 - **processTask** — A method to process a task `dora-agent.ts:144-160`
+- **processTask** — Processes a task by parsing entities, building relationships, and updating the graph storage `indexer-agent.ts:471-494`
 - **processTask** — Processes a task for the merge agent `merge-agent.ts:109-134`
 - **processTask** — Processes a task using the parser agent `parser-agent.ts:825-934`
 - **processTask** — Not implemented in the provided code `query-agent.ts:94-107`
@@ -567,12 +590,15 @@ The `src/agents` module contains a collection of agents responsible for various 
 
 ### Property
 - **_ready** — A boolean indicating whether the agent is ready to process tasks `base.ts:37-37`
-- **acquired** — Indicates that a lock has been acquired `indexer-agent.ts:125-125`, `indexer-agent.ts:134-134`
+- **acquired** — Indicates that a lock has been acquired `indexer-agent.ts:125-125`
+- **acquired** — Returns a promise containing a boolean indicating acquisition status and a release function `indexer-agent.ts:134-134`
 - **active** — Indicates whether a resource or entity is currently active `dev-agent.ts:1616-1616`
 - **activeTask** — The currently active task being processed by the agent `base.ts:28-28`
 - **AGENT_STALE_MS** — Time after which an agent is considered stale `conductor-orchestrator.ts:64-64`
-- **agentId** — Identifies the agent that is currently handling a task `conductor-orchestrator.ts:354-354`, `conductor-orchestrator.ts:359-359`
-- **agentId** — Agent ID `coordinator.ts:32-32`, `coordinator.ts:40-40`
+- **agentId** — Identifies the agent that is currently handling a task `conductor-orchestrator.ts:354-354`
+- **agentId** — Identifies the agent associated with the failed task `conductor-orchestrator.ts:359-359`
+- **agentId** — Agent ID `coordinator.ts:32-32`
+- **agentId** — Stores the unique identifier of the agent `coordinator.ts:40-40`
 - **agentLastSeen** — Tracks the last seen time for each agent `conductor-orchestrator.ts:65-65`
 - **agentLoadCache** — Cache for agent load times and timestamps `conductor-orchestrator.ts:47-47`
 - **agents** — Map of agent types to their respective agent instances `conductor-orchestrator.ts:42-42`
@@ -590,8 +616,8 @@ The `src/agents` module contains a collection of agents responsible for various 
 - **branchA** — Name of the first branch to merge `merge-agent.ts:37-37`
 - **branchB** — Name of the second branch to merge `merge-agent.ts:38-38`
 - **branchManager** — A manager for branch changes `indexer-agent.ts:163-163`
-- **branchManager** — Branch manager instance used by the MergeAgent `merge-agent.ts:32-32`
 - **branchManager** — Branch manager for the merge agent `merge-agent.ts:68-68`
+- **branchManager** — Branch manager instance used by the MergeAgent `merge-agent.ts:32-32`
 - **bulkDropPromise** — Promise for dropping bulk indexes `indexer-agent.ts:208-208`
 - **bulkIndexesDropped** — Indicates if bulk indexes are dropped `indexer-agent.ts:206-206`
 - **bulkMode** — Enables bulk mode for semantic analysis operations `semantic-agent.ts:916-916`
@@ -643,7 +669,7 @@ The `src/agents` module contains a collection of agents responsible for various 
 - **depth** — The depth of an entity in the graph `indexer-agent.ts:99-99`
 - **description** — The description of the implementation task `dev-agent.ts:59-59`
 - **description** — A property of the DoraPayload interface `dora-agent.ts:8-8`
-- **directImpact** — Stores an array of strings representing direct impacts `query-agent.ts:30-30`
+- **directImpact** — Stores an array of direct impact strings `query-agent.ts:30-30`
 - **directImplementationAttempts** — Counter for direct implementation attempts `conductor-orchestrator.ts:45-45`
 - **directory** — The directory path for the indexing task `dev-agent.ts:52-52`
 - **diskSizeBytes** — Calculates the disk size used for embeddings `semantic-agent.ts:1977-1977`
@@ -654,7 +680,8 @@ The `src/agents` module contains a collection of agents responsible for various 
 - **EMBEDDING_DEBOUNCE_MS** — The debounce time for embedding generation `indexer-agent.ts:171-171`
 - **embeddingAccumulator** — Accumulates binary embeddings for batch FAISS flush `parser-agent.ts:516-516`
 - **embeddingBatchSize** — Specifies the batch size for embedding generation `semantic-agent.ts:165-165`
-- **embeddingConfig** — Stores the configuration for embeddings `dev-agent.ts:850-850`, `dev-agent.ts:887-887`
+- **embeddingConfig** — Stores the configuration for embeddings `dev-agent.ts:850-850`
+- **embeddingConfig** — Stores the result of building a worker embedding configuration `dev-agent.ts:887-887`
 - **embeddingConfig** — Stores configuration for worker embeddings `parser-agent.ts:515-515`
 - **embeddingDebounceAbort** — A flag to abort debounced embedding generation `indexer-agent.ts:170-170`
 - **embeddingDim** — Represents the dimensionality of the embedding vectors `semantic-agent.ts:164-164`
@@ -664,8 +691,10 @@ The `src/agents` module contains a collection of agents responsible for various 
 - **embeddingMutex** — Ensures thread safety for embedding generation `semantic-agent.ts:181-181`
 - **embeddingReady** — Indicates whether the embedding model is ready for use `semantic-agent.ts:161-161`
 - **embeddingReadyPromise** — A promise that resolves when the embedding model is ready `semantic-agent.ts:162-162`
-- **entities** — Represents the entities extracted from code `dev-agent.ts:1058-1058`, `dev-agent.ts:1137-1137`
-- **entities** — A collection of entities or a representation of entities `dev-agent.ts:1418-1418`, `dev-agent.ts:2009-2009`
+- **entities** — Represents the entities extracted from code `dev-agent.ts:1058-1058`
+- **entities** — A collection of entities or a representation of entities `dev-agent.ts:1137-1137`
+- **entities** — Creates a map of entities by file, storing parsed entities and relationships `dev-agent.ts:1418-1418`
+- **entities** — Processes data files in parallel and returns the count of entities and files `dev-agent.ts:2009-2009`
 - **entities** — A collection of entities to be processed `indexer-agent.ts:94-94`
 - **entities** — A collection of entities `indexer-agent.ts:190-190`
 - **entities** — Stores a collection of entities `indexer-agent.ts:1097-1097`
@@ -677,14 +706,16 @@ The `src/agents` module contains a collection of agents responsible for various 
 - **entitiesIndexed** — Number of entities indexed `indexer-agent.ts:503-503`
 - **entityFlushThreshold** — The threshold for entity flush operations `indexer-agent.ts:187-187`
 - **entityId** — The unique identifier of an entity `indexer-agent.ts:98-98`
-- **entityId** — Represents the entity ID for tasks `query-agent.ts:47-47`, `query-agent.ts:52-52`, `query-agent.ts:53-53`
+- **entityId** — Represents the entity ID for tasks `query-agent.ts:47-47`
+- **entityId** — Parses the entityId from the query parameter `query-agent.ts:52-52`, `query-agent.ts:53-53`
 - **entityNameMap** — A map of entity names `indexer-agent.ts:195-195`
 - **entitySuffixMap** — Maps entity types to their suffixes `indexer-agent.ts:196-196`
 - **error** — Stores an error message related to a task failure `conductor-orchestrator.ts:359-359`
 - **error** — Error message or error object `coordinator.ts:41-41`
 - **error** — Indicates an error that occurred during the execution of a task `dev-agent.ts:1214-1214`
-- **error** — Represents an error encountered during indexing `indexer-agent.ts:537-537`, `indexer-agent.ts:750-750`
-- **error** — Handles errors during graph operations `indexer-agent.ts:1309-1309`
+- **error** — Represents an error encountered during indexing `indexer-agent.ts:537-537`
+- **error** — Handles errors during graph operations `indexer-agent.ts:750-750`
+- **error** — Stores an array of error objects, each containing an item and an error message `indexer-agent.ts:1309-1309`
 - **error** — Error message if the merge operation failed `merge-agent.ts:48-48`
 - **errors** — Stores a list of errors encountered during indexing `indexer-agent.ts:750-750`
 - **excludePatterns** — An array of patterns to exclude during indexing `dev-agent.ts:54-54`
@@ -710,8 +741,8 @@ The `src/agents` module contains a collection of agents responsible for various 
 - **from** — Represents the source entity in a relationship `indexer-agent.ts:653-653`
 - **fromId** — Represents the ID of the source entity in a relationship `indexer-agent.ts:653-653`
 - **generated** — Represents the set of entities that have been generated `semantic-agent.ts:1043-1043`
-- **gitIntegration** — Git integration instance used by the MergeAgent `merge-agent.ts:33-33`
 - **gitIntegration** — Git integration for the merge agent `merge-agent.ts:65-65`
+- **gitIntegration** — Git integration instance used by the MergeAgent `merge-agent.ts:33-33`
 - **gitWatchers** — Git watchers for tracking changes `indexer-agent.ts:165-165`
 - **globalCache** — A global cache for storing embeddings `semantic-agent.ts:192-192`
 - **globalCacheHitCount** — Tracks the global cache hit count `semantic-agent.ts:1121-1121`
@@ -745,8 +776,9 @@ The `src/agents` module contains a collection of agents responsible for various 
 - **isActiveIndexing** — Indicates whether indexing is currently active `indexer-agent.ts:202-202`
 - **isGeneratingEmbeddings** — Indicates whether the agent is currently generating embeddings `semantic-agent.ts:177-177`
 - **isProcessing** — Indicates whether the parser is currently processing `parser-agent.ts:512-512`
-- **item** — Represents a parsed entity or relationship `indexer-agent.ts:537-537`, `indexer-agent.ts:750-750`
-- **item** — Represents an item in the graph `indexer-agent.ts:1309-1309`
+- **item** — Represents a parsed entity or relationship `indexer-agent.ts:537-537`
+- **item** — Represents an item in the graph `indexer-agent.ts:750-750`
+- **item** — Stores an array of error objects, each containing an item and an error message `indexer-agent.ts:1309-1309`
 - **keepPoolsAlive** — Ensures worker pools remain alive for incremental parsing `parser-agent.ts:514-514`
 - **key** — A key used to identify or access a specific entity or resource `dev-agent.ts:1616-1616`
 - **knowledgeBus** — Manages event emission for knowledge bus `parser-agent.ts:511-511`
@@ -759,8 +791,8 @@ The `src/agents` module contains a collection of agents responsible for various 
 - **lastOversizedWarning** — Tracks the last oversized entities warning `semantic-agent.ts:174-174`
 - **lastRejection** — The last rejection details for the agent `base.ts:32-32`
 - **lastRequestTime** — Stores the timestamp of the last request received `conductor-orchestrator.ts:67-67`
-- **limit** — Represents the limit for a semantic task `semantic-agent.ts:144-144`
 - **limit** — Sets a limit for certain operations or data processing `semantic-agent.ts:2072-2072`
+- **limit** — Represents the limit for a semantic task `semantic-agent.ts:144-144`
 - **line** — The line number in the source file where an entity was parsed `indexer-agent.ts:88-88`
 - **load** — Not directly described in the provided code `conductor-orchestrator.ts:47-47`
 - **LOAD_CACHE_TTL** — Time-to-live for agent load cache entries `conductor-orchestrator.ts:48-48`
@@ -789,7 +821,7 @@ The `src/agents` module contains a collection of agents responsible for various 
 - **oldBranch** — Manages old branches in semantic analysis `semantic-agent.ts:924-924`
 - **on** — Method to subscribe to events `coordinator.ts:49-49`
 - **onStreamingResult** — Handles callbacks for streaming results `parser-agent.ts:518-518`
-- **originalIndexToHash** — Stores a list of original indices mapped to their corresponding hash values `semantic-agent.ts:1116-1116`
+- **originalIndexToHash** — Stores a list of original indices mapped to their corresponding hashes `semantic-agent.ts:1116-1116`
 - **parserAgent** — Parses code files `dev-agent.ts:90-90`
 - **payload** — The data associated with an indexer task `indexer-agent.ts:93-101`
 - **pending** — Tracks pending tasks `coordinator.ts:162-162`
@@ -810,8 +842,8 @@ The `src/agents` module contains a collection of agents responsible for various 
 - **priority** — A property of the DoraPayload interface `dora-agent.ts:11-11`
 - **processed** — Indicates whether an entity has been processed `indexer-agent.ts:750-750`
 - **query** — A query to be executed on the graph database `indexer-agent.ts:97-97`
-- **query** — Represents the query for a semantic task `semantic-agent.ts:139-139`
 - **query** — Executes a query using the semantic agent `semantic-agent.ts:2072-2072`
+- **query** — Represents the query for a semantic task `semantic-agent.ts:139-139`
 - **queryExpander** — Expands queries for more accurate semantic search `semantic-agent.ts:196-196`
 - **ready** — A flag indicating the agent is ready `indexer-agent.ts:174-174`
 - **reason** — Represents the reasoning process of the semantic agent `semantic-agent.ts:901-901`
@@ -825,13 +857,14 @@ The `src/agents` module contains a collection of agents responsible for various 
 - **relationshipsCreated** — The number of relationships created during indexing `dev-agent.ts:69-69`
 - **relationshipsCreated** — Represents the number of relationships created `dev-agent.ts:86-86`
 - **relationshipsCreated** — Number of relationships created `indexer-agent.ts:503-503`
-- **release** — Releases a lock `indexer-agent.ts:125-125`, `indexer-agent.ts:134-134`
+- **release** — Releases a lock `indexer-agent.ts:125-125`
+- **release** — Returns a promise containing a boolean indicating acquisition status and a release function `indexer-agent.ts:134-134`
 - **repoPath** — Repository path used by the MergeAgent `merge-agent.ts:26-26`
 - **repositoryPath** — Path to the repository `dev-agent.ts:178-178`
 - **repositoryPath** — Stores the repository path for semantic analysis `semantic-agent.ts:924-924`
 - **resolve** — A function to resolve a queued task with a result `base.ts:17-17`
-- **resourceConstraints** — Resource constraints for the coordinator `coordinator.ts:68-68`
 - **resourceConstraints** — Represents the resource constraints for task execution `coordinator.ts:77-77`
+- **resourceConstraints** — Resource constraints for the coordinator `coordinator.ts:68-68`
 - **resourceMixin** — Mixin for resource adjustment `dev-agent.ts:96-96`
 - **resourceMixin** — Mixes resource management functionalities into the semantic agent `semantic-agent.ts:169-169`
 - **result** — Result of the task `coordinator.ts:33-33`
@@ -869,8 +902,10 @@ The `src/agents` module contains a collection of agents responsible for various 
 - **targetAgent** — A property of the DoraPayload interface `dora-agent.ts:9-9`
 - **targetFile** — The file to which an entity was parsed `indexer-agent.ts:87-87`
 - **task** — An instance of an AgentTask `base.ts:16-16`
-- **task** — Represents a task that needs to be executed by an agent `conductor-orchestrator.ts:354-354`, `conductor-orchestrator.ts:359-359`
-- **task** — Agent task `coordinator.ts:31-31`, `coordinator.ts:39-39`
+- **task** — Represents a task that needs to be executed by an agent `conductor-orchestrator.ts:354-354`
+- **task** — Handles the failure of a task by logging an error and potentially shutting down the agent `conductor-orchestrator.ts:359-359`
+- **task** — Agent task `coordinator.ts:31-31`
+- **task** — Represents the task to be executed by the agent `coordinator.ts:39-39`
 - **taskDispatch** — Dispatches tasks based on message types `query-agent.ts:42-54`
 - **taskId** — Unique identifier for a task `dev-agent.ts:160-160`
 - **taskId** — A property of the DoraPayload interface `dora-agent.ts:10-10`
@@ -894,9 +929,10 @@ The `src/agents` module contains a collection of agents responsible for various 
 - **ttlCache** — Manages a time-to-live cache for query results `query-agent.ts:37-37`
 - **twoPhaseMode** — Indicates whether the agent is in two-phase mode `semantic-agent.ts:188-188`
 - **type** — The type of the agent `base.ts:23-23`
-- **type** — Specifies the type of a relationship `indexer-agent.ts:85-85`, `indexer-agent.ts:92-92`
-- **type** — A property representing the type of an entity `query-agent.ts:14-14`
+- **type** — Specifies the type of a relationship `indexer-agent.ts:85-85`
+- **type** — Represents the type of indexer agent, either "index:entities", "index:incremental", "query:graph", or "query:subgraph" `indexer-agent.ts:92-92`
 - **type** — Represents the type of the entity `query-agent.ts:47-47`
+- **type** — A property representing the type of an entity `query-agent.ts:14-14`
 - **type** — Represents the type of a semantic task `semantic-agent.ts:138-138`
 - **uniqueTexts** — Stores unique texts for processing `semantic-agent.ts:1117-1117`
 - **universalPool** — Represents a single universal worker pool for all languages in incremental mode `parser-agent.ts:509-509`

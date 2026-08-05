@@ -58,8 +58,11 @@ index.ts
 - **main** — Main function for the MCP server `index.ts:1304-1827`
 - **needsUpdate** — Determines if a package needs an update based on version and updatedAt fields `skills-installer.ts:150-178`
 - **newContent** — Maps over the response content to create a new content array with truncated or modified items if they exceed the maximum size `index.ts:807-829`
-- **noop** — Function to suppress console output in quiet mode `index.ts:55-55`, `index.ts:63-63`
-- **normalizeInputPath** — Normalizes the input path for the MCP server `index.ts:325-325`, `index.ts:326-326`, `index.ts:327-332`
+- **noop** — Function to suppress console output in quiet mode `index.ts:55-55`
+- **noop** — Defines a no-operation function `index.ts:63-63`
+- **normalizeInputPath** — Normalizes the input path for the MCP server `index.ts:325-325`
+- **normalizeInputPath** — Normalizes the input path by expanding home and resolving directory `index.ts:326-326`
+- **normalizeInputPath** — Normalizes the input path by expanding the home directory and resolving the path relative to the directory `index.ts:327-332`
 - **parseVersion** — Parse version string into parts `skills-installer.ts:83-86`
 - **parts** — Parts of the version string `skills-installer.ts:84-84`
 - **performGracefulShutdown** — Performs a graceful shutdown of the MCP server `index.ts:1337-1454`
@@ -158,7 +161,8 @@ index.ts
 - **content** — Represents a result object with a content array containing text elements `index.ts:796-796`
 - **content** — Returns a result object with a content array containing text elements `index.ts:797-797`
 - **debug** — Suppresses console.debug output `pipe-preload.ts:33-33`
-- **description** — Description of the skill `skills-installer.ts:36-36`, `skills-installer.ts:39-39`
+- **description** — Description of the skill `skills-installer.ts:36-36`
+- **description** — Stores the description of the skill `skills-installer.ts:39-39`
 - **directory** — Sets the directory for the MCP server `index.ts:1134-1134`
 - **error** — Suppresses console.error output `pipe-preload.ts:29-29`
 - **error** — Represents an error object or message `skills-installer.ts:388-388`
@@ -168,36 +172,44 @@ index.ts
 - **getIndexerAgent** — Gets the indexer agent for the MCP server `index.ts:1773-1776`
 - **info** — Suppresses console.info output `pipe-preload.ts:32-32`
 - **installed** — Indicates whether a skill is installed `skills-installer.ts:343-343`
-- **installedAt** — Date when the manifest was installed `skills-installer.ts:49-49`
 - **installedAt** — Indicates the time when a skill was installed `skills-installer.ts:345-345`
+- **installedAt** — Date when the manifest was installed `skills-installer.ts:49-49`
 - **installedFrom** — Source of the installed manifest `skills-installer.ts:50-50`
 - **knowledgeBus** — Represents an unknown value for the knowledge bus `index.ts:31-31`
 - **log** — Suppresses console.log output `pipe-preload.ts:31-31`
 - **minClaudeCodeVersion** — Minimum Claude Code version required `skills-installer.ts:41-41`
-- **name** — Name of the skill `skills-installer.ts:34-34`, `skills-installer.ts:38-38`
-- **needsUpdate** — Determines if an update is needed based on the current version and the latest version `skills-installer.ts:154-154`, `skills-installer.ts:348-348`
+- **name** — Name of the skill `skills-installer.ts:34-34`
+- **name** — Stores the name of the skill `skills-installer.ts:38-38`
+- **needsUpdate** — Determines if an update is needed based on the current version and the latest version `skills-installer.ts:154-154`
+- **needsUpdate** — Indicates whether an update is needed `skills-installer.ts:348-348`
 - **packageVersion** — Represents the version of the package `skills-installer.ts:347-347`
 - **parsed** — Parses raw input data into a structured format `index.ts:298-298`
 - **pipeServerMode** — Sets the pipe server mode for the MCP server `index.ts:1135-1135`
 - **processStartTime** — Records the start time of the MCP server process `index.ts:1136-1136`
 - **raw** — Stores raw input data for the MCP server `index.ts:297-297`
-- **reason** — Provides the reason for an update `skills-installer.ts:155-155`, `skills-installer.ts:244-244`
+- **reason** — Provides the reason for an update `skills-installer.ts:155-155`
+- **reason** — Represents the reason for an update `skills-installer.ts:244-244`
 - **removed** — Indicates whether a skill was removed `skills-installer.ts:245-245`
 - **removed** — Indicates a skill has been removed `skills-installer.ts:415-415`
 - **setProjectContext** — Sets the project context for the MCP server `index.ts:1774-1774`
 - **setRepositoryPath** — Sets the repository path for the MCP server `index.ts:1775-1775`
-- **skills** — Array of skill objects with name and description `skills-installer.ts:37-40`
-- **skills** — Represents the list of skills to be installed or updated `skills-installer.ts:243-243`, `skills-installer.ts:346-346`, `skills-installer.ts:387-387`
+- **skills** — Represents the list of skills to be installed or updated `skills-installer.ts:243-243`
+- **skills** — Contains an array of skill names `skills-installer.ts:346-346`
+- **skills** — Array of skill objects with name and description `skills-installer.ts:37-40`, `skills-installer.ts:387-387`
 - **success** — Indicates whether an action was successful `skills-installer.ts:385-385`
 - **text** — Sanitizes the response surrogates by modifying the content array `index.ts:735-735`
 - **text** — Appends elapsed time to the content array of a result object `index.ts:748-748`
 - **text** — Represents a result object with a content array containing text elements `index.ts:796-796`
 - **text** — Returns a result object with a content array containing text elements `index.ts:797-797`
-- **type** — Type alias for global with knowledge bus `index.ts:735-735`, `index.ts:748-748`, `index.ts:796-796`, `index.ts:797-797`
+- **type** — Type alias for global with knowledge bus `index.ts:735-735`
+- **type** — Appends elapsed time to the result content array `index.ts:748-748`
+- **type** — Represents the result content array with text type elements `index.ts:796-796`
+- **type** — Returns an object with content as an array of text elements `index.ts:797-797`
 - **updatedAt** — Date when the manifest was last updated `skills-installer.ts:42-42`
 - **updateReason** — Provides the reason for an update `skills-installer.ts:349-349`
-- **version** — Version of the skill `skills-installer.ts:35-35`
-- **version** — Represents the version of the skill or the package `skills-installer.ts:242-242`, `skills-installer.ts:344-344`, `skills-installer.ts:386-386`
+- **version** — Represents the version of the skill or the package `skills-installer.ts:242-242`
+- **version** — Stores the version of the package `skills-installer.ts:344-344`
+- **version** — Version of the skill `skills-installer.ts:35-35`, `skills-installer.ts:386-386`
 - **warn** — Suppresses console.warn output `pipe-preload.ts:30-30`
 
 ## Data Flow

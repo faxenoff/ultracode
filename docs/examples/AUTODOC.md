@@ -2,28 +2,20 @@
 
 ## 🤖 Overview
 
-The examples module provides runnable demonstrations of UltraCode's core capabilities: state analysis, code modification, GPU-accelerated operations, semantic merging, multi-branch indexing, and AST-driven parsing. Each example is a standalone script designed to showcase practical workflows and integration patterns, serving both as learning resources and production templates for common developer tasks.
+The `docs/examples` module provides practical examples for various code analysis and modification tools. It includes usage scenarios for Chaos Analysis, Code Modification, and Layered Indexing, demonstrating how these tools can be applied in real-world development contexts. Developers and maintainers of codebases can use these examples to understand and implement the tools effectively.
+
+## 🤖 Architecture
+
+```
+  [Chaos Analyzer] → [Graph Storage] → [Code Modification Tools]
+  [Layered Index Manager] → [Branch Manager] → [Git Watcher]
+```
 
 ## 🤖 Flow
 
 ```
-Developer Script
-      ↓
-  [Choose Example]
-      ↓
-    ┌─────────────────────────────────────┐
-    │  Initialize Tool/Analyzer           │
-    │  (Chaos/Modifier/GPU/Merge/Parser) │
-    └─────────────────────────────────────┘
-      ↓
-  [Load Input Data]
-      ↓
-    ┌─────────────────────────────────────┐
-    │  Process/Analyze/Compute            │
-    │  (with snapshots/caching as needed) │
-    └─────────────────────────────────────┘
-      ↓
-  [Output Results + Metrics]
+  [User] → [Chaos Analyzer] → [Graph Storage] → [Code Modification Tools]
+  [User] → [Layered Index Manager] → [Branch Manager] → [Git Watcher]
 ```
 
 ## 🤖 Entity Listing
@@ -80,7 +72,8 @@ Developer Script
 - **runChaosAnalysisExamples** — Runs a series of chaos analysis examples, including token analysis, state problem detection, auth module analysis, mutation hotspots, refactoring impact, and integrated analysis `chaos-analysis-example.ts:287-314`
 - **runLayeredIndexingExample** — Executes a series of examples for Layered Indexing, including setup, query operations, semantic search, branch management, status monitoring, and cleanup `layered-indexing-example.ts:176-212`
 - **semanticSearchExample** — Shows how to perform semantic search using vector embeddings with a LayeredIndexManager `layered-indexing-example.ts:80-100`
-- **sorted** — Sorts state patterns by chaos score in descending order `chaos-analysis-example.ts:70-70`, `chaos-analysis-example.ts:175-175`
+- **sorted** — Sorts state patterns by chaos score in descending order `chaos-analysis-example.ts:70-70`
+- **sorted** — Sorts file groups by the length of their entries in descending order `chaos-analysis-example.ts:175-175`
 - **sorted** — Not present in the provided entities `demo-merge-simple.mjs:172-176`
 - **statusMonitoringExample** — Retrieves and logs the current status of the LayeredIndexManager, including initialization status, current branch, cached branches, and total entities `layered-indexing-example.ts:128-152`
 - **userHelperEntity** — Finds the UserHelper entity in the list of entities `code-modification-example.ts:174-174`
@@ -131,14 +124,17 @@ Developer Script
 - **_intentClassifier** — Classifies the intent of code units `demo-semantic-merge.ts:51-51`
 - **aiResolved** — Number of conflicts resolved by AI `demo-semantic-merge.ts:33-33`
 - **aiResolver** — Resolves conflicts using AI `demo-semantic-merge.ts:49-49`
-- **baseUnit** — Represents the base unit of code `demo-semantic-merge.ts:161-161`, `demo-semantic-merge.ts:169-169`
-- **baseUnit** — Represents a base code unit for comparison `demo-semantic-merge.ts:258-258`
+- **baseUnit** — Represents the base unit of code `demo-semantic-merge.ts:161-161`
+- **baseUnit** — Represents a base code unit for comparison `demo-semantic-merge.ts:169-169`
+- **baseUnit** — Analyzes conflicts between base units and branch units `demo-semantic-merge.ts:258-258`
 - **branchA** — Name of the first branch to merge `demo-semantic-merge.ts:42-42`
-- **branchAUnit** — Represents the unit of branch A `demo-semantic-merge.ts:161-161`, `demo-semantic-merge.ts:170-170`
-- **branchAUnit** — Represents a code unit from branch A `demo-semantic-merge.ts:258-258`
+- **branchAUnit** — Represents the unit of branch A `demo-semantic-merge.ts:161-161`
+- **branchAUnit** — Represents a code unit from branch A `demo-semantic-merge.ts:170-170`
+- **branchAUnit** — Analyzes conflicts between base units and branch units `demo-semantic-merge.ts:258-258`
 - **branchB** — Represents the branch being compared in the semantic merge `demo-semantic-merge.ts:43-43`
-- **branchBUnit** — Represents the unit of branch B `demo-semantic-merge.ts:161-161`, `demo-semantic-merge.ts:171-171`
-- **branchBUnit** — Represents a code unit from branch B `demo-semantic-merge.ts:258-258`
+- **branchBUnit** — Represents the unit of branch B `demo-semantic-merge.ts:161-161`
+- **branchBUnit** — Represents a code unit from branch B `demo-semantic-merge.ts:171-171`
+- **branchBUnit** — Analyzes conflicts between base units and branch units `demo-semantic-merge.ts:258-258`
 - **branchManager** — Manages branch operations and configurations `demo-semantic-merge.ts:46-46`
 - **conflictDetectionTime** — Time taken to detect conflicts `demo-semantic-merge.ts:37-37`
 - **conflictDetector** — Detects conflicts between branches `demo-semantic-merge.ts:52-52`
@@ -155,11 +151,16 @@ Developer Script
 - **metrics** — Tracks performance metrics during the semantic merge process `demo-semantic-merge.ts:44-44`
 - **projectPath** — Path to the project directory `demo-semantic-merge.ts:41-41`
 - **semanticMatches** — Number of files matched via semantic analysis (embeddings) `demo-semantic-merge.ts:30-30`
-- **similarity** — Represents a function to calculate similarity between code units `demo-semantic-merge.ts:212-212`, `demo-semantic-merge.ts:221-221`, `demo-semantic-merge.ts:231-231`
+- **similarity** — Represents a function to calculate similarity between code units `demo-semantic-merge.ts:212-212`
+- **similarity** — Represents the similarity score between two CodeUnits in a match array `demo-semantic-merge.ts:221-221`
+- **similarity** — Represents the similarity score in a best match object `demo-semantic-merge.ts:231-231`
 - **startTime** — Start time of the merge process `demo-semantic-merge.ts:26-26`
 - **totalFiles** — Total number of files processed during the merge `demo-semantic-merge.ts:28-28`
-- **unitA** — Represents a code unit from branch A `demo-semantic-merge.ts:212-212`, `demo-semantic-merge.ts:221-221`
-- **unitB** — Represents a code unit from branch B `demo-semantic-merge.ts:212-212`, `demo-semantic-merge.ts:221-221`, `demo-semantic-merge.ts:231-231`
+- **unitA** — Represents a code unit from branch A `demo-semantic-merge.ts:212-212`
+- **unitA** — Represents a CodeUnit in a match array `demo-semantic-merge.ts:221-221`
+- **unitB** — Represents a code unit from branch B `demo-semantic-merge.ts:212-212`
+- **unitB** — Represents a CodeUnit in a match array `demo-semantic-merge.ts:221-221`
+- **unitB** — Represents a CodeUnit in a best match object `demo-semantic-merge.ts:231-231`
 - **unmatchedA** — Indicates whether branch A is unmatched `demo-semantic-merge.ts:162-162`
 - **unmatchedB** — Indicates whether branch B is unmatched `demo-semantic-merge.ts:163-163`
 - **unmatchedUnits** — Number of code units not matched by either fast or semantic paths `demo-semantic-merge.ts:31-31`

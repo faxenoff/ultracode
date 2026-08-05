@@ -46,20 +46,26 @@ The `src/diagrams/renderers` module provides a set of diagram renderers that con
 
 ### Function
 - **buildEdgeAnnotation** — Build edge annotation for Mermaid `mermaid-renderer.ts:42-53`
-- **buildEdgeLabel** — Constructs a label for an edge based on its data annotation `d2-renderer.ts:54-64`, `graphviz-renderer.ts:19-29`
+- **buildEdgeLabel** — Constructs a label for an edge based on its data annotation `d2-renderer.ts:54-64`
+- **buildEdgeLabel** — Constructs a label for an edge based on its data annotation and label `graphviz-renderer.ts:19-29`
 - **buildIdMap** — Build a stable mapping from node.id (hash) → unique sanitized label `mermaid-renderer.ts:25-40`
-- **children** — Represents the children of a node in the DiagramIR `d2-renderer.ts:115-115`, `graphviz-renderer.ts:119-119`
+- **children** — Represents the children of a node in the DiagramIR `d2-renderer.ts:115-115`
+- **children** — Represents the children of a node `graphviz-renderer.ts:119-119`
 - **children** — Not applicable in this context `mermaid-renderer.ts:151-151`
 - **createRenderer** — Factory function to create a DiagramRenderer based on the specified format `index.ts:16-27`
 - **escapeLabel** — Escapes double quotes in a string to make it a valid D2 label `d2-renderer.ts:16-18`
 - **escapeLabel** — Escapes special characters in a string `graphviz-renderer.ts:11-13`
 - **escapeLabel** — Escape label text for Mermaid (quotes and special chars) `mermaid-renderer.ts:17-19`
 - **methodLines** — Represents the method lines of a node in the DiagramIR `graphviz-renderer.ts:121-127`
-- **node** — Represents a node in the DiagramIR `d2-renderer.ts:83-83`, `graphviz-renderer.ts:88-88`
+- **node** — Represents a node in the DiagramIR `d2-renderer.ts:83-83`
+- **node** — Represents a node in the diagram `graphviz-renderer.ts:88-88`
 - **node** — Not applicable in this context `mermaid-renderer.ts:83-83`
-- **nodeColor** — Determines the color of a node based on its type `d2-renderer.ts:37-52`, `graphviz-renderer.ts:47-62`
-- **nodeShape** — Determines the shape of a node based on its type `d2-renderer.ts:20-35`, `graphviz-renderer.ts:31-45`
-- **resolve** — Resolve node ID to label `mermaid-renderer.ts:69-69`, `mermaid-renderer.ts:140-140`
+- **nodeColor** — Determines the color of a node based on its type `d2-renderer.ts:37-52`
+- **nodeColor** — Assigns a color to a node based on its type `graphviz-renderer.ts:47-62`
+- **nodeShape** — Determines the shape of a node based on its type `d2-renderer.ts:20-35`
+- **nodeShape** — Returns the shape for a node based on its type `graphviz-renderer.ts:31-45`
+- **resolve** — Resolve node ID to label `mermaid-renderer.ts:69-69`
+- **resolve** — Returns the resolved ID from the map or sanitizes it if not found `mermaid-renderer.ts:140-140`
 - **sanitizeId** — Sanitizes a string to be a valid D2 ID by replacing invalid characters with underscores `d2-renderer.ts:11-14`
 - **sanitizeId** — Sanitizes and limits the length of a string to 50 characters `graphviz-renderer.ts:15-17`
 - **sanitizeId** — Sanitize string for use as Mermaid node ID `mermaid-renderer.ts:12-14`
@@ -69,11 +75,13 @@ The `src/diagrams/renderers` module provides a set of diagram renderers that con
 - **render** — Renders a DiagramIR to DOT language output `graphviz-renderer.ts:65-110`
 - **render** — Render Mermaid diagram based on diagram type `mermaid-renderer.ts:56-65`
 - **renderClassDiagram** — Not applicable in this context `mermaid-renderer.ts:138-186`
-- **renderEdge** — Renders an edge in the DiagramIR `d2-renderer.ts:140-163`, `graphviz-renderer.ts:139-171`
+- **renderEdge** — Renders an edge in the DiagramIR `d2-renderer.ts:140-163`
+- **renderEdge** — Renders an edge in the DOT language `graphviz-renderer.ts:139-171`
 - **renderFlowchart** — Render flowchart diagram `mermaid-renderer.ts:67-102`
 - **renderFlowchartEdge** — Not applicable in this context `mermaid-renderer.ts:122-136`
 - **renderFlowchartNode** — Not applicable in this context `mermaid-renderer.ts:104-120`
-- **renderNode** — Renders a node in the DiagramIR `d2-renderer.ts:108-138`, `graphviz-renderer.ts:112-137`
+- **renderNode** — Renders a node in the DiagramIR `d2-renderer.ts:108-138`
+- **renderNode** — Renders a node in the DOT language `graphviz-renderer.ts:112-137`
 
 ### Class
 - **D2Renderer** — A class that implements the DiagramRenderer interface to generate D2 language output from DiagramIR `d2-renderer.ts:66-164`

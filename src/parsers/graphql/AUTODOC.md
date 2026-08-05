@@ -2,24 +2,42 @@
 
 ## 🤖 Overview
 
-This module parses GraphQL schema files and automatically detects links between schema definitions and implementation code. It identifies resolver implementations, generated types, hooks, and queries, building a complete relationship graph that tracks how GraphQL definitions connect to their implementations and generated artifacts. The module follows the same pattern as the Swagger code linker, using pattern matching for generated file detection and resolver framework identification to establish bidirectional code-to-schema links.
+The `src/parsers/graphql` module provides tools for analyzing and linking GraphQL schema definitions with source code. It identifies resolver implementations, generated hooks/queries, and types, and re-exports these functionalities for use in other modules. Developers and tools that need to understand or manipulate GraphQL code structures will find this module useful.
+
+## 🤖 Architecture
+
+```
+  +---------------------+
+  |     GraphQL Parser  |
+  +---------------------+
+          |               |
+          v               v
+  +---------------------+   +---------------------+
+  |  GraphQL Code Linker  |   |     Types Definitions  |
+  +---------------------+   +---------------------+
+          |               |
+          v               v
+  +---------------------+
+  |     Re-exports      |
+  +---------------------+
+```
 
 ## 🤖 Flow
 
 ```
-GraphQL Schema Files (.graphql, .gql)
-              ↓
-    GraphQLSchemaParser
-    (extract type definitions, fields, mutations)
-              ↓
-  buildGraphQLRelationships
-  (organize entities into relationship graph)
-              ↓
-  analyzeGraphQLCodeLinks
-  (detect resolver implementations, generated artifacts, consumers)
-              ↓
-     GraphQLAnalysis
-     (output: entities + bidirectional code links)
+  +---------------------+
+  |     GraphQL Parser  |
+  +---------------------+
+          |               |
+          v               v
+  +---------------------+   +---------------------+
+  |  GraphQL Code Linker  |   |     Types Definitions  |
+  +---------------------+   +---------------------+
+          |               |
+          v               v
+  +---------------------+
+  |     Re-exports      |
+  +---------------------+
 ```
 
 ## 🤖 Entity Listing
@@ -43,11 +61,14 @@ GraphQL Schema Files (.graphql, .gql)
 - **graphqlOperations** — Represents operations in the GraphQL schema `graphql-code-linker.ts:140-143`
 - **graphqlTypes** — Represents types in the GraphQL schema `graphql-code-linker.ts:132-136`
 - **interfaces** — Not present in the provided code `graphql-parser.ts:261-261`
-- **isGenerated** — Determines if a file is generated `graphql-code-linker.ts:309-309`, `graphql-code-linker.ts:382-382`
+- **isGenerated** — Determines if a file is generated `graphql-code-linker.ts:309-309`
+- **isGenerated** — Checks if the file path matches any of the generated file patterns `graphql-code-linker.ts:382-382`
 - **locations** — Not present in the provided code `graphql-parser.ts:573-573`
 - **matchGraphQLTypesToCode** — Matches GraphQL types to code entities `graphql-code-linker.ts:369-419`
 - **memberTypes** — Not present in the provided code `graphql-parser.ts:613-613`
-- **metadata** — Not present in the provided code `graphql-parser.ts:268-275`, `graphql-parser.ts:395-401`, `graphql-parser.ts:446-452`
+- **metadata** — Not present in the provided code `graphql-parser.ts:268-275`
+- **metadata** — Maps fields to an object containing name, type, isNonNull, isList, and defaultValue if present `graphql-parser.ts:395-401`
+- **metadata** — Parses fields and their metadata, including name, type, isNonNull, isList, and defaultValue `graphql-parser.ts:446-452`
 - **stripTypeSuffix** — Strips type suffixes from generated GraphQL types `graphql-code-linker.ts:465-474`
 
 ### Method
@@ -102,9 +123,10 @@ GraphQL Schema Files (.graphql, .gql)
 - **codeEntityName** — Name of the resolver/type in code `types.ts:17-17`
 - **codeFilePath** — File path of the code entity `types.ts:19-19`
 - **codegenConfigs** — Codegen config files found `types.ts:43-43`
-- **column** — The column number of an error message `graphql-parser.ts:22-22`
 - **column** — Not present in the provided code `graphql-parser.ts:102-102`
-- **confidence** — Confidence score 0-1 `types.ts:25-25`, `types.ts:56-56`
+- **column** — The column number of an error message `graphql-parser.ts:22-22`
+- **confidence** — Confidence score 0-1 `types.ts:25-25`
+- **confidence** — Represents the confidence level, which is optional `types.ts:56-56`
 - **consumers** — Generated hooks/queries (consumers) `types.ts:37-37`
 - **context** — Contextual information for the field `types.ts:60-60`
 - **defaultValue** — Default value for the field or argument `types.ts:70-70`
@@ -113,7 +135,8 @@ GraphQL Schema Files (.graphql, .gql)
 - **entities** — An array of parsed entities from the GraphQL file `graphql-parser.ts:20-20`
 - **errorCount** — The total number of errors encountered during parsing `graphql-parser.ts:52-52`
 - **errors** — An array of error messages with their locations in the parsed file `graphql-parser.ts:22-22`
-- **evidence** — Evidence for why these were linked `types.ts:27-27`, `types.ts:57-57`
+- **evidence** — Evidence for why these were linked `types.ts:27-27`
+- **evidence** — Represents an array of evidence, which is optional `types.ts:57-57`
 - **fieldName** — Name of the field in the GraphQL schema `types.ts:59-59`
 - **filesParsed** — A counter for the number of files parsed `graphql-parser.ts:50-50`
 - **fromFile** — File path of the entity in the relationship `types.ts:53-53`
@@ -129,25 +152,26 @@ GraphQL Schema Files (.graphql, .gql)
 - **isNonNull** — Checks if a type is non-null `graphql-parser.ts:765-765`
 - **isNonNull** — Indicates whether the field is non-null `types.ts:79-79`
 - **keyword** — The keyword defining the block, such as "query", "mutation", or "subscription" `graphql-parser.ts:26-26`
-- **line** — The line number of an error message `graphql-parser.ts:22-22`
 - **line** — Not present in the provided code `graphql-parser.ts:102-102`
+- **line** — The line number of an error message `graphql-parser.ts:22-22`
 - **linkType** — Type of link `types.ts:23-23`
-- **location** — The location of an error message, specified by line and column numbers `graphql-parser.ts:22-22`
 - **location** — Not present in the provided code `graphql-parser.ts:102-102`
-- **message** — A message associated with an error `graphql-parser.ts:22-22`
+- **location** — The location of an error message, specified by line and column numbers `graphql-parser.ts:22-22`
 - **message** — Not present in the provided code `graphql-parser.ts:102-102`
+- **message** — A message associated with an error `graphql-parser.ts:22-22`
 - **metadata** — Metadata for the relationship `types.ts:55-61`
 - **name** — Represents the name of an entity `graphql-code-linker.ts:241-241`
 - **name** — The name of the block, such as a query or mutation name `graphql-parser.ts:27-27`
-- **name** — Name of the field or argument `types.ts:68-68`, `types.ts:77-77`
+- **name** — Name of the field or argument `types.ts:68-68`
+- **name** — Represents the name of a type `types.ts:77-77`
 - **relationships** — An array of entity relationships extracted from the GraphQL file `graphql-parser.ts:21-21`
 - **resolvers** — Resolver implementations `types.ts:35-35`
 - **startLine** — The starting line number of the block `graphql-parser.ts:30-30`
 - **toFile** — File path of the entity in the relationship `types.ts:54-54`
 - **toName** — Name of the entity in the relationship `types.ts:51-51`
 - **totalParseTimeMs** — The total time taken to parse all files in milliseconds `graphql-parser.ts:51-51`
-- **type** — Type of the relationship `types.ts:52-52`
-- **type** — Type of the field or argument `types.ts:69-69`, `types.ts:78-78`
+- **type** — Type of the field or argument `types.ts:69-69`
+- **type** — Type of the relationship `types.ts:52-52`, `types.ts:78-78`
 - **typeName** — Type name for the relationship `types.ts:58-58`
 
 ## Entities

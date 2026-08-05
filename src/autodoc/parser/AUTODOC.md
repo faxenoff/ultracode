@@ -71,7 +71,8 @@ The `autodoc/parser` module is designed for parsing and extracting references fr
 - **parseReference** — Parses a reference from its text and target `link-extractor.ts:125-222`
 - **renderSection** — Renders a section and its children into a markdown string `md-parser.ts:300-315`
 - **slugify** — Converts a string to a slug by normalizing and replacing characters `md-parser.ts:338-344`
-- **tags** — Regex patterns for different reference types `link-extractor.ts:349-349`, `link-extractor.ts:361-361`
+- **tags** — Regex patterns for different reference types `link-extractor.ts:349-349`
+- **tags** — Maps each tag to its trimmed version `link-extractor.ts:361-361`
 - **traverse** — Recursively traverses a list of sections, pushing each section to the result array `md-parser.ts:136-143`
 - **traverse** — Recursively searches for a section with a specific ID in a list of parsed sections, updating the path as it goes `md-parser.ts:369-385`
 - **updateLineNumbers** — Updates line numbers for references `link-extractor.ts:285-294`
@@ -84,14 +85,18 @@ The `autodoc/parser` module is designed for parsing and extracting references fr
 - **node:path** — Imports `node:path` from `node:path`. `link-extractor.ts:20-20`, `md-parser.ts:12-12`
 
 ### Property
-- **column** — Represents the column number of a reference `link-extractor.ts:93-93`, `link-extractor.ts:99-99`
+- **column** — Represents the column number of a reference `link-extractor.ts:93-93`
+- **column** — Stores the column number of the link `link-extractor.ts:99-99`
 - **docRefs** — Stores doc references `link-extractor.ts:321-321`
 - **entityRefs** — Stores entity references `link-extractor.ts:322-322`
 - **error** — Indicates whether a reference is invalid `link-extractor.ts:268-268`
 - **flowTags** — Represents flow tags `link-extractor.ts:323-323`
-- **syntax** — Represents the syntax of a reference `link-extractor.ts:90-90`, `link-extractor.ts:96-96`
-- **target** — Represents the target URL of a reference `link-extractor.ts:92-92`, `link-extractor.ts:98-98`
-- **text** — Represents the text of a reference `link-extractor.ts:91-91`, `link-extractor.ts:97-97`
+- **syntax** — Represents the syntax of a reference `link-extractor.ts:90-90`
+- **syntax** — Stores the syntax of the link `link-extractor.ts:96-96`
+- **target** — Represents the target URL of a reference `link-extractor.ts:92-92`
+- **target** — Stores the target URL of the link `link-extractor.ts:98-98`
+- **text** — Represents the text of a reference `link-extractor.ts:91-91`
+- **text** — Stores the text of the link `link-extractor.ts:97-97`
 - **valid** — Indicates whether a reference is valid `link-extractor.ts:268-268`
 
 ## Data Flow

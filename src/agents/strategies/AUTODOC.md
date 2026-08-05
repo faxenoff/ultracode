@@ -31,14 +31,22 @@ The `strategies` module provides a flexible task delegation strategy for agents,
 ## 🤖 Entity Listing
 
 ### Function
-- **capableAgents** — Filters agents that support the task type `delegation-strategy.ts:52-52`, `delegation-strategy.ts:97-97`, `delegation-strategy.ts:129-129`
+- **capableAgents** — Filters agents that support the task type `delegation-strategy.ts:52-52`
+- **capableAgents** — Filters available agents to those capable of handling the task type `delegation-strategy.ts:97-97`
+- **capableAgents** — Filters available agents to those that can handle the task type `delegation-strategy.ts:129-129`
 
 ### Method
-- **calculateComplexity** — Calculates the complexity score of a task `delegation-strategy.ts:62-83`, `delegation-strategy.ts:109-111`
-- **calculateComplexity** — Calculates the complexity score of a task based on its priority, payload size, and type `delegation-strategy.ts:141-150`
-- **constructor** — Initializes a ComplexityBasedStrategy with a complexity threshold `delegation-strategy.ts:43-43`, `delegation-strategy.ts:118-121`
-- **selectAgent** — Selects the best agent for a task based on available agents `delegation-strategy.ts:50-60`, `delegation-strategy.ts:96-107`, `delegation-strategy.ts:128-139`
-- **shouldDelegate** — Determines if a task should be delegated based on its complexity `delegation-strategy.ts:45-48`, `delegation-strategy.ts:92-94`, `delegation-strategy.ts:123-126`
+- **calculateComplexity** — Calculates the complexity score of a task `delegation-strategy.ts:62-83`
+- **calculateComplexity** — Calculates the complexity score of a task based on its priority, payload size, and type `delegation-strategy.ts:109-111`
+- **calculateComplexity** — Calculates the complexity of a task based on its priority and payload size `delegation-strategy.ts:141-150`
+- **constructor** — Initializes a ComplexityBasedStrategy with a complexity threshold `delegation-strategy.ts:43-43`
+- **constructor** — Initializes the delegation strategy with complexity threshold and agent load getter `delegation-strategy.ts:118-121`
+- **selectAgent** — Selects the best agent for a task based on available agents `delegation-strategy.ts:50-60`
+- **selectAgent** — Selects an agent based on task type and available agents `delegation-strategy.ts:96-107`
+- **selectAgent** — Selects an agent with the lowest current load for the task `delegation-strategy.ts:128-139`
+- **shouldDelegate** — Determines if a task should be delegated based on its complexity `delegation-strategy.ts:45-48`
+- **shouldDelegate** — Always delegates in round-robin `delegation-strategy.ts:92-94`
+- **shouldDelegate** — Determines whether a task should be delegated based on its complexity `delegation-strategy.ts:123-126`
 
 ### Class
 - **ComplexityBasedStrategy** — Strategy for delegating tasks based on complexity threshold `delegation-strategy.ts:42-84`

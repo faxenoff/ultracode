@@ -128,8 +128,8 @@ The module is structured to allow easy integration with different providers, off
 - **res** — Represents the response from the TEI server `tei-provider.ts:564-564`
 - **results** — Stores the results of embedding operations `ovms-provider.ts:828-828`
 - **results** — Stores the results of processing multiple batches `ovms-provider.ts:828-828`
-- **results** — Parses batch configurations and processes each in parallel `ovms-provider.ts:930-930`
 - **results** — Parses a batch of configurations and processes them concurrently `ovms-provider.ts:930-930`
+- **results** — Parses batch configurations and processes each in parallel `ovms-provider.ts:930-930`
 - **results** — Stores the results of the embedding and reranking operations `tei-provider.ts:577-582`
 - **seemsMissing** — Determines if a model is missing based on the error message `ollama-provider.ts:27-34`
 - **sorted** — A sorted list or array `llamacpp-provider.ts:369-369`
@@ -344,7 +344,8 @@ The module is structured to allow easy integration with different providers, off
 - **add_special_tokens** — Adds special tokens to the input text for encoding `ovms-provider.ts:28-28`
 - **apiKey** — API key for the CloudRU provider `cloudru-provider.ts:17-17`
 - **apiKey** — Stores the API key for the provider `factory.ts:106-106`
-- **apiKey** — Represents an optional API key `factory.ts:116-116`, `factory.ts:124-124`
+- **apiKey** — Represents an optional API key `factory.ts:116-116`
+- **apiKey** — Represents an optional API key for authentication `factory.ts:124-124`
 - **apiKey** — API key for Hugging Face embeddings `huggingface-provider.ts:13-13`
 - **apiKey** — Stores the API key for accessing the Hugging Face API `huggingface-provider.ts:23-23`
 - **apiKey** — A string representing the API key for the OpenAI provider `openai-provider.ts:22-22`
@@ -363,8 +364,10 @@ The module is structured to allow easy integration with different providers, off
 - **baseUrl** — Base URL for the CloudRU provider `cloudru-provider.ts:16-16`
 - **baseUrl** — Stores the base URL for the provider `factory.ts:105-105`
 - **baseUrl** — Not present in the provided code `factory.ts:115-115`
-- **baseUrl** — Represents an optional base URL `factory.ts:125-125`, `factory.ts:142-142`, `factory.ts:154-154`, `factory.ts:168-168`
+- **baseUrl** — Represents an optional base URL `factory.ts:125-125`
 - **baseUrl** — Defines the base URL for API requests `factory.ts:133-133`
+- **baseUrl** — Represents an optional base URL for API requests `factory.ts:142-142`
+- **baseUrl** — Represents the base URL for API requests `factory.ts:154-154`, `factory.ts:168-168`
 - **baseUrl** — The base URL for HTTP requests `http-engine.ts:18-18`
 - **baseUrl** — Base URL for Hugging Face embeddings `huggingface-provider.ts:14-14`
 - **baseUrl** — Holds the base URL for the Hugging Face API `huggingface-provider.ts:24-24`
@@ -716,8 +719,11 @@ The module is structured to allow easy integration with different providers, off
 - **timeoutMs** — Timeout duration in milliseconds for the CloudRU provider `cloudru-provider.ts:18-18`
 - **timeoutMs** — Stores the timeout in milliseconds for the provider `factory.ts:107-107`
 - **timeoutMs** — Not present in the provided code `factory.ts:117-117`
-- **timeoutMs** — Represents an optional timeout in milliseconds `factory.ts:126-126`, `factory.ts:143-143`, `factory.ts:155-155`, `factory.ts:169-169`
+- **timeoutMs** — Represents an optional timeout in milliseconds `factory.ts:126-126`
 - **timeoutMs** — Represents the timeout duration in milliseconds for asynchronous operations `factory.ts:134-134`
+- **timeoutMs** — Represents an optional timeout in milliseconds for API requests `factory.ts:143-143`
+- **timeoutMs** — Represents an optional timeout in `factory.ts:155-155`
+- **timeoutMs** — Represents the timeout duration in milliseconds for API requests `factory.ts:169-169`
 - **timeoutMs** — The timeout duration in milliseconds for HTTP requests `http-engine.ts:19-19`
 - **timeoutMs** — Timeout in milliseconds for Hugging Face embeddings `huggingface-provider.ts:15-15`
 - **timeoutMs** — Sets the timeout duration in milliseconds for API requests `huggingface-provider.ts:25-25`

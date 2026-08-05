@@ -107,9 +107,11 @@ The `swagger` module provides a comprehensive set of functions for parsing and l
 - **codeEntityName** — Name of the controller/type in code `types.ts:17-17`
 - **codeFilePath** — File path of the code entity `types.ts:19-19`
 - **codegenConfigs** — Codegen config files found `types.ts:43-43`
-- **confidence** — A placeholder for confidence level in endpoint matching `swagger-code-linker.ts:336-336`, `swagger-code-linker.ts:337-337`
-- **confidence** — Represents the confidence level of a code entity `swagger-code-linker.ts:553-553`
-- **confidence** — Confidence score 0-1 `types.ts:25-25`, `types.ts:56-56`
+- **confidence** — A placeholder for confidence level in endpoint matching `swagger-code-linker.ts:336-336`
+- **confidence** — Represents the confidence level of a code entity `swagger-code-linker.ts:337-337`
+- **confidence** — Stores the confidence level of the best match `swagger-code-linker.ts:553-553`
+- **confidence** — Confidence score 0-1 `types.ts:25-25`
+- **confidence** — Optionally stores the confidence level as a number `types.ts:56-56`
 - **configFile** — Codegen config file found `types.ts:83-83`
 - **configs** — Stores code generation configuration files `swagger-code-linker.ts:439-439`
 - **consumers** — Stores detected consumers of generated code `swagger-code-linker.ts:439-439`
@@ -117,29 +119,37 @@ The `swagger` module provides a comprehensive set of functions for parsing and l
 - **context** — Context of the swagger entity `types.ts:61-61`
 - **controllerDecorators** — Decorator names that indicate a controller `types.ts:71-71`
 - **controllerPrefix** — Controller prefix `types.ts:103-103`
-- **endpoint** — A placeholder for an endpoint in the swagger specification `swagger-code-linker.ts:336-336`, `swagger-code-linker.ts:337-337`
+- **endpoint** — A placeholder for an endpoint in the swagger specification `swagger-code-linker.ts:336-336`
+- **endpoint** — Represents the best match for an endpoint with its confidence and evidence `swagger-code-linker.ts:337-337`
 - **entity** — Represents an entity in the swagger code linker `swagger-code-linker.ts:552-552`
-- **entityName** — Name of the entity `types.ts:99-99`, `types.ts:117-117`
-- **evidence** — A placeholder for evidence supporting endpoint matching `swagger-code-linker.ts:336-336`, `swagger-code-linker.ts:337-337`
-- **evidence** — Represents the evidence supporting a code entity `swagger-code-linker.ts:554-554`
-- **evidence** — Evidence for why these were linked `types.ts:27-27`, `types.ts:57-57`
+- **entityName** — Name of the entity `types.ts:99-99`
+- **entityName** — Stores the name of the entity as a string `types.ts:117-117`
+- **evidence** — A placeholder for evidence supporting endpoint matching `swagger-code-linker.ts:336-336`
+- **evidence** — Represents the evidence supporting a code entity `swagger-code-linker.ts:337-337`
+- **evidence** — Contains an array of strings representing the evidence for the best match `swagger-code-linker.ts:554-554`
+- **evidence** — Evidence for why these were linked `types.ts:27-27`
+- **evidence** — Optionally stores an array of evidence strings `types.ts:57-57`
 - **fileMarkers** — Markers found in generated files `types.ts:87-87`
-- **filePath** — File path of the entity `types.ts:101-101`, `types.ts:119-119`
+- **filePath** — File path of the entity `types.ts:101-101`
+- **filePath** — Stores the file path as a string `types.ts:119-119`
 - **framework** — Framework name for producer detection `types.ts:69-69`
 - **fromFile** — File path of the from entity `types.ts:53-53`
 - **fromName** — Name of the entity in the from file `types.ts:50-50`
 - **generatedFileMarkers** — Markers found in generated files `types.ts:41-41`
 - **generatedTypes** — Generated DTOs/types from swagger schemas `types.ts:39-39`
 - **generator** — Codegen generator `types.ts:85-85`
-- **httpMethod** — HTTP method used in the relationship `types.ts:58-58`
-- **httpMethod** — HTTP method for the route `types.ts:95-95`, `types.ts:111-111`
+- **httpMethod** — HTTP method for the route `types.ts:95-95`
+- **httpMethod** — HTTP method used in the relationship `types.ts:58-58`, `types.ts:111-111`
 - **linkType** — Type of link `types.ts:23-23`
 - **markers** — Stores markers for code generation `swagger-code-linker.ts:439-439`
 - **metadata** — Metadata for the relationship `types.ts:55-62`
 - **name** — A placeholder for a code entity's name `swagger-code-linker.ts:273-273`
-- **name** — Represents the name of a code entity `swagger-code-linker.ts:627-627`, `swagger-code-linker.ts:637-637`, `swagger-code-linker.ts:644-644`
+- **name** — Represents the name of a code entity `swagger-code-linker.ts:627-627`
+- **name** — Maps an array of objects to their names `swagger-code-linker.ts:637-637`
+- **name** — Maps the name property of each object in the array `swagger-code-linker.ts:644-644`
 - **operationId** — Operation ID for the endpoint `types.ts:115-115`
-- **path** — File path of the code entity `types.ts:59-59`, `types.ts:97-97`, `types.ts:113-113`
+- **path** — File path of the code entity `types.ts:59-59`
+- **path** — Represents the file path as a string `types.ts:97-97`, `types.ts:113-113`
 - **producers** — Controllers/routes that produce the API described in swagger `types.ts:35-35`
 - **routeDecorators** — Decorator names that indicate HTTP methods `types.ts:73-73`
 - **schemaName** — Name of the schema in the swagger specification `types.ts:60-60`

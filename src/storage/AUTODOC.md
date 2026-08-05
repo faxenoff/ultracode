@@ -474,7 +474,8 @@ The `src/storage` module is designed to be a robust foundation for applications 
 - **insertEntity** — Inserts an entity `graph-adapter.ts:407-407`
 - **insertRelationship** — Inserts a relationship `graph-adapter.ts:452-453`
 - **insertRelationships** — Inserts multiple relationships `graph-adapter.ts:454-455`
-- **inTransaction** — Indicates whether the database is in a transaction `bun-sqlite-adapter.ts:45-45`, `sqlite-adapter.ts:42-42`
+- **inTransaction** — Indicates whether the database is in a transaction `bun-sqlite-adapter.ts:45-45`
+- **inTransaction** — Indicates whether the adapter is currently in a transaction `sqlite-adapter.ts:42-42`
 - **isInitialized** — Boolean indicating whether the graph adapter is initialized `graph-adapter.ts:84-84`
 - **item** — Represents an individual item in a batch operation `batch-operations-libsql.ts:151-151`
 - **item** — Stores an item in an array of errors `batch-operations-libsql.ts:248-248`
@@ -498,7 +499,7 @@ The `src/storage` module is designed to be a robust foundation for applications 
 - **maxSize** — Returns the maximum size of the graph adapter `graph-adapter.ts:705-705`
 - **maxSize** — Represents the maximum size of the search result `graph-adapter.ts:706-706`
 - **maxSize** — Represents the maximum size the graph can have `graph-adapter.ts:707-707`
-- **memory** — Specifies if the database is in memory `sqlite-adapter.ts:46-46`
+- **memory** — Specifies if the adapter is using memory storage `sqlite-adapter.ts:46-46`
 - **memoryUsage** — Not explicitly defined in the provided code `cache-manager.ts:131-131`
 - **metadata** — Represents metadata in the graph adapter `graph-adapter.ts:707-707`
 - **metadataOps** — Operations for metadata `graph-adapter.ts:103-103`
@@ -506,10 +507,10 @@ The `src/storage` module is designed to be a robust foundation for applications 
 - **model** — Represents a model used for embeddings `graph-adapter.ts:519-519`
 - **mutexes** — Initializes a set of DbWriteMutex instances for different database operations `multi-db-manager.ts:89-94`
 - **name** — Mutex name for diagnostics `db-write-mutex.ts:17-17`
-- **name** — Stores the name of the database `sqlite-adapter.ts:48-48`
+- **name** — Stores the name of the adapter `sqlite-adapter.ts:48-48`
 - **namePattern** — Defines a name pattern `graph-adapter.ts:415-415`
 - **namePattern** — A pattern for entity names `graph-storage-libsql.ts:279-279`
-- **open** — Indicates if the database is open `sqlite-adapter.ts:49-49`
+- **open** — Indicates if the adapter is open `sqlite-adapter.ts:49-49`
 - **paths** — Stores a reference to MultiDbPaths or null `multi-db-manager.ts:96-96`
 - **projectHash** — Returns the hash of a project `graph-adapter.ts:539-539`
 - **projectHash** — Represents the hash of a project in the graph storage `graph-storage-libsql.ts:695-695`
@@ -518,7 +519,7 @@ The `src/storage` module is designed to be a robust foundation for applications 
 - **pruned** — Indicates whether the graph has been pruned `graph-adapter.ts:752-752`
 - **readonly** — Not applicable in this context `bun-sqlite-adapter.ts:17-17`
 - **readonly** — Read-only flag for the database connection `native-sqlite-client.ts:47-47`
-- **readonly** — Determines if the database is read-only `sqlite-adapter.ts:47-47`
+- **readonly** — Determines if the adapter is read-only `sqlite-adapter.ts:47-47`
 - **readwrite** — Not applicable in this context `bun-sqlite-adapter.ts:19-19`
 - **rebuildVectorIndex** — Rebuilds a vector index in the database `graph-adapter.ts:488-488`
 - **recordIncrementalChanges** — Records incremental changes `graph-adapter.ts:534-535`

@@ -67,10 +67,14 @@ This module provides configuration for various scripting languages, including Ba
 ## 🤖 Entity Listing
 
 ### Function
-- **BASH_CONFIG** — Represents the configuration for the Bash/Shell Script Language, including keywords, node types, and extractors for parsing and analyzing Bash scripts `bash.ts:23-36`, `bash.ts:37-46`
-- **BATCH_CONFIG** — Defines the configuration for the Batch/CMD language, including keywords, node types, and extractors `batch.ts:23-35`, `batch.ts:36-47`
-- **POWERSHELL_CONFIG** — Defines the configuration for the PowerShell language, including keywords, node types, and extractors for parsing and analyzing PowerShell code `powershell.ts:23-38`, `powershell.ts:39-48`
-- **PYTHON_CONFIG** — Represents a comprehensive configuration for the Python language, including keywords, node types, and extractors for enhanced parsing and structural subtyping support `python.ts:75-127`, `python.ts:128-159`
+- **BASH_CONFIG** — Represents the configuration for the Bash/Shell Script Language, including keywords, node types, and extractors for parsing and analyzing Bash scripts `bash.ts:23-36`
+- **BASH_CONFIG** — Parses and returns modifiers for different node types in a BASH configuration `bash.ts:37-46`
+- **BATCH_CONFIG** — Defines the configuration for the Batch/CMD language, including keywords, node types, and extractors `batch.ts:23-35`
+- **BATCH_CONFIG** — Parses the node type and returns an array of modifiers `batch.ts:36-47`
+- **POWERSHELL_CONFIG** — Defines the configuration for the PowerShell language, including keywords, node types, and extractors for parsing and analyzing PowerShell code `powershell.ts:23-38`
+- **POWERSHELL_CONFIG** — Returns modifiers based on the node type `powershell.ts:39-48`
+- **PYTHON_CONFIG** — Represents a comprehensive configuration for the Python language, including keywords, node types, and extractors for enhanced parsing and structural subtyping support `python.ts:75-127`
+- **PYTHON_CONFIG** — Extracts modifiers for Python nodes based on their type `python.ts:128-159`
 
 ### Import_decl
 - **../shared/keywords.js** — Imports `../shared/keywords.js` from `../shared/keywords.js`. `bash.ts:5-5`, `batch.ts:5-5`, `powershell.ts:5-5`, `python.ts:5-5`

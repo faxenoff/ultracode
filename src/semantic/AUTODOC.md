@@ -2,71 +2,84 @@
 
 ## 🤖 Overview
 
-The `semantic` module provides tools for semantic analysis and vector indexing, used by developers and data scientists to understand and manage code patterns and embeddings. It includes functionalities for code analysis, embedding generation, and efficient vector search.
+The `semantic` module provides tools for semantic analysis and vector indexing, primarily used by developers and data scientists to analyze code patterns and manage embeddings. It includes functionalities for code analysis, embedding generation, and efficient vector search.
 
 ## 🤖 Architecture
 
 ```
-  +-------------------+
-  | code-analyzer.ts  |
-  |   +-----------------+
-  |   | semantic-cache |
-  |   |   +-----------------+
-  |   |   | embedding-generator |
-  |   |   |   +-----------------+
-  |   |   |   | embedding-warmup |
-  |   |   |   |   +-----------------+
-  |   |   |   |   | embedding-dump |
-  |   |   |   |   |   +-----------------+
-  |   |   |   |   |   | embedding-router |
-  |   |   |   |   |   |   +-----------------+
-  |   |   |   |   |   |   | embedding-generator |
-  |   |   |   |   |   |   |   +-----------------+
-  |   |   |   |   |   |   |   | embedding-warmup |
-  |   |   |   |   |   |   |   |   +-----------------+
-  |   |   |   |   |   |   |   |   | embedding-dump |
-  |   |   |   |   |   |   |   |   |   +-----------------+
-  |   |   |   |   |   |   |   |   |   | embedding-router |
-  |   |   |
-  |   |   |   +-----------------+
-  |   |   |   | embedding-generator |
-  |   |   |   |   +-----------------+
-  |   |   |   |   | embedding-warmup |
-  |   |   |   |   |   +-----------------+
-  |   |   |   |   |   | embedding-dump |
-  |   |   |   |   |   |   +-----------------+
-  |   |   |   |   |   |   | embedding-router |
-  |   |   |   |   |   |   |   +-----------------+
-  |   |   |   |   |   |   |   | embedding-generator |
-  |   |   |   |   |   |   |   |   +-----------------+
-  |   |   |   |   |   |   |   |   | embedding-warmup |
-  |   |   |   |   |   |   |   |   |   +-----------------+
-  |   |   |   |   |   |   |   |   |   | embedding-dump |
-  |   |   |   |   |   |   |   |   |   |   +-----------------+
-  |   |   |   |   |   |   |   |   |   |   | embedding-router |
-  |   |   |   |   |   |   |   |   |   |   |   +-----------------+
-  |   |   |   |   |   |   |   |   |   |   |   | embedding-generator |
-  |   |   |   |   |   |   |   |   |   |   |   |   +-----------------+
-  |   |   |   |   |   |   |   |   |   |   |   |   | embedding-warmup |
-  |   |   |   |   |   |   |   |   |   |   |   |   |   +-----------------+
-  |   |   |   |   |   |   |   |   |   |   |   |   |   | embedding-dump |
-  |   |   |   |   |   |   |   |   |   |   |   |   |   |   +-----------------+
-  |   |   |   |   |   |   |   |   |   |   |   |   |   |   | embedding-router |
-  |   |   |   |   |   |   |   |   |   |   |   |   |   |   |   +-----------------+
-  |   |   |   |   |   |   |   |   |   |   |   |   |   |   |   | embedding-generator |
-  |   |   |   |   |   |   |   |   |   |   |   |   |   |   |   |   +-----------------+
-  |   |   |   |   |   |   |   |   |   |   |   |   |   |   |   |   | embedding-warmup |
-  |   |   |   |   |   |   |   |   |   |   |   |   |   |   |   |   |   +-----------------+
-  |   |   |   |   |   |   |   |   |   |   |   |   |   |   |   |   |   | embedding-dump |
-  |   |   |   |   |   |   |   |   |   |   |   |   |   |   |   |   |   |   +-----------------+
-  |   |   |   |   |   |   |   |   |   |   |   |   |   |   |   |   |   |   | embedding-router |
-  |   |   |   |   |   |   |   |   |   |   |   |   |   |   |   |   |   |   |   +-----------------+
-  |   |   |   |   |   |   |   |   |   |   |   |   |   |   |   |   |   |   |   | embedding-generator |
-  |   |   |   |   |   |   |   |   |   |   |   |   |   |   |   |   |   |   |   |   +-----------------+
-  |   |   |   |   |   |   |   |   |   |   |   |   |   |   |   |   |   |   |   |   | embedding-warmup |
-  |   |   |   |   |   |   |   |   |   |   |   |   |   |   |   |   |   |   |   |   |   +-----------------+
-  |   |   |   |   |   |   |   |   |   |   |   |   |   |   |   |   |   |   |   |   |   | embedding-dump |
-  |   |   |   |   |   |   |   |   |   |   |   |   |   |
+  +---------------------+
+  |  Code Analyzer      |
+  |  (code-analyzer.ts) |
+  +---------------------+
+           |
+           v
+  +---------------------+
+  |  Embedding Generator |
+  |  (embedding-generator.ts) |
+  +---------------------+
+           |
+           v
+  +---------------------+
+  |  Semantic Cache     |
+  |  (semantic-cache.ts) |
+  +---------------------+
+           |
+           v
+  +---------------------+
+  |  Vector Store       |
+  |  (vector-store.ts)  |
+  +---------------------+
+           |
+           v
+  +---------------------+
+  |  IVF Index          |
+  |  (ivf-index.ts)     |
+  +---------------------+
+           |
+           v
+  +---------------------+
+  |  Native Vector Index |
+  |  (native-vector-index.ts) |
+  +---------------------+
+```
+
+## 🤖 Flow
+
+```
+  +---------------------+
+  |  Code Analyzer      |
+  |  (code-analyzer.ts) |
+  +---------------------+
+           |
+           v
+  +---------------------+
+  |  Embedding Generator |
+  |  (embedding-generator.ts) |
+  +---------------------+
+           |
+           v
+  +----------------
+  |  Semantic Cache     |
+  |  (semantic-cache.ts) |
+  +---------------------+
+           |
+           v
+  +---------------------+
+  |  Vector Store       |
+  |  (vector-store.ts)  |
+  +---------------------+
+           |
+           v
+  +---------------------+
+  |  IVF Index          |
+  |  (ivf-index.ts)     |
+  +---------------------+
+           |
+           v
+  +---------------------+
+  |  Native Vector Index |
+  |  (native-vector-index.ts) |
+  +---------------------+
 ```
 
 ## 🤖 Entity Listing
@@ -106,9 +119,10 @@ The `semantic` module provides tools for semantic analysis and vector indexing, 
 - **data** — Categorizes text strings by their character lengths `embedding-accumulator.ts:849-849`
 - **data** — Categorizes text strings by their character lengths. `embedding `embedding-accumulator.ts:852-852`
 - **data** — Calculates the number of text strings longer than 1000 characters `embedding-accumulator.ts:853-853`
-- **data** — Maps each text to an object containing its ID, character count, truncated character count, and a preview `embedding-accumulator.ts:854-854`, `embedding-accumulator.ts:858-863`
+- **data** — Maps each text to an object containing its ID, character count, truncated character count, and a preview `embedding-accumulator.ts:854-854`
 - **data** — Determines the truncated character count based on the sorted batch index `embedding-accumulator.ts:855-855`
-- **data** — Sets the truncated character count based on the sorted batch index `embedding-accumulator.ts:861-861`
+- **data** — Sets the truncated character count based on the sorted batch index `embedding-accumulator.ts:858-863`
+- **data** — Parses the length of the truncated characters from the sorted batch `embedding-accumulator.ts:861-861`
 - **dedupeById** — Removes duplicate embeddings by their IDs `vector-store.ts:43-47`
 - **defaultTermMatchScorer** — Defines the default scorer for term matching in the search process `hybrid-search.ts:330-340`
 - **detectOptimalThreads** — Detects optimal thread count based on P-cores (Performance cores) for llama.cpp server processes `llamacpp-server-manager.ts:43-145`
@@ -282,7 +296,7 @@ The `semantic` module provides tools for semantic analysis and vector indexing, 
 - **copyBranch** — Copies a branch from the vector store `vector-store.ts:1501-1504`
 - **count** — Returns the number of vectors stored in the index `native-vector-index.ts:65-67`
 - **count** — Returns the number of vectors `native-vector-provider.ts:222-224`
-- **count** — Returns the total number of vectors in the vector store, using either a layered index or Faiss provider `vector-store.ts:1242-1251`
+- **count** — Returns the total number of vectors in the vector store `vector-store.ts:1242-1251`
 - **crossLanguageSearch** — Performs cross-language code search `code-analyzer.ts:263-279`
 - **defaultThreshold** — Default threshold for pre-filtering `hash-filter.ts:90-92`
 - **delete** — Removes a value from the cache `semantic-cache.ts:151-156`
@@ -478,7 +492,7 @@ The `semantic` module provides tools for semantic analysis and vector indexing, 
 - **setVectorProvider** — Sets the vector provider for embedding accumulation `embedding-accumulator.ts:148-153`
 - **siftDown** — Moves an element down in a heap to maintain heap property `ivf-index.ts:101-115`
 - **simType** — Similarity type for code comparison `code-analyzer.ts:351-354`
-- **size** — Represents the size of the cache, which is the sum of the sizes of embeddings, results, and miscellaneous data `semantic-cache.ts:178-180`
+- **size** — Returns the total size of the cache by summing the sizes of embeddings, results, and miscellaneous data `semantic-cache.ts:178-180`
 - **sortDescending** — Sorts an array in descending order `ivf-index.ts:117-121`
 - **start** — Initiates the llama.cpp server process `llamacpp-server-manager.ts:382-601`
 - **start** — Starts the MLX server process `mlx-server-manager.ts:257-408`
@@ -861,7 +875,7 @@ The `semantic` module provides tools for semantic analysis and vector indexing, 
 - **lines** — Counts the number of lines in the provided code `code-analyzer.ts:24-24`
 - **lines** — Indicates the number of lines in an entity `entity-expander.ts:217-217`
 - **list** — Index of the list in the inverted file `ivf-index.ts:50-50`
-- **lists** — Initializes an empty array to store inverted lists `ivf-index.ts:164-164`
+- **lists** — Represents an array of inverted lists `ivf-index.ts:164-164`
 - **loaded** — Boolean indicating whether the MLX Native library is loaded `mlx-native.ts:32-32`
 - **loops** — Counts the number of loops in the provided code `code-analyzer.ts:26-26`
 - **masterIdx** — Index of the master list in the inverted file `ivf-index.ts:45-45`
@@ -1004,8 +1018,8 @@ The `semantic` module provides tools for semantic analysis and vector indexing, 
 - **sim** — Represents a similarity score between vectors `ivf-index.ts:427-427`
 - **size** — Represents the size of the cache `embedding-generator.ts:319-319`
 - **size** — Returns the number of items in the cache `semantic-cache.ts:198-198`
-- **size** — Current size of the cache `semantic-cache.ts:28-28`, `semantic-cache.ts:199-199`
-- **size** — Returns the total size of the cache by summing the sizes of embeddings, results, and miscellaneous data `semantic-cache.ts:200-200`
+- **size** — Returns the total size of the cache by summing the sizes of embeddings, results, and miscellaneous data `semantic-cache.ts:199-199`
+- **size** — Current size of the cache `semantic-cache.ts:28-28`, `semantic-cache.ts:200-200`
 - **start** — Represents the start of a date range `vector-store.ts:1031-1031`
 - **startedAt** — Represents the timestamp when the server started `llamacpp-server-manager.ts:178-178`
 - **startedAt** — Number representing the timestamp when the MLX server started `mlx-server-manager.ts:43-43`

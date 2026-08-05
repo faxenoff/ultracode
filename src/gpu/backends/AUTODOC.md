@@ -104,12 +104,14 @@ This module provides a unified interface for various GPU backends, enabling effi
 - **close** — Closes the WASM backend by setting `this.ops` to null and logging a message `wasm-backend.ts:96-99`
 - **close** — Closes the WebGPU backend `webgpu-backend.ts:392-400`
 - **constructor** — Initializes a new instance of the WebGPU backend `webgpu-backend.ts:216-216`
-- **cosineSimilarity** — Method to compute cosine similarity between two vectors `cuda-backend.ts:123-133`, `metal-backend.ts:119-129`
+- **cosineSimilarity** — Method to compute cosine similarity between two vectors `cuda-backend.ts:123-133`
 - **cosineSimilarity** — Not present in the provided code `gpu-worker-backend.ts:96-102`
 - **cosineSimilarity** — Computes the cosine similarity between two vectors using an optimized implementation `js-backend.ts:37-40`
+- **cosineSimilarity** — Computes the cosine similarity between two vectors `metal-backend.ts:119-129`
 - **cosineSimilarity** — Computes cosine similarity between two vectors `wasm-backend.ts:67-74`
-- **cosineSimilarity** — Computes the cosine similarity between two vectors `webgpu-backend.ts:294-298`
-- **euclideanDistance** — Method to compute Euclidean distance between two vectors `cuda-backend.ts:158-167`, `metal-backend.ts:154-163`
+- **cosineSimilarity** — Computes the cosine similarity between query and database vectors using a WebGPU compute shader `webgpu-backend.ts:294-298`
+- **euclideanDistance** — Method to compute Euclidean distance between two vectors `cuda-backend.ts:158-167`
+- **euclideanDistance** — Calculates the Euclidean distance between two vectors `metal-backend.ts:154-163`
 - **getAdapter** — Retrieves the WebGPU adapter `webgpu-backend.ts:229-248`
 - **getCapabilities** — Method to get capabilities of the CUDA backend `cuda-backend.ts:113-121`
 - **getCapabilities** — Not present in the provided code `gpu-worker-backend.ts:86-94`
@@ -201,8 +203,10 @@ This module provides a unified interface for various GPU backends, enabling effi
 - **initialized** — Boolean indicating whether the CUDA backend has been initialized `cuda-backend.ts:50-50`
 - **initialized** — Indicates whether the backend has been initialized `gpu-worker-backend.ts:28-28`
 - **initialized** — Boolean indicating if the backend is initialized `metal-backend.ts:50-50`
-- **label** — Optional label for the shader module `webgpu-backend.ts:79-79`, `webgpu-backend.ts:86-86`, `webgpu-backend.ts:94-94`, `webgpu-backend.ts:101-101`, `webgpu-backend.ts:118-118`, `webgpu-backend.ts:133-133`, `webgpu-backend.ts:143-143`
-- **label** — A label for the WebGPU Shader Module `webgpu-backend.ts:151-151`, `webgpu-backend.ts:173-173`
+- **label** — Represents an optional string label for the entity `webgpu-backend.ts:101-101`, `webgpu-backend.ts:151-151`
+- **label** — Represents an optional string label `webgpu-backend.ts:94-94`, `webgpu-backend.ts:118-118`, `webgpu-backend.ts:133-133`, `webgpu-backend.ts:143-143`, `webgpu-backend.ts:173-173`
+- **label** — Optional label for the shader module `webgpu-backend.ts:79-79`
+- **label** — A label for the WebGPU Shader Module `webgpu-backend.ts:86-86`
 - **layout** — Specifies the layout for a bind group `webgpu-backend.ts:152-152`
 - **layout** — Represents the bind group layout for WebGPU `webgpu-backend.ts:174-174`
 - **limits** — Contains maximum storage buffer binding size and compute workgroup size `webgpu-backend.ts:193-196`

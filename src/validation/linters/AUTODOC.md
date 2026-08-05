@@ -105,7 +105,8 @@ The `Validation/linters` module provides a set of linters for code validation, i
 - **stderr** — Stores the standard error from the oxlint command `oxlint-linter.ts:75-75`
 - **stdout** — Standard output from the Biome command `biome-linter.ts:65-65`
 - **stdout** — Stores the standard output from the oxlint command `oxlint-linter.ts:75-75`
-- **stdout** — Stores the output from the Pylint command `pylint-linter.ts:56-56`, `pylint-linter.ts:58-58`
+- **stdout** — Stores the output from the Pylint command `pylint-linter.ts:56-56`
+- **stdout** — Parses the stdout property from an error object `pylint-linter.ts:58-58`
 
 ## Data Flow
 

@@ -157,7 +157,7 @@ The `src/shared` module provides a set of utilities and worker systems for diffe
 - **handleMessage** — Handles incoming IPC messages `ipc-protocol.ts:340-365`
 - **handleWorkerError** — Handles errors that occur during worker execution `adaptive-worker.ts:341-360`
 - **isIndexingInProgress** — Tracks whether indexing is currently in progress `project-context.ts:171-174`
-- **isProjectIndexed** — Checks if a project is indexed by retrieving its project info and checking the indexed status `project-context.ts:121-124`
+- **isProjectIndexed** — Checks if a project is indexed by retrieving its information and verifying the indexed status `project-context.ts:121-124`
 - **off** — Removes a listener for IPC messages `ipc-protocol.ts:328-330`
 - **on** — Listens for IPC messages `ipc-protocol.ts:318-323`
 - **onProjectChange** — Handles changes in the current project path `project-context.ts:197-199`
@@ -165,7 +165,7 @@ The `src/shared` module provides a set of utilities and worker systems for diffe
 - **request** — Sends an IPC request message `ipc-protocol.ts:295-313`
 - **reset** — Resets the buffer and decoder `ipc-protocol.ts:188-191`
 - **reset** — Resets the project context to its initial state `project-context.ts:221-228`
-- **resolveProjectPath** — Parses a project path, normalizing it if provided, or using the current project path if not `project-context.ts:72-80`
+- **resolveProjectPath** — Parses a project path, normalizing it if necessary, and returns the resolved path `project-context.ts:72-80`
 - **sendEvent** — Sends an IPC event message `ipc-protocol.ts:335-338`
 - **shrinkIfEmpty** — Shrinks the buffer if it is empty `ipc-protocol.ts:138-142`
 - **shutdown** — Shuts down the worker pool `adaptive-worker.ts:135-156`
@@ -225,7 +225,7 @@ The `src/shared` module provides a set of utilities and worker systems for diffe
 - **branch** — Represents the tracking branch of a submodule `git-worktree.ts:68-68`, `git-worktree.ts:377-377`
 - **branch** — Tracking branch (null if not set) `git-worktree.ts:50-50`, `git-worktree.ts:378-378`
 - **buffer** — A buffer used for IPC communication `ipc-protocol.ts:117-117`
-- **busy** — Represents the current state of the worker being busy `adaptive-worker.ts:67-67`
+- **busy** — Represents the current state of the worker being busy or not `adaptive-worker.ts:67-67`
 - **code** — The error code for the IPC error `ipc-protocol.ts:43-43`
 - **commitHash** — Pinned commit hash `git-worktree.ts:52-52`
 - **createdAt** — Records the timestamp when a worker was created `adaptive-worker.ts:69-69`

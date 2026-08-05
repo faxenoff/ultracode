@@ -2,50 +2,57 @@
 
 ## 🤖 Overview
 
-The `addons` module provides C# code parsing by managing an external Roslyn-based .NET subprocess (`Ultrasharp.Addon.dll`), connected via Named Pipes using a binary IPC protocol. It exposes a `CSharpNativeParser` facade for single-file and batch parsing, with a singleton lifecycle manager handling lazy initialization, concurrent-call deduplication, solution file discovery, and graceful shutdown. When the Roslyn addon is unavailable, all parse methods return `null`, enabling transparent fallback to tree-sitter parsing.
+The `src/addons` module provides a set of tools for parsing and managing C# code, primarily through the Roslyn library. It includes a native parser for C# files and a client for interacting with the Roslyn addon, along with lifecycle management for the Roslyn client. Developers and maintainers of C# projects can use this module to parse and analyze C# code efficiently.
+
+## 🤖 Architecture
+
+```
+  +---------------------+
+  | CSharpNativeParser |
+  +---------------------+
+          |
+          v
+  +---------------------+
+  | RoslynAddonClient  |
+  +---------------------+
+          |
+          v
+  +---------------------+
+  | RoslynClientOptions |
+  +---------------------+
+          |
+          v
+  +---------------------+
+  | CSharpEntityMetadata |
+  +---------------------+
+```
 
 ## 🤖 Flow
 
 ```
-┌─────────────────────────────────────────────────────────────┐
-│ Caller: parseFile(filePath) / parseBatch(files)             │
-└────────────────────┬────────────────────────────────────────┘
-                     ↓
-        ┌────────────────────────────┐
-        │ ensureRoslynStarted()       │
-        │ Check DLL availability      │
-        │ Deduplicate concurrent init │
-        └────────────┬───────────────┘
-                     ↓
-        ┌────────────────────────────────────────┐
-        │ RoslynAddonClient.start()               │
-        │ Spawn: dotnet exec Addon.dll --pipe... │
-        │ Connect via Named Pipe                  │
-        └────────────┬─────────────────────────────┘
-                     ↓
-        ┌──────────────────────────────────────┐
-        │ CSharpNativeParser.parseFile()        │
-        │ Encode JSON-RPC request + binary      │
-        │ Send over Named Pipe socket           │
-        └────────────┬──────────────────────────┘
-                     ↓
-        ┌──────────────────────────────────────┐
-        │ Roslyn Subprocess (Ultrasharp)        │
-        │ Parse C# → extract entities/metadata  │
-        │ Encode response + binary framing      │
-        └────────────┬──────────────────────────┘
-                     ↓
-        ┌──────────────────────────────────────┐
-        │ MessageDecoder                        │
-        │ Match response by UUID                │
-        │ Resolve pending promise               │
-        └────────────┬──────────────────────────┘
-                     ↓
-        ┌──────────────────────────────────────┐
-        │ CSharpParseResult                     │
-        │ [CSharpParsedEntity[], metadata]      │
-        │ or null if unavailable                │
-        └──────────────────────────────────────┘
+  +---------------------+
+  | CSharpNativeParser |
+  +---------------------+
+          |
+          v
+  +---------------------+
+  | parseCSharpFile     |
+  +---------------------+
+          |
+          v
+  +---------------------+
+  | CSharpParseResult   |
+  +---------------------+
+          |
+          v
+  +---------------------+
+  | CSharpParsedEntity  |
+  +---------------------+
+          |
+          v
+  +---------------------+
+  | CSharpEntityMetadata |
+  +---------------------+
 ```
 
 ## 🤖 Entity Listing
@@ -148,14 +155,18 @@ The `addons` module provides C# code parsing by managing an external Roslyn-base
 - **emptyCatchCount** — Counts the number of empty catch blocks in the C# code `csharp-native-parser.ts:81-81`
 - **endLine** — Ending line number of the entity in the C# file `csharp-native-parser.ts:25-25`
 - **entities** — An array of parsed entities from a C# file `csharp-native-parser.ts:16-16`
-- **entities** — Represents the parsed entities from the C# file `csharp-native-parser.ts:130-130`, `csharp-native-parser.ts:136-136`
+- **entities** — Represents the parsed entities from the C# file `csharp-native-parser.ts:130-130`
+- **entities** — Contains an array of file entities with their file paths and parsed entities `csharp-native-parser.ts:136-136`
 - **eventHandlers** — Stores event handlers for phase changes and diagnostics `roslyn-client.ts:90-90`
 - **exceptions** — exception handling in the control flow `csharp-native-parser.ts:62-68`
 - **expression** — expression associated with an await statement `csharp-native-parser.ts:70-70`
 - **fieldType** — Specifies the type of the field `csharp-native-parser.ts:53-53`
 - **filePath** — File path of the C# file from which the entity was parsed `csharp-native-parser.ts:23-23`
-- **filePath** — Represents the file path of the C# file being parsed `csharp-native-parser.ts:129-129`, `csharp-native-parser.ts:130-130`, `csharp-native-parser.ts:136-136`
-- **files** — Represents the list of files being parsed `csharp-native-parser.ts:130-130`, `csharp-native-parser.ts:136-136`
+- **filePath** — Represents the file path of the C# file being parsed `csharp-native-parser.ts:129-129`
+- **filePath** — Represents an array of file entities with their file paths and parsed entities `csharp-native-parser.ts:130-130`
+- **filePath** — Represents the file path of a C# native parser `csharp-native-parser.ts:136-136`
+- **files** — Represents the list of files being parsed `csharp-native-parser.ts:130-130`
+- **files** — Contains an array of file entities with their file paths and parsed entities `csharp-native-parser.ts:136-136`
 - **fqn** — Fully qualified name of the parsed entity `csharp-native-parser.ts:35-35`
 - **hasParallelForEachAsync** — Indicates whether the C# code contains parallel foreach async operations `csharp-native-parser.ts:79-79`
 - **hasRethrow** — whether the exception is rethrown `csharp-native-parser.ts:65-65`
@@ -178,7 +189,12 @@ The `addons` module provides C# code parsing by managing an external Roslyn-base
 - **kind** — kind of loop in the control flow `csharp-native-parser.ts:61-61`
 - **language** — Language of the parsed entity, which is always "C#" `csharp-native-parser.ts:27-27`
 - **line** — Indicates the line number of the method call `csharp-native-parser.ts:55-55`
-- **line** — line number where a diagnostic message occurs `csharp-native-parser.ts:56-56`, `csharp-native-parser.ts:60-60`, `csharp-native-parser.ts:61-61`, `csharp-native-parser.ts:63-63`, `csharp-native-parser.ts:69-69`, `csharp-native-parser.ts:70-70`
+- **line** — line number where a diagnostic message occurs `csharp-native-parser.ts:56-56`
+- **line** — Stores an array of branch entities with their line numbers `csharp-native-parser.ts:60-60`
+- **line** — Contains an array of loop entities with their kind, line numbers, and inner calls `csharp-native-parser.ts:61-61`
+- **line** — Represents a single line number `csharp-native-parser.ts:63-63`
+- **line** — Stores an array of return entities with their line numbers `csharp-native-parser.ts:69-69`
+- **line** — Contains an array of await entities with their expressions and line numbers `csharp-native-parser.ts:70-70`
 - **lockOnThisCount** — Counts the number of lock on this operations in the C# code `csharp-native-parser.ts:75-75`
 - **logDirectory** — Directory for logging the addon process `roslyn-client.ts:40-40`
 - **loops** — loops in the control flow of a parsed entity `csharp-native-parser.ts:61-61`
@@ -186,7 +202,8 @@ The `addons` module provides C# code parsing by managing an external Roslyn-base
 - **message** — Represents the message of the diagnostic `csharp-native-parser.ts:56-56`
 - **metadata** — Metadata associated with the parsed entity `csharp-native-parser.ts:29-29`
 - **name** — Name of the parsed entity `csharp-native-parser.ts:21-21`
-- **name** — Represents the name of the entity `csharp-native-parser.ts:47-47`, `csharp-native-parser.ts:55-55`
+- **name** — Represents the name of the entity `csharp-native-parser.ts:47-47`
+- **name** — Represents an array of call entities with their respective details `csharp-native-parser.ts:55-55`
 - **namespace** — Namespace of the parsed entity `csharp-native-parser.ts:34-34`
 - **newDisposableNoUsingCount** — Counts the number of new disposable objects without using in the C# code `csharp-native-parser.ts:78-78`
 - **newHttpClientCount** — Counts the number of new HttpClient instances in the C# code `csharp-native-parser.ts:77-77`

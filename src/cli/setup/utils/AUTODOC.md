@@ -2,7 +2,36 @@
 
 ## 🤖 Overview
 
-The setup utils module provides foundational infrastructure needed by the setup wizard and provider installers. It includes Docker daemon availability checking, Ollama service verification with retry logic, NVIDIA Container Toolkit detection and automated configuration, multi-device (GPU + CPU) parallel inference configuration for OVMS, Docker llama-server process cleanup, and a cross-runtime async sleep function compatible with both Bun and Node.js.
+This module provides utilities for Docker detection and management, multi-device configuration, and checking the presence of the NVIDIA Container Toolkit. It is used by the setup process to ensure necessary tools are available and configured correctly.
+
+## 🤖 Architecture
+
+```
+  +---------------------+
+  |     Docker Utils    |
+  +---------------------+
+  |     Multi-Device    |
+  |     Config          |
+  +---------------------+
+  |     NVIDIA Toolkit  |
+  +---------------------+
+```
+
+## 🤖 Flow
+
+```
+  +---------------------+
+  |     Check Docker    |
+  +---------------------+
+  |     Check Ollama    |
+  +---------------------+
+  |     Create Multi-Device Config |
+  +---------------------+
+  |     Generate Endpoints Array |
+  +---------------------+
+  |     Check NVIDIA Toolkit |
+  +---------------------+
+```
 
 ## 🤖 Entity Listing
 

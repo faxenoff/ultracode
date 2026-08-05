@@ -156,7 +156,7 @@ searchQuery → patternSearch → trigramExtract → trigramIndex → BM25Score 
 - **../utils/simd-vector-ops.js** — Imports `../utils/simd-vector-ops.js` from `../utils/simd-vector-ops.js`. `pattern-search.ts:28-28`
 - **./code-classifier.js** — Imports `./code-classifier.js` from `./code-classifier.js`. `keyword-triage.ts:16-16`, `trigram-extract.ts:15-15`
 - **./trigram-extract.js** — Imports `./trigram-extract.js` from `./trigram-extract.js`. `trigram-index.ts:13-13`
-- **./trigram-types.js** — Imports `./trigram-types.js` from `./trigram-types.js`. `trigram-extract.ts:16-16`, `trigram-extract.ts:17-17`, `trigram-index.ts:14-14`
+- **./trigram-types.js** — Imports `./trigram-types.js` from `./trigram-types.js`. `trigram-index.ts:14-14`, `trigram-extract.ts:16-16`, `trigram-extract.ts:17-17`
 - **./trigram-types.js** — Imports `./trigram-types.js`. `trigram-index.ts:15-25`
 - **./varint.js** — Imports `./varint.js` from `./varint.js`. `trigram-index.ts:26-26`
 - **node:fs** — Imports `node:fs` from `node:fs`. `trigram-index.ts:12-12`
@@ -201,18 +201,22 @@ searchQuery → patternSearch → trigramExtract → trigramIndex → BM25Score 
 - **limit** — Limit for search results `pattern-search.ts:52-52`
 - **lineContent** — Content of the line where the match was found `trigram-types.ts:81-81`
 - **lineNumber** — Line number in the file where the match was found `trigram-types.ts:79-79`
-- **locMask** — Bloom filter of occurrence positions mod 8 `trigram-extract.ts:30-30`, `trigram-extract.ts:90-90`
+- **locMask** — Bloom filter of occurrence positions mod 8 `trigram-extract.ts:30-30`
+- **locMask** — Represents the location mask value for a given next mask `trigram-extract.ts:90-90`
 - **locMask** — Stores the location mask for a trigram in a map `trigram-index.ts:93-93`
-- **locMask** — A field in the TrigramTableEntry interface representing the bloom mask for the location `trigram-types.ts:48-48`, `trigram-types.ts:58-58`
+- **locMask** — A field in the TrigramTableEntry interface representing the bloom mask for the location `trigram-types.ts:48-48`
+- **locMask** — Indicates an 8-bit unsigned integer `trigram-types.ts:58-58`
 - **magic** — A 4-byte constant representing the magic number "TGI\x01" `trigram-types.ts:27-27`
 - **matchType** — Indicates the type of match found in the search `pattern-search.ts:58-58`
 - **maxResults** — Maximum number of results to return `trigram-types.ts:70-70`
 - **mode** — Search mode: entity, content, semantic, or hybrid `pattern-search.ts:53-53`
 - **name** — Regular expression for entity name filtering `pattern-search.ts:37-37`
 - **name** — Represents the name of the entity being searched `pattern-search.ts:235-235`
-- **nextMask** — Bloom filter of characters that follow this trigram `trigram-extract.ts:30-30`, `trigram-extract.ts:90-90`
+- **nextMask** — Bloom filter of characters that follow this trigram `trigram-extract.ts:30-30`
+- **nextMask** — Represents the next mask value for a given location mask `trigram-extract.ts:90-90`
 - **nextMask** — Stores the next mask for a trigram in a map `trigram-index.ts:93-93`
-- **nextMask** — A field in the TrigramTableEntry interface representing the bloom mask for the next character `trigram-types.ts:44-44`, `trigram-types.ts:57-57`
+- **nextMask** — A field in the TrigramTableEntry interface representing the bloom mask for the next character `trigram-types.ts:44-44`
+- **nextMask** — Stores a 64-bit unsigned integer `trigram-types.ts:57-57`
 - **path** — The file path `trigram-index.ts:52-52`
 - **pathLen** — A field in the FileEntry interface representing the length of the file path `trigram-types.ts:39-39`
 - **pathOffset** — A field in the FileEntry interface representing the offset of the file path in the string table `trigram-types.ts:38-38`
@@ -231,7 +235,8 @@ searchQuery → patternSearch → trigramExtract → trigramIndex → BM25Score 
 - **stringChar** — Stores the character that started the string literal `code-classifier.ts:36-36`
 - **stringTableOffset** — A constant representing the offset of the string table within the trigram index file `trigram-types.ts:32-32`
 - **suffix** — Represents a suffix for stemming `stemmer.ts:134-134`
-- **trigram** — A field in the TrigramTableEntry interface representing the trigram value `trigram-types.ts:45-45`, `trigram-types.ts:56-56`
+- **trigram** — A field in the TrigramTableEntry interface representing the trigram value `trigram-types.ts:45-45`
+- **trigram** — Represents a 24-bit unsigned integer `trigram-types.ts:56-56`
 - **trigramCount** — A constant representing the size of the trigram entry array `trigram-types.ts:30-30`
 - **trigrams** — The pre-extracted trigrams for the file `trigram-index.ts:54-54`
 - **trigramTableOffset** — A constant representing the offset of the trigram table within the trigram index file `trigram-types.ts:33-33`

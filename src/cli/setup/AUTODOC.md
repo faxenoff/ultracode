@@ -125,11 +125,13 @@ setup
 - **api_key** — Stores the API key for LLM authentication `setup-llm.ts:851-851`
 - **architecture** — Specifies the GPU architecture `setup-types.ts:51-51`
 - **args** — Returns a command and its arguments for the Claude CLI `setup-llm.ts:88-88`
-- **available** — Indicates whether the model is available `setup-types.ts:37-37`, `setup-types.ts:49-49`
-- **available** — Indicates if a model is available `setup-types.ts:119-119`
+- **available** — Indicates whether the model is available `setup-types.ts:37-37`
+- **available** — Indicates if a model is available `setup-types.ts:49-49`
+- **available** — Indicates whether an entity is available `setup-types.ts:119-119`
 - **avg_ms** — Optional average time in milliseconds for the model `setup-types.ts:27-27`
 - **badge** — Optional badge associated with the embedding model `setup-types.ts:9-9`
-- **badge** — Optional badge or icon for the model `setup-types.ts:61-61`, `setup-types.ts:79-79`
+- **badge** — Optional badge or icon for the model `setup-types.ts:61-61`
+- **badge** — Optional string representing a badge `setup-types.ts:79-79`
 - **benchmark_chunks_per_sec** — Optional benchmark chunks per second for the model `setup-types.ts:23-23`
 - **benchmark_note** — Note about the model's benchmark performance `setup-types.ts:99-99`
 - **benchmark_toks** — Optional benchmark tokens for the model `setup-types.ts:22-22`
@@ -141,14 +143,20 @@ setup
 - **cons** — The disadvantages of a model `setup-types.ts:118-118`
 - **context** — Context length of the model `setup-selection.ts:23-23`
 - **context_tokens** — Defines the maximum number of context tokens for the LLM model `setup-llm.ts:855-855`
-- **context_tokens** — Maximum number of context tokens the model can handle `setup-types.ts:17-17`, `setup-types.ts:64-64`, `setup-types.ts:82-82`, `setup-types.ts:93-93`
-- **context_tokens** — Specifies the number of context tokens supported by an embedding model `setup-types.ts:142-142`
+- **context_tokens** — Maximum number of context tokens the model can handle `setup-types.ts:17-17`
+- **context_tokens** — Specifies the number of context tokens supported by an embedding model `setup-types.ts:64-64`
+- **context_tokens** — Specifies the number of context tokens for a model `setup-types.ts:82-82`
+- **context_tokens** — Indicates the number of context tokens used in a setup `setup-types.ts:93-93`
+- **context_tokens** — Number of context tokens `setup-types.ts:142-142`
 - **default_models** — Defines default models for each provider `setup-types.ts:45-45`
 - **default_models** — A record of default models for different providers `setup-types.ts:109-109`
 - **default_port** — Specifies the default port for the provider `setup-types.ts:43-43`
-- **description** — Description of the model `setup-types.ts:25-25`, `setup-types.ts:71-71`
+- **description** — Description of the model `setup-types.ts:25-25`
 - **description** — Describes the model `setup-types.ts:43-43`
-- **description** — Provides a detailed description of the model `setup-types.ts:86-86`, `setup-types.ts:104-104`, `setup-types.ts:105-105`
+- **description** — Provides a detailed description of the model `setup-types.ts:71-71`
+- **description** — Provides a description of a scenario in a record `setup-types.ts:86-86`
+- **description** — Provides a description of a provider in a record `setup-types.ts:104-104`
+- **description** — Record mapping provider names to their descriptions and statuses `setup-types.ts:105-105`
 - **detectDir** — The directory to detect the AI agent `mcp-installer.ts:35-35`
 - **detectedDimensions** — Detected dimensions of a model `setup-types.ts:133-133`
 - **detectedModelId** — Detected model ID `setup-types.ts:135-135`
@@ -167,9 +175,13 @@ setup
 - **gpu_support** — Boolean indicating if the model supports GPU `setup-types.ts:12-12`
 - **hf_model** — Represents the Hugging Face model ID `setup-types.ts:31-31`
 - **hf_repo** — Hugging Face repository URL for the model `setup-selection.ts:28-28`
-- **id** — Unique identifier for the model `setup-selection.ts:20-20`, `setup-types.ts:58-58`, `setup-types.ts:76-76`, `setup-types.ts:91-91`
+- **id** — Unique identifier for the model `setup-selection.ts:20-20`
 - **id** — Unique identifier for an embedding model `setup-types.ts:6-6`
-- **id** — A unique identifier for a model `setup-types.ts:113-113`, `setup-types.ts:139-139`
+- **id** — A unique identifier for a model `setup-types.ts:58-58`
+- **id** — Stores a unique identifier for an entity `setup-types.ts:76-76`
+- **id** — Unique identifier for an entity `setup-types.ts:91-91`
+- **id** — Represents a unique identifier `setup-types.ts:113-113`
+- **id** — Represents a unique identifier as a string `setup-types.ts:139-139`
 - **image_cpu** — Optional CPU image for the model `setup-types.ts:15-15`
 - **image_gpu** — Optional GPU image for the model `setup-types.ts:13-13`
 - **image_gpu_blackwell** — Optional Blackwell GPU image for the model `setup-types.ts:14-14`
@@ -181,19 +193,25 @@ setup
 - **max_model_len** — Specifies the maximum model length `setup-types.ts:38-38`
 - **model** — Selects the specific LLM model to be used `setup-llm.ts:853-853`
 - **model_id** — Unique identifier for the model within the provider `setup-types.ts:10-10`
-- **model_id** — The specific identifier for the model `setup-types.ts:62-62`, `setup-types.ts:80-80`
-- **model_id** — The ID of a model `setup-types.ts:140-140`
+- **model_id** — The specific identifier for the model `setup-types.ts:62-62`
+- **model_id** — The ID of a model `setup-types.ts:80-80`
+- **model_id** — Identifier for a model `setup-types.ts:140-140`
 - **modelName** — The name of a model `setup-types.ts:131-131`
 - **models** — Contains a list of embedding models `setup-types.ts:44-44`
 - **models** — Represents a collection of models for embedding `setup-types.ts:106-106`
 - **mteb** — Mean Text Embedding Benchmark score `setup-selection.ts:25-25`
 - **name** — The name of the AI agent `mcp-installer.ts:34-34`
-- **name** — Name of the model `setup-selection.ts:21-21`, `setup-types.ts:92-92`, `setup-types.ts:104-104`, `setup-types.ts:105-105`
+- **name** — Name of the model `setup-selection.ts:21-21`
 - **name** — The name of the embedding model `setup-types.ts:8-8`
-- **name** — Provides the name of the model `setup-types.ts:43-43`, `setup-types.ts:50-50`
-- **name** — The name of the model `setup-types.ts:60-60`, `setup-types.ts:78-78`
-- **name** — The name of a model `setup-types.ts:114-114`
-- **name** — Represents the name of an embedding model `setup-types.ts:141-141`
+- **name** — Provides the name of the model `setup-types.ts:43-43`
+- **name** — The name of the model `setup-types.ts:50-50`
+- **name** — The name of a model `setup-types.ts:60-60`
+- **name** — Represents the name of an embedding model `setup-types.ts:78-78`
+- **name** — Defines the name of a scenario in a record `setup-types.ts:92-92`
+- **name** — Defines the name of a provider in a record `setup-types.ts:104-104`
+- **name** — Defines the name of an entity `setup-types.ts:105-105`
+- **name** — Represents the name of a setup `setup-types.ts:114-114`
+- **name** — Name of the entity `setup-types.ts:141-141`
 - **note_en** — Note in English for the model `setup-selection.ts:26-26`
 - **note_ru** — Note in Russian for the model `setup-selection.ts:27-27`
 - **ollama** — Indicates if the model is compatible with Ollama `setup-types.ts:104-104`
@@ -205,7 +223,8 @@ setup
 - **pooling** — Indicates the pooling method used `setup-types.ts:33-33`
 - **pros** — The advantages of a model `setup-types.ts:117-117`
 - **provider** — The provider of the embedding model `setup-types.ts:7-7`
-- **provider** — The provider or vendor of the model `setup-types.ts:59-59`, `setup-types.ts:77-77`
+- **provider** — The provider or vendor of the model `setup-types.ts:59-59`
+- **provider** — Represents the name of the provider `setup-types.ts:77-77`
 - **providers** — Defines available providers and their details `setup-types.ts:43-43`
 - **providers** — List of providers for the model `setup-types.ts:105-105`
 - **quality** — Quality metrics for the model `setup-types.ts:69-69`
@@ -215,9 +234,12 @@ setup
 - **recommended** — Indicates if a model is recommended `setup-types.ts:115-115`
 - **scenarios** — Scenarios where the model is used `setup-types.ts:104-104`
 - **serversKey** — The key in the configuration file for servers `mcp-installer.ts:37-37`
-- **size_gb** — Size of the model in gigabytes `setup-types.ts:65-65`, `setup-types.ts:83-83`, `setup-types.ts:94-94`
-- **size_gb** — Indicates the size of an embedding model in gigabytes `setup-types.ts:143-143`
-- **size_mb** — Size of the model in megabytes `setup-selection.ts:29-29`, `setup-types.ts:19-19`
+- **size_gb** — Size of the model in gigabytes `setup-types.ts:65-65`
+- **size_gb** — Indicates the size of an embedding model in gigabytes `setup-types.ts:83-83`
+- **size_gb** — Indicates the size of a model in gigabytes `setup-types.ts:94-94`
+- **size_gb** — Specifies the size of the setup in gigabytes `setup-types.ts:143-143`
+- **size_mb** — Size of the model in megabytes `setup-selection.ts:29-29`
+- **size_mb** — Represents the size of the embedding model in megabytes `setup-types.ts:19-19`
 - **speed** — The speed of a model `setup-types.ts:116-116`
 - **style** — The style of the MCP entry `mcp-installer.ts:38-38`
 - **success** — Indicates if an installation was successful `setup-types.ts:123-123`
@@ -226,17 +248,20 @@ setup
 - **tokens_per_sec_cpu** — Tokens per second the model can process on CPU `setup-types.ts:67-67`
 - **tokens_per_sec_gpu** — Tokens per second the model can process on GPU `setup-types.ts:96-96`
 - **tokens_per_sec_npu** — Tokens per second the model can process on NPU `setup-types.ts:68-68`
-- **trust_remote_code** — Indicates whether to trust remote code `setup-types.ts:35-35`, `setup-types.ts:38-38`
+- **trust_remote_code** — Indicates whether to trust remote code `setup-types.ts:35-35`
+- **trust_remote_code** — Represents a boolean flag indicating whether remote code is trusted `setup-types.ts:38-38`
 - **use_case** — Use case for the model `setup-types.ts:24-24`
 - **use_case** — Use case or application for the model `setup-types.ts:70-70`
-- **use_case** — Describes the intended use case for the model `setup-types.ts:85-85`, `setup-types.ts:98-98`
+- **use_case** — Describes the intended use case for the model `setup-types.ts:85-85`
+- **use_case** — Describes the use case for the entity `setup-types.ts:98-98`
 - **useIR** — Indicates if inference is used `setup-types.ts:126-126`
 - **v3_api** — Indicates whether the model uses the v3 API `setup-types.ts:34-34`
 - **version** — Specifies the version of the configuration `setup-types.ts:42-42`
 - **version** — Version of the model `setup-types.ts:103-103`
 - **vllm_config** — Contains configuration for vLLM `setup-types.ts:38-38`
-- **vram_gb** — Represents the amount of VRAM in gigabytes `setup-types.ts:84-84`, `setup-types.ts:95-95`
-- **vram_gb** — Denotes the VRAM usage of an embedding model in gigabytes `setup-types.ts:144-144`
+- **vram_gb** — Represents the amount of VRAM in gigabytes `setup-types.ts:84-84`
+- **vram_gb** — Denotes the VRAM usage of an embedding model in gigabytes `setup-types.ts:95-95`
+- **vram_gb** — Optionally represents the VRAM usage in gigabytes for a setup `setup-types.ts:144-144`
 - **vram_mb** — Optional VRAM size of the model in megabytes `setup-types.ts:20-20`
 - **vramMB** — Specifies the VRAM in MB of the GPU `setup-types.ts:54-54`
 - **weight_format** — Specifies the weight format `setup-types.ts:36-36`

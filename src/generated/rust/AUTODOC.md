@@ -425,9 +425,16 @@ RustParserVisitor
 - **constructor** — Initializes the parser with a context and copies properties from the context `RustParser.ts:15473-15476`
 - **constructor** — Initializes the parser with a context and invoking state, copying properties from the context `RustParser.ts:15499-15502`
 - **constructor** — Initializes the RustParser with a context and invoking state `RustParser.ts:15540-15543`
-- **constructor** — Initializes the parser with a context and invoking state `RustParser.ts:15572-15575`, `RustParser.ts:17886-17889`, `RustParser.ts:17921-17924`
-- **constructor** — Initializes the constructor with parent and invoking state `RustParser.ts:15634-15637`, `RustParser.ts:15666-15669`, `RustParser.ts:15692-15695`, `RustParser.ts:15727-15730`, `RustParser.ts:15762-15765`, `RustParser.ts:15797-15800`, `RustParser.ts:15832-15835`, `RustParser.ts:15858-15861`
-- **constructor** — Initializes the parser with a range pattern context `RustParser.ts:17851-17854`
+- **constructor** — Initializes the parser with a context and invoking state `RustParser.ts:15572-15575`
+- **constructor** — Initializes the constructor with parent and invoking state `RustParser.ts:15634-15637`
+- **constructor** — Initializes the parser with a range pattern context `RustParser.ts:15666-15669`
+- **constructor** — Initializes the parser with a range pattern context. `Rust `RustParser.ts:15692-15695`
+- **constructor** — Initializes a new instance of the parser with a RangePatternContext `RustParser.ts:15727-15730`
+- **constructor** — Initializes a new instance of the class with a range pattern context `RustParser.ts:15762-15765`
+- **constructor** — Initializes the RustParser with a range pattern context `RustParser.ts:15797-15800`
+- **constructor** — Initializes a new instance of the RustParser class with a given context `RustParser.ts:15832-15835`, `RustParser.ts:15858-15861`
+- **constructor** — Initializes a new instance of the RustParser class with a given range pattern context `RustParser.ts:17851-17854`, `RustParser.ts:17886-17889`
+- **constructor** — Initializes a new instance of the RustParser class with a given context and invoking state `RustParser.ts:17921-17924`
 - **copyFrom** — Copies attributes from another context `RustParser.ts:14851-14853`
 - **copyFrom** — Copies properties from another context `RustParser.ts:17846-17848`
 - **crate** — Represents the crate keyword in the Rust grammar `RustParser.ts:836-883`
@@ -969,13 +976,13 @@ RustParserVisitor
 - **expression** — Parses an expression in the parser `RustParser.ts:15002-15008`
 - **expression** — Returns the context of the expression `RustParser.ts:15064-15066`
 - **expression** — Returns the context of the expression. `RustParser.ts:15 `RustParser.ts:15090-15092`
-- **expression** — Returns the root expression context `RustParser.ts:15122-15124`, `RustParser.ts:17126-17128`, `RustParser.ts:17167-17169`, `RustParser.ts:17205-17207`, `RustParser.ts:17266-17268`, `RustParser.ts:17322-17324`, `RustParser.ts:17369-17371`, `RustParser.ts:17431-17433`, `RustParser.ts:17542-17544`
+- **expression** — Returns the root expression context `RustParser.ts:15122-15124`, `RustParser.ts:17167-17169`, `RustParser.ts:17205-17207`, `RustParser.ts:17266-17268`, `RustParser.ts:17322-17324`, `RustParser.ts:17369-17371`, `RustParser.ts:17431-17433`, `RustParser.ts:17542-17544`
 - **expression** — Returns the expression context or contexts based on the provided index `RustParser.ts:15157-15159`
 - **expression** — Returns the root context of an expression `RustParser.ts:15185-15191`
 - **expression** — Returns the context of an expression or an array of contexts if an index is provided `RustParser.ts:15218-15220`
 - **expression** — Returns an ExpressionContext based on the provided index or default value `RustParser.ts:15311-15313`
 - **expression** — Returns the first ExpressionContext `RustParser.ts:15343-15345`
-- **expression** — Returns the context of the expression rule `RustParser.ts:15375-15377`
+- **expression** — Returns the context of the expression rule `RustParser.ts:15375-15377`, `RustParser.ts:18717-18719`
 - **expression** — Returns the expression context based on the provided index or all contexts `RustParser.ts:15412-15418`
 - **expression** — Returns the root expression context. `RustParser.ts:1618 `RustParser.ts:15451-15453`
 - **expression** — Returns the expression context at the specified index or all expression contexts `RustParser.ts:15506-15508`
@@ -989,12 +996,14 @@ RustParserVisitor
 - **expression** — Returns the root context of the expression `RustParser.ts:16182-16184`
 - **expression** — Returns the context of the `expression` rule `RustParser.ts:16271-16277`
 - **expression** — Returns the ExpressionContext at index 0 `RustParser.ts:16315-16321`
-- **expression** — Returns the first expression context `RustParser.ts:16509-16511`, `RustParser.ts:16933-16935`
+- **expression** — Returns the first expression context `RustParser.ts:16509-16511`
 - **expression** — Returns expression contexts based on an optional index `RustParser.ts:16550-16552`
 - **expression** — Returns the root expression context or null. `Rust `RustParser.ts:16596-16602`
-- **expression** — Returns the expression context `RustParser.ts:16775-16777`, `RustParser.ts:18717-18719`
-- **expression** — Returns the expression context or contexts based on the index `RustParser.ts:16815-16821`, `RustParser.ts:16882-16888`
-- **expression** — Returns the root expression context or null `RustParser.ts:17469-17471`
+- **expression** — Returns the expression context `RustParser.ts:16775-16777`
+- **expression** — Returns the expression context or contexts based on the index `RustParser.ts:16815-16821`
+- **expression** — Returns the root expression context or null `RustParser.ts:16882-16888`, `RustParser.ts:17469-17471`
+- **expression** — Returns the expression context or null `RustParser.ts:16933-16935`
+- **expression** — Parses an expression and returns an ExpressionContext or null `RustParser.ts:17126-17128`
 - **expression_sempred** — Represents a semantic predicate for an expression `RustParser.ts:10825-10871`
 - **expressionStatement** — Represents an expression statement `RustParser.ts:4824-4869`
 - **expressionStatement** — Represents an expression statement in the Rust parser `RustParser.ts:14734-14736`
@@ -1092,7 +1101,7 @@ RustParserVisitor
 - **identifier** — Represents an identifier in the grammar `RustParser.ts:13231-13233`
 - **identifier** — Identifier `RustParser.ts:13278-13280`
 - **identifier** — Parses an identifier in the Rust parser `RustParser.ts:13363-13365`
-- **identifier** — Returns the identifier context `RustParser.ts:13489-13491`, `RustParser.ts:19885-19887`
+- **identifier** — Returns the identifier context `RustParser.ts:13489-13491`
 - **identifier** — Returns the identifier context from the parser `RustParser.ts:13571-13573`
 - **identifier** — Returns the identifier context at the current position or null `RustParser.ts:13714-13716`
 - **identifier** — Returns the identifier context at the current position `RustParser.ts:13767-13769`
@@ -1104,8 +1113,12 @@ RustParserVisitor
 - **identifier** — Returns an IdentifierContext or null `RustParser.ts:16503-16505`
 - **identifier** — Returns the context of the identifier if it exists `RustParser.ts:16769-16771`
 - **identifier** — Returns the context of the identifier rule `RustParser.ts:17753-17755`
-- **identifier** — Returns the identifier context or null `RustParser.ts:18144-18146`, `RustParser.ts:19484-19486`, `RustParser.ts:19595-19597`, `RustParser.ts:20462-20464`
+- **identifier** — Returns the identifier context or null `RustParser.ts:18144-18146`
 - **identifier** — Retrieves the identifier context `RustParser.ts:19038-19040`
+- **identifier** — Returns an IdentifierContext `RustParser.ts:19484-19486`
+- **identifier** — Returns an IdentifierContext or null. `Rust `RustParser.ts:19595-19597`
+- **identifier** — Returns the root identifier context `RustParser.ts:19885-19887`
+- **identifier** — Returns the root identifier context or null `RustParser.ts:20462-20464`
 - **identifierPattern** — Represents an identifier pattern `RustParser.ts:7767-7811`
 - **identifierPattern** — Context for parsing identifier patterns `RustParser.ts:17641-17643`
 - **ifExpression** — Represents an if expression `RustParser.ts:7161-7215`
@@ -1385,9 +1398,10 @@ RustParserVisitor
 - **LPAREN** — Returns the context of an opening parenthesis `RustParser.ts:18372-18374`
 - **LPAREN** — Returns the terminal node for the left parenthesis if `RustParser.ts:18603-18605`
 - **LPAREN** — Returns the LPAREN terminal node `RustParser.ts:18661-18663`
-- **LPAREN** — Returns the left parenthesis token or null `RustParser.ts:18854-18856`, `RustParser.ts:20201-20203`
+- **LPAREN** — Returns the left parenthesis token or null `RustParser.ts:18854-18856`
 - **LPAREN** — Returns the left parenthesis token at the current position `RustParser.ts:19341-19343`
 - **LPAREN** — Returns a TerminalNode or null for the left parenthesis `RustParser.ts:20119-20121`
+- **LPAREN** — Returns an antlr.TerminalNode or null `RustParser.ts:20201-20203`
 - **LSQUAREBRACKET** — Represents an opening square bracket `RustParser.ts:11791-11793`
 - **LSQUAREBRACKET** — Token representing the left square bracket `RustParser.ts:11923-11925`
 - **LSQUAREBRACKET** — Represents a left square bracket `RustParser.ts:12005-12007`
@@ -1515,7 +1529,7 @@ RustParserVisitor
 - **outerAttribute** — Parses outer attributes in Rust `RustParser.ts:14234-14240`
 - **outerAttribute** — Returns the context of the outerAttribute rule if it exists `RustParser.ts:14267-14269`
 - **outerAttribute** — Returns the context of the outer attribute at the current position or null `RustParser.ts:14302-14304`
-- **outerAttribute** — Returns the outer attribute context or contexts `RustParser.ts:14549-14555`, `RustParser.ts:19090-19096`
+- **outerAttribute** — Returns the outer attribute context or contexts `RustParser.ts:14549-14555`
 - **outerAttribute** — Returns an OuterAttributeContext based on the provided index or default value `RustParser.ts:14774-14780`
 - **outerAttribute** — Returns the outer attribute context or contexts based on the index. `RustParser.ts:159 `RustParser.ts:15736-15742`
 - **outerAttribute** — Returns an array or single OuterAttributeContext based on the index `RustParser.ts:15999-16005`
@@ -1525,6 +1539,7 @@ RustParserVisitor
 - **outerAttribute** — Retrieves the outer attribute context at a given index or all contexts `RustParser.ts:18149-18155`
 - **outerAttribute** — Returns an array or a single OuterAttributeContext based on the provided index `RustParser.ts:18190-18196`
 - **outerAttribute** — Retrieves outer attribute contexts based on an index `RustParser.ts:19028-19034`
+- **outerAttribute** — Returns the outer attribute context or contexts based on the index `RustParser.ts:19090-19096`
 - **parenthesizedType** — Represents a type enclosed in parentheses `RustParser.ts:8731-8753`
 - **parenthesizedType** — Represents a parenthesized type `RustParser.ts:18538-18540`
 - **pathExpression** — Represents a path expression `RustParser.ts:5818-5861`
@@ -1642,7 +1657,8 @@ RustParserVisitor
 - **RCURLYBRACE** — Represents a closing curly brace in the Rust grammar `RustParser.ts:16135-16137`
 - **RCURLYBRACE** — Returns the right curly brace token `RustParser.ts:16418-16420`
 - **RCURLYBRACE** — Returns the terminal node for the right curly brace `RustParser.ts:16699-16701`
-- **RCURLYBRACE** — Returns the right curly brace terminal node `RustParser.ts:17375-17377`, `RustParser.ts:18033-18035`
+- **RCURLYBRACE** — Returns the right curly brace terminal node `RustParser.ts:17375-17377`
+- **RCURLYBRACE** — Returns a TerminalNode for the RCURLYBRACE token `RustParser.ts:18033-18035`
 - **referencePattern** — Represents a reference pattern `RustParser.ts:7976-8013`
 - **referencePattern** — Represents a pattern for referencing a variable or value `RustParser.ts:17650-17652`
 - **referenceType** — Represents a reference type `RustParser.ts:8889-8926`
@@ -1665,12 +1681,14 @@ RustParserVisitor
 - **RPAREN** — Represents the ')' operator `RustParser.ts:16582-16584`
 - **RPAREN** — Right parenthesis token `RustParser.ts:16810-16812`
 - **RPAREN** — Returns the right parenthesis terminal node `RustParser.ts:18226-18228`
-- **RPAREN** — Returns the right parenthesis token `RustParser.ts:18299-18301`, `RustParser.ts:20122-20124`
+- **RPAREN** — Returns the right parenthesis token `RustParser.ts:18299-18301`
 - **RPAREN** — Returns the RPAREN terminal node `RustParser.ts:18378-18380`
-- **RPAREN** — Returns the right parenthesis token or null `RustParser.ts:18609-18611`, `RustParser.ts:20204-20206`
+- **RPAREN** — Returns the right parenthesis token or null `RustParser.ts:18609-18611`
 - **RPAREN** — Returns the right parenthesis token at the current position `RustParser.ts:18664-18666`
 - **RPAREN** — Returns a TerminalNode or null for the right parenthesis `RustParser.ts:18857-18859`
 - **RPAREN** — Returns the right parenthesis terminal node or null `RustParser.ts:19344-19346`
+- **RPAREN** — Returns an antlr.TerminalNode `RustParser.ts:20122-20124`
+- **RPAREN** — Returns an antlr.TerminalNode or null `RustParser.ts:20204-20206`
 - **RSQUAREBRACKET** — Represents a closing square bracket `RustParser.ts:11794-11796`
 - **RSQUAREBRACKET** — Represents a right square bracket `RustParser.ts:11926-11928`
 - **RSQUAREBRACKET** — Represents a closing square bracket token `RustParser.ts:12008-12010`
@@ -2081,7 +2099,8 @@ RustParserVisitor
 - **typeParamBounds** — Represents type parameter bounds in the Rust parser `RustParser.ts:13891-13893`
 - **typeParamBounds** — Represents type parameter bounds `RustParser.ts:14314-14316`
 - **typeParamBounds** — Represents type parameter bounds in the parser `RustParser.ts:14489-14491`
-- **typeParamBounds** — Returns the type parameter bounds context `RustParser.ts:19120-19122`, `RustParser.ts:19181-19183`
+- **typeParamBounds** — Returns the type parameter bounds context `RustParser.ts:19120-19122`
+- **typeParamBounds** — Returns a TypeParamBoundsContext `RustParser.ts:19181-19183`
 - **typePath** — Represents a path to a type `RustParser.ts:10354-10396`
 - **typePath** — Represents a type path in the code `RustParser.ts:14008-14010`
 - **typePath** — Represents a type path `RustParser.ts:18547-18549`
@@ -2391,9 +2410,10 @@ RustParserVisitor
 - **AND** — Parses an and operator `RustLexer.ts:95-95`
 - **AND** — Represents the and operator `RustParser.ts:102-102`
 - **ANDAND** — Parses an and-and operator `RustLexer.ts:97-97`
-- **ANDAND** — Represents the andand operator `RustParser.ts:104-104`
+- **ANDAND** — Represents the and-and operator `RustParser.ts:104-104`
 - **ANDEQ** — Represents the logical AND equality operator `RustLexer.ts:105-105`, `RustParser.ts:112-112`
-- **AT** — Represents the at operator `RustLexer.ts:116-116`, `RustParser.ts:123-123`
+- **AT** — Represents the at operator `RustLexer.ts:116-116`
+- **AT** — Represents the assignment operator `RustParser.ts:123-123`
 - **BIN_LITERAL** — Parses a binary literal `RustLexer.ts:85-85`
 - **BIN_LITERAL** — Represents a binary literal `RustParser.ts:92-92`
 - **BLOCK_COMMENT** — Represents a block comment `RustLexer.ts:66-66`
@@ -2407,7 +2427,7 @@ RustParserVisitor
 - **CARET** — Parses a caret operator `RustLexer.ts:93-93`
 - **CARET** — Represents the caret operator `RustParser.ts:100-100`
 - **CARETEQ** — Parses a caret-equals operator `RustLexer.ts:104-104`
-- **CARETEQ** — Represents the caret equal operator `RustParser.ts:111-111`
+- **CARETEQ** — Represents the caret-equal operator `RustParser.ts:111-111`
 - **channelNames** — Represents the names of different token channels `RustLexer.ts:138-138`
 - **CHAR_LITERAL** — Represents a character literal `RustLexer.ts:75-75`
 - **CHAR_LITERAL** — Represents a character literal with a value of 69 `RustParser.ts:82-82`
@@ -2420,7 +2440,7 @@ RustParserVisitor
 - **decisionsToDFA** — Maps decisions to DFA states for the RustLexer `RustLexer.ts:1105-1107`
 - **decisionsToDFA** — Represents decisions to a DFA (Deterministic Finite Automaton) for the parser `RustParser.ts:11694-11696`
 - **DOLLAR** — Represents the dollar character `RustLexer.ts:129-129`
-- **DOLLAR** — Represents the dollar symbol with a value of 123 `RustParser.ts:136-136`
+- **DOLLAR** — Represents the dollar symbol `RustParser.ts:136-136`
 - **DOT** — Represents the dot character `RustLexer.ts:118-118`
 - **DOT** — Represents the ASCII value of the dot character `RustParser.ts:125-125`
 - **DOTDOT** — Represents the double dot character `RustLexer.ts:119-119`
@@ -2428,7 +2448,7 @@ RustParserVisitor
 - **DOTDOTDOT** — Represents the triple dot character `RustLexer.ts:120-120`
 - **DOTDOTDOT** — Represents the ASCII value of the triple dot character `RustParser.ts:127-127`
 - **DOTDOTEQ** — Represents the dot dot dot dot character `RustLexer.ts:121-121`
-- **DOTDOTEQ** — Represents the ASCII value of the dot followed by an equals sign `RustParser.ts:128-128`
+- **DOTDOTEQ** — Represents the ASCII value of the dot followed by an equals sign character `RustParser.ts:128-128`
 - **enterAbi** — Enters the ABI context `RustParserListener.ts:525-525`
 - **enterArithmeticOrLogicalExpression** — Enters the ArithmeticOrLogicalExpression context `RustParserListener.ts:1280-1280`
 - **enterArrayElements** — Parses array elements `RustParserListener.ts:1477-1477`
@@ -2907,7 +2927,7 @@ RustParserVisitor
 - **KW_AS** — Keyword for type casting `RustLexer.ts:7-7`
 - **KW_AS** — Represents the keyword 'as' with a value of 1 `RustParser.ts:14-14`
 - **KW_ASYNC** — Represents the keyword `async `RustLexer.ts:42-42`
-- **KW_ASYNC** — Represents the keyword 'async' with a value of 36 `RustParser.ts:49-49`
+- **KW_ASYNC** — Represents the keyword 'async' in Rust `RustParser.ts:49-49`
 - **KW_AWAIT** — Represents the keyword `await `RustLexer.ts:43-43`
 - **KW_AWAIT** — Represents the keyword 'await' with a value of 37 `RustParser.ts:50-50`
 - **KW_BECOME** — Represents the keyword `become `RustLexer.ts:46-46`
@@ -2945,93 +2965,93 @@ RustParserVisitor
 - **KW_IF** — Keyword for if statements `RustLexer.ts:18-18`
 - **KW_IF** — Represents the keyword 'if' with a value of 12 `RustParser.ts:25-25`
 - **KW_IMPL** — Keyword for impl blocks `RustLexer.ts:19-19`
-- **KW_IMPL** — Represents the keyword 'impl' with a value of 13 `RustParser.ts:26-26`
+- **KW_IMPL** — Represents the keyword "impl" with a value of 13 `RustParser.ts:26-26`
 - **KW_IN** — Keyword for in expressions `RustLexer.ts:20-20`
-- **KW_IN** — Represents the keyword 'in' with a value of 14 `RustParser.ts:27-27`
+- **KW_IN** — Represents the keyword "in" with a value of 14 `RustParser.ts:27-27`
 - **KW_LET** — Keyword for let bindings `RustLexer.ts:21-21`
-- **KW_LET** — Represents the keyword 'let' with a value of 15 `RustParser.ts:28-28`
+- **KW_LET** — Represents the keyword "let" with a value of 15 `RustParser.ts:28-28`
 - **KW_LOOP** — Keyword for loops `RustLexer.ts:22-22`
-- **KW_LOOP** — Represents the keyword 'loop' with a value of 16 `RustParser.ts:29-29`
+- **KW_LOOP** — Represents the keyword "loop" with a value of 16 `RustParser.ts:29-29`
 - **KW_MACRO** — Represents the keyword `macro `RustLexer.ts:50-50`
 - **KW_MACRO** — Represents the keyword 'macro' with a value of 44 `RustParser.ts:57-57`
 - **KW_MACRORULES** — Represents the keyword "macro_rules" `RustLexer.ts:60-60`
 - **KW_MACRORULES** — Represents the keyword "macro_rules" with a value of 54 `RustParser.ts:67-67`
 - **KW_MATCH** — Keyword for match expressions `RustLexer.ts:23-23`
-- **KW_MATCH** — Represents the keyword 'match' with a value of 17 `RustParser.ts:30-30`
+- **KW_MATCH** — Represents the keyword "match" with a value of 17 `RustParser.ts:30-30`
 - **KW_MOD** — Keyword for module declarations `RustLexer.ts:24-24`
-- **KW_MOD** — Represents the keyword 'mod' with a value of 18 `RustParser.ts:31-31`
+- **KW_MOD** — Represents the keyword "mod" with a value of 18 `RustParser.ts:31-31`
 - **KW_MOVE** — Keyword for move expressions `RustLexer.ts:25-25`
-- **KW_MOVE** — Represents the keyword 'move' with a value of 19 `RustParser.ts:32-32`
+- **KW_MOVE** — Represents the keyword "move" with a value of 19 `RustParser.ts:32-32`
 - **KW_MUT** — Keyword for mutable variables `RustLexer.ts:26-26`
-- **KW_MUT** — Represents the keyword 'mut' with a value of 20 `RustParser.ts:33-33`
+- **KW_MUT** — Represents the keyword "mut" with a value of 20 `RustParser.ts:33-33`
 - **KW_OVERRIDE** — Represents the keyword `override `RustLexer.ts:51-51`
-- **KW_OVERRIDE** — Represents the keyword 'override' with a value of �5 `RustParser.ts:58-58`
+- **KW_OVERRIDE** — Represents the keyword 'override' with a value of `RustParser.ts:58-58`
 - **KW_PRIV** — Represents the keyword `priv `RustLexer.ts:52-52`
-- **KW_PRIV** — Represents the keyword 'priv' with a value of 46 `RustParser.ts:59-59`
+- **KW_PRIV** — Represents the keyword "priv" with a value of 46 `RustParser.ts:59-59`
 - **KW_PUB** — Keyword for public declarations `RustLexer.ts:27-27`
-- **KW_PUB** — Represents the keyword 'pub' with a value of 21 `RustParser.ts:34-34`
+- **KW_PUB** — Represents the keyword "pub" with a value of 21 `RustParser.ts:34-34`
 - **KW_REF** — Keyword for references `RustLexer.ts:28-28`
-- **KW_REF** — Represents the keyword 'ref' with a value of 22 `RustParser.ts:35-35`
+- **KW_REF** — Represents the keyword "ref" with a value of 22 `RustParser.ts:35-35`
 - **KW_RETURN** — Keyword for return statements `RustLexer.ts:29-29`
-- **KW_RETURN** — Represents the keyword 'return' with a value of 23 `RustParser.ts:36-36`
+- **KW_RETURN** — Represents the keyword "return" with a value of 23 `RustParser.ts:36-36`
 - **KW_SELFTYPE** — Represents the keyword `self.type `RustLexer.ts:31-31`
-- **KW_SELFTYPE** — Represents the keyword 'selftype' with a value of 25 `RustParser.ts:38-38`
+- **KW_SELFTYPE** — Represents the keyword 'self' in Rust `RustParser.ts:38-38`
 - **KW_SELFVALUE** — Represents the keyword `self.value `RustLexer.ts:30-30`
-- **KW_SELFVALUE** — Represents the keyword 'selfvalue' with a value of 24 `RustParser.ts:37-37`
+- **KW_SELFVALUE** — Represents the keyword "selfvalue" with a value of 24 `RustParser.ts:37-37`
 - **KW_STATIC** — Represents the keyword `static `RustLexer.ts:32-32`
-- **KW_STATIC** — Represents the keyword 'static' with a value of 26 `RustParser.ts:39-39`
+- **KW_STATIC** — Represents the keyword 'static' in Rust `RustParser.ts:39-39`
 - **KW_STATICLIFETIME** — Represents the keyword "staticlifetime" `RustLexer.ts:59-59`
 - **KW_STATICLIFETIME** — Represents the keyword "staticlifetime" with a value of 53 `RustParser.ts:66-66`
 - **KW_STRUCT** — Represents the keyword `struct `RustLexer.ts:33-33`
-- **KW_STRUCT** — Represents the keyword 'struct' with a value of 27 `RustParser.ts:40-40`
+- **KW_STRUCT** — Represents the keyword 'struct' in Rust `RustParser.ts:40-40`
 - **KW_SUPER** — Represents the keyword `super `RustLexer.ts:34-34`
-- **KW_SUPER** — Represents the keyword 'super' with a value of 28 `RustParser.ts:41-41`
+- **KW_SUPER** — Represents the keyword 'super' in Rust `RustParser.ts:41-41`
 - **KW_TRAIT** — Represents the keyword `trait `RustLexer.ts:35-35`
-- **KW_TRAIT** — Represents the keyword 'trait' with a value of 29 `RustParser.ts:42-42`
+- **KW_TRAIT** — Represents the keyword 'trait' in Rust `RustParser.ts:42-42`
 - **KW_TRUE** — Represents the keyword `true `RustLexer.ts:36-36`
-- **KW_TRUE** — Represents the keyword 'true' with a value of 30 `RustParser.ts:43-43`
+- **KW_TRUE** — Represents the keyword 'true' in Rust `RustParser.ts:43-43`
 - **KW_TRY** — Represents the keyword "try" `RustLexer.ts:57-57`
 - **KW_TRY** — Represents the keyword "try" with a value of 51 `RustParser.ts:64-64`
 - **KW_TYPE** — Represents the keyword `type `RustLexer.ts:37-37`
-- **KW_TYPE** — Represents the keyword 'type' with a value of 31 `RustParser.ts:44-44`
+- **KW_TYPE** — Represents the keyword 'type' in Rust `RustParser.ts:44-44`
 - **KW_TYPEOF** — Represents the keyword `typeof `RustLexer.ts:53-53`
-- **KW_TYPEOF** — Represents the keyword 'typeof' with a value of 47 `RustParser.ts:60-60`
+- **KW_TYPEOF** — Represents the keyword "typeof" with a value of 47 `RustParser.ts:60-60`
 - **KW_UNDERLINELIFETIME** — Represents the keyword "underlinelifetime" `RustLexer.ts:61-61`
 - **KW_UNDERLINELIFETIME** — Represents the keyword "underlinelifetime" with a value of 55 `RustParser.ts:68-68`
 - **KW_UNION** — Represents the keyword "union" `RustLexer.ts:58-58`
 - **KW_UNION** — Represents the keyword "union" with a value of 52 `RustParser.ts:65-65`
 - **KW_UNSAFE** — Represents the keyword `unsafe `RustLexer.ts:38-38`
-- **KW_UNSAFE** — Represents the keyword 'unsafe' with a value of 32 `RustParser.ts:45-45`
+- **KW_UNSAFE** — Represents the keyword 'unsafe' in Rust `RustParser.ts:45-45`
 - **KW_UNSIZED** — Represents the keyword `unsized `RustLexer.ts:54-54`
-- **KW_UNSIZED** — Represents the keyword 'unsized' with a value of 48 `RustParser.ts:61-61`
+- **KW_UNSIZED** — Represents the keyword "unsized" with a value of 48 `RustParser.ts:61-61`
 - **KW_USE** — Represents the keyword `use `RustLexer.ts:39-39`
-- **KW_USE** — Represents the keyword 'use' with a value of 33 `RustParser.ts:46-46`
+- **KW_USE** — Represents the keyword 'use' in Rust `RustParser.ts:46-46`
 - **KW_VIRTUAL** — Represents the keyword "virtual" `RustLexer.ts:55-55`
 - **KW_VIRTUAL** — Represents the keyword "virtual" with a value of 49 `RustParser.ts:62-62`
 - **KW_WHERE** — Represents the keyword `where `RustLexer.ts:40-40`
-- **KW_WHERE** — Represents the keyword 'where' with a value of 34 `RustParser.ts:47-47`
+- **KW_WHERE** — Represents the keyword 'where' in Rust `RustParser.ts:47-47`
 - **KW_WHILE** — Represents the keyword `while `RustLexer.ts:41-41`
-- **KW_WHILE** — Represents the keyword 'while' with a value of 35 `RustParser.ts:48-48`
+- **KW_WHILE** — Represents the keyword 'while' in Rust `RustParser.ts:48-48`
 - **KW_YIELD** — Represents the keyword "yield" `RustLexer.ts:56-56`
 - **KW_YIELD** — Represents the keyword "yield" with a value of 50 `RustParser.ts:63-63`
 - **LCURLYBRACE** — Represents a left curly brace in the lexer `RustLexer.ts:131-131`
-- **LCURLYBRACE** — Represents the left curly brace symbol with a value of 125 `RustParser.ts:138-138`
+- **LCURLYBRACE** — Represents the left curly brace symbol `RustParser.ts:138-138`
 - **LE** — Represents the less than or equal to operator `RustLexer.ts:115-115`, `RustParser.ts:122-122`
 - **LIFETIME_OR_LABEL** — Represents a lifetime or label `RustLexer.ts:87-87`
 - **LIFETIME_OR_LABEL** — Represents a lifetime or label in Rust `RustParser.ts:94-94`
 - **LINE_COMMENT** — Represents a line comment `RustLexer.ts:65-65`
 - **LINE_COMMENT** — Represents a line comment in Rust code `RustParser.ts:72-72`
 - **literalNames** — Contains the names of literal tokens in the Rust lexer `RustLexer.ts:140-272`
-- **literalNames** — Contains a list of literal names for Rust keywords `RustParser.ts:341-473`
+- **literalNames** — Contains names of literal keywords `RustParser.ts:341-473`
 - **LPAREN** — Represents a left parenthesis in the lexer `RustLexer.ts:135-135`
-- **LPAREN** — Represents the left parenthesis symbol with a value of 129 `RustParser.ts:142-142`
+- **LPAREN** — Represents the left parenthesis symbol `RustParser.ts:142-142`
 - **LSQUAREBRACKET** — Represents a left square bracket in the lexer `RustLexer.ts:133-133`
-- **LSQUAREBRACKET** — Represents the left square bracket symbol with a value of 127 `RustParser.ts:140-140`
+- **LSQUAREBRACKET** — Represents the left square bracket symbol `RustParser.ts:140-140`
 - **LT** — Represents the less than operator `RustLexer.ts:113-113`, `RustParser.ts:120-120`
 - **MINUS** — Parses a minus operator `RustLexer.ts:89-89`
 - **MINUS** — Represents the minus operator in Rust `RustParser.ts:96-96`
 - **MINUSEQ** — Parses a minus-equals operator `RustLexer.ts:100-100`
-- **MINUSEQ** — Represents the minus equal operator `RustParser.ts:107-107`
+- **MINUSEQ** — Represents the minus-equal operator `RustParser.ts:107-107`
 - **modeNames** — Defines the names of different modes in the Rust lexer `RustLexer.ts:408-408`
 - **NE** — Represents the inequality operator `RustLexer.ts:111-111`, `RustParser.ts:118-118`
 - **NEWLINE** — Represents a newline `RustLexer.ts:74-74`
@@ -3046,7 +3066,7 @@ RustParserVisitor
 - **OR** — Represents the or operator `RustParser.ts:103-103`
 - **OREQ** — Represents the logical OR equality operator `RustLexer.ts:106-106`, `RustParser.ts:113-113`
 - **OROR** — Parses an or-or operator `RustLexer.ts:98-98`
-- **OROR** — Represents the oror operator `RustParser.ts:105-105`
+- **OROR** — Represents the or-or operator `RustParser.ts:105-105`
 - **OUTER_BLOCK_DOC** — Represents an outer block documentation comment `RustLexer.ts:70-70`
 - **OUTER_BLOCK_DOC** — Represents an outer block documentation comment in Rust code `RustParser.ts:77-77`
 - **OUTER_LINE_DOC** — Represents an outer line documentation comment `RustLexer.ts:69-69`
@@ -3056,15 +3076,15 @@ RustParserVisitor
 - **PERCENT** — Parses a percent operator `RustLexer.ts:92-92`
 - **PERCENT** — Represents the percent operator in Rust `RustParser.ts:99-99`
 - **PERCENTEQ** — Parses a percent-equals operator `RustLexer.ts:103-103`
-- **PERCENTEQ** — Represents the percent equal operator `RustParser.ts:110-110`
+- **PERCENTEQ** — Represents the percent-equal operator `RustParser.ts:110-110`
 - **PLUS** — Parses a plus operator `RustLexer.ts:88-88`
 - **PLUS** — Represents the plus operator in Rust `RustParser.ts:95-95`
 - **PLUSEQ** — Parses a plus-equals operator `RustLexer.ts:99-99`
-- **PLUSEQ** — Represents the plus equal operator `RustParser.ts:106-106`
+- **PLUSEQ** — Represents the plus-equal operator `RustParser.ts:106-106`
 - **POUND** — Represents the pound character `RustLexer.ts:128-128`
 - **POUND** — Represents the ASCII value of the pound character `RustParser.ts:135-135`
 - **QUESTION** — Represents a question mark in the lexer `RustLexer.ts:130-130`
-- **QUESTION** — Represents the question mark symbol with a value of 124 `RustParser.ts:137-137`
+- **QUESTION** — Represents the question mark symbol `RustParser.ts:137-137`
 - **RARROW** — Represents the right arrow character `RustLexer.ts:126-126`
 - **RARROW** — Represents the ASCII value of the right arrow character `RustParser.ts:133-133`
 - **RAW_BYTE_STRING_LITERAL** — Represents a raw byte string literal `RustLexer.ts:80-80`
@@ -3074,11 +3094,11 @@ RustParserVisitor
 - **RAW_STRING_LITERAL** — Represents a raw string literal `RustLexer.ts:77-77`
 - **RAW_STRING_LITERAL** — Represents a raw string literal in Rust `RustParser.ts:84-84`
 - **RCURLYBRACE** — Represents a right curly brace in the lexer `RustLexer.ts:132-132`
-- **RCURLYBRACE** — Represents the right curly brace symbol with a value of 126 `RustParser.ts:139-139`
+- **RCURLYBRACE** — Represents the right curly brace symbol `RustParser.ts:139-139`
 - **RPAREN** — Represents a right parenthesis in the lexer `RustLexer.ts:136-136`
-- **RPAREN** — Represents the right parenthesis symbol with a value of 130 `RustParser.ts:143-143`
+- **RPAREN** — Represents the right parenthesis symbol `RustParser.ts:143-143`
 - **RSQUAREBRACKET** — Represents a right square bracket in the lexer `RustLexer.ts:134-134`
-- **RSQUAREBRACKET** — Represents the right square bracket symbol with a value of 128 `RustParser.ts:141-141`
+- **RSQUAREBRACKET** — Represents the right square bracket symbol `RustParser.ts:141-141`
 - **RULE_abi** — Represents the ABI of a function `RustParser.ts:172-172`
 - **RULE_arrayElements** — Represents array elements in the Rust grammar `RustParser.ts:231-231`
 - **RULE_arrayType** — Represents an array type in Rust `RustParser.ts:292-292`
@@ -3276,7 +3296,7 @@ RustParserVisitor
 - **RULE_whereClauseItem** — Represents a where clause item in the Rust grammar `RustParser.ts:209-209`
 - **RULE_wildcardPattern** — Represents a wildcard pattern `RustParser.ts:269-269`
 - **ruleNames** — Specifies the names of lexical rules in the Rust lexer `RustLexer.ts:410-558`
-- **ruleNames** — Contains a list of rule names for parsing Rust syntax `RustParser.ts:608-805`
+- **ruleNames** — Contains names of parsing rules `RustParser.ts:608-805`
 - **SEMI** — Represents the semicolon character `RustLexer.ts:123-123`
 - **SEMI** — Represents the ASCII value of the semicolon character `RustParser.ts:130-130`
 - **SHEBANG** — Represents a shebang comment `RustLexer.ts:72-72`
@@ -3286,15 +3306,15 @@ RustParserVisitor
 - **SLASH** — Parses a slash operator `RustLexer.ts:91-91`
 - **SLASH** — Represents the slash operator in Rust `RustParser.ts:98-98`
 - **SLASHEQ** — Parses a slash-equals operator `RustLexer.ts:102-102`
-- **SLASHEQ** — Represents the slash equal operator `RustParser.ts:109-109`
+- **SLASHEQ** — Represents the slash-equal operator `RustParser.ts:109-109`
 - **STAR** — Parses a star operator `RustLexer.ts:90-90`
 - **STAR** — Represents the star operator in Rust `RustParser.ts:97-97`
 - **STAREQ** — Parses a star-equals operator `RustLexer.ts:101-101`
-- **STAREQ** — Represents the star equal operator `RustParser.ts:108-108`
+- **STAREQ** — Represents the star-equal operator `RustParser.ts:108-108`
 - **STRING_LITERAL** — Represents a string literal `RustLexer.ts:76-76`
 - **STRING_LITERAL** — Represents a string literal with a value of 70 `RustParser.ts:83-83`
 - **symbolicNames** — Lists the names of symbolic tokens in the Rust lexer `RustLexer.ts:274-406`
-- **symbolicNames** — Contains a list of symbolic names for Rust keywords `RustParser.ts:475-607`
+- **symbolicNames** — Contains names of symbolic keywords `RustParser.ts:475-607`
 - **UNDERSCORE** — Represents the underscore character `RustLexer.ts:117-117`
 - **UNDERSCORE** — Represents the ASCII value of the underscore character `RustParser.ts:124-124`
 - **visitAbi** — Parses an ABI `RustParserVisitor.ts:417-417`
@@ -3526,7 +3546,7 @@ RustParserVisitor
 - **visitWhereClauseItem** — Parses a where clause item `RustParserVisitor.ts:639-639`
 - **visitWildcardPattern** — Parses a wildcard pattern `RustParserVisitor.ts:1210-1210`
 - **vocabulary** — Initializes the vocabulary for the Rust lexer using literal and symbolic names `RustLexer.ts:1099-1099`
-- **vocabulary** — Initializes a vocabulary object for the parser using literal and symbolic names `RustParser.ts:11688-11688`
+- **vocabulary** — Initializes the vocabulary for the parser `RustParser.ts:11688-11688`
 - **WHITESPACE** — Represents whitespace `RustLexer.ts:73-73`
 - **WHITESPACE** — Represents whitespace characters `RustParser.ts:80-80`
 

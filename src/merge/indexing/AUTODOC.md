@@ -2,7 +2,63 @@
 
 ## 🤖 Overview
 
-The indexing module prepares code for three-way merge by building VersionedIndex structures for each branch. MultiVersionIndexer orchestrates parallel branch indexing with caching support. ContentNormalizer handles encoding detection, BOM removal, and line ending normalization to ensure consistent hashing. StructuralNormalizer strips comments and whitespace to produce structural hashes. SignatureGenerator creates function/class signatures for fast-path matching. LazyEmbeddingCache generates embeddings on demand for unmatched units.
+The `merge/indexing` module normalizes file content and manages versioned indexing for semantic merge. It is used by developers to ensure consistent file comparisons and to track changes across versions.
+
+## 🤖 Architecture
+
+```
+  +-------------------+
+  | ContentNormalizer |
+  +-------------------+
+          |
+          v
+  +-------------------+
+  | LazyEmbeddingCache |
+  +-------------------+
+          |
+          v
+  +-------------------+
+  | MultiVersionIndexer |
+  +-------------------+
+          |
+          v
+  +-------------------+
+  | SignatureGenerator |
+  +-------------------+
+          |
+          v
+  +-------------------+
+  | StructuralNormalizer |
+  +-------------------+
+```
+
+## 🤖 Flow
+
+```
+  +-------------------+
+  | ContentNormalizer |
+  +-------------------+
+          |
+          v
+  +-------------------+
+  | LazyEmbeddingCache |
+  +-------------------+
+          |
+          v
+  +----------------
+  | MultiVersionIndexer |
+  +----------------+
+          |
+          v
+  +-------------------+
+  | SignatureGenerator |
+  +-------------------+
+          |
+          v
+  +-------------------+
+  | StructuralNormalizer |
+  +-------------------+
+```
 
 ## 🤖 Entity Listing
 
@@ -90,7 +146,8 @@ The indexing module prepares code for three-way merge by building VersionedIndex
 ### Property
 - **_fromCache** — Indicates whether the index is loaded from cache `multi-version-indexer.ts:81-81`
 - **base** — Represents the base versioned index `multi-version-indexer.ts:101-101`
-- **batchSize** — Number of units to process in each batch `lazy-embedding-cache.ts:15-15`, `lazy-embedding-cache.ts:121-121`
+- **batchSize** — Number of units to process in each batch `lazy-embedding-cache.ts:15-15`
+- **batchSize** — Sets the batch size for parallel generation (default 32) `lazy-embedding-cache.ts:121-121`
 - **branchA** — Represents the first branch versioned index `multi-version-indexer.ts:102-102`
 - **branchB** — Represents the second branch versioned index `multi-version-indexer.ts:103-103`
 - **branchManager** — Manager for handling branches `multi-version-indexer.ts:125-125`
@@ -105,18 +162,18 @@ The indexing module prepares code for three-way merge by building VersionedIndex
 - **encoding** — Detected encoding of the file `content-normalizer.ts:69-69`
 - **endLine** — Entity from DevAgent `multi-version-indexer.ts:52-52`
 - **entities** — Entities from DevAgent `multi-version-indexer.ts:31-31`
-- **excludePatterns** — Array of patterns to exclude from indexing `multi-version-indexer.ts:23-23`
 - **excludePatterns** — Array of strings representing patterns to exclude `multi-version-indexer.ts:116-116`
+- **excludePatterns** — Array of patterns to exclude from indexing `multi-version-indexer.ts:23-23`
 - **filePath** — File path of an entity `multi-version-indexer.ts:48-48`
-- **fullScan** — Boolean indicating whether to perform a full scan `multi-version-indexer.ts:22-22`
 - **fullScan** — Boolean indicating whether the indexing is a full scan `multi-version-indexer.ts:115-115`
+- **fullScan** — Boolean indicating whether to perform a full scan `multi-version-indexer.ts:22-22`
 - **fullyQualifiedName** — Entity from DevAgent `multi-version-indexer.ts:50-50`
 - **gitIntegration** — Integration with Git `multi-version-indexer.ts:126-126`
 - **hadBom** — Indicates whether the file had a BOM `content-normalizer.ts:124-124`
 - **hasBom** — Indicates whether the file has a BOM `content-normalizer.ts:69-69`
 - **id** — Unique identifier for an entity `multi-version-indexer.ts:46-46`
-- **incremental** — Boolean indicating whether to perform an incremental scan `multi-version-indexer.ts:21-21`
 - **incremental** — Boolean indicating whether the indexing is incremental `multi-version-indexer.ts:114-114`
+- **incremental** — Boolean indicating whether to perform an incremental scan `multi-version-indexer.ts:21-21`
 - **indexingTimeMs** — Records the time taken for indexing in milliseconds `multi-version-indexer.ts:108-108`
 - **language** — Entity from DevAgent `multi-version-indexer.ts:56-56`
 - **memoryUsage** — Represents the estimated memory usage in bytes `lazy-embedding-cache.ts:129-129`

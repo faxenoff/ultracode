@@ -66,11 +66,12 @@ The parsers are designed to detect and parse stacktrace patterns specific to eac
 - **detect** — Detects Python tracebacks in the provided text and returns a confidence score `python-parser.ts:23-28`
 - **detect** — Detects the presence of a Rust panic stacktrace in the given text `rust-parser.ts:27-32`
 - **detect** — Detects Zig error traces and returns a confidence score `zig-parser.ts:26-30`
-- **parse** — Parses the provided text to extract error type, message, and stack frames, returning a structured ParsedStacktrace object `dotnet-parser.ts:29-76`, `python-parser.ts:30-66`
+- **parse** — Parses the provided text to extract error type, message, and stack frames, returning a structured ParsedStacktrace object `dotnet-parser.ts:29-76`
 - **parse** — Parses the text to extract error messages, goroutine information, and stack frames `go-parser.ts:36-100`
 - **parse** — Parses the provided text to extract stacktrace frames and returns a parsed stacktrace object `javascript-parser.ts:33-82`
 - **parse** — Parses the provided text into a ParsedStacktrace object `jvm-parser.ts:30-32`
 - **parse** — Parses the text to extract stacktrace information, including error type, message, and frames `native-parser.ts:37-55`
+- **parse** — Parses Python tracebacks to extract error type, message, and stack frames `python-parser.ts:30-66`
 - **parse** — Parses the text to extract panic message and stack frames `rust-parser.ts:34-88`
 - **parse** — Parses Zig error and panic traces into a structured format `zig-parser.ts:32-67`
 - **parseASAN** — Parses ASAN-style stacktrace frames from the text `native-parser.ts:75-92`

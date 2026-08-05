@@ -115,7 +115,8 @@ The `kotlin/framework` module is designed to extract and analyze Android-specifi
 
 ### Property
 - **androidAnnotations** — Represents Android-related annotations found in the code `android-extractor.ts:119-119`
-- **arguments** — Stores arguments for a route in Android navigation `android-extractor.ts:355-355`, `android-extractor.ts:359-359`
+- **arguments** — Stores arguments for a route in Android navigation `android-extractor.ts:355-355`
+- **arguments** — Optionally stores an array of strings as arguments `android-extractor.ts:359-359`
 - **authMethods** — Lists the authentication methods required `ktor-extractor.ts:298-298`
 - **channelTypes** — Represents types of channels `coroutines-extractor.ts:353-353`
 - **engine** — Represents the engine used `ktor-extractor.ts:393-393`
@@ -126,18 +127,27 @@ The `kotlin/framework` module is designed to extract and analyze Android-specifi
 - **flowType** — Determines the type of Flow `coroutines-extractor.ts:201-201`
 - **format** — Specifies the format of the entity `ktor-extractor.ts:266-266`, `ktor-extractor.ts:270-270`
 - **hasAuthentication** — Determines if the code includes authentication-related patterns `ktor-extractor.ts:297-297`
-- **hasCallReceive** — Indicates whether the handler contains a call.receive method `ktor-extractor.ts:183-183`, `ktor-extractor.ts:189-189`
-- **hasCallRespond** — Indicates whether the handler contains a call.respond method `ktor-extractor.ts:184-184`, `ktor-extractor.ts:190-190`
+- **hasCallReceive** — Indicates whether the handler contains a call.receive method `ktor-extractor.ts:183-183`
+- **hasCallReceive** — Indicates whether call receive is present `ktor-extractor.ts:189-189`
+- **hasCallRespond** — Indicates whether the handler contains a call.respond method `ktor-extractor.ts:184-184`
+- **hasCallRespond** — Indicates whether call respond is present `ktor-extractor.ts:190-190`
 - **hasCatchOperator** — Indicates whether the code contains a catch operator `coroutines-extractor.ts:393-393`
 - **hasChannel** — Checks if a channel is present `coroutines-extractor.ts:352-352`
-- **hasClient** — Determines if the code includes HTTP client-related patterns `ktor-extractor.ts:392-392`, `ktor-extractor.ts:396-396`
-- **hasConfiguration** — Indicates whether the entity has a configuration `ktor-extractor.ts:236-236`, `ktor-extractor.ts:240-240`
-- **hasCustomConfig** — Checks if the code contains custom configuration settings `ktor-extractor.ts:267-267`, `ktor-extractor.ts:271-271`
+- **hasClient** — Determines if the code includes HTTP client-related patterns `ktor-extractor.ts:392-392`
+- **hasClient** — Represents the presence of a client in the result object `ktor-extractor.ts:396-396`
+- **hasConfiguration** — Indicates whether the entity has a configuration `ktor-extractor.ts:236-236`
+- **hasConfiguration** — Indicates whether configuration is present `ktor-extractor.ts:240-240`
+- **hasCustomConfig** — Checks if the code contains custom configuration settings `ktor-extractor.ts:267-267`
+- **hasCustomConfig** — Indicates whether a custom configuration is present `ktor-extractor.ts:271-271`
 - **hasExceptionHandler** — Indicates whether the code contains an exception handler `coroutines-extractor.ts:391-391`
-- **hasIncoming** — Determines if the code includes incoming request patterns `ktor-extractor.ts:441-441`, `ktor-extractor.ts:446-446`
-- **hasJobCancellation** — Checks if job cancellation is present `coroutines-extractor.ts:256-256`, `coroutines-extractor.ts:258-258`
-- **hasOutgoing** — Determines if the code includes outgoing response patterns `ktor-extractor.ts:442-442`, `ktor-extractor.ts:447-447`
-- **hasStructuredConcurrency** — Checks if structured concurrency is present `coroutines-extractor.ts:255-255`, `coroutines-extractor.ts:258-258`
+- **hasIncoming** — Determines if the code includes incoming request patterns `ktor-extractor.ts:441-441`
+- **hasIncoming** — Indicates whether incoming data is present `ktor-extractor.ts:446-446`
+- **hasJobCancellation** — Checks if job cancellation is present `coroutines-extractor.ts:256-256`
+- **hasJobCancellation** — Indicates whether the coroutine supports job cancellation `coroutines-extractor.ts:258-258`
+- **hasOutgoing** — Determines if the code includes outgoing response patterns `ktor-extractor.ts:442-442`
+- **hasOutgoing** — Indicates whether outgoing data is present `ktor-extractor.ts:447-447`
+- **hasStructuredConcurrency** — Checks if structured concurrency is present `coroutines-extractor.ts:255-255`
+- **hasStructuredConcurrency** — Indicates whether the coroutine has structured concurrency `coroutines-extractor.ts:258-258`
 - **hasSupervisorJob** — Indicates whether the code contains a supervisor job `coroutines-extractor.ts:392-392`
 - **isAuthenticated** — Indicates if the route requires authentication `ktor-extractor.ts:25-25`
 - **isCold** — Checks if a Flow is cold `coroutines-extractor.ts:202-202`
@@ -147,14 +157,19 @@ The `kotlin/framework` module is designed to extract and analyze Android-specifi
 - **isPreview** — Represents whether a Preview annotation is present `android-extractor.ts:117-117`
 - **lifecycleEvents** — Represents lifecycle events annotated in the code `android-extractor.ts:118-118`
 - **location** — Optionally stores location information for the entity `android-extractor.ts:287-287`
-- **method** — Specifies the HTTP method for a route `ktor-extractor.ts:23-23`
-- **method** — Represents an HTTP method type used in Ktor routing `ktor-extractor.ts:483-483`, `ktor-extractor.ts:488-488`
-- **name** — Stores the name of the entity `android-extractor.ts:321-321`, `android-extractor.ts:325-325`, `ktor-extractor.ts:235-235`, `ktor-extractor.ts:239-239`
+- **method** — Represents an HTTP method type used in Ktor routing `ktor-extractor.ts:483-483`
+- **method** — Specifies the HTTP method for a route `ktor-extractor.ts:23-23`, `ktor-extractor.ts:488-488`
+- **name** — Stores the name of the entity `android-extractor.ts:321-321`
+- **name** — Stores the name of the entity as a string `android-extractor.ts:325-325`
+- **name** — Represents a Ktor HTTP method handler `ktor-extractor.ts:235-235`
+- **name** — Represents the name of the extractor `ktor-extractor.ts:239-239`
 - **operations** — Extracts Kotlin Coroutines patterns from code `coroutines-extractor.ts:354-354`
-- **path** — Defines the URL path for a route `ktor-extractor.ts:24-24`
-- **path** — Stores a string representing a file path `ktor-extractor.ts:440-440`, `ktor-extractor.ts:445-445`
-- **path** — Represents a route path in Ktor routing `ktor-extractor.ts:484-484`, `ktor-extractor.ts:489-489`
-- **plugins** — Represents an array of plugin names `ktor-extractor.ts:394-394`, `ktor-extractor.ts:396-396`
+- **path** — Stores a string representing a file path `ktor-extractor.ts:440-440`
+- **path** — Represents a route path in Ktor routing `ktor-extractor.ts:445-445`
+- **path** — Stores the path in the result object `ktor-extractor.ts:484-484`
+- **path** — Defines the URL path for a route `ktor-extractor.ts:24-24`, `ktor-extractor.ts:489-489`
+- **plugins** — Represents an array of plugin names `ktor-extractor.ts:394-394`
+- **plugins** — Stores an array of plugins in the result object `ktor-extractor.ts:396-396`
 - **protectedRoutes** — Lists the protected routes `ktor-extractor.ts:299-299`
 - **regex** — Stores a regular expression for pattern matching `android-extractor.ts:294-294`
 - **relationships** — Represents a list of entity relationships `android-extractor.ts:210-210`
@@ -162,12 +177,19 @@ The `kotlin/framework` module is designed to extract and analyze Android-specifi
 - **relationships** — Stores the relationships of the entity `ktor-extractor.ts:344-344`
 - **responseType** — Stores the response type if present in the handler `ktor-extractor.ts:185-185`
 - **responseType** — Represents the type of response expected `ktor-extractor.ts:191-191`
-- **route** — Represents a route in Android navigation `android-extractor.ts:354-354`, `android-extractor.ts:358-358`
-- **route** — Represents a route in Ktor `ktor-extractor.ts:182-182`, `ktor-extractor.ts:188-188`
-- **scope** — Represents the scope of a coroutine `coroutines-extractor.ts:254-254`, `coroutines-extractor.ts:258-258`
-- **type** — Specifies the type of the entity, which can be "remember", "rememberSaveable", "derivedStateOf", or "collectAsState" `android-extractor.ts:286-286`, `android-extractor.ts:290-290`, `android-extractor.ts:295-295`
-- **type** — Specifies the type of the entity, which can be "string", "drawable", "layout", "id", "color", "dimen", "style", or "other" `android-extractor.ts:320-320`, `android-extractor.ts:324-324`
-- **type** — Represents a type of HTTP method in Ktor routing `ktor-extractor.ts:485-485`, `ktor-extractor.ts:490-490`
+- **route** — Represents a route in Android navigation `android-extractor.ts:354-354`
+- **route** — Stores the route of the entity as a string `android-extractor.ts:358-358`
+- **route** — Represents a route in Ktor `ktor-extractor.ts:182-182`
+- **route** — Represents an extracted route `ktor-extractor.ts:188-188`
+- **scope** — Represents the scope of a coroutine `coroutines-extractor.ts:254-254`
+- **scope** — Represents the scope of the coroutine `coroutines-extractor.ts:258-258`
+- **type** — Specifies the type of the entity, which can be "remember", "rememberSaveable", "derivedStateOf", or "collectAsState" `android-extractor.ts:286-286`
+- **type** — Specifies the type of the entity, which can be "string", "drawable", "layout", "id", "color", "dimen", "style", or "other" `android-extractor.ts:290-290`
+- **type** — Represents the type of the entity, which can be "remember", "rememberSaveable", "derivedStateOf", or "collectAsState" `android-extractor.ts:295-295`
+- **type** — Represents the type of the entity, which can be "string", "drawable", "layout", "id", "color", "dimen", "style", or "other" `android-extractor.ts:320-320`
+- **type** — Represents the type of resource or attribute, with options including string, drawable, layout, id, color, dimen, style, and other `android-extractor.ts:324-324`
+- **type** — Represents a type of HTTP method in Ktor routing `ktor-extractor.ts:485-485`
+- **type** — Specifies the type as either "http" or "websocket" `ktor-extractor.ts:490-490`
 
 ## Data Flow
 

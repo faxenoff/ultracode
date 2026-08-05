@@ -2,7 +2,53 @@
 
 ## 🤖 Overview
 
-The schemas module contains all Zod schema definitions that validate and type-check input arguments for MCP tool handlers. Schemas are organized by domain: analysis, autodoc, diagram, entity, graph, graph-metrics, history, index, merge, modification, pattern, semantic, snapshot, taint, and validation. Each schema defines required and optional parameters with descriptions, defaults, and constraints. The central `index.ts` re-exports all schemas for convenient consumption by the tool registry.
+This module provides a comprehensive set of schemas for various tools within the MCP framework, including code analysis, auto-documentation, architecture diagrams, entity operations, graph metrics, and more. It is used by developers and tooling to validate and manage data structures and operations across different aspects of the codebase.
+
+## 🤖 Architecture
+
+```
+  +---------------------+
+  |     Tool Schemas    |
+  +---------------------+
+  |     +-----------------+     |
+  |     | Code Analysis   |     |
+  |     | AutoDoc         |     |
+  |     | Diagrams        |     |
+  |     | Entities        |     |
+  |     | Graph Metrics   |     |
+  |     | Graph Operations |     |
+  |     | History         |     |
+  |     | Index           |     |
+  |     | Merge           |     |
+  |     +-----------------+     |
+  +---------------------+
+```
+
+## 🤖 Flow
+
+```
+  +---------------------+
+  |     Tool Schemas    |
+  +---------------------+
+  |     +-----------------+     |
+  |     | Code Analysis   |     |
+  |     | AutoDoc         |     |
+  |     | Diagrams        |     |
+  |     | Entities        |     |
+  |     | Graph Metrics   |     |
+  |     | Graph Operations |     |
+  |     | History         |     |
+  |     | Index           |     |
+  |     | Merge           |     |
+  |     +-----------------+     |
+  +---------------------+
+  |     +-----------------+     |
+  |     | Schema Validation |     |
+  |     | Schema Generation |     |
+  |     | Schema Usage     |     |
+  |     +-----------------+     |
+  +---------------------+
+```
 
 ## 🤖 Entity Listing
 

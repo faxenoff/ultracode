@@ -51,13 +51,13 @@ The `conductor` module is responsible for orchestrating tasks and managing agent
 - **cons** — Lists the disadvantages of a task or method proposal `types.ts:42-42`
 - **delegationStrategy** — Specifies the delegation strategy for the task `types.ts:24-24`
 - **dependencies** — Dependencies for a subtask `types.ts:32-32`
-- **description** — Description of a subtask `types.ts:30-30`
 - **description** — Provides a detailed description of a task or method proposal `types.ts:40-40`
+- **description** — Description of a subtask `types.ts:30-30`
 - **directImplementation** — Task payload field indicating whether direct implementation is needed `task-analysis.ts:17-17`
 - **factors** — Lists the factors contributing to the complexity score `types.ts:22-22`
 - **fileCount** — Task payload field indicating the number of files affected `task-analysis.ts:14-14`
-- **id** — Unique identifier for a subtask `types.ts:29-29`
 - **id** — Represents a unique identifier for a task or method proposal `types.ts:38-38`
+- **id** — Unique identifier for a subtask `types.ts:29-29`
 - **loadBalancingStrategy** — Determines the load balancing strategy for task distribution `types.ts:12-12`
 - **mandatoryDelegation** — Indicates whether delegation is mandatory `types.ts:14-14`
 - **maxConcurrency** — Specifies the maximum number of concurrent agents allowed `config.ts:30-30`
@@ -67,15 +67,16 @@ The `conductor` module is responsible for orchestrating tasks and managing agent
 - **name** — Specifies the name of a task or method proposal `types.ts:39-39`
 - **payload** — Additional payload for a subtask `types.ts:34-34`
 - **priority** — Determines the priority level of agents `config.ts:30-30`
-- **priority** — Sets the priority level for the Conductor orchestrator agent `types.ts:17-17`, `types.ts:33-33`
+- **priority** — Sets the priority level for the Conductor orchestrator agent `types.ts:17-17`
+- **priority** — Represents the priority level of a task `types.ts:33-33`
 - **pros** — Lists the advantages of a task or method proposal `types.ts:41-41`
 - **recommended** — Indicates whether a task or method proposal is recommended `types.ts:45-45`
 - **requiresApproval** — Indicates whether approval is required for the task `types.ts:23-23`
 - **requiresResearch** — Checks if the payload contains a `requiresResearch` property `method-proposals.ts:112-112`
 - **requiresResearch** — Task payload field indicating whether research is required `task-analysis.ts:15-15`
 - **requiresTesting** — Task payload field indicating whether testing is required `task-analysis.ts:16-16`
-- **resourceConstraints** — Defines the resource constraints for the Conductor orchestrator agent `types.ts:10-10`
 - **resourceConstraints** — Defines resource constraints for the Conductor orchestrator `types.ts:49-49`
+- **resourceConstraints** — Defines the resource constraints for the Conductor orchestrator agent `types.ts:10-10`
 - **riskLevel** — Defines the risk level of a task or method proposal `types.ts:44-44`
 - **score** — Represents the complexity score of a task on a 1-10 scale `types.ts:21-21`
 - **subtasks** — Contains subtasks for the task `types.ts:25-25`

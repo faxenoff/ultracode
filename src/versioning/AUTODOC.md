@@ -119,10 +119,12 @@ The `version-manager.ts` module manages code snapshots for both Git worktrees an
 - **gitStashRef** — Optional git stash reference for git backend snapshots `version-manager.ts:38-38`
 - **hasGit** — Indicates whether the project is a Git repository `version-manager.ts:64-64`
 - **hash** — xxHash of the snapshot content `version-manager.ts:37-37`
-- **id** — Unique identifier for a snapshot `version-manager.ts:31-31`, `version-manager.ts:50-50`
+- **id** — Unique identifier for a snapshot `version-manager.ts:31-31`
+- **id** — Represents the unique identifier for a version `version-manager.ts:50-50`
 - **maxSnapshots** — Maximum number of snapshots to keep, defaulting to 10 `version-manager.ts:45-45`
 - **sizeBytes** — Represents the size of a snapshot in bytes `version-manager.ts:54-54`
-- **timestamp** — Timestamp when the snapshot was created `version-manager.ts:32-32`, `version-manager.ts:51-51`
+- **timestamp** — Timestamp when the snapshot was created `version-manager.ts:32-32`
+- **timestamp** — Stores the timestamp of the version `version-manager.ts:51-51`
 - **totalSizeBytes** — Total size of the snapshot in bytes `version-manager.ts:36-36`
 - **workingDirectory** — Working directory for the Version Manager `version-manager.ts:43-43`
 

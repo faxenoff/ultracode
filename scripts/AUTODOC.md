@@ -1,5 +1,79 @@
 # Scripts Module
 
+## 🤖 Overview
+
+The scripts module contains a collection of shell and TypeScript scripts for building, benchmarking, and converting models. These scripts are used by developers and data scientists to optimize and evaluate embedding models on large entities and various hardware platforms.
+
+## 🤖 Architecture
+
+```
+  +-------------------+
+  |   build-scripts   |
+  |   (shell scripts) |
+  |       /           |
+  |      /            |
+  |     /             |
+  |    /              |
+  |   /               |
+  |  /                |
+  | /                 |
+  |/                  |
+  +-------------------+
+  |   benchmarking    |
+  |   (TypeScript)    |
+  |       /           |
+  |      /            |
+  |     /             |
+  |    /              |
+  |   /               |
+  |  /                |
+  | /                 |
+  |/                  |
+  +-------------------+
+  |   model-conversion |
+  |   (Python scripts) |
+  |       /           |
+  |      /            |
+  |     /             |
+  |    /              |
+  |   /               |
+  |  /                |
+  | /                 |
+  |/                  |
+  +-------------------+
+```
+
+## 🤖 Flow
+
+```
+  +-------------------+
+  |   User Setup      |
+  |   (setup.sh)      |
+  |       /           |
+  |      /            |
+  |     /             |
+  |    /              |
+  |   /               |
+  |  /                |
+  | /                 |
+  |/                  |
+  +-------------------+
+  |   Build Scripts   |
+  |   (build-*.sh)    |
+  |       /           |
+  |      /            |
+  |     /             |
+  |    /              |
+  |   /               |
+  |  /                |
+  | /                 |
+  |/                  |
+  +-------------------+
+  |   Benchmarking    |
+  |   (benchmark-*.ts)|
+  |       /           |
+```
+
 ## 🤖 Entity Listing
 
 ### Function
@@ -51,7 +125,8 @@
 - **checkVSBuildTools** — Not present in the provided code `build-faiss-node.js:167-190`
 - **cleanupTestData** — Not present in the provided code `benchmark-runtime.ts:143-150`
 - **cloneFaissNode** — Clones the faiss-node repository from GitHub `build-faiss-node.js:387-397`
-- **command_exists** — Checks if a command exists in the system `user-setup-linux.sh:45-47`, `user-setup-macos.sh:45-47`
+- **command_exists** — Checks if a command exists in the system `user-setup-linux.sh:45-47`
+- **command_exists** — Checks if a command is available in the system `user-setup-macos.sh:45-47`
 - **compute_hash** — Computes the hash of the source files `build-roslyn.sh:27-31`
 - **convert_model** — Converts a Jina model to OpenVINO IR format using the optimum-cli tool `convert-jina-models.sh:12-40`
 - **convertModel** — Not present in the provided code `convert-tokenizer-simple.ts:167-275`
@@ -85,7 +160,8 @@
 - **findAsset** — Not present in the provided code `download-native-libs.js:276-293`
 - **formatResult** — Not present in the provided code `benchmark-runtime.ts:81-89`
 - **generateTokenizerJson** — Not present in the provided code `convert-tokenizer-simple.ts:99-133`
-- **get_version** — Retrieves the version of a command `user-setup-linux.sh:49-53`, `user-setup-macos.sh:49-53`
+- **get_version** — Retrieves the version of a command `user-setup-linux.sh:49-53`
+- **get_version** — Retrieves the version of a specified command `user-setup-macos.sh:49-53`
 - **getDataDir** — Get the storage directory based on the operating system `benchmark-large-entities.ts:49-62`
 - **getDownloadUrl** — Determines the URL and filename for downloading the OVMS native binary based on the platform `install-ovms-native.ts:91-114`
 - **getLatestRelease** — Not present in the provided code `download-native-libs.js:257-271`
@@ -177,9 +253,9 @@
 - **printWarn** — Prints a message indicating a warning in yellow `install-ovms-native.ts:53-55`
 - **printWarning** — Logs a warning message with yellow color `download-native-libs.js:54-56`
 - **provider** — Configures the OpenVINO provider with logging settings `benchmark-large-entities.ts:326-326`
-- **provider** — Represents a logger object with methods for logging messages `benchmark-large-entities.ts:326-326`
-- **provider** — Represents a logger object with methods for logging messages at different levels `benchmark-large-entities.ts:326-326`
 - **provider** — Represents a logger object with methods for logging `benchmark-large-entities.ts:326-326`
+- **provider** — Represents a logger object with methods for logging messages at different levels `benchmark-large-entities.ts:326-326`
+- **provider** — Represents a logger object with methods for logging messages `benchmark-large-entities.ts:326-326`
 - **request** — Not present in the provided code `build-faiss-node.js:96-115`
 - **request** — Handles HTTP requests, including redirects, and pipes the response to a writable stream `download-comm-binary.js:33-56`
 - **results** — Processes chunks asynchronously to fetch embeddings `benchmark-large-entities.ts:214-222`
@@ -372,11 +448,12 @@
 - **PREREQS_OK** — Checks if all required tools and dependencies are available `build-native-libs-macos.sh:637-637`
 - **PROCESS_PATTERN** — Pattern to search for processes, "ultracode" `restart-mcp-server.sh:26-26`
 - **PROJECT_ROOT** — Determines the root directory of the project based on the script's location `_build-linux-wsl-run.sh:31-31`
-- **PROJECT_ROOT** — Sets the root directory of the project `build-comm.sh:18-18`, `setup.sh:19-19`
+- **PROJECT_ROOT** — Sets the root directory of the project `build-comm.sh:18-18`
 - **PROJECT_ROOT** — The root directory of the project `build-faiss-cpu.sh:16-16`
 - **PROJECT_ROOT** — Determines the root directory of the project `build-faiss-wsl.sh:8-8`
-- **PROJECT_ROOT** — Stores the root directory of the project `build-linux-wsl.sh:15-15`
-- **PROJECT_ROOT** — Sets the PROJECT_ROOT variable to the directory of the current script `build-native-libs-macos.sh:41-41`, `build-roslyn.sh:8-8`
+- **PROJECT_ROOT** — Stores the root directory of the project `build-linux-wsl.sh:15-15`, `setup.sh:19-19`
+- **PROJECT_ROOT** — Sets the PROJECT_ROOT variable to the directory of the current script `build-native-libs-macos.sh:41-41`
+- **PROJECT_ROOT** — Sets the project root directory `build-roslyn.sh:8-8`
 - **PUBLISH_DIR** — Sets the directory where the Roslyn addon will be published `build-roslyn.sh:10-10`
 - **PYTHON_CMD** — Stores the command for Python `build-ovms-nvidia.sh:147-147`
 - **PYTHON_CMD** — Stores the command for Python 3.9+ installation `setup-tome-tools.sh:42-42`
@@ -397,10 +474,10 @@
 - **ROSLYN_BUILT** — Indicates whether the Roslyn C# addon has been built `build.sh:80-80`
 - **ROSLYN_DIR** — Sets the directory containing the Roslyn source code `build-roslyn.sh:9-9`
 - **SCRIPT_DIR** — Resolves the directory of the current script `_build-linux-wsl-run.sh:30-30`
-- **SCRIPT_DIR** — Sets the directory of the current script `build-comm.sh:17-17`, `setup.sh:18-18`
+- **SCRIPT_DIR** — Sets the directory of the current script `build-comm.sh:17-17`
 - **SCRIPT_DIR** — The directory of the current script `build-faiss-cpu.sh:15-15`
 - **SCRIPT_DIR** — Gets the directory of the current script `build-faiss-wsl.sh:7-7`
-- **SCRIPT_DIR** — Stores the directory of the current script `build-linux-wsl.sh:14-14`
+- **SCRIPT_DIR** — Stores the directory of the current script `build-linux-wsl.sh:14-14`, `setup.sh:18-18`
 - **SCRIPT_DIR** — Stores the directory path of the script file `build-native-libs-macos.sh:40-40`
 - **SCRIPT_DIR** — Sets the directory of the script `build-roslyn.sh:7-7`
 - **SCRIPT_DIR** — Sets the directory of the script to the current working directory `postinstall.sh:7-7`
@@ -494,7 +571,7 @@
 - **perChunkMs** — Time taken per chunk in milliseconds `benchmark-large-entities.ts:36-36`
 - **perEntityMs** — Time taken per entity in milliseconds `benchmark-large-entities.ts:35-35`
 - **port** — Specifies the port number for the local server `benchmark-runtime.ts:697-697`
-- **provider** — Represents a string provider `benchmark-large-entities.ts:28-28`
+- **provider** — Represents the name of the provider `benchmark-large-entities.ts:28-28`
 - **repo** — The repository URL for the model on HuggingFace `download-openvino-model.ts:15-15`
 - **results** — An array of benchmark results for the benchmark file `compare-benchmarks.ts:20-20`
 - **runtime** — The runtime (Node.js or Bun) for the benchmark file `compare-benchmarks.ts:16-16`
@@ -502,7 +579,7 @@
 - **timestamp** — The timestamp of the benchmark file `compare-benchmarks.ts:18-18`
 - **totalMs** — Represents the total runtime in milliseconds `benchmark-runtime.ts:45-45`
 - **totalTimeMs** — Total time taken for the benchmark in milliseconds `benchmark-large-entities.ts:34-34`
-- **totalTokens** — Returns an object containing chunks, entity count, and total tokens `benchmark-large-entities.ts:168-168`
+- **totalTokens** — Returns the total number of tokens in the entity `benchmark-large-entities.ts:168-168`
 - **totalTokensProcessed** — Total tokens processed in the benchmark `benchmark-large-entities.ts:38-38`
 - **type** — Type of the code entity `benchmark-large-entities.ts:20-20`
 - **url** — Returns the URL for downloading the OVMS native binary based on the platform `install-ovms-native.ts:91-91`
@@ -512,7 +589,8 @@
 - **CREATE TABLE IF NOT EXISTS items (id INTEGER PRIMARY KEY, name TEXT, value REAL)** — Creates a table named `items` if it does not exist `benchmark-runtime.ts:526-526`
 - **CREATE TABLE IF NOT EXISTS items (id INTEGER PRIMARY KEY, name TEXT, value REAL)** — Creates a table for storing items if it doesn't exist `benchmark-runtime.ts:584-584`
 - **DELETE FROM items** — Deletes all rows from the `items` table `benchmark-runtime.ts:527-527`
-- **DELETE FROM items** — Deletes all items from the database `benchmark-runtime.ts:544-544`, `benchmark-runtime.ts:585-585`, `benchmark-runtime.ts:602-602`
+- **DELETE FROM items** — Deletes all items from the database `benchmark-runtime.ts:544-544`
+- **DELETE FROM items** — Executes a SQL command to delete all items from the database `benchmark-runtime.ts:585-585`, `benchmark-runtime.ts:602-602`
 - **INSERT INTO items (name, value) VALUES (?, ?)** — Prepares an insert statement for the `items` table `benchmark-runtime.ts:530-530`
 - **INSERT INTO items (name, value) VALUES (?, ?)** — Prepares an SQL statement to insert new items into the database `benchmark-runtime.ts:588-588`
 - **SELECT * FROM items WHERE value > ?** — Prepares a select statement for filtering items by value `benchmark-runtime.ts:550-550`

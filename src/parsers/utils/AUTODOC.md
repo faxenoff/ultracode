@@ -125,7 +125,8 @@ The `parser-utils.ts` module provides performance optimizations for ANTLR parsin
 - **location** — Represents the location of a parser rule `parser-utils.ts:196-196`
 - **location** — Stores the location information for the parser `parser-utils.ts:204-204`
 - **location** — Represents the location information of a parsed element `parser-utils.ts:213-213`
-- **location** — Represents the location information for a parser `parser-utils.ts:220-220`, `parser-utils.ts:229-229`
+- **location** — Represents the location information for a parser `parser-utils.ts:220-220`
+- **location** — Represents the location information for parsing `parser-utils.ts:229-229`
 - **loops** — Counts the number of loops in the control flow `parser-utils.ts:184-184`
 - **maxSize** — Represents the maximum size of the object pool `parser-utils.ts:93-93`
 - **maxSize** — Sets the maximum size for the parser `parser-utils.ts:98-98`

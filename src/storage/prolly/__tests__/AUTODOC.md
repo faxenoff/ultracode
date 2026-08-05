@@ -54,8 +54,12 @@ This module contains test cases for the `commit-manager`, `node-store`, and `pro
 - **createMockClient** — Mocks a database client for testing purposes `prolly-tree.test.ts:6-54`
 - **internals** — Filters and counts the number of internal nodes in the storage `node-store.test.ts:94-94`
 - **leaves** — Filters and counts the number of leaf nodes in the storage `node-store.test.ts:93-93`
-- **rows** — Represents the rows returned by the mock database client for a given SQL query `commit-manager.test.ts:65-68`, `commit-manager.test.ts:70-70`
-- **rows** — Represents the rows returned by the SQL query `node-store.test.ts:56-56`, `node-store.test.ts:56-56`, `node-store.test.ts:62-62`, `node-store.test.ts:87-87`
+- **rows** — Represents the rows returned by the mock database client for a given SQL query `commit-manager.test.ts:65-68`
+- **rows** — Sorts the rows by their creation time in descending order `commit-manager.test.ts:70-70`
+- **rows** — Represents the rows returned by the SQL query `node-store.test.ts:56-56`
+- **rows** — Filters hashes to include only those present in storage and maps them to content_hash objects `node-store.test.ts:56-56`
+- **rows** — Maps hashes to their corresponding values in storage and filters out falsy values `node-store.test.ts:62-62`
+- **rows** — Converts storage keys to content_hash objects `node-store.test.ts:87-87`
 - **rows** — Represents rows returned by SQL queries in the mock database client `prolly-tree.test.ts:39-39`
 
 ### Import_decl

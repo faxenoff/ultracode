@@ -58,7 +58,8 @@ The `merge/matching` module provides efficient matching algorithms for code unit
 - **bestCandidate** — Finds the best candidate with the same file path and name as the target unit `fast-path-matcher.ts:152-155`
 - **sameFileCandidate** — Finds a candidate with the same file path as the target unit `fast-path-matcher.ts:115-118`
 - **similarities** — Compute similarity for each candidate `semantic-matcher.ts:38-51`
-- **typedCandidates** — Filters candidates to those with the same type as the target unit `fast-path-matcher.ts:142-145`, `fast-path-matcher.ts:183-186`
+- **typedCandidates** — Filters candidates to those with the same type as the target unit `fast-path-matcher.ts:142-145`
+- **typedCandidates** — Filters candidates to those with units of the same type as the target unit `fast-path-matcher.ts:183-186`
 
 ### Method
 - **bulkMatch** — Perform bulk matching between two indices `fast-path-matcher.ts:25-38`
@@ -104,7 +105,8 @@ The `merge/matching` module provides efficient matching algorithms for code unit
 - **avgCombinedScore** — Represents the combined score of vector similarity and structural similarity, weighted 70% and 30% respectively `semantic-matcher.ts:213-213`
 - **avgStructuralSimilarity** — Average structural similarity score `semantic-matcher.ts:212-212`
 - **avgVectorSimilarity** — Average vector similarity score `semantic-matcher.ts:211-211`
-- **baseUnit** — Base unit in the match result `fast-path-matcher.ts:248-248`, `semantic-matcher.ts:197-197`
+- **baseUnit** — Base unit in the match result `fast-path-matcher.ts:248-248`
+- **baseUnit** — Represents a unit in the base index used for semantic matching `semantic-matcher.ts:197-197`
 - **baseUnitId** — Base unit ID in the match result `fast-path-matcher.ts:247-247`
 - **baseUnitId** — ID of the base unit in the match result `semantic-matcher.ts:196-196`
 - **combinedScore** — Combined score of vector and structural similarity in the match result `semantic-matcher.ts:200-200`

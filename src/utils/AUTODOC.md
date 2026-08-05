@@ -353,7 +353,7 @@ BloomFilter
 - **trace** — Not present in the provided code `logger.ts:167-169`
 - **traceStart** — Not present in the provided code `logger.ts:177-186`
 - **traceTime** — Not present in the provided code `logger.ts:171-175`
-- **version** — Retrieves the version of the runtime environment, checking for Bun, Node, or Deno `runtime.ts:114-125`
+- **version** — Retrieves the version of the current runtime environment `runtime.ts:114-125`
 - **versionInfo** — Contains detailed version information of the runtime `runtime.ts:128-139`
 - **warn** — Not present in the provided code `logger.ts:196-198`
 - **writeLog** — Not present in the provided code `logger.ts:157-165`
@@ -596,13 +596,13 @@ BloomFilter
 - **Glob** — Bun runtime Glob operations `runtime.ts:36-36`
 - **gpu_architecture** — Not present in the provided code `config-paths.ts:238-238`
 - **gzipSync** — Bun runtime gzipSync operations `runtime.ts:39-39`
-- **hasBiomeConfig** — Indicates whether the project has a biome configuration `config-detector.ts:6-6`
-- **hasESLintConfig** — Indicates whether the project has an ESLint configuration `config-detector.ts:7-7`
+- **hasBiomeConfig** — Indicates whether a biome configuration is present `config-detector.ts:6-6`
+- **hasESLintConfig** — Indicates whether an ESLint configuration is present `config-detector.ts:7-7`
 - **hasGranite** — Represents whether the model has the Granite feature `ollama-checker.ts:19-19`
 - **hash** — Bun runtime hash operations `runtime.ts:38-38`
 - **hashCount** — The number of hash functions used in the Bloom filter `bloom-filter.ts:15-15`
 - **hasModels** — Determines if Ollama has any models available `ollama-checker.ts:17-17`
-- **hasOxlintConfig** — Indicates whether the project has an Oxlint configuration `config-detector.ts:8-8`
+- **hasOxlintConfig** — Indicates whether an Oxlint configuration is present `config-detector.ts:8-8`
 - **highWaterMark** — Sets the high water mark for the file writer `file-ops.ts:56-56`
 - **highWaterMark** — The maximum amount of data to be buffered before the stream emits a 'drain' event `stream-helpers.ts:23-23`
 - **hitRate** — Represents the percentage of acquires from the pool compared to new allocations `float32-pool.ts:208-208`
@@ -773,7 +773,7 @@ BloomFilter
 - **sizeBytes** — Returns the size of a directory in bytes `shell.ts:566-566`
 - **sizeMB** — Returns the size of a directory in megabytes `shell.ts:567-567`
 - **skipEmpty** — A boolean indicating whether to skip empty lines in the stream `stream-helpers.ts:29-29`
-- **sleep** — Defines a function to sleep for a specified number of milliseconds, returning a promise `runtime.ts:41-41`
+- **sleep** — Returns a function that pauses execution for a specified number of milliseconds `runtime.ts:41-41`
 - **stackTrace** — Stack trace of the log entry `logger-types.ts:32-32`
 - **stackTrace** — Optional field for the stack trace of the log entry `logger.ts:22-22`
 - **STALE_MS** — Time in milliseconds before log files are considered stale `logger.ts:37-37`
