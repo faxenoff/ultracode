@@ -146,17 +146,21 @@ export function checkShapeDivergence(entity: Entity): CustomDetectorResult {
 
   const variants = jitHints.objectShapeVariants ?? 0;
   const conditional = jitHints.conditionalFieldAddCount ?? 0;
-  // V8 keeps a polymorphic inline cache up to 4 shapes; past that a call site
-  // falls back to the generic hash lookup.
-  const megamorphic = variants > 4;
-  if (!megamorphic && conditional === 0) return { match: false, confidence: 0 };
 
-  const criteria: string[] = [];
-  if (megamorphic) criteria.push(`object-shapes=${variants}`);
+  // V8 gives up on the 5th shape, so that is where the cost begins — but as a
+  // finding, 5 is too broad: measured over this repo it flags 194 functions,
+  // since half the large handlers build that many literals. 8 inside a loop
+  // flags 43, which is a list someone can actually work through. Kept in sync
+  // with the Zig rule (jit_shape_divergence in pattern_registry.zig).
+  const SHAPE_THRESHOLD = 8;
+  if (variants < SHAPE_THRESHOLD || !jitHints.hasLoops) return { match: false, confidence: 0 };
+
+  const criteria = [`object-shapes=${variants}`, "in-loop"];
+  // Conditional field additions do not trigger on their own — they are a second
+  // route to the same divergence, so they only raise confidence.
   if (conditional > 0) criteria.push(`conditional-field-adds=${conditional}`);
-  if (jitHints.hasLoops) criteria.push("in-loop");
 
-  const confidence = megamorphic ? (jitHints.hasLoops ? 0.8 : 0.7) : conditional >= 3 ? 0.6 : 0.5;
+  const confidence = variants >= 12 ? 0.85 : conditional > 0 ? 0.8 : 0.75;
   return { match: true, confidence, matchedCriteria: criteria };
 }
 
