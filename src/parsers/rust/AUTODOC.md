@@ -1,17 +1,65 @@
----
-module_name: rust
-description: "AST helpers and pattern identification for Rust code analysis"
-status: active
-language: typescript
----
-
 # Rust
 
-> Provides utility functions for Rust AST traversal and data extraction, plus pattern identification for Builder, Iterator, error handling, ownership, and unsafe code patterns.
-
-## Overview
+## 🤖 Overview
 
 This module supports Rust code analysis with two components. The AST helpers provide functions for node traversal, text extraction, visibility/modifier checking, generic/lifetime extraction, derive/attribute parsing, type extraction (function parameters, return types, fields, aliases, constants, statics), macro rule extraction, and use tree resolution. The pattern identifier detects Rust-specific design and language patterns including Builder, Iterator, error handling (Result/Option chains), ownership patterns, and unsafe code blocks.
+
+## 🤖 Entity Listing
+
+### Function
+- **buildMethod** — Filters methods that are named "build" and have metadata indicating they are implementations of the entity `pattern-identifier.ts:66-66`
+- **countNestedItems** — Counts nested items in the AST node `ast-helpers.ts:176-195`
+- **extractAliasedType** — Extracts the aliased type from a node `ast-helpers.ts:319-322`
+- **extractAttributes** — Extracts attribute names from the AST node `ast-helpers.ts:135-144`
+- **extractConstType** — Extracts the constant type from a node `ast-helpers.ts:327-330`
+- **extractDerives** — Extracts derive attributes from the AST node `ast-helpers.ts:113-130`
+- **extractDiscriminant** — Extracts the discriminant from a node `ast-helpers.ts:347-358`
+- **extractFieldType** — Parses the type field of an AST node and returns its text value `ast-helpers.ts:311-314`
+- **extractFunctionParameters** — Extracts function parameters and their types from the AST node `ast-helpers.ts:256-294`
+- **extractGenerics** — Extract generic parameters from a node `ast-helpers.ts:72-87`
+- **extractLifetimes** — Parses the AST node to extract lifetime parameters `ast-helpers.ts:92-104`
+- **extractMacroRules** — Extracts macro rules from a node `ast-helpers.ts:363-375`
+- **extractReturnType** — Extracts the return type from the AST node `ast-helpers.ts:299-302`
+- **extractStaticType** — Extracts the static type from a node `ast-helpers.ts:335-338`
+- **extractSupertraits** — Extracts supertraits from the AST node `ast-helpers.ts:221-233`
+- **extractTraitBounds** — Extracts trait bounds from the AST node `ast-helpers.ts:204-216`
+- **extractTypeBounds** — Extracts type bounds from the AST node `ast-helpers.ts:238-247`
+- **extractUseTree** — Extracts the use tree from a node `ast-helpers.ts:384-426`
+- **extractVisibility** — Extract visibility modifier from a node `ast-helpers.ts:47-50`
+- **findNodes** — Find all nodes of a specific type `ast-helpers.ts:18-31`
+- **getAttributeName** — Retrieves the name of an attribute from the AST node `ast-helpers.ts:149-152`
+- **getNodeText** — Get text content of a node `ast-helpers.ts:36-38`
+- **hasBody** — Checks if a node has a body `ast-helpers.ts:169-171`
+- **hasModifier** — Check if a node has a specific modifier `ast-helpers.ts:55-63`
+- **hasModifier** — Checks if a node has a child with the specified modifier type `pattern-identifier.ts:197-205`
+- **identifyBuilderPattern** — Identify Builder pattern `pattern-identifier.ts:59-81`
+- **identifyErrorHandlingPatterns** — Identify Error handling patterns `pattern-identifier.ts:125-156`
+- **identifyIteratorPattern** — Identify Iterator pattern `pattern-identifier.ts:86-116`
+- **identifyOwnershipPatterns** — Identify Ownership patterns `pattern-identifier.ts:161-192`
+- **identifyPatterns** — Identify Rust patterns (Layer 4) `pattern-identifier.ts:19-50`
+- **identifyUnsafePatterns** — Identify unsafe code blocks `pattern-identifier.ts:210-236`
+- **impls** — Finds and filters implementation items that have a trait node with the text "Iterator" `pattern-identifier.ts:103-106`
+- **isTupleStruct** — Determines if a node is a tuple struct by checking its body `ast-helpers.ts:161-164`
+- **iteratorImpls** — Filters methods that are named "next" and have metadata indicating they are implementations of the "Iterator" trait `pattern-identifier.ts:92-92`
+- **mutReferences** — Filters references that have a child with the type "mutable_specifier" `pattern-identifier.ts:166-166`
+- **processUseTree** — Processes the use tree from a node `ast-helpers.ts:387-418`
+- **resolveName** — Resolves the name from a node `ast-helpers.ts:438-462`
+- **resultTypes** — Finds and filters generic type nodes that have a type name including "Result" `pattern-identifier.ts:129-133`
+- **unsafeFunctions** — Filters function items that have the "unsafe" modifier `pattern-identifier.ts:215-215`
+- **unsafeImpls** — Filters impl items that have the "unsafe" modifier `pattern-identifier.ts:217-217`
+- **unsafeTraits** — Filters trait items that have the "unsafe" modifier `pattern-identifier.ts:216-216`
+- **visit** — Traverse AST nodes and collect nodes of a specific type `ast-helpers.ts:20-28`
+
+### Import_decl
+- **../../types/parser.js** — Imports `../../types/parser.js` from `../../types/parser.js`. `ast-helpers.ts:8-8`, `pattern-identifier.ts:8-8`
+- **../base-parser-utils.js** — Imports `../base-parser-utils.js` from `../base-parser-utils.js`. `ast-helpers.ts:9-9`, `pattern-identifier.ts:9-9`
+- **./ast-helpers.js** — Imports `./ast-helpers.js` from `./ast-helpers.js`. `pattern-identifier.ts:10-10`
+
+### Property
+- **name** — Extracts function parameters and stores their names and types in an array `ast-helpers.ts:256-256`
+- **name** — Initializes an array to store function parameters `ast-helpers.ts:257-257`
+- **type** — Extracts function parameters and stores their names and types in an array `ast-helpers.ts:256-256`
+- **type** — Initializes an array to store function parameters `ast-helpers.ts:257-257`
 
 ## Data Flow
 
@@ -51,7 +99,7 @@ This module supports Rust code analysis with two components. The AST helpers pro
 | `identifyPatterns` | function | Analyzes code for Rust patterns | [`pattern-identifier.ts:19-50`](./pattern-identifier.ts) |
 | `identifyBuilderPattern` | function | Detects Builder pattern usage | [`pattern-identifier.ts:59-81`](./pattern-identifier.ts) |
 | `identifyIteratorPattern` | function | Detects Iterator trait implementations | [`pattern-identifier.ts:86-116`](./pattern-identifier.ts) |
-| `identifyErrorHandlingPatterns` | function | Finds error handling patterns | [`pattern-identifier.ts:129-133`](./pattern-identifier.ts) |
+| `identifyErrorHandlingPatterns` | function | Finds error handling patterns | [`pattern-identifier.ts:125-156`](./pattern-identifier.ts) |
 | `identifyOwnershipPatterns` | function | Identifies ownership patterns | [`pattern-identifier.ts:161-192`](./pattern-identifier.ts) |
 | `identifyUnsafePatterns` | function | Detects unsafe code blocks | [`pattern-identifier.ts:210-236`](./pattern-identifier.ts) |
 
@@ -84,10 +132,6 @@ Functions return empty arrays or default values when nodes are missing. Pattern 
 - Generic parameter extraction does not handle deeply nested lifetime bounds
 - Pattern identification is heuristic-based and may miss non-standard implementations
 - Use tree resolution does not handle `pub(in path)` visibility in all cases
-
-## Exports
-
-
 
 ## Files
 

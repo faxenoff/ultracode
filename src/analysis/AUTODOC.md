@@ -135,7 +135,7 @@ The `src/analysis` module provides a base for detecting usage patterns in API co
 - **node:path** — Imports `node:path` from `node:path`. `technology-detector.ts:21-21`
 
 ### Property
-- **activeFiles** — Tracks the number of active files in the usage detection process `base-usage-detector.ts:33-33`
+- **activeFiles** — Tracks the number of active files currently being used `base-usage-detector.ts:33-33`
 - **activeThreshold** — Threshold for "active" classification (default: 0.3) `base-usage-detector.ts:56-56`
 - **buildTools** — An array of detected build tools with their configuration files `technology-detector.ts:32-32`
 - **category** — The category of a detected framework, such as frontend, backend, testing, build, or other `technology-detector.ts:47-47`
@@ -163,9 +163,9 @@ The `src/analysis` module provides a base for detecting usage patterns in API co
 - **keywords** — Represents an array of keywords used for technology detection `technology-detector.ts:831-831`
 - **languages** — An array of detected programming languages with their versions, percentages, and file counts `technology-detector.ts:30-30`
 - **logTag** — The log tag for the usage detector `base-usage-detector.ts:42-42`
-- **name** — The name of a dependency `technology-detector.ts:45-45`, `technology-detector.ts:58-58`
+- **name** — Stores the name of the detected technology `technology-detector.ts:53-53`, `technology-detector.ts:58-58`
 - **name** — The name of a detected programming language `technology-detector.ts:38-38`
-- **name** — Stores the name of the detected technology `technology-detector.ts:53-53`
+- **name** — The name of a dependency `technology-detector.ts:45-45`
 - **percentage** — The percentage of the codebase that is written in a detected programming language `technology-detector.ts:40-40`
 - **score** — The score calculated for a usage signal `base-usage-detector.ts:19-19`
 - **signals** — An array of usage signals associated with the file `base-usage-detector.ts:27-27`
@@ -173,7 +173,7 @@ The `src/analysis` module provides a base for detecting usage patterns in API co
 - **totalFiles** — The total number of files processed `base-usage-detector.ts:32-32`
 - **type** — The type of usage signal, such as imports, codegen_script, codegen_config, or generated_markers `base-usage-detector.ts:17-17`
 - **type** — The type of a dependency, either "prod" or "dev" `technology-detector.ts:60-60`
-- **usageConfidence** — Represents the confidence level of usage detection `base-usage-detector.ts:25-25`
+- **usageConfidence** — Represents the confidence level of file usage detection `base-usage-detector.ts:25-25`
 - **version** — The version of a dependency `technology-detector.ts:46-46`, `technology-detector.ts:59-59`
 - **version** — The version of a detected programming language `technology-detector.ts:39-39`
 - **weight** — The weight assigned to a usage signal `base-usage-detector.ts:18-18`
@@ -214,13 +214,13 @@ The `src/analysis` module provides a base for detecting usage patterns in API co
 
 | Export | File:Lines | Description |
 |--------|-----------|-------------|
-| `detectCSharpChaosPatterns` | `chaos/csharp-patterns.ts:144-274` | Scans entity array for C# anti-patterns: mutable statics, async-void methods, god-service classes, missing CancellationToken, and singleton mutable state. |
+| `detectCSharpChaosPatterns` | `chaos/csharp-patterns.ts:272-272` | Scans entity array for C# anti-patterns: mutable statics, async-void methods, god-service classes, missing CancellationToken, and singleton mutable state. |
 | `buildRelationshipLookup` | `chaos/state-detector.ts:26-46` | Creates O(1) lookup map from entity ID to their relationships, enabling efficient mutation analysis without repeated linear scans. |
 | `isStateIdentifier` | `chaos/angular-patterns.ts:5-40` | Determines if a name is likely a state variable using keyword matching and regex heuristics (detects Angular, Redux, and general state patterns). |
 | `isCSharpStateIdentifier` | `chaos/csharp-patterns.ts:84-153` | C# state variable detection using entity metadata inspection (field keywords, property patterns, naming conventions). |
 | `detectSwaggerUsage` | `swagger-usage-detector.ts:74-134` | Multi-signal detection of swagger file usage: analyzes imports (weight 0.4), codegen scripts (0.3), config files (0.2), and generated markers (0.1); returns results with confidence >= 0.3. |
 | `applySwaggerUsageMetadata` | `swagger-usage-detector.ts:140-167` | Applies swagger usage detection results to entities in graph storage, enriching them with usage metadata and 1-sentence descriptions. |
-| `detectGraphQLUsage` | `graphql-usage-detector.ts:60-62` | Multi-signal detection of GraphQL schema file usage via imports, codegen scripts, config files, and generated markers; returns results with confidence >= 0.3. |
+| `detectGraphQLUsage` | `graphql-usage-detector.ts:36-67` | Multi-signal detection of GraphQL schema file usage via imports, codegen scripts, config files, and generated markers; returns results with confidence >= 0.3. |
 | `applyGraphQLUsageMetadata` | `graphql-usage-detector.ts:122-143` | Applies GraphQL usage detection results to entities in graph storage, enriching them with usage metadata. |
 | `detectProtobufUsage` | `protobuf-usage-detector.ts:61-117` | Multi-signal detection of Protobuf schema file usage via imports, codegen scripts, config files, and generated markers; returns results with confidence >= 0.3. |
 | `applyProtobufUsageMetadata` | `protobuf-usage-detector.ts:119-140` | Applies Protobuf usage detection results to entities in graph storage, enriching them with usage metadata. |

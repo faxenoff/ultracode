@@ -1,17 +1,64 @@
----
-module_name: strategies
-description: "Strategy pattern implementations for task delegation in the conductor orchestrator"
-status: active
-language: typescript
----
-
 # Strategies
 
-> Provides pluggable delegation strategies (complexity-based, round-robin, least-loaded) that replace large if-else chains in the conductor orchestrator.
+## 🤖 Overview
 
-## Overview
+The `strategies` module provides a flexible task delegation strategy for agents, enabling dynamic task assignment based on complexity and agent capabilities. This module is used by the conductor-orchestrator to manage task distribution efficiently, reducing the need for large if-else chains.
 
-The strategies module implements the Strategy pattern for task delegation decisions. It defines a `DelegationStrategy` interface with three methods (shouldDelegate, selectAgent, calculateComplexity) and provides three concrete implementations: `ComplexityBasedStrategy` (delegates above a threshold), `RoundRobinStrategy` (always delegates, rotating agents), and `LeastLoadedStrategy` (delegates above threshold, picks agent with lowest current load). This eliminates complex conditional logic in the conductor orchestrator.
+## 🤖 Architecture
+
+```
+[DelegationStrategy]
+    |
+    v
+[ComplexityBasedStrategy]
+    |
+    v
+[Agent]
+    |
+    v
+[AgentTask]
+    |
+    v
+[Task Complexity Score]
+```
+
+## 🤖 Flow
+
+```
+[AgentTask] → [DelegationStrategy] → [ComplexityBasedStrategy] → [Agent] → [Task Complexity Score]
+```
+
+## 🤖 Entity Listing
+
+### Function
+- **capableAgents** — Filters agents that support the task type `delegation-strategy.ts:52-52`, `delegation-strategy.ts:97-97`, `delegation-strategy.ts:129-129`
+
+### Method
+- **calculateComplexity** — Calculates the complexity score of a task `delegation-strategy.ts:62-83`, `delegation-strategy.ts:109-111`
+- **calculateComplexity** — Calculates the complexity score of a task based on its priority, payload size, and type `delegation-strategy.ts:141-150`
+- **constructor** — Initializes a ComplexityBasedStrategy with a complexity threshold `delegation-strategy.ts:43-43`, `delegation-strategy.ts:118-121`
+- **selectAgent** — Selects the best agent for a task based on available agents `delegation-strategy.ts:50-60`, `delegation-strategy.ts:96-107`, `delegation-strategy.ts:128-139`
+- **shouldDelegate** — Determines if a task should be delegated based on its complexity `delegation-strategy.ts:45-48`, `delegation-strategy.ts:92-94`, `delegation-strategy.ts:123-126`
+
+### Class
+- **ComplexityBasedStrategy** — Strategy for delegating tasks based on complexity threshold `delegation-strategy.ts:42-84`
+- **LeastLoadedStrategy** — Strategy for delegating tasks based on the least loaded agent `delegation-strategy.ts:117-151`
+- **RoundRobinStrategy** — Strategy for delegating tasks using a round-robin approach `delegation-strategy.ts:89-112`
+
+### Interface
+- **Agent** — Represents an agent with an ID, type, and capabilities `delegation-strategy.ts:10-17`
+- **DelegationStrategy** — Interface for task delegation strategies `delegation-strategy.ts:22-37`
+
+### Import_decl
+- **../../types/agent.js** — Imports `../../types/agent.js` from `../../types/agent.js`. `delegation-strategy.ts:8-8`
+
+### Property
+- **capabilities** — Object containing supported task types and maximum concurrency `delegation-strategy.ts:13-16`
+- **id** — Unique identifier for an agent `delegation-strategy.ts:11-11`
+- **lastSelectedIndex** — Index of the last selected agent `delegation-strategy.ts:90-90`
+- **maxConcurrency** — Maximum number of tasks the agent can handle concurrently `delegation-strategy.ts:15-15`
+- **supportedTaskTypes** — Array of task types supported by the agent `delegation-strategy.ts:14-14`
+- **type** — Type of the agent `delegation-strategy.ts:12-12`
 
 ## Data Flow
 

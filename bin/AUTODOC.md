@@ -1,47 +1,34 @@
 # bin
 
-## Overview
+## 🤖 Overview
 
-The `bin` module provides the command-line entry point for UltraCode, serving as a Node.js executable script that launches the application. It acts as a wrapper that resolves file paths, validates required dependencies (the Comm binary and Core MCP server), and spawns the Comm process to route commands from Claude Code to the Core server. This module ensures the application can be invoked from the terminal with proper error handling and path resolution regardless of installation method (npm, bun, or global).
+UltraCode is a module that resolves paths and launches the Comm proxy binary, serving as an entry point for the application. It is used by developers and users to manage the application's execution environment, ensuring the correct paths and dependencies are resolved before launching the Comm proxy.
 
-## Flow
+## 🤖 Architecture
 
 ```
-CLI invocation (node bin/ultracode.js)
-          ↓
-Resolve dist directory & file paths
-          ↓
-Validate Comm binary exists → Exit if missing
-          ↓
-Validate Core MCP server exists → Exit if missing
-          ↓
-Set environment variables (ULTRACODE_CORE_PATH, ULTRACODE_DIST_DIR)
-          ↓
-Spawn Comm process
-          ↓
-Forward Claude Code commands → Core server
+UltraCode → ultracode.js → ultracode.com (Comm) → Core (index.js)
 ```
 
-## Entity Listing
+## 🤖 Flow
 
-### Executable Scripts
+```
+UltraCode resolves paths and launches the Comm proxy binary, which then communicates with the Core (index.js) to execute the application.
+```
 
-- **bin/ultracode.js:1-50** — Main CLI entry point script that validates dependencies, resolves paths, sets environment variables, and spawns the Comm binary to route requests from Claude Code to the Core MCP server.
+## 🤖 Entity Listing
 
+### Function
+- **quotedArgs** — Maps each argument to a quoted string and joins them with spaces, suitable for passing to the Comm binary on macOS `ultracode.js:57-57`
+- **runSetup** — Executes the setup command by dynamically importing the specified script path `ultracode-setup.cjs:50-56`
+- **tryBunPath** — Tries to find the setup-command.js path using bun's global installation `ultracode-setup.cjs:34-48`
 
-### Added Entities
-
-- **tryBunPath** — `ultracode-setup.cjs:34-48`
-- **runSetup** — `ultracode-setup.cjs:50-56`
-- **{ existsSync }** — `ultracode-setup.cjs:10-10`
-- **{ join, dirname }** — `ultracode-setup.cjs:11-11`
-- **{ execSync }** — `ultracode-setup.cjs:12-12`
-- **{ platform }** — `ultracode-setup.cjs:13-13`
-- **relPath** — `ultracode-setup.cjs:16-16`
-- **npmRoot** — `ultracode-setup.cjs:22-22`
-- **npmPath** — `ultracode-setup.cjs:23-23`
-- **home** — `ultracode-setup.cjs:36-36`
-- **bunPath** — `ultracode-setup.cjs:37-39`
+### Import_decl
+- **node:child_process** — Imports `node:child_process` from `node:child_process`. `ultracode.js:12-12`
+- **node:fs** — Imports `node:fs` from `node:fs`. `ultracode.js:13-13`
+- **node:os** — Imports `node:os` from `node:os`. `ultracode.js:14-14`
+- **node:path** — Imports `node:path` from `node:path`. `ultracode.js:15-15`
+- **node:url** — Imports `node:url` from `node:url`. `ultracode.js:16-16`
 
 ## Dependencies
 

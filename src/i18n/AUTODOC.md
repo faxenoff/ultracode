@@ -48,9 +48,11 @@ locale-detector.ts
 - **./types.js** — Imports `./types.js` from `./types.js`. `locale-detector.ts:11-11`
 
 ### Property
-- **language** — Represents the detected language code `locale-detector.ts:44-44`, `locale-detector.ts:65-65`
+- **language** — Represents the detected language code `locale-detector.ts:44-44`
+- **language** — Detects the language using the Intl API and returns a language object `locale-detector.ts:65-65`
 - **language** — Detected/selected language `types.ts:20-20`
-- **locale** — Represents the detected locale string `locale-detector.ts:44-44`, `locale-detector.ts:65-65`
+- **locale** — Represents the detected locale string `locale-detector.ts:44-44`
+- **locale** — Detects the locale using the Intl API and returns a locale string `locale-detector.ts:65-65`
 - **source** — How the language was determined `types.ts:22-22`
 - **systemLocale** — Raw system locale string `types.ts:24-24`
 

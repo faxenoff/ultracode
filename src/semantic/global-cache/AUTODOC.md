@@ -1,17 +1,56 @@
----
-module_name: global-cache
-description: "Global embedding cache with pre-built language builtins and framework patterns"
-status: active
-language: typescript
----
-
 # Global Cache
 
-> Provides a global embedding cache containing pre-built entries for language built-in functions, standard library patterns, and framework-specific patterns across multiple programming languages.
+## 🤖 Overview
 
-## Overview
+The `global-cache` module provides a centralized cache for semantic embeddings, used by applications requiring efficient retrieval and storage of embedding data. It is designed for developers and data scientists who need to manage and access semantic embeddings across different modules and services.
 
-The global-cache module defines the data model and aggregation layer for pre-computed embedding cache entries. It re-exports the GlobalEmbeddingCache class from the parent semantic module and provides typed interfaces for cache entries (text, category, language, framework) and metadata (version, model, dimensions, entry counts). The data submodule contains the actual built-in definitions for all supported languages and frameworks.
+## 🤖 Architecture
+
+```
+GlobalCache
+├── EmbeddingCache
+│   ├── Embedding
+│   └── EmbeddingSet
+├── CacheManager
+│   ├── Cache
+│   └── CacheEntry
+└── Data
+    └── EmbeddingData
+```
+
+## 🤖 Flow
+
+```
+GlobalCache
+│
+├── EmbeddingCache
+│   ├── Embedding
+│   │   └── EmbeddingSet
+│   └── CacheManager
+│       └── Cache
+│           └── CacheEntry
+│
+└── Data
+    └── EmbeddingData
+```
+
+## 🤖 Entity Listing
+
+### Interface
+- **GlobalCacheEntry** — Represents an entry in the global embedding cache with text, optional embedding text, category, language, and framework `types.ts:5-22`
+- **GlobalCacheMetadata** — Metadata for the global embedding cache, including version, model, dimension, last updated time, and entry counts `types.ts:24-30`
+
+### Property
+- **category** — The category of the cache entry, either "builtin", "stdlib", "framework", or "pattern" `types.ts:19-19`
+- **dimension** — The dimension of the model used for the global embedding cache `types.ts:27-27`
+- **embeddingText** — Optional full embedding text used for pipeline cache hits when the entity name matches a known pattern `types.ts:18-18`
+- **entryCounts** — A record of counts for different types of cache entries `types.ts:29-29`
+- **framework** — Optional framework associated with the cache entry `types.ts:21-21`
+- **language** — The programming language associated with the cache entry `types.ts:20-20`
+- **lastUpdated** — The timestamp when the global embedding cache metadata was last updated `types.ts:28-28`
+- **model** — The model used for the global embedding cache `types.ts:26-26`
+- **text** — The text content of the cache entry `types.ts:6-6`
+- **version** — The version of the global embedding cache metadata `types.ts:25-25`
 
 ## Data Flow
 

@@ -2,7 +2,38 @@
 
 ## 🤖 Overview
 
-This module provides helper functions for parsing Java source code via ANTLR-generated AST nodes. It extracts structural information such as class/interface modifiers, annotations, inheritance hierarchies, method parameters, and method calls. The module serves as the root coordinator, re-exporting types and extraction helpers consumed by the Java parser pipeline.
+This module provides helper functions for extracting modifiers, annotations, inheritance, and parameters from Java AST nodes. It is used by developers to parse and analyze Java code structures.
+
+## 🤖 Architecture
+
+```
+  +---------------------+
+  | extraction-helpers.ts |
+  +---------------------+
+    |
+    v
+  +---------------------+
+  |     types.ts        |
+  +---------------------+
+```
+
+## 🤖 Flow
+
+```
+  +---------------------+
+  | Java AST node       |
+  +---------------------+
+    |
+    v
+  +---------------------+
+  | extraction-helpers.ts |
+  +---------------------+
+    |
+    v
+  +---------------------+
+  |     types.ts        |
+  +---------------------+
+```
 
 ## 🤖 Entity Listing
 
@@ -59,10 +90,18 @@ This module provides helper functions for parsing Java source code via ANTLR-gen
 - **elementValuePairList** — Represents the list of element-value pairs in an annotation `extraction-helpers.ts:240-240`
 - **fieldModifier** — Field modifier property of a modifiers context `extraction-helpers.ts:61-61`
 - **formalParameter** — ANTLR context for a single formal parameter `extraction-helpers.ts:94-94`
-- **formalParameterList** — ANTLR context for the list of formal parameters in a method declarator `extraction-helpers.ts:80-80`, `extraction-helpers.ts:87-87`
+- **formalParameterList** — ANTLR context for the list of formal parameters in a method declarator `extraction-helpers.ts:80-80`
+- **formalParameterList** — Returns a function that creates a FormalParameterListContext `extraction-helpers.ts:87-87`
 - **getText** — Method to get text from an ANTLR context `extraction-helpers.ts:43-43`
-- **getText** — Returns the text of an ANTLR token `extraction-helpers.ts:236-236`, `extraction-helpers.ts:240-240`, `extraction-helpers.ts:248-248`, `extraction-helpers.ts:253-253`, `extraction-helpers.ts:257-257`, `extraction-helpers.ts:377-377`, `extraction-helpers.ts:392-392`
-- **getText** — Returns the text of an ANTLR context `extraction-helpers.ts:393-393`, `extraction-helpers.ts:423-423`
+- **getText** — Returns the text of an ANTLR token `extraction-helpers.ts:236-236`
+- **getText** — Returns the text of an ANTLR context `extraction-helpers.ts:240-240`
+- **getText** — Extracts the text from a marker annotation `extraction-helpers.ts:248-248`
+- **getText** — Extracts the text from a single-element annotation `extraction-helpers.ts:253-253`
+- **getText** — Extracts the text from an element value `extraction-helpers.ts:257-257`
+- **getText** — Extracts the identifier text from a variable declaration `extraction-helpers.ts:377-377`
+- **getText** — Extracts the identifier text from a variable argument parameter `extraction-helpers.ts:392-392`
+- **getText** — Extracts the unann type text from a variable argument parameter `extraction-helpers.ts:393-393`
+- **getText** — Parses the identifier's text `extraction-helpers.ts:423-423`
 - **hasAllArgsConstructor** — A type alias for the `hasAllArgsConstructor` property in the `LombokInfo` interface `types.ts:67-67`
 - **hasBuilder** — A type alias for the `hasBuilder` property in the `LombokInfo` interface `types.ts:63-63`
 - **hasData** — A type alias for the `hasData` property in the `LombokInfo` interface `types.ts:62-62`
@@ -70,8 +109,9 @@ This module provides helper functions for parsing Java source code via ANTLR-gen
 - **hasNoArgsConstructor** — A type alias for the `hasNoArgsConstructor` property in the `LombokInfo` interface `types.ts:68-68`
 - **hasSetter** — A type alias for the `hasSetter` property in the `LombokInfo` interface `types.ts:65-65`
 - **hasSlf4j** — A type alias for the `hasSlf4j` property in the `LombokInfo` interface `types.ts:66-66`
-- **identifier** — Represents an identifier in the ANTLR context `extraction-helpers.ts:377-377`, `extraction-helpers.ts:392-392`
-- **identifier** — Represents an identifier in the Java AST `extraction-helpers.ts:423-423`
+- **identifier** — Represents an identifier in the ANTLR context `extraction-helpers.ts:377-377`
+- **identifier** — Represents an identifier in the Java AST `extraction-helpers.ts:392-392`
+- **identifier** — Extracts the identifier text from a variable declaration `extraction-helpers.ts:423-423`
 - **interfaceMethodModifier** — Interface method modifier property of a modifiers context `extraction-helpers.ts:60-60`
 - **interfaceModifier** — Interface modifier property of a modifiers context `extraction-helpers.ts:58-58`
 - **interfaces** — Represents the list of interfaces `extraction-helpers.ts:339-339`
@@ -87,14 +127,19 @@ This module provides helper functions for parsing Java source code via ANTLR-gen
 - **qualifiers** — A type alias for the `qualifiers` property in the `SpringAnnotationInfo` interface `types.ts:42-42`
 - **relationships** — A type alias for the `relationships` property in the `JpaEntityInfo` interface `types.ts:50-54`
 - **singleElementAnnotation** — Represents a single-element annotation in the ANTLR context `extraction-helpers.ts:228-228`
-- **start** — Start position property of an ANTLR token `extraction-helpers.ts:30-30`, `extraction-helpers.ts:39-39`
-- **stop** — Stop position property of an ANTLR token `extraction-helpers.ts:31-31`, `extraction-helpers.ts:40-40`
+- **start** — Start position property of an ANTLR token `extraction-helpers.ts:30-30`
+- **start** — Represents the start token in the ANTLR parser `extraction-helpers.ts:39-39`
+- **stop** — Stop position property of an ANTLR token `extraction-helpers.ts:31-31`
+- **stop** — Represents the stop token in the ANTLR parser `extraction-helpers.ts:40-40`
 - **tableName** — A type alias for the `tableName` property in the `JpaEntityInfo` interface `types.ts:49-49`
 - **targetEntity** — A type alias for the `targetEntity` property in the `JpaEntityInfo` interface `types.ts:52-52`
 - **text** — Text content property of an ANTLR token `extraction-helpers.ts:32-32`
-- **type** — A type alias for the `AnnotationInfo` type `types.ts:39-39`, `types.ts:51-51`
+- **type** — A type alias for the `AnnotationInfo` type `types.ts:39-39`
+- **type** — Represents the type of relationship, either "OneToMany", "ManyToOne", "OneToOne", or "ManyToMany" `types.ts:51-51`
 - **typeName** — ANTLR context for the type name of an annotation `extraction-helpers.ts:71-71`
-- **typeName** — Represents the type name of an annotation in the ANTLR context `extraction-helpers.ts:236-236`, `extraction-helpers.ts:248-248`, `extraction-helpers.ts:253-253`
+- **typeName** — Represents the type name of an annotation in the ANTLR context `extraction-helpers.ts:236-236`
+- **typeName** — Extracts the type name from a marker annotation `extraction-helpers.ts:248-248`
+- **typeName** — Extracts the type name from a single-element annotation `extraction-helpers.ts:253-253`
 - **unannType** — ANTLR context for an unannotated type `extraction-helpers.ts:102-102`
 - **unannType** — Represents an unannotated type in the Java AST `extraction-helpers.ts:393-393`
 - **variableArityParameter** — Represents a variable arity parameter in the ANTLR context `extraction-helpers.ts:389-389`

@@ -1,21 +1,244 @@
----
-module_name: search
-description: "Multi-mode pattern search engine with entity, content, semantic, and hybrid search over the code graph"
-status: active
-language: typescript
-entry_point: pattern-search.ts
-exports: [PatternSearch, PatternSearchQuery, PatternSearchResult]
-dependencies: [storage, semantic, analysis, logging, utils]
-tags: [search, regex, semantic-search, vector-similarity, simd, hybrid-search]
----
-
 # Search Module
 
-> Multi-mode code search engine combining regex entity matching, content filtering, SIMD-accelerated vector similarity, and hybrid ranking over the indexed code graph.
+## 🤖 Overview
 
-## Overview
+The `src/search` module implements a comprehensive search engine using various algorithms and data structures. It includes BM25 scoring, trigram indexing, and pattern matching for efficient document retrieval. This module is used by developers and data scientists to build and optimize search functionalities in applications.
 
-The module provides four search modes through a single `PatternSearch` class: **entity** (regex name matching against the graph), **content** (body text filtering with optional semantic similarity), **semantic** (vector store cosine similarity with SIMD acceleration), and **hybrid** (merged, deduplicated, score-ranked union of all three). It is instantiated lazily via `ServiceContainer.getPatternSearch()` and receives `GraphStorage`, `VectorStore`, and `TechnologyDetector` as constructor dependencies. Embedding generation initializes on first use; if unavailable, semantic search falls back to entity name matching with a 0.5 penalty score.
+## 🤖 Architecture
+
+```
+bm25.ts
+    |
+    v
+code-classifier.ts
+    |
+    v
+keyword-triage.ts
+    |
+    v
+pattern-search.ts
+    |
+    v
+stemmer.ts
+    |
+    v
+stopwords.ts
+    |
+    v
+trigram-extract.ts
+    |
+    v
+trigram-index.ts
+    |
+    v
+trigram-types.ts
+    |
+    v
+varint.ts
+```
+
+## 🤖 Flow
+
+```
+searchQuery → patternSearch → trigramExtract → trigramIndex → BM25Score → codeClassifier → keywordTriage → finalResult
+```
+
+## 🤖 Entity Listing
+
+### Function
+- **applyRules** — Applies a set of rules to a word `stemmer.ts:138-149`
+- **bm25Idf** — Computes IDF using the BM25 variant `bm25.ts:45-47`
+- **bm25Score** — Computes BM25 score for a single term in a single document `bm25.ts:29-37`
+- **bm25ScoreDocument** — Batch-scores multiple query terms against a document and returns the sum of BM25 scores `bm25.ts:59-74`
+- **buildCodeBitmap** — Builds a bitmap of code classification for a given source array `code-classifier.ts:154-166`
+- **containsVowel** — Checks if a word contains at least one vowel `stemmer.ts:49-54`
+- **countNewlines** — Counts the number of newline characters in a source array `code-classifier.ts:182-206`
+- **decode** — Decodes a LEB128-encoded u32 from buf `varint.ts:36-53`
+- **decodeDelta** — Delta+LEB128 decodes `count` u32 file IDs from buf `varint.ts:73-85`
+- **decomposePattern** — Parses a string pattern into a sorted array of trigram numbers `trigram-extract.ts:135-147`
+- **encode** — Encodes a u32 value into buf using LEB128 `varint.ts:17-30`
+- **encodeDelta** — Delta+LEB128 encodes a sorted array of u32 file IDs `varint.ts:59-68`
+- **endsCvc** — Determines if a word ends with a consonant-vowel-consonant pattern `stemmer.ts:56-63`
+- **endsWith** — Checks if a word ends with a specified suffix `stemmer.ts:65-71`
+- **extractRegexLiterals** — Extracts literal alphanumeric substrings (≥3 chars) from a regex pattern `trigram-index.ts:33-45`
+- **extractTrigrams** — Extracts all unique trigrams from content with bloom masks `trigram-extract.ts:26-66`
+- **extractTrigramsFiltered** — Extract trigrams only from "live code" bytes `trigram-extract.ts:84-129`
+- **extractTrigramsFromString** — Extract trigrams from a string (convenience wrapper) `trigram-extract.ts:71-73`
+- **frameworkInfo** — Represents framework-aware filtering for pattern-based search `pattern-search.ts:431-431`
+- **getKeywordsForLanguage** — Returns an array of keywords specific to a given programming language `keyword-triage.ts:123-154`
+- **intersectSorted** — Returns the intersection of two sorted arrays `trigram-index.ts:444-460`
+- **isCodeByte** — Checks if a specific byte in a code bitmap is classified as code `code-classifier.ts:171-176`
+- **isConsonant** — Determines if a character is a consonant `stemmer.ts:19-28`
+- **isDoubleEnd** — Checks if a word ends with a double consonant `stemmer.ts:106-108`
+- **isIdentCont** — Checks if a character is part of an identifier continuation `keyword-triage.ts:110-117`
+- **isStopword** — Checks if a given word is a stopword from the extended list of English, programming, and code tokens `stopwords.ts:272-274`
+- **isVowel** — Checks if a character is a vowel `stemmer.ts:14-17`
+- **isWordBoundary** — Determines if a character is a word boundary `code-classifier.ts:212-230`
+- **kwBytes** — Encodes keywords as byte arrays for efficient scanning `keyword-triage.ts:50-50`
+- **maxEncodedSize** — Not applicable in this context `varint.ts:88-90`
+- **measure** — Counts VC groups in a word `stemmer.ts:31-47`
+- **packTrigram** — Packs a trigram into a binary format `trigram-types.ts:91-93`
+- **readHeader** — Reads the header from a file `trigram-types.ts:124-140`
+- **replaceSuffix** — Replaces a suffix in a word `stemmer.ts:73-78`
+- **scanForKeywords** — Scans a file for entity-defining keywords using CodeClassifier to skip strings/comments, returning a result with keyword presence and count `keyword-triage.ts:34-108`
+- **sortedTrigrams** — Creates a sorted array of trigram keys `trigram-index.ts:111-111`
+- **stem** — Applies all steps of the Porter algorithm to a word `stemmer.ts:269-294`
+- **step1a** — Implements step 1a of the Porter algorithm `stemmer.ts:82-88`
+- **step1b** — Implements step 1b of the Porter algorithm `stemmer.ts:110-124`
+- **step1bFixup** — Fixes up step 1b of the Porter algorithm `stemmer.ts:90-104`
+- **step1c** — Implements step 1c of the Porter algorithm `stemmer.ts:126-131`
+- **step2** — Implements step 2 of the Porter algorithm `stemmer.ts:151-180`
+- **step3** — Implements step 3 of the Porter algorithm `stemmer.ts:182-198`
+- **step4** — Implements step 4 of the Porter algorithm `stemmer.ts:200-236`
+- **step5** — Implements step 5 of the Porter algorithm `stemmer.ts:238-255`
+- **trigramToString** — Converts a trigram to a string `trigram-types.ts:101-104`
+- **unpackTrigram** — Unpacks a trigram from a binary format `trigram-types.ts:96-98`
+- **writeHeader** — Writes the header to a file `trigram-types.ts:110-122`
+
+### Method
+- **addFile** — Adds a file to the builder, ensuring it is not duplicated `trigram-index.ts:62-67`
+- **build** — Builds the trigram index from the added files `trigram-index.ts:90-204`
+- **classifyChunk** — Classifies a 32-byte chunk, returning a u32 bitmask where bit=1 means "live code" `code-classifier.ts:49-134`
+- **clear** — Clears the file and file ID map of the trigram index `trigram-index.ts:207-210`
+- **computeSemanticSimilarity** — Computes the semantic similarity between two entities `pattern-search.ts:398-424`
+- **constructor** — Initializes the PatternSearch instance with necessary dependencies `pattern-search.ts:75-79`
+- **constructor** — Initializes a new instance of the TrigramBuilder class `trigram-index.ts:222-226`
+- **executeSearch** — Executes a search operation by decomposing the pattern into trigrams, looking up posting lists, intersecting them, and verifying matches by reading actual files `trigram-index.ts:294-436`
+- **fallbackEntitySearch** — Fallback search method for entities `pattern-search.ts:301-321`
+- **fileCount** — Returns the current number of files added to the builder `trigram-index.ts:70-72`
+- **fileCount** — Returns the number of files currently in the builder `trigram-index.ts:242-244`
+- **generateSnippet** — Generates a code snippet for the entity `pattern-search.ts:361-379`
+- **getEntityContent** — Retrieves the content of an entity `pattern-search.ts:350-359`
+- **getFilePath** — Retrieves the file path by file ID from the trigram index `trigram-index.ts:251-257`
+- **getFilesForFrameworks** — Retrieves files for specified frameworks `pattern-search.ts:426-448`
+- **initialize** — Initializes the embedding generator if not already initialized `pattern-search.ts:84-93`
+- **lookupTrigram** — Performs a binary search to find a trigram in the trigram table and returns its entry or null `trigram-index.ts:260-282`
+- **mergeFrom** — Merges another builder's postings into this one `trigram-index.ts:83-87`
+- **mergeResults** — Merges search results from different modes `pattern-search.ts:381-396`
+- **open** — Opens a file for reading or writing `trigram-index.ts:229-239`
+- **readPostingList** — Parses a posting list from the buffer using the provided offset and count `trigram-index.ts:285-289`
+- **reset** — Resets the state of a code classifier `code-classifier.ts:137-142`
+- **search** — Performs a search based on the specified pattern and mode `pattern-search.ts:98-111`
+- **searchContent** — Searches for content within entities matching the pattern `pattern-search.ts:156-197`
+- **searchEntities** — Searches for entities matching the pattern `pattern-search.ts:117-150`
+- **searchHybrid** — Performs a hybrid search combining entity, content, and semantic modes `pattern-search.ts:327-344`
+- **searchSemantic** — Searches for semantic similarity matches `pattern-search.ts:203-296`
+- **trigramCount** — Returns the count of trigrams in the trigram index `trigram-index.ts:246-248`
+
+### Class
+- **CodeClassifier** — Stateful classifier that tracks string/comment context across chunks `code-classifier.ts:34-143`
+- **PatternSearch** — A class for performing pattern-based searches in code `pattern-search.ts:72-449`
+- **TrigramBuilder** — A class for building a trigram index by adding files and merging postings `trigram-index.ts:57-211`
+- **TrigramIndex** — Represents a trigram index file, providing methods to open, get file count, get trigram count, get file path by file ID, and look up trigrams `trigram-index.ts:217-437`
+
+### Interface
+- **BuilderFile** — Represents a file with its path, content hash, and trigrams `trigram-index.ts:51-55`
+- **EntityFilters** — Filters for entity types, file paths, and names `pattern-search.ts:34-38`
+- **FileEntry** — An interface representing a file entry in the trigram index file, containing path offset, path length, and content hash `trigram-types.ts:37-41`
+- **FileTrigramData** — An interface representing per-file trigram data, containing an array of packed trigrams `trigram-types.ts:61-63`
+- **Header** — Represents the header of the trigram index file, containing metadata such as magic number, version, and offsets `trigram-types.ts:26-35`
+- **KeywordScanResult** — Represents the result of scanning a file for entity-defining keywords, including whether any keywords were found, the count of keywords, and an estimate of the number of entities `keyword-triage.ts:20-24`
+- **PackedTrigram** — An interface representing a packed trigram, containing trigram, next mask, and location mask `trigram-types.ts:55-59`
+- **PatternSearchQuery** — Query for pattern-based search with various modes and filters `pattern-search.ts:40-54`
+- **PatternSearchResult** — Result of a pattern-based search `pattern-search.ts:56-66`
+- **SearchMatch** — Represents a match found during a search `trigram-types.ts:77-84`
+- **SearchOptions** — Configuration options for a search operation `trigram-types.ts:69-75`
+- **StemRule** — Represents a rule for stemming `stemmer.ts:133-136`
+- **TrigramTableEntry** — An interface representing a trigram table entry, containing bloom masks, trigram, posting offset, posting count, and location mask `trigram-types.ts:43-49`
+
+### Import_decl
+- **../analysis/technology-detector.js** — Imports `../analysis/technology-detector.js` from `../analysis/technology-detector.js`. `pattern-search.ts:22-22`
+- **../logging/index.js** — Imports `../logging/index.js` from `../logging/index.js`. `pattern-search.ts:23-23`
+- **../semantic/embedding-generator.js** — Imports `../semantic/embedding-generator.js` from `../semantic/embedding-generator.js`. `pattern-search.ts:24-24`
+- **../semantic/vector-store.js** — Imports `../semantic/vector-store.js` from `../semantic/vector-store.js`. `pattern-search.ts:25-25`
+- **../types/storage.js** — Imports `../types/storage.js` from `../types/storage.js`. `pattern-search.ts:26-26`
+- **../utils/file-ops.js** — Imports `../utils/file-ops.js` from `../utils/file-ops.js`. `pattern-search.ts:27-27`
+- **../utils/simd-vector-ops.js** — Imports `../utils/simd-vector-ops.js` from `../utils/simd-vector-ops.js`. `pattern-search.ts:28-28`
+- **./code-classifier.js** — Imports `./code-classifier.js` from `./code-classifier.js`. `keyword-triage.ts:16-16`, `trigram-extract.ts:15-15`
+- **./trigram-extract.js** — Imports `./trigram-extract.js` from `./trigram-extract.js`. `trigram-index.ts:13-13`
+- **./trigram-types.js** — Imports `./trigram-types.js` from `./trigram-types.js`. `trigram-extract.ts:16-16`, `trigram-extract.ts:17-17`, `trigram-index.ts:14-14`
+- **./trigram-types.js** — Imports `./trigram-types.js`. `trigram-index.ts:15-25`
+- **./varint.js** — Imports `./varint.js` from `./varint.js`. `trigram-index.ts:26-26`
+- **node:fs** — Imports `node:fs` from `node:fs`. `trigram-index.ts:12-12`
+
+### Property
+- **buf** — Stores the buffer of the trigram index file `trigram-index.ts:218-218`
+- **caseInsensitive** — Whether the search is case-insensitive `trigram-types.ts:73-73`
+- **column** — Column number in the line where the match was found `trigram-types.ts:80-80`
+- **contains** — Content must contain this string `pattern-search.ts:48-48`
+- **contentFilter** — Content filters for search `pattern-search.ts:47-51`
+- **contentHash** — The content hash of the file `trigram-index.ts:53-53`
+- **contentHash** — A field in the FileEntry interface representing the content hash of the file `trigram-types.ts:40-40`
+- **contextAfter** — Context after the match `trigram-types.ts:83-83`
+- **contextBefore** — Context before the match `trigram-types.ts:82-82`
+- **contextLines** — Number of lines of context to include around each match `trigram-types.ts:71-71`
+- **embeddingGenerator** — Generates embeddings for semantic similarity searches `pattern-search.ts:73-73`
+- **end** — Marks the end position of the match `pattern-search.ts:64-64`
+- **entity** — Entity found in the search `pattern-search.ts:57-57`
+- **entityType** — Entity type for filtering `pattern-search.ts:35-35`
+- **entityTypes** — Entity types for filtering `pattern-search.ts:43-43`
+- **entries** — A field in the FileTrigramData interface representing the array of packed trigrams `trigram-types.ts:62-62`
+- **estimatedEntities** — Estimates the number of entities based on the presence of entity-defining keywords `keyword-triage.ts:23-23`
+- **fileCount** — A constant representing the size of the file entry array `trigram-types.ts:29-29`
+- **fileIdMap** — A map from file paths to their indices in the files array `trigram-index.ts:59-59`
+- **filePath** — File path for filtering `pattern-search.ts:36-36`
+- **filePath** — Represents the file path of the entity being searched `pattern-search.ts:233-233`
+- **filePath** — Path of the file where the match was found `trigram-types.ts:78-78`
+- **filePattern** — Pattern to match files `trigram-types.ts:72-72`
+- **files** — File paths for filtering `pattern-search.ts:44-44`
+- **files** — An array of files added to the builder `trigram-index.ts:58-58`
+- **fileTableOffset** — A constant representing the offset of the file table within the trigram index file `trigram-types.ts:31-31`
+- **frameworks** — Frameworks for filtering `pattern-search.ts:45-45`
+- **hasEntityKeywords** — Indicates whether the file contains any entity-defining keywords `keyword-triage.ts:21-21`
+- **header** — Stores the header of the trigram index file `trigram-index.ts:220-220`
+- **highlights** — Highlights the positions of the match within the code `pattern-search.ts:61-65`
+- **inBlockComment** — Tracks whether the current chunk is inside a block comment `code-classifier.ts:38-38`
+- **inLineComment** — Tracks whether the current chunk is inside a line comment `code-classifier.ts:37-37`
+- **inString** — Tracks whether the current chunk is inside a string literal `code-classifier.ts:35-35`
+- **isRegex** — Whether the search uses regular expressions `trigram-types.ts:74-74`
+- **keywordCount** — Counts the number of entity-defining keywords found in the file `keyword-triage.ts:22-22`
+- **len** — Not applicable in this context `varint.ts:36-36`
+- **limit** — Limit for search results `pattern-search.ts:52-52`
+- **lineContent** — Content of the line where the match was found `trigram-types.ts:81-81`
+- **lineNumber** — Line number in the file where the match was found `trigram-types.ts:79-79`
+- **locMask** — Bloom filter of occurrence positions mod 8 `trigram-extract.ts:30-30`, `trigram-extract.ts:90-90`
+- **locMask** — Stores the location mask for a trigram in a map `trigram-index.ts:93-93`
+- **locMask** — A field in the TrigramTableEntry interface representing the bloom mask for the location `trigram-types.ts:48-48`, `trigram-types.ts:58-58`
+- **magic** — A 4-byte constant representing the magic number "TGI\x01" `trigram-types.ts:27-27`
+- **matchType** — Indicates the type of match found in the search `pattern-search.ts:58-58`
+- **maxResults** — Maximum number of results to return `trigram-types.ts:70-70`
+- **mode** — Search mode: entity, content, semantic, or hybrid `pattern-search.ts:53-53`
+- **name** — Regular expression for entity name filtering `pattern-search.ts:37-37`
+- **name** — Represents the name of the entity being searched `pattern-search.ts:235-235`
+- **nextMask** — Bloom filter of characters that follow this trigram `trigram-extract.ts:30-30`, `trigram-extract.ts:90-90`
+- **nextMask** — Stores the next mask for a trigram in a map `trigram-index.ts:93-93`
+- **nextMask** — A field in the TrigramTableEntry interface representing the bloom mask for the next character `trigram-types.ts:44-44`, `trigram-types.ts:57-57`
+- **path** — The file path `trigram-index.ts:52-52`
+- **pathLen** — A field in the FileEntry interface representing the length of the file path `trigram-types.ts:39-39`
+- **pathOffset** — A field in the FileEntry interface representing the offset of the file path in the string table `trigram-types.ts:38-38`
+- **pattern** — Pattern or semantic query for search `pattern-search.ts:41-41`
+- **postingCount** — A field in the TrigramTableEntry interface representing the number of postings `trigram-types.ts:47-47`
+- **postingOffset** — A field in the TrigramTableEntry interface representing the byte offset of the postings section `trigram-types.ts:46-46`
+- **postingsOffset** — A constant representing the offset of the postings section within the trigram index file `trigram-types.ts:34-34`
+- **regex** — Content must match this regex `pattern-search.ts:49-49`
+- **replacement** — Represents a replacement for a suffix `stemmer.ts:135-135`
+- **scope** — Scope filters for entity types, files, and frameworks `pattern-search.ts:42-46`
+- **score** — Represents the similarity score of the match `pattern-search.ts:59-59`
+- **semantic** — Semantic similarity to this description `pattern-search.ts:50-50`
+- **similarity** — Computes the similarity between two entities `pattern-search.ts:232-232`
+- **snippet** — Provides a code snippet showing the match `pattern-search.ts:60-60`
+- **start** — Marks the start position of the match `pattern-search.ts:63-63`
+- **stringChar** — Stores the character that started the string literal `code-classifier.ts:36-36`
+- **stringTableOffset** — A constant representing the offset of the string table within the trigram index file `trigram-types.ts:32-32`
+- **suffix** — Represents a suffix for stemming `stemmer.ts:134-134`
+- **trigram** — A field in the TrigramTableEntry interface representing the trigram value `trigram-types.ts:45-45`, `trigram-types.ts:56-56`
+- **trigramCount** — A constant representing the size of the trigram entry array `trigram-types.ts:30-30`
+- **trigrams** — The pre-extracted trigrams for the file `trigram-index.ts:54-54`
+- **trigramTableOffset** — A constant representing the offset of the trigram table within the trigram index file `trigram-types.ts:33-33`
+- **type** — Represents the type of the entity being searched `pattern-search.ts:234-234`
+- **value** — Not applicable in this context `varint.ts:36-36`
+- **version** — A constant representing the version of the trigram index file `trigram-types.ts:28-28`
+- **view** — Stores the DataView of the trigram index file `trigram-index.ts:219-219`
 
 ## Data Flow
 

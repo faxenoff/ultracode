@@ -1,38 +1,112 @@
 # gpu
 
-Detects GPU capabilities and auto-selects optimal vector processing backend.
+## 🤖 Overview
 
-## Overview
+The `backend-selector.ts` module is responsible for selecting the optimal vector backend based on the runtime environment and hardware capabilities. It prioritizes CUDA Native for Node.js and CUDA Worker for Bun, with fallbacks to other backends if the preferred options are unavailable. This module is used by applications that require high-performance vector operations, ensuring the best possible backend is selected for the current environment.
 
-The `gpu` module abstracts GPU-accelerated vector operations (cosine similarity, batch cosine similarity, euclidean distance) behind a unified `VectorBackend` interface. `BackendSelector` (singleton) automatically detects available hardware via `GPUDetector` and selects the highest-priority backend. Six backends are supported: CUDA Native, CUDA Worker (Bun-compatible subprocess), Metal (Apple Silicon), WebGPU (universal), WASM SIMD (CPU), and Pure JS (fallback). The module is runtime-aware (Node.js vs Bun), handles Blackwell (RTX 50xx) incompatibilities, and degrades gracefully through the priority chain.
-
-## Architecture
+## 🤖 Architecture
 
 ```
-┌─────────────────────────────────────────────────────────────────┐
-│                     BackendSelector                              │
-│  ┌──────────────┐                                               │
-│  │ detectGPU()  │ ── analysis of available GPUs and APIs        │
-│  │ getBestBackend() │ ── selection of optimal backend           │
-│  └──────────────┘                                               │
-│         │                                                        │
-│         ▼                                                        │
-│  ┌─────────────────────────────────────────────────────────────┐│
-│  │                    VectorBackend                            ││
-│  │  - cosineSimilarity(a, b)                                   ││
-│  │  - batchCosineSimilarity(query, database)                   ││
-│  │  - euclideanDistance(a, b)                                  ││
-│  │  - normalizeVectors(vectors)                                ││
-│  └─────────────────────────────────────────────────────────────┘│
-│         │                                                        │
-│         ├── CudaBackend (priority 100) ── Node.js native         │
-│         ├── GpuWorkerBackend (priority 98-100) ── Bun via subprocess│
-│         ├── MetalBackend (priority 95) ── Apple Silicon          │
-│         ├── WebGpuBackend (priority 80) ── Browser/Deno          │
-│         ├── WasmBackend (priority 50) ── SIMD optimized          │
-│         └── JsBackend (priority 1) ── fallback                   │
-└─────────────────────────────────────────────────────────────────┘
+       +---------------------+
+       |     Backend Selector |
+       |     (Singleton)     |
+       |     (Runtime-aware) |
+       |     (Fallbacks)     |
+       +---------------------+
+           |       |
+           v       v
+       +---------------------+
+       |     Backend Detection |
+       |     (GPU Detection)  |
+       |     (Runtime Check)  |
+       +---------------------+
+           |
+           v
+       +---------------------+
+       |     Backend Selection |
+       |     (Priority order) |
+       |     (CUDA Native, etc)|
+       +---------------------+
+           |
+           v
+       +---------------------+
+       |     Backend Factory  |
+       |     (JSBackend, etc) |
+       +---------------------+
 ```
+
+## 🤖 Flow
+
+```
+       +---------------------+
+       |     Backend Selector |
+       |     (Singleton)     |
+       |     (Runtime-aware) |
+       |     (Fallbacks)     |
+       +---------------------+
+           |       |
+           v       v
+       +---------------------+
+       |     Backend Detection |
+       |     (GPU Detection)  |
+       |     (Runtime Check)  |
+       +---------------------+
+           |
+           v
+       +---------------------+
+       |     Backend Selection |
+       |     (Priority order) |
+       |     (CUDA Native, etc)|
+       +---------------------+
+           |
+           v
+       +---------------------+
+       |     Backend Factory  |
+       |     (JSBackend, etc) |
+       +---------------------+
+           |
+           v
+       +---------------------+
+       |     Selected Backend |
+       |     (Used for operations)|
+       +---------------------+
+```
+
+## 🤖 Entity Listing
+
+### Function
+- **backend** — Represents the selected backend `backend-selector.ts:192-192`
+- **isBunRuntime** — Determines if the runtime is Bun `backend-selector.ts:26-28`
+
+### Method
+- **close** — Closes the backend selector `backend-selector.ts:227-234`
+- **constructor** — Private constructor for BackendSelector `backend-selector.ts:35-35`
+- **getAvailableBackends** — Retrieves a list of available backends `backend-selector.ts:207-209`
+- **getBackend** — Retrieves the selected backend `backend-selector.ts:182-184`
+- **getInfo** — Retrieves information about the selected backend `backend-selector.ts:214-222`
+- **getInstance** — Returns the singleton instance of BackendSelector `backend-selector.ts:37-42`
+- **initialize** — Initializes and selects the optimal backend `backend-selector.ts:47-177`
+- **switchBackend** — Switches to a different backend `backend-selector.ts:190-202`
+
+### Class
+- **BackendSelector** — Manages the selection of optimal vector backend `backend-selector.ts:30-235`
+
+### Import_decl
+- **../logging/index.js** — Imports `../logging/index.js` from `../logging/index.js`. `backend-selector.ts:20-20`
+- **./backends/base.js** — Imports `./backends/base.js` from `./backends/base.js`. `backend-selector.ts:21-21`
+- **./backends/js-backend.js** — Imports `./backends/js-backend.js` from `./backends/js-backend.js`. `backend-selector.ts:22-22`
+- **./detection/gpu-detector.js** — Imports `./detection/gpu-detector.js` from `./detection/gpu-detector.js`. `backend-selector.ts:23-23`
+- **node:os** — Imports `node:os` from `node:os`. `backend-selector.ts:19-19`
+
+### Property
+- **available** — Indicates if a backend is available `backend-selector.ts:216-216`
+- **availableBackends** — List of available vector backends `backend-selector.ts:33-33`
+- **factory** — Factory function for creating a backend `backend-selector.ts:68-68`
+- **instance** — Static instance of BackendSelector `backend-selector.ts:31-31`
+- **name** — Name of the selected backend `backend-selector.ts:66-66`
+- **priority** — Priority of the selected backend `backend-selector.ts:67-67`
+- **selected** — Indicates if a backend is selected `backend-selector.ts:215-215`
+- **selectedBackend** — Current selected vector backend `backend-selector.ts:32-32`
 
 ## Data Flow
 
@@ -70,7 +144,7 @@ Bun Process                           Node.js Subprocess
 
 | Method | Description | Source |
 |--------|-------------|--------|
-| `getInstance()` | Returns the singleton BackendSelector instance, creating it if needed. | [`backend-selector.ts:37-42`](./backend-selector.ts) |
+| `getInstance()` | Returns the singleton BackendSelector instance, creating it if needed. | [`backend-selector.ts:30-235`](./backend-selector.ts) |
 | `initialize()` | Detects GPU hardware, builds priority-ordered backend candidates, and initializes the first available backend with success logging. | [`backend-selector.ts:47-177`](./backend-selector.ts) |
 | `getBackend()` | Returns the currently selected VectorBackend implementation. | [`backend-selector.ts:182-184`](./backend-selector.ts) |
 | `switchBackend(type)` | Asynchronously switches to a specific backend by name and re-initializes it. | [`backend-selector.ts:190-202`](./backend-selector.ts) |

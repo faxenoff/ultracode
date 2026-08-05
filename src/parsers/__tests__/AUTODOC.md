@@ -1,5 +1,38 @@
 # Module: src/parsers/__tests__
 
+## 🤖 Overview
+
+The `HelmParser` module is designed to parse and extract entities from Helm charts, particularly focusing on the `Chart.yaml` file. It is used by developers and maintainers of Helm charts to understand and manage their chart's metadata and dependencies.
+
+## 🤖 Architecture
+
+```
+  +-------------------+
+  |   HelmParser     |
+  +-------------------+
+  | - parseChartYAML  |
+  | - extractEntities |
+  +-------------------+
+```
+
+## 🤖 Flow
+
+```
+  +-------------------+
+  |   parseChartYAML  |
+  +-------------------+
+  |     |             |
+  |     v             |
+  +-------------------+
+  | extractEntities   |
+  +-------------------+
+  |     |             |
+  |     v             |
+  +-------------------+
+  |   return entities |
+  +-------------------+
+```
+
 ## 🤖 Entity Listing
 
 ### Function
@@ -7,7 +40,8 @@
 - **callNames** — Stores names of called functions or methods `helm-parser.test.ts:910-910`
 - **define** — Finds the child entity named "my-chart.name" in the file entity `helm-parser.test.ts:191-191`
 - **define** — Finds the child entity named "my-chart.labels" in the result entities `helm-parser.test.ts:202-202`
-- **defines** — Filters the children of the result entities to find those with metadata of type "named-template" `helm-parser.test.ts:221-221`, `helm-parser.test.ts:239-239`
+- **defines** — Filters the children of the result entities to find those with metadata of type "named-template" `helm-parser.test.ts:221-221`
+- **defines** — Filters entities to find those with a named-template metadata `helm-parser.test.ts:239-239`
 - **elseIfBranch** — Finds the branch of type "else-if" in the cf branches `helm-parser.test.ts:441-441`
 - **ifBranch** — Finds the branch of type "if" in the cf branches `helm-parser.test.ts:408-408`
 - **indentPattern** — Identifies the pattern with the indent function "indent" `helm-parser.test.ts:558-558`
@@ -30,9 +64,11 @@
 - **vitest** — Imports `vitest` from `vitest`. `helm-parser.test.ts:1-1`
 
 ### Property
-- **indentFunction** — Stores the indent function as a string `helm-parser.test.ts:537-537`, `helm-parser.test.ts:553-553`
-- **indentFunction** — Parses indentation levels in YAML content `helm-parser.test.ts:569-569`, `helm-parser.test.ts:599-599`
-- **indentValue** — Stores the indent value as a number `helm-parser.test.ts:538-538`, `helm-parser.test.ts:554-554`
-- **indentValue** — Represents a value with its indentation level `helm-parser.test.ts:600-600`
+- **indentFunction** — Stores the indent function as a string `helm-parser.test.ts:537-537`
+- **indentFunction** — Parses indentation levels in YAML content `helm-parser.test.ts:553-553`
+- **indentFunction** — Represents the indentation function as a string `helm-parser.test.ts:569-569`, `helm-parser.test.ts:599-599`
+- **indentValue** — Stores the indent value as a number `helm-parser.test.ts:538-538`
+- **indentValue** — Represents a value with its indentation level `helm-parser.test.ts:554-554`
+- **indentValue** — Represents the indentation value as a number `helm-parser.test.ts:600-600`
 - **pipeline** — Represents a sequence of operations for parsing Helm charts `helm-parser.test.ts:570-570`
 - **yamlContextIndent** — Manages indentation context for YAML parsing `helm-parser.test.ts:583-583`

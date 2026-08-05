@@ -54,7 +54,8 @@ BloomFilter
 - **detectLinterConfigs** — Detects available linter configurations in the project using a cache `config-detector.ts:97-111`
 - **detectLinterConfigsUncached** — Detects available linter configurations in the project without using a cache `config-detector.ts:48-81`
 - **dotProduct** — Compute dot product of two vectors using loop unrolling for better performance `simd-vector-ops.ts:25-46`
-- **enabledFeatures** — Lists enabled features based on the runtime `runtime.ts:232-232`, `runtime.ts:233-233`
+- **enabledFeatures** — Lists enabled features based on the runtime `runtime.ts:232-232`
+- **enabledFeatures** — Maps feature names to lowercase without "bun" `runtime.ts:233-233`
 - **ensureConfigDir** — Ensures the configuration directory exists and returns its path `config-paths.ts:108-114`
 - **ensureDataDir** — Ensures the data directory exists and returns its path `config-paths.ts:119-125`
 - **ensureDir** — Ensures a directory exists, creating it if necessary `file-ops.ts:798-807`
@@ -68,7 +69,9 @@ BloomFilter
 - **existsSync** — Checks if a file or directory exists `file-ops.ts:377-379`
 - **fileExists** — Checks if a file exists at a given path `config-detector.ts:36-43`
 - **fileExists** — Checks if a file exists `file-ops.ts:265-275`
-- **files** — Not present in the provided code `logger.ts:128-128`, `logger.ts:129-132`, `logger.ts:133-133`
+- **files** — Not present in the provided code `logger.ts:128-128`
+- **files** — Maps file names to their paths and modification times `logger.ts:129-132`
+- **files** — Sorts the files by their modification times in descending order `logger.ts:133-133`
 - **filteredEnv** — Filter environment variables for shell command execution `shell.ts:122-122`
 - **filterParallel** — Filter items in parallel with controlled concurrency `parallel.ts:62-75`
 - **findAllInstalledJvms** — Finds all installed JVMs on the system `jvm-detection.ts:356-420`
@@ -121,17 +124,21 @@ BloomFilter
 - **glob** — Glob utility function `glob.ts:106-125`
 - **globBun** — Bun-specific glob utility function `glob.ts:130-165`
 - **globNode** — Represents a node in the glob tree `glob.ts:170-225`
-- **hasBiomeConfig** — Checks if a biome configuration file exists in the project `config-detector.ts:50-50`, `config-detector.ts:51-51`
-- **hasESLintConfig** — Checks if an ESLint configuration file exists in the project `config-detector.ts:55-55`, `config-detector.ts:56-56`
+- **hasBiomeConfig** — Checks if a biome configuration file exists in the project `config-detector.ts:50-50`
+- **hasBiomeConfig** — Checks if a biome configuration exists `config-detector.ts:51-51`
+- **hasESLintConfig** — Checks if an ESLint configuration file exists in the project `config-detector.ts:55-55`
+- **hasESLintConfig** — Checks if an ESLint configuration exists `config-detector.ts:56-56`
 - **hasGranite** — Checks if Ollama has a model named "granite-embedding" `ollama-checker.ts:37-37`
 - **hashBigInt64** — Not present in the provided code `fast-hash.ts:115-121`
 - **hashNumber** — Not present in the provided code `fast-hash.ts:138-140`
 - **hashText** — Not present in the provided code `fast-hash.ts:89-95`
 - **hashText64** — Not present in the provided code `fast-hash.ts:102-108`
 - **hashTextAsync** — Not present in the provided code `fast-hash.ts:126-132`
-- **hasOxlintConfig** — Checks if an oxlint configuration file exists in the project `config-detector.ts:60-60`, `config-detector.ts:61-61`
+- **hasOxlintConfig** — Checks if an oxlint configuration file exists in the project `config-detector.ts:60-60`
+- **hasOxlintConfig** — Checks if an Oxlint configuration exists `config-detector.ts:61-61`
 - **hrtime** — Returns the current time in nanoseconds as a bigint `runtime.ts:276-284`
-- **ignoreMatchers** — Patterns to ignore (glob patterns) `glob.ts:147-147`, `glob.ts:314-314`
+- **ignoreMatchers** — Patterns to ignore (glob patterns) `glob.ts:147-147`
+- **ignoreMatchers** — Creates an array of ignore matchers from the allIgnore array `glob.ts:314-314`
 - **importForRuntime** — Imports runtime detection and feature flag utilities `runtime.ts:252-267`
 - **initHasher** — Initializes the hashing backend, using Bun.hash (SIMD-native) when available, or falling back to xxhash-wasm for Node.js `fast-hash.ts:37-58`
 - **initNewLogger** — Initializes a new logger instance `logger.ts:422-430`
@@ -176,12 +183,19 @@ BloomFilter
 - **partition** — Splits an array into chunks of a specified size `parallel.ts:106-112`
 - **preloadHasher** — Not present in the provided code `fast-hash.ts:145-147`
 - **processBatches** — Processes batches of items concurrently and returns the results `parallel.ts:124-133`
-- **quietConsole** — An object that wraps console methods to suppress output when MCP_QUIET_MODE is set `quiet-console.ts:11-13`, `quiet-console.ts:14-16`, `quiet-console.ts:17-19`, `quiet-console.ts:20-22`, `quiet-console.ts:23-25`
+- **quietConsole** — An object that wraps console methods to suppress output when MCP_QUIET_MODE is set `quiet-console.ts:11-13`
+- **quietConsole** — If not in quiet mode, logs a warning message `quiet-console.ts:14-16`
+- **quietConsole** — If not in quiet mode, logs a message `quiet-console.ts:17-19`
+- **quietConsole** — If not in quiet mode, logs an informational message `quiet-console.ts:20-22`
+- **quietConsole** — If not in quiet mode, logs a debug message `quiet-console.ts:23-25`
 - **randomUUID** — Represents a function to generate a random UUID version 7 `runtime.ts:302-319`
 - **readBinary** — Reads a binary file and returns an ArrayBuffer `file-ops.ts:162-169`
 - **readByteRange** — Reads a range of bytes from a file `file-ops.ts:758-787`
 - **readBytes** — Reads a file and returns a Uint8Array `file-ops.ts:180-186`
-- **readdir** — Reads the contents of a directory `file-ops.ts:415-415`, `file-ops.ts:416-416`, `file-ops.ts:417-417`, `file-ops.ts:418-425`
+- **readdir** — Reads the contents of a directory `file-ops.ts:415-415`
+- **readdir** — The function asynchronously reads the directory contents, including file types, recursively if the options object includes the recursive flag `file-ops.ts:416-416`
+- **readdir** — The function asynchronously reads the directory contents, excluding file types, recursively if the options object includes the recursive flag `file-ops.ts:417-417`
+- **readdir** — The function asynchronously reads the directory contents, including or excluding file types, recursively if the options object includes the recursive flag `file-ops.ts:418-425`
 - **readdirSync** — Reads the contents of a directory synchronously `file-ops.ts:454-460`
 - **readFilesParallel** — Reads multiple files in parallel `file-ops.ts:581-616`
 - **readJSON** — Reads JSON from a file `file-ops.ts:145-151`
@@ -192,7 +206,7 @@ BloomFilter
 - **readText** — Reads text from a file `file-ops.ts:128-134`
 - **readTextSync** — Synchronously reads text from a file `file-ops.ts:344-347`
 - **regexPattern** — Regular expression pattern `glob.ts:277-277`
-- **results** — Maps each item to a promise that checks if the item passes a predicate and returns the item with a boolean result `parallel.ts:71-71`
+- **results** — Maps each item to a promise that returns an object containing the item and a boolean indicating whether the predicate passed `parallel.ts:71-71`
 - **rm** — Removes a file or directory `file-ops.ts:433-437`
 - **runParallel** — Run async functions in parallel with controlled concurrency `parallel.ts:46-52`
 - **saveCachedKlsJvmPath** — Saves the current JVM information to the cached configuration `jvm-detection.ts:235-262`
@@ -200,8 +214,11 @@ BloomFilter
 - **scan** — Scans files `glob.ts:297-341`
 - **setFileChangeHook** — Sets the file change hook function `file-ops.ts:96-98`
 - **setLoggerProject** — Sets the project for the logger `logger.ts:432-434`
-- **settled** — Maps each item to a promise that either returns the item with its value or an error `parallel.ts:155-163`, `parallel.ts:156-163`
-- **shouldIgnore** — Determines if a file should be ignored `glob.ts:155-155`, `glob.ts:203-203`, `glob.ts:317-317`
+- **settled** — Maps each item to a promise that either returns the item with its value or an error `parallel.ts:155-163`
+- **settled** — Processes each item in parallel, returning either the value or the error `parallel.ts:156-163`
+- **shouldIgnore** — Determines if a file should be ignored `glob.ts:155-155`
+- **shouldIgnore** — Checks if a path should be ignored based on the ignoreMatchers `glob.ts:203-203`
+- **shouldIgnore** — Determines if a path should be ignored using the ignoreMatchers `glob.ts:317-317`
 - **simdL2Normalize** — Normalizes a vector to have unit length using L2 normalization `simd-vector-ops.ts:209-255`
 - **simdMeanPooling** — Computes the mean pooling of a sequence of vectors, normalizing the result `simd-vector-ops.ts:142-201`
 - **simdVectorAdd** — Adds two vectors element-wise `simd-vector-ops.ts:263-281`
@@ -216,8 +233,10 @@ BloomFilter
 - **streamReplaceInFile** — A function to replace content in a file using streams `stream-helpers.ts:164-189`
 - **streamReplaceRange** — A function to replace a range of content in a file using streams `stream-helpers.ts:194-227`
 - **streamToAsyncIterator** — Converts a file stream to an async iterator `file-ops.ts:621-632`
-- **tasks** — Represents a task for file operations `file-ops.ts:605-612`, `file-ops.ts:606-612`
-- **terminatePromises** — Returns a promise that resolves when a worker exits `similarity-worker-pool.ts:274-278`, `similarity-worker-pool.ts:275-278`
+- **tasks** — Represents a task for file operations `file-ops.ts:605-612`
+- **tasks** — The function reads the file content based on the encoding and the presence of the Bun file system `file-ops.ts:606-612`
+- **terminatePromises** — Returns a promise that resolves when a worker exits `similarity-worker-pool.ts:274-278`
+- **terminatePromises** — Creates a promise that resolves when a worker is terminated `similarity-worker-pool.ts:275-278`
 - **toError** — Safe conversion of unknown to Error `error-handling.ts:50-81`
 - **toMB** — Converts bytes to megabytes `logger.ts:323-323`
 - **transformer** — The transformer function used to process each chunk of data in the stream `stream-helpers.ts:177-180`
@@ -225,7 +244,9 @@ BloomFilter
 - **unlinkSync** — Removes a file synchronously `file-ops.ts:444-446`
 - **walk** — Walks through the file system `glob.ts:189-221`
 - **walkDir** — Walk through a directory and collect files `shell.ts:406-431`
-- **walkDir** — Recursively walks through a directory and processes its contents `shell.ts:451-481`, `shell.ts:530-550`, `shell.ts:575-603`
+- **walkDir** — Recursively walks through a directory and processes its contents `shell.ts:451-481`
+- **walkDir** — Recursively walks through a directory, counting files with specific extensions `shell.ts:530-550`
+- **walkDir** — Recursively walks through a directory, counting files with specific extensions and calculating their total size `shell.ts:575-603`
 - **withPooledArray** — Acquires a Float32Array from the pool, executes a function with it, and releases it back to the pool `float32-pool.ts:260-267`
 - **withPooledArraySync** — Acquires a Float32Array from the pool, executes a synchronous function with it, and releases it back to the pool. `float `float32-pool.ts:272-279`
 - **writeFile** — Writes to a file `file-ops.ts:206-242`
@@ -260,7 +281,8 @@ BloomFilter
 - **clear** — Clears the pool of all Float32Array objects `float32-pool.ts:173-175`
 - **close** — Closes the worker pool `similarity-worker-pool.ts:272-288`
 - **constructor** — Initializes a new Bloom filter with specified size and hash count `bloom-filter.ts:17-21`
-- **constructor** — Initializes a new instance of the CircuitBreaker class with optional configuration `circuit-breaker.ts:63-65`, `circuit-breaker.ts:203-206`
+- **constructor** — Initializes a new instance of the CircuitBreaker class with optional configuration `circuit-breaker.ts:63-65`
+- **constructor** — Initializes a new instance of the CircuitBreakerError with a given message `circuit-breaker.ts:203-206`
 - **constructor** — Initializes a new instance of the Float32ArrayPool class `float32-pool.ts:56-63`
 - **constructor** — Initializes the RotatedLogger with optional configuration `logger.ts:40-45`
 - **constructor** — Initializes a new instance of the SimilarityWorkerPool `similarity-worker-pool.ts:64-66`
@@ -331,7 +353,7 @@ BloomFilter
 - **trace** — Not present in the provided code `logger.ts:167-169`
 - **traceStart** — Not present in the provided code `logger.ts:177-186`
 - **traceTime** — Not present in the provided code `logger.ts:171-175`
-- **version** — Returns the version string based on the runtime environment `runtime.ts:114-125`
+- **version** — Retrieves the version of the runtime environment, checking for Bun, Node, or Deno `runtime.ts:114-125`
 - **versionInfo** — Contains detailed version information of the runtime `runtime.ts:128-139`
 - **warn** — Not present in the provided code `logger.ts:196-198`
 - **writeLog** — Not present in the provided code `logger.ts:157-165`
@@ -452,12 +474,13 @@ BloomFilter
 - **xxhash-wasm** — Imports `xxhash-wasm` from `xxhash-wasm`. `fast-hash.ts:12-12`
 
 ### Property
-- **absolute** — Return absolute paths (default: false) `glob.ts:61-61`
-- **absolute** — Return absolute paths `glob.ts:137-137`, `glob.ts:177-177`
+- **absolute** — Return absolute paths `glob.ts:137-137`
+- **absolute** — Return absolute paths (default: false) `glob.ts:61-61`, `glob.ts:177-177`
 - **architecture** — Defines the architecture of the embedding model `config-paths.ts:157-157`
 - **associatedEntityId** — The ID of the entity this comment documents `comment-extractor.ts:44-44`
 - **auto_detection** — Enables or disables automatic detection of model parameters `config-paths.ts:235-241`
-- **auto_start** — Enables or disables automatic startup of the model `config-paths.ts:207-207`, `config-paths.ts:223-223`
+- **auto_start** — Enables or disables automatic startup of the model `config-paths.ts:207-207`
+- **auto_start** — Determines if the model should start automatically `config-paths.ts:223-223`
 - **backend** — Not present in the provided code `fast-hash.ts:163-163`
 - **backend** — Specifies the backend used for optimization `simd-vector-ops.ts:113-113`
 - **batch_size** — Defines the batch size for OVMS `config-paths.ts:161-161`
@@ -481,26 +504,34 @@ BloomFilter
 - **claude** — Not present in the provided code `config-paths.ts:247-252`
 - **code** — Exit code `shell.ts:44-44`
 - **codebase_size** — Not present in the provided code `config-paths.ts:239-239`
-- **column** — The column number of the comment's start position `comment-extractor.ts:26-26`, `comment-extractor.ts:31-31`
-- **comment** — Represents a comment block `comment-extractor.ts:265-265`, `comment-extractor.ts:353-353`
+- **column** — The column number of the comment's start position `comment-extractor.ts:26-26`
+- **column** — Represents the column number in the code `comment-extractor.ts:31-31`
+- **comment** — Represents a comment block `comment-extractor.ts:265-265`
+- **comment** — Returns a comment block and the number of lines consumed `comment-extractor.ts:353-353`
 - **comments** — Array of comment blocks `comment-extractor.ts:57-57`
 - **concurrency** — Number of concurrent requests for the TEI model, defaulting to 16 `config-paths.ts:184-184`
-- **concurrency** — Controls the level of concurrency for model execution `config-paths.ts:206-206`, `config-paths.ts:222-222`
+- **concurrency** — Controls the level of concurrency for model execution `config-paths.ts:206-206`
+- **concurrency** — Specifies the level of concurrency for processing `config-paths.ts:222-222`
 - **concurrency** — Sets the maximum number of concurrent file reads `file-ops.ts:583-583`
 - **config** — The configuration for the circuit breaker `circuit-breaker.ts:61-61`
 - **config** — Configuration for the RotatedLogger `logger.ts:32-32`
 - **container_name** — Not present in the provided code `config-paths.ts:265-265`
 - **content** — The content of the comment block `comment-extractor.ts:38-38`
-- **content** — Represents the content of a request `fast-json.ts:295-295`, `fast-json.ts:299-299`
+- **content** — Represents the content of a request `fast-json.ts:295-295`
+- **content** — Contains an array of content strings `fast-json.ts:299-299`
 - **context_size** — Specifies the maximum context length for model input `config-paths.ts:198-198`
-- **context_tokens** — Not present in the provided code `config-paths.ts:250-250`, `config-paths.ts:257-257`, `config-paths.ts:264-264`, `config-paths.ts:272-272`
+- **context_tokens** — Not present in the provided code `config-paths.ts:250-250`
+- **context_tokens** — Sets the maximum number of context tokens allowed `config-paths.ts:257-257`
+- **context_tokens** — Specifies the maximum number of context tokens allowed for the model `config-paths.ts:264-264`
+- **context_tokens** — Defines the maximum number of context tokens allowed in the API request `config-paths.ts:272-272`
 - **ctime** — Returns the creation time of a file `file-ops.ts:488-488`
 - **currentLogFile** — Current log file path `logger.ts:33-33`
 - **currentPoolSize** — The current number of Float32Array objects in the pool `float32-pool.ts:30-30`
-- **cwd** — Base directory for search (default: current working directory) `glob.ts:37-37`, `glob.ts:53-53`, `glob.ts:133-133`
-- **cwd** — Base directory for search `glob.ts:173-173`
-- **cwd** — Working directory `shell.ts:29-29`, `shell.ts:61-61`
-- **cwd** — Set the working directory for shell command execution `shell.ts:105-105`, `shell.ts:184-184`
+- **cwd** — The current working directory `glob.ts:133-133`, `glob.ts:173-173`
+- **cwd** — Base directory for search (default: current working directory) `glob.ts:37-37`
+- **cwd** — Base directory for search `glob.ts:53-53`
+- **cwd** — Set the working directory for shell command execution `shell.ts:61-61`, `shell.ts:105-105`
+- **cwd** — Working directory `shell.ts:29-29`, `shell.ts:184-184`
 - **data** — Represents the data of an input `fast-json.ts:306-306`
 - **data** — Additional data associated with the log entry `logger-types.ts:31-31`
 - **data** — Optional field for additional data associated with the log entry `logger.ts:21-21`
@@ -509,36 +540,45 @@ BloomFilter
 - **deno** — Deno runtime version `runtime.ts:22-22`
 - **Deno** — Deno runtime detection `runtime.ts:51-51`
 - **details** — Provides detailed information about the optimization technique `simd-vector-ops.ts:112-112`
-- **dimension** — The dimension of the Float32Array objects in the pool `float32-pool.ts:28-28`, `float32-pool.ts:43-43`
+- **dimension** — The dimension of the Float32Array objects in the pool `float32-pool.ts:28-28`
+- **dimension** — Represents the dimension of the float32 pool `float32-pool.ts:43-43`
 - **doc_language** — Defines the language of the documents `config-paths.ts:137-137`
 - **docker_model_runner** — Not present in the provided code `config-paths.ts:268-274`
 - **documents** — Represents a collection of documents `fast-json.ts:284-284`
-- **dot** — Include dot files/directories (default: false) `glob.ts:37-37`, `glob.ts:65-65`
-- **dot** — Include dot files/directories `glob.ts:138-138`, `glob.ts:178-178`
+- **dot** — Include dot files/directories `glob.ts:65-65`, `glob.ts:138-138`
+- **dot** — Include dot files/directories (default: false) `glob.ts:37-37`, `glob.ts:178-178`
 - **duration** — Duration of the log entry `logger-types.ts:34-34`
 - **duration** — Optional field for the duration of the log entry `logger.ts:24-24`
 - **embedding** — Configures the embedding platform and its settings `config-paths.ts:155-234`
 - **embedding_dimension** — Specifies the dimension of the embedding vectors `config-paths.ts:135-135`
 - **embedding_model** — Represents the model used for embedding `config-paths.ts:133-133`
+- **enabled** — Not present in the provided code `config-paths.ts:245-245`
 - **enabled** — Indicates whether the configuration is enabled `config-paths.ts:154-154`
-- **enabled** — Not present in the provided code `config-paths.ts:245-245`, `fast-hash.ts:162-162`
+- **enabled** — Determines if the hashing backend is initialized and ready for use `fast-hash.ts:162-162`
 - **enableRotation** — Boolean indicating if log rotation is enabled `logger-types.ts:21-21`
 - **enableStackTrace** — Boolean indicating if stack traces are included in logs `logger-types.ts:23-23`
 - **enableTimestamp** — Boolean indicating if timestamps are included in logs `logger-types.ts:22-22`
 - **encoding** — Specifies the encoding for file reads `file-ops.ts:583-583`
 - **encoding** — Encoding for output `shell.ts:67-67`
-- **encoding** — The encoding to use for the data read from the source file `stream-helpers.ts:22-22`, `stream-helpers.ts:28-28`, `stream-helpers.ts:199-199`
-- **encoding_format** — Specifies the encoding format for the OpenAI provider `fast-json.ts:272-272`, `fast-json.ts:278-278`
+- **encoding** — The encoding to use for the data read from the source file `stream-helpers.ts:22-22`
+- **encoding** — Represents the encoding type for the stream `stream-helpers.ts:28-28`
+- **encoding** — Specifies the encoding type for the stream options `stream-helpers.ts:199-199`
+- **encoding_format** — Specifies the encoding format for the OpenAI provider `fast-json.ts:272-272`
+- **encoding_format** — Specifies the encoding format `fast-json.ts:278-278`
 - **encodingFormat** — Specifies the response format for the model, defaulting to base64 `config-paths.ts:176-176`
 - **end** — The ending position of a comment `comment-extractor.ts:29-33`
 - **endpoint** — Specifies the endpoint for OVMS `config-paths.ts:160-160`
 - **endpoint** — The URL endpoint for the TEI model `config-paths.ts:181-181`
-- **endpoint** — Represents the endpoint for model inference `config-paths.ts:197-197`, `config-paths.ts:220-220`
-- **endpoint** — Not present in the provided code `config-paths.ts:255-255`, `config-paths.ts:262-262`, `config-paths.ts:270-270`
+- **endpoint** — Represents the endpoint for model inference `config-paths.ts:197-197`
+- **endpoint** — Not present in the provided code `config-paths.ts:220-220`
+- **endpoint** — Specifies the API endpoint for the model `config-paths.ts:255-255`
+- **endpoint** — Represents the endpoint URL for API requests `config-paths.ts:262-262`
+- **endpoint** — Represents the API endpoint URL `config-paths.ts:270-270`
 - **endpoints** — Lists multiple endpoints for round-robin load balancing in OVMS `config-paths.ts:166-166`
-- **env** — Environment variables `shell.ts:30-30`, `shell.ts:63-63`
-- **env** — Set environment variables for shell command execution `shell.ts:106-106`, `shell.ts:184-184`
-- **error** — Represents an error encountered during processing of an item `parallel.ts:150-150`, `parallel.ts:168-168`
+- **env** — Set environment variables for shell command execution `shell.ts:63-63`, `shell.ts:106-106`
+- **env** — Environment variables `shell.ts:30-30`, `shell.ts:184-184`
+- **error** — Represents an error encountered during processing of an item `parallel.ts:150-150`
+- **error** — Stores an array of objects containing an item and its corresponding error `parallel.ts:168-168`
 - **errors** — Stores errors encountered during processing of items `parallel.ts:150-150`
 - **exitCode** — Exit code `shell.ts:54-54`
 - **exited** — Determine if shell command execution exited successfully `shell.ts:147-147`
@@ -549,37 +589,43 @@ BloomFilter
 - **file** — Bun runtime file operations `runtime.ts:34-34`
 - **fileCount** — Returns the count of files in a directory `shell.ts:565-565`
 - **followSymlinks** — Follow symbolic links (default: false) `glob.ts:63-63`
-- **gc** — Performs garbage collection `logger.ts:341-341`, `logger.ts:341-341`
+- **gc** — Performs garbage collection `logger.ts:341-341`
+- **gc** — Assigns a reference to the global garbage collection function `logger.ts:341-341`
 - **gc** — Trigger garbage collection (synchronous) `runtime-detection.ts:189-189`
 - **Glob** — Glob utility function `glob.ts:46-46`
 - **Glob** — Bun runtime Glob operations `runtime.ts:36-36`
 - **gpu_architecture** — Not present in the provided code `config-paths.ts:238-238`
 - **gzipSync** — Bun runtime gzipSync operations `runtime.ts:39-39`
-- **hasBiomeConfig** — Indicates whether the biome configuration is present `config-detector.ts:6-6`
-- **hasESLintConfig** — Indicates whether the ESLint configuration is present `config-detector.ts:7-7`
+- **hasBiomeConfig** — Indicates whether the project has a biome configuration `config-detector.ts:6-6`
+- **hasESLintConfig** — Indicates whether the project has an ESLint configuration `config-detector.ts:7-7`
 - **hasGranite** — Represents whether the model has the Granite feature `ollama-checker.ts:19-19`
 - **hash** — Bun runtime hash operations `runtime.ts:38-38`
 - **hashCount** — The number of hash functions used in the Bloom filter `bloom-filter.ts:15-15`
 - **hasModels** — Determines if Ollama has any models available `ollama-checker.ts:17-17`
-- **hasOxlintConfig** — Indicates whether the Oxlint configuration is present `config-detector.ts:8-8`
+- **hasOxlintConfig** — Indicates whether the project has an Oxlint configuration `config-detector.ts:8-8`
 - **highWaterMark** — Sets the high water mark for the file writer `file-ops.ts:56-56`
 - **highWaterMark** — The maximum amount of data to be buffered before the stream emits a 'drain' event `stream-helpers.ts:23-23`
 - **hitRate** — Represents the percentage of acquires from the pool compared to new allocations `float32-pool.ts:208-208`
 - **id** — Identifies a model in the OVMS configuration `config-paths.ts:169-169`
 - **id** — The unique identifier for a model configuration `config-paths.ts:188-188`
-- **id** — Represents the unique identifier for a model `config-paths.ts:211-211`, `config-paths.ts:227-227`
-- **id** — Represents a unique identifier `config-paths.ts:429-429`
-- **ignore** — Patterns to ignore (glob patterns) `glob.ts:59-59`, `glob.ts:136-136`, `glob.ts:176-176`
-- **index** — The index of the comment's start position `comment-extractor.ts:27-27`, `comment-extractor.ts:32-32`
+- **id** — Represents the unique identifier for a model `config-paths.ts:211-211`
+- **id** — Represents a unique identifier `config-paths.ts:227-227`
+- **id** — Represents the unique identifier for a specific configuration or model instance `config-paths.ts:429-429`
+- **ignore** — An array of strings to be ignored `glob.ts:136-136`
+- **ignore** — Patterns to ignore (glob patterns) `glob.ts:59-59`, `glob.ts:176-176`
+- **index** — The index of the comment's start position `comment-extractor.ts:27-27`
+- **index** — Represents the index in the code `comment-extractor.ts:32-32`
 - **inference** — Contains configuration for inference processes `config-paths.ts:143-143`
 - **initialized** — Indicates whether the hashing backend has been initialized `fast-hash.ts:160-160`
-- **initialized** — A flag indicating whether the worker pool has been initialized `similarity-worker-pool.ts:49-49`
 - **initialized** — Indicates whether the worker pool is initialized `similarity-worker-pool.ts:254-254`
+- **initialized** — A flag indicating whether the worker pool has been initialized `similarity-worker-pool.ts:49-49`
 - **inlineComments** — Map of line numbers to inline comments `comment-extractor.ts:59-59`
-- **input** — Contains the input string or array of strings for the OpenAI provider `fast-json.ts:271-271`, `fast-json.ts:276-276`
-- **input** — Represents the input for an embedding request `fast-json.ts:315-315`
-- **inputs** — Contains the input string for the TEI provider `fast-json.ts:256-256`, `fast-json.ts:260-260`
-- **inputs** — Represents the inputs for an inference request `fast-json.ts:310-310`
+- **input** — Contains the input string or array of strings for the OpenAI provider `fast-json.ts:271-271`
+- **input** — Represents the input for an embedding request `fast-json.ts:276-276`
+- **input** — Stores an array of input strings `fast-json.ts:315-315`
+- **inputs** — Contains the input string for the TEI provider `fast-json.ts:256-256`
+- **inputs** — Represents the inputs for an inference request `fast-json.ts:260-260`
+- **inputs** — Holds an array of OvmsInput objects `fast-json.ts:310-310`
 - **io_threads** — Sets the number of I/O threads for parallel processing `config-paths.ts:145-145`
 - **isDirectory** — Checks if a file is a directory `file-ops.ts:470-470`
 - **isDirectory** — Checks if a given path is a directory `file-ops.ts:485-485`
@@ -590,7 +636,8 @@ BloomFilter
 - **isLeading** — Indicates whether the comment is leading before the entity `comment-extractor.ts:41-41`
 - **isRunning** — Indicates whether the Ollama service is currently running `ollama-checker.ts:16-16`
 - **isTrailing** — Indicates if the comment is trailing (after the code line) `comment-extractor.ts:43-43`
-- **item** — Represents an item in the array being processed `parallel.ts:149-149`, `parallel.ts:150-150`, `parallel.ts:167-167`, `parallel.ts:168-168`
+- **item** — Represents an item in the array being processed `parallel.ts:149-149`, `parallel.ts:167-167`, `parallel.ts:168-168`
+- **item** — Stores the error encountered during processing each item `parallel.ts:150-150`
 - **javaPath** — Stores the path to the Java executable found during JVM detection `jvm-detection.ts:31-31`
 - **klsJavaMajorVersion** — Represents the major version of the Java Virtual Machine (JVM) used by KLS `jvm-detection.ts:180-180`
 - **klsJavaPath** — Represents the path to the Java Virtual Machine (JVM) used by KLS `jvm-detection.ts:178-178`
@@ -598,7 +645,8 @@ BloomFilter
 - **language** — Not present in the provided code `config-paths.ts:240-240`
 - **languages** — Lists the languages supported by a model in OVMS `config-paths.ts:170-170`
 - **languages** — An array of languages supported by a model configuration `config-paths.ts:189-189`
-- **languages** — Lists the supported languages for model inference `config-paths.ts:212-212`, `config-paths.ts:228-228`
+- **languages** — Lists the supported languages for model inference `config-paths.ts:212-212`
+- **languages** — Lists the languages supported by the selected model `config-paths.ts:228-228`
 - **lastDrain** — Last time the log buffer was drained `logger.ts:38-38`
 - **lastFailureTime** — The time of the last failure `circuit-breaker.ts:59-59`
 - **lastFailureTime** — Tracks the time of the last failure `circuit-breaker.ts:183-183`
@@ -606,9 +654,11 @@ BloomFilter
 - **leadingComments** — Maps line numbers to arrays of comment blocks before that line `comment-extractor.ts:58-58`
 - **level** — Log level of the entry `logger-types.ts:28-28`
 - **level** — Specifies the log level `logger.ts:18-18`
-- **line** — The line number of the comment's start position `comment-extractor.ts:25-25`, `comment-extractor.ts:30-30`
+- **line** — The line number of the comment's start position `comment-extractor.ts:25-25`
+- **line** — Represents the line number in the code `comment-extractor.ts:30-30`
 - **lineNumber** — The current line number being processed `stream-helpers.ts:101-101`
-- **linesConsumed** — Number of lines consumed during comment extraction `comment-extractor.ts:265-265`, `comment-extractor.ts:353-353`
+- **linesConsumed** — Number of lines consumed during comment extraction `comment-extractor.ts:265-265`
+- **linesConsumed** — Returns the number of lines consumed by the comment block `comment-extractor.ts:353-353`
 - **llamacpp** — Contains configuration for the LlamaCPP model, including endpoint, performance tuning, and client settings `config-paths.ts:195-217`
 - **llm** — Not present in the provided code `config-paths.ts:242-275`
 - **llm_model** — Specifies the model for the large language model `config-paths.ts:141-141`
@@ -618,26 +668,34 @@ BloomFilter
 - **logDir** — Directory where log files are stored `logger.ts:34-34`
 - **logLevel** — Current log level to be used `logger-types.ts:20-20`
 - **majorVersion** — Stores the major version of the detected Java Virtual Machine `jvm-detection.ts:33-33`
-- **max_batch_size** — Sets the maximum size of the batch for model input `config-paths.ts:205-205`, `config-paths.ts:221-221`
+- **max_batch_size** — Sets the maximum size of the batch for model input `config-paths.ts:205-205`
+- **max_batch_size** — Represents the maximum batch size for processing `config-paths.ts:221-221`
 - **max_batch_tokens** — Maximum number of tokens per batch for the TEI model `config-paths.ts:182-182`
 - **max_client_batch_size** — Maximum number of texts per HTTP request for the TEI model `config-paths.ts:183-183`
 - **maxDepth** — Maximum depth to traverse `glob.ts:67-67`, `glob.ts:179-179`
 - **maxFiles** — Maximum number of log files to retain `logger-types.ts:19-19`
 - **maxFileSize** — Maximum size of log files `logger-types.ts:18-18`
 - **maxLineLength** — The maximum length of a line to be processed `stream-helpers.ts:30-30`
-- **maxPoolSize** — The maximum number of Float32Array objects that can be held in the pool `float32-pool.ts:29-29`, `float32-pool.ts:44-44`
+- **maxPoolSize** — The maximum number of Float32Array objects that can be held in the pool `float32-pool.ts:29-29`
+- **maxPoolSize** — Defines the maximum size of the float32 pool `float32-pool.ts:44-44`
 - **message** — Message content of the log entry `logger-types.ts:30-30`
 - **message** — Contains the message of the log entry `logger.ts:20-20`
 - **minLevel** — Minimum log level for logging `logger.ts:370-370`
 - **mlx** — Indicates the use of MLX for model inference `config-paths.ts:218-233`
-- **model** — Specifies the model name for the Ollama provider `fast-json.ts:247-247`, `fast-json.ts:270-270`, `fast-json.ts:277-277`, `fast-json.ts:282-282`
-- **model** — Represents a model schema `fast-json.ts:289-289`, `fast-json.ts:314-314`
+- **model** — Specifies the model name for the Ollama provider `fast-json.ts:247-247`
+- **model** — Represents a model schema `fast-json.ts:270-270`
+- **model** — Represents the model name `fast-json.ts:277-277`, `fast-json.ts:282-282`, `fast-json.ts:289-289`, `fast-json.ts:314-314`
 - **model** — Not applicable in this context `ollama-checker.ts:34-34`
-- **model_id** — Not present in the provided code `config-paths.ts:249-249`, `config-paths.ts:256-256`, `config-paths.ts:263-263`, `config-paths.ts:271-271`
+- **model_id** — Not present in the provided code `config-paths.ts:249-249`
+- **model_id** — Stores the unique identifier for the selected model `config-paths.ts:256-256`
+- **model_id** — Stores the unique identifier for the machine learning model `config-paths.ts:263-263`
+- **model_id** — Specifies the model identifier for the API request `config-paths.ts:271-271`
 - **models** — Contains an array of model configurations for OVMS `config-paths.ts:167-173`
 - **models** — An array of model configurations for the TEI model `config-paths.ts:186-192`
-- **models** — Contains a list of available models for inference `config-paths.ts:209-215`, `config-paths.ts:225-231`
-- **models** — An array of model names available in Ollama `ollama-checker.ts:18-18`, `ollama-checker.ts:34-34`
+- **models** — Contains a list of available models for inference `config-paths.ts:209-215`
+- **models** — Defines an array of available models with their properties `config-paths.ts:225-231`
+- **models** — An array of model names available in Ollama `ollama-checker.ts:18-18`
+- **models** — Parses the JSON response to extract an array of model objects `ollama-checker.ts:34-34`
 - **monitorWindow** — The time window for counting failures `circuit-breaker.ts:35-35`
 - **mtime** — Returns the modification time of a file `file-ops.ts:487-487`
 - **mtimeMs** — Gets the modification time of a file in milliseconds `file-ops.ts:472-472`
@@ -649,13 +707,13 @@ BloomFilter
 - **nanoseconds** — Bun runtime nanoseconds timer `runtime.ts:33-33`
 - **nextTaskId** — The next available task ID for new tasks `similarity-worker-pool.ts:51-51`
 - **node** — Represents the Node.js runtime interface `runtime.ts:254-254`
-- **numWorkers** — The number of worker threads in the pool `similarity-worker-pool.ts:48-48`
 - **numWorkers** — Stores the number of worker threads `similarity-worker-pool.ts:255-255`
+- **numWorkers** — The number of worker threads in the pool `similarity-worker-pool.ts:48-48`
 - **ollama** — Not present in the provided code `config-paths.ts:253-259`
-- **onlyDirectories** — Return only directories `glob.ts:57-57`
-- **onlyDirectories** — Returns only directories `glob.ts:135-135`, `glob.ts:175-175`
-- **onlyFiles** — Return only files (default: true) `glob.ts:37-37`, `glob.ts:55-55`
-- **onlyFiles** — Returns only files `glob.ts:134-134`, `glob.ts:174-174`
+- **onlyDirectories** — Returns only directories `glob.ts:135-135`
+- **onlyDirectories** — Return only directories `glob.ts:57-57`, `glob.ts:175-175`
+- **onlyFiles** — Returns only files `glob.ts:55-55`, `glob.ts:134-134`
+- **onlyFiles** — Return only files (default: true) `glob.ts:37-37`, `glob.ts:174-174`
 - **onMatch** — Callback for each matched file `glob.ts:72-72`
 - **onProgress** — A callback function to track the progress of the file copy operation `stream-helpers.ts:24-24`
 - **optimal_qd** — Determines the optimal query depth for the model `config-paths.ts:147-147`
@@ -667,62 +725,73 @@ BloomFilter
 - **peakUsage** — The peak number of concurrent Float32Array objects in use `float32-pool.ts:34-34`
 - **pendingResults** — A map of pending results, indexed by task ID, containing the results, resolve/reject functions, and partial results `similarity-worker-pool.ts:52-62`
 - **pendingTasks** — Stores pending tasks `similarity-worker-pool.ts:258-258`
-- **platform** — Specifies the platform for the embedding model `config-paths.ts:156-156`
 - **platform** — Not present in the provided code `config-paths.ts:246-246`
+- **platform** — Specifies the platform for the embedding model `config-paths.ts:156-156`
 - **pool** — An array of Float32Array objects managed by the pool `float32-pool.ts:42-42`
 - **preferredFixerForTS** — Determines the preferred TypeScript fixer based on available linter configurations `config-detector.ts:9-9`
 - **prewarmSize** — The number of Float32Array objects to pre-allocate at startup `float32-pool.ts:45-45`
 - **prompt** — Provides the prompt for the Ollama provider `fast-json.ts:248-248`
-- **query** — Specifies the query for the TEI rerank request `fast-json.ts:264-264`, `fast-json.ts:283-283`
+- **query** — Specifies the query for the TEI rerank request `fast-json.ts:264-264`
+- **query** — Stores the query string `fast-json.ts:283-283`
 - **query** — The query vector used in the cosine similarity calculation `similarity-worker-pool.ts:39-39`
 - **query** — A Float32Array representing the query vector used for similarity computation `similarity-worker.ts:13-13`
 - **queueLength** — Represents the length of the task queue `similarity-worker-pool.ts:257-257`
-- **quiet** — Suppress stderr in output `shell.ts:69-69`
 - **quiet** — Suppress stderr output in shell command execution `shell.ts:108-108`
+- **quiet** — Suppress stderr in output `shell.ts:69-69`
 - **randomUUIDv7** — Bun runtime randomUUIDv7 operations `runtime.ts:42-42`
 - **raw** — The raw content of the comment block `comment-extractor.ts:40-40`
 - **received** — Indicates the number of chunks received `similarity-worker-pool.ts:59-59`
 - **recentFailures** — Stores a list of recent failure times within the monitor window `circuit-breaker.ts:182-182`
 - **recoveryTimeout** — The time before the circuit breaker transitions from OPEN to HALF_OPEN `circuit-breaker.ts:31-31`
-- **recursive** — Creates a directory and any necessary parent directories `file-ops.ts:391-391`, `file-ops.ts:403-403`, `file-ops.ts:416-416`, `file-ops.ts:417-417`, `file-ops.ts:420-420`
-- **reject** — A function to reject the result of a task `similarity-worker-pool.ts:43-43`
+- **recursive** — Creates a directory and any necessary parent directories `file-ops.ts:391-391`
+- **recursive** — The function creates a directory recursively if the options object includes the recursive flag `file-ops.ts:403-403`
+- **recursive** — The function asynchronously reads the directory contents, including file types, recursively if the options object includes the recursive flag `file-ops.ts:416-416`
+- **recursive** — The function asynchronously reads the directory contents, excluding file types, recursively if the options object includes the recursive flag `file-ops.ts:417-417`
+- **recursive** — Parses the recursive flag from the options object `file-ops.ts:420-420`
 - **reject** — Rejects a task with an error `similarity-worker-pool.ts:57-57`
+- **reject** — A function to reject the result of a task `similarity-worker-pool.ts:43-43`
 - **releaseRate** — Tracks the percentage of acquired arrays that are released back to the pool `float32-pool.ts:210-210`
 - **requestId** — Request ID associated with the log entry `logger-types.ts:33-33`
 - **requestId** — Optional field for the request ID associated with the log entry `logger.ts:23-23`
-- **resolve** — A function to resolve the result of a task `similarity-worker-pool.ts:42-42`, `similarity-worker-pool.ts:56-56`
+- **resolve** — A function to resolve the result of a task `similarity-worker-pool.ts:42-42`
+- **resolve** — Resolves a promise when a worker exits `similarity-worker-pool.ts:56-56`
 - **results** — Array of results in same order as input `parallel.ts:149-149`
 - **results** — A collection of results from the cosine similarity calculations `similarity-worker-pool.ts:55-55`
-- **runtime** — Detects the current JavaScript runtime (Bun vs Node.js) `runtime.ts:128-128`, `runtime.ts:129-129`
+- **runtime** — Detects the current JavaScript runtime (Bun vs Node.js) `runtime.ts:128-128`
+- **runtime** — Initializes the runtime information object `runtime.ts:129-129`
 - **selected_model** — Indicates the selected model for OVMS `config-paths.ts:163-163`
 - **selected_model** — The selected model for the TEI configuration `config-paths.ts:185-185`
-- **selected_model** — Stores the currently selected model for inference `config-paths.ts:208-208`, `config-paths.ts:224-224`
+- **selected_model** — Stores the currently selected model for inference `config-paths.ts:208-208`
+- **selected_model** — Stores the selected model identifier `config-paths.ts:224-224`
 - **semver** — Bun runtime semver operations `runtime.ts:43-43`
 - **shape** — Represents the shape of an input `fast-json.ts:304-304`
 - **similarities** — An array of Float32Array containing the cosine similarities computed for each vector in the database `similarity-worker.ts:20-20`
 - **size** — The number of bits in the Bloom filter `bloom-filter.ts:14-14`
-- **size** — Size property of BunFile `file-ops.ts:58-58`
 - **size** — Gets the size of a file `file-ops.ts:471-471`
 - **size** — Returns the size of a file in bytes `file-ops.ts:486-486`
+- **size** — Size property of BunFile `file-ops.ts:58-58`
 - **sizeBytes** — Returns the size of a directory in bytes `shell.ts:566-566`
 - **sizeMB** — Returns the size of a directory in megabytes `shell.ts:567-567`
 - **skipEmpty** — A boolean indicating whether to skip empty lines in the stream `stream-helpers.ts:29-29`
-- **sleep** — Represents a function that sleeps for a specified number of milliseconds and returns a promise `runtime.ts:41-41`
+- **sleep** — Defines a function to sleep for a specified number of milliseconds, returning a promise `runtime.ts:41-41`
 - **stackTrace** — Stack trace of the log entry `logger-types.ts:32-32`
 - **stackTrace** — Optional field for the stack trace of the log entry `logger.ts:22-22`
 - **STALE_MS** — Time in milliseconds before log files are considered stale `logger.ts:37-37`
 - **start** — The starting position of a comment `comment-extractor.ts:24-28`
 - **startIdx** — The starting index of the chunk vectors in the cosine similarity calculation `similarity-worker-pool.ts:41-41`
-- **startIdx** — The starting index in the database for similarity computation `similarity-worker.ts:15-15`, `similarity-worker.ts:21-21`
+- **startIdx** — The starting index in the database for similarity computation `similarity-worker.ts:15-15`
+- **startIdx** — Stores the starting index for the similarity calculation `similarity-worker.ts:21-21`
 - **state** — The current state of the circuit breaker `circuit-breaker.ts:57-57`
 - **state** — Represents the current state of the circuit breaker (CLOSED, OPEN, or HALF_OPEN) `circuit-breaker.ts:181-181`
 - **stats** — An object containing statistics for the Float32Array pool `float32-pool.ts:48-54`
 - **status** — Exit status `shell.ts:45-45`
-- **stderr** — Standard error `shell.ts:32-32`, `shell.ts:43-43`, `shell.ts:52-52`
-- **stderr** — Capture standard error from shell command execution `shell.ts:146-146`
+- **stderr** — Stores the standard error of a shell command `shell.ts:52-52`, `shell.ts:146-146`
+- **stderr** — Standard error `shell.ts:32-32`
+- **stderr** — Capture standard error from shell command execution `shell.ts:43-43`
 - **stdin** — Standard input `shell.ts:33-33`
-- **stdout** — Standard output `shell.ts:31-31`, `shell.ts:42-42`, `shell.ts:50-50`
-- **stdout** — Capture standard output from shell command execution `shell.ts:145-145`
+- **stdout** — Stores the standard output of a shell command `shell.ts:50-50`, `shell.ts:145-145`
+- **stdout** — Standard output `shell.ts:31-31`
+- **stdout** — Capture standard output from shell command execution `shell.ts:42-42`
 - **success** — Command succeeded `shell.ts:56-56`
 - **successCount** — The count of successful requests `circuit-breaker.ts:60-60`
 - **successCount** — Counts the number of successful requests within the monitor window `circuit-breaker.ts:184-184`
@@ -738,8 +807,8 @@ BloomFilter
 - **text_2** — Represents the second text input `fast-json.ts:291-291`
 - **texts** — Contains the array of text strings for the TEI rerank request `fast-json.ts:265-265`
 - **tgi** — Not present in the provided code `config-paths.ts:260-267`
-- **timeout** — Timeout in milliseconds `shell.ts:65-65`
-- **timeout** — Set a timeout for shell command execution in milliseconds `shell.ts:107-107`, `shell.ts:184-184`
+- **timeout** — Set a timeout for shell command execution in milliseconds `shell.ts:107-107`
+- **timeout** — Timeout in milliseconds `shell.ts:65-65`, `shell.ts:184-184`
 - **timestamp** — Timestamp of the log entry `logger-types.ts:27-27`
 - **timestamp** — Stores the timestamp of the log entry `logger.ts:17-17`
 - **top_n** — Represents the top N results `fast-json.ts:285-285`
@@ -749,24 +818,32 @@ BloomFilter
 - **truncate** — Indicates whether to truncate the texts for the TEI rerank request `fast-json.ts:266-266`
 - **type** — The type of the comment block `comment-extractor.ts:37-37`
 - **type** — Type property of BunFile `file-ops.ts:59-59`
-- **type** — Indicates the type of message, either "compute" or "ready" `similarity-worker.ts:12-12`, `similarity-worker.ts:19-19`
+- **type** — Indicates the type of message, either "compute" or "ready" `similarity-worker.ts:12-12`
+- **type** — Represents the type of the result `similarity-worker.ts:19-19`
 - **ubatch_size** — Sets the size of the unbatched batch for model input `config-paths.ts:202-202`
 - **useEmbeddingsApi** — Determines whether to use the /v3/embeddings API for OVMS `config-paths.ts:175-175`
 - **utilizationRate** — Indicates the percentage of pool capacity that is currently being used `float32-pool.ts:209-209`
 - **v8** — Returns an object containing runtime and version information, possibly including V8 version `runtime.ts:128-128`
 - **v8** — Initializes an object with runtime and version information, possibly including V8 version `runtime.ts:129-129`
-- **value** — Represents the result of processing an item `parallel.ts:149-149`, `parallel.ts:167-167`
+- **value** — Represents the result of processing an item `parallel.ts:149-149`
+- **value** — Stores the value obtained from processing each item `parallel.ts:167-167`
 - **vector_size** — Specifies the vector size for a model in OVMS `config-paths.ts:171-171`
 - **vector_size** — The vector size for a model configuration `config-paths.ts:190-190`
-- **vector_size** — Defines the size of the vector used for model input `config-paths.ts:213-213`, `config-paths.ts:229-229`
-- **vector_size** — Represents the size of the vector `config-paths.ts:430-430`
+- **vector_size** — Defines the size of the vector used for model input `config-paths.ts:213-213`
+- **vector_size** — Represents the size of the vector `config-paths.ts:229-229`
+- **vector_size** — Defines the size of the vector used for embedding or representation in the model `config-paths.ts:430-430`
 - **vendor** — Stores the vendor of the detected Java Virtual Machine `jvm-detection.ts:34-34`
 - **version** — Stores the version of the detected Java Virtual Machine `jvm-detection.ts:32-32`
 - **version** — Bun runtime version `runtime-detection.ts:23-23`
-- **version** — Deno runtime version `runtime.ts:21-24`, `runtime.ts:32-32`
-- **version** — Stores the version of the runtime `runtime.ts:128-128`, `runtime.ts:129-129`
+- **version** — Deno runtime version `runtime.ts:21-24`
+- **version** — Stores the version of the runtime `runtime.ts:32-32`
+- **version** — Returns the runtime version information `runtime.ts:128-128`
+- **version** — Returns the runtime version `runtime.ts:129-129`
 - **windowsHide** — Windows hide flag `shell.ts:34-34`
-- **withFileTypes** — Reads the contents of a directory with file types `file-ops.ts:416-416`, `file-ops.ts:417-417`, `file-ops.ts:420-420`, `file-ops.ts:454-454`
+- **withFileTypes** — Reads the contents of a directory with file types `file-ops.ts:416-416`
+- **withFileTypes** — The function asynchronously reads the directory contents, excluding file types, recursively if the options object includes the recursive flag `file-ops.ts:417-417`
+- **withFileTypes** — The function asynchronously reads the directory contents, including file types, recursively if the options object includes the recursive flag `file-ops.ts:420-420`
+- **withFileTypes** — The function synchronously reads the directory contents, excluding file types, if the options object includes the withFileTypes flag `file-ops.ts:454-454`
 - **worker** — A worker thread instance `similarity-worker-pool.ts:33-33`
 - **workers** — An array of worker thread states `similarity-worker-pool.ts:47-47`
 - **write** — Bun runtime write operations `runtime.ts:35-35`

@@ -1,10 +1,23 @@
 # Schemas
 
-Central collection of Zod schemas for validating tool parameters across code analysis, documentation generation, entity management, graph operations, and file modification tools.
-
-## Overview
+## 🤖 Overview
 
 The schemas module contains all Zod schema definitions that validate and type-check input arguments for MCP tool handlers. Schemas are organized by domain: analysis, autodoc, diagram, entity, graph, graph-metrics, history, index, merge, modification, pattern, semantic, snapshot, taint, and validation. Each schema defines required and optional parameters with descriptions, defaults, and constraints. The central `index.ts` re-exports all schemas for convenient consumption by the tool registry.
+
+## 🤖 Entity Listing
+
+### Function
+- **AnalyzeCodeImpactSchema** — Schema for analyzing code impact with entity ID, file path, depth, and optional recent changes highlighting `semantic-schemas.ts:64-64`
+- **AnalyzeHotspotsSchema** — Analyzes code for hotspots based on complexity, changes, coupling, or all metrics `analysis-schemas.ts:45-50`
+- **FindRelatedConceptsSchema** — Resolves the limit argument for related concepts `semantic-schemas.ts:89-89`
+- **ListRelationshipsToolSchema** — Schemas for listing relationships of entities, including optional parameters for entity ID, name, file path, depth, and relationship types `entity-schemas.ts:24-24`
+- **resolveLimit** — Helper function to resolve Zig aliases for limit/topN/top_n `semantic-schemas.ts:12-25`
+- **SemanticSearchSchema** — Schema for semantic search with natural language query and optional parameters `semantic-schemas.ts:28-28`
+- **SuggestRefactoringSchema** — Suggests refactoring for a specific file, entity, or line range `analysis-schemas.ts:35-37`
+
+### Import_decl
+- **../base-schemas.js** — Imports `../base-schemas.js` from `../base-schemas.js`. `diagram-schemas.ts:7-7`, `entity-schemas.ts:7-7`, `graph-schemas.ts:7-7`, `history-schemas.ts:12-12`, `pattern-schemas.ts:6-6`, `stacktrace-schemas.ts:6-6`
+- **zod** — Imports `zod` from `zod`. `analysis-schemas.ts:6-6`, `autodoc-schemas.ts:6-6`, `diagram-schemas.ts:5-5`, `entity-schemas.ts:6-6`, `graph-metrics-schemas.ts:1-1`, `graph-schemas.ts:6-6`, `history-schemas.ts:11-11`, `index-schemas.ts:6-6`, `merge-schemas.ts:6-6`, `missing-tool-schemas.ts:6-6`, `modification-schemas.ts:6-6`, `pattern-schemas.ts:5-5`, `semantic-schemas.ts:9-9`, `snapshot-schemas.ts:6-6`, `stacktrace-schemas.ts:5-5`, `taint-schemas.ts:1-1`, `validation-schemas.ts:6-6`, `worktree-schemas.ts:5-5`
 
 ## Data Flow
 

@@ -1,17 +1,130 @@
----
-module_name: java-extractors
-description: "AST-based extractors for calls, control flow, complexity, and documentation from Java code"
-status: active
-language: typescript
----
-
 # Java Extractors
 
-> Provides optimized AST-traversal extractors for method calls, control flow structures, complexity metrics, and JavaDoc documentation from Java ANTLR parse trees.
+## 🤖 Overview
 
-## Overview
+This module provides a set of extractors for Java code, focusing on method calls, constructor calls, and static calls. It is used by developers and analysts to understand and analyze Java code structures.
 
-This module contains specialized extractors that walk Java ANTLR AST nodes to produce detailed analysis results. The `unified-extractor` performs all three extractions (calls, control flow, complexity) in a single AST pass for 40-50% performance improvement. Individual extractors are retained for backward compatibility. The `doc-extractor` parses JavaDoc comments from token streams.
+## 🤖 Architecture
+
+```
+call-extractor.ts
+│
+├── extractCalls
+│   └── visits method bodies to extract calls
+│
+├── complexity-analyzer.ts
+│   └── analyzes code complexity
+│
+├── control-flow-extractor.ts
+│   └── extracts control flow information
+│
+├── doc-extractor.ts
+│   └── extracts documentation comments
+│
+└── unified-extractor.ts
+    └── unifies and processes extracted information
+```
+
+## 🤖 Flow
+
+```
+call-extractor.ts
+│
+├── extractCalls
+│   └── visits method bodies to extract calls
+│
+├── complexity-analyzer.ts
+│   └── analyzes code complexity
+│
+├── control-flow-extractor.ts
+│   └── extracts control flow information
+│
+├── doc-extractor.ts
+│   └── extracts documentation comments
+│
+└── unified-extractor.ts
+    └── unifies and processes extracted information
+```
+
+## 🤖 Entity Listing
+
+### Function
+- **calculateCognitiveComplexity** — Not explicitly defined in the provided code `complexity-analyzer.ts:125-174`
+- **calculateComplexity** — Calculates complexity metrics for a given Java method body `complexity-analyzer.ts:67-94`
+- **calculateCyclomaticComplexity** — Not explicitly defined in the provided code `complexity-analyzer.ts:100-119`
+- **calculateLinesOfCode** — Method to calculate lines of code in a method body `unified-extractor.ts:629-650`
+- **catchCount** — Not explicitly defined in the provided code `complexity-analyzer.ts:115-115`
+- **countArguments** — Counts arguments of a method call `call-extractor.ts:328-338`
+- **countArguments** — Method to count arguments in a method invocation `unified-extractor.ts:589-598`
+- **exceedsThresholds** — Not explicitly defined in the provided code `complexity-analyzer.ts:184-186`
+- **extractBranch** — Method to extract branch information `unified-extractor.ts:375-468`
+- **extractCalls** — Extracts all method and constructor calls from a method body `call-extractor.ts:35-44`
+- **extractCallsSimple** — Extracts calls and returns simple string array for backward compatibility `call-extractor.ts:49-55`
+- **extractClassInstanceCreationInfo** — Extracts class instance creation information `call-extractor.ts:223-256`
+- **extractClassInstanceCreationInfo** — Method to extract class instance creation information `unified-extractor.ts:300-330`
+- **extractControlFlow** — Extracts control flow information from a method body `control-flow-extractor.ts:27-40`
+- **extractDoWhileLoop** — Extracts do-while loops `control-flow-extractor.ts:251-256`
+- **extractEnhancedForLoop** — Extracts enhanced for loops `control-flow-extractor.ts:231-236`
+- **extractException** — Method to extract exception information `unified-extractor.ts:477-543`
+- **extractForLoop** — Extracts for loops `control-flow-extractor.ts:221-226`
+- **extractIfStatement** — Extracts conditional branches with conditions `control-flow-extractor.ts:112-143`
+- **extractJavaDoc** — Extracts and parses JavaDoc comments using shared doc parsing from jvm/shared-doc-parser `doc-extractor.ts:28-38`
+- **extractJavaDocFromSource** — Parses JavaDoc from source code at a specific declaration line `doc-extractor.ts:86-88`
+- **extractMethodInvocationInfo** — Extracts method invocation information `call-extractor.ts:136-214`
+- **extractMethodInvocationInfo** — Method to extract method invocation information `unified-extractor.ts:229-295`
+- **extractPrimaryTarget** — Extracts primary target of a call `call-extractor.ts:306-323`
+- **extractPrimaryTarget** — Method to extract primary target information `unified-extractor.ts:571-584`
+- **extractReturn** — Method to extract return information `unified-extractor.ts:552-562`
+- **extractReturnStatement** — Extracts return statements `control-flow-extractor.ts:341-352`
+- **extractSwitchStatement** — Extracts switch statements `control-flow-extractor.ts:148-191`
+- **extractTernaryExpression** — Extracts ternary expressions `control-flow-extractor.ts:196-212`
+- **extractThrowStatement** — Extracts throw statements `control-flow-extractor.ts:311-332`
+- **extractTryStatement** — Extracts try statements `control-flow-extractor.ts:265-306`
+- **extractTypeArguments** — Extracts type arguments of a method call `call-extractor.ts:343-356`
+- **extractTypeArguments** — Method to extract type arguments in a method invocation `unified-extractor.ts:603-616`
+- **extractUnified** — Function to extract calls, control flow, and complexity metrics in a single AST pass `unified-extractor.ts:103-220`
+- **extractUnqualifiedCreation** — Extracts unqualified class instance creation information `call-extractor.ts:261-297`
+- **extractUnqualifiedCreation** — Method to extract unqualified class instance creation information `unified-extractor.ts:335-366`
+- **extractWhileLoop** — Extracts while loops `control-flow-extractor.ts:241-246`
+- **getCaughtExceptionTypes** — Retrieves the types of exceptions caught in the control flow `control-flow-extractor.ts:387-389`
+- **getComplexityRating** — Not explicitly defined in the provided code `complexity-analyzer.ts:180-182`
+- **getControlFlowStats** — Returns statistics about control flow, including branch count, loop count, exception count, return count, and whether there are early returns `control-flow-extractor.ts:361-375`
+- **getRefactoringSuggestions** — Not explicitly defined in the provided code `complexity-analyzer.ts:188-190`
+- **hasExceptionHandling** — Checks if the control flow has exception handling `control-flow-extractor.ts:380-382`
+- **isClassInstanceCreation** — Checks if a node is a class instance creation `call-extractor.ts:117-119`
+- **isMethodInvocation** — Checks if a node is a method invocation `call-extractor.ts:110-112`
+- **isStaticTarget** — Checks if a call is a static call `call-extractor.ts:361-366`
+- **isStaticTarget** — Method to determine if a target is static `unified-extractor.ts:621-624`
+- **names** — Maps call info to names for simple extraction `call-extractor.ts:53-53`
+- **parseJavaDoc** — Parses JavaDoc comment text and dispatches tag handling for Java-specific tags `doc-extractor.ts:49-80`
+- **parseJavaDocText** — Parses JavaDoc text and returns a JavaDocInfo object `doc-extractor.ts:40-43`
+- **result** — Placeholder for result of extraction `call-extractor.ts:353-353`
+- **result** — Result object containing extracted information `unified-extractor.ts:613-613`
+- **visit** — Method to traverse the AST and extract information `unified-extractor.ts:130-203`
+- **visitNode** — Recursively visits all nodes to find calls `call-extractor.ts:69-101`
+- **visitNode** — Recursively visits nodes to extract control flow `control-flow-extractor.ts:49-103`
+
+### Interface
+- **UnifiedExtractionResult** — Result of unified extraction containing calls, control flow, and complexity metrics `unified-extractor.ts:34-38`
+
+### Import_decl
+- **../../../generated/java/Java20Parser.js** — Imports `../../../generated/java/Java20Parser.js`. `call-extractor.ts:16-24`, `unified-extractor.ts:16-23`
+- **../../jvm/shared-complexity.js** — Imports `../../jvm/shared-complexity.js`. `complexity-analyzer.ts:10-21`
+- **../../jvm/shared-doc-parser.js** — Imports `../../jvm/shared-doc-parser.js`. `doc-extractor.ts:10-18`
+- **../types.js** — Imports `../types.js` from `../types.js`. `call-extractor.ts:25-25`, `complexity-analyzer.ts:22-22`, `control-flow-extractor.ts:17-17`, `doc-extractor.ts:19-19`, `unified-extractor.ts:24-24`
+- **../utils/ast-helpers.js** — Imports `../utils/ast-helpers.js` from `../utils/ast-helpers.js`. `call-extractor.ts:26-26`, `control-flow-extractor.ts:18-18`, `unified-extractor.ts:25-25`
+- **./control-flow-extractor.js** — Imports `./control-flow-extractor.js` from `./control-flow-extractor.js`. `complexity-analyzer.ts:23-23`
+- **antlr4ng** — Imports `antlr4ng` from `antlr4ng`. `call-extractor.ts:15-15`, `complexity-analyzer.ts:9-9`, `control-flow-extractor.ts:16-16`, `doc-extractor.ts:9-9`, `unified-extractor.ts:15-15`
+
+### Property
+- **branchCount** — Represents the number of branches in the control flow `control-flow-extractor.ts:362-362`
+- **calls** — Array of call information extracted from the method body `unified-extractor.ts:35-35`
+- **complexity** — Complexity metrics extracted from the method body `unified-extractor.ts:37-37`
+- **controlFlow** — Control flow information extracted from the method body `unified-extractor.ts:36-36`
+- **exceptionCount** — Represents the number of exceptions in the control flow `control-flow-extractor.ts:364-364`
+- **hasEarlyReturn** — Indicates whether there are multiple returns in the control flow `control-flow-extractor.ts:366-366`
+- **loopCount** — Represents the number of loops in the control flow `control-flow-extractor.ts:363-363`
+- **returnCount** — Represents the number of returns in the control flow `control-flow-extractor.ts:365-365`
 
 ## Data Flow
 

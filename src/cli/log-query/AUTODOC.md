@@ -2,15 +2,105 @@
 
 ## 🤖 Overview
 
-The log-query module implements the `ulog` command-line tool for querying UltraCode structured logs. It supports filtering by log levels (E/W/I/D/T), module and event glob patterns, time ranges (relative like "5m" or absolute like "20260106-1500"), and arbitrary KV pair comparisons. Output can be formatted as raw, table, JSON, or CSV, with support for follow mode (tail -f), statistics, and embedding session analysis.
+The `ulog` CLI tool allows users to query logs efficiently by filtering based on log levels, modules, events, time, and key-value pairs. It is designed for developers and system administrators who need to analyze log files quickly without full-text search capabilities. The tool supports both static and dynamic log file analysis, including real-time following of log files.
+
+## 🤖 Architecture
+
+```
+  +---------------------+
+  |     log-query-cli   |
+  |     (CLI entry point)|
+  +---------------------+
+           |
+           v
+  +---------------------+
+  |   parseArgs         |
+  |   (command-line args)|
+  +---------------------+
+           |
+           v
+  +---------------------+
+  |   findLogFiles      |
+  |   (log file discovery)|
+  +---------------------+
+           |
+           v
+  +---------------------+
+  |   processLogFiles   |
+  |   (log file processing)|
+  +---------------------+
+           |
+           v
+  +---------------------+
+  |   log-reader        |
+  |   (log file reading) |
+  +---------------------+
+           |
+           v
+  +---------------------+
+  |   query-parser      |
+  |   (query parsing)    |
+  +---------------------+
+           |
+           v
+  +---------------------+
+  |   time-parser       |
+  |   (time parsing)     |
+  +---------------------+
+```
+
+## 🤖 Flow
+
+```
+  +---------------------+
+  |     log-query-cli   |
+  |     (CLI entry point)|
+  +---------------------+
+           |
+           v
+  +---------------------+
+  |   parseArgs         |
+  |   (command-line args)|
+  +---------------------+
+           |
+           v
+  +---------------------+
+  |   findLogFiles      |
+  |   (log file discovery)|
+  +---------------------+
+           |
+           v
+  +----------------
+  |   processLogFiles   |
+  |   (log file processing)|
+  +---------------------+
+           |
+           v
+  +---------------------+
+  |   log-reader        |
+  |   (log file reading) |
+  +---------------------+
+           |
+           v
+  +---------------------+
+  |   query-parser      |
+  |   (query parsing)    |
+  +---------------------+
+           |
+           v
+  +---------------------+
+  |   time-parser       |
+  |   (time parsing)     |
+  +---------------------+
+```
 
 ## 🤖 Entity Listing
 
 ### Function
 - **collectEmbeddingSessions** — Collects embedding sessions `log-reader.ts:296-388`
 - **createStats** — Creates an empty LogStats object `log-reader.ts:33-46`
-- **files** — Filters log files by type and ends with ".log" `log-reader.ts:157-162`
-- **files** — Represents log files being processed `log-reader.ts:163-163`, `log-reader.ts:164-168`
+- **files** — Represents log files being processed `log-reader.ts:163-163`
+- **files** — Filters log files by type and ends with ".log" `log-reader.ts:157-162`, `log-reader.ts:164-168`
 - **findLogFiles** — Finds log files in a specified directory, filtering by type and sorting by modification time `log-reader.ts:152-173`
 - **followLogFile** — Continuously follows a log file `log-reader.ts:221-271`
 - **formatEmbeddingStats** — Formats embedding statistics `log-reader.ts:393-437`
@@ -35,7 +125,8 @@ The log-query module implements the `ulog` command-line tool for querying UltraC
 - **summaryEntries** — Stores summary entries for log processing `log-reader.ts:298-298`
 - **topEvents** — Represents a record of log events with statistics such as total, matched, by level, by module, by event, first timestamp, last timestamp, average duration, total duration, and duration count `log-reader.ts:477-477`
 - **topModules** — Tracks top modules in log entries `log-reader.ts:468-468`
-- **total** — Tracks the total count of log entries `log-reader.ts:352-352`, `log-reader.ts:375-375`
+- **total** — Tracks the total count of log entries `log-reader.ts:352-352`
+- **total** — Calculates the total count of entries in the current session `log-reader.ts:375-375`
 - **updateStats** — Updates LogStats with a parsed log entry `log-reader.ts:51-71`
 - **vectorEvents** — Stores vector events for log processing `log-reader.ts:323-323`
 
@@ -102,10 +193,11 @@ The log-query module implements the `ulog` command-line tool for querying UltraC
 - **timeRange** — A time range for filtering log queries `query-parser.ts:28-28`
 - **timestamp** — Stores the timestamp of a log entry `log-reader.ts:277-277`
 - **to** — Represents the end date of a time range `time-parser.ts:150-150`
-- **total** — Represents the total count of log files `log-reader.ts:18-18`
+- **total** — Represents the total count of log entries `log-reader.ts:18-18`
 - **totalDuration** — Total duration of log entries `log-reader.ts:26-26`
 - **value** — A value in a key-value filter `query-parser.ts:21-21`
-- **workers** — Manages worker processes for log processing `log-reader.ts:281-281`, `log-reader.ts:331-331`
+- **workers** — Manages worker processes for log processing `log-reader.ts:281-281`
+- **workers** — Represents the set of worker IDs in the current session `log-reader.ts:331-331`
 
 ## Data Flow
 
@@ -128,7 +220,7 @@ The log-query module implements the `ulog` command-line tool for querying UltraC
 | `EmbeddingSession` | interface | Embedding generation session data | [`log-reader.ts:276-284`](./log-reader.ts) |
 | `collectEmbeddingSessions` | function | Aggregates embedding sessions from log entries | [`log-reader.ts:290-379`](./log-reader.ts) |
 | `LogQueryFilter` | interface | Complete filter structure for log queries | [`query-parser.ts:27-37`](./query-parser.ts) |
-| `OutputOptions` | interface | Output format and display options | [`query-parser.ts:42-51`](./query-parser.ts) |
+| `OutputOptions` | interface | Output format and display options | [`query-parser.ts:48-48`](./query-parser.ts) |
 | `parseArgs` | function | Parses CLI arguments into filter, output, and file list | [`query-parser.ts:113-117`](./query-parser.ts) |
 | `matchesFilter` | function | Tests if a log entry matches a filter | [`query-parser.ts:308-387`](./query-parser.ts) |
 | `TimeRange` | interface | Time range with from/to dates | [`time-parser.ts:148-151`](./time-parser.ts) |

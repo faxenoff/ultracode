@@ -165,7 +165,7 @@ The `src/shared` module provides a set of utilities and worker systems for diffe
 - **request** — Sends an IPC request message `ipc-protocol.ts:295-313`
 - **reset** — Resets the buffer and decoder `ipc-protocol.ts:188-191`
 - **reset** — Resets the project context to its initial state `project-context.ts:221-228`
-- **resolveProjectPath** — Parses a project path, normalizing it if provided, and returns the resolved path `project-context.ts:72-80`
+- **resolveProjectPath** — Parses a project path, normalizing it if provided, or using the current project path if not `project-context.ts:72-80`
 - **sendEvent** — Sends an IPC event message `ipc-protocol.ts:335-338`
 - **shrinkIfEmpty** — Shrinks the buffer if it is empty `ipc-protocol.ts:138-142`
 - **shutdown** — Shuts down the worker pool `adaptive-worker.ts:135-156`
@@ -222,18 +222,18 @@ The `src/shared` module provides a set of utilities and worker systems for diffe
 
 ### Property
 - **abortController** — An abort controller for managing request aborts `ipc-protocol.ts:253-253`
-- **branch** — Tracking branch (null if not set) `git-worktree.ts:50-50`, `git-worktree.ts:68-68`
-- **branch** — Represents the tracking branch of a submodule `git-worktree.ts:377-377`, `git-worktree.ts:378-378`
+- **branch** — Represents the tracking branch of a submodule `git-worktree.ts:68-68`, `git-worktree.ts:377-377`
+- **branch** — Tracking branch (null if not set) `git-worktree.ts:50-50`, `git-worktree.ts:378-378`
 - **buffer** — A buffer used for IPC communication `ipc-protocol.ts:117-117`
-- **busy** — Represents whether the worker is currently busy `adaptive-worker.ts:67-67`
+- **busy** — Represents the current state of the worker being busy `adaptive-worker.ts:67-67`
 - **code** — The error code for the IPC error `ipc-protocol.ts:43-43`
 - **commitHash** — Pinned commit hash `git-worktree.ts:52-52`
 - **createdAt** — Records the timestamp when a worker was created `adaptive-worker.ts:69-69`
-- **currentProject** — The currently active project path `project-context.ts:36-36`
 - **currentProject** — Stores the current active project path `project-context.ts:205-205`
+- **currentProject** — The currently active project path `project-context.ts:36-36`
 - **data** — Stores or processes data related to worker tasks `adaptive-worker.ts:263-263`
-- **data** — Optional data for the IPC event `ipc-protocol.ts:38-38`
 - **data** — Represents the data being processed `ipc-protocol.ts:45-45`
+- **data** — Optional data for the IPC event `ipc-protocol.ts:38-38`
 - **decoder** — A decoder for IPC messages `ipc-protocol.ts:260-260`
 - **error** — Optional field for error messages `adaptive-worker.ts:29-29`
 - **error** — An optional error object for the IPC response `ipc-protocol.ts:31-31`
@@ -244,12 +244,14 @@ The `src/shared` module provides a set of utilities and worker systems for diffe
 - **hash** — A unique identifier for the project `project-context.ts:28-28`
 - **hasVectorsDb** — Indicates whether the project has a vectors database `project-context.ts:31-31`
 - **id** — Unique identifier for the worker task `adaptive-worker.ts:34-34`
-- **id** — A unique identifier for an IPC message `ipc-protocol.ts:20-20`, `ipc-protocol.ts:28-28`, `ipc-protocol.ts:35-35`
-- **indexingInProgress** — Tracks projects currently being indexed `project-context.ts:56-56`
+- **id** — A unique identifier for an IPC message `ipc-protocol.ts:20-20`
+- **id** — Represents the unique identifier for an IPC message `ipc-protocol.ts:28-28`
+- **id** — Represents the unique identifier for an IPC event `ipc-protocol.ts:35-35`
 - **indexingInProgress** — Tracks whether indexing is in progress `project-context.ts:208-208`
+- **indexingInProgress** — Tracks projects currently being indexed `project-context.ts:56-56`
 - **initialSize** — The initial size of the buffer `ipc-protocol.ts:119-119`
-- **isIndexed** — Indicates whether the project is indexed `project-context.ts:29-29`
 - **isIndexed** — Checks if the current project is indexed `project-context.ts:207-207`
+- **isIndexed** — Indicates whether the project is indexed `project-context.ts:29-29`
 - **isMain** — Represents whether the current worktree is the main one `git-worktree.ts:70-70`
 - **isShuttingDown** — Indicates whether the worker pool is shutting down `adaptive-worker.ts:86-86`
 - **isWorktree** — Indicates whether the current worktree is a linked worktree (not the main working tree) `git-worktree.ts:31-31`
@@ -266,14 +268,17 @@ The `src/shared` module provides a set of utilities and worker systems for diffe
 - **options** — Contains configuration options for the adaptive worker pool `adaptive-worker.ts:78-78`
 - **params** — Optional parameters for the IPC request `ipc-protocol.ts:23-23`
 - **parentRepoIdentity** — repoIdentity of the parent repo `git-worktree.ts:54-54`
-- **path** — Relative path inside parent repo `git-worktree.ts:46-46`, `git-worktree.ts:66-66`
+- **path** — Relative path inside parent repo `git-worktree.ts:46-46`
+- **path** — Represents the file path `git-worktree.ts:66-66`
 - **path** — The file system path to the project directory `project-context.ts:27-27`
-- **payload** — Contains the data or command for the worker task `adaptive-worker.ts:28-28`, `adaptive-worker.ts:36-36`
+- **payload** — Contains the data or command for the worker task `adaptive-worker.ts:28-28`
+- **payload** — Represents the data being processed by the worker `adaptive-worker.ts:36-36`
 - **pendingRequests** — A collection of pending IPC requests `ipc-protocol.ts:261-261`
 - **prefix** — Path prefix in the repo (e.g., "libs/shared") `git-worktree.ts:59-59`
-- **previousProject** — The previous project path, if any `project-context.ts:37-37`
 - **previousProject** — Stores the previous project path `project-context.ts:206-206`
-- **projectPath** — Optional project path for the IPC request `ipc-protocol.ts:24-24`, `ipc-protocol.ts:39-39`
+- **previousProject** — The previous project path, if any `project-context.ts:37-37`
+- **projectPath** — Optional project path for the IPC request `ipc-protocol.ts:24-24`
+- **projectPath** — Optional string representing the path to the project, or undefined `ipc-protocol.ts:39-39`
 - **reject** — Rejects a promise when a task fails `adaptive-worker.ts:83-83`
 - **reject** — Rejects a pending request `ipc-protocol.ts:252-252`
 - **repoIdentity** — Stable identity: xxHash32(normalized gitCommonDir) — same for all worktrees `git-worktree.ts:37-37`
@@ -295,11 +300,14 @@ The `src/shared` module provides a set of utilities and worker systems for diffe
 - **taskId** — Stores the task ID associated with a worker `adaptive-worker.ts:68-68`
 - **taskQueue** — Holds tasks waiting to be processed by workers `adaptive-worker.ts:80-85`
 - **timeout** — Timeout duration for worker tasks in milliseconds `adaptive-worker.ts:45-45`
-- **type** — Indicates the type of message `adaptive-worker.ts:26-26`, `adaptive-worker.ts:35-35`
-- **type** — Determines the type of worker (Node.js or Bun) `adaptive-worker.ts:300-300`
-- **type** — The type of IPC message, either request, response, or event `ipc-protocol.ts:21-21`, `ipc-protocol.ts:29-29`, `ipc-protocol.ts:36-36`
-- **url** — Remote URL `git-worktree.ts:48-48`
-- **url** — Represents the remote URL of a submodule `git-worktree.ts:377-377`, `git-worktree.ts:378-378`
+- **type** — Indicates the type of message `adaptive-worker.ts:26-26`
+- **type** — Determines the type of worker (Node.js or Bun) `adaptive-worker.ts:35-35`
+- **type** — Specifies the type of worker to be created `adaptive-worker.ts:300-300`
+- **type** — The type of IPC message, either request, response, or event `ipc-protocol.ts:21-21`
+- **type** — Specifies the type of IPC message, either "response" or "event" `ipc-protocol.ts:29-29`
+- **type** — Specifies the type of the IPC event as "event" `ipc-protocol.ts:36-36`
+- **url** — Represents the remote URL of a submodule `git-worktree.ts:377-377`
+- **url** — Remote URL `git-worktree.ts:48-48`, `git-worktree.ts:378-378`
 - **worker** — Represents a worker instance in the adaptive worker system `adaptive-worker.ts:66-66`
 - **workers** — Maintains an array of pooled worker instances `adaptive-worker.ts:79-79`
 - **worktreeName** — Name of this worktree (null for main) `git-worktree.ts:39-39`
@@ -396,7 +404,7 @@ The `src/shared` module provides a set of utilities and worker systems for diffe
 | `ErrorCodes` | enum | RPC error code constants | [`ipc-protocol.ts:50-58`](./ipc-protocol.ts) |
 | `Methods` | enum | Core RPC method names | [`ipc-protocol.ts:60-66`](./ipc-protocol.ts) |
 | `Events` | enum | Core event names | [`ipc-protocol.ts:59-81`](./ipc-protocol.ts) |
-| `encodeMessage()` | function | Encode IPC message to binary buffer | [`ipc-protocol.ts:80-95`](./ipc-protocol.ts) |
+| `encodeMessage()` | function | Encode IPC message to binary buffer | [`ipc-protocol.ts:80-91`](./ipc-protocol.ts) |
 | `MessageDecoder` | class | Stateful decoder for binary IPC stream | [`ipc-protocol.ts:102-140`](./ipc-protocol.ts) |
 | `createRequest()` | function | Create IPCRequest | [`ipc-protocol.ts:148-153`](./ipc-protocol.ts) |
 | `createResponse()` | function | Create IPCResponse | [`ipc-protocol.ts:158-165`](./ipc-protocol.ts) |

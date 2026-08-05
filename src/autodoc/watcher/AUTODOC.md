@@ -60,7 +60,9 @@ The `autodoc-watcher` module is used by developers to monitor and update documen
 - **diffExports** — Compares the old and new exports to find differences `autodoc-updater.ts:424-432`
 - **escapeRegex** — Escapes regular expressions for safe string manipulation `autodoc-updater.ts:417-419`
 - **exampleExport** — An example of an exported name `autodoc-updater.ts:573-573`
-- **exportsList** — Represents the list of exported names from a file `autodoc-updater.ts:568-568`, `autodoc-updater.ts:569-569`, `autodoc-updater.ts:569-569`
+- **exportsList** — Represents the list of exported names from a file `autodoc-updater.ts:568-568`
+- **exportsList** — Maps exports to a list of strings `autodoc-updater.ts:569-569`
+- **exportsList** — Maps each function's exports to a string representation and joins them with newlines `autodoc-updater.ts:569-569`
 - **extractEntitiesFromContent** — Extracts entities from the content of a module `module-resolver.ts:184-253`
 - **extractExportedNames** — Extracts exported names from a file `autodoc-updater.ts:756-806`
 - **extractExportsFromContent** — Extracts export names from the content of a module `module-resolver.ts:96-144`
@@ -80,16 +82,20 @@ The `autodoc-watcher` module is used by developers to monitor and update documen
 - **langResults** — Represents results from language detection `autodoc-updater.ts:738-738`
 - **names** — Maps and filters names from export matches `module-resolver.ts:106-115`
 - **names** — Filters names to ensure they are valid strings `module-resolver.ts:116-116`
-- **newExportsList** — Contains the list of new exports `autodoc-updater.ts:206-206`, `autodoc-updater.ts:216-216`, `autodoc-updater.ts:217-217`
+- **newExportsList** — Contains the list of new exports `autodoc-updater.ts:206-206`
+- **newExportsList** — Filters and maps exports to a list of strings `autodoc-updater.ts:216-216`
+- **newExportsList** — Maps exports to a list of strings `autodoc-updater.ts:217-217`
 - **newExportsSet** — Set of new exports `autodoc-updater.ts:168-168`
 - **newFilesList** — Contains the list of new files `autodoc-updater.ts:275-275`
 - **parentEntries** — Represents parent entries in the module `autodoc-updater.ts:677-677`
 - **parseAutodoc** — Function to parse current AUTODOC.md content `autodoc-updater.ts:92-134`
 - **parseLLMDocResponse** — Parses LLM response for documentation `autodoc-updater.ts:858-924`
-- **removed** — Represents the removal of an entity from the export list `autodoc-updater.ts:172-172`, `autodoc-updater.ts:429-429`
+- **removed** — Represents the removal of an entity from the export list `autodoc-updater.ts:172-172`
+- **removed** — Filters and maps exports to a list of strings `autodoc-updater.ts:429-429`
 - **resetAutoDocWatcher** — Resets the AutoDoc Watcher to its initial state `autodoc-watcher.ts:936-941`
 - **sanitizeLLMOutput** — Sanitizes LLM output for description generation `autodoc-updater.ts:812-852`
-- **singlePrompt** — A single prompt for LLM description generation `autodoc-updater.ts:594-594`, `autodoc-updater.ts:602-605`
+- **singlePrompt** — A single prompt for LLM description generation `autodoc-updater.ts:594-594`
+- **singlePrompt** — Maps lines to a list of strings `autodoc-updater.ts:602-605`
 - **srcEntries** — Represents source entries in the module `autodoc-updater.ts:697-697`
 - **totalExports** — Represents the total number of exports in a module `autodoc-updater.ts:551-551`
 - **updateAutodocContent** — Function to update AUTODOC.md content incrementally `autodoc-updater.ts:50-87`
@@ -148,50 +154,55 @@ The `autodoc-watcher` module is used by developers to monitor and update documen
 - **_llmExportDescs** — Stores descriptions for exported functions from LLM `autodoc-watcher.ts:43-43`
 - **_llmFileDescs** — Record of LLM-generated file descriptions `autodoc-updater.ts:37-37`
 - **_llmFileDescs** — Stores descriptions for files from LLM `autodoc-watcher.ts:44-44`
-- **added** — Returns an array of added export names `autodoc-updater.ts:424-424`
+- **added** — Returns an object with arrays of added and removed exports `autodoc-updater.ts:424-424`
 - **AUTODOC_CHECK_TTL** — Represents the time-to-live for checking the availability of LLM `autodoc-watcher.ts:105-105`
 - **autodocCheckTime** — Time interval for checking for changes `autodoc-watcher.ts:103-103`
 - **autodocEnabled** — Boolean indicating if auto-doc is enabled `autodoc-watcher.ts:102-102`
 - **autodocPath** — Stores the path to an AutoDoc file `autodoc-watcher.ts:762-762`
 - **changedFiles** — Set of files that have changed `autodoc-watcher.ts:76-76`
-- **code** — Represents the code content of a file `autodoc-updater.ts:502-502`, `autodoc-updater.ts:669-669`
+- **code** — Represents the code content of a file `autodoc-updater.ts:502-502`
+- **code** — Stores an array of file data containing file names, code, and exports `autodoc-updater.ts:669-669`
 - **config** — Configuration for the AutoDocWatcher `autodoc-watcher.ts:84-92`
 - **config** — Provides configuration for the AutoDoc Watcher `autodoc-watcher.ts:912-912`
 - **content** — Stores the content of an AutoDoc file `autodoc-watcher.ts:762-762`
 - **debounceControllers** — Controllers for debouncing updates `autodoc-watcher.ts:94-94`
-- **debounceMs** — Debounce delay in milliseconds (default: 300000 = 5 minutes) `autodoc-watcher.ts:53-53`
 - **debounceMs** — Debounce delay in milliseconds `autodoc-watcher.ts:85-85`
+- **debounceMs** — Debounce delay in milliseconds (default: 300000 = 5 minutes) `autodoc-watcher.ts:53-53`
 - **description** — Description of the AUTODOC.md content `autodoc-updater.ts:42-42`
 - **directory** — Represents the directory path for documentation `autodoc-watcher.ts:35-35`
-- **enabled** — Enable/disable watcher `autodoc-watcher.ts:61-61`
 - **enabled** — Boolean indicating if the watcher is enabled `autodoc-watcher.ts:89-89`
 - **enabled** — Indicates whether the AutoDoc Watcher is enabled `autodoc-watcher.ts:909-909`
-- **endLine** — Represents the end of a line in the file `autodoc-updater.ts:312-312`, `autodoc-updater.ts:374-374`
+- **enabled** — Enable/disable watcher `autodoc-watcher.ts:61-61`
+- **endLine** — Represents the end of a line in the file `autodoc-updater.ts:312-312`
+- **endLine** — Represents the line number and end line number of the closest entity `autodoc-updater.ts:374-374`
 - **endLine** — Stores the ending line number of the entity `module-resolver.ts:177-177`
 - **endpoint** — LLM endpoint URL `autodoc-updater.ts:27-27`
 - **endpoint** — LLM provider endpoint `autodoc-watcher.ts:69-69`
 - **exportDescs** — Represents descriptions of exported names `autodoc-updater.ts:863-863`
-- **exportDescs** — Exports descriptions for modules `autodoc-watcher.ts:269-269`, `autodoc-watcher.ts:556-556`, `autodoc-watcher.ts:693-693`
+- **exportDescs** — Exports descriptions for modules `autodoc-watcher.ts:269-269`
+- **exportDescs** — Represents a record of exported descriptions `autodoc-watcher.ts:556-556`, `autodoc-watcher.ts:693-693`
 - **exported** — Indicates whether the entity is exported `module-resolver.ts:173-173`
 - **exports** — Represents the exports of a module `autodoc-updater.ts:502-502`
 - **exports** — Represents the exported names from a file `autodoc-updater.ts:669-669`
 - **file** — Represents a file in the file system `autodoc-updater.ts:502-502`
 - **file** — Represents a file in the module `autodoc-updater.ts:669-669`
 - **fileDescs** — Represents descriptions of files `autodoc-updater.ts:864-864`
-- **fileDescs** — Stores file descriptions `autodoc-watcher.ts:269-269`, `autodoc-watcher.ts:556-556`, `autodoc-watcher.ts:693-693`
+- **fileDescs** — Stores file descriptions `autodoc-watcher.ts:269-269`
+- **fileDescs** — Represents a record of file descriptions `autodoc-watcher.ts:556-556`, `autodoc-watcher.ts:693-693`
 - **firstChangeAt** — Timestamp of the first change `autodoc-watcher.ts:77-77`
 - **lastChangeAt** — Timestamp of the last change `autodoc-watcher.ts:78-78`
-- **line** — Represents a line in the file `autodoc-updater.ts:312-312`, `autodoc-updater.ts:374-374`
+- **line** — Represents a line in the file `autodoc-updater.ts:312-312`
+- **line** — Represents the line number and end line number of the closest entity `autodoc-updater.ts:374-374`
 - **line** — Stores the starting line number of the entity `module-resolver.ts:175-175`
 - **llmAvailabilityChecked** — Indicates whether the LLM availability has been checked `autodoc-watcher.ts:107-107`
 - **llmAvailabilityResult** — Stores the result of checking LLM availability `autodoc-watcher.ts:108-108`
 - **llmConfig** — Configuration for LLM, including provider, model, and endpoint `autodoc-updater.ts:23-29`
-- **llmConfig** — LLM provider config `autodoc-watcher.ts:65-71`
 - **llmConfig** — LLM provider configuration `autodoc-watcher.ts:91-91`
-- **maxDebounceMs** — Maximum debounce delay (default: 60—or 10 minutes) `autodoc-watcher.ts:57-57`
+- **llmConfig** — LLM provider config `autodoc-watcher.ts:65-71`
 - **maxDebounceMs** — Maximum debounce delay in milliseconds `autodoc-watcher.ts:87-87`
-- **minDebounceMs** — Minimum debounce delay (default: 120000 = 2 minutes) `autodoc-watcher.ts:55-55`
+- **maxDebounceMs** — Maximum debounce delay (default: 60—or 10 minutes) `autodoc-watcher.ts:57-57`
 - **minDebounceMs** — Minimum debounce delay in milliseconds `autodoc-watcher.ts:86-86`
+- **minDebounceMs** — Minimum debounce delay (default: 120000 = 2 minutes) `autodoc-watcher.ts:55-55`
 - **model** — LLM model name `autodoc-updater.ts:26-26`
 - **model** — LLM model used for generating descriptions `autodoc-watcher.ts:68-68`
 - **modPath** — Stores the path to a module `autodoc-watcher.ts:762-762`
@@ -206,9 +217,9 @@ The `autodoc-watcher` module is used by developers to monitor and update documen
 - **provider** — LLM provider, either "ollama", "openai", or "tgi" `autodoc-updater.ts:25-25`
 - **provider** — Specifies the LLM provider for documentation generation `autodoc-watcher.ts:67-67`
 - **rawContent** — Raw content of the AUTODOC.md file `autodoc-updater.ts:44-44`
-- **removed** — Returns an array of removed export names `autodoc-updater.ts:424-424`
-- **rootDir** — Root directory to watch `autodoc-watcher.ts:59-59`
+- **removed** — Returns an object with arrays of added and removed exports `autodoc-updater.ts:424-424`
 - **rootDir** — Root directory to watch for changes `autodoc-watcher.ts:88-88`
+- **rootDir** — Root directory to watch `autodoc-watcher.ts:59-59`
 - **running** — Indicates whether the AutoDoc Watcher is currently running `autodoc-watcher.ts:910-910`
 - **sections** — Map of sections in the AUTODOC.md content `autodoc-updater.ts:43-43`
 - **stopped** — Boolean indicating if the watcher is stopped `autodoc-watcher.ts:100-100`
@@ -216,8 +227,8 @@ The `autodoc-watcher` module is used by developers to monitor and update documen
 - **title** — Title of the AUTODOC.md content `autodoc-updater.ts:41-41`
 - **type** — Specifies the type of the entity, such as function, class, or interface `module-resolver.ts:172-172`
 - **useLlm** — Boolean flag to determine if LLM should be used for description generation `autodoc-updater.ts:21-21`
-- **useLlm** — Use LLM for description generation `autodoc-watcher.ts:63-63`
 - **useLlm** — Boolean indicating if LLM is used for description generation `autodoc-watcher.ts:90-90`
+- **useLlm** — Use LLM for description generation `autodoc-watcher.ts:63-63`
 
 ## Data Flow
 

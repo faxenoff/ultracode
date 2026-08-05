@@ -1,17 +1,98 @@
----
-module_name: parser
-description: "Markdown parsing, reference extraction, and document structure manipulation"
-status: active
-language: typescript
----
-
 # Parser
 
-> Parses markdown documents into hierarchical section trees, extracts and validates typed references (code, entity, doc, commit), and provides utilities for generating reference syntax and manipulating document structure.
+## 🤖 Overview
 
-## Overview
+The `autodoc/parser` module is designed for parsing and extracting references from Markdown documents. It provides a set of functions for generating code and documentation references, validating references, and manipulating Markdown content. This module is used by developers and documentation authors to maintain and update reference links within their Markdown files.
 
-The parser module is the markdown processing backbone of AutoDoc. The link extractor handles five reference types (line-range, entity, commit, doc, external URL) with generation and validation functions plus comment reference extraction (`@see`, `@flow`). The markdown parser converts documents into `ParsedDocument` structures with nested `ParsedSection` trees, supporting section lookup by ID/title, content updates, section insertion, and full markdown regeneration. Together they enable the incremental updater and storage modules to track and maintain documentation references.
+## 🤖 Architecture
+
+```
+  +---------------------+
+  |     link-extractor  |
+  +---------------------+
+  |     md-parser       |
+  +---------------------+
+  |     index.ts        |
+  +---------------------+
+```
+
+## 🤖 Flow
+
+```
+  +---------------------+
+  |     index.ts        |
+  +---------------------+
+  |     extractCommentRefs |
+  |     extractReferences |
+  |     generateCodeRef |
+  |     generateDocRef |
+  |     generateEntityRef |
+  |     generateFlowComment |
+  |     generateSeeDocComment |
+  |     generateSeeEntityComment |
+  |     updateLineNumbers |
+  |     validateReference |
+  +---------------------+
+  |     extractTitle |
+  |     findSectionById |
+  |     findSectionByTitle |
+  |     flattenSections |
+  |     generateMarkdown |
+  |     getSectionPath |
+  |     insertSectionAfter |
+  |     parseMarkdown |
+  |     updateSectionContent |
+  +---------------------+
+```
+
+## 🤖 Entity Listing
+
+### Function
+- **addSection** — Adds a new section to the document, maintaining hierarchy `md-parser.ts:59-74`
+- **extractCommentRefs** — Extracts comment references `link-extractor.ts:320-372`
+- **extractReferences** — Extracts all references from markdown content `link-extractor.ts:61-84`
+- **extractTitle** — Extracts the title from a markdown content string `md-parser.ts:349-361`
+- **findAllLinks** — Finds all markdown links in a given line `link-extractor.ts:89-120`
+- **findSectionById** — Searches for a section by its ID in a nested list of sections `md-parser.ts:152-163`
+- **findSectionByTitle** — Searches for a section by its title in a nested list of sections `md-parser.ts:168-181`
+- **flattenSections** — Recursively flattens a nested list of sections into a single-level list `md-parser.ts:133-147`
+- **flushContent** — Flushes content buffer to a section if it's not empty `md-parser.ts:46-57`
+- **generateCodeRef** — Generates a code reference `link-extractor.ts:231-239`
+- **generateDocRef** — Generates a doc reference `link-extractor.ts:252-256`
+- **generateEntityRef** — Generates an entity reference `link-extractor.ts:244-247`
+- **generateFlowComment** — Not present in the provided code `link-extractor.ts:391-393`
+- **generateMarkdown** — Generates a markdown string from a parsed document `md-parser.ts:297-329`
+- **generateSeeDocComment** — Not present in the provided code `link-extractor.ts:377-379`
+- **generateSeeEntityComment** — Not present in the provided code `link-extractor.ts:384-386`
+- **getSectionPath** — Retrieves the path to a section by its ID in a nested list of sections `md-parser.ts:366-389`
+- **hasTitle** — Checks if the document has a title section `md-parser.ts:318-318`
+- **insertSectionAfter** — Inserts a new section after a specified section in a markdown document `md-parser.ts:238-292`
+- **parseMarkdown** — Parses a markdown document into structured sections with hierarchy `md-parser.ts:30-128`
+- **parseReference** — Parses a reference from its text and target `link-extractor.ts:125-222`
+- **renderSection** — Renders a section and its children into a markdown string `md-parser.ts:300-315`
+- **slugify** — Converts a string to a slug by normalizing and replacing characters `md-parser.ts:338-344`
+- **tags** — Regex patterns for different reference types `link-extractor.ts:349-349`, `link-extractor.ts:361-361`
+- **traverse** — Recursively traverses a list of sections, pushing each section to the result array `md-parser.ts:136-143`
+- **traverse** — Recursively searches for a section with a specific ID in a list of parsed sections, updating the path as it goes `md-parser.ts:369-385`
+- **updateLineNumbers** — Updates line numbers for references `link-extractor.ts:285-294`
+- **updateSectionContent** — Updates the content of a section in a markdown document `md-parser.ts:186-233`
+- **validateReference** — Validates a reference `link-extractor.ts:265-280`
+
+### Import_decl
+- **../types.js** — Imports `../types.js` from `../types.js`. `link-extractor.ts:21-21`, `link-extractor.ts:22-22`, `md-parser.ts:13-13`
+- **./link-extractor.js** — Imports `./link-extractor.js` from `./link-extractor.js`. `md-parser.ts:14-14`
+- **node:path** — Imports `node:path` from `node:path`. `link-extractor.ts:20-20`, `md-parser.ts:12-12`
+
+### Property
+- **column** — Represents the column number of a reference `link-extractor.ts:93-93`, `link-extractor.ts:99-99`
+- **docRefs** — Stores doc references `link-extractor.ts:321-321`
+- **entityRefs** — Stores entity references `link-extractor.ts:322-322`
+- **error** — Indicates whether a reference is invalid `link-extractor.ts:268-268`
+- **flowTags** — Represents flow tags `link-extractor.ts:323-323`
+- **syntax** — Represents the syntax of a reference `link-extractor.ts:90-90`, `link-extractor.ts:96-96`
+- **target** — Represents the target URL of a reference `link-extractor.ts:92-92`, `link-extractor.ts:98-98`
+- **text** — Represents the text of a reference `link-extractor.ts:91-91`, `link-extractor.ts:97-97`
+- **valid** — Indicates whether a reference is valid `link-extractor.ts:268-268`
 
 ## Data Flow
 

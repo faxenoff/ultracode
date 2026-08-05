@@ -38,7 +38,8 @@ CodeClassifier
 ## 🤖 Entity Listing
 
 ### Function
-- **trigramStrings** — Not present in the provided code snippet `code-classifier.test.ts:323-328`, `code-classifier.test.ts:340-345`
+- **trigramStrings** — Not present in the provided code snippet `code-classifier.test.ts:323-328`
+- **trigramStrings** — Parses the trigram entries into strings `code-classifier.test.ts:340-345`
 
 ### Import_decl
 - **../../src/search/code-classifier.js** — Imports `../../src/search/code-classifier.js`. `code-classifier.test.ts:9-15`

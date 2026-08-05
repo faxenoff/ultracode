@@ -98,9 +98,9 @@ The `base-agent.test.ts` file tests the `BaseAgent` class, focusing on its initi
 - **classEntity** — Represents a class entity in the test code `parser-agent.test.ts:158-158`
 - **cleanupTestFiles** — Cleans up the temporary directory `parser-agent.test.ts:59-65`
 - **createTestFiles** — Creates test files in the temporary directory `parser-agent.test.ts:45-54`
-- **filePaths** — Maps test files to their full paths in the temporary directory `parser-agent.test.ts:323-323`, `parser-agent.test.ts:369-369`
+- **filePaths** — Maps each test file to a full path within the temporary directory `parser-agent.test.ts:349-349`, `parser-agent.test.ts:369-369`
 - **filePaths** — An array of file paths `parser-agent.test.ts:213-213`
-- **filePaths** — Maps each test file to a full path within the temporary directory `parser-agent.test.ts:349-349`
+- **filePaths** — Maps test files to their full paths in the temporary directory `parser-agent.test.ts:323-323`
 - **functionEntity** — Represents a function entity in the test code `parser-agent.test.ts:162-162`
 - **generateSampleCode** — Generates sample JavaScript code for a test file `parser-agent.test.ts:70-99`
 - **getGraphStorageMock** — Creates a mock for graph storage `semantic-agent.test.ts:118-125`
@@ -109,9 +109,9 @@ The `base-agent.test.ts` file tests the `BaseAgent` class, focusing on its initi
 - **interfaceEntity** — Represents an interface entity in the test code `parser-agent.test.ts:194-194`
 - **modifiedClass** — A modified class entity `parser-agent.test.ts:277-277`
 - **task** — Assigns full paths to test files in the temporary directory `parser-agent.test.ts:418-418`
-- **testFiles** — Create test files in temp directory `parser-agent.test.ts:316-319`, `parser-agent.test.ts:363-366`
-- **testFiles** — An array of test files `parser-agent.test.ts:206-209`, `parser-agent.test.ts:406-409`
-- **testFiles** — Creates an array of 50 test files with paths and sample code `parser-agent.test.ts:343-346`
+- **testFiles** — Creates an array of 50 test files with paths and sample code `parser-agent.test.ts:343-346`, `parser-agent.test.ts:363-366`
+- **testFiles** — Create test files in temp directory `parser-agent.test.ts:316-319`, `parser-agent.test.ts:406-409`
+- **testFiles** — An array of test files `parser-agent.test.ts:206-209`
 - **typeEntity** — Represents a type entity in the test code `parser-agent.test.ts:198-198`
 - **warmupMock** — Mocks the warmup function for semantic cache `semantic-agent.test.ts:15-15`
 

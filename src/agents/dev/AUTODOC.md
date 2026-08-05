@@ -1,10 +1,155 @@
 # Dev
 
-Recursively collects source files respecting patterns, supports multiple languages via AST and heuristic parsing, and manages incremental indexing with vendored directory detection.
+## 🤖 Overview
 
-## Overview
+The `dev` module in `src/agents` is designed for collecting and processing source files, particularly those related to code and data extensions. It is used by developers and data engineers to manage and index files efficiently. The module includes utilities for file collection, extension detection, and incremental indexing, making it a crucial component in the development and data engineering workflows.
 
-The dev module provides the file discovery and classification layer for the DevAgent. It recursively scans directories using Bun.Glob or fast-glob (with `.ultracodeignore` support), classifies files by extension into code vs. data categories, and provides heuristic entity creation for unsupported languages. The module also contains the incremental indexer (file separation, vector provider setup, batch processing) and the indexing pipeline (phased initialization, change detection, stale entity cleanup, and result building).
+## 🤖 Entity Listing
+
+### Function
+- **applyChangeAnalysis** — Applies change analysis to the files `indexing-pipeline.ts:255-281`
+- **buildIndexingResult** — Builds the indexing result based on the context `indexing-pipeline.ts:826-839`
+- **cleanStaleEntities** — Cleans stale entities from the graph `indexing-pipeline.ts:209-241`
+- **collectFiles** — Collects files from a directory `file-collector.ts:298-362`
+- **collectFilesAsync** — Asynchronously collects files using fast-glob `file-collector.ts:417-480`
+- **collectFilesWithBunGlob** — Uses Bun.Glob.scan() to collect files under Bun runtime `file-collector.ts:182-226`
+- **collectFilesWithFastGlob** — Collects files using fast-glob `file-collector.ts:369-407`
+- **collectFilesWithNodeFs** — Collects files using Node.js fs module `file-collector.ts:232-290`
+- **createHeuristicEntities** — Creates heuristic entities for a file that can't be parsed with AST, generating a single module entity representing the file `heuristic-parser.ts:48-88`
+- **currentFilesSet** — Represents the current set of files used for indexing `indexing-pipeline.ts:173-173`
+- **dbEntities** — Stores database entities `indexing-pipeline.ts:754-754`
+- **defaultIgnorePatterns** — Default ignore patterns for file collection `file-collector.ts:195-195`, `file-collector.ts:376-376`
+- **detectArchMirrors** — Detects architecture mirrors `vendored-detector.ts:200-255`
+- **detectChangedFiles** — Detects changed files based on the current and previous file sets `indexing-pipeline.ts:125-196`
+- **detectKnownVendored** — Detects known vendored path segments `vendored-detector.ts:164-194`
+- **detectMassHeaders** — Detects mass headers `vendored-detector.ts:261-305`
+- **detectVendoredDirectories** — Detects vendored/generated directories `vendored-detector.ts:84-158`
+- **estimateAvgLoc** — Estimates average LOC for mass-header heuristic `vendored-detector.ts:310-331`
+- **flushPendingEmbeddings** — Flushes pending embeddings from the parser agent to the FAISS index and saves the index to disk `incremental-indexer.ts:322-353`
+- **getCachedRegex** — Creates and caches a regular expression based on a given pattern `file-collector.ts:103-117`
+- **hasCodeEntities** — Checks if the directory contains code entities `indexing-pipeline.ts:653-653`
+- **hasDbEntities** — Checks if the directory contains database entities `indexing-pipeline.ts:652-652`
+- **hasGraphQL** — Checks if the directory contains GraphQL files `indexing-pipeline.ts:551-551`
+- **hasProtobuf** — Checks if the files contain Protobuf links `indexing-pipeline.ts:451-451`
+- **hasSwagger** — Checks if the files contain Swagger links `indexing-pipeline.ts:344-344`
+- **initializeIndexing** — Initializes the indexing process with given options `indexing-pipeline.ts:90-113`
+- **isCodeExtension** — Determines if a file extension is supported for code parsing and AST extraction `file-extensions.ts:146-148`
+- **isDataExtension** — Determines if a file extension is supported for non-AST indexing and semantic merge `file-extensions.ts:151-153`
+- **isSkipEmbeddingExtension** — Checks if a file extension should be skipped for embeddings `vendored-detector.ts:355-357`
+- **isSupportedFile** — Checks if a file name is supported based on its extension or name `file-collector.ts:141-150`
+- **isVendoredPath** — Checks if a path is a vendored path `vendored-detector.ts:341-350`
+- **loadIgnoreFile** — Loads patterns from .ultracodeignore file if it exists `file-collector.ts:29-63`
+- **matchingFiles** — Matches files for detection `vendored-detector.ts:292-295`
+- **migEntity** — Represents a migration entity `indexing-pipeline.ts:760-760`
+- **processHeuristicFiles** — Processes heuristic files to extract entities and queues them for indexing `incremental-indexer.ts:279-310`
+- **processSupportedFiles** — Processes a list of files using the parser agent and queues the results for indexing `incremental-indexer.ts:220-270`
+- **relationships** — Represents the relationships in the graph `indexing-pipeline.ts:372-382`, `indexing-pipeline.ts:475-485`
+- **relationships** — Represents relationships between entities `indexing-pipeline.ts:575-585`, `indexing-pipeline.ts:693-703`
+- **resolveDbSchemaLinks** — Resolves database schema links from the provided directory `indexing-pipeline.ts:648-801`
+- **resolveGraphQLLinks** — Parses GraphQL links from the provided directory `indexing-pipeline.ts:547-637`
+- **resolveProtobufLinks** — Resolves Protobuf links in the files `indexing-pipeline.ts:447-537`
+- **resolveSwaggerLinks** — Resolves Swagger links in the files `indexing-pipeline.ts:340-437`
+- **saveIndexToDisk** — Saves the FAISS index to disk if the layered index is enabled `incremental-indexer.ts:358-381`
+- **separateCodeAndDataFiles** — Separates code and data files from the given files `indexing-pipeline.ts:301-327`
+- **separateFilesBySupport** — Function to separate files into supported and other categories `incremental-indexer.ts:55-81`
+- **setupEmbeddingGenerator** — Sets up an embedding generator using the provided configuration and initializes it `incremental-indexer.ts:159-206`
+- **setupVectorProvider** — Initializes a vector provider based on the embedding configuration and current project context `incremental-indexer.ts:101-150`
+- **shouldExclude** — Determines if a file path should be excluded based on provided patterns `file-collector.ts:123-136`
+- **shouldUseIncrementalMode** — Determines if incremental mode should be used `indexing-pipeline.ts:813-815`
+- **uniqueDirs** — Set of unique directories scanned `file-collector.ts:439-439`, `file-collector.ts:448-448`
+- **walkDir** — Walks through a directory to collect files `file-collector.ts:241-285`
+
+### Interface
+- **BunGlob** — Represents a constructor for creating a BunGlob instance `file-collector.ts:170-172`
+- **BunGlobInstance** — Defines an instance of BunGlob that can scan files based on options `file-collector.ts:174-176`
+- **ChangeAnalysis** — Result of change analysis for files `indexing-pipeline.ts:46-51`
+- **CollectFilesOptions** — Defines options for collecting files, including exclude patterns and agent ID `file-collector.ts:152-155`
+- **CollectFilesResult** — Represents the result of collecting files, including the list of files and statistics `file-collector.ts:157-165`
+- **EmbeddingResult** — Represents the result of embedding generation, including the count of embeddings and skipped files `indexing-pipeline.ts:75-78`
+- **EmbeddingSetupContext** — An interface representing the context for setting up an embedding provider `incremental-indexer.ts:90-93`
+- **FileSeparationResult** — Represents the result of separating files into supported and other categories `incremental-indexer.ts:26-29`
+- **FileSeparationResult** — Represents the result of separating code and data files `indexing-pipeline.ts:290-293`
+- **IndexingContext** — Context object passed between indexing phases `indexing-pipeline.ts:34-41`
+- **IndexingOptions** — Indexing parameters for the DevAgent indexing pipeline `indexing-pipeline.ts:24-29`
+- **IndexingResult** — Result of the indexing process `indexing-pipeline.ts:56-62`
+- **ProcessingResult** — Represents the result of processing files, including success and error counts and elapsed time `incremental-indexer.ts:34-38`
+- **SaveResult** — Represents the result of saving the graph, including entity and relationship counts `indexing-pipeline.ts:67-70`
+- **VendoredDetectionResult** — Represents the result of detecting vendored/generated directories, including prefixes to skip embeddings and stats `vendored-detector.ts:58-70`
+
+### Import_decl
+- **../../config/yaml-config.js** — Imports `../../config/yaml-config.js` from `../../config/yaml-config.js`. `incremental-indexer.ts:11-11`
+- **../../logging/index.js** — Imports `../../logging/index.js` from `../../logging/index.js`. `file-collector.ts:15-15`, `incremental-indexer.ts:12-12`, `indexing-pipeline.ts:11-11`, `vendored-detector.ts:17-17`
+- **../../storage/graph-storage-factory.js** — Imports `../../storage/graph-storage-factory.js` from `../../storage/graph-storage-factory.js`. `indexing-pipeline.ts:12-12`
+- **../../types/parser.js** — Imports `../../types/parser.js` from `../../types/parser.js`. `heuristic-parser.ts:9-9`
+- **../../types/storage.js** — Imports `../../types/storage.js` from `../../types/storage.js`. `indexing-pipeline.ts:13-13`
+- **../../utils/error-handling.js** — Imports `../../utils/error-handling.js` from `../../utils/error-handling.js`. `incremental-indexer.ts:13-13`, `indexing-pipeline.ts:14-14`
+- **../../utils/runtime.js** — Imports `../../utils/runtime.js` from `../../utils/runtime.js`. `file-collector.ts:16-16`
+- **../dev/file-extensions.js** — Imports `../dev/file-extensions.js` from `../dev/file-extensions.js`. `incremental-indexer.ts:14-14`
+- **../indexer-agent.js** — Imports `../indexer-agent.js` from `../indexer-agent.js`. `incremental-indexer.ts:15-15`
+- **../parser-agent.js** — Imports `../parser-agent.js` from `../parser-agent.js`. `incremental-indexer.ts:16-16`
+- **../semantic/provider-config.js** — Imports `../semantic/provider-config.js` from `../semantic/provider-config.js`. `incremental-indexer.ts:17-17`
+- **./file-collector.js** — Imports `./file-collector.js` from `./file-collector.js`. `indexing-pipeline.ts:15-15`
+- **./file-extensions.js** — Imports `./file-extensions.js` from `./file-extensions.js`. `file-collector.ts:17-17`
+- **fast-glob** — Imports `fast-glob` from `fast-glob`. `file-collector.ts:14-14`
+- **node:fs** — Imports `node:fs` from `node:fs`. `file-collector.ts:12-12`, `indexing-pipeline.ts:10-10`, `vendored-detector.ts:15-15`
+- **node:path** — Imports `node:path` from `node:path`. `file-collector.ts:13-13`, `heuristic-parser.ts:8-8`, `incremental-indexer.ts:10-10`, `vendored-detector.ts:16-16`
+
+### Property
+- **agentId** — A string representing the agent ID for file collection `file-collector.ts:154-154`
+- **agentId** — Unique identifier for the agent performing indexing `indexing-pipeline.ts:28-28`, `indexing-pipeline.ts:38-38`
+- **allFiles** — Array of all files in the directory `indexing-pipeline.ts:39-39`
+- **archMirrors** — Detects directories with architecture mirrors `vendored-detector.ts:65-65`
+- **Bun** — Runtime environment for Bun.Glob `file-collector.ts:186-186`, `file-collector.ts:433-433`
+- **byExtension** — Maps file extensions to their exclusion counts `file-collector.ts:163-163`
+- **changedFiles** — Array of files that have changed `indexing-pipeline.ts:47-47`
+- **codeFiles** — Represents the list of code files separated `indexing-pipeline.ts:291-291`
+- **count** — Represents the count of embeddings generated `indexing-pipeline.ts:76-76`
+- **currentDir** — The current directory path used to determine the project hash and git branch `incremental-indexer.ts:92-92`
+- **cwd** — Sets the current working directory for scanning files `file-collector.ts:175-175`
+- **dataFiles** — Represents the list of data files separated `indexing-pipeline.ts:292-292`
+- **deletedEntities** — Represents the number of entities deleted during the indexing `indexing-pipeline.ts:61-61`
+- **deletedEntityIds** — Array of IDs of deleted entities `indexing-pipeline.ts:40-40`
+- **deletedFiles** — Array of deleted files `indexing-pipeline.ts:49-49`
+- **directory** — Directory path for indexing `indexing-pipeline.ts:25-25`, `indexing-pipeline.ts:35-35`
+- **dirsScanned** — A number representing the number of directories scanned during file collection `file-collector.ts:160-160`
+- **dirsScanned** — Set of directories scanned `file-collector.ts:235-235`
+- **elapsedMs** — Time elapsed in milliseconds during file processing `incremental-indexer.ts:37-37`
+- **entitiesExtracted** — Represents the number of entities extracted during the indexing process `indexing-pipeline.ts:58-58`
+- **entityCount** — Represents the count of entities in the graph `indexing-pipeline.ts:68-68`
+- **errorCount** — Count of files that failed to be processed `incremental-indexer.ts:36-36`, `incremental-indexer.ts:224-224`
+- **errorCount** — Represents the number of failed file processing operations `incremental-indexer.ts:282-282`
+- **excludedByDefault** — Represents the number of files excluded by default `file-collector.ts:162-162`
+- **excludedByDefault** — Boolean indicating if default exclusions are applied `file-collector.ts:235-235`
+- **excludedByPattern** — Represents the number of files excluded by a pattern `file-collector.ts:161-161`
+- **excludedByPattern** — Array of file paths excluded by patterns `file-collector.ts:185-185`, `file-collector.ts:235-235`, `file-collector.ts:372-372`
+- **excludePatterns** — An array of strings representing patterns to exclude files `file-collector.ts:153-153`
+- **excludePatterns** — Array of patterns to exclude files from indexing `indexing-pipeline.ts:26-26`, `indexing-pipeline.ts:36-36`
+- **files** — An array of strings representing the files collected `file-collector.ts:158-158`
+- **files** — Array of collected files `file-collector.ts:185-185`, `file-collector.ts:235-235`, `file-collector.ts:372-372`
+- **filesProcessed** — Number of files processed during indexing `indexing-pipeline.ts:57-57`
+- **Glob** — Glob pattern matching `file-collector.ts:186-186`, `file-collector.ts:433-433`
+- **ignore** — Specifies patterns to ignore during file scanning `file-collector.ts:175-175`
+- **incremental** — Boolean indicating if the indexing is incremental `indexing-pipeline.ts:27-27`
+- **isIncremental** — Boolean indicating if the indexing is incremental `indexing-pipeline.ts:37-37`
+- **knownVendored** — Detects known vendored path segments `vendored-detector.ts:67-67`
+- **massHeaders** — Detects directories with mass headers `vendored-detector.ts:66-66`
+- **newFiles** — Array of new files `indexing-pipeline.ts:48-48`
+- **onlyFiles** — Specifies whether to only return files and not directories `file-collector.ts:175-175`
+- **otherFiles** — List of files that are not supported for full parsing `incremental-indexer.ts:28-28`
+- **parserAgent** — A parser agent used for parsing and embedding files `incremental-indexer.ts:91-91`
+- **relationshipCount** — Represents the count of relationships in the graph `indexing-pipeline.ts:69-69`
+- **relationshipsCreated** — Represents the number of relationships created during the indexing process `indexing-pipeline.ts:59-59`
+- **skipExtensions** — Contains individual file extensions to always skip embeddings for `vendored-detector.ts:62-62`
+- **skipped** — Represents the number of files skipped during the embedding generation `indexing-pipeline.ts:77-77`
+- **stats** — An object containing statistics about the file collection process `file-collector.ts:159-164`
+- **stats** — Logs statistics for arch mirrors, mass headers, known vendored directories, and total skipped files `vendored-detector.ts:64-69`
+- **successCount** — Count of successfully processed files `incremental-indexer.ts:35-35`, `incremental-indexer.ts:224-224`
+- **successCount** — Represents the number of successful file processing operations `incremental-indexer.ts:282-282`
+- **supportedFiles** — List of files that are supported for full parsing `incremental-indexer.ts:27-27`
+- **totalFiles** — Represents the total number of files processed during the indexing `indexing-pipeline.ts:60-60`
+- **totalSkippedFiles** — Counts total skipped files `vendored-detector.ts:68-68`
+- **unchangedFiles** — Array of unchanged files `indexing-pipeline.ts:50-50`
+- **vendoredPrefixes** — Stores directory prefixes where embedding should be skipped `vendored-detector.ts:60-60`
 
 ## Data Flow
 

@@ -2,7 +2,43 @@
 
 ## 🤖 Overview
 
-The hooks module provides two complementary capabilities: a hook installer that manages the lifecycle of Git pre-commit hooks (install, uninstall, status check), and a pre-commit checker that validates all markdown link references in staged files. The checker supports entity references, doc references, file references with line ranges, and external URLs, processing files and references in parallel for performance.
+The `autodoc/hooks` module provides utilities for managing Git hooks related to documentation validation. It includes a pre-commit hook script that checks for staged documentation files and warns users to validate references. This module is used by developers to ensure documentation quality before commits.
+
+## 🤖 Architecture
+
+```
+  +-------------------+
+  |   Hook Installer  |
+  | (hook-installer.ts) |
+  +-------------------+
+          |
+          v
+  +-------------------+
+  |   Pre-commit Check |
+  | (pre-commit-check.ts) |
+  +-------------------+
+```
+
+## 🤖 Flow
+
+```
+  +-------------------+
+  |   Hook Installer  |
+  | (hook-installer.ts) |
+  +-------------------+
+          |
+          v
+  +-------------------+
+  |   Pre-commit Check |
+  | (pre-commit-check.ts) |
+  +-------------------+
+          |
+          v
+  +-------------------+
+  |   Git Hook Script  |
+  | (pre-commit-check.ts) |
+  +-------------------+
+```
 
 ## 🤖 Entity Listing
 
@@ -37,20 +73,25 @@ The hooks module provides two complementary capabilities: a hook installer that 
 
 ### Property
 - **brokenRefs** — An array of objects containing details about broken references found in the staged files `pre-commit-check.ts:23-28`
-- **error** — The error message associated with the broken reference `pre-commit-check.ts:27-27`
 - **error** — Represents an error object used in the pre-commit check `pre-commit-check.ts:103-103`
+- **error** — The error message associated with the broken reference `pre-commit-check.ts:27-27`
 - **errors** — Contains the list of errors encountered during hook installation `hook-installer.ts:23-23`
 - **file** — The file path where a broken reference was found `pre-commit-check.ts:24-24`
 - **gitRepo** — Not present in the provided code `hook-installer.ts:236-236`
 - **hooksDir** — Not present in the provided code `hook-installer.ts:237-237`
 - **installed** — Contains the list of installed hooks `hook-installer.ts:21-21`
-- **line** — The line number in the file where the broken reference was found `pre-commit-check.ts:25-25`, `pre-commit-check.ts:69-69`, `pre-commit-check.ts:70-70`
+- **line** — The line number in the file where the broken reference was found `pre-commit-check.ts:25-25`
+- **line** — Stores the line number of the reference `pre-commit-check.ts:69-69`
+- **line** — Initializes an array to store reference information `pre-commit-check.ts:70-70`
 - **preCommit** — Not present in the provided code `hook-installer.ts:238-238`
 - **skipped** — Contains the list of skipped hooks `hook-installer.ts:22-22`
 - **success** — Indicates whether the hook installation was successful `hook-installer.ts:20-20`
 - **success** — Indicates whether the pre-commit check was successful `pre-commit-check.ts:22-22`
-- **syntax** — The syntax used for the reference in the markdown content `pre-commit-check.ts:69-69`, `pre-commit-check.ts:70-70`
-- **target** — The target of the broken reference `pre-commit-check.ts:26-26`, `pre-commit-check.ts:69-69`, `pre-commit-check.ts:70-70`
+- **syntax** — The syntax used for the reference in the markdown content `pre-commit-check.ts:69-69`
+- **syntax** — Stores the syntax of the reference `pre-commit-check.ts:70-70`
+- **target** — The target of the broken reference `pre-commit-check.ts:26-26`
+- **target** — Stores the target of the reference `pre-commit-check.ts:69-69`
+- **target** — Stores the target of the reference. `pre-commit-check.ts:70 `pre-commit-check.ts:70-70`
 - **valid** — Indicates whether the target of a reference is valid `pre-commit-check.ts:103-103`
 - **warnings** — An array of warning messages from the pre-commit check `pre-commit-check.ts:29-29`
 

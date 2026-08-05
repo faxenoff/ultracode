@@ -1,17 +1,224 @@
----
-module_name: compiled-languages
-description: "Parser configurations for compiled languages: C, C++, C#, Go, Java, Kotlin, Rust, Swift, Zig"
-status: active
-language: typescript
----
-
 # Compiled Languages
 
-> Parser configuration objects defining AST node types, file extensions, keywords, and extraction rules for nine compiled programming languages.
+## 🤖 Overview
 
-## Overview
+This module provides configuration for various compiled programming languages, including C, C++, C#, Go, Java, Kotlin, Rust, and Swift. Developers and language parsers use these configurations to identify and extract language-specific elements such as keywords, node types, and extractors.
 
-The compiled-languages module provides `LanguageConfig` objects for C, C++, C#, Go, Java, Kotlin, Rust, Swift, and Zig. Each config defines the file extensions, language-specific keywords, Tree-sitter node types for functions/classes/methods/imports/exports/variables/types/interfaces, and extraction rules for name resolution, modifier detection, and parameter/return type handling. These configs are consumed by the central language registry.
+## 🤖 Architecture
+
+```
+  +---------------------+
+  |     Language Files  |
+  +---------------------+
+  |     +-----------------+
+  |     |     C.ts       |
+  |     +-----------------+
+  |     +-----------------+
+  |     |     CPP.ts      |
+  |     +-----------------+
+  |     +-----------------+
+  |     |     CSHARP.ts   |
+  |     +-----------------+
+  |     +-----------------+
+  |     |     GO.ts       |
+  |     +-----------------+
+  |     +-----------------+
+  |     |     JAVA.ts     |
+  |     +-----------------+
+  |     +-----------------+
+  |     |     KOTLIN.ts   |
+  |     +-----------------+
+  |     +-----------------+
+  |     |     RUST.ts     |
+  |     +-----------------+
+  |     +-----------------+
+  |     |     SWIFT.ts    |
+  |     +-----------------+
+  |     +-----------------+
+  |     |     ZIG.ts      |
+  |     +-----------------+
+  |     +-----------------+
+  |     |     Index.ts    |
+  |     +-----------------+
+  |     +-----------------+
+  |     |     Shared Files|
+  |     +-----------------+
+  |     +-----------------+
+  |     |     Keywords.js |
+  |     +-----------------+
+  |     +-----------------+
+  |     |     Types.js    |
+  |     +-----------------+
+  |     +-----------------+
+  |     |     Shared Types|
+  |     +-----------------+
+  |     +-----------------+
+  |     |     Shared Types|
+  |     +-----------------+
+  |     +-----------------+
+  |     |     Shared Types|
+  |     +-----------------+
+  |     +-----------------+
+  |     |     Shared Types|
+  |     +-----------------+
+  |     +-----------------+
+  |     |     Shared Types|
+  |     +-----------------+
+  |     +-----------------+
+  |     |     Shared Types|
+  |     +-----------------+
+  |     +-----------------+
+  |     |     Shared Types|
+  |     +-----------------+
+  |     +-----------------+
+  |     |     Shared Types|
+  |     +-----------------+
+  |     +-----------------+
+  |     |     Shared Types|
+  |     +-----------------+
+  |     +-----------------+
+  |     |     Shared Types|
+  |     +-----------------+
+  |     +-----------------+
+  |     |     Shared Types|
+  |     +-----------------+
+  |     +-----------------+
+  |     |     Shared Types|
+  |     +-----------------+
+  |     +-----------------+
+  |     |     Shared Types|
+  |     +-----------------+
+  |     +-----------------+
+  |     |     Shared Types|
+  |     +-----------------+
+  |     +-----------------+
+  |     |     Shared Types|
+  |     +-----------------+
+  |     +-----------------+
+  |     |     Shared Types|
+  |     +-----------------+
+  |     +-----------------+
+  |     |     Shared Types|
+  |     +-----------------+
+  |     +-----------------+
+  |     |     Shared Types|
+  |     +-----------------+
+  |     +-----------------+
+  |     |     Shared Types|
+  |     +-----------------+
+  |     +-----------------+
+  |     |     Shared Types|
+  |     +-----------------+
+  |     +-----------------+
+  |     |     Shared Types|
+  |     +-----------------+
+  |     +-----------------+
+  |     |     Shared Types|
+  |     +-----------------+
+  |     +-----------------+
+  |     |     Shared Types|
+  |     +-----------------+
+  |     +-----------------+
+  |     |     Shared Types|
+  |     +-----------------+
+  |     +-----------------+
+  |     |     Shared Types|
+  |     +-----------------+
+  |     +-----------------+
+  |     |     Shared Types|
+  |     +-----------------+
+  |     +-----------------+
+  |     |     Shared Types|
+  |     +-----------------+
+  |     +-----------------+
+  |     |     Shared Types|
+  |     +-----------------+
+  |     +-----------------+
+  |     |     Shared Types|
+  |     +-----------------+
+  |     +-----------------+
+  |     |     Shared Types|
+  |     +-----------------+
+  |     +-----------------+
+  |     |     Shared Types|
+  |     +-----------------+
+  |     +-----------------+
+  |     |     Shared Types|
+  |     +-----------------+
+  |     +-----------------+
+  |     |     Shared Types|
+  |     +-----------------+
+  |     +-----------------+
+  |     |     Shared Types|
+  |     +-----------------+
+  |     +-----------------+
+  |     |     Shared Types|
+  |     +-----------------+
+  |     +-----------------+
+  |     |     Shared Types|
+  |     +-----------------+
+  |     +-----------------+
+  |     |     Shared Types|
+  |     +-----------------+
+  |     +-----------------+
+  |     |     Shared Types|
+  |     +-----------------+
+  |     +-----------------+
+  |     |     Shared Types|
+  |     +-----------------+
+  |     +-----------------+
+  |     |     Shared Types|
+  |     +-----------------+
+  |     +-----------------+
+  |     |     Shared Types|
+  |     +-----------------+
+  |     +-----------------+
+  |     |     Shared Types|
+  |     +-----------------+
+  |     +-----------------+
+  |     |     Shared Types|
+  |     +-----------------+
+  |     +-----------------+
+  |     |     Shared Types|
+  |     +-----------------+
+  |     +-----------------+
+  |     |     Shared Types|
+  |     +-----------------+
+  |     +-----------------+
+  |     |     Shared Types|
+  |     +-----------------+
+  |     +-----------------+
+  |     |     Shared Types|
+  |     +-----------------+
+  |     +-----------------+
+  |     |     Shared Types|
+  |     +-----------------+
+  |     +-----------------+
+  |     |     Shared Types|
+  |     +-----------------+
+  |     +-----------------+
+  |     |     Shared Types|
+  |     +-----------------+
+  |     +-----------------+
+  |
+```
+
+## 🤖 Entity Listing
+
+### Function
+- **C_CONFIG** — Represents the configuration for the C programming language, including its language identifier, file extensions, keywords, node types, and extractors for parsing and analyzing C code `c.ts:30-49`, `c.ts:50-62`
+- **CPP_CONFIG** — Represents the configuration for the C++ language, including its extensions, keywords, node types, and extractors `cpp.ts:38-62`, `cpp.ts:63-77`
+- **CSHARP_CONFIG** — Defines the configuration for the C# language, including keywords, node types, and extractors for parsing and extracting code elements `csharp.ts:30-50`, `csharp.ts:51-80`
+- **GO_CONFIG** — Defines the configuration for the Go language, including keywords, node types, and extractors for parsing and analyzing Go code `go.ts:23-43`, `go.ts:44-55`
+- **JAVA_CONFIG** — Defines the configuration for the Java language, including keywords, node types, and extractors for parsing and analyzing Java code `java.ts:29-48`, `java.ts:49-74`
+- **KOTLIN_CONFIG** — Represents the configuration for the Kotlin language, including its extensions, keywords, node types, and extractors `kotlin.ts:23-23`, `kotlin.ts:24-24`
+- **RUST_CONFIG** — Represents the configuration for the Rust language, including keywords, node types, and extractors for parsing and extracting information from Rust code `rust.ts:50-79`, `rust.ts:80-100`
+- **SWIFT_CONFIG** — Represents the configuration for the Swift language, including its keywords, node types, and extractors `swift.ts:23-23`, `swift.ts:24-24`
+- **ZIG_CONFIG** — Defines the configuration for the Zig language, including its name, extensions, keywords, node types, and extractors `zig.ts:23-23`, `zig.ts:24-24`
+
+### Import_decl
+- **../shared/keywords.js** — Imports `../shared/keywords.js` from `../shared/keywords.js`. `c.ts:5-5`, `cpp.ts:5-5`, `csharp.ts:5-5`, `go.ts:5-5`, `java.ts:5-5`, `kotlin.ts:5-5`, `rust.ts:5-5`, `swift.ts:5-5`, `zig.ts:5-5`
+- **../shared/types.js** — Imports `../shared/types.js` from `../shared/types.js`. `c.ts:6-6`, `cpp.ts:6-6`, `csharp.ts:6-6`, `go.ts:6-6`, `java.ts:6-6`, `kotlin.ts:6-6`, `rust.ts:6-6`, `swift.ts:6-6`, `zig.ts:6-6`
 
 ## Data Flow
 
@@ -28,7 +235,7 @@ The compiled-languages module provides `LanguageConfig` objects for C, C++, C#, 
 | `CSHARP_CONFIG` | const | C# configuration with access modifiers | [`csharp.ts:8-85`](./csharp.ts) |
 | `GO_CONFIG` | const | Go configuration with interfaces and types | [`go.ts:8-60`](./go.ts) |
 | `JAVA_CONFIG` | const | Java configuration with access modifiers | [`java.ts:8-79`](./java.ts) |
-| `KOTLIN_CONFIG` | const | Kotlin configuration with core elements | [`kotlin.ts:8-29`](./kotlin.ts) |
+| `KOTLIN_CONFIG` | const | Kotlin configuration with core elements | [`kotlin.ts:24-24`](./kotlin.ts) |
 | `RUST_CONFIG` | const | Rust configuration with traits and visibility | [`rust.ts:8-105`](./rust.ts) |
 | `SWIFT_CONFIG` | const | Swift configuration with protocols | [`swift.ts:8-29`](./swift.ts) |
 | `ZIG_CONFIG` | const | Zig language parser configuration | [`zig.ts:8-29`](./zig.ts) |

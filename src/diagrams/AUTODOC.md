@@ -40,7 +40,8 @@ DiagramIR
 - **analyzeEntityFields** — Analyzes field mappings for a single entity, returning an array of field mappings `field-mapper.ts:65-143`
 - **analyzeFieldMappings** — Analyzes field mappings for a batch of entities, returning a map of entity IDs to their mappings `field-mapper.ts:47-63`
 - **bClasses** — Stores the classes of type B `schema-collector.ts:240-240`
-- **childIds** — Stores the IDs of child nodes `schema-collector.ts:306-306`, `schema-collector.ts:306-306`
+- **childIds** — Stores the IDs of child nodes `schema-collector.ts:306-306`
+- **childIds** — Filters and maps relational IDs to child IDs based on structural relationships `schema-collector.ts:306-306`
 - **childNodes** — Stores the child nodes of a given node `schema-collector.ts:255-255`
 - **children** — Stores the children of a node `schema-collector.ts:315-315`
 - **classCount** — Counts the number of classes in the schema `schema-collector.ts:604-604`
@@ -60,7 +61,8 @@ DiagramIR
 - **paramNames** — Creates a set of parameter names from the entity's metadata parameters `field-mapper.ts:83-83`
 - **setCachedIR** — Sets a cached diagram intermediate representation, evicting the oldest entry if the cache is full `schema-collector.ts:113-120`
 - **sortedFiles** — Sorts the files in the project `schema-collector.ts:237-243`
-- **transformNodeIds** — Transforms the IDs of nodes `schema-collector.ts:501-501`, `schema-collector.ts:501-501`
+- **transformNodeIds** — Transforms the IDs of nodes `schema-collector.ts:501-501`
+- **transformNodeIds** — Filters and maps node IDs to transformation nodes based on the presence of a transformation `schema-collector.ts:501-501`
 
 ### Method
 - **autoDetectDiagramType** — Automatically detects the type of diagram to generate `schema-collector.ts:603-612`
@@ -136,17 +138,20 @@ DiagramIR
 - **hasTransformation** — Boolean indicating if a diagram node has a transformation `diagram-ir.ts:39-39`
 - **id** — Unique identifier for a diagram node `diagram-ir.ts:32-32`
 - **id** — Unique identifier for a diagram group `diagram-ir.ts:61-61`
-- **inputTypes** — Array of input types for an edge `diagram-ir.ts:21-21`, `diagram-ir.ts:37-37`
+- **inputTypes** — Array of input types for an edge `diagram-ir.ts:21-21`
+- **inputTypes** — Represents an array of input types `diagram-ir.ts:37-37`
 - **ir** — Diagram's intermediate representation `schema-collector.ts:92-92`
 - **label** — Label for a diagram node `diagram-ir.ts:33-33`
-- **label** — Optional label for the edge in a diagram `diagram-ir.ts:53-53`, `diagram-ir.ts:62-62`
+- **label** — Optional label for the edge in a diagram `diagram-ir.ts:53-53`
+- **label** — Stores the label of a diagram element `diagram-ir.ts:62-62`
 - **mappings** — An array of field mappings detected in the entity's source code `field-mapper.ts:39-39`
 - **modifiers** — Array of modifiers for a diagram node `diagram-ir.ts:41-41`
 - **nodeIds** — Array of node identifiers within a diagram group `diagram-ir.ts:64-64`
 - **nodes** — Array of nodes in the diagram `diagram-ir.ts:80-80`
 - **nodes** — Stores the collected nodes `schema-collector.ts:182-182`
 - **operation** — Optional operation type for a field mapping `diagram-ir.ts:15-15`
-- **outputType** — Optional output type for an edge `diagram-ir.ts:22-22`, `diagram-ir.ts:38-38`
+- **outputType** — Optional output type for an edge `diagram-ir.ts:22-22`
+- **outputType** — Optionally represents the output type `diagram-ir.ts:38-38`
 - **parentId** — Optional parent ID for a diagram node `diagram-ir.ts:36-36`
 - **parentId** — Optional parent identifier for a diagram group `diagram-ir.ts:63-63`
 - **sourceField** — Optional identifier for the source field in a field mapping `diagram-ir.ts:13-13`

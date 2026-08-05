@@ -1,34 +1,2276 @@
----
-module_name: parsers
-description: Multi-language source code parsing framework with incremental caching, two-pass TS/JS analysis (OXC + TypeScript API), and layered analysis for Python/Rust
-status: production
-language: TypeScript
-entry_point: incremental-parser.ts
-exports:
-  - IncrementalParser
-  - UnifiedParser
-  - TypeScriptParser
-  - MultiPassOrchestrator
-  - fastParse
-  - fastParseBatch
-dependencies:
-  - typescript
-  - oxc-parser
-  - xxhash-wasm
-  - lru-cache
-tags:
-  - parsing
-  - ast
-  - multi-language
-  - incremental
-  - caching
-  - oxc
-  - tree-sitter
----
-
 # Parsers
 
-Multi-language source code parsing framework supporting 20+ languages. Uses a two-pass architecture for TS/JS (OXC fast pass + TypeScript API), layered analysis for Python and Rust, and incremental xxhash-based LRU caching. Routes parsing via `UnifiedParser` with lazy-loaded language-specific parsers. Circuit breaker pattern prevents runaway recursion and timeouts.
+## 🤖 Overview
+
+The `src/parsers` module contains a collection of parsers and analyzers for various programming languages and frameworks, including TypeScript, Angular, Bash, C, C++, CSS, Go, Helm, HTML, Java, Kotlin, Python, Rust, Swift, and XML. These parsers are used by developers to extract metadata, analyze code structure, and generate insights for different programming languages and frameworks.
+
+## 🤖 Architecture
+
+```
+  +-----------------------------+
+  |     Parser Factory          |
+  |     (creates parser instances)|
+  +-----------------------------+
+           |
+           v
+  +-----------------------------+
+  |     Language-Specific Parsers |
+  |     (e.g., TypeScript, Angular, Bash, etc.) |
+  +-----------------------------+
+           |
+           v
+  +-----------------------------+
+  |     Parser Utilities         |
+  |     (e.g., AST manipulation, metadata extraction) |
+  +-----------------------------+
+           |
+           v
+  +-----------------------------+
+  |     Parser Integration       |
+  |     (e.g., with TypeScript, Java, Kotlin, etc.) |
+  +-----------------------------+
+```
+
+## 🤖 Flow
+
+```
+  +-----------------------------+
+  |     Parser Factory          |
+  |     (selects appropriate parser)|
+  +-----------------------------+
+           |
+           v
+  +-----------------------------+
+  |     Language-Specific Parser |
+  |     (e.g., TypeScript, Angular, Bash, etc.) |
+  +-----------------------------+
+           |
+           v
+  +-----------------------------+
+  |     Parser Utilities         |
+  |     (e.g., AST manipulation, metadata extraction) |
+  +-----------------------------+
+           |
+           v
+  +-----------------------------+
+  |     Parser Integration       |
+  |     (e.g., with TypeScript, Java, Kotlin, etc.) |
+  +-----------------------------+
+```
+
+## 🤖 Entity Listing
+
+### Function
+- **addCallsRelationships** — Adds call relationships between entities in the TypeScript source file `ts-js-patterns-extractor.ts:31-52`
+- **addFieldReferenceRelationships** — Adds field access reference relationships for a function `ts-function-extractor.ts:66-82`
+- **addFunctionCallRelationships** — Adds call relationships for a function `ts-function-extractor.ts:40-61`
+- **addLang** — Adds a language to the list of supported languages `kotlin-native-parser.ts:421-425`
+- **addMemberRelationships** — Adds member relationships and call relationships to the entity relationships list `ts-class-extractor.ts:148-178`
+- **addRef** — Adds a reference to a type in the AST `ts-call-extractor.ts:242-271`
+- **addTypeReferenceRelationships** — Adds type reference relationships to the entity relationships list `ts-class-extractor.ts:36-56`, `ts-interface-extractor.ts:23-43`
+- **addTypeReferenceRelationships** — Adds type reference relationships to the entity relationships `ts-function-extractor.ts:87-108`
+- **addTypeReferenceRelationships** — Adds type reference relationships between entities `ts-type-extractor.ts:23-43`
+- **analyzeInnerFunction** — Analyzes the bindings and usage of variables within an inner function `ts-closure-hints-extractor.ts:158-226`
+- **args** — Represents the arguments of a decorator `angular-analyzer.ts:65-65`
+- **args** — Filters children of a node to extract arguments as words or strings `bash-analyzer.ts:286-286`
+- **baseId** — Represents the base class ID `cpp-analyzer.ts:456-456`
+- **batchInput** — Stores input for batch parsing `python-native-parser.ts:675-675`
+- **bounds** — Maps each bound to its trimmed version `rust-antlr-parser.ts:628-628`
+- **buildEnum** — Builds an enum entity from a node, extracting enumerator values `c-analyzer.ts:367-395`
+- **buildResult** — Returns a closure hints object if any inner functions or captured variables are found, otherwise returns undefined `ts-closure-hints-extractor.ts:110-138`
+- **callExpr** — Represents a function call expression `angular-analyzer.ts:100-100`
+- **callsCount** — Parses the number of "calls" relationships in the context `java-antlr-parser.ts:128-128`
+- **callsCount** — Counts function calls `kotlin-antlr-parser.ts:131-131`
+- **callsRels** — Extracts call relationships from parsed entities `swift-native-parser.ts:199-199`
+- **callsRels** — Stores relationships between function calls `swift-native-parser.ts:772-772`
+- **callsRels** — Stores calls and relationships `zig-native-parser.ts:527-527`
+- **callsSample** — Parses the first three call graph entries and formats them as strings `kotlin-native-parser.ts:314-314`
+- **cand** — Finds a candidate node for function name extraction `cpp-declarator-utils.ts:34-40`
+- **canonicalizeOperatorName** — Parses the operator name and canonicalizes it based on the context node `cpp-declarator-utils.ts:93-110`
+- **caseCount** — Parses the number of case clauses in the case block `ts-complexity-analyzer.ts:63-63`
+- **checkCircuitBreakers** — Used in go-analyzer, java-analyzer to check circuit breakers `base-parser-utils.ts:117-133`
+- **checkCommand** — Function to check Pyright command `pyright-integration.ts:128-161`
+- **checkCommand** — Checks the command for rust-analyzer `rust-analyzer-integration.ts:146-175`
+- **checkLatestVersion** — Asynchronously checks the latest version of K2 CLI and its download URL, caching the result if it's recent `kotlin-k2-provider.ts:91-135`
+- **checkThisUsage** — Checks the usage of `this` in the code `ts-js-patterns-extractor.ts:573-581`
+- **childrenWithType** — Generator that yields every named child whose `type` matches `wanted `java-analyzer.ts:63-68`
+- **classBody** — Represents the body of a class `kotlin-analyzer.ts:238-238`
+- **classEntities** — Stores entities within a class body `kotlin-native-parser.ts:783-783`
+- **closeDocument** — Closes a document for analysis with rust-analyzer `rust-analyzer-integration.ts:411-419`
+- **collectAnnotations** — Parses the modifiers of a node to collect annotation names `java-analyzer.ts:96-104`
+- **collectAssociatedTypes** — Function to collect associated types `rust-analyzer.ts:401-434`
+- **collectBindingNames** — Collects names of bindings from a node `ts-closure-hints-extractor.ts:315-325`
+- **collectEnumVariants** — Function to collect enum variants `rust-analyzer.ts:255-292`
+- **collectIdentifiers** — Collects identifiers from the AST `kotlin-analyzer.ts:501-510`
+- **collectNonClosureHints** — Collects non-closure-related hints such as Map, WeakMap, Set, WeakSet, and event listener counts `ts-closure-hints-extractor.ts:240-283`
+- **collectStructFields** — Function to collect struct fields `rust-analyzer.ts:171-208`
+- **collectTopLevelBindings** — Collects top-level bindings from a node `ts-closure-hints-extractor.ts:330-340`
+- **collectTraitMethods** — Function to collect trait methods `rust-analyzer.ts:329-399`
+- **commentText** — Extracts the comment text from a JSDoc comment `ts-doc-extractor.ts:36-36`
+- **compareVersions** — Compares semantic versions. Returns 1 if a > b, 0 if a == b, -1 if a < b `kotlin-k2-provider.ts:74-85`
+- **conditionPrefix** — Returns a prefix for condition nodes based on their type. `condition `condition-extractor.ts:171-176`
+- **convert** — Converts Kotlin code to a specific format `kotlin-k2-provider.ts:683-728`
+- **delegationSpecifiers** — Represents delegation specifiers in the AST `kotlin-analyzer.ts:208-208`
+- **detectBranch** — Checks if the call node is inside the "alternative"/"else" branch and returns "[else] " if it is `condition-extractor.ts:179-188`
+- **detectProjectType** — Detects the type of a project based on its files `unified-parser.ts:132-188`
+- **drillDeclaratorName** — Drills down to find the declarator name in the AST `c-analyzer.ts:156-176`
+- **drillFunctionName** — Drills down to find the function name in the AST `c-analyzer.ts:124-150`
+- **edgeMeta** — Returns metadata for an entity relationship, including a line number `java-analyzer.ts:107-109`
+- **enhanceWithAngularInfo** — Enhances an entity with Angular-specific information `angular-parser.ts:690-716`
+- **enhanceWithKotlinDiagnostics** — Enhances with Kotlin diagnostics `kotlin-compiler-integration.ts:153-199`
+- **enhanceWithPyrightTypes** — Function to enhance with Pyright types `pyright-integration.ts:255-299`
+- **enhanceWithRustAnalyzer** — Enhances parsed entities with rust-analyzer information `rust-analyzer-integration.ts:520-570`
+- **ensureJavaParserJar** — Ensures the JavaParser JAR is available `javaparser-integration.ts:391-423`
+- **ensureWrapperCompiled** — Ensures the JavaParser wrapper is compiled `javaparser-integration.ts:428-469`
+- **entity** — Represents an Angular entity `angular-parser.ts:697-697`
+- **entity** — Represents a parsed entity from a JSON file `json-parser.ts:334-342`
+- **errors** — Stores the errors encountered during parsing `powershell-native-parser.ts:345-348`
+- **existingEntity** — Represents an existing entity in the code `ts-js-patterns-extractor.ts:586-586`
+- **exists** — Checks if an entity exists in the parsed entities list `kotlin-analyzer.ts:44-44`
+- **extractAccessor** — Extracts getter or setter details including calls, field references, and relationships `ts-class-extractor.ts:507-556`
+- **extractAngularMetadata** — Extracts metadata from an Angular entity `angular-parser.ts:270-294`
+- **extractAnnotations** — Extracts annotations from a node `java-chevrotain-parser.ts:165-186`
+- **extractAntipatternHints** — Extracts antipattern hints from a function/method body `ts-antipattern-hints-extractor.ts:29-157`
+- **extractArrowFunctionOrExpression** — Extracts arrow function or expression details and relationships `ts-function-extractor.ts:159-209`
+- **extractCallInfo** — Extracts detailed information about a function or method call `ts-call-extractor.ts:84-161`
+- **extractCalls** — Extracts function calls from the parsed code `rust-antlr-parser.ts:855-906`
+- **extractCalls** — Extracts all function/method calls within a TypeScript AST node `ts-call-extractor.ts:21-79`
+- **extractClassDeclaration** — Extracts class declaration with all members from the given TypeScript node `ts-class-extractor.ts:61-195`
+- **extractClassMember** — Parses and extracts class members such as methods, properties, constructors, getters, and setters `ts-class-extractor.ts:211-241`
+- **extractClosureHints** — Function to extract closure-related memory leak hints from a function/method body `ts-closure-hints-extractor.ts:36-227`
+- **extractCommonJSExport** — Extracts CommonJS exports from the TypeScript source file `ts-js-patterns-extractor.ts:129-236`
+- **extractCommonJSRequire** — Extracts CommonJS require() calls from the TypeScript source file `ts-js-patterns-extractor.ts:460-555`
+- **extractComplexity** — Extracts complexity metrics from a function/method node `ts-complexity-analyzer.ts:16-184`
+- **extractConstants** — Extracts constant definitions `rust-analyzer.ts:553-609`
+- **extractConstructor** — Extracts constructor details including calls, field references, and relationships `ts-class-extractor.ts:460-502`
+- **extractControlFlow** — Extracts control flow structures from a function/method body `ts-control-flow-extractor.ts:22-194`
+- **extractDocumentation** — Extracts JSDoc documentation from a TypeScript AST node `ts-doc-extractor.ts:16-151`
+- **extractEnclosingConditions** — Extracts enclosing conditions from a call site node `condition-extractor.ts:77-94`
+- **extractEntities** — Main entity extraction function that delegates to specialized extractors `typescript-parser.ts:69-156`
+- **extractEntitiesViaRegex** — Extracts entities using regular expressions `incremental-parser.ts:86-106`
+- **extractEnumDeclaration** — Extracts and stores information about an enum declaration `ts-type-extractor.ts:77-116`
+- **extractEnums** — Function to extract enums `rust-analyzer.ts:294-327`
+- **extractExportDeclaration** — Extracts export declaration nodes and their associated data `ts-import-export-extractor.ts:113-126`
+- **extractFieldName** — Extracts the field name from a declarator node `cpp-declarator-utils.ts:115-131`
+- **extractFieldReferences** — Extracts field references from TypeScript AST nodes `ts-call-extractor.ts:177-227`
+- **extractFromTypeNode** — Extracts type references from a TypeScript type node `ts-call-extractor.ts:273-309`
+- **extractFunctionDeclaration** — Extracts function declaration details and relationships `ts-function-extractor.ts:113-154`
+- **extractFunctionName** — Extracts the function name from a declarator node `cpp-declarator-utils.ts:12-85`
+- **extractFunctions** — Extracts function definitions and their parameters `rust-analyzer.ts:483-521`
+- **extractHostMetadata** — Extracts host metadata from an Angular entity `angular-parser.ts:402-430`
+- **extractIdentifierName** — Parses the identifier name from the AST node by checking common child types and returns the text if found `base-parser-utils.ts:185-199`
+- **extractIIFE** — Extracts IIFE (Immediately Invoked Function Expressions) from the TypeScript source file `ts-js-patterns-extractor.ts:390-455`
+- **extractImplBlocksForType** — Extracts implementation blocks for a specific type `rust-analyzer.ts:675-753`
+- **extractImplBlocksGlobal** — Extracts global implementation blocks `rust-analyzer.ts:755-803`
+- **extractImportDeclaration** — Extracts import declaration nodes and their associated data `ts-import-export-extractor.ts:21-108`
+- **extractInheritance** — Extracts inheritance information from a Kotlin declaration `kotlin-antlr-parser.ts:894-921`
+- **extractInterfaceDeclaration** — Extracts interface declarations and their members `ts-interface-extractor.ts:48-101`
+- **extractJitHints** — Extracts JIT deoptimization hints from a function/method body, returning undefined if no relevant patterns are found `ts-jit-hints-extractor.ts:37-200`
+- **extractMacros** — Extracts macro definitions `rust-analyzer.ts:611-669`
+- **extractMethod** — Extracts method details including modifiers, parameters, return type, and relationships `ts-class-extractor.ts:246-355`
+- **extractMethodQualifiers** — Extracts method qualifiers from an AST node `cpp-declarator-utils.ts:148-159`
+- **extractModifiers** — Extracts modifiers from a node `java-chevrotain-parser.ts:135-163`
+- **extractModifiers** — Extracts modifiers from a Kotlin declaration `kotlin-antlr-parser.ts:829-892`
+- **extractModules** — Function to extract modules `rust-analyzer.ts:133-169`
+- **extractNamespaceDeclaration** — Extracts namespace declaration details and stores them in the context `ts-type-extractor.ts:121-133`
+- **extractNgRxEffectInfo** — Extracts information about NgRx effects, including listensTo, servicesCalled, and dispatches `ts-ngrx-extractor.ts:183-233`
+- **extractNgRxReducerInfo** — Parses TypeScript AST nodes to extract information about NgRx reducers `ts-ngrx-extractor.ts:243-274`
+- **extractNgRxSelectorInfo** — Parses TypeScript AST nodes to extract information about NgRx selectors `ts-ngrx-extractor.ts:283-324`
+- **extractNgRxStoreUsage** — Parses TypeScript AST nodes to extract information about store usage in NgRx `ts-ngrx-extractor.ts:333-386`
+- **extractObjectLiteralMetadata** — Extracts metadata from an object literal `angular-parser.ts:299-397`
+- **extractObjectLiteralWithMethods** — Extracts object literals with methods from the TypeScript source file `ts-js-patterns-extractor.ts:241-385`
+- **extractParameters** — Extracts parameters from a formal parameter list, including optional and variable arity parameters `java-chevrotain-parser.ts:242-278`
+- **extractParameters** — Extracts parameters from a Kotlin declaration `kotlin-antlr-parser.ts:923-949`
+- **extractProperty** — Extracts property details including type references and relationships, and checks for NgRx effect information `ts-class-extractor.ts:360-455`
+- **extractPrototypeMethod** — Extracts prototype method assignments from the TypeScript source file `ts-js-patterns-extractor.ts:57-124`
+- **extractStructs** — Function to extract structs `rust-analyzer.ts:210-253`
+- **extractTemplateParameters** — Extracts type parameter names from a parameter list node `cpp-template-utils.ts:25-49`
+- **extractTraits** — Extracts trait definitions and their bounds `rust-analyzer.ts:436-481`
+- **extractTypeAliasDeclaration** — Extracts and stores information about a type alias declaration `ts-type-extractor.ts:48-72`
+- **extractTypeAliases** — Extracts type alias definitions `rust-analyzer.ts:523-551`
+- **extractTypeIdentifier** — Parses the identifier from a typed CST node `java-chevrotain-parser.ts:188-192`
+- **extractTypeReferences** — Extracts type references from TypeScript AST nodes `ts-call-extractor.ts:238-425`
+- **extractTypeText** — Extracts the type text from a type node, handling both primitive and reference types `java-chevrotain-parser.ts:194-240`
+- **extractUseStatements** — Extracts use statements and their dependencies `rust-analyzer.ts:809-875`
+- **extractVariableWithNgRx** — Extracts variable details related to NgRx reducer or selector `ts-function-extractor.ts:214-307`
+- **findActionCalls** — Finds action calls within the body of an arrow function or function expression `ts-ngrx-extractor.ts:104-121`
+- **findCargoToml** — Finds the cargo.toml file in the current directory `rust-analyzer-integration.ts:604-617`
+- **findDescendants** — Collects every descendant node whose type matches a target type using an iterative BFS-style stack `c-analyzer.ts:52-64`
+- **findJava** — Asynchronously checks for the presence of the Java compiler by attempting to run it with the `-version` flag and returns the command if found `javaparser-integration.ts:367-386`
+- **findKotlinc** — Finds the path to the kotlinc compiler executable `kotlin-compiler-integration.ts:41-69`
+- **findNodesByType** — Recursively searches for nodes of specified types within a given AST node, up to a maximum depth `base-parser-utils.ts:140-161`
+- **findPyright** — Function to find Pyright installation `pyright-integration.ts:95-123`
+- **findRustAnalyzer** — Finds the rust-analyzer process `rust-analyzer-integration.ts:111-141`
+- **firstChildIn** — First named child whose type belongs to `accepted`, or undefined `java-analyzer.ts:71-77`
+- **firstDescendantOfTypes** — Returns the first descendant node whose type is in a given list of target types using an iterative DFS `c-analyzer.ts:69-80`
+- **firstNamedChildOfTypes** — Returns the first named child node of specified types in the AST `c-analyzer.ts:105-111`
+- **formatConditionText** — Parses and formats condition expressions based on node types, returning truncated text `condition-extractor.ts:100-169`
+- **funcEntity** — Represents a function entity `zig-native-parser.ts:787-788`
+- **gatherModifiers** — Collects modifiers from a node `c-analyzer.ts:206-224`
+- **getAngularImports** — Extracts imports from an Angular file `angular-parser.ts:740-756`
+- **getAngularType** — Retrieves the Angular type of an entity `angular-parser.ts:227-241`
+- **getBaseIdentifier** — Extracts the base identifier from an expression `ts-antipattern-hints-extractor.ts:198-203`
+- **getBody** — Extracts the body of a function/method declaration `ts-antipattern-hints-extractor.ts:205-218`
+- **getBody** — Retrieves the body of a function or method `ts-closure-hints-extractor.ts:297-310`
+- **getBody** — A function that gets the body of a function or method `ts-jit-hints-extractor.ts:249-262`
+- **getDecoratorName** — Extracts the name of an Angular decorator `angular-parser.ts:246-261`
+- **getDecorators** — Not applicable — this entity is not present in the provided code `ts-ast-helpers.ts:149-172`
+- **getDocumentSymbols** — Retrieves document symbols from rust-analyzer `rust-analyzer-integration.ts:424-467`
+- **getExtension** — Extracts the file extension from a given file path `ts-ast-helpers.ts:41-44`
+- **getFileDiagnostics** — Function to get file diagnostics `pyright-integration.ts:242-250`
+- **getFirstNode** — A function to get the first CST node from a CST node's children `java-chevrotain-parser.ts:62-65`
+- **getFirstToken** — A function to get the first token from a CST node's children `java-chevrotain-parser.ts:57-60`
+- **getJavaAntlrParser** — Asynchronously loads and returns the ANTLR parser `java-native-parser.ts:35-41`
+- **getJavaChevrotainParser** — Asynchronously loads and returns the Chevrotain parser `java-native-parser.ts:23-29`
+- **getKotlinAntlrParser** — A function that returns the ANTLR parser class `kotlin-native-parser.ts:48-54`
+- **getKotlinK2Provider** — Retrieves the Kotlin K2 provider instance `kotlin-k2-provider.ts:814-842`
+- **getKotlinVersion** — Retrieves the version of the Kotlin compiler `kotlin-compiler-integration.ts:215-230`
+- **getLanguage** — Determines the language of a file based on its extension `ts-ast-helpers.ts:46-60`
+- **getLibDir** — Returns the path to the lib directory for JavaParser `javaparser-integration.ts:40-44`
+- **getLineContext** — Gets the context of the current line `helm-parser.ts:735-747`
+- **getLocation** — A function to get the location of a node `java-chevrotain-parser.ts:76-116`
+- **getLocation** — Gets the location information of a token `kotlin-antlr-parser.ts:809-827`
+- **getLocation** — A function to get the location of an entity based on its index `regex-entity-extractor.ts:54-54`
+- **getLocation** — Retrieves the location information for a given token or context `rust-antlr-parser.ts:836-853`
+- **getLocation** — Gets a location `rust-native-parser.ts:434-434`
+- **getLocation** — Retrieves the start and end positions of a node in a source file `ts-ast-helpers.ts:67-72`
+- **getModifiers** — Extracts modifiers from a TypeScript node `ts-ast-helpers.ts:74-124`
+- **getNodeLocation** — Used in c-analyzer, cpp-analyzer to get the location of a node `base-parser-utils.ts:94-107`
+- **getNodes** — A function to extract CST nodes from a CST node's children `java-chevrotain-parser.ts:51-55`
+- **getNodeText** — Extracts the text content of an AST node from the source code `base-parser-utils.ts:166-169`
+- **getParameters** — Not applicable — this entity is not present in the provided code `ts-ast-helpers.ts:126-140`
+- **getPosition** — Converts a position in a source file to line, column, and index `ts-ast-helpers.ts:62-65`
+- **getReturnType** — Not applicable — this entity is not present in the provided code `ts-ast-helpers.ts:142-147`
+- **getRustAnalyzerVersion** — Retrieves the version of rust-analyzer `rust-analyzer-integration.ts:575-599`
+- **getRustAntlrParser** — Asynchronously loads and returns the ANTLR parser class `rust-native-parser.ts:34-40`
+- **getSymbolKindName** — Converts a symbol kind to a human-readable name `rust-analyzer-integration.ts:472-502`
+- **getTokens** — A function to extract tokens from a CST node's children `java-chevrotain-parser.ts:45-49`
+- **handleLspData** — Handles data from the LSP `rust-analyzer-integration.ts:247-278`
+- **handleLspMessage** — Processes LSP messages from rust-analyzer `rust-analyzer-integration.ts:283-295`
+- **hasBody** — Checks if a node has a body `cpp-native-parser.ts:319-319`
+- **hasChild** — Checks if a node has a child of the specified type `base-parser-utils.ts:78-86`
+- **identifier** — Represents an identifier in the AST `angular-analyzer.ts:102-102`
+- **identifier** — Parses the identifier from the decorator children `angular-analyzer.ts:107-107`
+- **identifierNode** — Represents an identifier node in the AST `kotlin-analyzer.ts:133-133`
+- **ids** — Extracts identifiers from named children of a node `go-analyzer.ts:389-389`
+- **ids** — Filters and maps identifiers from named children `go-analyzer.ts:389-389`
+- **importHeaders** — Represents the headers of import statements `kotlin-analyzer.ts:513-513`
+- **importPath** — Represents the path of an import declaration `java-chevrotain-parser.ts:341-341`
+- **imports** — Imports necessary modules and functions for the Python Native Parser `python-native-parser.ts:859-859`
+- **imports** — Splits import strings into local and imported names, providing detailed metadata for each specifier `python-native-parser.ts:886-886`, `python-native-parser.ts:916-916`
+- **inheritRels** — Extracts inheritance relationships from parsed entities `swift-native-parser.ts:200-200`
+- **initializeJavaParser** — Initializes the JavaParser for use `javaparser-integration.ts:474-506`
+- **initializeLsp** — Initializes the LSP connection with rust-analyzer `rust-analyzer-integration.ts:365-388`
+- **initNode** — Initializes a node for parsing `cpp-native-parser.ts:358-358`
+- **inner** — Represents inner entities within a class or struct `cpp-analyzer.ts:336-336`
+- **inner** — Represents the inner declarator node `cpp-declarator-utils.ts:69-77`
+- **inner** — Represents the inner nodes of a node `cpp-native-parser.ts:556-556`
+- **isAbstractClass** — Determines if a node represents an abstract class `cpp-declarator-utils.ts:164-166`
+- **isAngular** — Not present in the provided code snippet `html-analyzer.ts:82-82`
+- **isAngularClass** — Determines if a class is an Angular class `angular-parser.ts:208-222`
+- **isAngularFile** — Determines if a file is an Angular file `angular-parser.ts:721-735`
+- **isAssignmentOperator** — Determines if an expression is an assignment operator `ts-antipattern-hints-extractor.ts:181-189`
+- **isAsync** — Checks if the function is asynchronous `ts-function-extractor.ts:170-170`
+- **isAsync** — Determines if a function is asynchronous `ts-js-patterns-extractor.ts:79-79`
+- **isAsync** — Checks if the right-hand side of an assignment has the Async keyword `ts-js-patterns-extractor.ts:192-192`
+- **isAsync** — Checks if the property value has the Async keyword `ts-js-patterns-extractor.ts:308-308`
+- **isAsync** — Checks if the function expression has the Async keyword `ts-js-patterns-extractor.ts:426-426`
+- **isCompanion** — Checks if a node is a companion object `kotlin-analyzer.ts:262-262`
+- **isComplexTemplate** — Determines if a template is too complex to analyze based on SFINAE patterns and other criteria `cpp-template-utils.ts:55-74`
+- **isConst** — Determines if a node is a constant by checking for "const" in type qualifiers `c-analyzer.ts:256-256`
+- **isCstNode** — A function to check if a node is a CST node `java-chevrotain-parser.ts:41-43`
+- **isExported** — Determines if an entity is exported `go-analyzer.ts:494-498`
+- **isFinalClass** — Determines if a node represents a final class `cpp-declarator-utils.ts:171-178`
+- **isFunction** — Checks if a node is a function declaration, expression, arrow function, method declaration, or constructor declaration `ts-closure-hints-extractor.ts:287-295`
+- **isFunctionDeclarator** — Checks if a node is a function declarator `c-analyzer.ts:182-189`
+- **isInsideBranch** — A function that checks if a node is inside a branch `ts-jit-hints-extractor.ts:221-229`
+- **isInterface** — Checks if a node is an interface `kotlin-analyzer.ts:170-170`
+- **isInterface** — Checks if the node's parent or children contain an interface `kotlin-analyzer.ts:170-170`
+- **isJavaParserAvailable** — Checks if JavaParser is available `javaparser-integration.ts:511-513`
+- **isKotlincAvailable** — Checks if the kotlinc compiler is available `kotlin-compiler-integration.ts:74-76`
+- **isKotlinK2Ready** — Checks if the Kotlin K2 provider is ready `kotlin-k2-provider.ts:858-860`
+- **isKotlinScript** — Determines if the Kotlin source is a script `kotlin-compiler-integration.ts:208-210`
+- **isLikelyProtocol** — Determines if a given string is likely to be a protocol `swift-native-parser.ts:1100-1110`
+- **isLiteralDefault** — Determines if an expression is a literal default `ts-antipattern-hints-extractor.ts:191-196`
+- **isNewErrorExpression** — Determines if an expression is a new Error expression `ts-antipattern-hints-extractor.ts:173-179`
+- **isNgRxFile** — Determines if a file contains NgRx constructs `ngrx-parser.ts:630-643`
+- **isNullLiteral** — Checks if a given string is a null literal `cpp-native-parser.ts:61-63`
+- **isObjectOfPropertyAccess** — Checks if an identifier is the expression in a property access expression `ts-closure-hints-extractor.ts:371-379`
+- **isProperty** — Checks if a node is a property `kotlin-analyzer.ts:457-457`
+- **isPropertyName** — Determines if an identifier is a property name in a property access or object literal `ts-closure-hints-extractor.ts:345-365`
+- **isPropertyName** — A function that checks if a node is a property name `ts-jit-hints-extractor.ts:235-247`
+- **isRustAnalyzerAvailable** — Checks if rust-analyzer is available `rust-analyzer-integration.ts:180-182`
+- **isThisKeyword** — Checks if a node is the 'this' keyword `ts-ngrx-extractor.ts:71-73`
+- **isToken** — A function to check if a node is a token `java-chevrotain-parser.ts:37-39`
+- **iterativeFindNodes** — Iterative DFS method for node finding `rust-analyzer.ts:85-102`
+- **jarAsset** — Represents a JAR asset for the Kotlin K2 CLI `kotlin-k2-provider.ts:117-117`
+- **javaEntity** — Factory for constructing Java entities `java-analyzer.ts:122-145`
+- **knownNames** — Stores known names for entities `zig-native-parser.ts:468-468`
+- **lastDescendantOfTypes** — Finds the last descendant node of specified types in the AST `c-analyzer.ts:86-100`
+- **lines** — Represents a list of lines in a Kotlin file `kotlin-native-parser.ts:652-652`
+- **loadAngularCompiler** — Loads the Angular compiler for template parsing `angular-parser.ts:564-580`
+- **makeEntity** — Function to create a parsed entity `rust-analyzer.ts:109-127`
+- **mapEntity** — Maps an entity to a parsed entity `go-native-parser.ts:911-994`
+- **markConstructorFunction** — Marks constructor functions in the code `ts-js-patterns-extractor.ts:560-597`
+- **measureConditionalTypeDepth** — Measures the maximum depth of conditional types within a given type node `ts-type-extractor.ts:140-158`
+- **memberRels** — Extracts member relationships from parsed entities `swift-native-parser.ts:201-201`
+- **memberRels** — Stores member relationships `zig-native-parser.ts:528-528`
+- **mkEntity** — Creates a new parsed entity with specified properties `cpp-analyzer.ts:52-73`
+- **mkLoc** — Creates a location object for an entity `cpp-native-parser.ts:298-301`
+- **name** — Maps identifiers to their images and joins them with periods `java-chevrotain-parser.ts:180-180`
+- **nameNode** — Represents a name node in the AST `kotlin-analyzer.ts:147-147`
+- **nameNode** — Represents a node for a name in the AST `kotlin-analyzer.ts:255-255`
+- **nameNode** — Finds a simple identifier node in the children `kotlin-analyzer.ts:315-315`
+- **nameNode** — Finds a variable declaration node in the children `kotlin-analyzer.ts:381-381`
+- **nameNode** — Finds a simple identifier node within a variable declaration `kotlin-analyzer.ts:382-382`
+- **nameNode** — Finds a simple identifier node in the parameter's children `kotlin-analyzer.ts:450-450`
+- **nodeContainsText** — Checks if a node contains a specific text pattern, either as a string or a regular expression. `base-parser-utils.ts:1 `base-parser-utils.ts:174-180`
+- **objectBody** — Represents the body of an object in Kotlin `kotlin-analyzer.ts:300-300`
+- **objectLiteral** — Represents the object literal within decorator arguments `angular-analyzer.ts:68-68`
+- **openDocument** — Opens a document for analysis with rust-analyzer `rust-analyzer-integration.ts:393-406`
+- **paramNumbers** — Converts matched parameters to numbers and filters out non-positive values `bash-analyzer.ts:184-184`
+- **paramNumbers** — Parses and filters numeric parameters from a match array `bash-analyzer.ts:184-184`
+- **params** — Represents the parameters of a function or method `kotlin-analyzer.ts:447-447`
+- **parentLocation** — Stores the location information of the parent node in the AST `python-native-parser.ts:918-918`
+- **parsedArgs** — Parsed arguments for an Angular entity `angular-parser.ts:529-529`
+- **parseJsonc** — Parse JSONC (JSON with Comments) - used for tsconfig.json, jsconfig.json `json-parser.ts:37-54`
+- **parseModifiers** — Parses modifier keywords attached to a declaration into a Set<string> `java-analyzer.ts:84-93`
+- **parseNgRxFile** — Parses an NgRx file to extract entities and relationships `ngrx-parser.ts:648-662`
+- **parseTemplate** — Parses an Angular template `angular-parser.ts:440-551`
+- **parseTemplateWithCompiler** — Parses an Angular template using the compiler `angular-parser.ts:586-680`
+- **parseVersionFromTag** — Parses version from tag (e.g., "k2-cli-v1.1.0" → "1.1.0") `kotlin-k2-provider.ts:63-66`
+- **parseWithJavaParser** — Parses Java code using JavaParser `javaparser-integration.ts:518-585`
+- **parts** — Represents parts of a parsed file `kotlin-native-parser.ts:495-495`
+- **parts** — Stores parts of Swift classes `swift-native-parser.ts:1093-1093`
+- **primaryConstructor** — Represents the primary constructor of a class `kotlin-analyzer.ts:229-229`
+- **proc** — Represents a process object for executing commands `go-native-parser.ts:481-491`
+- **processAnnotationInterfaceDeclaration** — Processes an annotation interface declaration to extract annotation name and modifiers, then creates an annotation interface entity `java-antlr-parser.ts:499-517`
+- **processAnnotationInterfaceDeclaration** — Processes an annotation interface declaration and returns a ParsedEntity `java-chevrotain-parser.ts:1045-1065`
+- **processClassBody** — Processes the body of a class declaration and returns a ParsedEntity `java-chevrotain-parser.ts:499-515`
+- **processClassDeclaration** — Processes a class declaration and returns a ParsedEntity `java-chevrotain-parser.ts:391-411`
+- **processClassDeclaration** — Processes class declarations `kotlin-antlr-parser.ts:266-372`
+- **processClassMember** — Processes class member declarations `kotlin-antlr-parser.ts:374-411`
+- **processClassMemberDeclaration** — Processes a class member declaration to handle fields, methods, and nested classes or interfaces `java-antlr-parser.ts:369-411`
+- **processClassMemberDeclaration** — Processes a member declaration of a class and returns a ParsedEntity `java-chevrotain-parser.ts:517-544`
+- **processClassParameter** — Processes class parameters `kotlin-antlr-parser.ts:441-473`
+- **processCompanionObject** — Processes companion objects `kotlin-antlr-parser.ts:513-548`
+- **processCompilationUnit** — Processes the compilation unit of the Java code `java-chevrotain-parser.ts:284-315`
+- **processComposite** — Processes a struct or union node, extracting field declarations `c-analyzer.ts:319-365`
+- **processConstant** — Processes a constant context to extract its definition and relationships `rust-antlr-parser.ts:785-802`
+- **processConstantDeclaration** — Parses a constant declaration `java-antlr-parser.ts:971-1011`
+- **processConstantDeclaration** — Processes a constant declaration and returns a ParsedEntity `java-chevrotain-parser.ts:1009-1043`
+- **processConstructorDeclaration** — Parses a constructor declaration `java-antlr-parser.ts:881-910`
+- **processConstructorDeclaration** — Processes a constructor declaration and returns a ParsedEntity `java-chevrotain-parser.ts:605-631`
+- **processCrate** — Processes a crate context `rust-antlr-parser.ts:132-146`
+- **processDeclaration** — Processes a declaration node, identifying function or variable entities `c-analyzer.ts:250-313`
+- **processDeclaration** — Processes declaration contexts `kotlin-antlr-parser.ts:228-260`
+- **processDefinition** — Processes a function definition node `c-analyzer.ts:230-244`
+- **processEnumConstant** — Processes an enum constant to extract its name and value, then creates an enum constant entity `java-antlr-parser.ts:599-620`
+- **processEnumDeclaration** — Processes an enum declaration to extract enum name and constants, then creates an enum entity `java-antlr-parser.ts:523-597`
+- **processEnumDeclaration** — Processes an enum declaration and returns a ParsedEntity `java-chevrotain-parser.ts:682-768`
+- **processEnumEntry** — Processes enum entries `kotlin-antlr-parser.ts:413-435`
+- **processEnumeration** — Processes an enumeration context `rust-antlr-parser.ts:551-594`
+- **processFieldDeclaration** — Parses a field declaration `java-antlr-parser.ts:916-969`
+- **processFieldDeclaration** — Processes a field declaration and returns a ParsedEntity `java-chevrotain-parser.ts:633-680`
+- **processFunction** — Processes a function context `rust-antlr-parser.ts:348-456`
+- **processFunctionDeclaration** — Processes function declarations `kotlin-antlr-parser.ts:554-680`
+- **processImplementation** — Processes an implementation context to extract its definition and relationships `rust-antlr-parser.ts:676-756`
+- **processImport** — Processes an import declaration to determine the import path and metadata, then stores it and creates an import entity `java-antlr-parser.ts:215-285`
+- **processImport** — Processes import statements `kotlin-antlr-parser.ts:188-226`
+- **processImportDeclaration** — Parses an import declaration and returns a ParsedEntity with type "import" `java-chevrotain-parser.ts:330-374`
+- **processInterfaceBody** — Processes the body of an interface declaration and returns a ParsedEntity `java-chevrotain-parser.ts:930-960`
+- **processInterfaceDeclaration** — Processes an interface declaration and returns a ParsedEntity `java-chevrotain-parser.ts:852-863`
+- **processInterfaceMemberDeclaration** — Processes an interface member declaration to handle constants, methods, and nested classes or interfaces `java-antlr-parser.ts:469-497`
+- **processInterfaceMethodDeclaration** — Parses an interface method declaration `java-antlr-parser.ts:838-879`
+- **processInterfaceMethodDeclaration** — Processes a method declaration of an interface and returns a ParsedEntity `java-chevrotain-parser.ts:962-1007`
+- **processItem** — Processes an item context `rust-antlr-parser.ts:148-170`
+- **processKotlinFile** — Processes a Kotlin file to extract entities and relationships `kotlin-antlr-parser.ts:153-186`
+- **processMethodDeclaration** — Parses a method declaration `java-antlr-parser.ts:711-836`
+- **processMethodDeclaration** — Processes a method declaration and returns a Parsed `java-chevrotain-parser.ts:546-603`
+- **processModule** — Processes a module context `rust-antlr-parser.ts:281-308`
+- **processNode** — Method to process a node in the AST `bash-native-parser.ts:209-238`
+- **processNode** — Processes a node in the AST `cpp-native-parser.ts:303-444`
+- **processNormalClassDeclaration** — Processes a normal class declaration to extract class name, modifiers, annotations, inheritance, and creates a class entity with relationships `java-antlr-parser.ts:291-367`
+- **processNormalClassDeclaration** — Processes a normal class declaration and returns a ParsedEntity `java-chevrotain-parser.ts:413-497`
+- **processNormalInterfaceDeclaration** — Processes a normal interface declaration to extract interface name, modifiers, annotations, inheritance, and creates an interface entity with relationships `java-antlr-parser.ts:417-467`
+- **processNormalInterfaceDeclaration** — Processes a normal interface declaration and returns a ParsedEntity `java-chevrotain-parser.ts:865-928`
+- **processObjectDeclaration** — Processes object declarations `kotlin-antlr-parser.ts:479-511`
+- **processOrdinaryCompilationUnit** — Processes an ordinary compilation unit to extract package name, create module entity, and handle imports and top-level declarations `java-antlr-parser.ts:150-213`
+- **processPackageDeclaration** — Processes the package declaration of the Java code `java-chevrotain-parser.ts:317-328`
+- **processPreprocessor** — Parses and processes preprocessor directives, adding entities and relationships to the context `c-analyzer.ts:432-475`
+- **processPropertyDeclaration** — Processes property declarations `kotlin-antlr-parser.ts:710-779`
+- **processRecordComponent** — Parses a record component declaration `java-antlr-parser.ts:691-705`
+- **processRecordDeclaration** — Processes a record declaration to extract record name and fields, then creates a record entity `java-antlr-parser.ts:626-689`
+- **processRecordDeclaration** — Processes a record declaration and returns a ParsedEntity `java-chevrotain-parser.ts:770-850`
+- **processSecondaryConstructor** — Processes secondary constructors `kotlin-antlr-parser.ts:682-704`
+- **processStatic** — Processes a static context to extract its definition and relationships `rust-antlr-parser.ts:808-830`
+- **processStruct** — Processes a struct context `rust-antlr-parser.ts:462-545`
+- **processSymbol** — Processes a document symbol from rust-analyzer `rust-analyzer-integration.ts:438-456`
+- **processTrait** — Processes a trait context to extract its definition and relationships `rust-antlr-parser.ts:600-670`
+- **processTypeAlias** — Processes type aliases `kotlin-antlr-parser.ts:785-803`
+- **processTypeAlias** — Processes a type alias context to extract its definition and relationships `rust-antlr-parser.ts:762-779`
+- **processTypeDeclaration** — Processes a type declaration and returns a ParsedEntity `java-chevrotain-parser.ts:376-389`
+- **processTypedef** — Processes a typedef node, identifying type names `c-analyzer.ts:401-426`
+- **processUseDeclaration** — Processes a use declaration context `rust-antlr-parser.ts:314-342`
+- **processVisItem** — Processes a visibility item context `rust-antlr-parser.ts:172-275`
+- **PYTHON_CLI_SCRIPT_PATH** — Path to the Python CLI script for parsing `python-native-parser.ts:40-46`
+- **qualifiedName** — Constructs a qualified name from a simple name and a list of package names `java-analyzer.ts:112-115`
+- **raceWithTimeout** — A function that runs a promise with a timeout `incremental-parser.ts:69-84`
+- **raw** — Finds and returns the text of a raw string literal or interpreted string literal `go-analyzer.ts:475-475`
+- **receiverType** — Determines the type of the receiver in a method call `kotlin-analyzer.ts:335-335`
+- **reducerEntity** — Represents an entity for an NgRx reducer `ts-function-extractor.ts:250-250`
+- **relMeta** — Creates metadata for entity relationships `cpp-analyzer.ts:75-77`
+- **responsePromise** — Represents a promise for the response to an LSP request `rust-analyzer-integration.ts:318-330`
+- **resultPromise** — A promise that resolves to the result of parsing Java code `javaparser-integration.ts:548-573`
+- **resultPromise** — Promise for Pyright analysis result `pyright-integration.ts:140-149`
+- **resultPromise** — Creates a promise that resolves with the parsed output of the Pyright process or null if parsing fails `pyright-integration.ts:205-224`
+- **resultPromise** — Promise that resolves to the result of a command `rust-analyzer-integration.ts:154-163`
+- **rules** — Maps a shebang match to a module metadata object `bash-native-parser.ts:252-262`
+- **rules** — Maps an import match to an import data object `bash-native-parser.ts:267-280`
+- **rules** — Maps a function name match to a function metadata object `bash-native-parser.ts:285-294`
+- **rules** — Deduplicates function names by adding a prefix `bash-native-parser.ts:295-298`
+- **rules** — Maps a function name match to a function metadata object, excluding "function" as a name. `bash-native-parser.ts:2 `bash-native-parser.ts:303-312`
+- **rules** — Deduplicates function names by appending "func:" to the name if it's not "function" `bash-native-parser.ts:313-316`
+- **rules** — Maps function names to objects with type, modifiers, and location based on the match `bash-native-parser.ts:321-336`
+- **rules** — Defines regex extraction rules for parsing bash scripts `bash-native-parser.ts:341-351`
+- **rules** — Represents the extraction rules `cpp-native-parser.ts:586-596`
+- **rules** — Maps a match to a class or enum with file path and location `cpp-native-parser.ts:603-607`
+- **rules** — Maps a match to an enum with file path and location `cpp-native-parser.ts:613-617`
+- **rules** — Maps a match to a function with file path and location, excluding certain keywords `cpp-native-parser.ts:624-628`
+- **rules** — Maps a match to a type with file path and location `cpp-native-parser.ts:634-638`
+- **rules** — Maps a match to a constant with file path and location, including a macro modifier `cpp-native-parser.ts:644-648`
+- **rules** — Stores rules for parsing Go files `go-native-parser.ts:766-776`
+- **rules** — A set of rules for parsing Go code `go-native-parser.ts:781-797`
+- **rules** — Maps function names and modifiers to a structured object `go-native-parser.ts:802-820`
+- **rules** — Maps type names and kinds to a structured object `go-native-parser.ts:825-842`
+- **rules** — Maps variable names and types to a structured object `go-native-parser.ts:847-864`
+- **rules** — Represents the rules for parsing PowerShell script `powershell-native-parser.ts:416-420`
+- **rules** — Maps a function name to a parsed entity with type and location `powershell-native-parser.ts:425-429`
+- **rules** — Maps a function name to a parsed entity with type, location, and modifiers `powershell-native-parser.ts:434-444`, `powershell-native-parser.ts:449-459`
+- **rules** — Maps a class name to a parsed entity with type and location `powershell-native-parser.ts:464-468`
+- **rules** — Maps an enum name to a parsed entity with type and location `powershell-native-parser.ts:473-477`
+- **rules** — Maps a variable name to a parsed entity with type, location, and scope `powershell-native-parser.ts:482-493`
+- **rules** — Represents a set of rules for parsing Python code `python-native-parser.ts:824-833`
+- **rules** — Maps regex matches to function or import rules, providing detailed metadata for each match `python-native-parser.ts:838-850`
+- **rules** — Maps regex matches to import rules, providing detailed metadata for each match `python-native-parser.ts:855-878`, `python-native-parser.ts:867-874`
+- **rules** — Parses an import statement and returns its details `python-native-parser.ts:883-904`
+- **runPyrightAnalysis** — Function to run Pyright analysis `pyright-integration.ts:166-237`
+- **runRegexExtractors** — Run a set of regex extraction rules against content and collect entities `regex-entity-extractor.ts:51-78`
+- **selectorEntity** — Represents an entity for an NgRx selector `ts-function-extractor.ts:277-277`
+- **selectors** — Extracts selectors from a rule set node `css-analyzer.ts:74-74`
+- **sendNotification** — Sends an LSP notification to rust-analyzer `rust-analyzer-integration.ts:347-360`
+- **sendRequest** — Sends an LSP request to rust-analyzer `rust-analyzer-integration.ts:300-342`
+- **startRustAnalyzer** — Starts the rust-analyzer process `rust-analyzer-integration.ts:187-242`
+- **startTag** — Extracts the start tag from the AST node `html-analyzer.ts:69-69`
+- **stopKotlinK2Provider** — Stops the Kotlin K2 provider instance `kotlin-k2-provider.ts:847-853`
+- **stopRustAnalyzer** — Stops the rust-analyzer process `rust-analyzer-integration.ts:507-515`
+- **tagComment** — Extracts the comment text from a JSDoc tag `ts-doc-extractor.ts:49-49`
+- **tagName** — Extracts the tag name from the start tag `html-analyzer.ts:72-72`
+- **target** — Represents the target entity being analyzed `cpp-analyzer.ts:403-403`
+- **target** — Parses a condition for type identifiers or function definitions `cpp-analyzer.ts:473-473`
+- **targetEntity** — Represents the target entity of a function or method `swift-native-parser.ts:633-635`
+- **timeoutPromise** — A promise that resolves after a timeout `javaparser-integration.ts:575-582`
+- **timeoutPromise** — Returns a new Promise that resolves immediately `javaparser-integration.ts:581-581`
+- **timeoutPromise** — Promise for Pyright analysis timeout `pyright-integration.ts:151-158`
+- **timeoutPromise** — Returns a promise that resolves after a timeout or when the process is killed `pyright-integration.ts:157-157`, `pyright-integration.ts:226-234`, `pyright-integration.ts:233-233`
+- **timeoutPromise** — Promise that resolves after a timeout `rust-analyzer-integration.ts:165-172`
+- **timeoutPromise** — Represents a promise that resolves after a timeout `rust-analyzer-integration.ts:171-171`
+- **timeoutPromise** — Creates a promise that resolves after 30 seconds or rejects if the request is not aborted `rust-analyzer-integration.ts:332-339`
+- **timeoutPromise** — Returns a new promise that resolves immediately `rust-analyzer-integration.ts:338-338`
+- **timer** — A function that runs a timer to abort a promise after a specified time `incremental-parser.ts:71-75`
+- **timer** — Returns a promise that resolves immediately `incremental-parser.ts:74-74`
+- **timer** — Manages a timer for background updates `kotlin-k2-provider.ts:631-634`
+- **traverse** — Recursively traverses an AST node, collecting nodes of specified types up to a maximum depth `base-parser-utils.ts:144-157`
+- **truncate** — Truncates the input text to a maximum length, appending "..." if necessary `condition-extractor.ts:190-193`
+- **typeNode** — Represents a type node in the AST `kotlin-analyzer.ts:212-212`
+- **validateKotlinSyntax** — Validates Kotlin syntax using the kotlinc compiler `kotlin-compiler-integration.ts:82-148`
+- **valOrVar** — Represents a variable or value node `kotlin-analyzer.ts:402-402`
+- **valOrVar** — Identifies whether the parameter is a val or var declaration `kotlin-analyzer.ts:459-459`
+- **valRef** — Represents a value reference `cpp-native-parser.ts:541-541`
+- **visit** — Visits an Angular entity `angular-parser.ts:615-662`
+- **visit** — Parses and processes Angular metadata for class declarations `angular-parser.ts:691-713`
+- **visit** — A recursive function to traverse the AST and collect antipattern hints `ts-antipattern-hints-extractor.ts:55-123`
+- **visit** — Recursively visits TypeScript AST nodes to extract calls and references `ts-call-extractor.ts:24-55`
+- **visit** — Parses PropertyAccessExpression nodes that are not the callee of a CallExpression or NewExpression, collects their field names and locations, and stores them in a list `ts-call-extractor.ts:181-207`
+- **visit** — Visits nodes to count addEventListener and new Map/WeakMap/Set/WeakSet calls `ts-closure-hints-extractor.ts:241-280`
+- **visit** — Recursively visits nodes to calculate complexity metrics `ts-complexity-analyzer.ts:36-132`
+- **visit** — A recursive function to visit and extract control flow information from TypeScript AST nodes `ts-control-flow-extractor.ts:29-166`
+- **visit** — A function that visits AST nodes to collect JIT-relevant patterns such as delete expressions, arguments object usage, with statements, spread in calls, dynamic property access, holey arrays, eval calls, loops, and object shape variants `ts-jit-hints-extractor.ts:65-161`
+- **visitForInnerFunctions** — Increments the inner function count and analyzes each inner function `ts-closure-hints-extractor.ts:144-153`
+- **visitInner** — Recursively visits nodes to check for eval calls and identifier references within an inner function `ts-closure-hints-extractor.ts:180-213`
+- **visitMapPattern** — Parses a map pattern in a call expression to find action calls `ts-ngrx-extractor.ts:95-124`
+- **visitNode** — Recursively visits nodes to find and process call expressions `ts-ngrx-extractor.ts:215-223`
+- **visitNode** — A helper function to check if a node is the 'this' keyword `ts-ngrx-extractor.ts:336-382`
+- **visitOfTypePattern** — Detects ofType(action1, action2, ...) calls and pushes to result.listensTo `ts-ngrx-extractor.ts:78-90`
+- **visitServiceCallPattern** — Identifies service calls within a call expression, particularly those involving this.serviceName.method() or store.dispatch(action) `ts-ngrx-extractor.ts:129-173`
+- **walk** — Traverses the AST nodes `cpp-native-parser.ts:495-504`
+- **walk** — Recursively walks through a type node to determine the maximum depth of conditional types `ts-type-extractor.ts:143-154`
+- **walkIterative** — Iteratively traverses the AST, handling nodes and checking for parse timeouts `c-analyzer.ts:539-572`
+
+### Method
+- **addExtendedIfaces** — Method to add extended interfaces to a type declaration `java-analyzer.ts:550-561`
+- **addInterfaces** — Method to add interfaces to a type declaration `java-analyzer.ts:536-547`
+- **addLanguageToEntities** — Adds a language to the list of supported languages `kotlin-native-parser.ts:420-427`
+- **addParamsAndReturn** — Adds parameters and return types to function declarations `go-analyzer.ts:430-435`
+- **addSuperclass** — Method to add superclass to a type declaration `java-analyzer.ts:522-533`
+- **analyze** — The main method for analyzing a Bash script, returning entities, relationships, and validation issues `bash-analyzer.ts:52-78`
+- **analyze** — Analyzes a batch script and returns entities, relationships, and validation issues `batch-analyzer.ts:46-73`
+- **analyze** — Analyzes C source files and returns a list of semantic entities and their relationships `c-analyzer.ts:502-522`
+- **analyze** — Analyzes the C++ code to extract entities and relationships `cpp-analyzer.ts:102-129`
+- **analyze** — Analyzes an AST node to extract CSS module information and relationships `css-analyzer.ts:16-38`
+- **analyze** — Method to analyze a Go source file and return parsed entities and relationships `go-analyzer.ts:50-74`
+- **analyze** — Analyzes an HTML node and its children, creating a module for the HTML file `html-analyzer.ts:15-37`
+- **analyze** — Method to process tree-sitter Java ASTs and extract artefacts `java-analyzer.ts:198-214`
+- **analyze** — Parses Kotlin source code and traverses the AST nodes `kotlin-analyzer.ts:66-78`
+- **analyze** — The main method for analyzing a PowerShell script, extracting entities, validating the script, and returning the results `powershell-analyzer.ts:53-79`
+- **analyze** — Analyzes the Rust source code `rust-analyzer.ts:918-967`
+- **analyze** — Analyzes XML content to extract entities and relationships `xml-analyzer.ts:15-130`
+- **batchStandard** — Processes standard files in batches `incremental-parser.ts:364-421`
+- **batchTsGroup** — Groups TypeScript files for batch processing `incremental-parser.ts:346-362`
+- **buildCallRelationships** — Builds call relationships between entities `swift-native-parser.ts:621-668`
+- **buildCliBinary** — Builds the pre-compiled Go AST CLI binary if not already present `go-native-parser.ts:474-495`
+- **buildExtractionRules** — Builds regex extraction rules `cpp-native-parser.ts:581-675`
+- **buildExtractionRules** — Builds extraction rules `rust-native-parser.ts:258-425`
+- **buildStateFlowRelationships** — Builds state flow relationships between entities `swift-native-parser.ts:673-694`
+- **checkBestPractices** — Checks for best practices in the script `bash-analyzer.ts:394-419`
+- **checkBestPractices** — Checks for approved verb usage in function names and recursively checks children `powershell-analyzer.ts:451-476`
+- **checkDangerousPatterns** — Checks for dangerous patterns like eval and rm -rf without safeguards `bash-analyzer.ts:358-392`
+- **checkDangerousPatterns** — Checks for dangerous patterns in the batch script `batch-analyzer.ts:239-292`
+- **checkForUpdatesInBackground** — Checks for updates in the background `kotlin-k2-provider.ts:396-435`
+- **checkGo** — Checks if Go is installed and available `go-native-parser.ts:516-525`
+- **checkPython** — Checks if Python is available `python-native-parser.ts:486-495`
+- **checkSecurityIssues** — Checks for security issues in the script `powershell-analyzer.ts:417-449`
+- **checkUndefinedVariables** — Checks for undefined variables in the script `bash-analyzer.ts:331-356`
+- **classifyStateWrapper** — Classifies state wrapper entities `swift-native-parser.ts:555-577`
+- **cleanReturnType** — Cleans and normalizes the return type of a function `zig-native-parser.ts:1141-1149`
+- **cleanup** — Cleans up resources used by the Kotlin K2 provider `kotlin-k2-provider.ts:795-801`
+- **clearCache** — Clears the cache used by the parser `bash-native-parser.ts:381-383`
+- **clearCache** — Clears the parser cache `cpp-native-parser.ts:699-701`
+- **clearCache** — Clears the cache used for storing parsed results to free up memory `go-native-parser.ts:1022-1031`
+- **clearCache** — Clears the cache used by the HelmParser `helm-parser.ts:199-201`
+- **clearCache** — Clears the cache of parsed entities `incremental-parser.ts:298-304`
+- **clearCache** — Clears the internal cache, but there is no internal cache to clear `java-native-parser.ts:457-459`, `kotlin-native-parser.ts:1164-1166`
+- **clearCache** — Clears the cache used for parsing PowerShell script `powershell-native-parser.ts:523-525`
+- **clearCache** — Clears the cache used by the Python Native Parser `python-native-parser.ts:967-969`
+- **clearCache** — No cache to clear `rust-native-parser.ts:520-522`, `zig-native-parser.ts:1247-1249`
+- **clearCache** — Clears the cache, but no cache exists `swift-native-parser.ts:1261-1263`
+- **clearCache** — Clears the parser cache to free up memory `typescript-parser.ts:338-340`
+- **clearCache** — Clears the cache for all parsers, resetting their internal state `unified-parser.ts:799-811`
+- **collect** — Collects all nodes of a specified type from an AST node, using a fallback method if the native method is not available `go-analyzer.ts:448-469`
+- **collectCalls** — Collects function calls during AST traversal `go-analyzer.ts:405-426`
+- **collectCallsFromNode** — Collects function calls from a node `cpp-native-parser.ts:511-522`
+- **collectStateProperties** — Collects state properties from parsed entities `swift-native-parser.ts:583-602`
+- **computeFileHash** — Computes the hash of a file `incremental-parser.ts:158-161`
+- **constructor** — Initializes the LineOffsetMap with content and builds the offsets array `base-parser-utils.ts:24-29`
+- **constructor** — Initializes a new instance of the CircuitBreakerError class with a message and optional error options `base-parser-utils.ts:66-69`
+- **constructor** — Initializes the C++ analyzer with necessary constants and state `cpp-analyzer.ts:86-100`
+- **constructor** — Constructor for the GoAnalyzer class, initializing the handlers map `go-analyzer.ts:37-48`
+- **constructor** — Initializes an instance of the IncrementalParser `incremental-parser.ts:117-138`
+- **constructor** — Constructor of the JavaAnalyzer class `java-analyzer.ts:168-187`
+- **constructor** — Initializes a new instance of the Kotlin K2 Provider `kotlin-k2-provider.ts:194-200`
+- **constructor** — Initializes the Kotlin K2 Provider `kotlin-k2-provider.ts:213-222`
+- **constructor** — Initializes the NgRxParser with a source file and file path `ngrx-parser.ts:47-58`
+- **constructor** — Initializes the RustAnalyzer instance `rust-analyzer.ts:898-913`
+- **convertEntities** — Converts parsed entities to a specific format `kotlin-k2-provider.ts:682-731`
+- **convertRelationships** — Converts relationships between entities `kotlin-k2-provider.ts:760-767`
+- **countArgumentsSimple** — Counts the number of arguments for a Swift function `swift-native-parser.ts:1065-1082`
+- **countArgumentsSimple** — Counts the number of simple arguments `zig-native-parser.ts:1216-1232`
+- **descend** — Method to descend into child nodes during the AST traversal `go-analyzer.ts:90-95`
+- **determineScope** — Determines the scope of variables and functions `powershell-analyzer.ts:512-520`
+- **doBases** — Processes base classes for inheritance `cpp-analyzer.ts:439-467`
+- **doClassBody** — Processes the body of a class or struct `cpp-analyzer.ts:204-248`
+- **doClassStruct** — Processes class or struct declarations `cpp-analyzer.ts:183-202`
+- **doEnum** — Processes enum declarations `cpp-analyzer.ts:411-435`
+- **doField** — Processes field declarations `cpp-analyzer.ts:281-298`
+- **doFreeFunc** — Processes free function declarations `cpp-analyzer.ts:302-320`
+- **doFriend** — Processes friend declarations `cpp-analyzer.ts:471-488`
+- **doMethodDecl** — Processes method declarations `cpp-analyzer.ts:252-277`
+- **doNamespace** — Processes namespace declarations `cpp-analyzer.ts:169-179`
+- **doTemplate** — Processes template declarations `cpp-analyzer.ts:324-379`
+- **doUsing** — Processes using directives `cpp-analyzer.ts:402-407`
+- **downloadFromUrl** — Downloads a file from a URL `kotlin-k2-provider.ts:464-499`
+- **emptyBatch** — An empty batch result `incremental-parser.ts:423-425`
+- **ensureBashParser** — Ensures the Bash parser is initialized `unified-parser.ts:362-368`
+- **ensureCppParser** — Ensures the C++ parser is initialized `unified-parser.ts:354-360`
+- **ensureGoParser** — Ensures the Go parser is initialized `unified-parser.ts:338-344`
+- **ensureHelmParser** — Ensures the Helm parser is initialized `unified-parser.ts:394-400`
+- **ensureJavaParser** — Ensures the Java parser is initialized `unified-parser.ts:322-328`
+- **ensureJsonParser** — Ensures the JSON parser is initialized `unified-parser.ts:378-384`
+- **ensureKotlinParser** — Ensures the Kotlin parser is initialized `unified-parser.ts:330-336`
+- **ensurePackageEntity** — Ensures a module entity exists for the current package `kotlin-analyzer.ts:40-61`
+- **ensurePkgEntity** — Ensures that a package entity is present `java-analyzer.ts:733-749`
+- **ensurePowershellParser** — Ensures the PowerShell parser is initialized `unified-parser.ts:370-376`
+- **ensurePythonParser** — Ensures the Python parser is initialized `unified-parser.ts:314-320`
+- **ensureRustParser** — Ensures the Rust parser is initialized `unified-parser.ts:346-352`
+- **ensureScriptExists** — Ensures the Go AST extraction script exists `go-native-parser.ts:530-537`
+- **ensureTypescriptParser** — Ensures the TypeScript parser is initialized `unified-parser.ts:306-312`
+- **ensureZigParser** — Ensures the Zig parser is initialized `unified-parser.ts:386-392`
+- **evictFile** — Evicts a file from the cache `incremental-parser.ts:340-344`
+- **expandBody** — Method to expand the body of a declaration `java-analyzer.ts:634-658`
+- **exportCache** — A cache for storing parsed entities `incremental-parser.ts:315-323`
+- **extractActionName** — Extracts action names from createAction() calls `ngrx-parser.ts:555-566`
+- **extractAngularMetadata** — Extracts Angular-specific metadata from decorators `angular-analyzer.ts:18-56`
+- **extractAttributes** — Extracts attributes from the AST node `powershell-analyzer.ts:500-510`
+- **extractBraceBlock** — Extracts brace blocks from Swift code `swift-native-parser.ts:959-983`
+- **extractBraceBlock** — Extracts blocks of code enclosed in braces `zig-native-parser.ts:1113-1139`
+- **extractCalls** — Extracts method calls from Kotlin code `kotlin-native-parser.ts:999-1073`
+- **extractCallsAndControlFlow** — Extracts calls and control flow from the body `zig-native-parser.ts:749-858`
+- **extractCallsAndDataFlow** — Extracts function calls and data flow from Swift code `swift-native-parser.ts:701-780`
+- **extractCallsFromBody** — Extracts function calls from Swift code `swift-native-parser.ts:988-1060`
+- **extractCallsFromBody** — Extracts calls from the body `zig-native-parser.ts:864-944`
+- **extractCallTarget** — Extracts the target of a function call `cpp-native-parser.ts:461-476`
+- **extractClass** — Extracts class entities from the AST node `powershell-analyzer.ts:246-296`
+- **extractCommand** — Extracts command executions and pipelines from the script `bash-analyzer.ts:272-308`
+- **extractCommand** — Extracts command entities from the AST node `powershell-analyzer.ts:378-395`
+- **extractControlFlow** — Extracts control flow statements (if/while/for/case) from the script `bash-analyzer.ts:310-323`
+- **extractControlFlow** — Extracts control flow patterns from the template `helm-parser.ts:631-689`
+- **extractControlFlowFromBody** — Extracts control flow patterns from Swift code `swift-native-parser.ts:785-858`
+- **extractControlFlowFromBody** — Extracts control flow from the body `zig-native-parser.ts:950-1043`
+- **extractDataFlowFromBody** — Extracts data flow patterns from Swift code `swift-native-parser.ts:865-954`
+- **extractDeclaration** — Extracts variable declarations from the script `bash-analyzer.ts:236-270`
+- **extractDefines** — Extracts define statements from a file `helm-parser.ts:438-541`
+- **extractDispatchTable** — Extracts the dispatch table from a node `cpp-native-parser.ts:528-566`
+- **extractEffectActions** — Extracts effect actions from a node `ngrx-parser.ts:274-298`
+- **extractEntities** — Recursively processes AST nodes to extract entities and relationships `bash-analyzer.ts:91-160`
+- **extractEntities** — Extracts entities from the AST node `powershell-analyzer.ts:93-161`
+- **extractEntitiesAndRelationships** — Extracts entities and relationships from a file `cpp-native-parser.ts:289-456`
+- **extractEntitiesFromShfmtAST** — Method to extract entities from the shfmt AST `bash-native-parser.ts:206-242`
+- **extractEnum** — Extracts enum entities from the AST node `powershell-analyzer.ts:298-324`
+- **extractEnumConsts** — Method to extract enum constants `java-analyzer.ts:568-593`
+- **extractErrorHandling** — Extracts error handling entities from the AST node `powershell-analyzer.ts:397-410`
+- **extractExports** — Extracts exports from a JSON structure `json-parser.ts:573-600`
+- **extractFilter** — Extracts filter entities from the AST node `powershell-analyzer.ts:217-244`
+- **extractFunction** — Extracts function declarations and definitions from the script `bash-analyzer.ts:162-210`
+- **extractFunction** — Extracts function entities from the AST node `powershell-analyzer.ts:163-215`
+- **extractImport** — Extracts import entities from the AST node `powershell-analyzer.ts:350-376`
+- **extractImports** — Extracts import statements from parsed entities `swift-native-parser.ts:230-252`
+- **extractIncludes** — Extracts include statements from the template `helm-parser.ts:547-605`
+- **extractIndentUsage** — Extracts indent usage patterns from the template `helm-parser.ts:726-819`
+- **extractKDoc** — Extracts KDoc comments from a parsed file `kotlin-native-parser.ts:623-645`
+- **extractMemberName** — Extracts member names from the AST node `powershell-analyzer.ts:495-498`
+- **extractMembers** — Extracts member declarations from parsed entities `swift-native-parser.ts:381-550`
+- **extractModifiersFromMatch** — Extracts modifiers from a regex match `swift-native-parser.ts:1135-1167`
+- **extractParameterName** — Extracts parameter names from the AST node `powershell-analyzer.ts:489-493`
+- **extractParameters** — Extracts parameters from a JSON structure `json-parser.ts:388-403`
+- **extractParams** — Extracts parameters from a node `java-analyzer.ts:707-722`
+- **extractPkgName** — Parses the package name from an AST node, checking for named children and identifiers `go-analyzer.ts:113-129`
+- **extractRecordComps** — Method to extract record components `java-analyzer.ts:596-622`
+- **extractRefName** — Extracts the name of a schema reference `json-parser.ts:475-480`
+- **extractRequestBody** — Extracts the request body from a JSON structure `json-parser.ts:405-425`
+- **extractResponses** — Extracts responses from a JSON structure `json-parser.ts:427-451`
+- **extractSchemaRefs** — Extracts schema references from a JSON structure `json-parser.ts:453-473`
+- **extractSchemas** — Parses and extracts schema information from a JSON file, building entities and relationships `json-parser.ts:309-386`
+- **extractSelectorName** — Extracts selector names from createSelector() calls `ngrx-parser.ts:571-579`
+- **extractStateChanges** — Extracts state changes from NgRx constructs `ngrx-parser.ts:387-405`
+- **extractSwitchDispatch** — Extracts switch dispatch information `cpp-native-parser.ts:490-506`
+- **extractTypeDeclarations** — Extracts type declarations from parsed entities `swift-native-parser.ts:258-375`
+- **extractUseStatements** — Extracts use statements `rust-native-parser.ts:430-467`
+- **extractValueReferences** — Extracts value references from the template `helm-parser.ts:611-626`
+- **extractVariable** — Extracts variable assignments and exports from the script `bash-analyzer.ts:212-234`
+- **extractVariable** — Extracts variable entities from the AST node `powershell-analyzer.ts:326-348`
+- **extractVariableAssigns** — Extracts variable assignments from the template `helm-parser.ts:694-720`
+- **extractZigSpecificOps** — Extracts Zig-specific operations `zig-native-parser.ts:1049-1107`
+- **fallbackParse** — Fallback parsing method `unified-parser.ts:599-740`
+- **fetchCached** — Fetches a cached result for a file `incremental-parser.ts:325-328`
+- **findChildByType** — Finds child nodes by type `powershell-analyzer.ts:479-487`
+- **findClassBodyStart** — Finds the start of a class body in Kotlin code `kotlin-native-parser.ts:804-830`
+- **findDispatchedActions** — Finds dispatched actions from a node `ngrx-parser.ts:303-316`
+- **findEnclosingEntity** — Finds the enclosing entity for a given node `ngrx-parser.ts:584-620`
+- **findFunctionEntity** — Finds function entities in parsed code `swift-native-parser.ts:608-615`
+- **findKeyLocation** — Finds the location of a key in the JSON structure `json-parser.ts:824-852`
+- **findLocalJar** — Finds the local Kotlin K2 JAR file `kotlin-k2-provider.ts:337-369`
+- **findMatchingBrace** — Finds the matching brace for a given position in Kotlin code `kotlin-native-parser.ts:835-864`
+- **findMethodBodyStart** — Finds the start of a method body in Kotlin code `kotlin-native-parser.ts:962-990`
+- **findProjectBuildJar** — Finds the project build JAR file `kotlin-k2-provider.ts:374-391`
+- **findWorkspace** — Finds the current workspace `rust-native-parser.ts:146-148`
+- **getDecoratorName** — Retrieves the name of a decorator `angular-analyzer.ts:98-109`
+- **getEntityLocation** — Returns the start and end locations for a given index `base-parser-utils.ts:42-45`
+- **getInitializedParsers** — Returns a map of initialized parsers based on the project's file extensions `unified-parser.ts:816-818`
+- **getJvmInfo** — Retrieves JVM information for Kotlin parsing `kotlin-native-parser.ts:217-219`
+- **getK2JarPath** — Retrieves the path to the Kotlin K2 JAR file `kotlin-k2-provider.ts:232-332`
+- **getLanguage** — Retrieves the language of a file `unified-parser.ts:417-420`
+- **getLine** — Returns the line number for a given index `base-parser-utils.ts:47-49`
+- **getLocation** — Returns the line, column, and index for a given index `base-parser-utils.ts:31-40`
+- **getLocationFromContent** — Method to get location information from content `xml-analyzer.ts:132-144`
+- **getLocationFromIndex** — Gets the location from the current index `helm-parser.ts:829-849`
+- **getLocationFromIndex** — Retrieves the location from an index `java-native-parser.ts:417-433`
+- **getLocationFromIndex** — Gets the location from an index in Kotlin code `kotlin-native-parser.ts:1123-1140`
+- **getLocationFromIndex** — Calculates the line and column indices for a given content index `swift-native-parser.ts:1221-1237`
+- **getLocationFromIndex** — Converts an index to a location `unified-parser.ts:745-764`
+- **getLocationFromIndexWithEnd** — Extracts the start and end positions of a template or include in a Helm chart `helm-parser.ts:855-897`
+- **getProjectInfo** — Detects the project type from files like package.json, Cargo.toml, etc `unified-parser.ts:823-825`
+- **getStats** — Retrieves statistics about the parsing process `bash-native-parser.ts:374-376`
+- **getStats** — Retrieves parser statistics `cpp-native-parser.ts:692-694`
+- **getStats** — Retrieves statistics about the parsed Go file, such as the number of entities and relationships `go-native-parser.ts:1015-1017`
+- **getStats** — Retrieves statistics about parsed files `helm-parser.ts:192-194`
+- **getStats** — Retrieves parsing statistics `incremental-parser.ts:294-296`
+- **getStats** — Returns a copy of the current parser stats `java-native-parser.ts:450-452`, `kotlin-native-parser.ts:1157-1159`, `zig-native-parser.ts:1243-1245`
+- **getStats** — Retrieves statistics for JSON parsing `json-parser.ts:861-863`
+- **getStats** — Retrieves statistics about the parsed PowerShell script `powershell-native-parser.ts:516-518`
+- **getStats** — Retrieves statistics about the parsed Python code `python-native-parser.ts:960-962`
+- **getStats** — Returns statistics about the parsing process `rust-native-parser.ts:513-515`
+- **getStats** — Returns the current parser statistics `swift-native-parser.ts:1254-1256`
+- **getStats** — Retrieves statistics about parsing operations `typescript-parser.ts:331-333`
+- **getStats** — Retrieves statistics for all parsers, aggregating their individual stats into a unified ParserStats object `unified-parser.ts:769-794`
+- **guard** — Guards against recursion depth and time limits during analysis `cpp-analyzer.ts:157-165`
+- **handleClass** — Handles the class entity during analysis `kotlin-analyzer.ts:140-246`
+- **handleElement** — Handles an HTML element by extracting its tag name and creating an entity for it `html-analyzer.ts:61-110`
+- **handleFunction** — Handles the parsing of function definitions `kotlin-analyzer.ts:308-371`
+- **handleImport** — Handles the parsing of import statements `kotlin-analyzer.ts:488-545`
+- **handleMediaQuery** — Handles a media query node to extract its conditions and create a media query entity `css-analyzer.ts:99-131`
+- **handleObject** — Handles the object entity during analysis `kotlin-analyzer.ts:248-306`
+- **handlePackage** — Handles the package entity during analysis `kotlin-analyzer.ts:131-138`
+- **handlePrimaryConstructor** — Handles the parsing of primary constructors `kotlin-analyzer.ts:439-486`
+- **handleProperty** — Handles the parsing of property definitions `kotlin-analyzer.ts:373-437`
+- **handleRuleSet** — Handles a rule set node to extract selectors and create a rule entity `css-analyzer.ts:66-97`
+- **ifaceMethods** — Extracts method declarations for interface types `go-analyzer.ts:314-339`
+- **initialize** — Method to initialize the parser and check shfmt availability `bash-native-parser.ts:78-89`
+- **initialize** — Initializes the parser and checks for clang availability `cpp-native-parser.ts:81-92`
+- **initialize** — Initializes the Go Native Parser with necessary configurations `go-native-parser.ts:422-468`
+- **initialize** — Initializes the HelmParser instance `helm-parser.ts:88-90`
+- **initialize** — Initializes the parser and its components `incremental-parser.ts:140-156`
+- **initialize** — Asynchronously initializes the parser `java-native-parser.ts:79-81`
+- **initialize** — Initializes the JSON parser with necessary configurations `json-parser.ts:111-113`
+- **initialize** — Initializes the Kotlin Native Parser with necessary configurations `kotlin-native-parser.ts:99-163`
+- **initialize** — Initializes the PowerShell Native Parser `powershell-native-parser.ts:228-248`
+- **initialize** — Initializes the parser with necessary configurations `python-native-parser.ts:426-474`
+- **initialize** — Initializes the parser `rust-native-parser.ts:87-100`
+- **initialize** — Checks if Swift compiler is available and logs initialization status `swift-native-parser.ts:107-118`
+- **initialize** — Initializes the parser and logs initialization completion `typescript-parser.ts:188-190`
+- **initialize** — Initializes parsers for the current project `unified-parser.ts:294-300`
+- **initialize** — Initializes the Zig Native Parser `zig-native-parser.ts:125-136`
+- **initializeForWorkspace** — Initializes parsers for the current workspace `unified-parser.ts:235-289`
+- **isAngularSignal** — Not present in the provided code `angular-analyzer.ts:114-120`
+- **isApprovedVerb** — Checks if a verb is approved `powershell-analyzer.ts:522-547`
+- **isBuiltInVariable** — Determines if a variable is a built-in variable in the batch script `batch-analyzer.ts:294-325`
+- **isCppFile** — Checks if a file is a C/C++ file `cpp-native-parser.ts:193-205`
+- **isCreateAction** — Checks if a node is a createAction call `ngrx-parser.ts:124-126`
+- **isCreateEffect** — Checks if a node is a createEffect call `ngrx-parser.ts:128-130`
+- **isCreateReducer** — Checks if a node is a createReducer call `ngrx-parser.ts:132-134`
+- **isCreateSelector** — Checks if a node is a createSelector call `ngrx-parser.ts:136-141`
+- **isEffectDecorator** — Checks if a node is an effect decorator `ngrx-parser.ts:156-166`
+- **isHelmContext** — Checks if a file is in a Helm context `helm-parser.ts:208-237`
+- **isInsideTypeBodyFast** — Checks if the current position is inside a type body `zig-native-parser.ts:1162-1173`
+- **isK2Ready** — Checks if K2 analysis API is ready for use `kotlin-native-parser.ts:203-205`
+- **isKotlinScript** — Determines if a file is a Kotlin script `kotlin-native-parser.ts:271-273`
+- **isLspReady** — Checks if Language Server Protocol is ready for use `kotlin-native-parser.ts:210-212`
+- **isMethodParam** — Determines if a parameter is a method parameter `zig-native-parser.ts:1151-1160`
+- **isOpenApiFile** — Determines if a file is an OpenAPI/Swagger specification `json-parser.ts:172-183`
+- **isParentCall** — Determines if a call is a parent call `cpp-native-parser.ts:481-485`
+- **isReady** — Checks if the Kotlin K2 provider is ready `kotlin-k2-provider.ts:772-774`
+- **isStoreDispatch** — Checks if a node is a store.dispatch call `ngrx-parser.ts:143-147`
+- **isStoreSelect** — Checks if a node is a store.select call `ngrx-parser.ts:149-154`
+- **mapEntityType** — Maps entity types to a specific format `kotlin-k2-provider.ts:736-755`
+- **mapGoResultToParseResult** — Maps the result of Go parsing to a structured parse result `go-native-parser.ts:905-998`
+- **markTemplate** — Marks template entities for further processing `cpp-analyzer.ts:381-398`
+- **namesFromField** — Extracts field names from struct fields `go-analyzer.ts:480-487`
+- **normalizeEntities** — Normalizes the parsed entities `powershell-native-parser.ts:365-406`
+- **normalizeObject** — Normalizes an object for consistent comparison `json-parser.ts:798-819`
+- **onConsts** — Processes constant declarations in the Go AST `go-analyzer.ts:343-360`
+- **onFunc** — Method to handle the function declaration node during the AST traversal `go-analyzer.ts:162-181`
+- **onImport** — Handler for import declarations `java-analyzer.ts:266-286`
+- **onImports** — Method to handle the import declaration node during the AST traversal `go-analyzer.ts:133-158`
+- **onMemberDecl** — Handler for member declarations `java-analyzer.ts:399-515`
+- **onMethod** — Method to handle the method declaration node during the AST traversal `go-analyzer.ts:185-216`
+- **onPackage** — Method to handle the package clause node during the AST traversal `go-analyzer.ts:99-111`
+- **onPackage** — Handler for package declarations `java-analyzer.ts:257-263`
+- **onTypeDecl** — Handles type declarations in the Go AST `go-analyzer.ts:232-237`
+- **onTypeDecl** — Handler for type declarations `java-analyzer.ts:297-389`
+- **onVars** — Processes variable declarations in the Go AST `go-analyzer.ts:362-380`
+- **paramList** — Builds a list of parameter names and types from a parameter declaration node `go-analyzer.ts:437-446`
+- **parse** — Method to parse a Bash script `bash-native-parser.ts:109-155`
+- **parse** — Parses a file using clang or regex `cpp-native-parser.ts:140-188`
+- **parse** — Parses a Go file and returns the parsed entities `go-native-parser.ts:549-605`
+- **parse** — Parses a file and returns parsed entities `helm-parser.ts:130-175`
+- **parse** — A static method that parses Java source code and returns extracted entities and relationships `java-antlr-parser.ts:77-143`
+- **parse** — Parses a Java source code and returns a CST `java-chevrotain-parser.ts:1075-1106`
+- **parse** — Parses a file using the configured parser `java-native-parser.ts:114-208`
+- **parse** — Parses a JSON file and returns the parsed result `json-parser.ts:120-166`
+- **parse** — Parses a Kotlin file and extracts entities and relationships `kotlin-antlr-parser.ts:86-146`
+- **parse** — Parses a version string from a tag `kotlin-k2-provider.ts:655-677`
+- **parse** — Parses a Kotlin file using the configured parser `kotlin-native-parser.ts:278-387`
+- **parse** — Parses the source file for NgRx constructs `ngrx-parser.ts:63-66`
+- **parse** — Parses a PowerShell script `powershell-native-parser.ts:261-307`
+- **parse** — Parses a single file `python-native-parser.ts:508-590`
+- **parse** — A static method to parse Rust source code and extract entities and relationships `rust-antlr-parser.ts:77-125`
+- **parse** — Parses a file `rust-native-parser.ts:160-241`
+- **parse** — Parses Swift code using regex-based extraction `swift-native-parser.ts:130-170`
+- **parse** — Parses a file and returns the parsed entities `typescript-parser.ts:203-312`
+- **parse** — Parses a file using the appropriate parser `unified-parser.ts:425-523`
+- **parse** — Parses a file using regex-based extraction `zig-native-parser.ts:143-182`
+- **parseBatch** — Parses a batch of files `incremental-parser.ts:222-261`
+- **parseBatch** — Parses a batch of Python files using either the CLI or sequential parsing, logging detailed statistics `python-native-parser.ts:596-651`
+- **parseChartYaml** — Parses the Chart.yaml file `helm-parser.ts:246-308`
+- **parseClassBodies** — Parses class bodies in Kotlin code `kotlin-native-parser.ts:781-799`
+- **parseClassMembers** — Parses class members in Kotlin code `kotlin-native-parser.ts:869-957`
+- **parseComponentDecorator** — Parses @Component decorator arguments `angular-analyzer.ts:61-93`
+- **parseConformanceList** — Parses protocol conformance lists `swift-native-parser.ts:219-225`
+- **parseCreateAction** — Parses a createAction call `ngrx-parser.ts:175-218`
+- **parseCreateEffect** — Parses a createEffect call `ngrx-parser.ts:223-269`
+- **parseCreateReducer** — Parses a createReducer call `ngrx-parser.ts:321-357`
+- **parseCreateSelector** — Parses createSelector() calls to identify selector entities `ngrx-parser.ts:410-453`
+- **parseEnumBody** — Parses the body of an enum `zig-native-parser.ts:670-743`
+- **parseFast** — Parses a file quickly using regex `cpp-native-parser.ts:117-135`
+- **parseFile** — Parses a single file `incremental-parser.ts:163-220`
+- **parseGenericJson** — Parses generic JSON content `json-parser.ts:716-789`
+- **parseHelmTemplate** — Parses a Helm template file `helm-parser.ts:363-428`
+- **parseIncremental** — Parses bash scripts incrementally using shfmt or regex `bash-native-parser.ts:362-369`
+- **parseIncremental** — Parses code incrementally `cpp-native-parser.ts:680-687`
+- **parseIncremental** — Parses a Go file incrementally, updating the parse result as the file is read `go-native-parser.ts:1003-1010`
+- **parseIncremental** — Parses a file incrementally `helm-parser.ts:180-187`
+- **parseIncremental** — Parses Java code incrementally `java-native-parser.ts:438-445`
+- **parseIncremental** — Parses Kotlin code incrementally `kotlin-native-parser.ts:1145-1152`
+- **parseIncremental** — Parses PowerShell script incrementally `powershell-native-parser.ts:504-511`
+- **parseIncremental** — Parses Python code incrementally using the CLI script `python-native-parser.ts:948-955`
+- **parseIncremental** — Parses parameters incrementally `rust-native-parser.ts:501-508`
+- **parseIncremental** — Calls the parse method with the provided parameters `swift-native-parser.ts:1242-1249`
+- **parseIncremental** — Parses a file incrementally, updating the parser state `typescript-parser.ts:317-326`
+- **parseIncremental** — Parses incremental content for a file based on its extension, using the appropriate parser `unified-parser.ts:529-594`
+- **parseIncremental** — Parses the code incrementally `zig-native-parser.ts:1234-1241`
+- **parseInheritanceInfo** — Parses inheritance information for Swift classes `swift-native-parser.ts:1087-1130`
+- **parseJava** — Parses Java code using Chevrotain or ANTLR `java-native-parser.ts:213-385`
+- **parseKDoc** — Parses KDoc comments in Kotlin code `kotlin-native-parser.ts:650-772`
+- **parseKotlinRegex** — Parses a Kotlin file using a regular expression `kotlin-native-parser.ts:432-613`
+- **parseLegacyEffect** — Parses legacy effect constructs to identify effect entities `ngrx-parser.ts:519-546`
+- **parseOnHandler** — Parses an on handler for a reducer `ngrx-parser.ts:362-382`
+- **parseOpenApi** — Parses an OpenAPI/Swagger specification file `json-parser.ts:185-307`
+- **parsePackageJson** — Parses the package.json file `json-parser.ts:486-571`
+- **parseParameters** — Parses parameters for the Java parser `java-native-parser.ts:390-412`
+- **parseParameters** — Parses method parameters in Kotlin code `kotlin-native-parser.ts:1078-1115`
+- **parseParameters** — Parses parameters `rust-native-parser.ts:472-496`
+- **parseParameters** — Parses parameters from a function or method `swift-native-parser.ts:1172-1216`
+- **parseParameters** — Parses function parameters `zig-native-parser.ts:1175-1214`
+- **parseStoreDispatch** — Parses store.dispatch() calls to identify dispatch relationships `ngrx-parser.ts:458-485`
+- **parseStoreSelect** — Parses store.select() calls to identify select relationships `ngrx-parser.ts:490-514`
+- **parseStructBody** — Parses the body of a struct `zig-native-parser.ts:545-664`
+- **parseTsConfig** — Parses the tsconfig.json file `json-parser.ts:606-710`
+- **parseValuesYaml** — Parses the values.yaml file `helm-parser.ts:313-357`
+- **parseWithAntlr** — Parses a Kotlin file using ANTLR `kotlin-native-parser.ts:392-415`
+- **parseWithClang** — Parses a file using clang `cpp-native-parser.ts:210-231`
+- **parseWithCliBatch** — Parses a batch of files using the CLI script `python-native-parser.ts:656-715`
+- **parseWithCliBinary** — Parses a Go file using the pre-compiled Go AST CLI binary `go-native-parser.ts:610-654`
+- **parseWithCliScript** — Parses a Go file using the Go AST extraction script `go-native-parser.ts:659-702`
+- **parseWithCliScript** — Parses a file using the CLI script `python-native-parser.ts:720-768`
+- **parseWithGo** — Parses a Go file using Go's built-in `go/parser` and `go/ast` packages `go-native-parser.ts:707-756`
+- **parseWithPowerShell** — Parses a PowerShell script using PowerShell `powershell-native-parser.ts:312-360`
+- **parseWithPython** — Parses a file using Python's built-in `ast` module `python-native-parser.ts:773-814`
+- **parseWithRegex** — Method to parse a Bash script using regex `bash-native-parser.ts:247-357`
+- **parseWithRegex** — Parses the batch script using regex-based parsing `batch-analyzer.ts:88-206`
+- **parseWithRegex** — Parses code using regex `cpp-native-parser.ts:571-575`
+- **parseWithRegex** — Parses a Go file using regex-based extraction `go-native-parser.ts:761-899`
+- **parseWithRegex** — Parses PowerShell script using regex-based extraction `powershell-native-parser.ts:411-499`
+- **parseWithRegex** — Parses a file using regex-based extraction `python-native-parser.ts:819-943`
+- **parseWithRegex** — Parses a file using regex `rust-native-parser.ts:246-252`
+- **parseWithRegex** — Parses Swift code with specific regex patterns `swift-native-parser.ts:182-213`
+- **parseWithRegex** — Parses a file using specific regex patterns `zig-native-parser.ts:192-539`
+- **parseWithShfmt** — Method to parse a Bash script using shfmt `bash-native-parser.ts:160-201`
+- **processIncremental** — Processes incremental changes in the file `incremental-parser.ts:263-292`
+- **processTypeSpec** — Processes type specifications for Go entities `go-analyzer.ts:239-267`
+- **pruneRels** — Prunes unnecessary relationships during analysis `cpp-analyzer.ts:492-498`
+- **rebuildIfOutdated** — Rebuilds the pre-compiled Go AST CLI binary if it is outdated `go-native-parser.ts:500-511`
+- **recvTypeName** — Method to extract the receiver type name from a method declaration node `go-analyzer.ts:218-228`
+- **resetRegex** — Resets the regex patterns for parsing `swift-native-parser.ts:175-177`
+- **resetRegex** — Resets the lastIndex property of a regular expression `zig-native-parser.ts:188-190`
+- **resetState** — A method to reset the state of the BashAnalyzer instance `bash-analyzer.ts:80-89`
+- **resetState** — Resets the state of the batch analyzer for a new analysis `batch-analyzer.ts:75-82`
+- **resetState** — A method to reset the state of the PowerShell analyzer `powershell-analyzer.ts:81-91`
+- **resetStats** — Resets statistics for JSON parsing `json-parser.ts:865-876`
+- **runClang** — Runs clang to extract AST `cpp-native-parser.ts:236-278`
+- **rustAnalyzerAvailable** — Checks if rust-analyzer is available `rust-native-parser.ts:80-82`
+- **scanCalls** — Method to scan method calls `java-analyzer.ts:668-697`
+- **sendCommand** — Sends a command to the Kotlin K2 Provider `kotlin-k2-provider.ts:625-650`
+- **setAntlrEnabled** — Sets whether ANTLR is enabled `java-native-parser.ts:100-102`
+- **setAntlrEnabled** — Sets whether to use ANTLR parser `rust-native-parser.ts:153-155`
+- **setAntlrFallbackEnabled** — Sets whether ANTLR is used as fallback `java-native-parser.ts:93-95`
+- **setAntlrFallbackEnabled** — Enables or disables ANTLR-based parsing as a fallback `kotlin-native-parser.ts:196-198`
+- **setChevrotainEnabled** — Sets whether Chevrotain parser is enabled `java-native-parser.ts:86-88`
+- **setK2Enabled** — Enables or disables K2 analysis API for parsing `kotlin-native-parser.ts:182-184`
+- **setKotlincDiagnosticsEnabled** — Enables or disables Kotlin compiler diagnostics `kotlin-native-parser.ts:175-177`
+- **setKotlincEnabled** — Enables or disables Kotlin compiler diagnostics `kotlin-native-parser.ts:168-170`
+- **setLspEnabled** — Enables or disables Language Server Protocol support `kotlin-native-parser.ts:189-191`
+- **setPyrightEnabled** — Enables or disables Pyright integration `python-native-parser.ts:479-481`
+- **setRustAnalyzerEnabled** — Sets whether to use rust-analyzer `rust-native-parser.ts:105-107`
+- **setRustAnalyzerEnhancementEnabled** — Sets whether to enhance parsing with rust-analyzer info `rust-native-parser.ts:112-114`
+- **shutdown** — Shuts down the Kotlin Native Parser `kotlin-native-parser.ts:224-229`
+- **start** — Starts the Kotlin K2 Provider `kotlin-k2-provider.ts:504-595`
+- **startForWorkspace** — Starts parsing for a specific workspace `rust-native-parser.ts:119-126`
+- **step** — Represents a step in the analysis process `cpp-analyzer.ts:133-150`
+- **stop** — Stops the Kotlin K2 provider `kotlin-k2-provider.ts:779-793`
+- **stop** — Stops the parser `rust-native-parser.ts:131-134`
+- **storeCached** — Stores a parsed result in the cache `incremental-parser.ts:330-338`
+- **stripQuotes** — Removes quotes from string literals `go-analyzer.ts:471-478`
+- **structEmbeds** — Identifies embedded types within struct declarations `go-analyzer.ts:294-310`
+- **structFields** — Collects field names for struct types `go-analyzer.ts:271-292`
+- **supportsFile** — Method to check if a file is supported for parsing `bash-native-parser.ts:94-104`
+- **supportsFile** — Determines if a file is a C/C++ file `cpp-native-parser.ts:97-111`
+- **supportsFile** — Determines if a file supports Go parsing `go-native-parser.ts:542-544`
+- **supportsFile** — Determines if a file is supported by the HelmParser `helm-parser.ts:100-125`
+- **supportsFile** — Determines if a file is supported `java-native-parser.ts:107-109`
+- **supportsFile** — Checks if a file supports JSON parsing `json-parser.ts:115-118`
+- **supportsFile** — Checks if a file supports Kotlin parsing `kotlin-native-parser.ts:263-266`
+- **supportsFile** — Checks if a file is supported for parsing `powershell-native-parser.ts:253-256`
+- **supportsFile** — Determines if a file is supported for parsing `python-native-parser.ts:500-503`
+- **supportsFile** — Checks if a file is supported `rust-native-parser.ts:139-141`
+- **supportsFile** — Determines if a file path ends with ".swift" `swift-native-parser.ts:123-125`
+- **supportsFile** — Determines if a file can be parsed by the TypeScriptParser `typescript-parser.ts:195-198`
+- **supportsFile** — Determines if a file supports a specific language `unified-parser.ts:409-412`
+- **supportsFile** — Determines if a file is supported by the parser `zig-native-parser.ts:138-141`
+- **traverseNode** — Recursively traverses an AST node to handle different types of nodes `css-analyzer.ts:40-64`
+- **traverseNode** — Recursively traverses the AST node to handle elements and their children `html-analyzer.ts:39-59`
+- **traverseNode** — Traverses the AST nodes to analyze the Kotlin source code `kotlin-analyzer.ts:80-129`
+- **tryStartK2** — Attempts to start K2 analysis API `kotlin-native-parser.ts:235-258`
+- **updateStats** — Updates statistics for JSON parsing `json-parser.ts:854-859`
+- **validateScript** — Validates the script for syntax and common issues `bash-analyzer.ts:325-329`
+- **validateScript** — Validates the parsed script for common issues `batch-analyzer.ts:208-237`
+- **validateScript** — Validates the script for best practices and security issues `powershell-analyzer.ts:412-415`
+- **varNames** — Collects variable names from variable declarations `go-analyzer.ts:382-401`
+- **visit** — Method to traverse the AST and process nodes, updating the analysis state `go-analyzer.ts:78-88`
+- **visit** — Recursively visits AST nodes to parse NgRx constructs `ngrx-parser.ts:71-118`
+- **waitForDownloadAny** — Waits for any download to complete `kotlin-k2-provider.ts:440-459`
+- **waitForReady** — Waits for the provider to be ready `kotlin-k2-provider.ts:600-620`
+- **walk** — Method to perform iterative DFS traversal `java-analyzer.ts:225-250`
+- **walkKids** — Walks through the AST nodes to extract entities and relationships `cpp-analyzer.ts:152-155`
+- **warmRestart** — Warms up the parser for a restart `incremental-parser.ts:306-313`
+- **workspaceRoot** — The root directory of the current workspace `unified-parser.ts:228-230`
+
+### Class
+- **AngularAnalyzer** — Extends TypeScript parsing with Angular 18+ specific features `angular-analyzer.ts:14-121`
+- **BashAnalyzer** — A class for analyzing Bash scripts, tracking recursion depth, parse start time, source code, and various script entities `bash-analyzer.ts:39-420`
+- **BashNativeParser** — Class for parsing Bash scripts, using shfmt or regex `bash-native-parser.ts:62-384`
+- **BatchAnalyzer** — A class for analyzing batch scripts, tracking labels, variables, and scripts `batch-analyzer.ts:35-326`
+- **CAnalyzer** — Parses C source files via tree-sitter AST and produces a flat list of semantic entities `c-analyzer.ts:497-523`
+- **CircuitBreakerError** — Error class for circuit breaker errors `base-parser-utils.ts:65-70`
+- **CppAnalyzer** — Analyzes C++ code to extract entities and relationships `cpp-analyzer.ts:83-499`
+- **CppNativeParser** — A class for parsing C/C++ files using clang or regex `cpp-native-parser.ts:65-702`
+- **CSSAnalyzer** — A class for analyzing CSS/SCSS files, extracting selectors, rules, and media queries `css-analyzer.ts:15-132`
+- **GoAnalyzer** — Class for analyzing Go source files and extracting structural entities and relationships `go-analyzer.ts:34-488`
+- **GoNativeParser** — A parser that uses Go's built-in `go/parser` and `go/ast` packages via subprocess `go-native-parser.ts:401-1032`
+- **HelmParser** — A class for parsing Helm chart templates, values, and Chart.yaml files `helm-parser.ts:71-898`
+- **HTMLAnalyzer** — Simplified HTML analyzer for elements, tags, attributes, IDs, and Angular template syntax `html-analyzer.ts:14-111`
+- **IncrementalParser** — A class for incremental parsing of files `incremental-parser.ts:108-426`
+- **JavaAnalyzer** — Java AST Analyzer — iterative DFS traversal with Map-based dispatch `java-analyzer.ts:164-750`
+- **JavaAntlrParser** — A class for parsing Java source code using ANTLR4 to extract entities and relationships `java-antlr-parser.ts:73-144`
+- **JavaChevrotainParser** — Represents the Java Chevrotain parser `java-chevrotain-parser.ts:1071-1107`
+- **JavaNativeParser** — Class for Java native parser with Chevrotain and ANTLR fallback `java-native-parser.ts:62-460`
+- **JsonParser** — A class for parsing JSON files with special support for various configurations `json-parser.ts:99-877`
+- **K2JavaVersionError** — Represents an error related to Java version compatibility `kotlin-k2-provider.ts:193-201`
+- **KotlinAnalyzer** — Analyzer for Kotlin language supporting various entities and relationships `kotlin-analyzer.ts:31-546`
+- **KotlinAntlrParser** — A class for parsing Kotlin source code using ANTLR4 `kotlin-antlr-parser.ts:82-147`
+- **KotlinK2Provider** — Represents the main class of the Kotlin K2 Provider `kotlin-k2-provider.ts:203-802`
+- **KotlinNativeParser** — A class for parsing Kotlin native code `kotlin-native-parser.ts:75-1167`
+- **LineOffsetMap** — Pre-computed line offset map for O(log n) index→line/column lookups `base-parser-utils.ts:21-50`
+- **NgRxParser** — Parses NgRx-specific constructs to enable event-driven flow tracing `ngrx-parser.ts:41-621`
+- **PowerShellAnalyzer** — A class for analyzing PowerShell scripts, tracking recursion depth, parse start time, source code, and various script elements `powershell-analyzer.ts:39-548`
+- **PowerShellNativeParser** — A class for parsing PowerShell scripts using native PowerShell `powershell-native-parser.ts:211-526`
+- **PythonNativeParser** — A parser that uses Python's built-in `ast` module via subprocess for parsing `python-native-parser.ts:403-970`
+- **RustAnalyzer** — The main class for analyzing Rust source code `rust-analyzer.ts:887-968`
+- **RustAntlrParser** — A class for parsing Rust source code using ANTLR4 grammar `rust-antlr-parser.ts:73-126`
+- **RustNativeParser** — Class for parsing Rust files using ANTLR and optionally rust-analyzer `rust-native-parser.ts:62-523`
+- **SwiftNativeParser** — The main class for parsing Swift files `swift-native-parser.ts:90-1264`
+- **TypeScriptParser** — A class for parsing TypeScript files using the TypeScript Compiler API `typescript-parser.ts:173-341`
+- **UnifiedParser** — A class that routes parsing requests to appropriate language-specific parsers `unified-parser.ts:194-826`
+- **XMLAnalyzer** — Simplified XML analyzer for configuration files, Android manifests, etc `xml-analyzer.ts:14-145`
+- **ZigNativeParser** — Represents the Zig Native Parser class `zig-native-parser.ts:112-1250`
+
+### Interface
+- **AngularASTNode** — Represents an abstract syntax tree node for Angular templates `angular-parser.ts:155-169`
+- **AngularCompilerModule** — Represents the Angular compiler module for parsing templates `angular-parser.ts:131-141`
+- **AngularEntityInfo** — Angular-specific entity information including decorator type, selector, template, templateUrl, styleUrls, styles, changeDetection, encapsulation, standalone, imports, providers, hostBindings, and hostListeners `angular-parser.ts:25-64`
+- **AngularTemplateInfo** — Parsed template information including source, isInline, propertyBindings, and eventBindings `angular-parser.ts:69-96`
+- **AngularTemplateParseResult** — Represents the result of parsing an Angular template `angular-parser.ts:146-150`
+- **AntipatternHints** — Represents a collection of counts and strings related to various antipatterns in TypeScript code `ts-antipattern-hints-extractor.ts:14-23`
+- **AntlrParserRuleContext** — Represents a context node in the parser with start and stop tokens `rust-antlr-parser.ts:43-49`
+- **AntlrToken** — Represents an ANTLR token with line, column, start, stop, and text information `kotlin-antlr-parser.ts:70-76`
+- **AntlrToken** — Represents a token with line, column, start, stop, and text information `rust-antlr-parser.ts:35-41`
+- **ASTNode** — Minimal AST node interface (tree-sitter compatible) `condition-extractor.ts:57-64`
+- **BaseParser** — Defines the base interface for all language-specific parsers `base-parser.ts:27-57`
+- **BashParseResult** — Represents the result of parsing a Bash script, containing entities and errors `bash-native-parser.ts:57-60`
+- **BashValidationIssue** — Represents a validation issue in a Bash script with type, message, line, column, and optional suggestion `bash-analyzer.ts:31-37`
+- **BatchResult** — An object containing parsed results, errors, and statistics for a batch of files `incremental-parser.ts:63-67`
+- **BatchValidationIssue** — Represents a validation issue in a batch script with type, message, line, column, and optional suggestion `batch-analyzer.ts:27-33`
+- **BunWithJsonc** — Bun runtime with JSONC support (Bun 1.3.6+) `json-parser.ts:27-31`
+- **ClangASTNode** — Represents a node in the Abstract Syntax Tree (AST) of a C/C++ source file `cpp-native-parser.ts:31-37`
+- **ClangLocation** — Represents the line and column position in a C/C++ source file `cpp-native-parser.ts:26-29`
+- **ClassExtractorContext** — Represents the context for extracting class declarations, including the source file, file path, parsed entities, and relationships `ts-class-extractor.ts:26-31`
+- **ClosureHints** — Interface representing closure-related memory leak hints `ts-closure-hints-extractor.ts:19-30`
+- **CppParseResult** — Represents the result of parsing a C/C++ source file, including parsed entities, relationships, and errors `cpp-native-parser.ts:54-58`
+- **CppRunState** — Represents the state of a C++ language analysis run, including entities, relationships, and various counters `cpp-analyzer.ts:37-46`
+- **CstChildren** — An object mapping keys to arrays of CST nodes or tokens `java-chevrotain-parser.ts:28-30`
+- **DefineStart** — Represents the start of a define statement `helm-parser.ts:446-450`
+- **ExtractorContext** — Represents the context for extracting entities from a TypeScript source file `typescript-parser.ts:57-64`
+- **FieldReference** — Represents a reference to a field in a TypeScript AST node `ts-call-extractor.ts:167-171`
+- **FunctionExtractorContext** — Represents the context for extracting functions from a TypeScript source file `ts-function-extractor.ts:30-35`
+- **GoParseResult** — Represents the result of parsing Go code, including entities, relationships, and errors `go-native-parser.ts:384-388`
+- **HandlerContext** — A context object containing file path, parsed entities, relationships, and a deadline `c-analyzer.ts:35-40`
+- **HintCallbacks** — Defines interface for callbacks to count addListener, removeListener, and new Map/WeakMap/Set/WeakSet calls `ts-closure-hints-extractor.ts:231-238`
+- **ImportExportExtractorContext** — Represents the context for extracting import and export declarations, containing the source file, file path, parsed entities, and relationships `ts-import-export-extractor.ts:11-16`
+- **IndentUsage** — Represents the usage of indentation in the parsed templates `helm-parser.ts:55-65`
+- **InterfaceExtractorContext** — Represents the context for extracting TypeScript interface declarations `ts-interface-extractor.ts:13-18`
+- **JavaParseContext** — Represents the context for parsing Java code, including file path, package, entities, relationships, and depth `java-analyzer.ts:148-155`
+- **JavaParseResult** — Represents the result of parsing Java code, containing parsed entities and any errors encountered `javaparser-integration.ts:25-28`
+- **JitHints** — An interface representing JIT-relevant data from AST nodes `ts-jit-hints-extractor.ts:10-31`
+- **JsonParseResult** — Result of parsing JSON, including entities, relationships, and errors `json-parser.ts:71-75`
+- **JSPatternsExtractorContext** — Represents the context for extracting JavaScript-specific patterns from TypeScript code `ts-js-patterns-extractor.ts:21-26`
+- **K2CallEdge** — Represents a call edge in the K2 graph `kotlin-k2-provider.ts:180-184`
+- **K2Command** — A command for the Kotlin K2 CLI `kotlin-k2-provider.ts:141-146`
+- **K2Entity** — A parsed entity from Kotlin code `kotlin-k2-provider.ts:157-171`
+- **K2ParseResult** — A result of parsing Kotlin code `kotlin-k2-provider.ts:148-155`
+- **K2Relationship** — Represents a relationship between entities in the K2 graph `kotlin-k2-provider.ts:173-178`
+- **KotlinCompileResult** — Represents the result of compiling Kotlin source, including success status and a list of diagnostics `kotlin-compiler-integration.ts:26-29`
+- **KotlinDiagnostic** — Represents a diagnostic message from the Kotlin compiler with severity, message, and optional line/column/file information `kotlin-compiler-integration.ts:18-24`
+- **Location** — Interface for representing the start and end locations of an entity `base-parser-utils.ts:52-63`
+- **LocationInfo** — An object containing start and end locations of a node `java-chevrotain-parser.ts:71-74`
+- **LSPDocumentSymbol** — Represents a symbol from rust-analyzer LSP `rust-analyzer-integration.ts:29-44`
+- **LSPMessage** — Represents a message in the Language Server Protocol `rust-analyzer-integration.ts:87-94`
+- **MemberContext** — Represents the context for extracting class members, including class name, base classes, class entity, source file, file path, and relationships `ts-class-extractor.ts:197-206`
+- **MethodQualifiers** — Represents method qualifiers with boolean flags `cpp-declarator-utils.ts:136-143`
+- **NgRxEffectInfo** — Represents information about NgRx effects, including actions listened to, services called, actions dispatched, and whether the effect is dispatch: false `ts-ngrx-extractor.ts:14-33`
+- **NgRxReducerInfo** — Represents information about NgRx reducers, including actions handled via on() `ts-ngrx-extractor.ts:35-41`
+- **NgRxSelectorInfo** — Represents information about NgRx selectors, including dependencies and feature name `ts-ngrx-extractor.ts:43-51`
+- **NgRxStoreUsageInfo** — Represents information about NgRx store usage, including dispatched actions and selected selectors `ts-ngrx-extractor.ts:53-64`
+- **ParsedEntityWithAngular** — Represents an entity with Angular-specific metadata `angular-parser.ts:182-185`
+- **ParsedEntityWithRAInfo** — An extended parsed entity with rust-analyzer information `rust-analyzer-integration.ts:49-54`
+- **ParsedEntityWithTypeInfo** — ParsedEntity with optional Python type information `pyright-integration.ts:27-29`
+- **ParserContext** — Represents the context for parsing Java code, including file path, package name, entities, relationships, current class, and imports `java-chevrotain-parser.ts:122-129`
+- **ParserContext** — Represents the context for parsing Kotlin source code, including file path, package name, parsed entities, relationships, current class, and imports `kotlin-antlr-parser.ts:49-56`
+- **ParserContext** — Context for parsing, containing file path, module path, entities, relationships, and current struct `rust-antlr-parser.ts:55-62`
+- **ParserStats** — Represents statistics for parsing operations, including file count, cache hits, and average parse time `base-parser.ts:13-22`
+- **ParserStats** — Represents statistics for parsing shell scripts `bash-native-parser.ts:46-55`
+- **ParserStats** — Stores statistics about the parsing process, including files parsed, cache hits, and parse times `cpp-native-parser.ts:43-52`
+- **ParserStats** — Stores statistics about the parsing process, such as files parsed, cache hits, and average parse time `go-native-parser.ts:390-399`
+- **ParserStats** — Tracks statistics for parsing Helm templates, including files parsed, cache hits, and average parse time `helm-parser.ts:44-53`
+- **ParserStats** — Interface for tracking parser statistics `java-native-parser.ts:47-56`
+- **ParserStats** — Parser statistics including files parsed, cache hits, misses, average parse time, total parse time, throughput, cache memory, and error count `json-parser.ts:60-69`
+- **ParserStats** — An interface representing parser statistics `kotlin-native-parser.ts:60-69`
+- **ParserStats** — Represents statistics for the PowerShell parser, including files parsed, cache hits, cache misses, average parse time, and total parse time `powershell-native-parser.ts:195-204`
+- **ParserStats** — Statistics collected during the parsing process, including files parsed, cache hits, cache misses, average parse time, total parse time, and throughput `python-native-parser.ts:392-401`
+- **ParserStats** — Represents statistics for parsing operations `rust-native-parser.ts:46-55`
+- **ParserStats** — Tracks statistics for parsing Swift files `swift-native-parser.ts:27-36`
+- **ParserStats** — Represents statistics for parsing TypeScript files, including counts and times `typescript-parser.ts:162-171`
+- **ParserStats** — Tracks statistics for the Zig Native Parser, including files parsed, cache hits and misses, average and total parse times, throughput, cache memory usage, and error count `zig-native-parser.ts:25-34`
+- **ParserWithErrorListeners** — Interface for parser with error listeners `rust-antlr-parser.ts:51-53`
+- **ParseTemplateResult** — Represents the result of parsing an Angular template `angular-parser.ts:174-177`
+- **PipeUsage** — Tracks usage of pipes in Angular templates `angular-parser.ts:122-126`
+- **PowerShellError** — Represents an error message and its location in a PowerShell script `powershell-native-parser.ts:23-29`
+- **PowerShellParseResult** — Stores the result of parsing PowerShell script `powershell-native-parser.ts:206-209`
+- **PowerShellValidationIssue** — Represents a validation issue in a PowerShell script with type, message, line, column, and optional suggestion `powershell-analyzer.ts:31-37`
+- **ProjectInfo** — Represents information about a project `unified-parser.ts:123-127`
+- **PyrightDiagnostic** — Pyright diagnostic from JSON output `pyright-integration.ts:34-43`
+- **PyrightOutput** — Pyright JSON output format `pyright-integration.ts:48-59`
+- **PythonParseResult** — Result of parsing a Python script, containing entities, relationships, and errors `python-native-parser.ts:386-390`
+- **PythonTypeInfo** — Represents type information for a Python entity `pyright-integration.ts:64-80`
+- **RawPowerShellEntity** — Represents a raw PowerShell entity with its name, type, and optional line and column information `powershell-native-parser.ts:31-39`
+- **RegexExtractionRule** — A single regex extraction rule that maps regex matches to ParsedEntity objects `regex-entity-extractor.ts:27-35`
+- **ReleaseAsset** — Interface for release assets containing name and browser_download_url `kotlin-k2-provider.ts:50-53`
+- **ReleaseInfo** — Interface for release information containing tag_name and assets `kotlin-k2-provider.ts:55-58`
+- **RunState** — Internal state per parse run containing file path, package name, parsed entities, relationships, start time, and current level `go-analyzer.ts:21-28`
+- **RunState** — Per-analysis mutable context, replaces class-level mutable fields `rust-analyzer.ts:57-65`
+- **RustAnalyzerResult** — Represents the result of rust-analyzer analysis `rust-analyzer-integration.ts:71-74`
+- **RustDiagnostic** — Represents a diagnostic from rust-analyzer `rust-analyzer-integration.ts:60-69`
+- **RustParseResult** — Interface for the result of parsing a Rust file `rust-native-parser.ts:57-60`
+- **RustSymbolInfo** — Represents a symbol from rust-analyzer `rust-analyzer-integration.ts:76-84`
+- **ShfmtASTNode** — Represents a node in the Abstract Syntax Tree (AST) of a shell script `bash-native-parser.ts:34-40`
+- **ShfmtName** — Represents the name of a token in a shell script `bash-native-parser.ts:30-32`
+- **ShfmtPosition** — Represents the position of a token in a shell script `bash-native-parser.ts:24-28`
+- **StackFrame** — Represents a frame in the traversal stack, containing a node and its depth `c-analyzer.ts:529-532`
+- **StackFrame** — Work-item pushed onto the iterative DFS stack, each frame carries a snapshot of the enclosing type stack `java-analyzer.ts:34-37`
+- **StructuralDirective** — Represents a structural directive in an Angular template `angular-parser.ts:110-115`
+- **SwiftParseResult** — Represents the result of parsing a Swift file `swift-native-parser.ts:38-42`
+- **TemplateBinding** — Describes a property binding in an Angular template `angular-parser.ts:98-102`
+- **TemplateEvent** — Represents an event binding in an Angular template `angular-parser.ts:104-108`
+- **TemplateInterpolation** — Represents an interpolation in an Angular template `angular-parser.ts:117-120`
+- **TsConfigJson** — Represents the structure of a TypeScript configuration file `json-parser.ts:83-93`
+- **TypeExtractorContext** — Represents the context for extracting TypeScript type aliases and enums `ts-type-extractor.ts:13-18`
+- **ZigParseResult** — Represents the result of parsing a Zig file, including parsed entities, relationships, and errors `zig-native-parser.ts:36-40`
+
+### Type_alias
+- **AnalyzerMetrics** — Object containing metrics for the analysis `rust-analyzer.ts:67-72`
+- **AwaitInfo** — Represents an await in the control flow `ts-control-flow-extractor.ts:17-17`
+- **BashParserType** — Represents the Bash parser type `unified-parser.ts:31-31`
+- **BranchInfo** — Represents a branch in the control flow, such as if, else-if, else, switch, or case `ts-control-flow-extractor.ts:13-13`
+- **CallInfo** — Represents information about a function or method call `ts-call-extractor.ts:16-16`
+- **Complexity** — Represents complexity metrics (cyclomatic, cognitive) extracted from TypeScript AST nodes `ts-complexity-analyzer.ts:11-11`
+- **ContentHasher** — A function that hashes input text to a string `incremental-parser.ts:61-61`
+- **ControlFlow** — Represents control flow structures extracted from TypeScript AST nodes `ts-control-flow-extractor.ts:12-12`
+- **CppParserType** — Represents the C++ parser type `unified-parser.ts:30-30`
+- **Directive** — Represents a directive in a Helm template `helm-parser.ts:485-485`
+- **Documentation** — Represents the documentation extracted from a TypeScript AST node `ts-doc-extractor.ts:11-11`
+- **ExceptionInfo** — Represents an exception in the control flow `ts-control-flow-extractor.ts:15-15`
+- **ExtractionPhase** — Represents a phase in the extraction process `rust-analyzer.ts:881-881`
+- **GoParserType** — Represents the Go parser type `unified-parser.ts:28-28`
+- **HelmParserType** — Represents the Helm parser type `unified-parser.ts:35-35`
+- **JavaAntlrParserType** — Lazy-loaded ANTLR parser (fallback, more accurate for edge cases) `java-native-parser.ts:32-32`
+- **JavaChevrotainParserType** — Lazy-loaded Chevrotain parser (primary, faster) `java-native-parser.ts:20-20`
+- **JavaParserType** — Represents the Java parser type `unified-parser.ts:26-26`
+- **JsonParserType** — Represents the JSON parser type `unified-parser.ts:33-33`
+- **JsonValue** — Value in JSON, which can be a string, number, boolean, null, array, or object `json-parser.ts:77-77`
+- **KotlinAntlrParserType** — A type alias for the ANTLR parser class `kotlin-native-parser.ts:45-45`
+- **KotlinParserType** — Represents the Kotlin parser type `unified-parser.ts:27-27`
+- **LocationInfo** — Represents the start and end locations of a parsed entity `kotlin-antlr-parser.ts:58-61`
+- **LocationInfo** — Represents the start and end positions of a token or context in the source code `rust-antlr-parser.ts:64-67`
+- **LoopInfo** — Represents a loop in the control flow `ts-control-flow-extractor.ts:14-14`
+- **NodeHandler** — A function that processes an AST node and updates the handler context `c-analyzer.ts:42-42`
+- **NodeHandler** — Signature for every node-type handler registered in the dispatch map `java-analyzer.ts:43-52`
+- **PowerShellParserType** — Represents the PowerShell parser type `unified-parser.ts:32-32`
+- **ProjectType** — Represents the type of a project `unified-parser.ts:109-121`
+- **PythonParserType** — Represents the Python parser type `unified-parser.ts:25-25`
+- **ReturnInfo** — Represents a return in the control flow `ts-control-flow-extractor.ts:16-16`
+- **RustAntlrParserType** — Type alias for the ANTLR parser module `rust-native-parser.ts:31-31`
+- **RustParserType** — Represents the Rust parser type `unified-parser.ts:29-29`
+- **SourceFileWithDiagnostics** — A source file with associated diagnostic messages `typescript-parser.ts:259-259`
+- **TypedCstNode** — A CST node with children and no image property `java-chevrotain-parser.ts:33-35`
+- **TypeReference** — Represents a reference to a type in a TypeScript AST node `ts-call-extractor.ts:233-233`
+- **TypeScriptParserType** — Represents the TypeScript parser type `unified-parser.ts:24-24`
+- **ZigParserType** — Represents the Zig parser type `unified-parser.ts:34-34`
+
+### Import_decl
+- **../agents/dev/file-extensions.js** — Imports `../agents/dev/file-extensions.js` from `../agents/dev/file-extensions.js`. `incremental-parser.ts:3-3`
+- **../agents/dev/file-extensions.js** — Imports `../agents/dev/file-extensions.js`. `unified-parser.ts:88-99`
+- **../agents/workers/worker-logging.js** — Imports `../agents/workers/worker-logging.js` from `../agents/workers/worker-logging.js`. `kotlin-k2-provider.ts:23-23`, `kotlin-native-parser.ts:26-26`
+- **../config/constants.js** — Imports `../config/constants.js` from `../config/constants.js`. `bash-analyzer.ts:20-20`, `c-analyzer.ts:19-19`, `cpp-analyzer.ts:13-13`, `go-analyzer.ts:9-9`, `java-analyzer.ts:19-19`, `kotlin-analyzer.ts:24-24`, `powershell-analyzer.ts:23-23`
+- **../generated/java/Java20Lexer.js** — Imports `../generated/java/Java20Lexer.js` from `../generated/java/Java20Lexer.js`. `java-antlr-parser.ts:18-18`
+- **../generated/java/Java20Parser.js** — Imports `../generated/java/Java20Parser.js`. `java-antlr-parser.ts:19-38`
+- **../generated/kotlin/KotlinLexer.js** — Imports `../generated/kotlin/KotlinLexer.js` from `../generated/kotlin/KotlinLexer.js`. `kotlin-antlr-parser.ts:18-18`
+- **../generated/kotlin/KotlinParser.js** — Imports `../generated/kotlin/KotlinParser.js`. `kotlin-antlr-parser.ts:19-37`
+- **../generated/rust/RustLexer.js** — Imports `../generated/rust/RustLexer.js` from `../generated/rust/RustLexer.js`. `rust-antlr-parser.ts:11-11`
+- **../generated/rust/RustParser.js** — Imports `../generated/rust/RustParser.js`. `rust-antlr-parser.ts:12-27`
+- **../logging/index.js** — Imports `../logging/index.js` from `../logging/index.js`. `angular-parser.ts:15-15`, `bash-analyzer.ts:21-21`, `bash-native-parser.ts:16-16`, `batch-analyzer.ts:23-23`, `c-analyzer.ts:20-20`, `cpp-analyzer.ts:14-14`, `cpp-native-parser.ts:18-18`, `go-analyzer.ts:10-10`, `go-native-parser.ts:21-21`, `helm-parser.ts:18-18`, `incremental-parser.ts:4-4`, `java-analyzer.ts:20-20`, `java-antlr-parser.ts:39-39`, `java-chevrotain-parser.ts:21-21`, `java-native-parser.ts:16-16`, `javaparser-integration.ts:17-17`, `json-parser.ts:19-19`, `kotlin-antlr-parser.ts:38-38`, `kotlin-compiler-integration.ts:11-11`, `kotlin-k2-provider.ts:24-24`, `kotlin-native-parser.ts:27-27`, `powershell-analyzer.ts:24-24`, `powershell-native-parser.ts:15-15`, `pyright-integration.ts:16-16`, `python-native-parser.ts:20-20`, `rust-analyzer-integration.ts:18-18`, `rust-antlr-parser.ts:28-28`, `rust-native-parser.ts:15-15`, `swift-native-parser.ts:20-20`, `ts-class-extractor.ts:8-8`, `typescript-parser.ts:24-24`, `unified-parser.ts:15-15`, `zig-native-parser.ts:17-17`
+- **../types/parser.js** — Imports `../types/parser.js` from `../types/parser.js`. `angular-analyzer.ts:12-12`, `angular-parser.ts:16-16`, `base-parser-utils.ts:12-12`, `base-parser.ts:8-8`, `bash-analyzer.ts:22-22`, `bash-native-parser.ts:17-17`, `batch-analyzer.ts:24-24`, `c-analyzer.ts:21-21`, `cpp-analyzer.ts:15-15`, `cpp-declarator-utils.ts:7-7`, `cpp-native-parser.ts:19-19`, `cpp-template-utils.ts:7-7`, `css-analyzer.ts:12-12`, `go-analyzer.ts:11-11`, `go-native-parser.ts:22-22`, `helm-parser.ts:19-19`, `html-analyzer.ts:11-11`, `java-analyzer.ts:21-21`, `java-antlr-parser.ts:40-40`, `java-chevrotain-parser.ts:22-22`, `java-native-parser.ts:17-17`, `javaparser-integration.ts:18-18`, `json-parser.ts:20-20`, `kotlin-analyzer.ts:25-25`, `kotlin-antlr-parser.ts:39-39`, `kotlin-compiler-integration.ts:12-12`, `kotlin-k2-provider.ts:25-25`, `kotlin-native-parser.ts:28-28`, `ngrx-parser.ts:18-18`, `powershell-analyzer.ts:25-25`, `powershell-native-parser.ts:16-16`, `pyright-integration.ts:17-17`, `python-native-parser.ts:21-21`, `regex-entity-extractor.ts:15-15`, `rust-analyzer-integration.ts:19-19`, `rust-analyzer.ts:20-20`, `rust-antlr-parser.ts:29-29`, `rust-native-parser.ts:16-16`, `swift-native-parser.ts:21-21`, `ts-ast-helpers.ts:9-9`, `ts-call-extractor.ts:9-9`, `ts-class-extractor.ts:9-9`, `ts-complexity-analyzer.ts:9-9`, `ts-control-flow-extractor.ts:9-9`, `ts-doc-extractor.ts:9-9`, `ts-function-extractor.ts:8-8`, `ts-import-export-extractor.ts:8-8`, `ts-interface-extractor.ts:8-8`, `ts-js-patterns-extractor.ts:14-14`, `ts-type-extractor.ts:8-8`, `typescript-parser.ts:25-25`, `unified-parser.ts:16-16`, `xml-analyzer.ts:12-12`, `zig-native-parser.ts:18-18`
+- **../types/parser.js** — Imports `../types/parser.js`. `incremental-parser.ts:5-13`
+- **../utils/circuit-breaker.js** — Imports `../utils/circuit-breaker.js` from `../utils/circuit-breaker.js`. `cpp-analyzer.ts:16-16`
+- **../utils/config-paths.js** — Imports `../utils/config-paths.js` from `../utils/config-paths.js`. `kotlin-k2-provider.ts:26-26`
+- **../utils/fast-hash.js** — Imports `../utils/fast-hash.js` from `../utils/fast-hash.js`. `incremental-parser.ts:14-14`
+- **../utils/file-ops.js** — Imports `../utils/file-ops.js` from `../utils/file-ops.js`. `helm-parser.ts:20-20`, `incremental-parser.ts:15-15`, `unified-parser.ts:17-17`
+- **../utils/jvm-detection.js** — Imports `../utils/jvm-detection.js` from `../utils/jvm-detection.js`. `kotlin-native-parser.ts:29-29`
+- **../utils/runtime-detection.js** — Imports `../utils/runtime-detection.js` from `../utils/runtime-detection.js`. `incremental-parser.ts:16-16`, `javaparser-integration.ts:19-19`, `kotlin-k2-provider.ts:27-27`, `pyright-integration.ts:18-18`, `rust-analyzer-integration.ts:20-20`
+- **./angular-parser.js** — Imports `./angular-parser.js` from `./angular-parser.js`. `typescript-parser.ts:26-26`
+- **./base-parser-utils.js** — Imports `./base-parser-utils.js` from `./base-parser-utils.js`. `bash-analyzer.ts:23-23`, `batch-analyzer.ts:25-25`, `c-analyzer.ts:22-22`, `cpp-analyzer.ts:17-17`, `css-analyzer.ts:13-13`, `go-analyzer.ts:12-12`, `go-native-parser.ts:23-23`, `html-analyzer.ts:12-12`, `java-analyzer.ts:22-22`, `kotlin-analyzer.ts:26-26`, `powershell-analyzer.ts:26-26`, `regex-entity-extractor.ts:16-16`, `rust-analyzer.ts:21-21`, `rust-native-parser.ts:17-17`, `zig-native-parser.ts:19-19`
+- **./base-parser.js** — Imports `./base-parser.js` from `./base-parser.js`. `unified-parser.ts:18-18`
+- **./cpp-declarator-utils.js** — Imports `./cpp-declarator-utils.js`. `cpp-analyzer.ts:18-25`
+- **./cpp-template-utils.js** — Imports `./cpp-template-utils.js` from `./cpp-template-utils.js`. `cpp-analyzer.ts:26-26`
+- **./java/extraction-helpers.js** — Imports `./java/extraction-helpers.js`. `java-antlr-parser.ts:43-60`
+- **./java/extractors/unified-extractor.js** — Imports `./java/extractors/unified-extractor.js` from `./java/extractors/unified-extractor.js`. `java-antlr-parser.ts:63-63`
+- **./java/types.js** — Imports `./java/types.js` from `./java/types.js`. `java-antlr-parser.ts:64-64`
+- **./kotlin-compiler-integration.js** — Imports `./kotlin-compiler-integration.js`. `kotlin-native-parser.ts:30-36`
+- **./kotlin-k2-provider.js** — Imports `./kotlin-k2-provider.js`. `kotlin-native-parser.ts:37-42`
+- **./kotlin/extractors/unified-extractor.js** — Imports `./kotlin/extractors/unified-extractor.js` from `./kotlin/extractors/unified-extractor.js`. `kotlin-antlr-parser.ts:43-43`
+- **./multipass/multipass-orchestrator.js** — Imports `./multipass/multipass-orchestrator.js` from `./multipass/multipass-orchestrator.js`. `incremental-parser.ts:17-17`
+- **./ngrx-parser.js** — Imports `./ngrx-parser.js` from `./ngrx-parser.js`. `typescript-parser.ts:27-27`
+- **./ngrx/builders.js** — Imports `./ngrx/builders.js` from `./ngrx/builders.js`. `ngrx-parser.ts:19-19`
+- **./ngrx/types.js** — Imports `./ngrx/types.js` from `./ngrx/types.js`. `ngrx-parser.ts:20-20`
+- **./pyright-integration.js** — Imports `./pyright-integration.js` from `./pyright-integration.js`. `python-native-parser.ts:22-22`
+- **./regex-entity-extractor.js** — Imports `./regex-entity-extractor.js` from `./regex-entity-extractor.js`. `bash-native-parser.ts:18-18`, `cpp-native-parser.ts:20-20`, `go-native-parser.ts:24-24`, `powershell-native-parser.ts:17-17`, `python-native-parser.ts:23-23`, `rust-native-parser.ts:18-18`, `rust-native-parser.ts:19-19`
+- **./rust-analyzer-integration.js** — Imports `./rust-analyzer-integration.js`. `rust-native-parser.ts:20-28`
+- **./rust/ast-helpers.js** — Imports `./rust/ast-helpers.js`. `rust-analyzer.ts:23-48`
+- **./rust/pattern-identifier.js** — Imports `./rust/pattern-identifier.js` from `./rust/pattern-identifier.js`. `rust-analyzer.ts:50-50`
+- **./ts-antipattern-hints-extractor.js** — Imports `./ts-antipattern-hints-extractor.js` from `./ts-antipattern-hints-extractor.js`. `ts-class-extractor.ts:10-10`, `ts-function-extractor.ts:9-9`
+- **./ts-ast-helpers.js** — Imports `./ts-ast-helpers.js` from `./ts-ast-helpers.js`. `ts-call-extractor.ts:10-10`, `ts-class-extractor.ts:11-11`, `ts-control-flow-extractor.ts:10-10`, `ts-function-extractor.ts:10-10`, `ts-import-export-extractor.ts:9-9`, `ts-interface-extractor.ts:9-9`, `ts-js-patterns-extractor.ts:15-15`, `ts-type-extractor.ts:9-9`, `typescript-parser.ts:29-29`
+- **./ts-call-extractor.js** — Imports `./ts-call-extractor.js`. `ts-class-extractor.ts:12-18`, `ts-function-extractor.ts:11-17`
+- **./ts-call-extractor.js** — Imports `./ts-call-extractor.js` from `./ts-call-extractor.js`. `ts-interface-extractor.ts:10-10`, `ts-js-patterns-extractor.ts:16-16`, `ts-type-extractor.ts:10-10`
+- **./ts-class-extractor.js** — Imports `./ts-class-extractor.js` from `./ts-class-extractor.js`. `typescript-parser.ts:31-31`
+- **./ts-closure-hints-extractor.js** — Imports `./ts-closure-hints-extractor.js` from `./ts-closure-hints-extractor.js`. `ts-class-extractor.ts:19-19`, `ts-function-extractor.ts:18-18`
+- **./ts-complexity-analyzer.js** — Imports `./ts-complexity-analyzer.js` from `./ts-complexity-analyzer.js`. `ts-class-extractor.ts:20-20`, `ts-function-extractor.ts:19-19`, `ts-js-patterns-extractor.ts:17-17`
+- **./ts-control-flow-extractor.js** — Imports `./ts-control-flow-extractor.js` from `./ts-control-flow-extractor.js`. `ts-class-extractor.ts:21-21`, `ts-function-extractor.ts:20-20`, `ts-js-patterns-extractor.ts:18-18`
+- **./ts-doc-extractor.js** — Imports `./ts-doc-extractor.js` from `./ts-doc-extractor.js`. `ts-class-extractor.ts:22-22`, `ts-function-extractor.ts:21-21`, `ts-interface-extractor.ts:11-11`, `ts-js-patterns-extractor.ts:19-19`, `ts-type-extractor.ts:11-11`
+- **./ts-function-extractor.js** — Imports `./ts-function-extractor.js`. `typescript-parser.ts:32-36`
+- **./ts-import-export-extractor.js** — Imports `./ts-import-export-extractor.js` from `./ts-import-export-extractor.js`. `typescript-parser.ts:37-37`
+- **./ts-interface-extractor.js** — Imports `./ts-interface-extractor.js` from `./ts-interface-extractor.js`. `typescript-parser.ts:38-38`
+- **./ts-jit-hints-extractor.js** — Imports `./ts-jit-hints-extractor.js` from `./ts-jit-hints-extractor.js`. `ts-class-extractor.ts:23-23`, `ts-function-extractor.ts:22-22`
+- **./ts-js-patterns-extractor.js** — Imports `./ts-js-patterns-extractor.js`. `typescript-parser.ts:39-46`
+- **./ts-ngrx-extractor.js** — Imports `./ts-ngrx-extractor.js` from `./ts-ngrx-extractor.js`. `ts-class-extractor.ts:24-24`
+- **./ts-ngrx-extractor.js** — Imports `./ts-ngrx-extractor.js`. `ts-function-extractor.ts:23-28`
+- **./ts-type-extractor.js** — Imports `./ts-type-extractor.js`. `typescript-parser.ts:47-51`
+- **./unified-parser.js** — Imports `./unified-parser.js` from `./unified-parser.js`. `incremental-parser.ts:18-18`
+- **antlr4ng** — Imports `antlr4ng` from `antlr4ng`. `java-antlr-parser.ts:17-17`, `kotlin-antlr-parser.ts:17-17`, `rust-antlr-parser.ts:10-10`
+- **java-parser** — Imports `java-parser` from `java-parser`. `java-chevrotain-parser.ts:19-19`, `java-chevrotain-parser.ts:20-20`
+- **lru-cache** — Imports `lru-cache` from `lru-cache`. `incremental-parser.ts:2-2`
+- **node:child_process** — Imports `node:child_process` from `node:child_process`. `bash-native-parser.ts:14-14`, `cpp-native-parser.ts:14-14`, `go-native-parser.ts:16-16`, `javaparser-integration.ts:14-14`, `kotlin-compiler-integration.ts:10-10`, `kotlin-k2-provider.ts:17-17`, `powershell-native-parser.ts:14-14`, `pyright-integration.ts:15-15`, `python-native-parser.ts:16-16`, `rust-analyzer-integration.ts:15-15`, `swift-native-parser.ts:19-19`, `zig-native-parser.ts:16-16`
+- **node:fs** — Imports `node:fs` from `node:fs`. `cpp-native-parser.ts:15-15`, `go-native-parser.ts:17-17`, `javaparser-integration.ts:15-15`, `kotlin-k2-provider.ts:18-18`, `python-native-parser.ts:17-17`, `rust-analyzer-integration.ts:16-16`
+- **node:os** — Imports `node:os` from `node:os`. `cpp-native-parser.ts:16-16`, `go-native-parser.ts:18-18`
+- **node:path** — Imports `node:path` from `node:path`. `bash-native-parser.ts:15-15`, `cpp-native-parser.ts:17-17`, `css-analyzer.ts:11-11`, `go-native-parser.ts:19-19`, `helm-parser.ts:17-17`, `html-analyzer.ts:10-10`, `incremental-parser.ts:1-1`, `javaparser-integration.ts:16-16`, `json-parser.ts:18-18`, `kotlin-k2-provider.ts:19-19`, `python-native-parser.ts:18-18`, `rust-analyzer-integration.ts:17-17`, `unified-parser.ts:14-14`
+- **node:readline** — Imports `node:readline` from `node:readline`. `kotlin-k2-provider.ts:20-20`
+- **node:stream** — Imports `node:stream` from `node:stream`. `kotlin-k2-provider.ts:21-21`
+- **node:stream/promises** — Imports `node:stream/promises` from `node:stream/promises`. `kotlin-k2-provider.ts:22-22`
+- **node:url** — Imports `node:url` from `node:url`. `go-native-parser.ts:20-20`, `python-native-parser.ts:19-19`
+- **typescript** — Imports `typescript` from `typescript`. `angular-parser.ts:14-14`, `ngrx-parser.ts:17-17`, `ts-antipattern-hints-extractor.ts:12-12`, `ts-ast-helpers.ts:8-8`, `ts-call-extractor.ts:8-8`, `ts-class-extractor.ts:7-7`, `ts-closure-hints-extractor.ts:17-17`, `ts-complexity-analyzer.ts:8-8`, `ts-control-flow-extractor.ts:8-8`, `ts-doc-extractor.ts:8-8`, `ts-function-extractor.ts:7-7`, `ts-import-export-extractor.ts:7-7`, `ts-interface-extractor.ts:7-7`, `ts-js-patterns-extractor.ts:13-13`, `ts-ngrx-extractor.ts:8-8`, `ts-type-extractor.ts:7-7`, `typescript-parser.ts:23-23`, `ts-jit-hints-extractor.ts:8-8`
+
+### Property
+- **_start** — Represents the start of a Kotlin file `kotlin-antlr-parser.ts:811-811`
+- **_start** — Start token of the context node `rust-antlr-parser.ts:45-45`
+- **_stop** — Represents the end of a token in the ANTLR parser `kotlin-antlr-parser.ts:811-811`
+- **_stop** — Stop token of the context—one more than the stop token `rust-antlr-parser.ts:47-47`
+- **_workspaceRoot** — The root directory of the current workspace `unified-parser.ts:212-212`
+- **actionName** — Name of an action listened to via ofType() `ts-ngrx-extractor.ts:17-17`
+- **actionName** — Name of the action dispatched `ts-ngrx-extractor.ts:28-28`
+- **actionName** — Stores the name of an action `ts-ngrx-extractor.ts:38-38`
+- **actionName** — Represents the name of an action `ts-ngrx-extractor.ts:56-56`
+- **addListenerCount** — Count of addEventListener calls without corresponding removeEventListener calls `ts-closure-hints-extractor.ts:24-24`
+- **addListenerCount** — Adds a listener to count `ts-closure-hints-extractor.ts:232-232`
+- **addMemberRelationships** — Adds member relationships to the relationships array, including calls and direct relations `ts-class-extractor.ts:204-204`
+- **addTypeReferenceRelationships** — Adds type reference relationships excluding extends/implements `ts-class-extractor.ts:205-205`
+- **alias** — The alias used for an imported symbol `ts-import-export-extractor.ts:29-29`
+- **alias** — Represents an alias for a variable or identifier `ts-js-patterns-extractor.ts:508-508`
+- **allocCallCount** — Tracks the number of memory allocation calls `zig-native-parser.ts:1057-1057`
+- **analysis** — Stores the parsed NgRx analysis results `ngrx-parser.ts:44-44`
+- **analysis** — Stores the parsed analysis of NgRx constructs `ngrx-parser.ts:652-652`
+- **angular** — Angular-specific parser extension `angular-parser.ts:183-183`
+- **angularType** — Angular decorator type `angular-parser.ts:27-27`
+- **annotations** — Stores annotations for a Kotlin declaration `kotlin-antlr-parser.ts:831-831`
+- **annotations** — Stores an array of annotations with their names and optional arguments `kotlin-antlr-parser.ts:835-835`
+- **args** — Contains arguments passed to a pipe usage `angular-parser.ts:124-124`
+- **argumentCount** — The number of arguments for an entity `go-native-parser.ts:924-924`
+- **argumentCount** — Represents the number of arguments in a function `swift-native-parser.ts:622-622`
+- **argumentCount** — Stores the number of arguments for a Swift function `swift-native-parser.ts:991-991`
+- **argumentCount** — Stores the number of arguments for a function or method `swift-native-parser.ts:998-998`
+- **argumentCount** — Stores the argument count of an entity `zig-native-parser.ts:867-867`
+- **argumentCount** — Tracks the number of arguments for a function call `zig-native-parser.ts:869-869`
+- **arguments** — Extracts arguments from a node `java-chevrotain-parser.ts:167-167`
+- **arguments** — Initializes an array to store annotations with name, arguments, and isBuiltin flags `java-chevrotain-parser.ts:168-168`
+- **arguments** — Stores arguments for a Kotlin declaration `kotlin-antlr-parser.ts:831-831`
+- **arguments** — Represents the arguments of an annotation `kotlin-antlr-parser.ts:835-835`
+- **argumentsRefCount** — A counter for references to the `arguments` built-in object `ts-jit-hints-extractor.ts:12-12`
+- **assets** — Array of release assets `kotlin-k2-provider.ts:57-57`
+- **avgParseTimeMs** — Stores the average parse time in milliseconds `base-parser.ts:17-17`, `rust-native-parser.ts:50-50`, `swift-native-parser.ts:31-31`, `typescript-parser.ts:166-166`, `zig-native-parser.ts:29-29`
+- **avgParseTimeMs** — Stores the average parsing time in milliseconds `bash-native-parser.ts:50-50`, `json-parser.ts:64-64`
+- **avgParseTimeMs** — Tracks the average parse time in milliseconds `cpp-native-parser.ts:47-47`, `go-native-parser.ts:394-394`
+- **avgParseTimeMs** — Calculates the average parse time in milliseconds `helm-parser.ts:48-48`
+- **avgParseTimeMs** — Average parse time in milliseconds `java-native-parser.ts:51-51`
+- **avgParseTimeMs** — The average parse time in milliseconds `kotlin-native-parser.ts:64-64`
+- **avgParseTimeMs** — Represents the average parsing time in milliseconds `powershell-native-parser.ts:199-199`
+- **avgParseTimeMs** — Stores the average parse time in milliseconds for Python files `python-native-parser.ts:396-396`
+- **awaits** — The await statement in a function `go-native-parser.ts:949-949`
+- **bareCount** — Represents the count of bare variable usage in captured variables `ts-closure-hints-extractor.ts:178-178`
+- **baseClasses** — Stores base classes for a Kotlin declaration `kotlin-antlr-parser.ts:895-895`
+- **baseClasses** — Stores base classes for Swift classes `swift-native-parser.ts:1088-1088`
+- **baseClasses** — An array of base classes for the extracted class `ts-class-extractor.ts:199-199`
+- **bashParser** — A Bash-specific parser `unified-parser.ts:203-203`
+- **basic** — Basic analysis function `pyright-integration.ts:170-170`
+- **branches** — The branches of a conditional statement `go-native-parser.ts:945-945`
+- **browser_download_url** — Browser download URL for the release asset `kotlin-k2-provider.ts:52-52`
+- **Bun** — Bun runtime with JSONC support (Bun 1.3.6+) `json-parser.ts:39-39`
+- **cache** — A cache for storing parsed entities `incremental-parser.ts:111-111`
+- **cacheHits** — Counts the number of cache hits during parsing `base-parser.ts:15-15`
+- **cacheHits** — Counts the number of cache hits `bash-native-parser.ts:48-48`, `powershell-native-parser.ts:197-197`, `swift-native-parser.ts:29-29`, `typescript-parser.ts:164-164`
+- **cacheHits** — Tracks the number of cache hits `cpp-native-parser.ts:45-45`, `go-native-parser.ts:392-392`, `helm-parser.ts:46-46`, `zig-native-parser.ts:27-27`
+- **cacheHits** — Count of cache hits `java-native-parser.ts:49-49`
+- **cacheHits** — Number of cache hits `json-parser.ts:62-62`
+- **cacheHits** — A counter for the number of cache hits `kotlin-native-parser.ts:62-62`
+- **cacheHits** — Number of cache hits during the parsing process `python-native-parser.ts:394-394`
+- **cacheHits** — Count of cache hits during parsing `rust-native-parser.ts:48-48`
+- **cacheMemoryMB** — Tracks the memory used for caching `base-parser.ts:20-20`
+- **cacheMemoryMB** — Stores the cache memory usage in megabytes `bash-native-parser.ts:53-53`
+- **cacheMemoryMB** — Tracks the cache memory usage in megabytes `cpp-native-parser.ts:50-50`, `go-native-parser.ts:397-397`, `swift-native-parser.ts:34-34`
+- **cacheMemoryMB** — Tracks the memory usage for caching `helm-parser.ts:51-51`
+- **cacheMemoryMB** — Cache memory usage in megabytes `java-native-parser.ts:54-54`
+- **cacheMemoryMB** — Cache memory used in megabytes `json-parser.ts:67-67`
+- **cacheMemoryMB** — The memory used for caching in megabytes `kotlin-native-parser.ts:67-67`
+- **cacheMemoryMB** — Represents the amount of memory allocated for caching `powershell-native-parser.ts:202-202`
+- **cacheMemoryMB** — Memory used for caching during the parsing process in megabytes `python-native-parser.ts:399-399`
+- **cacheMemoryMB** — Memory used for caching `rust-native-parser.ts:53-53`
+- **cacheMemoryMB** — Tracks the memory usage of the parser cache `typescript-parser.ts:169-169`
+- **cacheMemoryMB** — Tracks the memory usage of the cache in megabytes `zig-native-parser.ts:32-32`
+- **cacheMisses** — Counts the number of cache misses during parsing `base-parser.ts:16-16`
+- **cacheMisses** — Counts the number of cache misses `bash-native-parser.ts:49-49`, `powershell-native-parser.ts:198-198`, `swift-native-parser.ts:30-30`, `typescript-parser.ts:165-165`
+- **cacheMisses** — Tracks the number of cache misses `cpp-native-parser.ts:46-46`, `go-native-parser.ts:393-393`, `helm-parser.ts:47-47`, `zig-native-parser.ts:28-28`
+- **cacheMisses** — Count of cache misses `java-native-parser.ts:50-50`
+- **cacheMisses** — Number of cache misses `json-parser.ts:63-63`
+- **cacheMisses** — A counter for the number of cache misses `kotlin-native-parser.ts:63-63`
+- **cacheMisses** — Number of cache misses during the parsing process `python-native-parser.ts:395-395`
+- **cacheMisses** — Count of cache misses during parsing `rust-native-parser.ts:49-49`
+- **calledScripts** — A set of scripts called in the batch script `batch-analyzer.ts:41-41`
+- **callGraph** — The call graph of parsed entities `kotlin-k2-provider.ts:153-153`
+- **callGraph** — Extracts call graph from Kotlin code `kotlin-k2-provider.ts:658-658`
+- **calls** — Extracts function calls from the template `helm-parser.ts:550-550`
+- **capturedVarCount** — Count of captured variables in the analyzed function `ts-closure-hints-extractor.ts:21-21`
+- **changeDetection** — Change detection strategy `angular-parser.ts:45-45`
+- **character** — Character position of a Pyright diagnostic `pyright-integration.ts:39-39`
+- **character** — Represents the character number of the end position `pyright-integration.ts:40-40`, `rust-analyzer-integration.ts:65-65`
+- **character** — The character position of the start position `rust-analyzer-integration.ts:33-33`
+- **character** — The character position of a diagnostic range `rust-analyzer-integration.ts:34-34`
+- **character** — Represents a character position within a line `rust-analyzer-integration.ts:38-38`
+- **character** — Represents the end character of a range `rust-analyzer-integration.ts:39-39`
+- **character** — Represents the start character of a range. `rust `rust-analyzer-integration.ts:64-64`
+- **character** — Specifies the character number of the start position `rust-analyzer-integration.ts:80-80`
+- **character** — Specifies the character number of the end position `rust-analyzer-integration.ts:81-81`
+- **checkedAt** — Cache for latest version check (avoid repeated API calls) `kotlin-k2-provider.ts:40-40`
+- **children** — Represents the children of an Angular AST node `angular-parser.ts:164-164`
+- **children** — A property of a CST node containing its children `java-chevrotain-parser.ts:34-34`
+- **children** — Represents the children of a parsed entity `kotlin-k2-provider.ts:170-170`
+- **children** — Represents the children of a document symbol `rust-analyzer-integration.ts:43-43`
+- **clangAvailable** — Indicates whether clang is available for AST extraction `cpp-native-parser.ts:66-66`
+- **classEntity** — Represents the parsed entity of a class `ts-class-extractor.ts:200-200`
+- **className** — The name of the class being extracted `ts-class-extractor.ts:198-198`
+- **cliBinaryAvailable** — Checks if the pre-compiled Go AST CLI binary is available `go-native-parser.ts:406-406`
+- **cliScriptAvailable** — Determines if the pre-compiled Go AST CLI script is available `go-native-parser.ts:405-405`
+- **cliScriptAvailable** — Indicates whether the CLI script is available `python-native-parser.ts:411-411`
+- **cmplx** — Stores complexity metrics for templates, nested entities, inheritance, and operations `cpp-analyzer.ts:44-44`
+- **code** — Represents the code associated with an entity `json-parser.ts:429-429`
+- **code** — Initializes an array to store parsed JSON objects `json-parser.ts:432-432`
+- **code** — The code identifier of a diagnostic `rust-analyzer-integration.ts:67-67`
+- **code** — Error code associated with an error `rust-analyzer-integration.ts:93-93`
+- **Col** — Represents the column number of a token in a shell script `bash-native-parser.ts:26-26`
+- **col** — Represents the column number in a C/C++ source file `cpp-native-parser.ts:28-28`
+- **column** — Returns the column number for a given index `base-parser-utils.ts:31-31`
+- **column** — Represents the column number in the source code `base-parser-utils.ts:55-55`, `base-parser-utils.ts:60-60`, `ts-ngrx-extractor.ts:57-57`, `ts-ngrx-extractor.ts:62-62`
+- **column** — The column number where the validation issue occurs `bash-analyzer.ts:35-35`
+- **column** — Column number of an error `bash-native-parser.ts:59-59`
+- **column** — Specifies the column number where the validation issue occurs `batch-analyzer.ts:31-31`
+- **column** — Column number of the start position `condition-extractor.ts:61-61`
+- **column** — Represents the column number of an error or entity `cpp-native-parser.ts:57-57`
+- **column** — Stores the column number of parsed entities `go-native-parser.ts:387-387`
+- **column** — Stores the column number of the parsed templates `helm-parser.ts:62-62`
+- **column** — Represents a column number in a file `helm-parser.ts:63-63`
+- **column** — Represents the current column number `helm-parser.ts:515-515`
+- **column** — Represents the column number of a template or include in a Helm chart `helm-parser.ts:832-832`
+- **column** — Returns the start and end columns of a location `helm-parser.ts:832-832`, `helm-parser.ts:859-859`
+- **column** — Represents the start and end positions of a column in a string `helm-parser.ts:859-859`
+- **column** — The column number of a node's start location `java-chevrotain-parser.ts:72-72`
+- **column** — Represents the end position with column number `java-chevrotain-parser.ts:73-73`
+- **column** — Represents a column number in the code `java-native-parser.ts:121-121`
+- **column** — The column number where an error occurred `javaparser-integration.ts:27-27`
+- **column** — Stores the column number of an error or message `json-parser.ts:74-74`
+- **column** — Specifies the column number of an error or log message `json-parser.ts:188-188`
+- **column** — Indicates the column number in the JSON file `json-parser.ts:489-489`
+- **column** — Stores error messages with column numbers `json-parser.ts:609-609`
+- **column** — Stores the column number of an error `json-parser.ts:719-719`
+- **column** — Returns the start and end positions of a JSON element, including line and column numbers `json-parser.ts:828-828`, `json-parser.ts:828-828`
+- **column** — Represents the column number of the start location `kotlin-antlr-parser.ts:59-59`
+- **column** — Represents the column number of the end position `kotlin-antlr-parser.ts:60-60`
+- **column** — Optional column number of the start position `kotlin-antlr-parser.ts:72-72`
+- **column** — Specifies the column number in the source file where the diagnostic occurred `kotlin-compiler-integration.ts:22-22`
+- **column** — The column number of a parsed entity `kotlin-k2-provider.ts:162-162`
+- **column** — Represents the end position of a resource, including line and column numbers `kotlin-k2-provider.ts:163-163`
+- **column** — Indicates the column number where the validation issue occurs `powershell-analyzer.ts:35-35`
+- **column** — Specifies the column number of the error `powershell-native-parser.ts:27-27`
+- **column** — Represents the column number in the PowerShell script `powershell-native-parser.ts:35-35`
+- **column** — Indicates the column number in the error location `powershell-native-parser.ts:208-208`
+- **column** — Specifies the column number in the start location `powershell-native-parser.ts:373-373`
+- **column** — Specifies the column number in the end location `powershell-native-parser.ts:374-374`
+- **column** — Column number of a parsed entity `python-native-parser.ts:389-389`
+- **column** — Column number of the token `rust-antlr-parser.ts:37-37`
+- **column** — The column number of a token or context `rust-antlr-parser.ts:65-65`
+- **column** — Stores the column number of the end position `rust-antlr-parser.ts:66-66`
+- **column** — Column number of a parsing error `rust-native-parser.ts:59-59`
+- **column** — Stores a column number `rust-native-parser.ts:167-167`
+- **column** — Stores the column number of the error `swift-native-parser.ts:41-41`
+- **column** — Not applicable — this is a property, not a function `ts-ast-helpers.ts:62-62`
+- **column** — Column number of an action in the source file `ts-ngrx-extractor.ts:18-18`
+- **column** — Column number of the selector in the source file `ts-ngrx-extractor.ts:24-24`
+- **column** — Represents the column number of a location `ts-ngrx-extractor.ts:29-29`, `ts-ngrx-extractor.ts:39-39`
+- **column** — Represents the column number of a location. `ts `ts-ngrx-extractor.ts:47-47`
+- **column** — Specifies the column number of a diagnostic message `typescript-parser.ts:256-256`
+- **column** — Represents a column in the file `unified-parser.ts:748-748`
+- **column** — Returns the start and end positions of a column in the file `unified-parser.ts:748-748`
+- **column** — Column number of the start location `xml-analyzer.ts:135-135`
+- **column** — Returns the start and end column information for a given XML element `xml-analyzer.ts:135-135`
+- **column** — Stores the column number of an error message `zig-native-parser.ts:39-39`
+- **compilerOptions** — Contains compiler options for the TypeScript configuration `json-parser.ts:85-88`
+- **condition** — The condition of a conditional statement `go-native-parser.ts:945-945`
+- **conditionalFieldAddCount** — A counter for conditional field additions in the AST `ts-jit-hints-extractor.ts:30-30`
+- **constructor** — Initializes an AngularASTNode with a name and value `angular-parser.ts:156-156`
+- **containerStack** — Array of strings representing the enclosing type stack `java-analyzer.ts:36-36`
+- **content** — The content of an entity `kotlin-k2-provider.ts:145-145`
+- **content** — Stores the content of the file `python-native-parser.ts:596-596`
+- **content** — Parses a batch of Python files using the CLI and returns a result array `python-native-parser.ts:656-656`
+- **contentHash** — Stores the hash of the file content `python-native-parser.ts:596-596`
+- **contentType** — Determines the content type of a JSON structure `json-parser.ts:405-405`
+- **context** — Represents the context of the parsed templates `helm-parser.ts:60-60`
+- **cppParser** — A C++-specific parser `unified-parser.ts:202-202`
+- **currentClass** — Represents the current class being parsed `java-chevrotain-parser.ts:127-127`
+- **currentClass** — Stores the current class being analyzed `kotlin-analyzer.ts:35-35`
+- **currentClass** — Stores the current class name being parsed `kotlin-antlr-parser.ts:54-54`
+- **currentClass** — Tracks the current class context during parsing `ngrx-parser.ts:45-45`
+- **currentImpl** — Stores the current implementation context being processed `rust-antlr-parser.ts:61-61`
+- **currentPackage** — Stores the current package being analyzed `kotlin-analyzer.ts:34-34`
+- **currentStruct** — Current struct being parsed `rust-antlr-parser.ts:60-60`
+- **currentType** — Represents the current type being parsed `swift-native-parser.ts:261-261`
+- **currentWorkspace** — Stores the current workspace `rust-native-parser.ts:77-77`
+- **deadline** — A wall-clock deadline passed to handlers to limit parsing time `c-analyzer.ts:39-39`
+- **declaredClasses** — A set of declared classes in the script `powershell-analyzer.ts:46-46`
+- **declaredFunctions** — A set of declared functions in the script `powershell-analyzer.ts:45-45`
+- **declaredLabels** — A set of labels declared in the batch script `batch-analyzer.ts:38-38`
+- **declaredVariables** — A set of declared variables in the script `bash-analyzer.ts:44-44`
+- **declaredVariables** — A set of variables declared in the batch script `batch-analyzer.ts:40-40`
+- **declaredVariables** — Stores a set of declared variables `powershell-analyzer.ts:44-44`
+- **dedupKey** — Optional dedup function. If provided and returns a key that was already seen, the entity is skipped `regex-entity-extractor.ts:34-34`
+- **defaultValue** — Represents the default value of a declaration `java-analyzer.ts:709-709`
+- **defaultValue** — Initializes an array to store entity names and types `java-analyzer.ts:710-710`
+- **defaultValue** — Provides the default value of a parsed entity `kotlin-k2-provider.ts:166-166`
+- **defaultValue** — Represents the default value of an entity `swift-native-parser.ts:1174-1174`
+- **defaultValue** — Stores the default value of a parameter in an array `swift-native-parser.ts:1177-1177`
+- **defaultValue** — Extracts the default value of an entity `zig-native-parser.ts:1177-1177`
+- **defaultValue** — Stores the default value of a parameter `zig-native-parser.ts:1180-1180`
+- **deferCount** — Stores the defer count `zig-native-parser.ts:1052-1052`
+- **definedFunctions** — A set of defined functions in the script `bash-analyzer.ts:46-46`
+- **deleteCount** — A counter for delete expressions in the AST `ts-jit-hints-extractor.ts:11-11`
+- **dependsOn** — Array of selectors this selector depends on `ts-ngrx-extractor.ts:45-48`
+- **depth** — Represents `c-analyzer.ts:531-531`
+- **depth** — Tracks the recursion depth during the C++ analysis `cpp-analyzer.ts:41-41`
+- **depth** — Stores the depth value in the JavaParseContext `java-analyzer.ts:153-153`
+- **descendantsOfType** — Represents a method to find descendants of a specific type in an AST node `go-analyzer.ts:449-449`
+- **description** — Stores a description of a file or resource `json-parser.ts:199-199`
+- **description** — Provides a description of an entity `json-parser.ts:215-215`
+- **description** — Returns an array of objects with code, description, and optional schema `json-parser.ts:429-429`
+- **description** — Initializes an array to store parsed JSON objects `json-parser.ts:432-432`
+- **description** — Provides a description of a Kotlin entity `kotlin-native-parser.ts:658-658`
+- **description** — Stores an array of objects with type and description properties `kotlin-native-parser.ts:661-661`
+- **description** — Stores an object with type and description properties or undefined `kotlin-native-parser.ts:664-664`
+- **detail** — Additional detail about the symbol `rust-analyzer-integration.ts:42-42`
+- **detail** — Additional details about a document symbol `rust-analyzer-integration.ts:52-52`
+- **detail** — Provides additional information about a symbol `rust-analyzer-integration.ts:83-83`
+- **diagnostics** — Contains an array of Kotlin diagnostics from the compilation `kotlin-compiler-integration.ts:28-28`
+- **diagnostics** — Stores related diagnostics for a Python entity `pyright-integration.ts:75-79`
+- **diagnostics** — The diagnostics from rust-analyzer `rust-analyzer-integration.ts:72-72`
+- **dispatches** — Array of actions dispatched inside the effect with their locations `ts-ngrx-extractor.ts:27-30`
+- **dispatches** — Array of actions dispatched via store.dispatch() `ts-ngrx-extractor.ts:55-58`
+- **dispatchFalse** — Boolean indicating whether the effect is dispatch: false `ts-ngrx-extractor.ts:32-32`
+- **documentation** — Contains the documentation of a parsed entity `kotlin-k2-provider.ts:169-169`
+- **doubleAssertionCount** — Counts the number of double assertions in the AST `ts-antipattern-hints-extractor.ts:16-16`
+- **dynamicPropAccessCount** — A counter for dynamic property access in the AST `ts-jit-hints-extractor.ts:15-15`
+- **encapsulation** — View encapsulation `angular-parser.ts:48-48`
+- **end** — Represents the end position of an Angular AST node `angular-parser.ts:162-162`
+- **end** — Represents the end location of an entity `base-parser-utils.ts:58-62`
+- **End** — Represents the end position of a node in the Abstract Syntax Tree (AST) of a shell script `bash-native-parser.ts:38-38`
+- **end** — Stores the end location of the parsed templates `helm-parser.ts:63-63`
+- **end** — Represents the end of the current entity `helm-parser.ts:832-832`
+- **end** — Represents the ending position of a template or include in a Helm chart `helm-parser.ts:859-859`
+- **end** — The end location of a node `java-chevrotain-parser.ts:73-73`
+- **end** — Represents the end position in the JSON file `json-parser.ts:828-828`
+- **end** — Represents the end location of a parsed entity `kotlin-antlr-parser.ts:60-60`
+- **end** — The end position of a parsed entity `kotlin-k2-provider.ts:163-163`
+- **end** — Indicates the end position of the parsed entity `powershell-native-parser.ts:374-374`
+- **end** — End position of a Pyright diagnostic `pyright-integration.ts:40-40`
+- **end** — The end position of the symbol `rust-analyzer-integration.ts:34-34`
+- **end** — The end position of a diagnostic range `rust-analyzer-integration.ts:39-39`
+- **end** — Indicates the end of a range or a line `rust-analyzer-integration.ts:65-65`
+- **end** — Stores the ending line and character of a range `rust-analyzer-integration.ts:81-81`
+- **end** — The ending position of a token or context `rust-antlr-parser.ts:66-66`
+- **end** — Ends parsing `unified-parser.ts:748-748`
+- **end** — Location end information `xml-analyzer.ts:135-135`
+- **end** — Ends the parsing process `zig-native-parser.ts:201-201`
+- **end** — Determines if a given index is inside a type body range `zig-native-parser.ts:1162-1162`
+- **endIndex** — Represents the end index in the file `helm-parser.ts:485-485`
+- **endPositions** — Stores end positions of parsed entities `helm-parser.ts:441-441`
+- **ent** — Stores an array of parsed entities in the JavaParseContext `java-analyzer.ts:151-151`
+- **entities** — A list of parsed entities from the script `bash-analyzer.ts:57-57`
+- **entities** — Array of parsed entities from a Bash script `bash-native-parser.ts:58-58`
+- **entities** — A list of parsed entities from the batch script `batch-analyzer.ts:51-51`
+- **entities** — A list of parsed semantic entities (functions, composites, typedefs, macros, variables) `c-analyzer.ts:37-37`
+- **entities** — A list of semantic entities extracted from the C source file `c-analyzer.ts:505-505`
+- **entities** — Stores parsed entities during the C++ analysis `cpp-analyzer.ts:38-38`
+- **entities** — Stores parsed entities in the analyzer state `cpp-analyzer.ts:105-105`
+- **entities** — Represents parsed entities in a C/C++ file `cpp-native-parser.ts:55-55`
+- **entities** — Parses and returns a list of parsed entities and their relationships `cpp-native-parser.ts:292-292`, `go-analyzer.ts:53-53`
+- **entities** — Array of parsed entities from the Go source file `go-analyzer.ts:24-24`
+- **entities** — Stores the parsed entities from the Go code `go-native-parser.ts:385-385`
+- **entities** — Stores parsed entities `helm-parser.ts:441-441`
+- **entities** — Entities extracted during the analysis `java-analyzer.ts:201-201`
+- **entities** — A property representing the parsed entities `java-antlr-parser.ts:77-77`
+- **entities** — Stores parsed entities such as classes, enums, records, interfaces, methods, etc `java-chevrotain-parser.ts:125-125`
+- **entities** — Represents the entities parsed by the Java Chevrotain parser `java-chevrotain-parser.ts:1075-1075`
+- **entities** — An array of parsed entities from the Java code `javaparser-integration.ts:26-26`
+- **entities** — Entities extracted from JSON structure `json-parser.ts:72-72`
+- **entities** — Stores an array of parsed entities from the Kotlin source code `kotlin-antlr-parser.ts:52-52`
+- **entities** — Parses a Kotlin file and returns parsed entities and their relationships `kotlin-antlr-parser.ts:86-86`
+- **entities** — A collection of parsed entities `kotlin-k2-provider.ts:151-151`
+- **entities** — Represents entities in the Kotlin K2 Provider `kotlin-k2-provider.ts:658-658`
+- **entities** — Represents parsed entities `kotlin-native-parser.ts:395-395`
+- **entities** — Stores the parsed entities from NgRx constructs `ngrx-parser.ts:653-653`
+- **entities** — Represents an array of parsed entities `powershell-analyzer.ts:58-58`, `swift-native-parser.ts:39-39`
+- **entities** — Contains the parsed entities from the PowerShell script `powershell-native-parser.ts:207-207`
+- **entities** — Entities extracted from the parsed Python script `python-native-parser.ts:387-387`
+- **entities** — ParsedEntity array for entity extraction `rust-analyzer.ts:58-58`
+- **entities** — Stores extracted entities `rust-analyzer.ts:922-922`
+- **entities** — Array of parsed entities `rust-antlr-parser.ts:58-58`
+- **entities** — An array of parsed entities `rust-antlr-parser.ts:77-77`
+- **entities** — Holds an array of parsed entities `rust-native-parser.ts:58-58`, `typescript-parser.ts:60-60`
+- **entities** — Returns an object containing parsed entities and the current type `swift-native-parser.ts:261-261`
+- **entities** — Returns an object containing parsed entities and their relationships `swift-native-parser.ts:385-385`
+- **entities** — An array of parsed entities extracted from the source file `ts-class-extractor.ts:29-29`
+- **entities** — Contains an array of parsed entities from the TypeScript source file `ts-function-extractor.ts:33-33`
+- **entities** — An array of parsed entities, including import and export declarations `ts-import-export-extractor.ts:14-14`
+- **entities** — Contains an array of parsed entities `ts-interface-extractor.ts:16-16`
+- **entities** — An array of parsed entities from the TypeScript source file `ts-js-patterns-extractor.ts:24-24`
+- **entities** — An array of parsed entities, including type aliases and enums `ts-type-extractor.ts:16-16`
+- **entities** — Parses XML entities and returns them as an array of ParsedEntity objects `xml-analyzer.ts:18-18`
+- **entities** — Stores the parsed entities from a Zig file `zig-native-parser.ts:37-37`
+- **entitiesExtracted** — Number of entities extracted during analysis `rust-analyzer.ts:68-68`
+- **errdeferCount** — Counts the number of deferred error handling instances `zig-native-parser.ts:1053-1053`
+- **error** — An error object `incremental-parser.ts:65-65`
+- **error** — An error encountered during parsing `incremental-parser.ts:367-367`
+- **error** — An error message from the parsing process `kotlin-k2-provider.ts:154-154`
+- **error** — Error object returned by the LSP `rust-analyzer-integration.ts:93-93`
+- **errorCount** — Counts the number of parsing errors `base-parser.ts:21-21`, `swift-native-parser.ts:35-35`
+- **errorCount** — Counts the number of errors encountered during parsing `bash-native-parser.ts:54-54`
+- **errorCount** — Tracks the number of errors encountered `cpp-native-parser.ts:51-51`, `helm-parser.ts:52-52`, `zig-native-parser.ts:33-33`
+- **errorCount** — Tracks the number of parsing errors encountered `go-native-parser.ts:398-398`
+- **errorCount** — Count of parsing errors `java-native-parser.ts:55-55`
+- **errorCount** — Number of parsing errors `json-parser.ts:68-68`
+- **errorCount** — A counter for the number of errors encountered `kotlin-native-parser.ts:68-68`
+- **errorCount** — Tracks the number of errors encountered during parsing `powershell-native-parser.ts:203-203`
+- **errorCount** — Error count in Pyright output `pyright-integration.ts:54-54`
+- **errorCount** — Stores the count of parsing errors for Python files `python-native-parser.ts:400-400`
+- **errorCount** — Tracks the number of parsing errors `rust-native-parser.ts:54-54`
+- **errorCount** — Counts the number of parsing errors encountered `typescript-parser.ts:170-170`
+- **errors** — Stores any errors encountered during template parsing `angular-parser.ts:148-148`
+- **errors** — Contains an array of error messages `angular-parser.ts:176-176`
+- **errors** — Array of error messages with their locations `bash-native-parser.ts:59-59`
+- **errors** — Stores error messages during parsing `cpp-native-parser.ts:57-57`
+- **errors** — Stores any errors encountered during the parsing process `go-native-parser.ts:387-387`
+- **errors** — An array of error objects containing file paths and error messages `incremental-parser.ts:65-65`
+- **errors** — An array of error messages along with their locations in the Java code `javaparser-integration.ts:27-27`
+- **errors** — Errors encountered during parsing, including messages and locations `json-parser.ts:74-74`
+- **errors** — Contains an array of error messages with their respective line and column numbers `powershell-native-parser.ts:208-208`
+- **errors** — Errors encountered during the parsing of the Python script `python-native-parser.ts:389-389`
+- **errors** — Array of parsing errors `rust-native-parser.ts:59-59`
+- **errors** — Stores parsing errors `swift-native-parser.ts:41-41`
+- **errors** — Stores the errors encountered during parsing `zig-native-parser.ts:39-39`
+- **evalCount** — A counter for `eval(...)` calls in the AST `ts-jit-hints-extractor.ts:19-19`
+- **evalInClosureCount** — Count of eval() calls within closures in the analyzed function `ts-closure-hints-extractor.ts:23-23`
+- **eventBindings** — Stores event bindings for the template `angular-parser.ts:80-80`
+- **exceptions** — The exceptions in a code block `go-native-parser.ts:947-947`
+- **exclude** — Specifies files to exclude from the TypeScript configuration `json-parser.ts:90-90`
+- **exportedVariables** — A set of exported variables in the script `bash-analyzer.ts:45-45`
+- **expression** — Contains the expression part of a template binding `angular-parser.ts:100-100`
+- **expression** — Stores the expression associated with an Angular directive `angular-parser.ts:112-112`, `angular-parser.ts:118-118`
+- **extends** — Specifies the base configuration file to extend `json-parser.ts:84-84`
+- **failed** — The number of files that failed to parse `incremental-parser.ts:66-66`
+- **featureName** — Feature name if this is createFeatureSelector `ts-ngrx-extractor.ts:50-50`
+- **file** — A file path `incremental-parser.ts:65-65`
+- **file** — Represents a file being parsed `incremental-parser.ts:306-306`
+- **file** — A file path or identifier `incremental-parser.ts:315-315`
+- **file** — Stores an array of objects with file, hash, and result properties `incremental-parser.ts:316-316`
+- **file** — Stores an array of objects with file and error properties `incremental-parser.ts:367-367`
+- **file** — Provides the file path of the source file where the diagnostic occurred `kotlin-compiler-integration.ts:23-23`
+- **file** — File path for a Pyright diagnostic `pyright-integration.ts:35-35`
+- **file** — Represents a file in the project `unified-parser.ts:140-140`
+- **fileHashMap** — A map of file hashes to parsed entities `incremental-parser.ts:114-114`
+- **filePath** — The file path of the C source file being analyzed `c-analyzer.ts:36-36`
+- **filePath** — Stores the file path of the parsed Java code `java-chevrotain-parser.ts:123-123`
+- **filePath** — Stores the file path of the Kotlin source code being parsed `kotlin-antlr-parser.ts:50-50`
+- **filePath** — The file path of an entity `kotlin-k2-provider.ts:144-144`
+- **filePath** — Stores the file path of a resource `kotlin-k2-provider.ts:160-160`
+- **filePath** — Stores the file path of the source file `ngrx-parser.ts:43-43`, `ts-interface-extractor.ts:15-15`
+- **filePath** — Stores the file path for parsing `python-native-parser.ts:596-596`, `typescript-parser.ts:59-59`
+- **filePath** — Parses a batch of Python files using the CLI, returning a promise of PythonParseResult objects `python-native-parser.ts:656-656`
+- **filePath** — String representing the file path being analyzed `rust-analyzer.ts:61-61`
+- **filePath** — File path of the source code being parsed `rust-antlr-parser.ts:56-56`
+- **filePath** — The file path of the TypeScript source file `ts-class-extractor.ts:28-28`
+- **filePath** — Stores the file path for the class extractor `ts-class-extractor.ts:202-202`
+- **filePath** — Stores the file path of the TypeScript source file `ts-function-extractor.ts:32-32`, `ts-type-extractor.ts:15-15`
+- **filePath** — The file path of the source file `ts-import-export-extractor.ts:13-13`
+- **filePath** — Stores the file path for the TypeScript parser `ts-js-patterns-extractor.ts:23-23`
+- **files** — Lists files to be parsed by the JSON parser `json-parser.ts:91-91`
+- **filesAnalyzed** — Number of files analyzed in Pyright output `pyright-integration.ts:53-53`
+- **filesParsed** — Tracks the number of files parsed `base-parser.ts:14-14`, `cpp-native-parser.ts:44-44`, `go-native-parser.ts:391-391`, `swift-native-parser.ts:28-28`, `typescript-parser.ts:163-163`
+- **filesParsed** — Counts the number of files parsed `bash-native-parser.ts:47-47`, `powershell-native-parser.ts:196-196`
+- **filesParsed** — Counts the number of files parsed by the Helm parser `helm-parser.ts:45-45`
+- **filesParsed** — Count of files parsed `java-native-parser.ts:48-48`
+- **filesParsed** — Number of files parsed `json-parser.ts:61-61`
+- **filesParsed** — A counter for the number of files parsed `kotlin-native-parser.ts:61-61`
+- **filesParsed** — Number of files parsed during the parsing process `python-native-parser.ts:393-393`
+- **filesParsed** — Count of files parsed by the parser `rust-native-parser.ts:47-47`
+- **filesParsed** — Counts the number of files parsed by the Zig Native Parser `zig-native-parser.ts:26-26`
+- **forceUnwrapCount** — Stores the force unwrap count `zig-native-parser.ts:1050-1050`
+- **fp** — Stores the file path during the C++ analysis `cpp-analyzer.ts:40-40`
+- **fp** — File path of the Go source file being analyzed `go-analyzer.ts:22-22`
+- **fp** — Stores the file path in the JavaParseContext `java-analyzer.ts:149-149`
+- **freeCallCount** — Counts the number of memory deallocation calls `zig-native-parser.ts:1058-1058`
+- **from** — Represents the source of an entity `cpp-native-parser.ts:296-296`
+- **from** — Specifies the source entity in a K2 relationship `kotlin-k2-provider.ts:174-174`
+- **from** — Indicates the source of a resource `kotlin-k2-provider.ts:181-181`
+- **fromCache** — The number of files parsed from the cache `incremental-parser.ts:66-66`
+- **fullObjectCaptureCount** — Count of full object captures in the analyzed function `ts-closure-hints-extractor.ts:22-22`
+- **generalDiagnostics** — General diagnostics from Pyright output `pyright-integration.ts:51-51`
+- **getText** — Method to get the text of the context node `rust-antlr-parser.ts:48-48`
+- **goAvailable** — Checks if Go is available on the system `go-native-parser.ts:403-403`
+- **goParser** — A Go-specific parser `unified-parser.ts:200-200`
+- **goPath** — Represents the path to the Go executable `go-native-parser.ts:402-402`
+- **handler** — Contains the handler function of an event binding `angular-parser.ts:106-106`
+- **handler** — Represents the handler of an Angular AST node `angular-parser.ts:159-159`
+- **handlerMap** — Handler registry: Map<string, Handler> populated once per instance `java-analyzer.ts:166-166`
+- **handlers** — Map of handler functions for different AST nodes during the analysis `go-analyzer.ts:35-35`
+- **handlesActions** — Array of actions handled via on() with their locations `ts-ngrx-extractor.ts:37-40`
+- **hash** — Represents the hash of a file `incremental-parser.ts:306-306`
+- **hash** — A hash value for a file or content `incremental-parser.ts:315-315`
+- **hash** — Stores an array of objects with file, hash, and result properties `incremental-parser.ts:316-316`
+- **hashFn** — A function for computing content hashes `incremental-parser.ts:112-112`
+- **hasLoops** — A boolean indicating the presence of loops in the AST `ts-jit-hints-extractor.ts:21-21`
+- **hasScripts** — Represents whether the project has scripts `unified-parser.ts:126-126`
+- **hasValue** — Indicates whether the return statement has a value `go-native-parser.ts:948-948`
+- **hasWithStatement** — A boolean indicating the presence of a `with` statement in the AST `ts-jit-hints-extractor.ts:13-13`
+- **helmContextCache** — A cache for Helm context information `helm-parser.ts:83-83`
+- **helmParser** — A Helm-specific parser `unified-parser.ts:207-207`
+- **holeyArrayCount** — A counter for `new Array(n)` expressions that create HOLEY arrays `ts-jit-hints-extractor.ts:17-17`
+- **hostBindings** — Host bindings `angular-parser.ts:60-60`
+- **hostListeners** — Host listeners `angular-parser.ts:63-63`
+- **id** — An identifier for an entity `kotlin-k2-provider.ts:142-142`
+- **id** — Represents the unique identifier of a resource `kotlin-k2-provider.ts:149-149`
+- **id** — Unique identifier for a request or response `rust-analyzer-integration.ts:89-89`
+- **imported** — The name of the imported symbol `ts-import-export-extractor.ts:28-28`
+- **imported** — Represents an imported variable or identifier `ts-js-patterns-extractor.ts:508-508`
+- **importedModules** — A set of imported modules in the script `powershell-analyzer.ts:47-47`
+- **imports** — Imports for standalone components `angular-parser.ts:54-54`
+- **imports** — Stores import declarations `java-chevrotain-parser.ts:128-128`
+- **imports** — Stores a map of imported packages and their corresponding paths `kotlin-antlr-parser.ts:55-55`
+- **imports** — ImportDependency array for import dependencies `rust-analyzer.ts:60-60`
+- **imports** — Stores import dependencies `rust-analyzer.ts:924-924`
+- **in** — Indicates the presence of an entity within a JSON structure `json-parser.ts:388-388`
+- **include** — Specifies files to include in the TypeScript configuration `json-parser.ts:89-89`
+- **indentFunction** — Stores the function used for indentation `helm-parser.ts:56-56`
+- **indentValue** — Stores the value used for indentation `helm-parser.ts:57-57`
+- **index** — Returns the index for a given index `base-parser-utils.ts:31-31`
+- **index** — Represents the index in the source code `base-parser-utils.ts:56-56`, `base-parser-utils.ts:61-61`
+- **index** — Stores the index of the parsed templates `helm-parser.ts:62-62`
+- **index** — Represents an index in a file `helm-parser.ts:63-63`
+- **index** — Represents the current index in the file `helm-parser.ts:448-448`
+- **index** — Represents the index position of a template or include in a Helm chart `helm-parser.ts:485-485`
+- **index** — Represents the index of a location `helm-parser.ts:515-515`
+- **index** — Returns the start and end indices of a location `helm-parser.ts:832-832`, `helm-parser.ts:832-832`, `helm-parser.ts:859-859`
+- **index** — Represents the start and end positions of an index in a string `helm-parser.ts:859-859`
+- **index** — The index of a node's start location `java-chevrotain-parser.ts:72-72`
+- **index** — Represents the end position with index number `java-chevrotain-parser.ts:73-73`
+- **index** — Represents the index in the JSON structure `json-parser.ts:828-828`
+- **index** — Returns the start and end positions of a JSON element, including line and column numbers `json-parser.ts:828-828`
+- **index** — Represents the index of the start location `kotlin-antlr-parser.ts:59-59`
+- **index** — Represents the index of the end position `kotlin-antlr-parser.ts:60-60`
+- **index** — The index of a parsed entity `kotlin-k2-provider.ts:162-162`
+- **index** — Represents the main entry point of the Kotlin K2 Provider `kotlin-k2-provider.ts:163-163`
+- **index** — Indicates the index of the parsed entity `powershell-native-parser.ts:373-373`
+- **index** — Represents the index or position in the PowerShell script `powershell-native-parser.ts:374-374`
+- **index** — The index of a token or context `rust-antlr-parser.ts:65-65`
+- **index** — Stores the index of the end position `rust-antlr-parser.ts:66-66`
+- **index** — Not applicable — this is a property, not a function `ts-ast-helpers.ts:62-62`
+- **index** — Represents an index in the file `unified-parser.ts:748-748`
+- **index** — Returns the start and end positions of an index in the file `unified-parser.ts:748-748`
+- **index** — Index of the start location `xml-analyzer.ts:135-135`
+- **index** — Returns the start and end index information for a given XML element `xml-analyzer.ts:135-135`
+- **inferredType** — Stores the inferred or declared type of a Python entity `pyright-integration.ts:66-66`
+- **informationCount** — Counts the number of information messages in Pyright diagnostics `pyright-integration.ts:56-56`
+- **inherit** — Represents the number of inherited template instances in the complex analysis `cpp-analyzer.ts:44-44`
+- **initializedParsers** — A set of initialized parsers `unified-parser.ts:210-210`
+- **inner** — Represents an optional array of Clang AST nodes `cpp-native-parser.ts:35-35`
+- **innerFunctionCount** — Count of inner functions in the analyzed function `ts-closure-hints-extractor.ts:20-20`
+- **innerHtmlAssignCount** — Counts the number of assignments to `innerHTML `ts-antipattern-hints-extractor.ts:19-19`
+- **inputs** — Represents the inputs of an Angular AST node `angular-parser.ts:165-165`
+- **interfaces** — Stores interfaces for a Kotlin declaration `kotlin-antlr-parser.ts:896-896`
+- **interfaces** — Stores interfaces for Swift classes `swift-native-parser.ts:1089-1089`
+- **interpolations** — Stores interpolations for the template `angular-parser.ts:89-89`
+- **isAwait** — Indicates whether a function is awaited `swift-native-parser.ts:622-622`
+- **isAwait** — Indicates whether a function is awaited in Swift `swift-native-parser.ts:992-992`
+- **isAwait** — Optionally stores whether a function or method is awaited `swift-native-parser.ts:999-999`
+- **isBuiltin** — Indicates whether the entity is a built-in function `go-native-parser.ts:928-928`
+- **isBuiltin** — Determines if a node is a built-in type `java-chevrotain-parser.ts:167-167`
+- **isBuiltin** — Indicates whether an annotation is a built-in annotation `java-chevrotain-parser.ts:168-168`
+- **isConst** — Represents the const qualifier flag `cpp-declarator-utils.ts:138-138`
+- **isDefer** — Indicates whether an entity is a defer statement `go-native-parser.ts:926-926`
+- **isFinal** — Represents the final qualifier flag `cpp-declarator-utils.ts:141-141`
+- **isFromStub** — Indicates whether the type is from a stub file `pyright-integration.ts:72-72`
+- **isGo** — Indicates whether the entity is in Go `go-native-parser.ts:927-927`
+- **isInline** — Indicates whether the template is inline `angular-parser.ts:74-74`
+- **isNoexcept** — Represents the noexcept qualifier flag `cpp-declarator-utils.ts:142-142`
+- **isOptional** — Indicates whether a property is optional `swift-native-parser.ts:622-622`
+- **isOptional** — Indicates whether a function is optional in Swift `swift-native-parser.ts:993-993`
+- **isOptional** — Indicates whether the parameter is optional `swift-native-parser.ts:1000-1000`
+- **isOverride** — Represents the override qualifier flag `cpp-declarator-utils.ts:140-140`
+- **isResolved** — Indicates whether the type is fully resolved `pyright-integration.ts:69-69`
+- **isStatic** — Represents the static qualifier flag `cpp-declarator-utils.ts:137-137`
+- **isVirtual** — Represents the virtual qualifier flag `cpp-declarator-utils.ts:139-139`
+- **javaHome** — Stores the path to the JDK home directory `kotlin-k2-provider.ts:210-210`
+- **javaParser** — A Java-specific parser `unified-parser.ts:198-198`
+- **javaPath** — Stores the path to the JDK executable `kotlin-k2-provider.ts:211-211`
+- **JSONC** — JSON with Comments `json-parser.ts:28-30`
+- **jsonParser** — A JSON-specific parser `unified-parser.ts:205-205`
+- **jsonrpc** — Indicates the JSON-RPC version of the LSP `rust-analyzer-integration.ts:88-88`
+- **jvmInfo** — Information about the JVM `kotlin-native-parser.ts:93-93`
+- **k2JarPath** — Stores the path to the Kotlin K2 JAR file `kotlin-k2-provider.ts:209-209`
+- **k2Provider** — A provider for K2 parsing `kotlin-native-parser.ts:92-92`
+- **kind** — Represents the kind of node in the AST `cpp-native-parser.ts:32-32`
+- **kind** — The kind of the symbol `rust-analyzer-integration.ts:31-31`
+- **kind** — The kind of a document symbol `rust-analyzer-integration.ts:51-51`
+- **kind** — Specifies the kind of the entity `rust-analyzer-integration.ts:78-78`
+- **kotlincEnabled** — A flag indicating whether kotlinc is enabled `kotlin-native-parser.ts:87-87`
+- **kotlinParser** — A Kotlin-specific parser `unified-parser.ts:199-199`
+- **langs** — A record mapping file extensions to supported languages `unified-parser.ts:140-140`
+- **leadingSpaces** — Represents the leading spaces in the current line `helm-parser.ts:735-735`
+- **line** — Indicates the line number of a template binding `angular-parser.ts:101-101`
+- **line** — Represents the line number of an Angular AST node `angular-parser.ts:107-107`
+- **line** — Optional line number for an Angular directive `angular-parser.ts:114-114`, `angular-parser.ts:119-119`, `angular-parser.ts:125-125`, `angular-parser.ts:161-161`
+- **line** — Represents the end line number of a node `angular-parser.ts:162-162`
+- **line** — Returns the line number for a given index `base-parser-utils.ts:31-31`
+- **line** — Represents the line number in the source code `base-parser-utils.ts:54-54`, `base-parser-utils.ts:59-59`, `ts-ngrx-extractor.ts:57-57`, `ts-ngrx-extractor.ts:62-62`
+- **line** — The line number where the validation issue occurs `bash-analyzer.ts:34-34`
+- **Line** — Represents the line number of a token in a shell script `bash-native-parser.ts:25-25`
+- **line** — Line number of an error `bash-native-parser.ts:59-59`
+- **line** — Indicates the line number where the validation issue occurs `batch-analyzer.ts:30-30`, `powershell-analyzer.ts:34-34`
+- **line** — Represents the line number in a C/C++ source file `cpp-native-parser.ts:27-27`
+- **line** — Represents the line number of an error or entity `cpp-native-parser.ts:57-57`
+- **line** — Stores the line number of parsed entities `go-native-parser.ts:387-387`
+- **line** — The line number of an entity `go-native-parser.ts:925-925`
+- **line** — Represents a line of code in the Go file being parsed `go-native-parser.ts:945-945`
+- **line** — Represents the line number of a loop or exception `go-native-parser.ts:946-946`
+- **line** — Represents an array of exception types and their line numbers `go-native-parser.ts:947-947`
+- **line** — Represents an array of return values and their line numbers `go-native-parser.ts:948-948`
+- **line** — Parses an array of awaits with optional line numbers `go-native-parser.ts:949-949`
+- **line** — Stores the line number of the parsed templates `helm-parser.ts:62-62`
+- **line** — Represents a line number in a file `helm-parser.ts:63-63`
+- **line** — Represents the current line number `helm-parser.ts:515-515`
+- **line** — Represents the line number of a template or include in a Helm chart `helm-parser.ts:832-832`
+- **line** — Returns the start and end lines of a location `helm-parser.ts:832-832`, `helm-parser.ts:859-859`
+- **line** — Parses the start and end positions of a line `helm-parser.ts:859-859`
+- **line** — The line number of a node's start location `java-chevrotain-parser.ts:72-72`
+- **line** — Represents the end position with line number `java-chevrotain-parser.ts:73-73`
+- **line** — Represents a line number in the code `java-native-parser.ts:121-121`
+- **line** — The line number where an error occurred `javaparser-integration.ts:27-27`
+- **line** — Stores the line number of an error or message `json-parser.ts:74-74`
+- **line** — Specifies the line number of an error or log message `json-parser.ts:188-188`
+- **line** — Indicates the line number in the JSON file `json-parser.ts:489-489`
+- **line** — Stores error messages with line numbers `json-parser.ts:609-609`
+- **line** — Stores the line number of an error `json-parser.ts:719-719`
+- **line** — Returns the start and end positions of a JSON element, including line and column numbers `json-parser.ts:828-828`, `json-parser.ts:828-828`
+- **line** — Represents the line number of the start location `kotlin-antlr-parser.ts:59-59`
+- **line** — Represents the line number of the end position `kotlin-antlr-parser.ts:60-60`, `pyright-integration.ts:40-40`, `rust-analyzer-integration.ts:65-65`
+- **line** — Optional line number of the start position `kotlin-antlr-parser.ts:71-71`
+- **line** — Indicates the line number in the source file where the diagnostic occurred `kotlin-compiler-integration.ts:21-21`
+- **line** — The line number of a parsed entity `kotlin-k2-provider.ts:162-162`
+- **line** — Represents the line number of a parsed entity `kotlin-k2-provider.ts:163-163`
+- **line** — Represents the line number of a resource `kotlin-k2-provider.ts:183-183`
+- **line** — Specifies the line number of the error `powershell-native-parser.ts:26-26`
+- **line** — Represents the line number in the parsed entity `powershell-native-parser.ts:34-34`
+- **line** — Indicates the line number in the error location `powershell-native-parser.ts:208-208`
+- **line** — Specifies the line number in the start location `powershell-native-parser.ts:373-373`
+- **line** — Specifies the line number in the end location `powershell-native-parser.ts:374-374`
+- **line** — Line number of a Pyright diagnostic `pyright-integration.ts:39-39`
+- **line** — Line number of a parsed entity `python-native-parser.ts:389-389`
+- **line** — The line number of the start position `rust-analyzer-integration.ts:33-33`
+- **line** — The line number of a diagnostic range `rust-analyzer-integration.ts:34-34`
+- **line** — Represents the start line of a range `rust-analyzer-integration.ts:38-38`, `rust-analyzer-integration.ts:64-64`
+- **line** — Represents the end line of a range `rust-analyzer-integration.ts:39-39`
+- **line** — Specifies the line number of the start position `rust-analyzer-integration.ts:80-80`
+- **line** — Specifies the line number of the end position `rust-analyzer-integration.ts:81-81`
+- **line** — Line number of the token `rust-antlr-parser.ts:36-36`
+- **line** — The line number of a token or context `rust-antlr-parser.ts:65-65`
+- **line** — Stores the line number of the end position `rust-antlr-parser.ts:66-66`
+- **line** — Line number of a parsing error `rust-native-parser.ts:59-59`
+- **line** — Stores a line number `rust-native-parser.ts:167-167`
+- **line** — Stores the line number of the error `swift-native-parser.ts:41-41`
+- **line** — Not applicable — this is a property, not a function `ts-ast-helpers.ts:62-62`
+- **line** — Line number of an action in the source file `ts-ngrx-extractor.ts:18-18`
+- **line** — Line number of the selector in the source file `ts-ngrx-extractor.ts:24-24`
+- **line** — Represents the line number of a location `ts-ngrx-extractor.ts:29-29`, `ts-ngrx-extractor.ts:39-39`, `ts-ngrx-extractor.ts:47-47`
+- **line** — Specifies the line number of a diagnostic message `typescript-parser.ts:256-256`
+- **line** — Represents a line in the file `unified-parser.ts:748-748`
+- **line** — Returns the start and end positions of a line in the file `unified-parser.ts:748-748`
+- **line** — Line number of the start location `xml-analyzer.ts:135-135`
+- **line** — Returns the start and end line information for a given XML element `xml-analyzer.ts:135-135`
+- **line** — Stores an array of error messages with optional location details `zig-native-parser.ts:39-39`
+- **lineNumber** — Represents the current line number `helm-parser.ts:735-735`
+- **lineText** — Represents the text of the current line `helm-parser.ts:735-735`
+- **listensTo** — Array of actions listened via ofType() with their locations `ts-ngrx-extractor.ts:16-19`
+- **loc** — Represents the location of the node in the AST `cpp-native-parser.ts:34-34`
+- **local** — The local name of an imported symbol `ts-import-export-extractor.ts:27-27`
+- **local** — Represents a local variable or identifier `ts-js-patterns-extractor.ts:508-508`
+- **location** — Location of an error, specified by line and column numbers `bash-native-parser.ts:59-59`
+- **location** — Represents the location of an error or entity `cpp-native-parser.ts:57-57`
+- **location** — Stores the location information of parsed entities `go-native-parser.ts:387-387`
+- **location** — Stores the location information for the parsed templates `helm-parser.ts:61-64`
+- **location** — Represents the location or position in the code `java-native-parser.ts:121-121`
+- **location** — An object containing line and column numbers where an error occurred `javaparser-integration.ts:27-27`
+- **location** — Location of an error, including line and column numbers `json-parser.ts:74-74`
+- **location** — Stores the location of an error or message `json-parser.ts:188-188`
+- **location** — Indicates the location of an error or log message `json-parser.ts:489-489`
+- **location** — Represents the position in the JSON file `json-parser.ts:609-609`
+- **location** — Stores error messages with line and column numbers `json-parser.ts:719-719`
+- **location** — The location of a parsed entity `kotlin-k2-provider.ts:161-164`
+- **location** — Contains the line and column numbers where the error occurred `powershell-native-parser.ts:25-28`
+- **location** — Indicates the location of the error `powershell-native-parser.ts:208-208`
+- **location** — Location information for a parsed entity, including start and end positions `python-native-parser.ts:389-389`
+- **location** — The location of the symbol `rust-analyzer-integration.ts:36-41`
+- **location** — Location of a parsing error `rust-native-parser.ts:59-59`
+- **location** — Stores a location `rust-native-parser.ts:167-167`
+- **location** — Stores the location of the error `swift-native-parser.ts:41-41`
+- **location** — The location of the field reference in the source file `ts-call-extractor.ts:170-170`
+- **location** — Location of an action in the source file `ts-ngrx-extractor.ts:18-18`
+- **location** — Location of the selector in the source file `ts-ngrx-extractor.ts:24-24`
+- **location** — Represents the line and column number of a location `ts-ngrx-extractor.ts:29-29`, `ts-ngrx-extractor.ts:39-39`, `ts-ngrx-extractor.ts:47-47`
+- **location** — Stores the line and column number where the action is located `ts-ngrx-extractor.ts:57-57`
+- **location** — Contains the line and column numbers of the source code `ts-ngrx-extractor.ts:62-62`
+- **location** — Indicates the location of a diagnostic message `typescript-parser.ts:256-256`
+- **location** — Stores an array of error messages with optional location details `zig-native-parser.ts:39-39`
+- **loops** — The loops in a code block `go-native-parser.ts:946-946`
+- **lvl** — Current level of recursion during the analysis process `go-analyzer.ts:27-27`
+- **mapNewCount** — Count of new Map() calls in the analyzed function `ts-closure-hints-extractor.ts:26-26`
+- **mapNewCount** — Maps a new count `ts-closure-hints-extractor.ts:234-234`
+- **mapper** — Converts a regex match into a ParsedEntity (or null to skip) `regex-entity-extractor.ts:29-33`
+- **matchEnd** — Matches the end of a define statement `helm-parser.ts:449-449`
+- **message** — The message describing the validation issue `bash-analyzer.ts:33-33`
+- **message** — Error message string `bash-native-parser.ts:59-59`
+- **message** — Contains the message describing the validation issue `batch-analyzer.ts:29-29`
+- **message** — Contains a message string `cpp-native-parser.ts:57-57`
+- **message** — Stores a message related to the parsing result `go-native-parser.ts:387-387`
+- **message** — Represents a message or log entry `java-native-parser.ts:121-121`
+- **message** — A message describing an error or a result `javaparser-integration.ts:27-27`
+- **message** — Message associated with an error `json-parser.ts:74-74`
+- **message** — Stores a message related to the parsing process `json-parser.ts:188-188`
+- **message** — Represents a message associated with an error or log `json-parser.ts:489-489`
+- **message** — Stores an error or message related to parsing `json-parser.ts:609-609`
+- **message** — Stores error messages with line and column numbers `json-parser.ts:719-719`
+- **message** — Contains the message text of a Kotlin diagnostic `kotlin-compiler-integration.ts:20-20`
+- **message** — Stores the actual message content of a diagnostic `kotlin-compiler-integration.ts:179-179`
+- **message** — Stores the message associated with the validation issue `powershell-analyzer.ts:33-33`
+- **message** — Stores the error message `powershell-native-parser.ts:24-24`
+- **message** — Holds the error message `powershell-native-parser.ts:208-208`
+- **message** — Message of a Pyright diagnostic `pyright-integration.ts:37-37`
+- **message** — Stores the message of a Pyright diagnostic `pyright-integration.ts:77-77`
+- **message** — Message associated with an error or a parsed entity `python-native-parser.ts:389-389`
+- **message** — The message of a diagnostic `rust-analyzer-integration.ts:62-62`
+- **message** — Error message associated with an error `rust-analyzer-integration.ts:93-93`
+- **message** — Message associated with a parsing error `rust-native-parser.ts:59-59`
+- **message** — Stores a message `rust-native-parser.ts:167-167`
+- **message** — Stores an array of error messages with optional location details `swift-native-parser.ts:41-41`, `zig-native-parser.ts:39-39`
+- **message** — Represents a diagnostic message from the parser `typescript-parser.ts:256-256`
+- **metadata** — Stores metadata associated with a parsed entity `kotlin-k2-provider.ts:177-177`
+- **method** — Method name for a request in the LSP `rust-analyzer-integration.ts:90-90`
+- **methodName** — Name of a method called inside the effect `ts-ngrx-extractor.ts:23-23`
+- **metrics** — Tracks metrics during the analysis `rust-analyzer.ts:888-893`
+- **metrics** — Represents the metrics for the analyzer `rust-analyzer.ts:926-926`
+- **modifiers** — Stores modifiers for a Kotlin declaration `kotlin-antlr-parser.ts:830-830`
+- **modifiers** — Stores an array of modifiers for the parsed entity `kotlin-antlr-parser.ts:834-834`
+- **modifiers** — Stores the modifiers of a parsed entity `kotlin-k2-provider.ts:165-165`
+- **modulePath** — Path of the module being parsed `rust-antlr-parser.ts:57-57`
+- **msg** — Represents a message related to the template parsing `angular-parser.ts:176-176`
+- **multiPass** — A flag indicating whether multi-pass parsing is enabled `incremental-parser.ts:110-110`
+- **multiPassEnabled** — A flag indicating whether multi-pass parsing is enabled `incremental-parser.ts:115-115`
+- **name** — Stores the name of a template binding `angular-parser.ts:99-99`
+- **name** — Represents the name of an Angular AST node `angular-parser.ts:105-105`
+- **name** — Represents the name of an Angular directive, such as ngIf, ngFor, or ngSwitch `angular-parser.ts:111-111`, `angular-parser.ts:123-123`, `angular-parser.ts:156-156`, `angular-parser.ts:157-157`
+- **Name** — Represents the name of a node in the Abstract Syntax Tree (AST) of a shell script `bash-native-parser.ts:36-36`
+- **name** — Represents the name of the node in the AST `cpp-native-parser.ts:33-33`
+- **name** — The name of an entity `go-native-parser.ts:922-922`
+- **name** — Represents the name of a define statement `helm-parser.ts:447-447`
+- **name** — Represents a name in the parser `incremental-parser.ts:86-86`
+- **name** — Stores an array of objects with type and name properties `incremental-parser.ts:88-88`
+- **name** — Represents the name of a type declaration `java-analyzer.ts:709-709`
+- **name** — Initializes an array to store entity names and types `java-analyzer.ts:710-710`
+- **name** — Represents the name of an entity, such as a class, interface, or enum `java-antlr-parser.ts:648-648`
+- **name** — Represents the name of a Java entity `java-antlr-parser.ts:693-693`
+- **name** — Extracts the name of a node `java-chevrotain-parser.ts:167-167`
+- **name** — Represents the name of a declaration `java-chevrotain-parser.ts:168-168`
+- **name** — Returns an array of parameter names with optional and type information `java-chevrotain-parser.ts:244-244`
+- **name** — Initializes an array to store parameter names with optional and type information `java-chevrotain-parser.ts:247-247`
+- **name** — Initializes an array to store parameter names with type information `java-chevrotain-parser.ts:781-781`
+- **name** — Represents the name of an entity `json-parser.ts:388-388`
+- **name** — Stores the name of a Kotlin declaration `kotlin-antlr-parser.ts:831-831`
+- **name** — Represents the name of an annotation `kotlin-antlr-parser.ts:835-835`
+- **name** — Represents the name of a property `kotlin-antlr-parser.ts:924-924`
+- **name** — Represents the type of a property `kotlin-antlr-parser.ts:928-928`
+- **name** — Name of the release asset `kotlin-k2-provider.ts:51-51`
+- **name** — The name of a parsed entity `kotlin-k2-provider.ts:158-158`
+- **name** — Represents the name of a parsed entity `kotlin-k2-provider.ts:166-166`
+- **name** — Stores the name of a Kotlin entity `kotlin-native-parser.ts:656-656`
+- **name** — Stores the name of the PowerShell entity `powershell-native-parser.ts:32-32`
+- **name** — Represents the name of the parsed entity `powershell-native-parser.ts:36-36`
+- **name** — The name of the symbol `rust-analyzer-integration.ts:30-30`
+- **name** — The name of a symbol `rust-analyzer-integration.ts:77-77`
+- **name** — Stores the name of a parameter `rust-antlr-parser.ts:369-369`
+- **name** — Stores the name of a Swift entity `swift-native-parser.ts:622-622`
+- **name** — Stores the name of a function or method `swift-native-parser.ts:989-989`, `swift-native-parser.ts:996-996`
+- **name** — Represents the name of a parameter `swift-native-parser.ts:1174-1174`, `zig-native-parser.ts:1177-1177`, `zig-native-parser.ts:1180-1180`
+- **name** — Stores the name of a parameter in an array `swift-native-parser.ts:1177-1177`
+- **name** — The name of the field referenced `ts-call-extractor.ts:168-168`
+- **name** — Stores the name of an entity `zig-native-parser.ts:865-865`
+- **name** — Extracts the name of an entity `zig-native-parser.ts:869-869`
+- **namedChildren** — Optional array of named children AST nodes `condition-extractor.ts:62-62`
+- **nested** — Represents the number of nested template instances in the complex analysis `cpp-analyzer.ts:44-44`
+- **node** — Represents a node in the AST `c-analyzer.ts:530-530`
+- **node** — ASTNode representing a node in the tree-sitter Java AST `java-analyzer.ts:35-35`
+- **nodeMap** — Maps AST nodes to parsed entities during the C++ analysis `cpp-analyzer.ts:84-84`
+- **nodes** — Stores the parsed nodes of the template `angular-parser.ts:147-147`
+- **nodes** — Stores an array of Angular AST nodes `angular-parser.ts:175-175`
+- **nonNullAssertionCount** — Counts the number of non-null assertions in the AST `ts-antipattern-hints-extractor.ts:17-17`
+- **objectShapeVariants** — A counter for distinct key-order signatures among object literals `ts-jit-hints-extractor.ts:28-28`
+- **Offset** — Represents the offset of a token in a shell script `bash-native-parser.ts:27-27`
+- **offsets** — Array of offsets for line breaks in the content `base-parser-utils.ts:22-22`
+- **ops** — Represents the number of operations in the complex analysis `cpp-analyzer.ts:44-44`
+- **optional** — Determines if a node is optional `java-chevrotain-parser.ts:244-244`
+- **optional** — Indicates whether a parameter is optional `java-chevrotain-parser.ts:247-247`
+- **optional** — Indicates if a parameter is optional in a Kotlin declaration `kotlin-antlr-parser.ts:926-926`
+- **optional** — Initializes an array to store parsed results with name, type, and optional flags `kotlin-antlr-parser.ts:928-928`
+- **optional** — Indicates whether a parsed entity is optional `kotlin-k2-provider.ts:166-166`
+- **optional** — Indicates whether a Kotlin entity is optional `kotlin-native-parser.ts:659-659`
+- **optional** — Indicates whether an entity is optional `rust-antlr-parser.ts:369-369`
+- **optional** — Indicates if an entity is optional `swift-native-parser.ts:1174-1174`
+- **optional** — Stores whether a parameter is optional in an array `swift-native-parser.ts:1177-1177`
+- **optional** — Determines if an entity is optional `zig-native-parser.ts:1177-1177`
+- **optional** — Indicates if a parameter is optional `zig-native-parser.ts:1180-1180`
+- **orWithDefaultCount** — Counts the number of `||` expressions with a default value `ts-antipattern-hints-extractor.ts:20-20`
+- **outputs** — Represents the outputs of an Angular AST node `angular-parser.ts:166-166`
+- **packageName** — Represents the package name in the Java code `java-chevrotain-parser.ts:124-124`
+- **packageName** — Stores the package name of the Kotlin source code being parsed `kotlin-antlr-parser.ts:51-51`
+- **parameters** — Contains the parameters of a parsed entity `kotlin-k2-provider.ts:166-166`
+- **parameters** — Stores an array of parameter names and types for the PowerShell entity `powershell-native-parser.ts:36-36`
+- **paramMutationCount** — Counts the number of parameter mutations in function/method declarations `ts-antipattern-hints-extractor.ts:21-21`
+- **params** — Parameters for a request in the LSP `rust-analyzer-integration.ts:91-91`
+- **parent** — Reference to the parent AST node `condition-extractor.ts:59-59`
+- **parentEntity** — The current parent entity name for contains relationships `typescript-parser.ts:63-63`
+- **parseDiagnostics** — Parses a file and returns diagnostic messages `typescript-parser.ts:259-259`
+- **parser** — An instance of the parser used for incremental parsing `incremental-parser.ts:109-109`
+- **parseStartTime** — The start time of the script parsing process `bash-analyzer.ts:41-41`
+- **parseStartTime** — Records the start time of the parsing process `kotlin-analyzer.ts:33-33`
+- **parseStartTime** — Records the start time of the script analysis `powershell-analyzer.ts:41-41`
+- **parseTemplate** — Parses an Angular template string and returns a parse result `angular-parser.ts:132-139`
+- **parseTime** — Number representing the time taken for parsing `rust-analyzer.ts:71-71`
+- **path** — Provides the file path for the JSON parser `json-parser.ts:92-92`
+- **path** — Stores the path to a file or directory `kotlin-k2-provider.ts:337-337`
+- **path** — Asynchronously finds the project build JAR file and returns its path and version `kotlin-k2-provider.ts:374-374`
+- **paths** — Defines paths for modules in the TypeScript configuration `json-parser.ts:86-86`
+- **patterns** — Stores patterns for JSON parsing `json-parser.ts:661-661`
+- **patterns** — Stores identified patterns `rust-analyzer.ts:925-925`
+- **patternsIdentified** — Number of patterns identified during analysis `rust-analyzer.ts:70-70`
+- **patternType** — Defines the type of pattern used in JSON parsing `json-parser.ts:661-661`
+- **pendingRequests** — Manages pending requests for the Kotlin K2 Provider `kotlin-k2-provider.ts:206-207`
+- **phases** — Manages the phases of the analysis `rust-analyzer.ts:896-896`
+- **pipeline** — Represents the pipeline of operations in the parsed templates `helm-parser.ts:58-58`
+- **pipeUsages** — Tracks usage of pipes in Angular templates `angular-parser.ts:95-95`
+- **pkg** — Package name of the Go source file being analyzed `go-analyzer.ts:23-23`
+- **pkg** — Stores the package value in the JavaParseContext `java-analyzer.ts:150-150`
+- **Pos** — Represents the position of a node in the Abstract Syntax Tree (AST) of a shell script `bash-native-parser.ts:37-37`
+- **powershellParser** — A PowerShell-specific parser `unified-parser.ts:204-204`
+- **preserveLineEndings** — Preserves line endings in the parsed template `angular-parser.ts:137-137`
+- **preserveWhitespaces** — Preserves whitespace in parsed Angular templates `angular-parser.ts:136-136`
+- **primaryLanguages** — Represents the primary languages supported by the parser `unified-parser.ts:125-125`
+- **process** — Processes the input and outputs the parsed entities `kotlin-k2-provider.ts:204-204`
+- **projectInfo** — Information about the current project `unified-parser.ts:211-211`
+- **propAccessCount** — Represents the count of property access usage in captured variables `ts-closure-hints-extractor.ts:178-178`
+- **propertyBindings** — Stores property bindings for the template `angular-parser.ts:77-77`
+- **providers** — Providers `angular-parser.ts:57-57`
+- **psAvailable** — Indicates whether PowerShell is available `powershell-native-parser.ts:213-213`
+- **psPath** — The path to the PowerShell executable `powershell-native-parser.ts:212-212`
+- **pyrightAvailable** — Indicates whether Pyright is available for type diagnostics `python-native-parser.ts:406-406`
+- **pythonAvailable** — Indicates whether Python is available for parsing `python-native-parser.ts:405-405`
+- **pythonParser** — A Python-specific parser `unified-parser.ts:197-197`
+- **pythonPath** — Stores the path to the Python interpreter `python-native-parser.ts:404-404`
+- **range** — Range of a Pyright diagnostic `pyright-integration.ts:38-41`
+- **range** — The range of the symbol `rust-analyzer-integration.ts:32-35`
+- **range** — The range of a diagnostic `rust-analyzer-integration.ts:37-40`
+- **range** — Defines a range with start and end positions `rust-analyzer-integration.ts:63-66`
+- **range** — Represents a range with start and end positions `rust-analyzer-integration.ts:79-82`
+- **readline** — Reads input line by line for the Kotlin K2 Provider `kotlin-k2-provider.ts:205-205`
+- **ready** — Indicates that the provider is ready for use `kotlin-k2-provider.ts:208-208`
+- **recursionDepth** — The current recursion depth during script analysis `bash-analyzer.ts:40-40`
+- **recursionDepth** — Tracks the depth of recursion during parsing `kotlin-analyzer.ts:32-32`
+- **recursionDepth** — Tracks the current recursion depth during script analysis `powershell-analyzer.ts:40-40`
+- **referencedCmdlets** — A set of referenced cmdlets in the script `powershell-analyzer.ts:48-48`
+- **referencedCommands** — A set of referenced commands in the script `bash-analyzer.ts:47-47`
+- **referencedLabels** — A set of labels referenced in the batch script `batch-analyzer.ts:39-39`
+- **references** — Represents the references of an Angular AST node `angular-parser.ts:167-167`
+- **references** — Defines references to other configuration files `json-parser.ts:92-92`
+- **regex** — The regex pattern (must have 'g' flag). Will be reset before use `regex-entity-extractor.ts:28-28`
+- **regexLiterals** — Stores an array of regex literals found in the AST `ts-antipattern-hints-extractor.ts:22-22`
+- **reject** — Rejects a promise or a deferred object `kotlin-k2-provider.ts:206-206`
+- **reject** — Rejects a promise or a value `rust-analyzer-integration.ts:104-104`
+- **rel** — Stores an array of entity relationships in the JavaParseContext `java-analyzer.ts:152-152`
+- **relationships** — A list of entity relationships from the script `bash-analyzer.ts:58-58`
+- **relationships** — A list of entity relationships from the batch script `batch-analyzer.ts:52-52`
+- **relationships** — A list of relationships between parsed entities based on include paths `c-analyzer.ts:38-38`
+- **relationships** — A list of relationships between semantic entities extracted from the C source file `c-analyzer.ts:505-505`
+- **relationships** — Stores entity relationships in the analyzer state `cpp-analyzer.ts:105-105`
+- **relationships** — Represents relationships between parsed entities `cpp-native-parser.ts:56-56`
+- **relationships** — Parses and returns a list of parsed entities and their relationships `cpp-native-parser.ts:292-292`
+- **relationships** — Array of entity relationships extracted from the Go source file `go-analyzer.ts:53-53`
+- **relationships** — Stores the relationships between parsed entities `go-native-parser.ts:386-386`
+- **relationships** — Extracts relationships between entities `helm-parser.ts:550-550`
+- **relationships** — Relationships extracted during the analysis `java-analyzer.ts:201-201`
+- **relationships** — A property representing the relationships between parsed entities `java-antlr-parser.ts:77-77`
+- **relationships** — Manages relationships between parsed entities `java-chevrotain-parser.ts:126-126`
+- **relationships** — Represents the relationships between parsed entities `java-chevrotain-parser.ts:1075-1075`
+- **relationships** — Relationships between entities in JSON structure `json-parser.ts:73-73`
+- **relationships** — Stores an array of entity relationships extracted from the Kotlin source code `kotlin-antlr-parser.ts:53-53`
+- **relationships** — Stores entity relationships `kotlin-antlr-parser.ts:86-86`
+- **relationships** — Relationships between parsed entities `kotlin-k2-provider.ts:152-152`
+- **relationships** — Represents relationships between entities in the Kotlin K2 Provider `kotlin-k2-provider.ts:658-658`
+- **relationships** — Returns a promise containing parsed entities and their relationships `kotlin-native-parser.ts:395-395`
+- **relationships** — Stores the parsed relationships between entities `ngrx-parser.ts:654-654`
+- **relationships** — A list of entity relationships extracted from the script `powershell-analyzer.ts:59-59`
+- **relationships** — Relationships between entities extracted from the parsed Python script `python-native-parser.ts:388-388`
+- **relationships** — EntityRelationship array for relationship mapping `rust-analyzer.ts:59-59`
+- **relationships** — Stores relationships between entities `rust-analyzer.ts:923-923`
+- **relationships** — Array of entity relationships `rust-antlr-parser.ts:59-59`
+- **relationships** — An array of entity relationships `rust-antlr-parser.ts:77-77`
+- **relationships** — Stores relationships between parsed entities `swift-native-parser.ts:40-40`
+- **relationships** — Returns an object containing parsed entities and their relationships `swift-native-parser.ts:385-385`
+- **relationships** — An array of entity relationships extracted from the source file `ts-class-extractor.ts:30-30`
+- **relationships** — Manages relationships between entities `ts-class-extractor.ts:203-203`
+- **relationships** — An array of relationships between entities extracted from the source file `ts-function-extractor.ts:34-34`
+- **relationships** — An array of entity relationships, representing how entities are connected `ts-import-export-extractor.ts:15-15`
+- **relationships** — Holds an array of entity relationships `ts-interface-extractor.ts:17-17`
+- **relationships** — An array of entity relationships extracted from the TypeScript source file `ts-js-patterns-extractor.ts:25-25`
+- **relationships** — An array of entity relationships, including type references `ts-type-extractor.ts:17-17`
+- **relationships** — Stores an array of entity relationships `typescript-parser.ts:61-61`, `zig-native-parser.ts:38-38`
+- **relationships** — Parses XML relationships and returns them as an array of EntityRelationship objects `xml-analyzer.ts:18-18`
+- **relationshipsFound** — Number of relationships found during analysis `rust-analyzer.ts:69-69`
+- **rels** — Stores relationships between parsed entities during the C++ analysis `cpp-analyzer.ts:39-39`
+- **rels** — Array of entity relationships extracted from the Go source file `go-analyzer.ts:25-25`
+- **removeErrorListeners** — Method to remove error listeners from the parser `rust-antlr-parser.ts:52-52`
+- **removeListenerCount** — Count of removeEventListener calls in the analyzed function `ts-closure-hints-extractor.ts:25-25`
+- **removeListenerCount** — Removes a listener from count `ts-closure-hints-extractor.ts:233-233`
+- **resolve** — Resolves a promise or a deferred object `kotlin-k2-provider.ts:206-206`
+- **resolve** — Resolves a promise or a value `rust-analyzer-integration.ts:104-104`
+- **result** — Represents the result of parsing a file `incremental-parser.ts:306-306`
+- **result** — A result of parsing a file `incremental-parser.ts:315-315`
+- **result** — Stores an array of objects with file, hash, and result properties `incremental-parser.ts:316-316`
+- **result** — Result of a request in the LSP `rust-analyzer-integration.ts:92-92`
+- **results** — An array of parsed results `incremental-parser.ts:64-64`
+- **returns** — The return statement in a function `go-native-parser.ts:948-948`
+- **returnType** — Defines the return type of a parsed entity `kotlin-k2-provider.ts:167-167`
+- **returnType** — Stores the return type of the PowerShell entity `powershell-native-parser.ts:37-37`
+- **row** — Row number of the start position `condition-extractor.ts:61-61`
+- **rule** — Rule associated with a Pyright diagnostic `pyright-integration.ts:42-42`
+- **rule** — Stores the rule associated with a Pyright diagnostic `pyright-integration.ts:78-78`
+- **rustAnalyzerEnabled** — Indicates whether to use rust-analyzer `rust-native-parser.ts:75-75`
+- **rustAnalyzerInfo** — Contains rust-analyzer specific information for a parsed entity `rust-analyzer-integration.ts:50-53`
+- **rustParser** — A Rust-specific parser `unified-parser.ts:201-201`
+- **safeUnwrapCount** — Stores the safe unwrap count `zig-native-parser.ts:1051-1051`
+- **schema** — Represents the schema of a JSON structure `json-parser.ts:405-405`
+- **schema** — Returns an array of objects with code, description, and optional schema `json-parser.ts:429-429`
+- **schema** — Initializes an array to store parsed JSON objects `json-parser.ts:432-432`
+- **scriptPath** — Stores the path to the Go AST extraction script `go-native-parser.ts:404-404`
+- **selector** — Component selector `angular-parser.ts:30-30`
+- **selectorName** — Name of the selector `ts-ngrx-extractor.ts:46-46`
+- **selectorName** — Stores the name of the selector used in the code `ts-ngrx-extractor.ts:61-61`
+- **selects** — Array of selectors used via store.select() `ts-ngrx-extractor.ts:60-63`
+- **serviceName** — Name of a service called inside the effect `ts-ngrx-extractor.ts:22-22`
+- **servicesCalled** — Array of services/methods called inside the effect with their locations `ts-ngrx-extractor.ts:21-25`
+- **setNewCount** — Count of new Set() calls in the analyzed function `ts-closure-hints-extractor.ts:28-28`
+- **setNewCount** — Sets a new count `ts-closure-hints-extractor.ts:236-236`
+- **severity** — Specifies the severity level of a Kotlin diagnostic, either "error", "warning", or "info" `kotlin-compiler-integration.ts:19-19`
+- **severity** — Stores the severity level of a diagnostic message `kotlin-compiler-integration.ts:178-178`
+- **severity** — Severity of a Pyright diagnostic `pyright-integration.ts:36-36`
+- **severity** — Represents the severity of a Pyright diagnostic `pyright-integration.ts:76-76`
+- **severity** — The severity level of a diagnostic `rust-analyzer-integration.ts:61-61`
+- **shfmtAvailable** — Boolean indicating whether shfmt is available `bash-native-parser.ts:63-63`
+- **source** — Represents the source string being parsed `angular-parser.ts:71-71`
+- **source** — Represents the source code of an Angular AST node `angular-parser.ts:158-158`
+- **source** — Optional source string for an Angular directive `angular-parser.ts:159-159`
+- **source** — The source of a diagnostic `rust-analyzer-integration.ts:68-68`
+- **sourceCode** — The source code of the Bash script being analyzed `bash-analyzer.ts:42-42`
+- **sourceCode** — Stores the source code of the batch script being analyzed `batch-analyzer.ts:36-36`
+- **sourceCode** — Stores the source code of the PowerShell script being analyzed `powershell-analyzer.ts:42-42`
+- **sourceFile** — Represents the source file being parsed `ngrx-parser.ts:42-42`
+- **sourceFile** — The TypeScript source file being analyzed `ts-class-extractor.ts:27-27`
+- **sourceFile** — Represents the source file object `ts-class-extractor.ts:201-201`
+- **sourceFile** — Represents the TypeScript source file being analyzed `ts-function-extractor.ts:31-31`
+- **sourceFile** — Represents the source file being analyzed `ts-import-export-extractor.ts:12-12`
+- **sourceFile** — Represents the source file from which the entities are parsed `ts-interface-extractor.ts:14-14`
+- **sourceFile** — Stores the source file for the TypeScript parser `ts-js-patterns-extractor.ts:22-22`
+- **sourceFile** — Represents the TypeScript source file being processed `ts-type-extractor.ts:14-14`
+- **sourceFile** — The TypeScript source file being parsed `typescript-parser.ts:58-58`
+- **sourceSpan** — Represents the span of the source code in an Angular AST node `angular-parser.ts:160-163`
+- **spreadInCallCount** — A counter for spread operators in function calls `ts-jit-hints-extractor.ts:14-14`
+- **standalone** — Standalone component flag `angular-parser.ts:51-51`
+- **start** — Represents the start position of an Angular AST node `angular-parser.ts:161-161`
+- **start** — Represents the start location of an entity `base-parser-utils.ts:53-57`
+- **start** — Stores the start location of the parsed templates `helm-parser.ts:62-62`
+- **start** — Represents the start of the current entity `helm-parser.ts:832-832`
+- **start** — Represents the starting position of a template or include in a Helm chart `helm-parser.ts:859-859`
+- **start** — The start location of a node `java-chevrotain-parser.ts:72-72`
+- **start** — Represents the start position in the JSON file `json-parser.ts:828-828`
+- **start** — Represents the start location of a parsed entity `kotlin-antlr-parser.ts:59-59`
+- **start** — Represents the start of a Kotlin file `kotlin-antlr-parser.ts:73-73`
+- **start** — Extracts the start token from the context object `kotlin-antlr-parser.ts:811-811`
+- **start** — Represents the start position of a line in the file `kotlin-k2-provider.ts:162-162`
+- **start** — Indicates the start position of the parsed entity `powershell-native-parser.ts:373-373`
+- **start** — Start position of a Pyright diagnostic `pyright-integration.ts:39-39`
+- **start** — The start position of the symbol `rust-analyzer-integration.ts:33-33`
+- **start** — The start position of a diagnostic range `rust-analyzer-integration.ts:38-38`
+- **start** — Represents the start position of a range `rust-analyzer-integration.ts:64-64`
+- **start** — Stores the starting line and character of a range `rust-analyzer-integration.ts:80-80`
+- **start** — Start position of the token `rust-antlr-parser.ts:38-38`
+- **start** — The starting position of a token or context `rust-antlr-parser.ts:44-44`
+- **start** — Stores the start position of a token `rust-antlr-parser.ts:65-65`
+- **start** — Starts parsing `unified-parser.ts:748-748`
+- **start** — Location start information `xml-analyzer.ts:135-135`
+- **start** — Starts the parsing process `zig-native-parser.ts:201-201`
+- **start** — Determines if a given index is inside a type body range `zig-native-parser.ts:1162-1162`
+- **startPosition** — Optional start position of the AST node `condition-extractor.ts:61-61`
+- **stateModifications** — Represents state property modifications in Swift code `swift-native-parser.ts:674-674`
+- **stateModifications** — Stores an array of state modifications `swift-native-parser.ts:870-870`
+- **stateReads** — Represents state property reads in Swift code `swift-native-parser.ts:674-674`
+- **stateReads** — Stores an array of state reads `swift-native-parser.ts:869-869`
+- **stats** — Statistics for parsing operations `bash-native-parser.ts:64-73`
+- **stats** — Tracks statistics for parsing operations `cpp-native-parser.ts:67-76`
+- **stats** — Stores statistics related to parsing operations `go-native-parser.ts:408-417`
+- **stats** — Stores statistics about parsed files and cache usage `helm-parser.ts:72-81`
+- **stats** — An object containing statistics for a batch of files `incremental-parser.ts:66-66`
+- **stats** — Statistics for the parsing process `incremental-parser.ts:113-113`
+- **stats** — Object containing parser statistics `java-native-parser.ts:65-74`
+- **stats** — Tracks statistics for the JSON parsing process `json-parser.ts:100-109`
+- **stats** — An instance of ParserStats for tracking parser statistics `kotlin-native-parser.ts:76-85`
+- **stats** — Stores statistics related to parsing `powershell-native-parser.ts:214-223`
+- **stats** — Manages statistics for Python file parsing, including files parsed, cache hits, and error count `python-native-parser.ts:412-421`
+- **stats** — Initializes and stores parser statistics `rust-native-parser.ts:63-72`
+- **stats** — Stores parser statistics `swift-native-parser.ts:93-102`
+- **stats** — Stores statistics about parsing operations `typescript-parser.ts:174-183`
+- **stats** — Parser statistics `unified-parser.ts:214-223`
+- **stats** — Stores the parser statistics `zig-native-parser.ts:114-123`
+- **stop** — Represents the end of a Kotlin file `kotlin-antlr-parser.ts:74-74`
+- **stop** — Extracts the stop token from the context object `kotlin-antlr-parser.ts:811-811`
+- **stop** — Stop position of the token `rust-antlr-parser.ts:39-39`
+- **stop** — Represents an optional AntlrToken `rust-antlr-parser.ts:46-46`
+- **structNames** — String array to track struct names seen `rust-analyzer.ts:63-63`
+- **structuralDirectives** — Stores structural directives for the template `angular-parser.ts:86-86`
+- **styles** — Inline styles `angular-parser.ts:42-42`
+- **styleUrls** — Style URLs `angular-parser.ts:39-39`
+- **succeeded** — The number of files parsed successfully `incremental-parser.ts:66-66`
+- **success** — Indicates whether the Kotlin compilation was successful `kotlin-compiler-integration.ts:27-27`
+- **success** — Indicates whether the parse was successful `kotlin-k2-provider.ts:150-150`
+- **success** — Indicates successful parsing or analysis `kotlin-native-parser.ts:235-235`
+- **suggestion** — An optional suggestion for resolving the validation issue `bash-analyzer.ts:36-36`
+- **suggestion** — Provides a suggestion for resolving the validation issue `batch-analyzer.ts:32-32`, `powershell-analyzer.ts:36-36`
+- **summary** — Summary of Pyright output `pyright-integration.ts:52-58`
+- **superTypes** — Lists the super types of a parsed entity `kotlin-k2-provider.ts:168-168`
+- **swiftcAvailable** — Checks if swiftc is available `swift-native-parser.ts:92-92`
+- **symbols** — The symbols from rust-analyzer `rust-analyzer-integration.ts:73-73`
+- **t0** — Stores the start time of the C++ analysis `cpp-analyzer.ts:42-42`
+- **t0** — Start time of the analysis process `go-analyzer.ts:26-26`
+- **t0** — Work-item pushed onto the iterative DFS stack `java-analyzer.ts:154-154`
+- **t0** — Number representing the start time of the analysis `rust-analyzer.ts:64-64`
+- **tag_name** — Tag name of the release `kotlin-k2-provider.ts:56-56`
+- **target** — The target of an entity `go-native-parser.ts:923-923`
+- **target** — Represents the target of a function or method `swift-native-parser.ts:622-622`
+- **target** — Stores the target of a Swift entity `swift-native-parser.ts:990-990`
+- **target** — Optionally stores the target of a function or method `swift-native-parser.ts:997-997`
+- **target** — The target node of the field reference `ts-call-extractor.ts:169-169`
+- **target** — Stores the target of an entity `zig-native-parser.ts:866-866`
+- **target** — Represents the target of a function call `zig-native-parser.ts:869-869`
+- **targetName** — Represents the target name of an entity `cpp-native-parser.ts:296-296`
+- **template** — Inline template `angular-parser.ts:33-33`
+- **templateInfo** — Interface for parsed template information `angular-parser.ts:184-184`
+- **templateRefs** — Represents references to templates in Angular components `angular-parser.ts:92-92`
+- **templateUrl** — External template URL `angular-parser.ts:36-36`
+- **text** — Optional text content of the AST node `condition-extractor.ts:60-60`
+- **text** — Represents the text of a token `kotlin-antlr-parser.ts:75-75`
+- **text** — Text content of the token `rust-antlr-parser.ts:40-40`
+- **throughput** — Represents the parsing throughput `base-parser.ts:19-19`
+- **throughput** — Stores the throughput of parsing `bash-native-parser.ts:52-52`
+- **throughput** — Stores the parsing throughput `cpp-native-parser.ts:49-49`
+- **throughput** — Stores the throughput of the parser `go-native-parser.ts:396-396`
+- **throughput** — Measures the throughput of the parser `helm-parser.ts:50-50`
+- **throughput** — Parser throughput `java-native-parser.ts:53-53`
+- **throughput** — Throughput in files parsed per second `json-parser.ts:66-66`
+- **throughput** — The throughput of the parser `kotlin-native-parser.ts:66-66`
+- **throughput** — Represents the throughput of the parser `powershell-native-parser.ts:201-201`
+- **throughput** — Throughput of the parser, calculated as the number of files parsed per second `python-native-parser.ts:398-398`
+- **throughput** — Throughput of the parser `rust-native-parser.ts:52-52`
+- **throughput** — Measures the parsing throughput `swift-native-parser.ts:33-33`
+- **throughput** — Measures the rate of parsing operations `typescript-parser.ts:168-168`
+- **throughput** — Measures the throughput of the Zig Native Parser `zig-native-parser.ts:31-31`
+- **throwNonErrorCount** — Counts the number of `throw` statements that do not throw an Error `ts-antipattern-hints-extractor.ts:18-18`
+- **time** — Time of Pyright output `pyright-integration.ts:50-50`
+- **timeInSec** — Represents the time taken for Pyright analysis in seconds `pyright-integration.ts:57-57`
+- **timeout** — Timeout function `pyright-integration.ts:172-172`
+- **to** — Specifies the target entity in a K2 relationship `kotlin-k2-provider.ts:175-175`
+- **to** — Specifies the destination of a resource `kotlin-k2-provider.ts:182-182`
+- **total** — Represents the total number of template instances in the complex analysis `cpp-analyzer.ts:44-44`
+- **total** — The total number of files processed `incremental-parser.ts:66-66`
+- **totalParseTimeMs** — Stores the total parse time in milliseconds `base-parser.ts:18-18`, `rust-native-parser.ts:51-51`, `typescript-parser.ts:167-167`, `zig-native-parser.ts:30-30`
+- **totalParseTimeMs** — Stores the total parsing time in milliseconds `bash-native-parser.ts:51-51`, `json-parser.ts:65-65`, `powershell-native-parser.ts:200-200`
+- **totalParseTimeMs** — Tracks the total parse time in milliseconds `cpp-native-parser.ts:48-48`, `go-native-parser.ts:395-395`
+- **totalParseTimeMs** — Sums the total parse time in milliseconds `helm-parser.ts:49-49`
+- **totalParseTimeMs** — Total parse time in milliseconds `java-native-parser.ts:52-52`
+- **totalParseTimeMs** — The total parse time in milliseconds `kotlin-native-parser.ts:65-65`
+- **totalParseTimeMs** — Stores the total parse time in milliseconds for Python files `python-native-parser.ts:397-397`
+- **totalParseTimeMs** — Calculates the total parse time in milliseconds `swift-native-parser.ts:32-32`
+- **totalTimeMs** — The total time taken in milliseconds for parsing `incremental-parser.ts:66-66`
+- **tpl** — Represents the number of template instances in the complex analysis `cpp-analyzer.ts:44-44`
+- **tplMemo** — Memoizes template entities during the C++ analysis `cpp-analyzer.ts:45-45`
+- **tplNest** — Tracks the template nesting level during the C++ analysis `cpp-analyzer.ts:43-43`
+- **tryCount** — Tracks the number of try blocks encountered `zig-native-parser.ts:1054-1054`
+- **twoWayBindings** — Stores two-way bindings for the template `angular-parser.ts:83-83`
+- **type** — The type of the validation issue, either "warning", "error", or "info" `bash-analyzer.ts:32-32`
+- **Type** — Represents the type of a node in the Abstract Syntax Tree (AST) of a shell script `bash-native-parser.ts:35-35`
+- **type** — Specifies the type of validation issue, either "warning", "error", or "info" `batch-analyzer.ts:28-28`
+- **type** — Represents the type of the AST node `condition-extractor.ts:58-58`
+- **type** — The type of an entity `go-native-parser.ts:945-945`
+- **type** — Represents the type of a loop or exception `go-native-parser.ts:946-946`
+- **type** — Represents the type of an exception `go-native-parser.ts:947-947`
+- **type** — Represents an array of await types and their line numbers `go-native-parser.ts:949-949`
+- **type** — Represents the type of a directive `helm-parser.ts:485-485`
+- **type** — Represents a type in the parser `incremental-parser.ts:86-86`
+- **type** — Stores an array of objects with type and name properties `incremental-parser.ts:88-88`
+- **type** — Represents the type of a declaration `java-analyzer.ts:709-709`
+- **type** — Initializes an array to store entity names and types `java-analyzer.ts:710-710`
+- **type** — Initializes an array to store parameter names and optional types `java-antlr-parser.ts:648-648`
+- **type** — Represents the type of a Java entity `java-antlr-parser.ts:693-693`
+- **type** — Extracts the type of a node `java-chevrotain-parser.ts:244-244`
+- **type** — Represents the type of a parameter `java-chevrotain-parser.ts:247-247`, `java-chevrotain-parser.ts:781-781`, `zig-native-parser.ts:1180-1180`
+- **type** — Specifies the type of an entity `json-parser.ts:388-388`
+- **type** — Stores the type of a Kotlin declaration `kotlin-antlr-parser.ts:925-925`
+- **type** — Indicates whether a property is optional `kotlin-antlr-parser.ts:928-928`
+- **type** — Specifies the type of a parsed entity `kotlin-k2-provider.ts:143-143`
+- **type** — Specifies the type of a resource `kotlin-k2-provider.ts:159-159`, `kotlin-k2-provider.ts:176-176`
+- **type** — Defines the parameters of a resource, including name, type, and optional status `kotlin-k2-provider.ts:166-166`
+- **type** — Represents the type of a Kotlin entity `kotlin-native-parser.ts:657-657`
+- **type** — Stores an array of objects with type and description properties `kotlin-native-parser.ts:661-661`
+- **type** — Stores an object with type and description properties or undefined `kotlin-native-parser.ts:664-664`
+- **type** — Represents the type of validation issue, either warning, error, or info `powershell-analyzer.ts:32-32`
+- **type** — Stores the type of the PowerShell entity `powershell-native-parser.ts:33-33`
+- **type** — Represents the type of the parsed entity `powershell-native-parser.ts:36-36`
+- **type** — Stores the type of a parameter `rust-antlr-parser.ts:369-369`
+- **type** — Represents the type of an entity `swift-native-parser.ts:1174-1174`
+- **type** — Stores the type of a parameter in an array `swift-native-parser.ts:1177-1177`
+- **type** — Represents the type of a parser `unified-parser.ts:124-124`
+- **type** — Represents the type of parser needed for a given file `unified-parser.ts:140-140`
+- **type** — Extracts the type of an entity `zig-native-parser.ts:1177-1177`
+- **typeAssertionCount** — Counts the number of type assertions in the AST `ts-antipattern-hints-extractor.ts:15-15`
+- **typeInfo** — Type information for a Python entity `pyright-integration.ts:28-28`
+- **typescriptParser** — A TypeScript-specific parser `unified-parser.ts:196-196`
+- **unreachableCount** — Counts the number of unreachable code blocks `zig-native-parser.ts:1056-1056`
+- **unsafeCastCount** — Records the count of unsafe casts `zig-native-parser.ts:1055-1055`
+- **url** — Stores the URL of a file or resource `json-parser.ts:199-199`
+- **url** — Maps server URLs to objects `json-parser.ts:215-215`
+- **url** — GitHub releases API for version checking `kotlin-k2-provider.ts:40-40`
+- **url** — Asynchronously checks the latest version and returns a promise containing the version and URL `kotlin-k2-provider.ts:91-91`
+- **useAntlr** — Determines whether to use ANTLR parser `rust-native-parser.ts:74-74`
+- **useAntlrFallback** — Boolean indicating whether to use ANTLR as fallback `java-native-parser.ts:64-64`
+- **useAntlrFallback** — A flag indicating whether to use ANTLR as a fallback `kotlin-native-parser.ts:94-94`
+- **useChevrotain** — Boolean indicating whether to use Chevrotain parser `java-native-parser.ts:63-63`
+- **useCliScript** — Uses the pre-compiled Go AST CLI script for parsing `go-native-parser.ts:407-407`
+- **useCliScript** — A flag to use the CLI script for parsing `python-native-parser.ts:410-410`
+- **useK2** — A flag indicating whether to use K2 for parsing `kotlin-native-parser.ts:91-91`
+- **useKotlincDiagnostics** — A flag indicating whether to use kotlinc diagnostics `kotlin-native-parser.ts:88-88`
+- **usePyright** — A flag to enable or disable Pyright integration `python-native-parser.ts:409-409`
+- **useRustAnalyzerEnhancement** — Specifies whether to enhance parsing with rust-analyzer info `rust-native-parser.ts:76-76`
+- **validationIssues** — A list of validation issues found during script analysis `bash-analyzer.ts:43-43`
+- **validationIssues** — Represents an array of Bash validation issues `bash-analyzer.ts:59-59`
+- **validationIssues** — A list of validation issues found during the analysis `batch-analyzer.ts:37-37`
+- **validationIssues** — Represents an array of batch validation issues `batch-analyzer.ts:53-53`
+- **validationIssues** — A collection of validation issues found during script analysis `powershell-analyzer.ts:43-43`
+- **validationIssues** — Stores an array of PowerShell validation issues `powershell-analyzer.ts:60-60`
+- **value** — Represents the value of an Angular AST node `angular-parser.ts:158-158`
+- **Value** — Represents the value of a token in a shell script `bash-native-parser.ts:31-31`
+- **Value** — Returns the value of the node's name as a string `bash-native-parser.ts:215-215`
+- **value** — Value associated with a node or entity `java-analyzer.ts:46-46`
+- **value** — Value associated with a node `java-analyzer.ts:50-50`
+- **value** — Represents the value of a package declaration `java-analyzer.ts:150-150`
+- **value** — Represents the depth of analysis `java-analyzer.ts:153-153`, `java-analyzer.ts:304-304`, `java-analyzer.ts:406-406`, `java-analyzer.ts:672-672`
+- **value** — Handles the package node and its properties `java-analyzer.ts:257-257`
+- **value** — Stores the package value `java-analyzer.ts:269-269`, `java-analyzer.ts:300-300`, `java-analyzer.ts:402-402`
+- **variables** — Stores variables used in a structural directive `angular-parser.ts:113-113`
+- **version** — Fallback K2 CLI version used when no local JAR and API unavailable `kotlin-k2-provider.ts:40-40`
+- **version** — Stores the version of the Kotlin K2 Provider `kotlin-k2-provider.ts:91-91`
+- **version** — Asynchronously finds the local JAR file and returns its path and version `kotlin-k2-provider.ts:337-337`
+- **version** — Parses the version of the Kotlin K2 provider `kotlin-k2-provider.ts:374-374`
+- **version** — Version of Pyright output `pyright-integration.ts:49-49`
+- **versionError** — Handles version compatibility errors `kotlin-native-parser.ts:235-235`
+- **warningCount** — Counts the number of warnings in Pyright diagnostics `pyright-integration.ts:55-55`
+- **weakMapNewCount** — Count of new WeakMap() calls in the analyzed function `ts-closure-hints-extractor.ts:27-27`
+- **weakMapNewCount** — Weakly maps a new count `ts-closure-hints-extractor.ts:235-235`
+- **weakSetNewCount** — Count of new WeakSet() calls in the analyzed function `ts-closure-hints-extractor.ts:29-29`
+- **weakSetNewCount** — Tracks the number of new WeakSet instances created in the closure `ts-closure-hints-extractor.ts:237-237`
+- **yamlContextIndent** — Stores the indentation level for YAML context `helm-parser.ts:59-59`
+- **zigAvailable** — Indicates whether Zig is available for parsing `zig-native-parser.ts:113-113`
+- **zigParser** — A Zig-specific parser `unified-parser.ts:206-206`
 
 ## Data Flow
 

@@ -88,7 +88,9 @@ The `src/logging` module provides a fixed-position logging system for structured
 - **escapeValue** — Escape special characters in quoted string `kv-serializer.ts:14-16`
 - **extractEvent** — Extract event from message `logger-adapter.ts:56-87`
 - **extractFields** — Extracts specific fields from a ParsedLogLine object into a record `log-formatter.ts:250-287`
-- **files** — Array of log files. (Repeated three times in the excerpt) `fixed-logger.ts:116-116`, `fixed-logger.ts:117-125`, `fixed-logger.ts:126-126`
+- **files** — Array of log files. (Repeated three times in the excerpt) `fixed-logger.ts:116-116`
+- **files** — Maps each file to an object containing its name, path, size, and modification time, filtering out null values `fixed-logger.ts:117-125`
+- **files** — Filters the mapped files to retain only those that are not null `fixed-logger.ts:126-126`
 - **formatBuildHash** — Format build hash (8 chars) `log-formatter.ts:68-70`
 - **formatDuration** — Not present in the provided entities `kv-serializer.ts:190-192`
 - **formatEvent** — Parses and pads the event string to a fixed length `log-formatter.ts:89-91`
@@ -105,7 +107,7 @@ The `src/logging` module provides a fixed-position logging system for structured
 - **getLogger** — Get the logger instance `fixed-logger.ts:401-406`
 - **getMemoryStats** — Function to get current memory statistics `memory-logger.ts:35-44`
 - **getPid** — Retrieves the current process ID, caching it if not already present `build-info.ts:81-87`
-- **hash** — Maps each part of the version string to a two-digit string `build-info.ts:60-60`
+- **hash** — Parses a number to a two-digit string `build-info.ts:60-60`
 - **initLogger** — Initializes a fixed-position logger instance with default or provided configuration `fixed-logger.ts:411-417`
 - **isMemoryHigh** — Function to determine if memory usage is high `memory-logger.ts:97-100`
 - **isValidKey** — Validate key format `kv-serializer.ts:25-27`

@@ -54,7 +54,8 @@ The `extractors` module provides a suite of tools for analyzing Kotlin code, foc
 - **calculateKotlinSpecificComplexity** — Calculates specific complexity metrics for Kotlin code, including extension function count, scope function usage, null safety operators, and coroutine complexity `complexity-analyzer.ts:209-221`
 - **calculateLinesOfCode** — Parses a string of code and counts the number of lines of code, excluding comments and empty lines `unified-extractor.ts:685-706`
 - **catchCount** — Counts the number of catch blocks in the control flow `complexity-analyzer.ts:113-113`
-- **checkSafeCall** — Checks if a call is a safe call (?.) `call-extractor.ts:310-317`, `unified-extractor.ts:643-649`
+- **checkSafeCall** — Checks if a call is a safe call (?.) `call-extractor.ts:310-317`
+- **checkSafeCall** — Parses safe calls (?.) and Elvis operator (?:) in the AST `unified-extractor.ts:643-649`
 - **cleanKDocDescription** — Cleans the description part of a KDoc comment `doc-extractor.ts:145-147`
 - **countArguments** — Counts the number of arguments in a call `call-extractor.ts:322-333`
 - **countArguments** — Counts the number of arguments in a function call `unified-extractor.ts:654-665`

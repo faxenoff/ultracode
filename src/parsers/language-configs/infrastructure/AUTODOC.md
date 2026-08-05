@@ -1,24 +1,131 @@
 # Helm Language Configuration
 
-Provides language configuration objects for infrastructure and DSL languages, enabling AST-based code analysis across multiple schema and query syntaxes.
+## 🤖 Overview
 
-## Overview
+This module provides language configuration for various programming languages used in infrastructure projects. Developers and maintainers of infrastructure systems use it to define and extract language-specific information for tools and analyzers.
 
-Provides language configuration for semantic code parsing of Helm templates. This module defines syntax rules, keywords, node types, and semantic extraction rules that enable code analysis tools to understand Helm's template structure. The configuration follows a declarative pattern consistent with other language definitions in the infrastructure module, allowing Helm to integrate seamlessly into the semantic analysis pipeline alongside GraphQL, LINQ, Prisma, Protobuf, and SQL.
+## 🤖 Architecture
 
-## Entity Listing
+```
+  +---------------------+
+  |     Language Configs     |
+  |     ---------------------|
+  |     |                   |
+  |     |     GraphQL       |
+  |     |     ----------------|
+  |     |     |              |
+  |     |     |     Keywords |
+  |     |     |     ----------------|
+  |     |     |     |              |
+  |     |     |     |     Node Types |
+  |     |     |     |     ----------------|
+  |     |     |     |     |              |
+  |     |     |     |     |     Extractors |
+  |     |     |     |     |     ----------------|
+  |     |     |     |     |     |              |
+  |     |     |     |     |     |     Extractors |
+  |     |     |     |     |     |     ----------------|
+  |     |     |     |     |     |     |              |
+  |     |     |     |     |     |     |     Extractors |
+  |     |     |     |     |     |     |     ----------------|
+  |     |     |     |     |     |     |     |              |
+  |     |     |     |     |     |     |     |     Extractors |
+  |     |     |     |     |     |     |     |     ----------------|
+  |     |     |     |     |     |     |     |     |              |
+  |     |     |     |     |     |     |     |     |     Extractors |
+  |     |     |
+  |     |     +-----------------+
+  |     |     |     Helm       |
+  |     |     |     ----------------|
+  |     |     |     |              |
+  |     |     |     |     Keywords |
+  |     |     |     |     ----------------|
+  |     |     |     |     |              |
+  |     |     |     |     |     Node Types |
+  |     |     |     |     |     ----------------|
+  |     |     |     |     |     |              |
+  |     |     |     |     |     |     Extractors |
+  |     |     |     |     |     |     ----------------|
+  |     |     |     |     |     |     |              |
+  |     |     |     |     |     |     |     Extractors |
+  |     |     |     |     |     |     |     ----------------|
+  |     |     |     |     |     |     |     |              |
+  |     |     |     |     |     |     |     |     Extractors |
+  |     |     |     |     |     |     |     |     ----------------|
+  |     |     |     |     |     |     |     |     |              |
+  |     |     |     |     |     |     |     |     |     Extractors |
+  |     |     |
+  |     |     +-----------------+
+  |     |     |     Linq       |
+  |     |     |     ----------------|
+  |     |     |     |              |
+  |     |     |     |     Keywords |
+  |     |     |     |     ----------------|
+  |     |     |     |     |              |
+  |     |     |     |     |     Node Types |
+  |     |     |     |     |     ----------------|
+  |     |     |     |     |     |              |
+  |     |     |     |     |     |     Extractors |
+  |     |     |     |     |     |     ----------------|
+  |     |     |     |     |     |     |              |
+  |     |     |     |     |     |     |     Extractors |
+  |     |     |     |     |     |     |     ----------------|
+  |     |     |     |     |     |     |     |              |
+  |     |     |     |     |     |     |     |     Extractors |
+  |     |     |     |     |     |     |     |     ----------------|
+  |     |     |     |     |     |     |     |     |              |
+  |     |     |     |     |     |     |     |     |     Extractors |
+  |     |     |
+  |     |     +-----------------+
+  |     |     |     Prisma     |
+  |     |     |     ----------------|
+  |     |     |     |              |
+  |     |     |     |     Keywords |
+  |     |     |     |     ----------------|
+  |     |     |     |     |              |
+  |     |     |     |     |     Node Types |
+  |     |     |     |     |     ----------------|
+  |     |     |     |     |     |              |
+  |     |     |     |     |     |     Extractors |
+  |     |     |     |     |     |     ----------------|
+  |     |     |     |     |     |     |              |
+  |     |     |     |     |     |     |     Extractors |
+  |     |     |     |     |     |     |     ----------------|
+  |     |     |     |     |     |     |     |              |
+  |     |     |     |     |     |     |     |     Extractors |
+  |     |     |     |     |     |     |     |     ----------------|
+  |     |     |     |     |     |     |     |     |              |
+  |     |     |     |     |     |     |     |     |     Extractors |
+  |     |     |
+  |     |     +-----------------+
+  |     |     |     Protobuf   |
+  |     |     |     ----------------|
+  |     |     |     |              |
+  |     |     |     |     Keywords |
+  |     |     |     |     ----------------|
+  |     |     |     |     |              |
+  |     |     |     |     |     Node Types |
+  |     |     |     |     |     ----------------|
+  |     |     |     |     |     |              |
+  |     |     |     |     |     |     Extractors |
+  |     |     |     |     |     |     ----------------|
+  |     |     |     |     |     |     |              |
+  |     |     |     |     |     |     |
+```
 
-### Public API
+## 🤖 Entity Listing
 
-| Name | Type | Description | Location |
-|------|------|-------------|----------|
-| `HELM_CONFIG` | const | Language configuration object for Helm templates specifying extensions, keywords, node type mappings, and semantic extraction rules for templating constructs | helm.ts:4-38 |
+### Function
+- **GRAPHQL_CONFIG** — Defines the configuration for the GraphQL language, including keywords, node types, and extractors `graphql.ts:23-23`, `graphql.ts:24-24`
+- **HELM_CONFIG** — Defines the configuration for the Helm language, including its language name, extensions, keywords, and node types `helm.ts:19-32`, `helm.ts:33-33`
+- **LINQ_CONFIG** — Defines the configuration for the LINQ language, including its name, extensions, keywords, and various extractors `linq.ts:23-23`, `linq.ts:24-24`
+- **PRISMA_CONFIG** — Defines the configuration for the Prisma language, including its keywords, node types, and extractors `prisma.ts:23-23`, `prisma.ts:24-24`
+- **PROTOBUF_CONFIG** — Defines the configuration for Protocol Buffers language support, including keywords, node types, and extractors `protobuf.ts:23-23`, `protobuf.ts:24-24`
+- **SQL_CONFIG** — Defines the configuration for the SQL language, including keywords, node types, and extractors `sql.ts:23-23`, `sql.ts:24-24`
 
-### Module Exports
-
-| Name | Type | Description | Location |
-|------|------|-------------|----------|
-| `HELM_CONFIG` | re-export | Aggregated export making Helm configuration available to dependent modules through unified language configuration API | index.ts |
+### Import_decl
+- **../shared/keywords.js** — Imports `../shared/keywords.js` from `../shared/keywords.js`. `graphql.ts:5-5`, `helm.ts:1-1`, `linq.ts:5-5`, `prisma.ts:5-5`, `protobuf.ts:5-5`, `sql.ts:5-5`
+- **../shared/types.js** — Imports `../shared/types.js` from `../shared/types.js`. `graphql.ts:6-6`, `helm.ts:2-2`, `linq.ts:6-6`, `prisma.ts:6-6`, `protobuf.ts:6-6`, `sql.ts:6-6`
 
 ## Dependencies
 

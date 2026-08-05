@@ -1,47 +1,97 @@
 # vector-ops-simd
 
-## Overview
+## 🤖 Overview
 
-This module provides WebAssembly-based SIMD-optimized implementations of fundamental vector operations for use from JavaScript. It exposes core linear algebra primitives—dot product, L2 norm, normalization, and cosine similarity—that process 4 float32 elements per SIMD instruction, delivering significant speedup over pure JavaScript computation. The module bridges high-performance Rust code with JavaScript via `wasm_bindgen`, enabling CPU-efficient vector math for ML embeddings, similarity search, and geometric computations in browsers.
+This module provides a WebAssembly SIMD implementation for computing cosine similarity between two vectors, optimized for performance. It is used by developers and data scientists who need efficient vector operations in environments that support WebAssembly SIMD instructions.
 
-## Flow
+## 🤖 Architecture
 
 ```
-JavaScript Vectors (Float32Array)
-           ↓
-    [wasm_bindgen boundary]
-           ↓
-    SIMD Computation (4-element chunks)
-           ├─ Load 4 floats from vector A & B
-           ├─ Multiply/Add with SIMD instructions (f32x4_*)
-           └─ Accumulate results across chunks
-           ↓
-    Scalar Reduction (remaining < 4 elements)
-           ↓
-    Float32 Result
-           ↓
-    [wasm_bindgen boundary]
-           ↓
-    JavaScript (f32 score/values)
+       +---------------------+
+       |     SIMD Vector    |
+       |     Operations     |
+       |     (4-element)     |
+       +---------------------+
+           |
+           v
+       +---------------------+
+       |     Dot Product     |
+       |     Calculation     |
+       +---------------------+
+           |
+           v
+       +---------------------+
+       |     Norm Squared    |
+       |     Calculation     |
+       +---------------------+
+           |
+           v
+       +---------------------+
+       |     Cosine Similarity|
+       |     Calculation     |
+       +---------------------+
 ```
 
-## Entity Listing
+## 🤖 Flow
 
-### Public API
+```
+       +---------------------+
+       |     Input Vectors   |
+       |     (a, b)          |
+       +---------------------+
+           |
+           v
+       +---------------------+
+       |     SIMD Vector     |
+       |     Operations      |
+       |     (4-element)      |
+       +---------------------+
+           |
+           v
+       +---------------------+
+       |     Dot Product     |
+       |     Calculation     |
+       +---------------------+
+           |
+           v
+       +---------------------+
+       |     Norm Squared    |
+       |     Calculation     |
+       +---------------------+
+           |
+           v
+       +---------------------+
+       |     Cosine Similarity|
+       |     Calculation     |
+       +---------------------+
+           |
+           v
+       +---------------------+
+       |     Output Result   |
+       |     (cosine similarity)|
+       +---------------------+
+```
 
-- **cosine_similarity_simd** — `lib.rs:15-96` — Computes cosine similarity between two equal-length vectors using SIMD, returning a normalized score from 0.0 to 1.0.
-- **dot_product_simd** — `lib.rs:100-143` — Calculates the dot product of two vectors using SIMD multiplication and accumulation across 4-element chunks.
-- **l2_norm_simd** — `lib.rs:147-185` — Computes the Euclidean (L2) norm of a vector using SIMD to accelerate squared-value accumulation and final square root.
-- **normalize_simd** — `lib.rs:189-226` — Returns a normalized unit vector by dividing each element by the vector's L2 norm, computed with SIMD optimization.
+## 🤖 Entity Listing
 
-### Tests
+### Function
+- **cosine_similarity_simd** — Computes cosine similarity between two vectors using SIMD instructions for performance `lib.rs:15-96`
+- **dot_product_simd** — Not present in the provided code `lib.rs:100-143`
+- **l2_norm_simd** — Not present in the provided code `lib.rs:147-185`
+- **normalize_simd** — Not present in the provided code `lib.rs:189-226`
+- **test_cosine_similarity** — Tests the cosine similarity function `lib.rs:233-239`
+- **test_dot_product** — Tests the dot product function `lib.rs:251-257`
+- **test_l2_norm** — Tests the L2 norm function `lib.rs:260-264`
+- **test_normalize** — Tests the normalize function `lib.rs:267-273`
+- **test_orthogonal_vectors** — Tests the cosine similarity function with orthogonal vectors `lib.rs:242-248`
 
-- **tests** — `lib.rs:229-274` — Module housing unit tests for vector operation correctness.
-  - **test_cosine_similarity** — `lib.rs:233-239` — Verifies cosine similarity calculation between known vectors.
-  - **test_orthogonal_vectors** — `lib.rs:242-248` — Ensures orthogonal vectors produce zero dot product.
-  - **test_dot_product** — `lib.rs:251-257` — Tests dot product computation accuracy.
-  - **test_l2_norm** — `lib.rs:260-264` — Validates L2 norm calculation.
-  - **test_normalize** — `lib.rs:267-273` — Confirms normalized output has unit length.
+### Module
+- **tests** — Contains test functions for vector operations `lib.rs:229-274`
+
+### Import_decl
+- **use std::arch::wasm32::*;** — Imports `use std::arch::wasm32::*;`. `lib.rs:32-32`, `lib.rs:111-111`, `lib.rs:154-154`, `lib.rs:201-201`
+- **use super::*;** — Imports `use super::*;`. `lib.rs:230-230`
+- **use wasm_bindgen::prelude::*;** — Imports `use wasm_bindgen::prelude::*;`. `lib.rs:1-1`
 
 ## Dependencies
 

@@ -1,26 +1,94 @@
 # Recent Changes Enrichment
 
-## Overview
+## 🤖 Overview
 
-This module enriches diagnostic tool results with recently-changed entity metadata extracted from Prolly Tree commit history. It provides core utilities for annotating diagnostic outputs (from tools like `trace_flow` and `trace_backwards`) with change timestamps and significance levels, eliminating boilerplate duplication across diagnostic systems. The module bridges diagnostic queries with version control metadata, enabling tools to highlight recently modified code as a signal for potential issues.
+The `recent-changes-enrichment.ts` module provides a utility for annotating diagnostic tool results with recently-changed entity status from Prolly Tree commit history. It is used by developers and maintainers to understand the impact of recent changes on diagnostic tools, helping them identify critical or high-significance changes that may affect tool behavior.
 
-## Flow
+## 🤖 Architecture
 
 ```
-Entity Locations / Diagnostic Results
-              ↓
-    Resolve Locations → Entity IDs (via query)
-              ↓
-    Analyze Commit History (Prolly Tree)
-              ↓
-    Build Change Summary (type, significance)
-              ↓
-    Annotate Entities In-Place
-              ↓
-    Format for Display
-              ↓
-    Enriched Diagnostic Output
+  +-----------------------------+
+  |     getRecentlyChangedEntities |
+  +-----------------------------+
+           |
+           v
+  +-----------------------------+
+  |       enrichEntityInfo      |
+  +-----------------------------+
+           |
+           v
+  +-----------------------------+
+  |       summarizeRecentChanges |
+  +-----------------------------+
+           |
+           v
+  +-----------------------------+
+  |       logRecentChanges      |
+  +-----------------------------+
 ```
+
+## 🤖 Flow
+
+```
+  +-----------------------------+
+  |       getRecentlyChangedEntities |
+  +-----------------------------+
+           |
+           v
+  +-----------------------------+
+  |       enrichEntityInfo      |
+  +-----------------------------+
+           |
+           v
+  +-----------------------------+
+  |       summarizeRecentChanges |
+  +-----------------------------+
+           |
+           v
+  +-----------------------------+
+  |       logRecentChanges      |
+  +----------------
+```
+
+## 🤖 Entity Listing
+
+### Function
+- **annotateEntitiesInPlace** — Annotates diagnostic tool results with recently-changed entity status from Prolly Tree commit history `recent-changes-enrichment.ts:124-136`
+- **buildRecentChangeSummary** — Builds a summary of recently changed entities from given inputs `recent-changes-enrichment.ts:68-116`
+- **formatRecentChangesSection** — Formats the recent changes section for display `recent-changes-enrichment.ts:211-227`
+- **getAdapterFromStorage** — Extracts a GraphAdapter from storage, returning null if unavailable `recent-changes-enrichment.ts:44-47`
+- **hintForSignificance** — Generates a hint based on the significance and number of commits `recent-changes-enrichment.ts:53-62`
+- **resolveLocationsToEntities** — Resolves locations to entities `recent-changes-enrichment.ts:152-204`
+
+### Interface
+- **ChangedEntityInfo** — Represents information about an entity that has been changed, including its ID, name, file path, change type, significance, and a hint `recent-changes-enrichment.ts:16-23`
+- **EntityInfoInput** — Input for entity information, including ID, significance, name, and file path `recent-changes-enrichment.ts:32-37`
+- **RecentChangeSummary** — Summary of recently changed entities, including their details and statistics `recent-changes-enrichment.ts:25-30`
+- **ResolvedLocation** — Represents the resolved location of an entity `recent-changes-enrichment.ts:140-146`
+
+### Import_decl
+- **../../logging/index.js** — Imports `../../logging/index.js` from `../../logging/index.js`. `recent-changes-enrichment.ts:9-9`
+- **../../storage/graph-adapter.js** — Imports `../../storage/graph-adapter.js` from `../../storage/graph-adapter.js`. `recent-changes-enrichment.ts:10-10`
+- **../../storage/prolly/recently-changed.js** — Imports `../../storage/prolly/recently-changed.js` from `../../storage/prolly/recently-changed.js`. `recent-changes-enrichment.ts:11-11`
+- **../../types/storage.js** — Imports `../../types/storage.js` from `../../types/storage.js`. `recent-changes-enrichment.ts:12-12`
+
+### Property
+- **changeType** — Type of change to an entity, either "added" or "modified" `recent-changes-enrichment.ts:20-20`
+- **commitsAnalyzed** — Number of commits analyzed `recent-changes-enrichment.ts:28-28`
+- **entityId** — Unique identifier for an entity `recent-changes-enrichment.ts:17-17`, `recent-changes-enrichment.ts:33-33`
+- **entityId** — Represents the unique identifier of an entity `recent-changes-enrichment.ts:125-125`, `recent-changes-enrichment.ts:144-144`
+- **entityName** — Name of an entity `recent-changes-enrichment.ts:18-18`, `recent-changes-enrichment.ts:35-35`
+- **entityName** — Represents the name of an entity `recent-changes-enrichment.ts:145-145`
+- **filePath** — File path where an entity is located `recent-changes-enrichment.ts:19-19`, `recent-changes-enrichment.ts:36-36`
+- **filePath** — Represents the file path of an entity `recent-changes-enrichment.ts:142-142`
+- **getLibSQLAdapter** — Function to get a GraphAdapter from storage `recent-changes-enrichment.ts:45-45`
+- **hint** — A hint or note related to the significance of the change `recent-changes-enrichment.ts:22-22`
+- **line** — Represents the line number of an entity `recent-changes-enrichment.ts:143-143`, `recent-changes-enrichment.ts:159-159`
+- **location** — Represents the location of an entity `recent-changes-enrichment.ts:141-141`, `recent-changes-enrichment.ts:159-159`
+- **recentlyChangedEntities** — Array of recently changed entities `recent-changes-enrichment.ts:26-26`
+- **significance** — Significance level of the change, either "critical", "high", or "medium" `recent-changes-enrichment.ts:21-21`, `recent-changes-enrichment.ts:34-34`
+- **timeMs** — Time taken in milliseconds to analyze changes `recent-changes-enrichment.ts:29-29`
+- **totalAnnotated** — Total number of annotated entities `recent-changes-enrichment.ts:27-27`
 
 ## Entities
 

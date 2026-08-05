@@ -1,21 +1,106 @@
----
-module_name: cpu
-description: "CPU capability detection for OpenVINO optimization tier classification with cross-platform flag probing and model-name inference"
-status: active
-language: typescript
-entry_point: cpu-detector.ts
-exports: [CPUInfo, CPUDetector]
-dependencies: [child_process, os, logging]
-tags: [hardware, cpu-detection, openvino, avx, simd, performance-tier]
----
-
 # CPU
 
-> Cross-platform CPU capability detection system that probes instruction-set flags (AVX2, AVX-512, VNNI, AMX) and classifies processors into OpenVINO performance tiers.
+## 🤖 Overview
 
-## Overview
+The `cpu-detector.ts` module detects CPU capabilities for OpenVINO optimization, providing detailed information about the CPU's vendor, model, cores, threads, and supported instruction sets. This module is used by developers and system administrators to optimize applications for different CPU architectures.
 
-The cpu module exposes a singleton `CPUDetector` class that detects the host processor's vendor, core/thread counts, and SIMD instruction-set support. On Linux it reads `/proc/cpuinfo`, on macOS it queries `sysctl`, and on Windows (or as a universal fallback) it infers capabilities from the `os.cpus()` model string using a comprehensive heuristic covering Intel Core, Core Ultra, Xeon, and AMD Ryzen/EPYC families. Detection results are cached after the first call. Based on detected flags the module assigns an OpenVINO performance tier (`unsupported` through `optimal`) with a human-readable recommendation. Two convenience methods check whether OpenVINO is advisable and produce a one-line summary for logging.
+## 🤖 Architecture
+
+```
++---------------------+
+|     CPU Info        |
+|     (cached)        |
++---------------------+
+        |
+        v
++---------------------+
+|   CPU Detection     |
+|   (os.cpus(), etc.) |
++---------------------+
+        |
+        v
++---------------------+
+|   Instruction Sets  |
+|   (AVX2, AVX-512, etc.) |
++---------------------+
+        |
+        v
++---------------------+
+|   OpenVINO Tier     |
+|   (based on detection) |
++---------------------+
+```
+
+## 🤖 Flow
+
+```
++---------------------+
+|   Start Detection   |
+|   (call detect())   |
++---------------------+
+        |
+        v
++---------------------+
+|   Get CPU Info      |
+|   (os.cpus(), etc.) |
++---------------------+
+        |
+        v
++---------------------+
+|   Cache Info        |
+|   (if not cached)   |
++---------------------+
+        |
+        v
++---------------------+
+|   Detect Instruction|
+|   Sets (AVX2, etc.) |
++---------------------+
+        |
+        v
++---------------------+
+|   Determine OpenVINO|
+|   Tier and Recom.  |
++---------------------+
+```
+
+## 🤖 Entity Listing
+
+### Method
+- **calculateOpenVINOTier** — Calculates the OpenVINO performance tier based on CPU capabilities `cpu-detector.ts:277-326`
+- **countPhysicalCores** — Counts the number of physical CPU cores `cpu-detector.ts:234-272`
+- **detect** — Detects CPU capabilities and returns a CPUInfo object `cpu-detector.ts:40-73`
+- **detectVendor** — Detects the CPU vendor based on the model `cpu-detector.ts:218-225`
+- **getCPUFlags** — Retrieves CPU flags from the system `cpu-detector.ts:78-118`
+- **getSummary** — Detects CPU capabilities for OpenVINO optimization, including AVX2, AVX-512, VNNI, and AMX support, and returns a summary of the detected CPU information `cpu-detector.ts:339-348`
+- **inferFlagsFromModel** — Not present in the provided code `cpu-detector.ts:123-213`
+- **isOpenVINORecommended** — Not present in the provided code `cpu-detector.ts:331-334`
+
+### Class
+- **CPUDetector** — A class for detecting CPU capabilities `cpu-detector.ts:34-349`
+
+### Interface
+- **CPUInfo** — Represents CPU information including vendor, model, cores, threads, and instruction set support `cpu-detector.ts:17-32`
+
+### Import_decl
+- **../logging/index.js** — Imports `../logging/index.js` from `../logging/index.js`. `cpu-detector.ts:15-15`
+- **node:child_process** — Imports `node:child_process` from `node:child_process`. `cpu-detector.ts:13-13`
+- **node:os** — Imports `node:os` from `node:os`. `cpu-detector.ts:14-14`
+
+### Property
+- **amx** — Indicates whether AMX is supported `cpu-detector.ts:27-27`
+- **avx2** — Indicates whether AVX2 is supported `cpu-detector.ts:24-24`
+- **avx512** — Indicates whether AVX-512 is supported `cpu-detector.ts:25-25`
+- **cachedInfo** — Caches detected CPU information for performance `cpu-detector.ts:35-35`
+- **cores** — Counts the number of physical CPU cores `cpu-detector.ts:20-20`
+- **model** — Stores the model of the CPU `cpu-detector.ts:19-19`
+- **openvinoRecommendation** — Stores the recommendation for OpenVINO optimization `cpu-detector.ts:31-31`
+- **openvinoTier** — Represents the performance tier for OpenVINO optimization `cpu-detector.ts:30-30`
+- **recommendation** — Stores the recommendation for OpenVINO optimization `cpu-detector.ts:279-279`
+- **threads** — Stores the number of CPU threads `cpu-detector.ts:21-21`
+- **tier** — Represents the performance tier for OpenVINO optimization `cpu-detector.ts:278-278`
+- **vendor** — Determines the CPU vendor as "intel", "amd", "arm", or "unknown" `cpu-detector.ts:18-18`
+- **vnni** — Indicates whether VNNI is supported `cpu-detector.ts:26-26`
 
 ## Data Flow
 

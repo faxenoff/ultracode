@@ -118,7 +118,8 @@ This module is a Protocol Buffers loader and serializer, designed to dynamically
 - **protobufjs** — Imports `protobufjs` from `protobufjs`. `index.ts:6-6`
 
 ### Property
-- **added** — Represents the added delta for an entity `index.ts:140-140`, `index.ts:146-146`
+- **added** — Represents the added delta for an entity `index.ts:140-140`
+- **added** — Stores a record of added relationships `index.ts:146-146`
 - **arguments** — Contains the arguments for the entity `index.ts:90-90`
 - **base_commit_sha** — Stores the SHA of the base commit `index.ts:153-153`
 - **branch_name** — Represents the name of the branch `index.ts:152-152`
@@ -131,7 +132,8 @@ This module is a Protocol Buffers loader and serializer, designed to dynamically
 - **created_at** — Stores the timestamp when the entity was created `index.ts:136-136`
 - **decorators** — List of decorators for the entity `index.ts:101-101`
 - **default_value** — The default value of a parameter `index.ts:73-73`
-- **deleted** — Represents the deleted delta for an entity `index.ts:142-142`, `index.ts:148-148`
+- **deleted** — Represents the deleted delta for an entity `index.ts:142-142`
+- **deleted** — Stores an array of deleted entities `index.ts:148-148`
 - **dimensions** — Defines the dimensions of the embeddings `index.ts:178-178`
 - **distance** — Represents the distance in the search result `index.ts:170-170`
 - **embedding** — Stores the embedding of an entity `index.ts:118-118`
@@ -140,22 +142,24 @@ This module is a Protocol Buffers loader and serializer, designed to dynamically
 - **end** — The end position of a token `index.ts:66-66`
 - **entities** — Represents a collection of entities `index.ts:269-269`
 - **entity_delta** — Describes the delta of an entity `index.ts:154-154`
-- **error** — Indicates an error in the message `index.ts:165-165`, `index.ts:175-175`
+- **error** — Indicates an error in the message `index.ts:165-165`
+- **error** — Optionally represents an error message `index.ts:175-175`
 - **extra** — Additional information for the entity `index.ts:102-102`
 - **extra** — Stores additional information about an entity `index.ts:126-126`
 - **file_path** — File path of the entity `index.ts:109-109`
 - **from_id** — Represents the identifier of the entity from which the relationship originates `index.ts:131-131`
 - **hash** — Hash of the entity `index.ts:112-112`
 - **id** — Unique identifier for the entity `index.ts:106-106`
-- **id** — Represents the unique identifier of an entity `index.ts:130-130`
-- **id** — Identifies the message `index.ts:162-162`, `index.ts:169-169`
+- **id** — Represents the unique identifier of an entity `index.ts:130-130`, `index.ts:169-169`
+- **id** — Identifies the message `index.ts:162-162`
 - **import_data** — Data for importing the entity `index.ts:98-98`
 - **imported** — The imported name of an import specifier `index.ts:78-78`
 - **index** — The index of a token `index.ts:61-61`
 - **is_builtin** — Indicates whether the entity is a built-in type `index.ts:91-91`
 - **is_default** — Indicates if an import is a default import `index.ts:84-84`
 - **is_namespace** — Indicates if an import is a namespace import `index.ts:85-85`
-- **language** — Language of the entity `index.ts:100-100`, `index.ts:116-116`
+- **language** — Language of the entity `index.ts:100-100`
+- **language** — Optionally represents the language of an entity `index.ts:116-116`
 - **last_modified** — Indicates the last modified time `index.ts:156-156`
 - **line** — The line number of a token `index.ts:59-59`
 - **line** — Represents the line number of a position `index.ts:123-123`
@@ -164,10 +168,12 @@ This module is a Protocol Buffers loader and serializer, designed to dynamically
 - **message_id** — Identifies a specific message `index.ts:186-186`
 - **metadata** — Metadata for the entity `index.ts:111-111`
 - **metadata** — Stores metadata for the relationship `index.ts:134-134`
-- **modified** — Represents the modified delta for an entity `index.ts:141-141`, `index.ts:147-147`
+- **modified** — Represents the modified delta for an entity `index.ts:141-141`
+- **modified** — Stores a record of modified relationships `index.ts:147-147`
 - **modifiers** — List of modifiers for the entity `index.ts:95-95`
 - **name** — The name of a parameter `index.ts:70-70`
-- **name** — Stores the name of the entity `index.ts:89-89`, `index.ts:107-107`
+- **name** — Stores the name of the entity `index.ts:89-89`
+- **name** — Represents the name of an entity `index.ts:107-107`
 - **optional** — Indicates if a parameter is optional `index.ts:72-72`
 - **parameters** — Array of parameters for the entity `index.ts:97-97`
 - **payload** — Contains the message payload `index.ts:163-163`
@@ -188,7 +194,8 @@ This module is a Protocol Buffers loader and serializer, designed to dynamically
 - **type** — The type of a parameter `index.ts:71-71`
 - **type** — Type of the entity `index.ts:108-108`
 - **type** — Represents the type of the relationship `index.ts:133-133`
-- **type** — Specifies the type of the message `index.ts:161-161`, `index.ts:176-176`
+- **type** — Specifies the type of the message `index.ts:161-161`
+- **type** — Represents the type of an entity `index.ts:176-176`
 - **updated_at** — Last update timestamp of the entity `index.ts:114-114`
 - **vector_count** — Counts the number of vectors in the results `index.ts:180-180`
 - **weight** — Represents the weight of the relationship `index.ts:135-135`

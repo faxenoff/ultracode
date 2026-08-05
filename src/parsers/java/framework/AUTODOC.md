@@ -1,17 +1,120 @@
----
-module_name: java-framework
-description: "Extractors for Java framework patterns: Spring, JPA/Hibernate, and Lombok"
-status: active
-language: typescript
----
-
 # Java Framework
 
-> Detects and extracts framework-specific patterns from Java code, including Spring stereotypes/endpoints, JPA entity mappings, and Lombok code generation annotations.
+## 🤖 Overview
 
-## Overview
+The `jpa-extractor.ts` module is designed to extract JPA-specific patterns and annotations from Java code, particularly focusing on entities and their relationships. It is used by developers and tools that need to analyze or generate code based on JPA annotations, such as identifying entities, their relationships, and repository patterns.
 
-This module provides framework-aware analysis for Java projects. Each extractor handles a specific framework ecosystem: Spring (DI, REST endpoints, component types), JPA/Hibernate (entities, relationships, repositories, queries), and Lombok (generated methods, builder pattern, logging). Extractors work with annotation data from the parser to enrich entities with framework metadata and generate additional relationships.
+## 🤖 Architecture
+
+```
+  +-------------------+
+  | JPA Entity       |
+  | (e.g., @Entity)  |
+  +-------------------+
+          |
+          v
+  +-------------------+
+  | Relationship     |
+  | (e.g., @OneToMany)|
+  +-------------------+
+          |
+          v
+  +-------------------+
+  | Field             |
+  | (e.g., @Column)   |
+  +-------------------+
+          |
+          v
+  +-------------------+
+  | Named Query       |
+  | (e.g., @Query)    |
+  +-------------------+
+```
+
+## 🤖 Flow
+
+```
+  +-------------------+
+  | Java Code        |
+  | (e.g., @Entity)  |
+  +-------------------+
+          |
+          v
+  +-------------------+
+  | JPA Entity       |
+  | (e.g., @Entity)  |
+  +-------------------+
+          |
+          v
+  +-------------------+
+  | Relationship     |
+  | (e.g., @OneToMany)|
+  +-------------------+
+          |
+          v
+  +-------------------+
+  | Field             |
+  | (e.g., @Column)   |
+  +-------------------+
+          |
+          v
+  +-------------------+
+  | Named Query       |
+  | (e.g., @Query)    |
+  +-------------------+
+```
+
+## 🤖 Entity Listing
+
+### Function
+- **detectJpaFramework** — Checks if code contains JPA framework imports `jpa-extractor.ts:59-70`
+- **detectLombokFramework** — Checks if code contains Lombok imports or annotations `lombok-extractor.ts:63-71`
+- **detectSpringFramework** — Checks if code contains Spring framework imports `spring-extractor.ts:59-68`
+- **enrichEntityWithJpa** — Enriches an entity with JPA metadata and relationships `jpa-extractor.ts:197-237`
+- **enrichEntityWithLombok** — Adds Lombok metadata to an entity and creates relationships `lombok-extractor.ts:285-317`
+- **enrichEntityWithSpring** — Enriches a parsed entity with Spring framework metadata and relationships `spring-extractor.ts:192-238`
+- **extractCustomQueries** — Extracts custom queries from repository methods `jpa-extractor.ts:292-334`
+- **extractEndpoints** — Extracts endpoints from a parsed entity and its children `spring-extractor.ts:247-297`
+- **extractJpaInfo** — Parses annotations to extract JPA entity information and relationships `jpa-extractor.ts:93-143`
+- **extractLombokInfo** — Parses annotations to determine Lombok-related information `lombok-extractor.ts:94-138`
+- **extractMethodFromAnnotation** — Extracts the HTTP method from a Spring annotation `spring-extractor.ts:171-183`
+- **extractPathFromAnnotation** — Extracts the path from a Spring annotation `spring-extractor.ts:145-166`
+- **extractRelationshipInfo** — Extracts relationship information from a JPA annotation `jpa-extractor.ts:163-188`
+- **extractRepositoryEntityType** — Extracts the entity type from a JPA repository interface `jpa-extractor.ts:275-287`
+- **extractSpringInfo** — Parses annotations to extract Spring framework information and relationships `spring-extractor.ts:91-140`
+- **extractTableName** — Extracts the table name from a JPA @Table annotation `jpa-extractor.ts:148-158`
+- **getJpaConfidence** — Detects JPA framework confidence level `jpa-extractor.ts:75-84`
+- **getLoggerType** — Determines the logger type based on Lombok logging annotations `lombok-extractor.ts:335-347`
+- **getLombokConfidence** — Detects Lombok framework confidence level based on code patterns `lombok-extractor.ts:76-85`
+- **getSpringConfidence** — Detects Spring framework confidence level `spring-extractor.ts:73-82`
+- **hasLombokLogging** — Checks if an entity has Lombok logging annotations `lombok-extractor.ts:326-330`
+- **inferGeneratedMethods** — Infers generated methods based on Lombok annotations and fields `lombok-extractor.ts:147-276`
+- **isJpaRepository** — Determines if an entity is a JPA repository `jpa-extractor.ts:246-270`
+- **params** — Filters and maps fields to extract property names and types `lombok-extractor.ts:255-255`
+- **params** — Maps fields to extract property names and types `lombok-extractor.ts:256-259`
+- **parseDerivedQueryMethod** — Parses derived query methods from repository names `jpa-extractor.ts:339-355`
+
+### Import_decl
+- **../../../types/parser.js** — Imports `../../../types/parser.js` from `../../../types/parser.js`. `jpa-extractor.ts:15-15`, `lombok-extractor.ts:15-15`, `spring-extractor.ts:15-15`
+- **../types.js** — Imports `../types.js` from `../types.js`. `jpa-extractor.ts:16-16`, `lombok-extractor.ts:16-16`, `spring-extractor.ts:16-16`
+
+### Property
+- **entity** — Represents a parsed entity `jpa-extractor.ts:201-201`, `lombok-extractor.ts:286-286`, `spring-extractor.ts:196-196`
+- **handlerName** — Represents the handler name of an endpoint `spring-extractor.ts:253-253`
+- **handlerName** — Stores the handler name `spring-extractor.ts:259-259`
+- **isNative** — Optionally indicates if the query is native `jpa-extractor.ts:295-295`, `jpa-extractor.ts:300-300`
+- **jpaInfo** — Represents JPA entity information `jpa-extractor.ts:97-97`
+- **location** — Represents the location information `spring-extractor.ts:254-254`, `spring-extractor.ts:260-260`
+- **method** — Represents the HTTP method of an endpoint `spring-extractor.ts:252-252`
+- **method** — Stores the HTTP method `spring-extractor.ts:258-258`
+- **methodName** — Represents the name of the method `jpa-extractor.ts:293-293`, `jpa-extractor.ts:298-298`
+- **path** — Represents the path of an endpoint `spring-extractor.ts:251-251`
+- **path** — Stores the request path `spring-extractor.ts:257-257`
+- **query** — Optionally holds a string query `jpa-extractor.ts:294-294`, `jpa-extractor.ts:299-299`
+- **relationships** — Stores entity relationships `jpa-extractor.ts:98-98`, `jpa-extractor.ts:202-202`
+- **relationships** — Represents relationships between entities `lombok-extractor.ts:287-287`
+- **relationships** — Stores an array of entity relationships `spring-extractor.ts:96-96`, `spring-extractor.ts:197-197`
+- **springInfo** — Represents the Spring annotation information `spring-extractor.ts:95-95`
 
 ## Data Flow
 

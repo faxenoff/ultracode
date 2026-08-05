@@ -1,8 +1,61 @@
 # Module: tests/autodoc
 
-## Overview
+## 🤖 Overview
 
-The `tests/autodoc` module contains comprehensive test suites validating the autodoc generation system's core components: file synchronization, language detection, link extraction from markdown, and markdown document parsing. These tests ensure that the autodoc pipeline correctly processes source files, identifies programming languages, resolves documentation links, and parses markdown structures. Together, they form the quality gate for the automated documentation generation workflow.
+This module contains test cases for the AutoDoc File Sync functionality, which identifies and reads markdown files from a directory. It is used by developers to ensure the correctness of file synchronization logic.
+
+## 🤖 Architecture
+
+```
+  +-------------------+
+  | findMarkdownFiles |
+  +-------------------+
+          |
+          v
+  +-------------------+
+  | readDocumentFromDisk |
+  +-------------------+
+          |
+          v
+  +-------------------+
+  | writeDocumentToDisk |
+  +-------------------+
+```
+
+## 🤖 Flow
+
+```
+  +-------------------+
+  | findMarkdownFiles |
+  +-------------------+
+          |
+          v
+  +-------------------+
+  | readDocumentFromDisk |
+  +-------------------+
+          |
+          v
+  +-------------------+
+  | writeDocumentToDisk |
+  +-------------------+
+```
+
+## 🤖 Entity Listing
+
+### Function
+- **detailsSection** — Represents a detailed section within a markdown document `md-parser.test.ts:119-119`
+- **falseResolver** — Not present in the provided code `link-extractor.test.ts:126-126`
+- **mockResolver** — Not present in the provided code `link-extractor.test.ts:94-94`
+- **titles** — Extracts section titles from parsed markdown content `md-parser.test.ts:45-45`
+
+### Import_decl
+- **../../src/autodoc/i18n/language-detector.js** — Imports `../../src/autodoc/i18n/language-detector.js`. `language-detector.test.ts:2-7`
+- **../../src/autodoc/parser/link-extractor.js** — Imports `../../src/autodoc/parser/link-extractor.js`. `link-extractor.test.ts:2-12`
+- **../../src/autodoc/parser/md-parser.js** — Imports `../../src/autodoc/parser/md-parser.js`. `md-parser.test.ts:2-10`
+- **../../src/autodoc/sync/file-sync.js** — Imports `../../src/autodoc/sync/file-sync.js` from `../../src/autodoc/sync/file-sync.js`. `file-sync.test.ts:8-8`
+- **bun:test** — Imports `bun:test` from `bun:test`. `file-sync.test.ts:5-5`, `language-detector.test.ts:1-1`, `link-extractor.test.ts:1-1`, `md-parser.test.ts:1-1`
+- **node:fs/promises** — Imports `node:fs/promises` from `node:fs/promises`. `file-sync.test.ts:6-6`
+- **node:path** — Imports `node:path` from `node:path`. `file-sync.test.ts:7-7`
 
 ## Test Suites
 

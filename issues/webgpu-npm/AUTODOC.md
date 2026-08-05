@@ -1,10 +1,10 @@
 # webgpu-npm
 
-## Overview
+## 🤖 Overview
 
 The `webgpu-npm` module provides internal integration with the WebGPU API in Node.js and Bun environments by wrapping the `webgpu` npm package. It enables GPU-accelerated graphics operations through a simplified initialization pattern without exposing public APIs. This module serves as a runtime compatibility layer, handling adapter and device creation workflows to verify WebGPU functionality in target environments.
 
-## Flow
+## 🤖 Flow
 
 ```
 Runtime Detection
@@ -20,12 +20,13 @@ Device Request
 WebGPU Ready
 ```
 
-## Entity Listing
+## 🤖 Entity Listing
 
-### Test & Validation
+### Module
+- **bun-issue-webgpu-npm** — Represents a Bun issue where loading the webgpu npm package causes a segmentation fault `package.json:1-1`
 
-- **test.js** — Entry point for validating WebGPU module compatibility across Node.js and Bun runtimes; performs sequential initialization of GPU instance, adapter, and device to verify the webgpu package functions correctly in the target environment.
-- **bun-issue-webgpu-npm** — Documents the WebGPU adapter initialization failure that occurs when test.js executes in Bun runtime (package.json:1-1).
+### Import_decl
+- **webgpu** — Imports `webgpu`. `package.json:0-0`
 
 ## Dependencies
 

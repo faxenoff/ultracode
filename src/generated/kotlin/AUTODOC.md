@@ -48,32 +48,180 @@ UnicodeClasses.ts
 - **_ATN** — Provides access to the ATN (Alternative Tree Node) for parsing `UnicodeClasses.ts:255-261`
 - **ABSTRACT** — Indicates an abstract class `KotlinParser.ts:20978-20980`
 - **ABSTRACT** — Represents an abstract modifier in the Kotlin grammar `KotlinParser.ts:21332-21334`
-- **accept** — Accepts the current token as part of the current rule `KotlinParser.ts:13827-13833`, `KotlinParser.ts:13898-13904`, `KotlinParser.ts:13933-13939`, `KotlinParser.ts:16835-16841`, `KotlinParser.ts:16876-16882`, `KotlinParser.ts:16905-16911`, `KotlinParser.ts:16946-16952`, `KotlinParser.ts:16978-16984`, `KotlinParser.ts:17442-17448`, `KotlinParser.ts:17494-17500`, `KotlinParser.ts:17529-17535`, `KotlinParser.ts:17597-17603`, `KotlinParser.ts:17647-17653`, `KotlinParser.ts:17676-17682`, `KotlinParser.ts:17726-17732`, `KotlinParser.ts:17785-17791`, `KotlinParser.ts:17837-17843`, `KotlinParser.ts:17887-17893`, `KotlinParser.ts:17940-17946`, `KotlinParser.ts:17975-17981`, `KotlinParser.ts:19144-19150`, `KotlinParser.ts:19194-19200`, `KotlinParser.ts:19238-19244`, `KotlinParser.ts:19855-19861`, `KotlinParser.ts:19920-19926`, `KotlinParser.ts:20058-20064`, `KotlinParser.ts:20096-20102`, `KotlinParser.ts:20131-20137`, `KotlinParser.ts:20166-20172`, `KotlinParser.ts:20195-20201`, `KotlinParser.ts:20224-20230`, `KotlinParser.ts:20799-20805`, `KotlinParser.ts:20828-20834`, `KotlinParser.ts:20860-20866`, `KotlinParser.ts:21125-21131`, `KotlinParser.ts:21169-21175`, `KotlinParser.ts:21486-21492`, `KotlinParser.ts:21536-21542`
-- **accept** — Represents accepting a rule in the Kotlin parser `KotlinParser.ts:13992-13998`, `KotlinParser.ts:14024-14030`
-- **accept** — Parses the input string and returns a parser instance `KotlinParser.ts:14056-14062`, `KotlinParser.ts:14097-14103`, `KotlinParser.ts:14126-14132`
-- **accept** — Accepts a rule in the parser `KotlinParser.ts:14155-14161`, `KotlinParser.ts:14205-14211`, `KotlinParser.ts:14243-14249`, `KotlinParser.ts:16600-16606`, `KotlinParser.ts:16635-16641`, `KotlinParser.ts:19729-19735`, `KotlinParser.ts:19767-19773`, `KotlinParser.ts:19805-19811`
-- **accept** — Accepts a rule in the Kotlin parser `KotlinParser.ts:14311-14317`, `KotlinParser.ts:14352-14358`, `KotlinParser.ts:15268-15274`, `KotlinParser.ts:18367-18373`, `KotlinParser.ts:18399-18405`, `KotlinParser.ts:18446-18452`
-- **accept** — Represents accepting a rule `KotlinParser.ts:14393-14399`, `KotlinParser.ts:14449-14455`, `KotlinParser.ts:16017-16023`, `KotlinParser.ts:16067-16073`, `KotlinParser.ts:20624-20630`, `KotlinParser.ts:20656-20662`
-- **accept** — Accepts a rule in the parsing process `KotlinParser.ts:14505-14511`, `KotlinParser.ts:14557-14563`
-- **accept** — Accepts a token in the parser `KotlinParser.ts:14604-14610`, `KotlinParser.ts:14642-14648`, `KotlinParser.ts:14686-14692`, `KotlinParser.ts:20253-20259`, `KotlinParser.ts:20285-20291`, `KotlinParser.ts:20314-20320`
-- **accept** — Accepts a token `KotlinParser.ts:14730-14736`, `KotlinParser.ts:14786-14792`, `KotlinParser.ts:14830-14836`, `KotlinParser.ts:20352-20358`, `KotlinParser.ts:20387-20393`, `KotlinParser.ts:20416-20422`, `KotlinParser.ts:20457-20463`, `KotlinParser.ts:20486-20492`, `KotlinParser.ts:20527-20533`, `KotlinParser.ts:20568-20574`
-- **accept** — Accepts a parsed element `KotlinParser.ts:14883-14889`, `KotlinParser.ts:14933-14939`, `KotlinParser.ts:14974-14980`, `KotlinParser.ts:15103-15109`, `KotlinParser.ts:15159-15165`, `KotlinParser.ts:15203-15209`, `KotlinParser.ts:18124-18130`, `KotlinParser.ts:18165-18171`, `KotlinParser.ts:18194-18200`
-- **accept** — Represents accepting a rule in the Kotlin grammar `KotlinParser.ts:15009-15015`, `KotlinParser.ts:15047-15053`, `KotlinParser.ts:15788-15794`, `KotlinParser.ts:15829-15835`
-- **accept** — Accepts a rule and returns a visitor `KotlinParser.ts:15309-15315`, `KotlinParser.ts:15359-15365`, `KotlinParser.ts:15415-15421`
-- **accept** — Represents accepting a rule in the parser `KotlinParser.ts:15495-15501`, `KotlinParser.ts:18951-18957`, `KotlinParser.ts:18983-18989`, `KotlinParser.ts:19300-19306`, `KotlinParser.ts:19329-19335`
-- **accept** — Parses a rule and returns a visitor `KotlinParser.ts:15533-15539`, `KotlinParser.ts:15586-15592`
-- **accept** — Accepts the current token as part of the rule `KotlinParser.ts:15645-15651`, `KotlinParser.ts:15703-15709`, `KotlinParser.ts:15747-15753`, `KotlinParser.ts:15879-15885`, `KotlinParser.ts:15929-15935`, `KotlinParser.ts:15970-15976`, `KotlinParser.ts:16111-16117`, `KotlinParser.ts:16152-16158`, `KotlinParser.ts:16181-16187`, `KotlinParser.ts:16345-16351`, `KotlinParser.ts:16377-16383`, `KotlinParser.ts:16409-16415`, `KotlinParser.ts:18016-18022`, `KotlinParser.ts:18051-18057`, `KotlinParser.ts:18089-18095`, `KotlinParser.ts:18235-18241`, `KotlinParser.ts:18267-18273`, `KotlinParser.ts:18323-18329`, `KotlinParser.ts:19376-19382`, `KotlinParser.ts:19405-19411`, `KotlinParser.ts:19458-19464`, `KotlinParser.ts:19958-19964`, `KotlinParser.ts:20014-20020`
-- **accept** — Accepts a visitor and returns the result of visiting the nullable type or its children `KotlinParser.ts:16228-16234`
-- **accept** — Accepts a visitor and returns the result of visiting the quest or its children `KotlinParser.ts:16257-16263`
-- **accept** — Returns the result of visiting the userType or its children based on the visitor's method `KotlinParser.ts:16307-16313`
-- **accept** — Parses the next token `KotlinParser.ts:16447-16453`, `KotlinParser.ts:16494-16500`, `KotlinParser.ts:16559-16565`, `KotlinParser.ts:17143-17149`, `KotlinParser.ts:17190-17196`, `KotlinParser.ts:17225-17231`, `KotlinParser.ts:17266-17272`, `KotlinParser.ts:17292-17298`, `KotlinParser.ts:17342-17348`, `KotlinParser.ts:17392-17398`, `KotlinParser.ts:21000-21006`, `KotlinParser.ts:21032-21038`, `KotlinParser.ts:21058-21064`, `KotlinParser.ts:21087-21093`
-- **accept** — Accepts a rule and returns a context `KotlinParser.ts:16679-16685`, `KotlinParser.ts:16741-16747`, `KotlinParser.ts:16782-16788`, `KotlinParser.ts:19024-19030`, `KotlinParser.ts:19056-19062`, `KotlinParser.ts:19097-19103`
-- **accept** — Accepts the current token `KotlinParser.ts:17043-17049`, `KotlinParser.ts:17093-17099`, `KotlinParser.ts:18817-18823`, `KotlinParser.ts:18846-18852`, `KotlinParser.ts:18893-18899`, `KotlinParser.ts:20694-20700`, `KotlinParser.ts:20735-20741`, `KotlinParser.ts:20764-20770`, `KotlinParser.ts:21225-21231`, `KotlinParser.ts:21290-21296`
-- **accept** — Represents the action to accept a rule `KotlinParser.ts:18502-18508`, `KotlinParser.ts:18558-18564`
-- **accept** — Accepts a rule during parsing `KotlinParser.ts:18605-18611`, `KotlinParser.ts:18670-18676`
-- **accept** — Accepts a rule `KotlinParser.ts:18711-18717`, `KotlinParser.ts:18767-18773`, `KotlinParser.ts:19523-19529`, `KotlinParser.ts:19582-19588`, `KotlinParser.ts:19635-19641`, `KotlinParser.ts:19697-19703`
-- **accept** — Parses a rule and returns a result `KotlinParser.ts:20901-20907`, `KotlinParser.ts:20942-20948`, `KotlinParser.ts:20968-20974`
-- **accept** — Parses the input string and returns a parse tree `KotlinParser.ts:21319-21325`
+- **accept** — Accepts the current token as part of the current rule `KotlinParser.ts:13827-13833`
+- **accept** — Represents accepting a rule in the Kotlin parser `KotlinParser.ts:13898-13904`
+- **accept** — Parses the input string and returns a parser instance `KotlinParser.ts:13933-13939`
+- **accept** — Accepts a rule in the parser `KotlinParser.ts:13992-13998`
+- **accept** — Accepts a rule in the Kotlin parser `KotlinParser.ts:14024-14030`
+- **accept** — Represents accepting a rule `KotlinParser.ts:14056-14062`
+- **accept** — Accepts a rule in the parsing process `KotlinParser.ts:14097-14103`
+- **accept** — Accepts a token in the parser `KotlinParser.ts:14126-14132`
+- **accept** — Accepts a token `KotlinParser.ts:14155-14161`
+- **accept** — Accepts a parsed element `KotlinParser.ts:14205-14211`
+- **accept** — Represents accepting a rule in the Kotlin grammar `KotlinParser.ts:14243-14249`
+- **accept** — Accepts a rule and returns a visitor `KotlinParser.ts:14311-14317`
+- **accept** — Represents accepting a rule in the parser `KotlinParser.ts:14352-14358`
+- **accept** — Parses a rule and returns a visitor `KotlinParser.ts:14393-14399`
+- **accept** — Accepts the current token as part of the rule `KotlinParser.ts:14449-14455`
+- **accept** — Accepts a visitor and returns the result of visiting the nullable type or its children `KotlinParser.ts:14505-14511`
+- **accept** — Accepts a visitor and returns the result of visiting the quest or its children `KotlinParser.ts:14557-14563`
+- **accept** — Returns the result of visiting the userType or its children based on the visitor's method `KotlinParser.ts:14604-14610`
+- **accept** — Parses the next token `KotlinParser.ts:14642-14648`
+- **accept** — Accepts a rule and returns a context `KotlinParser.ts:14686-14692`
+- **accept** — Accepts the current token `KotlinParser.ts:14730-14736`
+- **accept** — Represents the action to accept a rule `KotlinParser.ts:14786-14792`
+- **accept** — Accepts a rule during parsing `KotlinParser.ts:14830-14836`
+- **accept** — Accepts a rule `KotlinParser.ts:14883-14889`
+- **accept** — Parses a rule and returns a result `KotlinParser.ts:14933-14939`
+- **accept** — Parses the input string and returns a parse tree `KotlinParser.ts:14974-14980`
+- **accept** — Accepts a visitor and returns the result of visiting the class member declaration `KotlinParser.ts:15009-15015`
+- **accept** — Accepts a visitor and returns the result of visiting the anonymous initializer or its children `KotlinParser.ts:15047-15053`
+- **accept** — Accepts a visitor and returns the result of visiting the companion object or its children `KotlinParser.ts:15103-15109`
+- **accept** — Accepts a visitor and returns the result of visiting the function value parameters or its children `KotlinParser.ts:15159-15165`
+- **accept** — Accepts the visitor for the function value parameter rule `KotlinParser.ts:15203-15209`
+- **accept** — Accepts the visitor for the function declaration rule `KotlinParser.ts:15268-15274`
+- **accept** — Returns the result of visiting the function body or its children if no visitor method is available `KotlinParser.ts:15309-15315`
+- **accept** — Returns the result of visiting the variable declaration or its children if no visitor method is available `KotlinParser.ts:15359-15365`
+- **accept** — Parses a property declaration and returns the result or null `KotlinParser.ts:15415-15421`
+- **accept** — Parses a property delegate and returns the result or null `KotlinParser.ts:15495-15501`
+- **accept** — Accepts the visitor and returns the result of visiting the getter `KotlinParser.ts:15533-15539`
+- **accept** — Returns the result of visiting the node with the visitor or visiting its children if the visitor does not support the node `KotlinParser.ts:15586-15592`
+- **accept** — Accepts a visitor and returns the result of visiting the function value parameter with optional type `KotlinParser.ts:15645-15651`
+- **accept** — Accepts the visitor and returns the result of visiting the parameter with optional type `KotlinParser.ts:15703-15709`
+- **accept** — Accepts the visitor and returns the `KotlinParser.ts:15747-15753`
+- **accept** — Accepts the visitor and returns the result of visiting the objectDeclaration `KotlinParser.ts:15788-15794`
+- **accept** — Accepts a visitor for the secondary constructor rule `KotlinParser.ts:15829-15835`
+- **accept** — Accepts a visitor for the constructor delegation call rule `KotlinParser.ts:15879-15885`
+- **accept** — Returns the result of visiting the enum class body or visiting children if the visitor does not have a specific visit method `KotlinParser.ts:15929-15935`
+- **accept** — Returns the result of visiting the enum entries or visiting children if the visitor does not have a specific visit method `KotlinParser.ts:15970-15976`
+- **accept** — Returns the result of visiting the enum entry or visiting its children if no visitor is available `KotlinParser.ts:16017-16023`
+- **accept** — Returns the result of visiting the type or visiting its children if no visitor is available. `Kotlin `KotlinParser.ts:16067-16073`
+- **accept** — Accepts a visitor and returns the result of visiting the type reference `KotlinParser.ts:16111-16117`
+- **accept** — Returns the result of visiting the quest or its children based on the visitor's method `KotlinParser.ts:16152-16158`
+- **accept** — Parses a simple user type or type projection and returns the result or null `KotlinParser.ts:16181-16187`
+- **accept** — Parses a type projection and returns the result or null `KotlinParser.ts:16228-16234`
+- **accept** — Parses a type projection modifier and returns the result or null `KotlinParser.ts:16257-16263`
+- **accept** — Accepts the type projection modifier and returns the result or null `KotlinParser.ts:16307-16313`
+- **accept** — Accepts the function type and returns the result or null `KotlinParser.ts:16345-16351`
+- **accept** — Accepts a visitor and returns the result of visiting function type parameters or children `KotlinParser.ts:16377-16383`
+- **accept** — Accepts a visitor and returns the result of visiting the parenthesized type or its children `KotlinParser.ts:16409-16415`
+- **accept** — Accepts a visitor and returns the result of visiting the receiver type or its children `KotlinParser.ts:16447-16453`
+- **accept** — Returns the result of visiting the node with the visitor or visiting its children if the visitor does not support the node. `KotlinParser.ts:167 `KotlinParser.ts:16494-16500`
+- **accept** — Accepts a visitor and returns the result of visiting the current node `KotlinParser.ts:16559-16565`
+- **accept** — Accepts `KotlinParser.ts:16600-16606`
+- **accept** — Accepts the visitor and returns the result of visiting the block or its children `KotlinParser.ts:16635-16641`
+- **accept** — Accepts the visitor and returns the result of visiting the loop statement or its children `KotlinParser.ts:16679-16685`
+- **accept** — Accepts the visitor and returns the result of visiting the forStatement `KotlinParser.ts:16741-16747`
+- **accept** — Parses a while statement and returns the result of visiting it with a visitor `KotlinParser.ts:16782-16788`
+- **accept** — Parses a do while statement and returns the result of visiting it with a visitor `KotlinParser.ts:16835-16841`
+- **accept** — Returns the result of visiting the assignment rule or visiting its children if no visitor method exists `KotlinParser.ts:16876-16882`
+- **accept** — Returns the result of visiting the semi rule or visiting its children if no visitor method exists `KotlinParser.ts:16905-16911`
+- **accept** — Accepts the visitor's visitSemis method if it exists, otherwise visits children `KotlinParser.ts:16946-16952`
+- **accept** — Parses the expression using the visitor `KotlinParser.ts:16978-16984`
+- **accept** — Parses the disjunction using the visitor `KotlinParser.ts:17043-17049`
+- **accept** — Parses the conjunction using the visitor `KotlinParser.ts:17093-17099`
+- **accept** — Accepts a visitor and returns the result of visiting the equality rule or its children `KotlinParser.ts:17143-17149`
+- **accept** — Accepts a visitor and returns the result of visiting the comparison rule or its children `KotlinParser.ts:17190-17196`
+- **accept** — Parses a generic call-like comparison using a visitor `KotlinParser.ts:17225-17231`
+- **accept** — Returns the result of visiting the `infixOperation` if the visitor has a method for it, otherwise visits children `KotlinParser.ts:17266-17272`
+- **accept** — Returns the result of visiting the `elvisExpression` if the visitor has a method for it, otherwise visits children `KotlinParser.ts:17292-17298`
+- **accept** — Parses an Elvis expression using a visitor `KotlinParser.ts:17342-17348`
+- **accept** — Accepts the visitor and returns the result of visiting the infixFunctionCall `KotlinParser.ts:17392-17398`
+- **accept** — Parses a range expression using a visitor `KotlinParser.ts:17442-17448`
+- **accept** — Accepts a visitor for the additive expression rule `KotlinParser.ts:17494-17500`
+- **accept** — Accepts a visitor for the multiplicative expression rule `KotlinParser.ts:17529-17535`
+- **accept** — Accepts a visitor and returns the result of visiting the prefix unary expression or its children `KotlinParser.ts:17597-17603`
+- **accept** — Parses a unary prefix expression using a visitor `KotlinParser.ts:17647-17653`
+- **accept** — Returns the result of visiting the postfix unary expression or visiting children if the visitor does not have a visitPostfixUnaryExpression method `KotlinParser.ts:17676-17682`
+- **accept** — Returns the result of visiting the postfix unary suffix or visiting children if the visitor does not have a visitPostfixUnarySuffix method `KotlinParser.ts:17726-17732`
+- **accept** — Returns the result of visiting the directly assignable expression or visiting its children if the visitor does not have a visitDirectlyAssignableExpression method `KotlinParser.ts:17785-17791`
+- **accept** — Accepts the visitor for the parenthesized directly assignable expression `KotlinParser.ts:17837-17843`
+- **accept** — Returns the result of visiting the assignable expression or visiting its children if the visitor does not have a visitAssignableExpression method `KotlinParser.ts:17887-17893`
+- **accept** — Accepts the visitor for `parenthesizedAssignableExpression` and returns the result `KotlinParser.ts:17940-17946`
+- **accept** — Accepts the visitor for `assignableSuffix` and returns the result `KotlinParser.ts:17975-17981`
+- **accept** — Accepts a visitor for indexing suffix and returns the result or null `KotlinParser.ts:18016-18022`
+- **accept** — Accepts a visitor for navigation suffix and returns the result or null `KotlinParser.ts:18051-18057`
+- **accept** — Accepts the visitor and returns the result of visiting the callSuffix node or visiting its children `KotlinParser.ts:18089-18095`
+- **accept** — Accepts the visitor and returns the result of visiting the annotatedLambda node or visiting its children `KotlinParser.ts:18124-18130`
+- **accept** — Accepts a visitor and returns the result of visiting type arguments or children `KotlinParser.ts:18165-18171`
+- **accept** — Returns the result of visiting valueArguments or visiting children based on the visitor's method `KotlinParser.ts:18194-18200`
+- **accept** — Returns the result of visiting valueArgument or visiting children based on the visitor's method `KotlinParser.ts:18235-18241`
+- **accept** — Returns the result of visiting the primary expression or visiting its children if the visitor does not have a visitPrimaryExpression method `KotlinParser.ts:18267-18273`
+- **accept** — Returns the result of visiting the parenthesized expression or visiting its children if the visitor does not have a visitParenthesizedExpression method `KotlinParser.ts:18323-18329`
+- **accept** — Accepts a visitor and returns the result of visiting the collectionLiteral or visiting its children `KotlinParser.ts:18367-18373`
+- **accept** — Accepts a visitor and returns the result of visiting the literalConstant or visiting its children `KotlinParser.ts:18399-18405`
+- **accept** — Returns the result of visiting the string literal or visiting children if the visitor does not have a visitStringLiteral method `KotlinParser.ts:18446-18452`
+- **accept** — Returns the result of visiting the line string literal or visiting children if the visitor does not have a visitLineStringLiteral method `KotlinParser.ts:18502-18508`
+- **accept** — Returns the result of visiting the multi-line string literal or visiting children if the visitor does not have a visitMultiLineStringLiteral method `KotlinParser.ts:18558-18564`
+- **accept** — Returns the result of visiting the line string content or visiting its children if the visitor does not have a specific visit method `KotlinParser.ts:18605-18611`
+- **accept** — Returns the result of visiting the line string expression or visiting its children if the visitor does not have a specific visit method. `Kotlin `KotlinParser.ts:18670-18676`
+- **accept** — Returns the result of visiting the multi-line string content or children based on the visitor's method `KotlinParser.ts:18711-18717`
+- **accept** — Returns the result of visiting the multi-line string expression or children based on the visitor's method `KotlinParser.ts:18767-18773`
+- **accept** — Returns the result of visiting the lambda literal or its children if no visitor is specified `KotlinParser.ts:18817-18823`
+- **accept** — Returns the result of visiting the lambda parameters or its children if no visitor is specified `KotlinParser.ts:18846-18852`
+- **accept** — Accepts the visitor and returns the result of visiting the lambda parameter `KotlinParser.ts:18893-18899`
+- **accept** — Accepts the visitor and returns the result of visiting the anonymous function `KotlinParser.ts:18951-18957`
+- **accept** — Accepts a visitor and returns the result of visiting the function literal or its children `KotlinParser.ts:18983-18989`
+- **accept** — Parses an object literal or this expression using a visitor `KotlinParser.ts:19024-19030`
+- **accept** — Parses a this expression using a visitor `KotlinParser.ts:19056-19062`
+- **accept** — Parses a super expression using a visitor `KotlinParser.ts:19097-19103`
+- **accept** — Accepts the visitor for the if expression `KotlinParser.ts:19144-19150`
+- **accept** — Accepts the visitor for the whenSubject rule `KotlinParser.ts:19194-19200`
+- **accept** — Accepts a visitor and returns the result of visiting the `whenExpression` node or its children `KotlinParser.ts:19238-19244`
+- **accept** — Accepts a visitor and returns the result of visiting the `whenEntry` node or its children `KotlinParser.ts:19300-19306`
+- **accept** — Accepts a visitor and returns the result of visiting the `whenCondition` node or its children `KotlinParser.ts:19329-19335`
+- **accept** — Accepts a visitor and returns the result of visiting the `rangeTest` node or its children. `Kotlin `KotlinParser.ts:19376-19382`
+- **accept** — Accepts a visitor and returns the result of visiting the typeTest or its children `KotlinParser.ts:19405-19411`
+- **accept** — Accepts a visitor and returns the result of visiting the tryExpression or its children `KotlinParser.ts:19458-19464`
+- **accept** — Accepts the catch block rule and returns the result `KotlinParser.ts:19523-19529`
+- **accept** — Accepts the visitor and returns the result of visiting the finallyBlock rule or its children `KotlinParser.ts:19582-19588`
+- **accept** — Accepts the visitor and returns the result of visiting the jumpExpression rule or its children `KotlinParser.ts:19635-19641`
+- **accept** — Accepts the visitor and returns the result of visiting the callableReference `KotlinParser.ts:19697-19703`
+- **accept** — Accepts the visitor and returns the result of visiting the assignmentAndOperator `KotlinParser.ts:19729-19735`
+- **accept** — Returns the result of visiting the equality operator or visiting children if the visitor does not support visiting the equality operator `KotlinParser.ts:19767-19773`
+- **accept** — Returns the result of visiting the comparison operator or visiting children if the visitor does not support visiting the comparison operator `KotlinParser.ts:19805-19811`
+- **accept** — Returns the result of visiting the in operator or visiting children if the visitor does not support visiting the in operator `KotlinParser.ts:19855-19861`
+- **accept** — Returns the result of visiting the IsOperator node or visiting its children if no visitor method exists `KotlinParser.ts:19920-19926`
+- **accept** — Returns the result of visiting the additiveOperator node or visiting its children if no visitor method exists `KotlinParser.ts:19958-19964`
+- **accept** — Returns the result of visiting the multiplicativeOperator node or visiting its children if no visitor method exists `KotlinParser.ts:20014-20020`
+- **accept** — Accepts a visitor and returns the result of visiting the `asOperator` rule or visiting its children `KotlinParser.ts:20058-20064`
+- **accept** — Accepts a visitor and returns the result of visiting the `prefixUnaryOperator` rule or visiting its children `KotlinParser.ts:20096-20102`
+- **accept** — Accepts the visitor for the postfix unary operator rule `KotlinParser.ts:20131-20137`
+- **accept** — Accepts the visitor and returns the result of visiting the excl rule `KotlinParser.ts:20166-20172`
+- **accept** — Accepts the visitor and returns the result of visiting the memberAccessOperator rule `KotlinParser.ts:20195-20201`
+- **accept** — Accepts a visitor and returns the result of visiting the safe navigation rule `KotlinParser.ts:20224-20230`
+- **accept** — Accepts a visitor and returns the result of visiting the modifiers rule `KotlinParser.ts:20253-20259`
+- **accept** — Parses the parameter modifiers and returns the result or null `KotlinParser.ts:20285-20291`
+- **accept** — Parses the modifier and returns the result or null `KotlinParser.ts:20314-20320`
+- **accept** — Parses the type modifiers and returns the result or null `KotlinParser.ts:20352-20358`
+- **accept** — Accepts a visitor for type modifiers and returns the result `KotlinParser.ts:20387-20393`
+- **accept** — Accepts a visitor for class modifiers and returns the result `KotlinParser.ts:20416-20422`
+- **accept** — Accepts a visitor for member modifiers and returns the result. `KotlinParser.ts `KotlinParser.ts:20457-20463`
+- **accept** — Accepts a visitor for the visibility modifier rule `KotlinParser.ts:20486-20492`
+- **accept** — Accepts a visitor for the variance modifier rule `KotlinParser.ts:20527-20533`
+- **accept** — Accepts the visitor for the type parameter modifiers rule. `KotlinParser.ts:20860-2 `KotlinParser.ts:20568-20574`
+- **accept** — Accepts a visitor and returns the result of visiting type parameter modifier `KotlinParser.ts:20624-20630`
+- **accept** — Accepts a visitor and returns the result of visiting function modifier `KotlinParser.ts:20656-20662`
+- **accept** — Accepts a visitor and returns the result of visiting property modifier `KotlinParser.ts:20694-20700`
+- **accept** — Accepts a visitor and returns the result of visiting the inheritance modifier rule `KotlinParser.ts:20735-20741`
+- **accept** — Accepts a visitor and returns the result of visiting the parameter modifier rule `KotlinParser.ts:20764-20770`
+- **accept** — Accepts a visitor and returns the result of visiting the reification modifier rule `KotlinParser.ts:20799-20805`
+- **accept** — Accepts a visitor and returns the result of visiting the platform modifier or its children `KotlinParser.ts:20828-20834`
+- **accept** — Accepts a visitor and returns the result of visiting the annotation or its children `KotlinParser.ts:20860-20866`
+- **accept** — Accepts a visitor and returns the result of visiting a single annotation or its children `KotlinParser.ts:20901-20907`
+- **accept** — Returns the result of visiting the current node with the given visitor, or null if the visitor does not support visiting this node `KotlinParser.ts:20942-20948`
+- **accept** — Returns the result of visiting the unescaped annotation or visiting children if the visitor does not support unescaped annotation `KotlinParser.ts:20968-20974`
+- **accept** — Returns the result of visiting the simpleIdentifier or visiting children if the visitor does not support simpleIdentifier `KotlinParser.ts:21000-21006`
+- **accept** — Returns the result of visiting the identifier or its children based on the visitor's method `KotlinParser.ts:21032-21038`
+- **accept** — Accepts a visitor and returns the result of visiting the reification modifier or children `KotlinParser.ts:21058-21064`
+- **accept** — Accepts a visitor and returns the result of visiting the platform modifier or children `KotlinParser.ts:21087-21093`
+- **accept** — Accepts a visitor and returns the result of visiting the annotation or children `KotlinParser.ts:21125-21131`
+- **accept** — Accepts a visitor and returns the result of visiting the single annotation or children `KotlinParser.ts:21169-21175`
+- **accept** — Returns the result of visiting the multiAnnotation node using the visitor's visitMultiAnnotation method if it exists, otherwise visits the children `KotlinParser.ts:21225-21231`
+- **accept** — Accepts a visitor and returns the result of visiting the annotation use site target `KotlinParser.ts:21290-21296`
+- **accept** — Accepts a visitor and returns the result of visiting the unescaped annotation `KotlinParser.ts:21319-21325`
+- **accept** — Parses the current node using the visitor's visitSimpleIdentifier method if available, otherwise visits children `KotlinParser.ts:21486-21492`
+- **accept** — Parses the current node using the visitor's visitIdentifier method if available, otherwise visits children `KotlinParser.ts:21536-21542`
 - **action** — Represents an action `KotlinLexer.ts:876-882`
 - **ACTUAL** — Represents an actual modifier `KotlinParser.ts:21071-21073`
 - **ACTUAL** — Represents an actual keyword `KotlinParser.ts:21461-21463`
@@ -90,17 +238,26 @@ UnicodeClasses.ts
 - **annotatedLambda** — Parses an annotated lambda in Kotlin `KotlinParser.ts:8231-8282`
 - **annotatedLambda** — Parses an annotated lambda in the Kotlin parser `KotlinParser.ts:18377-18379`
 - **annotation** — Represents an annotation in Kotlin `KotlinParser.ts:12298-12343`
-- **annotation** — Represents an annotation in the parser `KotlinParser.ts:14657-14663`, `KotlinParser.ts:16431-16433`
-- **annotation** — Parses an annotation in the Kotlin parser `KotlinParser.ts:14904-14910`, `KotlinParser.ts:18414-18420`
-- **annotation** — Parses an annotation `KotlinParser.ts:15324-15330`, `KotlinParser.ts:17020-17026`
-- **annotation** — Represents an annotation `KotlinParser.ts:16815-16821`, `KotlinParser.ts:19553-19559`, `KotlinParser.ts:20498-20504`, `KotlinParser.ts:20539-20545`, `KotlinParser.ts:20666-20668`, `KotlinParser.ts:20885-20887`
-- **annotation** — Annotation context `KotlinParser.ts:17985-17987`
-- **annotation** — Represents the context for an annotation `KotlinParser.ts:18571-18573`
-- **annotation** — Represents an annotation in the grammar `KotlinParser.ts:19897-19903`
+- **annotation** — Represents an annotation in the parser `KotlinParser.ts:14657-14663`
+- **annotation** — Parses an annotation in the Kotlin parser `KotlinParser.ts:14904-14910`
+- **annotation** — Parses an annotation `KotlinParser.ts:15324-15330`
+- **annotation** — Represents an annotation `KotlinParser.ts:16431-16433`
+- **annotation** — Annotation context `KotlinParser.ts:16815-16821`
+- **annotation** — Represents the context for an annotation `KotlinParser.ts:17020-17026`
+- **annotation** — Represents an annotation in the grammar `KotlinParser.ts:17985-17987`
+- **annotation** — Returns the annotation context or contexts based on the provided index `KotlinParser.ts:18414-18420`
+- **annotation** — Returns the context of the annotation rule or null if not found `KotlinParser.ts:18571-18573`
+- **annotation** — Returns the annotation context or contexts `KotlinParser.ts:19553-19559`
+- **annotation** — Returns an annotation context or an array of annotation contexts `KotlinParser.ts:19897-19903`
+- **annotation** — Retrieves annotation contexts based on an index or returns all annotation contexts `KotlinParser.ts:20498-20504`
+- **annotation** — Returns the annotation context or null `KotlinParser.ts:20539-20545`
+- **annotation** — Returns the annotation context or null if not found `KotlinParser.ts:20666-20668`
 - **ANNOTATION** — Represents the annotation modifier `KotlinParser.ts:20710-20712`
+- **annotation** — Returns the context of an annotation rule `KotlinParser.ts:20885-20887`
 - **ANNOTATION** — Represents an annotation in the Kotlin grammar `KotlinParser.ts:21335-21337`
 - **annotationUseSiteTarget** — Represents the use site target of an annotation `KotlinParser.ts:12464-12509`
-- **annotationUseSiteTarget** — Represents the target of an annotation use site `KotlinParser.ts:21138-21140`, `KotlinParser.ts:21185-21187`
+- **annotationUseSiteTarget** — Represents the target of an annotation use site `KotlinParser.ts:21138-21140`
+- **annotationUseSiteTarget** — Returns the context of an annotation use site target `KotlinParser.ts:21185-21187`
 - **anonymousFunction** — Represents an anonymous function `KotlinParser.ts:9469-9622`
 - **anonymousFunction** — Represents an anonymous function in the Kotlin grammar `KotlinParser.ts:19313-19315`
 - **anonymousInitializer** — Anonymous initializer `KotlinParser.ts:2797-2828`
@@ -116,7 +273,8 @@ UnicodeClasses.ts
 - **asOperator** — Represents the as operator in Kotlin `KotlinParser.ts:11387-11412`
 - **asOperator** — Operator for the 'as' keyword `KotlinParser.ts:17902-17908`
 - **assignableExpression** — Parses an assignable expression in Kotlin `KotlinParser.ts:7850-7883`
-- **assignableExpression** — Parses an assignable expression `KotlinParser.ts:17162-17164`, `KotlinParser.ts:18207-18209`
+- **assignableExpression** — Parses an assignable expression `KotlinParser.ts:17162-17164`
+- **assignableExpression** — Returns the assignable expression context `KotlinParser.ts:18207-18209`
 - **assignableSuffix** — Parses an assignable suffix in Kotlin `KotlinParser.ts:7931-7976`
 - **assignableSuffix** — Parses an assignable suffix `KotlinParser.ts:18102-18104`
 - **assignment** — An assignment expression `KotlinParser.ts:6740-6791`
@@ -124,28 +282,34 @@ UnicodeClasses.ts
 - **ASSIGNMENT** — Represents an assignment operation in the Kotlin grammar `KotlinParser.ts:14480-14482`
 - **ASSIGNMENT** — Assignment token `KotlinParser.ts:15175-15177`
 - **ASSIGNMENT** — Matches the assignment operator in the Kotlin grammar `KotlinParser.ts:15281-15283`
-- **ASSIGNMENT** — Represents the assignment operator `KotlinParser.ts:15464-15466`, `KotlinParser.ts:17159-17161`
+- **ASSIGNMENT** — Represents the assignment operator `KotlinParser.ts:15464-15466`
 - **ASSIGNMENT** — Represents the assignment operator token `KotlinParser.ts:15719-15721`
 - **assignment** — Represents an assignment `KotlinParser.ts:16795-16797`
-- **ASSIGNMENT** — Represents the assignment operator in Kotlin `KotlinParser.ts:18586-18588`
-- **ASSIGNMENT** — Represents an assignment `KotlinParser.ts:19548-19550`
+- **ASSIGNMENT** — Represents the assignment operator in Kotlin `KotlinParser.ts:17159-17161`
+- **ASSIGNMENT** — Represents an assignment `KotlinParser.ts:18586-18588`
+- **ASSIGNMENT** — Returns the assignment token or null `KotlinParser.ts:19548-19550`
 - **assignmentAndOperator** — Represents an assignment and operator `KotlinParser.ts:11205-11230`
 - **assignmentAndOperator** — Parses an assignment and operator `KotlinParser.ts:17165-17167`
 - **AT_NO_WS** — Represents the at token without whitespace in the Kotlin parser `KotlinParser.ts:13949-13951`
 - **AT_NO_WS** — Represents the AT token without whitespace `KotlinParser.ts:16848-16850`
 - **AT_NO_WS** — Token representing '@' without whitespace `KotlinParser.ts:19427-19429`
-- **AT_NO_WS** — Represents an annotation with no whitespace `KotlinParser.ts:21141-21143`, `KotlinParser.ts:21188-21190`
-- **AT_NO_WS** — Represents an at token without whitespace `KotlinParser.ts:21238-21240`
+- **AT_NO_WS** — Represents an annotation with no whitespace `KotlinParser.ts:21141-21143`
+- **AT_NO_WS** — Represents an at token without whitespace `KotlinParser.ts:21188-21190`
+- **AT_NO_WS** — Returns the terminal node for the at token without whitespace, or null if not found `KotlinParser.ts:21238-21240`
 - **AT_POST_WS** — Represents the AT token with post-whitespace `KotlinParser.ts:16851-16853`
 - **AT_PRE_WS** — Represents the at token with preceding whitespace in the Kotlin parser `KotlinParser.ts:13952-13954`
-- **AT_PRE_WS** — Represents an annotation with preceding whitespace `KotlinParser.ts:21144-21146`, `KotlinParser.ts:21191-21193`
-- **AT_PRE_WS** — Represents an at token with preceding whitespace `KotlinParser.ts:21241-21243`
+- **AT_PRE_WS** — Represents an annotation with preceding whitespace `KotlinParser.ts:21144-21146`
+- **AT_PRE_WS** — Represents an at token with preceding whitespace `KotlinParser.ts:21191-21193`
+- **AT_PRE_WS** — Returns the terminal node for the at token with preceding whitespace, or null if not found `KotlinParser.ts:21241-21243`
 - **BinLiteral** — Parses a binary literal `KotlinParser.ts:18786-18788`
 - **block** — A block of code `KotlinParser.ts:6276-6322`
 - **block** — Represents a block in the Kotlin grammar `KotlinParser.ts:15022-15024`
 - **block** — Represents a block in the Kotlin parser `KotlinParser.ts:15278-15280`
-- **block** — Parses a block of code `KotlinParser.ts:15913-15915`, `KotlinParser.ts:16886-16888`, `KotlinParser.ts:19818-19820`
-- **block** — Represents a block of code in the grammar `KotlinParser.ts:19883-19885`, `KotlinParser.ts:19933-19935`
+- **block** — Parses a block of code `KotlinParser.ts:15913-15915`
+- **block** — Represents a block of code in the grammar `KotlinParser.ts:16886-16888`
+- **block** — Returns the block context from the parser `KotlinParser.ts:19818-19820`
+- **block** — Returns a block context `KotlinParser.ts:19883-19885`
+- **block** — Returns the block context `KotlinParser.ts:19933-19935`
 - **BooleanLiteral** — Parses a boolean literal `KotlinParser.ts:18777-18779`
 - **BREAK** — Represents a break statement `KotlinParser.ts:19995-19997`
 - **BREAK_AT** — Represents a break statement with an at symbol `KotlinParser.ts:19998-20000`
@@ -162,22 +326,24 @@ UnicodeClasses.ts
 - **catchBlock** — Represents a 'catch' block `KotlinParser.ts:10887-10966`
 - **catchBlock** — Represents the catch block in a try-catch-finally structure `KotlinParser.ts:19835-19841`
 - **channelNames** — Stores names of channels `KotlinLexer.ts:868-870`
-- **channelNames** — Stores names of token channels `UnicodeClasses.ts:70-72`
+- **channelNames** — Represents the names of the token channels used in the grammar `UnicodeClasses.ts:70-72`
 - **CharacterLiteral** — Parses a character literal `KotlinParser.ts:18789-18791`
 - **CLASS** — Represents a class in the Kotlin parser `KotlinParser.ts:14256-14258`
 - **CLASS** — Represents a class in the Kotlin grammar `KotlinParser.ts:18342-18344`
 - **CLASS** — Represents a class declaration `KotlinParser.ts:20030-20032`
-- **classBody** — Represents the body of a class `KotlinParser.ts:1888-1934`, `KotlinParser.ts:16086-16088`
+- **classBody** — Represents the body of a class `KotlinParser.ts:1888-1934`
 - **classBody** — Represents the body of a class or interface `KotlinParser.ts:14289-14291`
 - **classBody** — Represents the body of a class in the Kotlin parser `KotlinParser.ts:15087-15089`
 - **classBody** — Represents the class body in the Kotlin grammar `KotlinParser.ts:15863-15865`
-- **classBody** — Represents the body of a class in the Kotlin grammar `KotlinParser.ts:19360-19362`
+- **classBody** — Represents the body of a class in the Kotlin grammar `KotlinParser.ts:16086-16088`
+- **classBody** — Returns the context for the class body `KotlinParser.ts:19360-19362`
 - **classDeclaration** — Represents a class declaration in the Kotlin file `KotlinParser.ts:1631-1836`
 - **classDeclaration** — Parses a class declaration `KotlinParser.ts:14215-14217`
 - **classMemberDeclaration** — Represents a single class member declaration `KotlinParser.ts:2749-2796`
 - **classMemberDeclaration** — Parses a class member declaration `KotlinParser.ts:14945-14951`
 - **classMemberDeclarations** — Declarations of class members `KotlinParser.ts:2706-2748`
-- **classMemberDeclarations** — Represents the declarations of class members `KotlinParser.ts:14365-14367`, `KotlinParser.ts:16001-16003`
+- **classMemberDeclarations** — Represents the declarations of class members `KotlinParser.ts:14365-14367`
+- **classMemberDeclarations** — Returns the context for class member declarations `KotlinParser.ts:16001-16003`
 - **classModifier** — Represents the class modifier in Kotlin `KotlinParser.ts:11946-11971`
 - **classModifier** — Represents a modifier for a class `KotlinParser.ts:20578-20580`
 - **classParameter** — Represents a single parameter of a class `KotlinParser.ts:2046-2148`
@@ -188,26 +354,43 @@ UnicodeClasses.ts
 - **collectionLiteral** — Context for collection literals `KotlinParser.ts:18636-18638`
 - **COLON** — Represents the colon token in the Kotlin parser `KotlinParser.ts:13946-13948`
 - **COLON** — Represents a colon in the Kotlin parser `KotlinParser.ts:14280-14282`
-- **COLON** — Represents a colon `KotlinParser.ts:14462-14464`, `KotlinParser.ts:15340-15342`, `KotlinParser.ts:15567-15569`, `KotlinParser.ts:15626-15628`
-- **COLON** — Represents a colon token `KotlinParser.ts:14811-14813`, `KotlinParser.ts:19210-19212`, `KotlinParser.ts:21235-21237`
+- **COLON** — Represents a colon `KotlinParser.ts:14462-14464`
+- **COLON** — Represents a colon token `KotlinParser.ts:14811-14813`
 - **COLON** — Represents a colon character in the Kotlin parser `KotlinParser.ts:14896-14898`
 - **COLON** — Represents a colon in the Kotlin grammar `KotlinParser.ts:15081-15083`
 - **COLON** — Matches the colon operator in the Kotlin grammar `KotlinParser.ts:15243-15245`
-- **COLON** — Represents a colon character in the Kotlin grammar `KotlinParser.ts:15769-15771`, `KotlinParser.ts:15801-15803`, `KotlinParser.ts:15857-15859`
-- **COLON** — Represents a colon in the grammar `KotlinParser.ts:15907-15909`
-- **COLON** — Represents a colon character `KotlinParser.ts:17660-17662`, `KotlinParser.ts:19278-19280`, `KotlinParser.ts:19354-19356`
-- **COLON** — Represents the colon ':' in the grammar `KotlinParser.ts:19874-19876`
+- **COLON** — Represents a colon character in the Kotlin grammar `KotlinParser.ts:15340-15342`
+- **COLON** — Represents a colon in the grammar `KotlinParser.ts:15567-15569`
+- **COLON** — Represents a colon character `KotlinParser.ts:15626-15628`
+- **COLON** — Represents the colon ':' in the grammar `KotlinParser.ts:15769-15771`
+- **COLON** — Returns the terminal node for the colon rule `KotlinParser.ts:15801-15803`
+- **COLON** — Returns a TerminalNode or null `KotlinParser.ts:15857-15859`
+- **COLON** — Returns the terminal node for the `COLON` rule `KotlinParser.ts:15907-15909`
+- **COLON** — Returns the colon token if it exists `KotlinParser.ts:17660-17662`
+- **COLON** — Returns the COLON terminal node `KotlinParser.ts:19210-19212`
+- **COLON** — Returns the terminal node for the COLON keyword `KotlinParser.ts:19278-19280`
+- **COLON** — Returns a terminal node representing a colon `KotlinParser.ts:19354-19356`
+- **COLON** — Returns the terminal node for the colon token `KotlinParser.ts:19874-19876`
+- **COLON** — Returns a terminal node for the colon token `KotlinParser.ts:21235-21237`
 - **COLONCOLON** — Represents a double colon `KotlinParser.ts:20024-20026`
 - **COLONCOLON** — Represents a colon colon operator `KotlinParser.ts:20441-20443`
-- **COMMA** — Represents a comma `KotlinParser.ts:14429-14435`, `KotlinParser.ts:15395-15401`, `KotlinParser.ts:15623-15625`, `KotlinParser.ts:16038-16044`
+- **COMMA** — Represents a comma `KotlinParser.ts:14429-14435`
 - **COMMA** — Parses a comma in the Kotlin grammar `KotlinParser.ts:14528-14534`
-- **COMMA** — Represents a comma token `KotlinParser.ts:14766-14772`, `KotlinParser.ts:19165-19171`
+- **COMMA** — Represents a comma token `KotlinParser.ts:14766-14772`
 - **COMMA** — Represents a comma character in the Kotlin parser `KotlinParser.ts:14863-14869`
 - **COMMA** — Comma token `KotlinParser.ts:15139-15145`
-- **COMMA** — Represents the comma token `KotlinParser.ts:15683-15689`, `KotlinParser.ts:16539-16545`, `KotlinParser.ts:18482-18488`, `KotlinParser.ts:18538-18544`
-- **COMMA** — Represents the comma character `KotlinParser.ts:18303-18309`
-- **COMMA** — Matches a comma `KotlinParser.ts:18747-18753`, `KotlinParser.ts:19662-19668`
-- **COMMA** — Represents the comma ',' in the grammar `KotlinParser.ts:19904-19906`
+- **COMMA** — Represents the comma token `KotlinParser.ts:15395-15401`
+- **COMMA** — Represents the comma character `KotlinParser.ts:15623-15625`
+- **COMMA** — Matches a comma `KotlinParser.ts:15683-15689`
+- **COMMA** — Represents the comma ',' in the grammar `KotlinParser.ts:16038-16044`
+- **COMMA** — Returns the comma terminal node or nodes `KotlinParser.ts:16539-16545`
+- **COMMA** — Returns a comma token or an array of comma tokens based on the provided index `KotlinParser.ts:18303-18309`
+- **COMMA** — Returns the comma terminal node or nodes based on the provided index `KotlinParser.ts:18482-18488`
+- **COMMA** — Returns the comma tokens or a single comma token if specified `KotlinParser.ts:18538-18544`
+- **COMMA** — Returns a TerminalNode or an array of TerminalNodes based on the provided index `KotlinParser.ts:18747-18753`
+- **COMMA** — Returns the comma token or tokens if specified `KotlinParser.ts:19165-19171`
+- **COMMA** — Returns the comma token or tokens `KotlinParser.ts:19662-19668`
+- **COMMA** — Returns a comma terminal node or null `KotlinParser.ts:19904-19906`
 - **COMPANION** — Represents the COMPANION rule in the Kotlin grammar `KotlinParser.ts:15057-15059`
 - **COMPANION** — Represents the 'companion' keyword in the Kotlin grammar `KotlinParser.ts:21344-21346`
 - **companionObject** — Companion object `KotlinParser.ts:2829-2963`
@@ -235,8 +418,11 @@ UnicodeClasses.ts
 - **CONTINUE** — Represents a continue statement `KotlinParser.ts:19989-19991`
 - **CONTINUE_AT** — Represents a continue statement with an at symbol `KotlinParser.ts:19992-19994`
 - **controlStructureBody** — The body of a control structure `KotlinParser.ts:6242-6275`
-- **controlStructureBody** — Parses the body of a control structure `KotlinParser.ts:17027-17029`, `KotlinParser.ts:19482-19488`
-- **controlStructureBody** — Represents the body of a control structure `KotlinParser.ts:17065-17067`, `KotlinParser.ts:17127-17129`, `KotlinParser.ts:19657-19659`
+- **controlStructureBody** — Parses the body of a control structure `KotlinParser.ts:17027-17029`
+- **controlStructureBody** — Represents the body of a control structure `KotlinParser.ts:17065-17067`
+- **controlStructureBody** — Returns the context for the control structure body `KotlinParser.ts:17127-17129`
+- **controlStructureBody** — Returns the control structure body context or contexts `KotlinParser.ts:19482-19488`
+- **controlStructureBody** — Returns the context of the control structure body `KotlinParser.ts:19657-19659`
 - **createFailedPredicateException** — Creates an exception for failed predicate checks `KotlinParser.ts:887-889`
 - **CROSSINLINE** — Represents a crossinline modifier `KotlinParser.ts:21016-21018`
 - **CROSSINLINE** — Represents the 'crossinline' keyword in the Kotlin grammar `KotlinParser.ts:21350-21352`
@@ -245,8 +431,9 @@ UnicodeClasses.ts
 - **DATA** — Represents the data modifier `KotlinParser.ts:20713-20715`
 - **DATA** — Represents the 'data' keyword in the Kotlin grammar `KotlinParser.ts:21353-21355`
 - **declaration** — Represents a declaration in the Kotlin file `KotlinParser.ts:1576-1630`
-- **declaration** — Represents a declaration in the Kotlin grammar `KotlinParser.ts:14136-14138`, `KotlinParser.ts:14984-14986`
-- **declaration** — Represents a declaration `KotlinParser.ts:16792-16794`
+- **declaration** — Represents a declaration in the Kotlin grammar `KotlinParser.ts:14136-14138`
+- **declaration** — Represents a declaration `KotlinParser.ts:14984-14986`
+- **declaration** — Returns the declaration context or null `KotlinParser.ts:16792-16794`
 - **DECR** — Represents the decrement operator `KotlinParser.ts:20327-20329`
 - **DECR** — Represents a decrement operator `KotlinParser.ts:20365-20367`
 - **definitelyNonNullableType** — Represents a type that is guaranteed to be non-nullable `KotlinParser.ts:5837-6026`
@@ -257,9 +444,12 @@ UnicodeClasses.ts
 - **delegationSpecifier** — Represents a delegation specifier in the parser `KotlinParser.ts:14652-14654`
 - **delegationSpecifiers** — Specifies delegation in a class `KotlinParser.ts:2149-2205`
 - **delegationSpecifiers** — Stores delegation specifiers for a class or interface `KotlinParser.ts:14283-14285`
-- **delegationSpecifiers** — Represents delegation specifiers in the Kotlin grammar `KotlinParser.ts:15084-15086`, `KotlinParser.ts:15860-15862`, `KotlinParser.ts:19357-19359`
+- **delegationSpecifiers** — Represents delegation specifiers in the Kotlin grammar `KotlinParser.ts:15084-15086`
+- **delegationSpecifiers** — Returns a DelegationSpecifiersContext or null `KotlinParser.ts:15860-15862`
+- **delegationSpecifiers** — Returns the context for delegation specifiers `KotlinParser.ts:19357-19359`
 - **directlyAssignableExpression** — Parses a directly assignable expression in Kotlin `KotlinParser.ts:7760-7802`
-- **directlyAssignableExpression** — Parses a directly assignable expression `KotlinParser.ts:17156-17158`, `KotlinParser.ts:18137-18139`
+- **directlyAssignableExpression** — Parses a directly assignable expression `KotlinParser.ts:17156-17158`
+- **directlyAssignableExpression** — Returns the context for a directly assignable expression `KotlinParser.ts:18137-18139`
 - **DISJ** — Represents the disjunction operator `KotlinParser.ts:17313-17319`
 - **disjunction** — A disjunction expression `KotlinParser.ts:6893-6949`
 - **disjunction** — Parses a disjunction expression `KotlinParser.ts:17276-17278`
@@ -269,11 +459,12 @@ UnicodeClasses.ts
 - **DOT** — Represents the dot operator in the Kotlin grammar `KotlinParser.ts:14072-14074`
 - **DOT** — Matches the dot operator in the Kotlin grammar `KotlinParser.ts:15231-15233`
 - **DOT** — Represents the dot operator `KotlinParser.ts:15440-15442`
-- **DOT** — Represents a dot character `KotlinParser.ts:16278-16284`, `KotlinParser.ts:19275-19277`
+- **DOT** — Represents a dot character `KotlinParser.ts:16278-16284`
 - **DOT** — Represents the dot token `KotlinParser.ts:16469-16471`
-- **DOT** — Represents a dot operator `KotlinParser.ts:20426-20428`
-- **DOT** — Represents a dot `KotlinParser.ts:20470-20472`
-- **DOT** — Represents the dot character `KotlinParser.ts:21507-21513`
+- **DOT** — Represents a dot operator `KotlinParser.ts:19275-19277`
+- **DOT** — Represents a dot `KotlinParser.ts:20426-20428`
+- **DOT** — Represents the dot character `KotlinParser.ts:20470-20472`
+- **DOT** — Returns the terminal node for the DOT token if it exists `KotlinParser.ts:21507-21513`
 - **doWhileStatement** — A do-while loop statement `KotlinParser.ts:6669-6739`
 - **doWhileStatement** — Parses a do-while statement `KotlinParser.ts:16962-16964`
 - **DYNAMIC** — Represents a dynamic type `KotlinParser.ts:16165-16167`
@@ -285,31 +476,180 @@ UnicodeClasses.ts
 - **elvisExpression** — An elvis expression `KotlinParser.ts:7208-7264`
 - **elvisExpression** — Represents an Elvis expression in the Kotlin grammar `KotlinParser.ts:17541-17547`
 - **enterEveryRule** — Enters every rule `KotlinParserListener.ts:1930-1930`
-- **enterRule** — Begins parsing a new rule `KotlinParser.ts:13817-13821`, `KotlinParser.ts:13888-13892`, `KotlinParser.ts:13923-13927`, `KotlinParser.ts:15635-15639`, `KotlinParser.ts:15693-15697`, `KotlinParser.ts:15737-15741`, `KotlinParser.ts:15869-15873`, `KotlinParser.ts:15919-15923`, `KotlinParser.ts:15960-15964`, `KotlinParser.ts:16101-16105`, `KotlinParser.ts:16142-16146`, `KotlinParser.ts:16171-16175`, `KotlinParser.ts:16335-16339`, `KotlinParser.ts:16367-16371`, `KotlinParser.ts:16399-16403`, `KotlinParser.ts:16437-16441`, `KotlinParser.ts:16825-16829`, `KotlinParser.ts:16866-16870`, `KotlinParser.ts:16895-16899`, `KotlinParser.ts:16936-16940`, `KotlinParser.ts:16968-16972`, `KotlinParser.ts:17033-17037`, `KotlinParser.ts:17716-17720`, `KotlinParser.ts:17775-17779`, `KotlinParser.ts:17827-17831`, `KotlinParser.ts:17877-17881`, `KotlinParser.ts:17930-17934`, `KotlinParser.ts:17965-17969`, `KotlinParser.ts:18006-18010`, `KotlinParser.ts:18041-18045`, `KotlinParser.ts:18079-18083`, `KotlinParser.ts:18225-18229`, `KotlinParser.ts:18257-18261`, `KotlinParser.ts:18313-18317`, `KotlinParser.ts:19134-19138`, `KotlinParser.ts:19184-19188`, `KotlinParser.ts:19228-19232`, `KotlinParser.ts:19366-19370`, `KotlinParser.ts:19395-19399`, `KotlinParser.ts:19448-19452`, `KotlinParser.ts:19948-19952`, `KotlinParser.ts:20004-20008`, `KotlinParser.ts:20048-20052`, `KotlinParser.ts:20086-20090`, `KotlinParser.ts:20121-20125`, `KotlinParser.ts:20789-20793`, `KotlinParser.ts:20818-20822`, `KotlinParser.ts:20850-20854`, `KotlinParser.ts:20891-20895`, `KotlinParser.ts:21476-21480`, `KotlinParser.ts:21526-21530`
-- **enterRule** — Represents entering a rule in the Kotlin parser `KotlinParser.ts:13982-13986`, `KotlinParser.ts:14014-14018`, `KotlinParser.ts:14046-14050`
-- **enterRule** — Enters a rule in the Kotlin parser `KotlinParser.ts:14087-14091`, `KotlinParser.ts:14116-14120`, `KotlinParser.ts:14145-14149`, `KotlinParser.ts:14301-14305`, `KotlinParser.ts:14342-14346`, `KotlinParser.ts:15258-15262`, `KotlinParser.ts:15299-15303`, `KotlinParser.ts:18357-18361`, `KotlinParser.ts:18389-18393`, `KotlinParser.ts:18436-18440`
-- **enterRule** — Enters a rule in the parser `KotlinParser.ts:14195-14199`, `KotlinParser.ts:14233-14237`, `KotlinParser.ts:16590-16594`, `KotlinParser.ts:16625-16629`, `KotlinParser.ts:16669-16673`, `KotlinParser.ts:17282-17286`, `KotlinParser.ts:17332-17336`, `KotlinParser.ts:17382-17386`, `KotlinParser.ts:19719-19723`, `KotlinParser.ts:19757-19761`, `KotlinParser.ts:19795-19799`
-- **enterRule** — Represents entering a rule `KotlinParser.ts:14383-14387`, `KotlinParser.ts:14439-14443`, `KotlinParser.ts:16007-16011`, `KotlinParser.ts:16057-16061`, `KotlinParser.ts:20614-20618`, `KotlinParser.ts:20646-20650`, `KotlinParser.ts:20684-20688`
-- **enterRule** — Enters a new rule in the parsing process `KotlinParser.ts:14495-14499`, `KotlinParser.ts:14547-14551`, `KotlinParser.ts:14594-14598`, `KotlinParser.ts:17432-17436`, `KotlinParser.ts:17484-17488`, `KotlinParser.ts:17519-17523`
-- **enterRule** — Represents the entry of a rule in the parser `KotlinParser.ts:14632-14636`, `KotlinParser.ts:14676-14680`
-- **enterRule** — Begins parsing a rule `KotlinParser.ts:14720-14724`, `KotlinParser.ts:14776-14780`, `KotlinParser.ts:14820-14824`, `KotlinParser.ts:20342-20346`, `KotlinParser.ts:20377-20381`, `KotlinParser.ts:20406-20410`, `KotlinParser.ts:20447-20451`, `KotlinParser.ts:20476-20480`, `KotlinParser.ts:20517-20521`, `KotlinParser.ts:20558-20562`
-- **enterRule** — Enters a parsing rule `KotlinParser.ts:14873-14877`, `KotlinParser.ts:14923-14927`, `KotlinParser.ts:14964-14968`, `KotlinParser.ts:18114-18118`, `KotlinParser.ts:18155-18159`, `KotlinParser.ts:18184-18188`, `KotlinParser.ts:20243-20247`, `KotlinParser.ts:20275-20279`, `KotlinParser.ts:20304-20308`
-- **enterRule** — Represents entering a rule in the Kotlin grammar `KotlinParser.ts:14999-15003`, `KotlinParser.ts:15037-15041`, `KotlinParser.ts:15778-15782`, `KotlinParser.ts:15819-15823`
-- **enterRule** — Invoked when entering a parsing rule `KotlinParser.ts:15093-15097`, `KotlinParser.ts:15149-15153`, `KotlinParser.ts:15193-15197`
-- **enterRule** — Enters a rule `KotlinParser.ts:15349-15353`, `KotlinParser.ts:15405-15409`, `KotlinParser.ts:16484-16488`, `KotlinParser.ts:16549-16553`, `KotlinParser.ts:16731-16735`, `KotlinParser.ts:16772-16776`, `KotlinParser.ts:17180-17184`, `KotlinParser.ts:17215-17219`, `KotlinParser.ts:17256-17260`, `KotlinParser.ts:18701-18705`, `KotlinParser.ts:18757-18761`, `KotlinParser.ts:19513-19517`, `KotlinParser.ts:19572-19576`, `KotlinParser.ts:19625-19629`, `KotlinParser.ts:19687-19691`
-- **enterRule** — Represents entering a rule in the parser `KotlinParser.ts:15485-15489`, `KotlinParser.ts:15523-15527`, `KotlinParser.ts:18941-18945`, `KotlinParser.ts:18973-18977`, `KotlinParser.ts:19014-19018`, `KotlinParser.ts:19290-19294`, `KotlinParser.ts:19319-19323`
-- **enterRule** — Enters a rule and returns a visitor `KotlinParser.ts:15576-15580`
-- **enterRule** — Invokes the enter nullable type listener if it exists `KotlinParser.ts:16218-16222`
-- **enterRule** — Invokes the enter quest listener if it exists `KotlinParser.ts:16247-16251`
-- **enterRule** — Invokes the enterUserType method of the listener if it exists `KotlinParser.ts:16297-16301`
-- **enterRule** — Enters the current rule `KotlinParser.ts:17083-17087`, `KotlinParser.ts:17133-17137`, `KotlinParser.ts:20725-20729`, `KotlinParser.ts:20754-20758`, `KotlinParser.ts:21280-21284`, `KotlinParser.ts:21309-21313`
-- **enterRule** — Enters a new rule in the parser `KotlinParser.ts:17587-17591`, `KotlinParser.ts:17637-17641`, `KotlinParser.ts:17666-17670`, `KotlinParser.ts:21115-21119`, `KotlinParser.ts:21159-21163`, `KotlinParser.ts:21215-21219`
-- **enterRule** — Represents the action to enter a rule `KotlinParser.ts:18492-18496`, `KotlinParser.ts:18548-18552`
-- **enterRule** — Enters a new rule during parsing `KotlinParser.ts:18595-18599`, `KotlinParser.ts:18660-18664`, `KotlinParser.ts:19845-19849`, `KotlinParser.ts:19910-19914`
-- **enterRule** — Enters a new rule `KotlinParser.ts:18807-18811`, `KotlinParser.ts:18836-18840`, `KotlinParser.ts:18883-18887`, `KotlinParser.ts:21022-21026`, `KotlinParser.ts:21048-21052`, `KotlinParser.ts:21077-21081`
-- **enterRule** — Enters a rule and updates the rule index `KotlinParser.ts:19046-19050`, `KotlinParser.ts:19087-19091`
-- **enterRule** — Enters a new rule context `KotlinParser.ts:20156-20160`, `KotlinParser.ts:20185-20189`, `KotlinParser.ts:20214-20218`
-- **enterRule** — Enters a rule and initializes its context `KotlinParser.ts:20932-20936`, `KotlinParser.ts:20958-20962`, `KotlinParser.ts:20990-20994`
+- **enterRule** — Begins parsing a new rule `KotlinParser.ts:13817-13821`
+- **enterRule** — Represents entering a rule in the Kotlin parser `KotlinParser.ts:13888-13892`
+- **enterRule** — Enters a rule in the Kotlin parser `KotlinParser.ts:13923-13927`
+- **enterRule** — Enters a rule in the parser `KotlinParser.ts:13982-13986`
+- **enterRule** — Represents entering a rule `KotlinParser.ts:14014-14018`
+- **enterRule** — Enters a new rule in the parsing process `KotlinParser.ts:14046-14050`
+- **enterRule** — Represents the entry of a rule in the parser `KotlinParser.ts:14087-14091`
+- **enterRule** — Begins parsing a rule `KotlinParser.ts:14116-14120`
+- **enterRule** — Enters a parsing rule `KotlinParser.ts:14145-14149`
+- **enterRule** — Represents entering a rule in the Kotlin grammar `KotlinParser.ts:14195-14199`
+- **enterRule** — Invoked when entering a parsing rule `KotlinParser.ts:14233-14237`
+- **enterRule** — Enters a rule `KotlinParser.ts:14301-14305`
+- **enterRule** — Represents entering a rule in the parser `KotlinParser.ts:14342-14346`
+- **enterRule** — Enters a rule and returns a visitor `KotlinParser.ts:14383-14387`
+- **enterRule** — Invokes the enter nullable type listener if it exists `KotlinParser.ts:14439-14443`
+- **enterRule** — Invokes the enter quest listener if it exists `KotlinParser.ts:14495-14499`
+- **enterRule** — Invokes the enterUserType method of the listener if it exists `KotlinParser.ts:14547-14551`
+- **enterRule** — Enters the current rule `KotlinParser.ts:14594-14598`
+- **enterRule** — Enters a new rule in the parser `KotlinParser.ts:14632-14636`
+- **enterRule** — Represents the action to enter a rule `KotlinParser.ts:14676-14680`
+- **enterRule** — Enters a new rule during parsing `KotlinParser.ts:14720-14724`
+- **enterRule** — Enters a new rule `KotlinParser.ts:14776-14780`
+- **enterRule** — Enters a rule and updates the rule index `KotlinParser.ts:14820-14824`
+- **enterRule** — Enters a new rule context `KotlinParser.ts:14873-14877`
+- **enterRule** — Enters a rule and initializes its context `KotlinParser.ts:14923-14927`
+- **enterRule** — Invokes the enter method for class member declarations `KotlinParser.ts:14964-14968`
+- **enterRule** — Invokes the enter method for class member declaration `KotlinParser.ts:14999-15003`
+- **enterRule** — Invokes the enter method for anonymous initializer `KotlinParser.ts:15037-15041`
+- **enterRule** — Invokes the listener's enter method for companion object `KotlinParser.ts:15093-15097`
+- **enterRule** — Invokes the listener's enter method for function value parameters `KotlinParser.ts:15149-15153`
+- **enterRule** — Invokes the enter function value parameter listener `KotlinParser.ts:15193-15197`
+- **enterRule** — Invokes the enter function declaration listener `KotlinParser.ts:15258-15262`
+- **enterRule** — Invokes the listener's enterFunctionBody method if it exists `KotlinParser.ts:15299-15303`
+- **enterRule** — Invokes the listener's enterVariableDeclaration method if it exists `KotlinParser.ts:15349-15353`
+- **enterRule** — Invokes the listener's enterMultiVariableDeclaration method if it exists `KotlinParser.ts:15405-15409`
+- **enterRule** — Enters the property declaration rule and notifies the listener `KotlinParser.ts:15485-15489`
+- **enterRule** — Enters the property delegate rule and notifies the listener `KotlinParser.ts:15523-15527`
+- **enterRule** — Invokes the enterGetter method of the listener `KotlinParser.ts:15576-15580`
+- **enterRule** — Invokes the enter method for the setter rule `KotlinParser.ts:15635-15639`
+- **enterRule** — Invokes the enter method for the parameters with optional type rule `KotlinParser.ts:15693-15697`
+- **enterRule** — Invokes the enter method for the function value parameter with optional type rule `KotlinParser.ts:15737-15741`
+- **enterRule** — Invokes the enterParameterWithOptionalType method of the listener `KotlinParser.ts:15778-15782`
+- **enterRule** — Invokes the enterParameter method of the listener `KotlinParser.ts:15819-15823`
+- **enterRule** — Invokes the enterObjectDeclaration method of the listener `KotlinParser.ts:15869-15873`
+- **enterRule** — Invokes the enter method for the secondary constructor rule `KotlinParser.ts:15919-15923`
+- **enterRule** — Invokes the enter method for the constructor delegation call rule `KotlinParser.ts:15960-15964`
+- **enterRule** — Invokes the listener's `enterEnumClassBody` method if it exists `KotlinParser.ts:16007-16011`
+- **enterRule** — Invokes the listener's `enterEnumEntries` method if it exists `KotlinParser.ts:16057-16061`
+- **enterRule** — Invokes the listener's enterEnumEntry method if it exists `KotlinParser.ts:16101-16105`
+- **enterRule** — Invokes the listener's enterType method if it exists `KotlinParser.ts:16142-16146`
+- **enterRule** — Invokes the enter method for the type reference rule `KotlinParser.ts:16171-16175`
+- **enterRule** — Invokes the listener's enterQuest method if it exists `KotlinParser.ts:16218-16222`
+- **enterRule** — Invokes the listener's enterUserType method if it exists `KotlinParser.ts:16247-16251`
+- **enterRule** — Invokes the listener's `KotlinParser.ts:16297-16301`
+- **enterRule** — Enters the type projection rule and notifies the listener `KotlinParser.ts:16335-16339`
+- **enterRule** — Enters the type projection modifiers rule and notifies the listener `KotlinParser.ts:16367-16371`
+- **enterRule** — Invokes the listener's enterTypeProjectionModifier method if it exists `KotlinParser.ts:16399-16403`
+- **enterRule** — Enters the function type rule `KotlinParser.ts:16437-16441`
+- **enterRule** — Enters the function type parameters rule. `KotlinParser.ts `KotlinParser.ts:16484-16488`
+- **enterRule** — Enters the rule and calls the enter function for parenthesized type `KotlinParser.ts:16549-16553`
+- **enterRule** — Invokes the listener's enter method for the receiver type rule `KotlinParser.ts:16590-16594`
+- **enterRule** — Invokes the listener's enter method for the parenthesized user type rule. `KotlinParser.ts:16 `KotlinParser.ts:16625-16629`
+- **enterRule** — Invokes the enter method of the listener for the definitely non-nullable type rule `KotlinParser.ts:16669-16673`
+- **enterRule** — Invokes the enter method of the listener for the statements rule `KotlinParser.ts:16731-16735`
+- **enterRule** — Enters the rule and calls the enter function for statement `KotlinParser.ts:16772-16776`
+- **enterRule** — Invokes the listener's enter method for the current rule `KotlinParser.ts:16825-16829`
+- **enterRule** — Invokes the enterBlock method of the listener if it exists `KotlinParser.ts:16866-16870`
+- **enterRule** — Invokes the enterLoopStatement method of the listener if it exists `KotlinParser.ts:16895-16899`
+- **enterRule** — Invokes the enterForStatement method of the listener `KotlinParser.ts:16936-16940`
+- **enterRule** — Invokes the enterWhileStatement method of the listener `KotlinParser.ts:16968-16972`
+- **enterRule** — Enters the do while statement rule and notifies the listener `KotlinParser.ts:17033-17037`
+- **enterRule** — Invokes the listener's enterAssignment method if it exists `KotlinParser.ts:17083-17087`
+- **enterRule** — Invokes the listener's enterSemi method if it exists `KotlinParser.ts:17133-17137`
+- **enterRule** — Invokes the listener's enterSemis method if it exists `KotlinParser.ts:17180-17184`
+- **enterRule** — Invokes the listener's enterExpression method if it exists `KotlinParser.ts:17215-17219`
+- **enterRule** — Enters the disjunction rule for the listener `KotlinParser.ts:17256-17260`
+- **enterRule** — Enters the conjunction rule for the listener `KotlinParser.ts:17282-17286`
+- **enterRule** — Invokes the enterEquality method of the listener if it exists `KotlinParser.ts:17332-17336`
+- **enterRule** — Invokes the enterComparison method of the listener if it exists `KotlinParser.ts:17382-17386`
+- **enterRule** — Invokes the enterGenericCallLikeComparison method of the listener if it exists `KotlinParser.ts:17432-17436`
+- **enterRule** — Enters the infix operation rule for a listener `KotlinParser.ts:17484-17488`
+- **enterRule** — Invokes the listener's `enterElvisExpression` method if it exists `KotlinParser.ts:17519-17523`
+- **enterRule** — Enters the Elvis rule for a listener `KotlinParser.ts:17587-17591`
+- **enterRule** — Invokes the enterInfixFunctionCall method of the listener `KotlinParser.ts:17637-17641`
+- **enterRule** — Invokes the enterRangeExpression method of the listener `KotlinParser.ts:17666-17670`
+- **enterRule** — Invokes the enter method for the additive expression rule `KotlinParser.ts:17716-17720`
+- **enterRule** — Invokes the enter method for the multiplicative expression rule `KotlinParser.ts:17775-17779`
+- **enterRule** — Enters the as expression rule for a listener `KotlinParser.ts:17827-17831`
+- **enterRule** — Invokes the listener's enter method for the prefix unary expression rule `KotlinParser.ts:17877-17881`
+- **enterRule** — Invokes the listener's enter method for the unary prefix rule `KotlinParser.ts:17930-17934`
+- **enterRule** — Invokes the listener's enterPostfixUnaryExpression method if it exists `KotlinParser.ts:17965-17969`
+- **enterRule** — Invokes the listener's enterPostfixUnarySuffix method if it exists `KotlinParser.ts:18006-18010`
+- **enterRule** — Invokes the listener's enterDirectlyAssignableExpression method if it exists `KotlinParser.ts:18041-18045`
+- **enterRule** — Invokes the enter method for the parenthesized directly assignable expression `KotlinParser.ts:18079-18083`
+- **enterRule** — Invokes the enter method for the assignable expression `KotlinParser.ts:18114-18118`
+- **enterRule** — Invokes the `enterParenthesizedAssignableExpression` method of the listener `KotlinParser.ts:18155-18159`
+- **enterRule** — Invokes the `enterAssignableSuffix` method of the listener `KotlinParser.ts:18184-18188`
+- **enterRule** — Invokes the enter method for indexing suffix on the listener `KotlinParser.ts:18225-18229`
+- **enterRule** — Invokes the enter method for navigation suffix on the listener `KotlinParser.ts:18257-18261`
+- **enterRule** — Invokes the enterCallSuffix method of the listener if it exists `KotlinParser.ts:18313-18317`
+- **enterRule** — Invokes the enterAnnotatedLambda method of the listener if it exists `KotlinParser.ts:18357-18361`
+- **enterRule** — Invokes the enter method for type arguments if the listener has it `KotlinParser.ts:18389-18393`
+- **enterRule** — Invokes the enter method for value arguments if the listener has it `KotlinParser.ts:18436-18440`
+- **enterRule** — Invokes the listener's enterValueArgument method if it exists `KotlinParser.ts:18492-18496`
+- **enterRule** — Invokes the listener's enterPrimaryExpression method if it exists `KotlinParser.ts:18548-18552`
+- **enterRule** — Invokes the listener's enterParenthesizedExpression method if it exists `KotlinParser.ts:18595-18599`
+- **enterRule** — Invokes the enterCollectionLiteral method of the listener if it exists `KotlinParser.ts:18660-18664`
+- **enterRule** — Invokes the enterLiteralConstant method of the listener if it exists `KotlinParser.ts:18701-18705`
+- **enterRule** — Invokes the enterStringLiteral method of the listener if it exists `KotlinParser.ts:18757-18761`
+- **enterRule** — Invokes the listener's enterLineStringLiteral method if it exists `KotlinParser.ts:18807-18811`
+- **enterRule** — Invokes the listener's enterMultiLineStringLiteral method if it exists `KotlinParser.ts:18836-18840`
+- **enterRule** — Invokes the listener's enterLineStringContent method if it exists `KotlinParser.ts:18883-18887`
+- **enterRule** — Invokes the listener's enterLineStringExpression method if it exists `KotlinParser.ts:18941-18945`
+- **enterRule** — Invokes the enter method for multi-line string content if the listener has it `KotlinParser.ts:18973-18977`
+- **enterRule** — Invokes the enter method for the multi-line string expression rule `KotlinParser.ts:19014-19018`
+- **enterRule** — Invokes the listener's enterLambdaLiteral method if it exists `KotlinParser.ts:19046-19050`
+- **enterRule** — Invokes the listener's enterLambdaParameters method if it exists `KotlinParser.ts:19087-19091`
+- **enterRule** — Invokes the enterLambdaParameter method of the listener `KotlinParser.ts:19134-19138`
+- **enterRule** — Invokes the enterAnonymousFunction method of the listener `KotlinParser.ts:19184-19188`
+- **enterRule** — Invokes the enter function literal listener if it exists `KotlinParser.ts:19228-19232`
+- **enterRule** — Invokes the enter object literal listener if it exists `KotlinParser.ts:19290-19294`
+- **enterRule** — Enters the rule for this expression `KotlinParser.ts:19319-19323`
+- **enterRule** — Enters the if expression rule `KotlinParser.ts:19366-19370`
+- **enterRule** — Enters the whenSubject rule `KotlinParser.ts:19395-19399`
+- **enterRule** — Invokes the `enterWhenExpression` method of the listener if it exists `KotlinParser.ts:19448-19452`
+- **enterRule** — Invokes the `enterWhenEntry` method of the listener if it exists `KotlinParser.ts:19513-19517`
+- **enterRule** — Invokes the `enterWhenCondition` method of the listener if it exists `KotlinParser.ts:19572-19576`
+- **enterRule** — Invokes the `enterRangeTest` method of the listener if it exists `KotlinParser.ts:19625-19629`
+- **enterRule** — Invokes the enterTypeTest method of the listener if it exists `KotlinParser.ts:19687-19691`
+- **enterRule** — Invokes the enterTryExpression method of the listener if it exists `KotlinParser.ts:19719-19723`
+- **enterRule** — Enters the catch block rule `KotlinParser.ts:19757-19761`
+- **enterRule** — Invokes the enterFinallyBlock method of the listener if it exists `KotlinParser.ts:19795-19799`
+- **enterRule** — Invokes the enterJumpExpression method of the listener if it exists `KotlinParser.ts:19845-19849`
+- **enterRule** — Invokes the enterCallableReference method of the listener `KotlinParser.ts:19910-19914`
+- **enterRule** — Invokes the enterAssignmentAndOperator method of the listener `KotlinParser.ts:19948-19952`
+- **enterRule** — Invokes the enterEqualityOperator method of the listener `KotlinParser.ts:20004-20008`
+- **enterRule** — Invokes the enterComparisonOperator method of the listener if it exists `KotlinParser.ts:20048-20052`
+- **enterRule** — Invokes the enterInOperator method of the listener if it exists `KotlinParser.ts:20086-20090`
+- **enterRule** — Invokes the listener's enterIsOperator method if it exists `KotlinParser.ts:20121-20125`
+- **enterRule** — Invokes the listener's enterAdditiveOperator method if it exists `KotlinParser.ts:20156-20160`
+- **enterRule** — Invokes the listener's enterMultiplicativeOperator method if it exists `KotlinParser.ts:20185-20189`
+- **enterRule** — Invokes the `enterAsOperator` method of the listener if it exists `KotlinParser.ts:20214-20218`
+- **enterRule** — Invokes the `enterPrefixUnaryOperator` method of the listener if it exists `KotlinParser.ts:20243-20247`
+- **enterRule** — Invokes the `enterPostfixUnaryOperator` method of the listener if it exists `KotlinParser.ts:20275-20279`
+- **enterRule** — Invokes the enterExcl method of the listener `KotlinParser.ts:20304-20308`
+- **enterRule** — Invokes the enterMemberAccessOperator method of the listener `KotlinParser.ts:20342-20346`
+- **enterRule** — Invokes the listener's enter method for the safe navigation rule `KotlinParser.ts:20377-20381`
+- **enterRule** — Invokes the listener's enter method for the modifiers rule `KotlinParser.ts:20406-20410`
+- **enterRule** — Invokes the listener's enter method for the parameter modifiers rule. `KotlinParser.ts:20558-2056 `KotlinParser.ts:20447-20451`
+- **enterRule** — Enters the modifier rule and calls the listener's enterModifier method `KotlinParser.ts:20476-20480`
+- **enterRule** — Enters the type modifiers rule and calls the listener's enterTypeModifiers method `KotlinParser.ts:20517-20521`
+- **enterRule** — Invokes the enter method for type modifiers `KotlinParser.ts:20558-20562`
+- **enterRule** — Invokes the enter method for class modifiers `KotlinParser.ts:20614-20618`
+- **enterRule** — Invokes the enter method for member modifiers `KotlinParser.ts:20646-20650`
+- **enterRule** — Invokes the enter method for the visibility modifier rule `KotlinParser.ts:20684-20688`
+- **enterRule** — Invokes the enter method for the variance modifier rule `KotlinParser.ts:20725-20729`
+- **enterRule** — Invokes the enter method for the type parameter modifiers rule `KotlinParser.ts:20754-20758`
+- **enterRule** — Invokes the enter method for type parameter modifier `KotlinParser.ts:20789-20793`
+- **enterRule** — Invokes the enter method for function modifier `KotlinParser.ts:20818-20822`
+- **enterRule** — Invokes the enter method for property modifier `KotlinParser.ts:20850-20854`
+- **enterRule** — Invokes the enter method for the inheritance modifier rule `KotlinParser.ts:20891-20895`
+- **enterRule** — Invokes the enter method for the parameter modifier rule `KotlinParser.ts:20932-20936`
+- **enterRule** — Invokes the enter method for the reification modifier rule `KotlinParser.ts:20958-20962`
+- **enterRule** — Invokes the enterPlatformModifier method of the listener if it exists `KotlinParser.ts:20990-20994`
+- **enterRule** — Invokes the enterAnnotation method of the listener if it exists `KotlinParser.ts:21022-21026`
+- **enterRule** — Invokes the enterSingleAnnotation method of the listener if it exists `KotlinParser.ts:21048-21052`
+- **enterRule** — Invokes the listener's enter method for a multi-annotation `KotlinParser.ts:21077-21081`
+- **enterRule** — Invokes the enter method of the listener for the current rule, which is annotation use site target `KotlinParser.ts:21115-21119`
+- **enterRule** — Invokes the enter method of the listener for the current rule, which is unescaped annotation `KotlinParser.ts:21159-21163`
+- **enterRule** — Invokes the listener's enterSimpleIdentifier method if it exists `KotlinParser.ts:21215-21219`
+- **enterRule** — Invokes the listener's enterIdentifier method if it exists `KotlinParser.ts:21280-21284`
+- **enterRule** — Notifies the listener of the entry of the unescaped annotation rule `KotlinParser.ts:21309-21313`
+- **enterRule** — Notifies the listener of the entry of the simple identifier rule `KotlinParser.ts:21476-21480`
+- **enterRule** — Notifies the listener that the identifier rule is entering `KotlinParser.ts:21526-21530`
 - **ENUM** — Represents the enum modifier `KotlinParser.ts:20704-20706`
 - **ENUM** — Represents the 'enum' keyword in the Kotlin grammar `KotlinParser.ts:21359-21361`
 - **enumClassBody** — Represents the body of an enum class in Kotlin `KotlinParser.ts:4676-4767`
@@ -331,47 +671,210 @@ UnicodeClasses.ts
 - **excl** — Represents an exclamation mark `KotlinParser.ts:20371-20373`
 - **EXCL_EQ** — Represents the not equal operator `KotlinParser.ts:20106-20108`
 - **EXCL_EQEQ** — Represents the not equal to equal operator `KotlinParser.ts:20109-20111`
-- **EXCL_NO_WS** — Represents an exclamation mark without whitespace `KotlinParser.ts:20368-20370`, `KotlinParser.ts:20397-20399`
+- **EXCL_NO_WS** — Represents an exclamation mark without whitespace `KotlinParser.ts:20368-20370`
+- **EXCL_NO_WS** — Returns the terminal node for the EXCL_NO_WS rule `KotlinParser.ts:20397-20399`
 - **EXCL_WS** — Represents an exclamation mark with whitespace `KotlinParser.ts:20400-20402`
 - **exitEveryRule** — Exits every rule `KotlinParserListener.ts:1931-1931`
-- **exitRule** — Ends parsing the current rule `KotlinParser.ts:13822-13826`, `KotlinParser.ts:13893-13897`, `KotlinParser.ts:13928-13932`, `KotlinParser.ts:15640-15644`, `KotlinParser.ts:15698-15702`, `KotlinParser.ts:15742-15746`, `KotlinParser.ts:15874-15878`, `KotlinParser.ts:15924-15928`, `KotlinParser.ts:15965-15969`, `KotlinParser.ts:16106-16110`, `KotlinParser.ts:16147-16151`, `KotlinParser.ts:16176-16180`, `KotlinParser.ts:16340-16344`, `KotlinParser.ts:16372-16376`, `KotlinParser.ts:16404-16408`, `KotlinParser.ts:16442-16446`, `KotlinParser.ts:16830-16834`, `KotlinParser.ts:16871-16875`, `KotlinParser.ts:16900-16904`, `KotlinParser.ts:16941-16945`, `KotlinParser.ts:16973-16977`, `KotlinParser.ts:17721-17725`, `KotlinParser.ts:17780-17784`, `KotlinParser.ts:17832-17836`, `KotlinParser.ts:17882-17886`, `KotlinParser.ts:17935-17939`, `KotlinParser.ts:17970-17974`, `KotlinParser.ts:18011-18015`, `KotlinParser.ts:18046-18050`, `KotlinParser.ts:18084-18088`, `KotlinParser.ts:18230-18234`, `KotlinParser.ts:18262-18266`, `KotlinParser.ts:18318-18322`, `KotlinParser.ts:19139-19143`, `KotlinParser.ts:19189-19193`, `KotlinParser.ts:19233-19237`, `KotlinParser.ts:19371-19375`, `KotlinParser.ts:19400-19404`, `KotlinParser.ts:19453-19457`, `KotlinParser.ts:19953-19957`, `KotlinParser.ts:20009-20013`, `KotlinParser.ts:20053-20057`, `KotlinParser.ts:20091-20095`, `KotlinParser.ts:20126-20130`, `KotlinParser.ts:20794-20798`, `KotlinParser.ts:20823-20827`, `KotlinParser.ts:20855-20859`, `KotlinParser.ts:20896-20900`, `KotlinParser.ts:21481-21485`, `KotlinParser.ts:21531-21535`
-- **exitRule** — Represents exiting a rule in the Kotlin parser `KotlinParser.ts:13987-13991`, `KotlinParser.ts:14019-14023`, `KotlinParser.ts:14051-14055`
-- **exitRule** — Exits a rule in the Kotlin parser `KotlinParser.ts:14092-14096`, `KotlinParser.ts:14121-14125`, `KotlinParser.ts:14150-14154`, `KotlinParser.ts:14306-14310`, `KotlinParser.ts:14347-14351`, `KotlinParser.ts:15263-15267`, `KotlinParser.ts:15304-15308`, `KotlinParser.ts:18362-18366`, `KotlinParser.ts:18394-18398`, `KotlinParser.ts:18441-18445`
-- **exitRule** — Exits a rule in the parser `KotlinParser.ts:14200-14204`, `KotlinParser.ts:14238-14242`, `KotlinParser.ts:16595-16599`, `KotlinParser.ts:16630-16634`, `KotlinParser.ts:16674-16678`, `KotlinParser.ts:17287-17291`, `KotlinParser.ts:17337-17341`, `KotlinParser.ts:17387-17391`, `KotlinParser.ts:19724-19728`, `KotlinParser.ts:19762-19766`, `KotlinParser.ts:19800-19804`
-- **exitRule** — Represents exiting a rule `KotlinParser.ts:14388-14392`, `KotlinParser.ts:14444-14448`, `KotlinParser.ts:16012-16016`, `KotlinParser.ts:16062-16066`, `KotlinParser.ts:20619-20623`, `KotlinParser.ts:20651-20655`
-- **exitRule** — Exits the current rule in the parsing process `KotlinParser.ts:14500-14504`, `KotlinParser.ts:14552-14556`, `KotlinParser.ts:17437-17441`, `KotlinParser.ts:17489-17493`, `KotlinParser.ts:17524-17528`
-- **exitRule** — Represents the exit of a rule in the parser `KotlinParser.ts:14599-14603`, `KotlinParser.ts:14637-14641`, `KotlinParser.ts:14681-14685`
-- **exitRule** — Ends parsing a rule `KotlinParser.ts:14725-14729`, `KotlinParser.ts:14781-14785`, `KotlinParser.ts:14825-14829`, `KotlinParser.ts:20347-20351`, `KotlinParser.ts:20382-20386`, `KotlinParser.ts:20411-20415`, `KotlinParser.ts:20452-20456`, `KotlinParser.ts:20481-20485`, `KotlinParser.ts:20522-20526`, `KotlinParser.ts:20563-20567`
-- **exitRule** — Exits a parsing rule `KotlinParser.ts:14878-14882`, `KotlinParser.ts:14928-14932`, `KotlinParser.ts:14969-14973`, `KotlinParser.ts:18119-18123`, `KotlinParser.ts:18160-18164`, `KotlinParser.ts:18189-18193`, `KotlinParser.ts:20248-20252`, `KotlinParser.ts:20280-20284`, `KotlinParser.ts:20309-20313`
-- **exitRule** — Represents exiting a rule in the Kotlin grammar `KotlinParser.ts:15004-15008`, `KotlinParser.ts:15042-15046`, `KotlinParser.ts:15783-15787`, `KotlinParser.ts:15824-15828`
-- **exitRule** — Invoked when exiting a parsing rule `KotlinParser.ts:15098-15102`, `KotlinParser.ts:15154-15158`, `KotlinParser.ts:15198-15202`
-- **exitRule** — Exits a rule `KotlinParser.ts:15354-15358`, `KotlinParser.ts:15410-15414`, `KotlinParser.ts:16489-16493`, `KotlinParser.ts:16554-16558`, `KotlinParser.ts:16736-16740`, `KotlinParser.ts:16777-16781`, `KotlinParser.ts:17185-17189`, `KotlinParser.ts:17220-17224`, `KotlinParser.ts:17261-17265`, `KotlinParser.ts:18706-18710`, `KotlinParser.ts:18762-18766`, `KotlinParser.ts:19518-19522`, `KotlinParser.ts:19577-19581`, `KotlinParser.ts:19630-19634`, `KotlinParser.ts:19692-19696`
-- **exitRule** — Represents exiting a rule in the parser `KotlinParser.ts:15490-15494`, `KotlinParser.ts:15528-15532`, `KotlinParser.ts:18946-18950`, `KotlinParser.ts:18978-18982`, `KotlinParser.ts:19019-19023`, `KotlinParser.ts:19295-19299`, `KotlinParser.ts:19324-19328`
-- **exitRule** — Exits a rule and returns a visitor `KotlinParser.ts:15581-15585`
-- **exitRule** — Invokes the exit nullable type listener if it exists `KotlinParser.ts:16223-16227`
-- **exitRule** — Invokes the exit quest listener if it exists `KotlinParser.ts:16252-16256`
-- **exitRule** — Invokes the exitUserType method of the listener if it exists `KotlinParser.ts:16302-16306`
-- **exitRule** — Exits the current rule `KotlinParser.ts:17038-17042`, `KotlinParser.ts:17088-17092`, `KotlinParser.ts:17138-17142`, `KotlinParser.ts:18812-18816`, `KotlinParser.ts:18841-18845`, `KotlinParser.ts:18888-18892`, `KotlinParser.ts:20689-20693`, `KotlinParser.ts:20730-20734`, `KotlinParser.ts:20759-20763`, `KotlinParser.ts:21027-21031`, `KotlinParser.ts:21053-21057`, `KotlinParser.ts:21082-21086`, `KotlinParser.ts:21220-21224`, `KotlinParser.ts:21285-21289`, `KotlinParser.ts:21314-21318`
-- **exitRule** — Exits the current rule in the parser `KotlinParser.ts:17592-17596`, `KotlinParser.ts:17642-17646`, `KotlinParser.ts:17671-17675`, `KotlinParser.ts:21120-21124`, `KotlinParser.ts:21164-21168`
-- **exitRule** — Represents the action to exit a rule `KotlinParser.ts:18497-18501`, `KotlinParser.ts:18553-18557`
-- **exitRule** — Exits a rule during parsing `KotlinParser.ts:18600-18604`, `KotlinParser.ts:18665-18669`
-- **exitRule** — Exits a rule and updates the rule index `KotlinParser.ts:19051-19055`, `KotlinParser.ts:19092-19096`
-- **exitRule** — Exits the current rule during parsing `KotlinParser.ts:19850-19854`, `KotlinParser.ts:19915-19919`
-- **exitRule** — Exits the current rule context `KotlinParser.ts:20161-20165`, `KotlinParser.ts:20190-20194`, `KotlinParser.ts:20219-20223`
-- **exitRule** — Exits a rule and finalizes its context `KotlinParser.ts:20937-20941`, `KotlinParser.ts:20963-20967`, `KotlinParser.ts:20995-20999`
+- **exitRule** — Ends parsing the current rule `KotlinParser.ts:13822-13826`
+- **exitRule** — Represents exiting a rule in the Kotlin parser `KotlinParser.ts:13893-13897`
+- **exitRule** — Exits a rule in the Kotlin parser `KotlinParser.ts:13928-13932`
+- **exitRule** — Exits a rule in the parser `KotlinParser.ts:13987-13991`
+- **exitRule** — Represents exiting a rule `KotlinParser.ts:14019-14023`
+- **exitRule** — Exits the current rule in the parsing process `KotlinParser.ts:14051-14055`
+- **exitRule** — Represents the exit of a rule in the parser `KotlinParser.ts:14092-14096`
+- **exitRule** — Ends parsing a rule `KotlinParser.ts:14121-14125`
+- **exitRule** — Exits a parsing rule `KotlinParser.ts:14150-14154`
+- **exitRule** — Represents exiting a rule in the Kotlin grammar `KotlinParser.ts:14200-14204`
+- **exitRule** — Invoked when exiting a parsing rule `KotlinParser.ts:14238-14242`
+- **exitRule** — Exits a rule `KotlinParser.ts:14306-14310`
+- **exitRule** — Represents exiting a rule in the parser `KotlinParser.ts:14347-14351`
+- **exitRule** — Exits a rule and returns a visitor `KotlinParser.ts:14388-14392`
+- **exitRule** — Invokes the exit nullable type listener if it exists `KotlinParser.ts:14444-14448`
+- **exitRule** — Invokes the exit quest listener if it exists `KotlinParser.ts:14500-14504`
+- **exitRule** — Invokes the exitUserType method of the listener if it exists `KotlinParser.ts:14552-14556`
+- **exitRule** — Exits the current rule `KotlinParser.ts:14599-14603`
+- **exitRule** — Exits the current rule in the parser `KotlinParser.ts:14637-14641`
+- **exitRule** — Represents the action to exit a rule `KotlinParser.ts:14681-14685`
+- **exitRule** — Exits a rule during parsing `KotlinParser.ts:14725-14729`
+- **exitRule** — Exits a rule and updates the rule index `KotlinParser.ts:14781-14785`
+- **exitRule** — Exits the current rule during parsing `KotlinParser.ts:14825-14829`
+- **exitRule** — Exits the current rule context `KotlinParser.ts:14878-14882`
+- **exitRule** — Exits a rule and finalizes its context `KotlinParser.ts:14928-14932`
+- **exitRule** — Invokes the exit method for class member declarations `KotlinParser.ts:14969-14973`
+- **exitRule** — Invokes the exit method for class member declaration `KotlinParser.ts:15004-15008`
+- **exitRule** — Invokes the listener's exit method for anonymous initializer `KotlinParser.ts:15042-15046`
+- **exitRule** — Invokes the listener's exit method for companion object `KotlinParser.ts:15098-15102`
+- **exitRule** — Invokes the listener's exit method for function value parameters `KotlinParser.ts:15154-15158`
+- **exitRule** — Invokes the exit function value parameter listener `KotlinParser.ts:15198-15202`
+- **exitRule** — Invokes the exit function declaration listener `KotlinParser.ts:15263-15267`
+- **exitRule** — Invokes the listener's exitFunctionBody method if it exists `KotlinParser.ts:15304-15308`
+- **exitRule** — Invokes the listener's exitVariableDeclaration method if it exists `KotlinParser.ts:15354-15358`
+- **exitRule** — Invokes the listener's exitMultiVariableDeclaration method if it exists `KotlinParser.ts:15410-15414`
+- **exitRule** — Exits the property declaration rule and notifies the listener `KotlinParser.ts:15490-15494`
+- **exitRule** — Exits the property delegate rule and notifies the listener `KotlinParser.ts:15528-15532`
+- **exitRule** — Invokes the exitGetter method of the listener `KotlinParser.ts:15581-15585`
+- **exitRule** — Invokes the exit method for the setter rule `KotlinParser.ts:15640-15644`
+- **exitRule** — Invokes the exit method for the parameters with optional type rule `KotlinParser.ts:15698-15702`
+- **exitRule** — Invokes the `KotlinParser.ts:15742-15746`
+- **exitRule** — Invokes the exitParameterWithOptionalType method of the listener `KotlinParser.ts:15783-15787`
+- **exitRule** — Invokes the exitParameter method of the listener `KotlinParser.ts:15824-15828`
+- **exitRule** — Invokes the exitObjectDeclaration method of the listener `KotlinParser.ts:15874-15878`
+- **exitRule** — Invokes the exit method for the secondary constructor rule `KotlinParser.ts:15924-15928`
+- **exitRule** — Invokes the exit method for the constructor delegation call rule `KotlinParser.ts:15965-15969`
+- **exitRule** — Invokes the listener's `exitEnumClassBody` method if it exists `KotlinParser.ts:16012-16016`
+- **exitRule** — Invokes the listener's `exitEnumEntries` method if it exists `KotlinParser.ts:16062-16066`
+- **exitRule** — Invokes the listener's exitEnumEntry method if it exists `KotlinParser.ts:16106-16110`
+- **exitRule** — Invokes the listener's exitType method if it exists `KotlinParser.ts:16147-16151`
+- **exitRule** — Invokes the exit method for the type reference rule `KotlinParser.ts:16176-16180`
+- **exitRule** — Invokes the listener's exitQuest method if it exists `KotlinParser.ts:16223-16227`
+- **exitRule** — Invokes the listener's exitUserType method if it exists `KotlinParser.ts:16252-16256`
+- **exitRule** — Invokes the listener's exitSimpleUserType method if it exists `KotlinParser.ts:16302-16306`
+- **exitRule** — Exits the type projection rule and notifies the listener `KotlinParser.ts:16340-16344`
+- **exitRule** — Exits the type projection modifiers rule and notifies the listener `KotlinParser.ts:16372-16376`
+- **exitRule** — Parses and exits the type projection modifier rule `KotlinParser.ts:16404-16408`
+- **exitRule** — Exits the function type rule `KotlinParser.ts:16442-16446`
+- **exitRule** — Parses and calls the exit function for function type parameters `KotlinParser.ts:16489-16493`
+- **exitRule** — Invokes the listener's exit method for the parenthesized type rule `KotlinParser.ts:16554-16558`
+- **exitRule** — Invokes the listener's exit method for the receiver type rule `KotlinParser.ts:16595-16599`
+- **exitRule** — Exits the rule and calls the exit function for parenthesized user type `KotlinParser.ts:16630-16634`
+- **exitRule** — Invokes the exit method of the listener for the definitely non-nullable type rule `KotlinParser.ts:16674-16678`
+- **exitRule** — Invokes the exit method of the listener for the statements rule `KotlinParser.ts:16736-16740`
+- **exitRule** — Invokes the listener's exit method for the current rule `KotlinParser.ts:16777-16781`
+- **exitRule** — Invokes the exitBlock method of the listener if it exists `KotlinParser.ts:16830-16834`
+- **exitRule** — Invokes the exitLoopStatement method of the listener if it exists `KotlinParser.ts:16871-16875`
+- **exitRule** — Invokes the exitForStatement method of the listener `KotlinParser.ts:16900-16904`
+- **exitRule** — Invokes the exitWhileStatement method of the listener `KotlinParser.ts:16941-16945`
+- **exitRule** — Exits the do while statement rule and notifies the listener `KotlinParser.ts:16973-16977`
+- **exitRule** — Invokes the listener's exitAssignment method if it exists `KotlinParser.ts:17038-17042`
+- **exitRule** — Invokes the listener's exitSemi method if it exists `KotlinParser.ts:17088-17092`
+- **exitRule** — Invokes the listener's exitSemis method if it exists `KotlinParser.ts:17138-17142`
+- **exitRule** — Invokes the listener's exitExpression method if it exists `KotlinParser.ts:17185-17189`
+- **exitRule** — Exits the disjunction rule for the listener `KotlinParser.ts:17220-17224`
+- **exitRule** — Exits the conjunction rule for the listener `KotlinParser.ts:17261-17265`
+- **exitRule** — Invokes the exitEquality method of the listener if it exists `KotlinParser.ts:17287-17291`
+- **exitRule** — Invokes the exitComparison method of the listener if it exists `KotlinParser.ts:17337-17341`
+- **exitRule** — Invokes the exitGenericCallLikeComparison method of the listener if it exists `KotlinParser.ts:17387-17391`
+- **exitRule** — Invokes the listener's `exitInfixOperation` method if it exists `KotlinParser.ts:17437-17441`
+- **exitRule** — Invokes the listener's `exitElvisExpression` method if it exists `KotlinParser.ts:17489-17493`
+- **exitRule** — Exits the Elvis rule for a listener `KotlinParser.ts:17524-17528`
+- **exitRule** — Invokes the exitInfixFunctionCall method of the listener `KotlinParser.ts:17592-17596`
+- **exitRule** — Invokes the exitRangeExpression method of the listener `KotlinParser.ts:17642-17646`
+- **exitRule** — Invokes the exit method for the additive expression rule `KotlinParser.ts:17671-17675`
+- **exitRule** — Invokes the exit method for the multiplicative expression rule `KotlinParser.ts:17721-17725`
+- **exitRule** — Invokes the listener's exit method for the prefix unary expression rule `KotlinParser.ts:17780-17784`
+- **exitRule** — Invokes the listener's exit method for the unary `KotlinParser.ts:17832-17836`
+- **exitRule** — Invokes the listener's exitPostfixUnaryExpression method if it exists `KotlinParser.ts:17882-17886`
+- **exitRule** — Invokes the listener's exitPostfixUnarySuffix method if it exists `KotlinParser.ts:17935-17939`
+- **exitRule** — Invokes the listener's exitDirectlyAssignableExpression method if it exists `KotlinParser.ts:17970-17974`
+- **exitRule** — Invokes the exit method for the parenthesized directly assignable expression `KotlinParser.ts:18011-18015`
+- **exitRule** — Invokes `KotlinParser.ts:18046-18050`
+- **exitRule** — Invokes the `exitParenthesizedAssignableExpression` method of the listener `KotlinParser.ts:18084-18088`
+- **exitRule** — Invokes the `exitAssignableSuffix` method of the listener `KotlinParser.ts:18119-18123`
+- **exitRule** — Invokes the exit method for indexing suffix on the listener `KotlinParser.ts:18160-18164`
+- **exitRule** — Invokes the exit method for navigation suffix on the listener `KotlinParser.ts:18189-18193`
+- **exitRule** — Invokes the exitCallSuffix method of the listener if it exists `KotlinParser.ts:18230-18234`
+- **exitRule** — Invokes the exitAnnotatedLambda method of the listener if it exists `KotlinParser.ts:18262-18266`
+- **exitRule** — Invokes the exit method for type arguments if the listener has it `KotlinParser.ts:18318-18322`
+- **exitRule** — Invokes the listener's exitValueArguments method if it exists `KotlinParser.ts:18362-18366`
+- **exitRule** — Invokes the listener's exitValueArgument method if it exists `KotlinParser.ts:18394-18398`
+- **exitRule** — Invokes the listener's exitPrimaryExpression method if it exists `KotlinParser.ts:18441-18445`
+- **exitRule** — Invokes the listener's exitParenthesizedExpression method if it exists `KotlinParser.ts:18497-18501`
+- **exitRule** — Invokes the exitCollectionLiteral method of the listener if it exists `KotlinParser.ts:18553-18557`
+- **exitRule** — Invokes the exitLiteralConstant method of the listener if it exists `KotlinParser.ts:18600-18604`
+- **exitRule** — Invokes the listener's exitStringLiteral method if it exists `KotlinParser.ts:18665-18669`
+- **exitRule** — Invokes the listener's exitLineStringLiteral method if it exists `KotlinParser.ts:18706-18710`
+- **exitRule** — Invokes the listener's exitMultiLineStringLiteral method if it exists `KotlinParser.ts:18762-18766`
+- **exitRule** — Invokes the listener's exitLineStringContent method if it exists `KotlinParser.ts:18812-18816`
+- **exitRule** — Invokes the listener's exitLineStringExpression method if it exists `KotlinParser.ts:18841-18845`
+- **exitRule** — Invokes the listener's exit method for the multi-line string content rule `KotlinParser.ts:18888-18892`
+- **exitRule** — Invokes the exit method for the multi-line string expression rule `KotlinParser.ts:18946-18950`
+- **exitRule** — Invokes the listener's exitLambdaLiteral method if it exists `KotlinParser.ts:18978-18982`
+- **exitRule** — Invokes the listener's exitLambdaParameters method if it exists `KotlinParser.ts:19019-19023`
+- **exitRule** — Invokes the exitLambdaParameter method of the listener `KotlinParser.ts:19051-19055`
+- **exitRule** — Invokes the exitAnonymousFunction method of the listener `KotlinParser.ts:19092-19096`
+- **exitRule** — Invokes the exit function literal listener if it exists `KotlinParser.ts:19139-19143`
+- **exitRule** — Invokes the exit object literal listener if it exists `KotlinParser.ts:19189-19193`
+- **exitRule** — Exits the rule for this expression `KotlinParser.ts:19233-19237`
+- **exitRule** — Exits the if expression rule `KotlinParser.ts:19295-19299`
+- **exitRule** — Exits the whenSubject rule `KotlinParser.ts:19324-19328`
+- **exitRule** — Invokes the `exitWhenExpression` method of the listener if it exists `KotlinParser.ts:19371-19375`
+- **exitRule** — Invokes the `exitWhenEntry` method of the listener if it exists `KotlinParser.ts:19400-19404`
+- **exitRule** — Invokes the `exitWhenCondition` method of the listener if it exists `KotlinParser.ts:19453-19457`
+- **exitRule** — Invokes the `exitRangeTest` method of the listener if it exists `KotlinParser.ts:19518-19522`
+- **exitRule** — Invokes the exitTypeTest method of the listener if it exists `KotlinParser.ts:19577-19581`
+- **exitRule** — Invokes the exitTryExpression method of the listener if it exists `KotlinParser.ts:19630-19634`
+- **exitRule** — Exits the catch block rule `KotlinParser.ts:19692-19696`
+- **exitRule** — Invokes the exitFinallyBlock method of the listener if it exists `KotlinParser.ts:19724-19728`
+- **exitRule** — Invokes the exitJumpExpression method of the listener if it exists `KotlinParser.ts:19762-19766`
+- **exitRule** — Invokes the exitCallableReference method of the listener `KotlinParser.ts:19800-19804`
+- **exitRule** — Invokes the exitAssignmentAndOperator method of the listener `KotlinParser.ts:19850-19854`
+- **exitRule** — Invokes the exitEqualityOperator method of the listener `KotlinParser.ts:19915-19919`
+- **exitRule** — Invokes the exitComparisonOperator method of the listener if it exists `KotlinParser.ts:19953-19957`
+- **exitRule** — Invokes the exitInOperator method of the listener if it exists `KotlinParser.ts:20009-20013`
+- **exitRule** — Invokes the listener's exitIsOperator method if it exists `KotlinParser.ts:20053-20057`
+- **exitRule** — Invokes the listener's exitAdditiveOperator method if it exists `KotlinParser.ts:20091-20095`
+- **exitRule** — Invokes the listener's exitMultiplicativeOperator method if it exists `KotlinParser.ts:20126-20130`
+- **exitRule** — Invokes the `exitAsOperator` method of the listener if it exists `KotlinParser.ts:20161-20165`
+- **exitRule** — Invokes the `exitPrefixUnaryOperator` method of the listener if it exists `KotlinParser.ts:20190-20194`
+- **exitRule** — Invokes the listener's exit method for the postfix unary operator rule `KotlinParser.ts:20219-20223`
+- **exitRule** — Invokes the exitExcl method of the listener `KotlinParser.ts:20248-20252`
+- **exitRule** — Invokes the exitMemberAccessOperator method of the listener `KotlinParser.ts:20280-20284`
+- **exitRule** — Invokes the listener's exit method for the safe navigation rule `KotlinParser.ts:20309-20313`
+- **exitRule** — Invokes the listener's exit method for the modifiers rule `KotlinParser.ts:20347-20351`
+- **exitRule** — Invokes the listener's exit method for the parameter modifiers rule `KotlinParser.ts:20382-20386`
+- **exitRule** — Exits the modifier rule and calls the listener's exitModifier method `KotlinParser.ts:20411-20415`
+- **exitRule** — Exits the type modifiers rule and calls the listener's exitTypeModifiers method `KotlinParser.ts:20452-20456`
+- **exitRule** — Invokes the exit method for type modifiers `KotlinParser.ts:20481-20485`
+- **exitRule** — Invokes the exit method for class modifiers `KotlinParser.ts:20522-20526`
+- **exitRule** — Invokes the exit method for member modifiers `KotlinParser.ts:20563-20567`
+- **exitRule** — Invokes the exit method for the visibility modifier rule `KotlinParser.ts:20619-20623`
+- **exitRule** — Invokes the exit method for the variance modifier rule `KotlinParser.ts:20651-20655`
+- **exitRule** — Invokes the exit method for the type parameter modifiers rule. `KotlinParser `KotlinParser.ts:20689-20693`
+- **exitRule** — Invokes the exit method for type parameter modifier `KotlinParser.ts:20730-20734`
+- **exitRule** — Invokes the exit method for function modifier `KotlinParser.ts:20759-20763`
+- **exitRule** — Invokes the exit method for property modifier `KotlinParser.ts:20794-20798`
+- **exitRule** — Invokes the exit method for the inheritance modifier rule `KotlinParser.ts:20823-20827`
+- **exitRule** — Invokes the exit method for the parameter modifier rule `KotlinParser.ts:20855-20859`
+- **exitRule** — Invokes the exit method for the reification modifier rule `KotlinParser.ts:20896-20900`
+- **exitRule** — Invokes the exitPlatformModifier method of the listener if it exists `KotlinParser.ts:20937-20941`
+- **exitRule** — Invokes the exitAnnotation method of the listener if it exists `KotlinParser.ts:20963-20967`
+- **exitRule** — Invokes the listener's exit method for a single annotation `KotlinParser.ts:20995-20999`
+- **exitRule** — Invokes the listener's exit method for a multi-annotation `KotlinParser.ts:21027-21031`
+- **exitRule** — Invokes the exit method of the listener for the current rule, which is annotation use site target `KotlinParser.ts:21053-21057`
+- **exitRule** — Invokes the listener's exitUnescapedAnnotation method if it exists `KotlinParser.ts:21082-21086`
+- **exitRule** — Invokes the listener's exitSimpleIdentifier method if it exists `KotlinParser.ts:21120-21124`
+- **exitRule** — Invokes the listener's exitIdentifier method if it exists `KotlinParser.ts:21164-21168`
+- **exitRule** — Invokes the listener's exitMultiAnnotation method if it exists `KotlinParser.ts:21220-21224`
+- **exitRule** — Notifies the listener of the exit of the annotation use site target rule `KotlinParser.ts:21285-21289`
+- **exitRule** — Notifies the listener of the exit of the unescaped annotation rule `KotlinParser.ts:21314-21318`
+- **exitRule** — Notifies the listener of the exit of the simple identifier rule `KotlinParser.ts:21481-21485`
+- **exitRule** — Notifies the listener that the identifier rule is exiting `KotlinParser.ts:21531-21535`
 - **EXPECT** — Represents an expect modifier `KotlinParser.ts:21068-21070`
 - **EXPECT** — Represents an expect keyword `KotlinParser.ts:21458-21460`
 - **explicitDelegation** — Explicit delegation `KotlinParser.ts:2349-2409`
 - **explicitDelegation** — Parses an explicit delegation in the Kotlin grammar `KotlinParser.ts:14570-14572`
 - **expression** — An expression `KotlinParser.ts:6874-6892`
 - **expression** — Parses an expression in the Kotlin grammar `KotlinParser.ts:14483-14485`
-- **expression** — Represents an expression in the parser `KotlinParser.ts:14699-14701`, `KotlinParser.ts:18996-18998`
-- **expression** — Represents an expression `KotlinParser.ts:15178-15180`, `KotlinParser.ts:15722-15724`, `KotlinParser.ts:16801-16803`, `KotlinParser.ts:19707-19709`
+- **expression** — Represents an expression in the parser `KotlinParser.ts:14699-14701`
+- **expression** — Represents an expression `KotlinParser.ts:15178-15180`
 - **expression** — Represents an expression in the Kotlin parser `KotlinParser.ts:15284-15286`
-- **expression** — Represents an expression in the grammar `KotlinParser.ts:15467-15469`, `KotlinParser.ts:15508-15510`, `KotlinParser.ts:19069-19071`
-- **expression** — Parses an expression `KotlinParser.ts:16997-16999`, `KotlinParser.ts:17059-17061`, `KotlinParser.ts:17112-17114`, `KotlinParser.ts:17153-17155`, `KotlinParser.ts:18683-18685`, `KotlinParser.ts:18738-18744`, `KotlinParser.ts:19474-19476`, `KotlinParser.ts:19536-19538`, `KotlinParser.ts:19742-19744`, `KotlinParser.ts:19971-19973`
-- **expression** — Parses an expression in Kotlin `KotlinParser.ts:18282-18288`
-- **expression** — Represents the context for an expression `KotlinParser.ts:18568-18570`
+- **expression** — Represents an expression in the grammar `KotlinParser.ts:15467-15469`
+- **expression** — Parses an expression `KotlinParser.ts:15508-15510`
+- **expression** — Parses an expression in Kotlin `KotlinParser.ts:15722-15724`
+- **expression** — Represents the context for an expression `KotlinParser.ts:16801-16803`
+- **expression** — Returns the context of the expression rule. `KotlinParser.ts:16997-16999 `KotlinParser.ts:16997-16999`
+- **expression** — Returns the context of the expression rule `KotlinParser.ts:17059-17061`
+- **expression** — Returns the context for an expression `KotlinParser.ts:17112-17114`
+- **expression** — Returns the context for `KotlinParser.ts:17153-17155`
+- **expression** — Returns the context for `expression` or a single context `KotlinParser.ts:18282-18288`
+- **expression** — Returns an array or a single ExpressionContext based on the provided index `KotlinParser.ts:18568-18570`
+- **expression** — Returns the context for the expression `KotlinParser.ts:18683-18685`
+- **expression** — Returns the context of the expression `KotlinParser.ts:18738-18744`
+- **expression** — Returns the context of the `expression` rule `KotlinParser.ts:18996-18998`
+- **expression** — Returns the context for the expression rule `KotlinParser.ts:19069-19071`
+- **expression** — Returns an expression context `KotlinParser.ts:19474-19476`, `KotlinParser.ts:19536-19538`
+- **expression** — Returns the expression context or null `KotlinParser.ts:19707-19709`, `KotlinParser.ts:19971-19973`
+- **expression** — Returns the expression context `KotlinParser.ts:19742-19744`
 - **EXTERNAL** — Indicates an external function `KotlinParser.ts:20923-20925`
 - **EXTERNAL** — Represents the 'external' keyword in the Kotlin grammar `KotlinParser.ts:21362-21364`
 - **FIELD** — Represents a field `KotlinParser.ts:21244-21246`
@@ -393,8 +896,11 @@ UnicodeClasses.ts
 - **FUN** — Represents a function in the Kotlin parser `KotlinParser.ts:14295-14297`
 - **FUN** — Matches the keyword "fun" in the Kotlin grammar `KotlinParser.ts:15213-15215`
 - **FUN** — Represents a function keyword `KotlinParser.ts:19248-19250`
-- **functionBody** — Represents the body of a function `KotlinParser.ts:3317-3367`, `KotlinParser.ts:15252-15254`, `KotlinParser.ts:15555-15557`, `KotlinParser.ts:15611-15613`
-- **functionBody** — Represents the body of a function in the Kotlin grammar `KotlinParser.ts:19284-19286`
+- **functionBody** — Represents the body of a function `KotlinParser.ts:3317-3367`
+- **functionBody** — Represents the body of a function in the Kotlin grammar `KotlinParser.ts:15252-15254`
+- **functionBody** — Returns the function body context `KotlinParser.ts:15555-15557`
+- **functionBody** — Returns the function body context or null `KotlinParser.ts:15611-15613`
+- **functionBody** — Returns a function body context or null `KotlinParser.ts:19284-19286`
 - **functionDeclaration** — Declares a function `KotlinParser.ts:3141-3316`
 - **functionDeclaration** — Parses a function declaration `KotlinParser.ts:14221-14223`
 - **functionLiteral** — Represents a function literal `KotlinParser.ts:9623-9660`
@@ -413,7 +919,8 @@ UnicodeClasses.ts
 - **functionValueParameters** — Represents the value parameters of a function `KotlinParser.ts:15219-15221`
 - **functionValueParameters** — Parses function value parameters `KotlinParser.ts:15892-15894`
 - **functionValueParameterWithOptionalType** — Defines a function value parameter that may have an optional type `KotlinParser.ts:4290-4354`
-- **functionValueParameterWithOptionalType** — Represents a function value parameter with an optional type `KotlinParser.ts:15605-15607`, `KotlinParser.ts:15672-15680`
+- **functionValueParameterWithOptionalType** — Represents a function value parameter with an optional type `KotlinParser.ts:15605-15607`
+- **functionValueParameterWithOptionalType** — Returns the context or contexts for the function value parameter with optional type rule `KotlinParser.ts:15672-15680`
 - **GE** — Represents a greater than or equal to operator `KotlinParser.ts:20150-20152`
 - **genericCallLikeComparison** — A generic call-like comparison expression `KotlinParser.ts:7099-7130`
 - **genericCallLikeComparison** — Represents a generic call-like comparison in the Kotlin grammar `KotlinParser.ts:17454-17462`
@@ -422,7 +929,8 @@ UnicodeClasses.ts
 - **GET** — Represents the 'get' keyword in the Kotlin grammar `KotlinParser.ts:21371-21373`
 - **getter** — Getter for a property `KotlinParser.ts:3938-4041`
 - **getter** — Represents a getter in Kotlin `KotlinParser.ts:15473-15475`
-- **grammarFileName** — Stores the name of the grammar file `KotlinLexer.ts:850-852`, `KotlinParser.ts:871-873`
+- **grammarFileName** — Stores the name of the grammar file `KotlinLexer.ts:850-852`
+- **grammarFileName** — Generated from D:/github/ultracode/grammar/kotlin/grammar/KotlinParser.g4 by ANTLR 4.13.1 `KotlinParser.ts:871-873`
 - **grammarFileName** — Returns the name of the grammar file `UnicodeClasses.ts:52-54`
 - **HexLiteral** — Parses a hexadecimal literal `KotlinParser.ts:18783-18785`
 - **identifier** — Represents an identifier in Kotlin `KotlinParser.ts:12576-12620`
@@ -442,7 +950,8 @@ UnicodeClasses.ts
 - **importList** — Represents the import list in Kotlin `KotlinParser.ts:13778-13780`
 - **importList** — Parses the import list `KotlinParser.ts:13840-13842`
 - **IN** — Parses the keyword "in" `KotlinParser.ts:16994-16996`
-- **IN** — Represents the 'in' keyword `KotlinParser.ts:20176-20178`, `KotlinParser.ts:20809-20811`
+- **IN** — Represents the 'in' keyword `KotlinParser.ts:20176-20178`
+- **IN** — Returns the IN terminal node `KotlinParser.ts:20809-20811`
 - **INCR** — Represents the increment operator `KotlinParser.ts:20324-20326`
 - **INCR** — Represents an increment operator `KotlinParser.ts:20362-20364`
 - **indexingSuffix** — Parses an indexing suffix in Kotlin `KotlinParser.ts:7977-8079`
@@ -487,14 +996,17 @@ UnicodeClasses.ts
 - **lambdaParameter** — Represents a lambda parameter `KotlinParser.ts:19156-19162`
 - **lambdaParameters** — Represents the parameters of a lambda `KotlinParser.ts:9273-9349`
 - **lambdaParameters** — Represents the parameters of a lambda literal `KotlinParser.ts:19128-19130`
-- **LANGLE** — Represents the left angle bracket token `KotlinParser.ts:14740-14742`, `KotlinParser.ts:18456-18458`
-- **LANGLE** — Token representing '<' `KotlinParser.ts:19418-19420`
-- **LANGLE** — Represents the less than operator `KotlinParser.ts:20141-20143`
+- **LANGLE** — Represents the left angle bracket token `KotlinParser.ts:14740-14742`
+- **LANGLE** — Token representing '<' `KotlinParser.ts:18456-18458`
+- **LANGLE** — Represents the less than operator `KotlinParser.ts:19418-19420`
+- **LANGLE** — Returns the LANGLE terminal node if it exists `KotlinParser.ts:20141-20143`
 - **LATEINIT** — Represents the lateinit modifier `KotlinParser.ts:20748-20750`
 - **LATEINIT** — Represents the 'lateinit' keyword in the Kotlin grammar `KotlinParser.ts:21392-21394`
-- **LCURL** — Represents the left curly brace `KotlinParser.ts:14362-14364`, `KotlinParser.ts:15980-15982`, `KotlinParser.ts:16915-16917`
-- **LCURL** — Represents the left curly brace in the grammar `KotlinParser.ts:19107-19109`
-- **LCURL** — Matches the left curly brace `KotlinParser.ts:19595-19597`
+- **LCURL** — Represents the left curly brace `KotlinParser.ts:14362-14364`
+- **LCURL** — Represents the left curly brace in the grammar `KotlinParser.ts:15980-15982`
+- **LCURL** — Matches the left curly brace `KotlinParser.ts:16915-16917`
+- **LCURL** — Returns the left curly brace terminal node `KotlinParser.ts:19107-19109`
+- **LCURL** — Returns the left curly brace token `KotlinParser.ts:19595-19597`
 - **LE** — Represents a less than or equal to operator `KotlinParser.ts:20147-20149`
 - **LineStrEscapedChar** — Represents an escaped character in a line string `KotlinParser.ts:18964-18966`
 - **LineStrExprStart** — Represents the start of a line string expression `KotlinParser.ts:18993-18995`
@@ -509,47 +1021,62 @@ UnicodeClasses.ts
 - **literalConstant** — Parses a literal constant in Kotlin `KotlinParser.ts:8874-8899`
 - **literalConstant** — Context for literal constants `KotlinParser.ts:18621-18623`
 - **literalNames** — Stores names of literals `KotlinLexer.ts:854-856`
-- **literalNames** — Stores names of literal tokens `KotlinParser.ts:874-876`, `UnicodeClasses.ts:56-58`
+- **literalNames** — Stores names of literal tokens `KotlinParser.ts:874-876`
+- **literalNames** — An empty array for literal names `UnicodeClasses.ts:56-58`
 - **LongLiteral** — Represents a long literal in Kotlin `KotlinParser.ts:18798-18800`
 - **loopStatement** — A loop statement `KotlinParser.ts:6323-6365`
 - **loopStatement** — Represents a loop statement `KotlinParser.ts:16798-16800`
-- **LPAREN** — Represents the left parenthesis `KotlinParser.ts:14403-14405`, `KotlinParser.ts:15549-15551`, `KotlinParser.ts:15602-15604`, `KotlinParser.ts:17056-17058`, `KotlinParser.ts:17109-17111`
+- **LPAREN** — Represents the left parenthesis `KotlinParser.ts:14403-14405`
 - **LPAREN** — Left parenthesis token `KotlinParser.ts:15113-15115`
-- **LPAREN** — Represents an opening parenthesis `KotlinParser.ts:15369-15371`, `KotlinParser.ts:19471-19473`, `KotlinParser.ts:19533-19535`
-- **LPAREN** — Represents the left parenthesis token `KotlinParser.ts:15655-15657`, `KotlinParser.ts:16504-16506`, `KotlinParser.ts:16569-16571`, `KotlinParser.ts:18512-18514`
-- **LPAREN** — Represents a left parenthesis in the Kotlin grammar `KotlinParser.ts:16645-16647`
-- **LPAREN** — Parses the left parenthesis `KotlinParser.ts:16991-16993`
-- **LPAREN** — Parses a left parenthesis `KotlinParser.ts:18134-18136`, `KotlinParser.ts:18204-18206`
-- **LPAREN** — Matches an opening parenthesis `KotlinParser.ts:18680-18682`
-- **LPAREN** — Represents the left parenthesis '(' in the grammar `KotlinParser.ts:19868-19870`
+- **LPAREN** — Represents an opening parenthesis `KotlinParser.ts:15369-15371`
+- **LPAREN** — Represents the left parenthesis token `KotlinParser.ts:15549-15551`
+- **LPAREN** — Represents a left parenthesis in the Kotlin grammar `KotlinParser.ts:15602-15604`
+- **LPAREN** — Parses the left parenthesis `KotlinParser.ts:15655-15657`
+- **LPAREN** — Parses a left parenthesis `KotlinParser.ts:16504-16506`
+- **LPAREN** — Matches an opening parenthesis `KotlinParser.ts:16569-16571`
+- **LPAREN** — Represents the left parenthesis '(' in the grammar `KotlinParser.ts:16645-16647`
+- **LPAREN** — Returns the left parenthesis terminal node `KotlinParser.ts:16991-16993`
+- **LPAREN** — Returns the terminal node for the LPAREN keyword `KotlinParser.ts:17056-17058`
+- **LPAREN** — Returns the terminal node for the left parenthesis `KotlinParser.ts:17109-17111`, `KotlinParser.ts:18512-18514`, `KotlinParser.ts:18680-18682`
+- **LPAREN** — Returns the LPAREN terminal node `KotlinParser.ts:18134-18136`
+- **LPAREN** — Returns the left parenthesis token `KotlinParser.ts:18204-18206`, `KotlinParser.ts:19868-19870`
+- **LPAREN** — Returns a terminal node for the LPAREN rule `KotlinParser.ts:19471-19473`, `KotlinParser.ts:19533-19535`
 - **LSQUARE** — Represents the left square bracket token in the Kotlin parser `KotlinParser.ts:13955-13957`
 - **LSQUARE** — Represents the left square bracket character `KotlinParser.ts:18277-18279`
 - **LSQUARE** — Matches an opening square bracket `KotlinParser.ts:18721-18723`
 - **LSQUARE** — Represents an opening square bracket `KotlinParser.ts:21179-21181`
-- **memberAccessOperator** — Represents the member access operator in Kotlin `KotlinParser.ts:11542-11603`, `KotlinParser.ts:18333-18335`
+- **memberAccessOperator** — Represents the member access operator in Kotlin `KotlinParser.ts:11542-11603`
+- **memberAccessOperator** — Returns the member access operator context `KotlinParser.ts:18333-18335`
 - **memberModifier** — Represents the member modifier in Kotlin `KotlinParser.ts:11972-11997`
 - **memberModifier** — Represents a modifier for a member `KotlinParser.ts:20581-20583`
 - **MOD** — Represents the modulo operator `KotlinParser.ts:20269-20271`
 - **MOD_ASSIGNMENT** — Represents the modulo assignment operator `KotlinParser.ts:20080-20082`
-- **modeNames** — Stores names of modes `KotlinLexer.ts:872-874`, `UnicodeClasses.ts:74-76`
+- **modeNames** — Stores names of modes `KotlinLexer.ts:872-874`
+- **modeNames** — An array containing mode names for Unicode classes `UnicodeClasses.ts:74-76`
 - **modifier** — Represents the modifier in Kotlin `KotlinParser.ts:11759-11861`
 - **modifier** — Represents a modifier `KotlinParser.ts:20507-20513`
 - **modifiers** — Represents the modifiers in Kotlin `KotlinParser.ts:11625-11703`
-- **modifiers** — Parses modifiers `KotlinParser.ts:14177-14179`, `KotlinParser.ts:15431-15433`
-- **modifiers** — Stores modifiers for a class or interface `KotlinParser.ts:14262-14264`, `KotlinParser.ts:14327-14329`
-- **modifiers** — Represents modifiers `KotlinParser.ts:14468-14470`, `KotlinParser.ts:16080-16082`
-- **modifiers** — Represents modifiers in the Kotlin grammar `KotlinParser.ts:15063-15065`, `KotlinParser.ts:15845-15847`
-- **modifiers** — Represents the modifiers of a function `KotlinParser.ts:15222-15224`
-- **modifiers** — Stores the modifiers for a function `KotlinParser.ts:15546-15548`, `KotlinParser.ts:15599-15601`
-- **modifiers** — Parses modifiers for a function or variable `KotlinParser.ts:15895-15897`
+- **modifiers** — Parses modifiers `KotlinParser.ts:14177-14179`
+- **modifiers** — Stores modifiers for a class or interface `KotlinParser.ts:14262-14264`
+- **modifiers** — Represents modifiers `KotlinParser.ts:14327-14329`
+- **modifiers** — Represents modifiers in the Kotlin grammar `KotlinParser.ts:14468-14470`
+- **modifiers** — Represents the modifiers of a function `KotlinParser.ts:15063-15065`
+- **modifiers** — Stores the modifiers for a function `KotlinParser.ts:15222-15224`
+- **modifiers** — Parses modifiers for a function or variable `KotlinParser.ts:15431-15433`
+- **modifiers** — Returns the modifiers context or null `KotlinParser.ts:15546-15548`, `KotlinParser.ts:16080-16082`
+- **modifiers** — Returns the modifiers context `KotlinParser.ts:15599-15601`
+- **modifiers** — Returns a ModifiersContext or null `KotlinParser.ts:15845-15847`
+- **modifiers** — Returns the context of modifiers or null if not present `KotlinParser.ts:15895-15897`
 - **MULT** — Represents the multiplication operator in the Kotlin grammar `KotlinParser.ts:14075-14077`
-- **MULT** — Represents the multiplication operator `KotlinParser.ts:16361-16363`, `KotlinParser.ts:20263-20265`
+- **MULT** — Represents the multiplication operator `KotlinParser.ts:16361-16363`
 - **MULT** — Represents the multiplication operator in Kotlin `KotlinParser.ts:18589-18591`
+- **MULT** — Returns the MULT token if it exists `KotlinParser.ts:20263-20265`
 - **MULT_ASSIGNMENT** — Represents the multiplication assignment operator `KotlinParser.ts:20074-20076`
 - **multiAnnotation** — Represents multiple annotations in Kotlin `KotlinParser.ts:12396-12463`
 - **multiAnnotation** — Represents multiple annotations `KotlinParser.ts:21100-21102`
 - **MultiLineStrExprStart** — Represents the start of a multi-line string expression `KotlinParser.ts:19066-19068`
-- **multiLineStringContent** — Represents the content of a multi-line string `KotlinParser.ts:9111-9136`, `KotlinParser.ts:18911-18917`
+- **multiLineStringContent** — Represents the content of a multi-line string `KotlinParser.ts:9111-9136`
+- **multiLineStringContent** — Returns the context of multi-line string content or null if not provided `KotlinParser.ts:18911-18917`
 - **multiLineStringExpression** — Represents a multi-line string expression `KotlinParser.ts:9137-9183`
 - **multiLineStringExpression** — Represents the expression of a multi-line string `KotlinParser.ts:18920-18928`
 - **multiLineStringLiteral** — Parses a multi-line string literal in Kotlin `KotlinParser.ts:8986-9037`
@@ -570,25 +1097,74 @@ UnicodeClasses.ts
 - **navigationSuffix** — Parses a navigation suffix `KotlinParser.ts:18073-18075`
 - **navigationSuffix** — Manages navigation suffixes in Kotlin `KotlinParser.ts:18251-18253`
 - **NL** — Represents the newline in Kotlin `KotlinParser.ts:13789-13795`
-- **NL** — Represents a newline character `KotlinParser.ts:13851-13857`, `KotlinParser.ts:13913-13919`, `KotlinParser.ts:16199-16205`, `KotlinParser.ts:16287-16293`, `KotlinParser.ts:16325-16331`, `KotlinParser.ts:16424-16430`, `KotlinParser.ts:16721-16727`, `KotlinParser.ts:16856-16862`, `KotlinParser.ts:16926-16932`, `KotlinParser.ts:17577-17583`, `KotlinParser.ts:17627-17633`, `KotlinParser.ts:17706-17712`, `KotlinParser.ts:17765-17771`, `KotlinParser.ts:17817-17823`, `KotlinParser.ts:17867-17873`, `KotlinParser.ts:18215-18221`, `KotlinParser.ts:18294-18300`, `KotlinParser.ts:19259-19265`, `KotlinParser.ts:19347-19353`, `KotlinParser.ts:19747-19753`, `KotlinParser.ts:19785-19791`, `KotlinParser.ts:19826-19832`, `KotlinParser.ts:19888-19894`, `KotlinParser.ts:19938-19944`, `KotlinParser.ts:19976-19982`, `KotlinParser.ts:20038-20044`, `KotlinParser.ts:20604-20610`, `KotlinParser.ts:20674-20680`, `KotlinParser.ts:20875-20881`, `KotlinParser.ts:21105-21111`, `KotlinParser.ts:21149-21155`, `KotlinParser.ts:21205-21211`, `KotlinParser.ts:21516-21522`
-- **NL** — Represents the newline token in the Kotlin parser `KotlinParser.ts:13972-13978`
-- **NL** — Parses a newline `KotlinParser.ts:14182-14188`, `KotlinParser.ts:17011-17017`, `KotlinParser.ts:18145-18151`
-- **NL** — Represents a newline in the Kotlin parser `KotlinParser.ts:14267-14273`, `KotlinParser.ts:14332-14338`
-- **NL** — Represents a newline `KotlinParser.ts:14373-14379`, `KotlinParser.ts:14411-14417`, `KotlinParser.ts:14473-14479`, `KotlinParser.ts:15333-15339`, `KotlinParser.ts:15386-15392`, `KotlinParser.ts:15560-15566`, `KotlinParser.ts:15616-15622`, `KotlinParser.ts:15988-15994`, `KotlinParser.ts:16047-16053`, `KotlinParser.ts:16091-16097`, `KotlinParser.ts:17073-17079`, `KotlinParser.ts:17120-17126`, `KotlinParser.ts:17170-17176`, `KotlinParser.ts:17205-17211`, `KotlinParser.ts:17246-17252`, `KotlinParser.ts:17322-17328`, `KotlinParser.ts:17372-17378`, `KotlinParser.ts:19503-19509`, `KotlinParser.ts:19562-19568`, `KotlinParser.ts:20431-20437`, `KotlinParser.ts:21270-21276`
-- **NL** — Parses a newline in the Kotlin grammar `KotlinParser.ts:14537-14543`, `KotlinParser.ts:14584-14590`
-- **NL** — Represents a newline in the parser `KotlinParser.ts:14622-14628`, `KotlinParser.ts:14666-14672`, `KotlinParser.ts:14710-14716`, `KotlinParser.ts:19004-19010`
-- **NL** — Represents a newline token `KotlinParser.ts:14757-14763`, `KotlinParser.ts:14804-14810`, `KotlinParser.ts:19174-19180`, `KotlinParser.ts:19218-19224`
-- **NL** — Represents a newline character in the Kotlin parser `KotlinParser.ts:14854-14860`, `KotlinParser.ts:14913-14919`
-- **NL** — Represents a newline in the Kotlin grammar `KotlinParser.ts:15027-15033`, `KotlinParser.ts:15068-15074`, `KotlinParser.ts:16580-16586`, `KotlinParser.ts:16659-16665`, `KotlinParser.ts:17422-17428`, `KotlinParser.ts:17474-17480`, `KotlinParser.ts:18347-18353`, `KotlinParser.ts:18426-18432`
-- **NL** — Newline token `KotlinParser.ts:15121-15127`, `KotlinParser.ts:15183-15189`
-- **NL** — Matches a newline in the Kotlin grammar `KotlinParser.ts:15236-15242`, `KotlinParser.ts:15289-15295`
-- **NL** — Represents the newline character `KotlinParser.ts:15451-15457`, `KotlinParser.ts:15513-15519`
-- **NL** — Represents the newline token `KotlinParser.ts:15663-15669`, `KotlinParser.ts:15727-15733`, `KotlinParser.ts:16474-16480`, `KotlinParser.ts:16512-16518`, `KotlinParser.ts:18473-18479`, `KotlinParser.ts:18520-18526`, `KotlinParser.ts:18576-18582`
-- **NL** — Represents a newline character in the Kotlin grammar `KotlinParser.ts:15762-15768`, `KotlinParser.ts:15809-15815`, `KotlinParser.ts:15850-15856`
-- **NL** — Represents a newline in the grammar `KotlinParser.ts:15900-15906`, `KotlinParser.ts:15950-15956`, `KotlinParser.ts:19077-19083`, `KotlinParser.ts:19118-19124`
-- **NL** — Newline character `KotlinParser.ts:17920-17926`, `KotlinParser.ts:17996-18002`
-- **NL** — Matches a newline `KotlinParser.ts:18691-18697`, `KotlinParser.ts:18729-18735`, `KotlinParser.ts:19603-19609`, `KotlinParser.ts:19671-19677`
-- **NL** — Token representing a newline `KotlinParser.ts:19435-19441`
+- **NL** — Represents a newline character `KotlinParser.ts:13851-13857`
+- **NL** — Represents the newline token in the Kotlin parser `KotlinParser.ts:13913-13919`
+- **NL** — Parses a newline `KotlinParser.ts:13972-13978`
+- **NL** — Represents a newline in the Kotlin parser `KotlinParser.ts:14182-14188`
+- **NL** — Represents a newline `KotlinParser.ts:14267-14273`
+- **NL** — Parses a newline in the Kotlin grammar `KotlinParser.ts:14332-14338`
+- **NL** — Represents a newline in the parser `KotlinParser.ts:14373-14379`
+- **NL** — Represents a newline token `KotlinParser.ts:14411-14417`
+- **NL** — Represents a newline character in the Kotlin parser `KotlinParser.ts:14473-14479`
+- **NL** — Represents a newline in the Kotlin grammar `KotlinParser.ts:14537-14543`
+- **NL** — Newline token `KotlinParser.ts:14584-14590`
+- **NL** — Matches a newline in the Kotlin grammar `KotlinParser.ts:14622-14628`
+- **NL** — Represents the newline character `KotlinParser.ts:14666-14672`
+- **NL** — Represents the newline token `KotlinParser.ts:14710-14716`
+- **NL** — Represents a newline character in the Kotlin grammar `KotlinParser.ts:14757-14763`
+- **NL** — Represents a newline in the grammar `KotlinParser.ts:14804-14810`
+- **NL** — Newline character `KotlinParser.ts:14854-14860`
+- **NL** — Matches a newline `KotlinParser.ts:14913-14919`
+- **NL** — Token representing a newline `KotlinParser.ts:15027-15033`
+- **NL** — Returns a terminal node or an array of terminal nodes for newline `KotlinParser.ts:15068-15074`
+- **NL** — Returns a terminal node or an array of terminal nodes for the newline rule `KotlinParser.ts:15121-15127`
+- **NL** — Returns a newline token or an array of newline tokens `KotlinParser.ts:15183-15189`
+- **NL** — Returns the newline terminal node or nodes `KotlinParser.ts:15236-15242`
+- **NL** — Returns the newline terminal node or nodes. `Kotlin `KotlinParser.ts:15289-15295`
+- **NL** — Returns the terminal node or nodes for the newline rule `KotlinParser.ts:15333-15339`
+- **NL** — Returns a TerminalNode or null or an array of TerminalNodes `KotlinParser.ts:15386-15392`
+- **NL** — Returns a terminal node or an array of terminal `KotlinParser.ts:15451-15457`
+- **NL** — Returns a terminal node or an array of terminal nodes for the newline rule. `KotlinParser.ts:1 `KotlinParser.ts:15513-15519`
+- **NL** — Returns the terminal node or nodes for the NL rule `KotlinParser.ts:15560-15566`
+- **NL** — Returns the next line token or an array of line tokens `KotlinParser.ts:15616-15622`
+- **NL** — Returns a terminal node or an array of terminal nodes for the NL rule `KotlinParser.ts:15663-15669`, `KotlinParser.ts:17706-17712`, `KotlinParser.ts:17765-17771`, `KotlinParser.ts:17817-17823`, `KotlinParser.ts:17867-17873`, `KotlinParser.ts:17920-17926`, `KotlinParser.ts:17996-18002`, `KotlinParser.ts:18145-18151`, `KotlinParser.ts:18215-18221`, `KotlinParser.ts:18294-18300`, `KotlinParser.ts:18347-18353`, `KotlinParser.ts:18426-18432`, `KotlinParser.ts:18473-18479`, `KotlinParser.ts:19218-19224`, `KotlinParser.ts:19259-19265`, `KotlinParser.ts:19347-19353`, `KotlinParser.ts:19435-19441`, `KotlinParser.ts:19503-19509`, `KotlinParser.ts:20674-20680`, `KotlinParser.ts:20875-20881`, `KotlinParser.ts:21105-21111`, `KotlinParser.ts:21149-21155`, `KotlinParser.ts:21205-21211`
+- **NL** — Returns the terminal node or nodes for the NL keyword `KotlinParser.ts:15727-15733`
+- **NL** — Returns a terminal node or an array of terminal nodes for newline. `K `KotlinParser.ts:15762-15768`
+- **NL** — Returns the NL token or an array of tokens if i is provided `KotlinParser.ts:15809-15815`
+- **NL** — Returns a terminal node or null for the newline rule `KotlinParser.ts:15850-15856`
+- **NL** — Returns the next line terminal node or a list of line terminal nodes `KotlinParser.ts:15900-15906`
+- **NL** — Parses a newline token at position i or returns all newline tokens `KotlinParser.ts:15950-15956`
+- **NL** — Retrieves a newline token or tokens `KotlinParser.ts:15988-15994`
+- **NL** — Returns a terminal node or an array of terminal nodes for the `NL` rule `KotlinParser.ts:16047-16053`
+- **NL** — Returns a TerminalNode or null based on the provided index `KotlinParser.ts:16091-16097`
+- **NL** — Returns the next line token or tokens `KotlinParser.ts:16199-16205`
+- **NL** — Returns the terminal node or nodes for newlines `KotlinParser.ts:16287-16293`
+- **NL** — Returns newline tokens or a single newline token `KotlinParser.ts:16325-16331`
+- **NL** — Returns a newline token or an array of newline tokens based on the provided index `KotlinParser.ts:16424-16430`
+- **NL** — Returns the newline terminal node or nodes based on the provided index `KotlinParser.ts:16474-16480`
+- **NL** — Returns the newline tokens or a single newline token if specified `KotlinParser.ts:16512-16518`
+- **NL** — Returns the terminal node or nodes for newline characters `KotlinParser.ts:16580-16586`
+- **NL** — Returns the NL terminal node or an array of NL terminal nodes based on the provided index `KotlinParser.ts:16659-16665`
+- **NL** — Returns the newline terminal node or an array of newline terminal nodes `KotlinParser.ts:16721-16727`
+- **NL** — Returns the newline token or tokens if specified `KotlinParser.ts:16856-16862`
+- **NL** — Returns the terminal node for the NL keyword or an array of such nodes `KotlinParser.ts:16926-16932`
+- **NL** — Returns a newline token or tokens `KotlinParser.ts:17011-17017`
+- **NL** — Returns the terminal node or nodes for the newline `KotlinParser.ts:17073-17079`
+- **NL** — Returns the newline token or tokens `KotlinParser.ts:17120-17126`
+- **NL** — Retrieves the next line terminal node or a list of such nodes `KotlinParser.ts:17170-17176`
+- **NL** — Returns the newline token or tokens at a specified index `KotlinParser.ts:17205-17211`
+- **NL** — Returns a newline terminal node or an array of newline terminal nodes `KotlinParser.ts:17246-17252`
+- **NL** — Returns the terminal node for the NL rule, optionally with an index `KotlinParser.ts:17322-17328`
+- **NL** — Returns the NL terminal node or an array of NL terminal nodes if an index is provided `KotlinParser.ts:17372-17378`
+- **NL** — Returns the context of a newline or an array of contexts `KotlinParser.ts:17422-17428`
+- **NL** — Returns the newline token or an array of newline tokens, or null if not found `KotlinParser.ts:17474-17480`
+- **NL** — Returns the terminal node for the NL token if it exists `KotlinParser.ts:17577-17583`
+- **NL** — Returns a newline token or null `KotlinParser.ts:17627-17633`
+- **NL** — Returns the terminal node for newline, optionally with an index `KotlinParser.ts:18520-18526`, `KotlinParser.ts:18576-18582`, `KotlinParser.ts:18691-18697`, `KotlinParser.ts:18729-18735`, `KotlinParser.ts:19004-19010`, `KotlinParser.ts:19077-19083`, `KotlinParser.ts:19118-19124`, `KotlinParser.ts:19174-19180`
+- **NL** — Returns newline tokens or a single newline token based on the parameter `KotlinParser.ts:19562-19568`, `KotlinParser.ts:19603-19609`, `KotlinParser.ts:19671-19677`, `KotlinParser.ts:19747-19753`, `KotlinParser.ts:19785-19791`, `KotlinParser.ts:19826-19832`
+- **NL** — Returns newline terminal nodes or a single node based on the index `KotlinParser.ts:19888-19894`, `KotlinParser.ts:19938-19944`, `KotlinParser.ts:19976-19982`, `KotlinParser.ts:20038-20044`, `KotlinParser.ts:20431-20437`, `KotlinParser.ts:20604-20610`
+- **NL** — Returns a terminal node or an array of terminal nodes for newline tokens `KotlinParser.ts:21270-21276`
+- **NL** — Returns the NL token at the specified index or all tokens if no index is provided `KotlinParser.ts:21516-21522`
 - **NOINLINE** — Represents a noinline modifier `KotlinParser.ts:21013-21015`
 - **NOINLINE** — Represents the 'noinline' keyword in the Kotlin grammar `KotlinParser.ts:21395-21397`
 - **NOT_IN** — Represents the 'not in' keyword `KotlinParser.ts:20179-20181`
@@ -598,14 +1174,16 @@ UnicodeClasses.ts
 - **nullableType** — Context for nullable types in the parser `KotlinParser.ts:16613-16615`
 - **NullLiteral** — Represents a null literal in Kotlin `KotlinParser.ts:18795-18797`
 - **OBJECT** — Represents the OBJECT rule in the Kotlin grammar `KotlinParser.ts:15060-15062`
-- **OBJECT** — Represents the keyword "object" in the Kotlin grammar `KotlinParser.ts:15839-15841`, `KotlinParser.ts:19339-19341`
+- **OBJECT** — Represents the keyword "object" in the Kotlin grammar `KotlinParser.ts:15839-15841`
+- **OBJECT** — Returns the terminal node for the OBJECT keyword `KotlinParser.ts:19339-19341`
 - **objectDeclaration** — Declares an object in Kotlin `KotlinParser.ts:4451-4545`
 - **objectDeclaration** — Parses an object declaration `KotlinParser.ts:14218-14220`
 - **objectLiteral** — Represents an object literal `KotlinParser.ts:9661-9765`
 - **objectLiteral** — Context for object literals `KotlinParser.ts:18633-18635`
 - **OPEN** — Indicates an open class `KotlinParser.ts:20984-20986`
 - **OPEN** — Represents an open keyword `KotlinParser.ts:21398-21400`
-- **OPERATOR** — Represents an operator `KotlinParser.ts:20914-20916`, `KotlinParser.ts:21401-21403`
+- **OPERATOR** — Represents an operator `KotlinParser.ts:20914-20916`
+- **OPERATOR** — Returns the terminal node for the OPERATOR token if it exists `KotlinParser.ts:21401-21403`
 - **OUT** — Represents the 'out' keyword `KotlinParser.ts:20812-20814`
 - **OUT** — Represents an out keyword `KotlinParser.ts:21404-21406`
 - **OVERRIDE** — Represents the override modifier `KotlinParser.ts:20745-20747`
@@ -637,8 +1215,9 @@ UnicodeClasses.ts
 - **parenthesizedExpression** — Parses a parenthesized expression `KotlinParser.ts:18339-18341`
 - **parenthesizedExpression** — Context for expressions within parentheses `KotlinParser.ts:18615-18617`
 - **parenthesizedType** — Represents a parenthesized type in Kotlin `KotlinParser.ts:5637-5680`
-- **parenthesizedType** — Parses a parenthesized type `KotlinParser.ts:16124-16126`, `KotlinParser.ts:16194-16196`
-- **parenthesizedType** — Context for parenthesized types in the parser `KotlinParser.ts:16610-16612`
+- **parenthesizedType** — Parses a parenthesized type `KotlinParser.ts:16124-16126`
+- **parenthesizedType** — Context for parenthesized types in the parser `KotlinParser.ts:16194-16196`
+- **parenthesizedType** — Returns the context of the parenthesized type rule `KotlinParser.ts:16610-16612`
 - **parenthesizedUserType** — Represents a parenthesized user-defined type in Kotlin `KotlinParser.ts:5730-5836`
 - **parenthesizedUserType** — Context for parenthesized user types in the parser `KotlinParser.ts:16654-16656`
 - **parenthesizedUserType** — Represents a parenthesized user-defined type `KotlinParser.ts:16703-16709`
@@ -677,7 +1256,8 @@ UnicodeClasses.ts
 - **quest** — Represents a question mark in Kotlin `KotlinParser.ts:5129-5154`
 - **quest** — Parses and returns a quest context `KotlinParser.ts:16208-16214`
 - **QUEST_NO_WS** — Returns the terminal node for the QUEST_NO_WS rule `KotlinParser.ts:16238-16240`
-- **QUEST_NO_WS** — Represents a question mark with no whitespace `KotlinParser.ts:17657-17659`, `KotlinParser.ts:20467-20469`
+- **QUEST_NO_WS** — Represents a question mark with no whitespace `KotlinParser.ts:17657-17659`
+- **QUEST_NO_WS** — Returns the terminal node for the QUEST_NO_WS rule. `KotlinParser.ts:20467-20 `KotlinParser.ts:20467-20469`
 - **QUEST_WS** — Returns the terminal node for the QUEST_WS rule `KotlinParser.ts:16241-16243`
 - **QUOTE_CLOSE** — Represents the close quote character `KotlinParser.ts:18859-18861`
 - **QUOTE_OPEN** — Represents the open quote character `KotlinParser.ts:18856-18858`
@@ -687,13 +1267,16 @@ UnicodeClasses.ts
 - **rangeExpression** — Context for a range expression in the parser `KotlinParser.ts:17688-17694`
 - **rangeTest** — Represents a range test `KotlinParser.ts:10716-10749`
 - **rangeTest** — Parses a range test expression `KotlinParser.ts:19710-19712`
-- **RANGLE** — Represents the right angle bracket token `KotlinParser.ts:14752-14754`, `KotlinParser.ts:18468-18470`
-- **RANGLE** — Token representing '>' `KotlinParser.ts:19424-19426`
-- **RANGLE** — Represents a right angle bracket `KotlinParser.ts:20144-20146`
-- **RCURL** — Represents the right curly brace `KotlinParser.ts:14368-14370`, `KotlinParser.ts:15983-15985`, `KotlinParser.ts:16921-16923`
-- **RCURL** — Represents the closing curly brace in the parser `KotlinParser.ts:18999-19001`
-- **RCURL** — Represents the right curly brace in the grammar `KotlinParser.ts:19072-19074`, `KotlinParser.ts:19113-19115`
-- **RCURL** — Matches the right curly brace `KotlinParser.ts:19598-19600`
+- **RANGLE** — Represents the right angle bracket token `KotlinParser.ts:14752-14754`
+- **RANGLE** — Token representing '>' `KotlinParser.ts:18468-18470`
+- **RANGLE** — Represents a right angle bracket `KotlinParser.ts:19424-19426`
+- **RANGLE** — Returns the RANGLE terminal node if it exists `KotlinParser.ts:20144-20146`
+- **RCURL** — Represents the right curly brace `KotlinParser.ts:14368-14370`
+- **RCURL** — Represents the closing curly brace in the parser `KotlinParser.ts:15983-15985`
+- **RCURL** — Represents the right curly brace in the grammar `KotlinParser.ts:16921-16923`
+- **RCURL** — Matches the right curly brace `KotlinParser.ts:18999-19001`
+- **RCURL** — Returns the right curly brace terminal node `KotlinParser.ts:19072-19074`
+- **RCURL** — Returns the right curly brace token `KotlinParser.ts:19113-19115`, `KotlinParser.ts:19598-19600`
 - **RCURL_action** — Represents an action for right-curly `KotlinLexer.ts:883-891`
 - **RealLiteral** — Represents a real literal in Kotlin `KotlinParser.ts:18792-18794`
 - **RECEIVER** — Represents a receiver `KotlinParser.ts:21256-21258`
@@ -709,39 +1292,203 @@ UnicodeClasses.ts
 - **REIFIED** — Represents a reified keyword `KotlinParser.ts:21419-21421`
 - **RETURN** — Represents a return statement `KotlinParser.ts:19983-19985`
 - **RETURN_AT** — Represents a return statement with an at symbol `KotlinParser.ts:19986-19988`
-- **RPAREN** — Represents the right parenthesis `KotlinParser.ts:14406-14408`, `KotlinParser.ts:15552-15554`, `KotlinParser.ts:15608-15610`, `KotlinParser.ts:17062-17064`, `KotlinParser.ts:17115-17117`
+- **RPAREN** — Represents the right parenthesis `KotlinParser.ts:14406-14408`
 - **RPAREN** — Right parenthesis token `KotlinParser.ts:15116-15118`
-- **RPAREN** — Represents a closing parenthesis `KotlinParser.ts:15381-15383`, `KotlinParser.ts:19477-19479`, `KotlinParser.ts:19539-19541`
-- **RPAREN** — Represents the right parenthesis token `KotlinParser.ts:15658-15660`, `KotlinParser.ts:16507-16509`, `KotlinParser.ts:18515-18517`
-- **RPAREN** — Represents a right parenthesis in the Kotlin grammar `KotlinParser.ts:16575-16577`, `KotlinParser.ts:16648-16650`
-- **RPAREN** — Parses the right parenthesis `KotlinParser.ts:17000-17002`
-- **RPAREN** — Parses a right parenthesis `KotlinParser.ts:18140-18142`, `KotlinParser.ts:18210-18212`
-- **RPAREN** — Matches a closing parenthesis `KotlinParser.ts:18686-18688`
-- **RPAREN** — Represents the right parenthesis ')' in the grammar `KotlinParser.ts:19880-19882`
+- **RPAREN** — Represents a closing parenthesis `KotlinParser.ts:15381-15383`
+- **RPAREN** — Represents the right parenthesis token `KotlinParser.ts:15552-15554`
+- **RPAREN** — Represents a right parenthesis in the Kotlin grammar `KotlinParser.ts:15608-15610`
+- **RPAREN** — Parses the right parenthesis `KotlinParser.ts:15658-15660`
+- **RPAREN** — Parses a right parenthesis `KotlinParser.ts:16507-16509`
+- **RPAREN** — Matches a closing parenthesis `KotlinParser.ts:16575-16577`
+- **RPAREN** — Represents the right parenthesis ')' in the grammar `KotlinParser.ts:16648-16650`
+- **RPAREN** — Returns the right parenthesis terminal node `KotlinParser.ts:17000-17002`, `KotlinParser.ts:19880-19882`
+- **RPAREN** — Returns the terminal node for the RPAREN keyword `KotlinParser.ts:17062-17064`
+- **RPAREN** — Returns the terminal node for the right parenthesis `KotlinParser.ts:17115-17117`, `KotlinParser.ts:18686-18688`
+- **RPAREN** — Returns the right parenthesis token `KotlinParser.ts:18140-18142`, `KotlinParser.ts:19539-19541`
+- **RPAREN** — Returns the RPAREN terminal node `KotlinParser.ts:18210-18212`
+- **RPAREN** — Returns a terminal node representing a right parenthesis `KotlinParser.ts:18515-18517`
+- **RPAREN** — Returns a terminal node for the RPAREN rule `KotlinParser.ts:19477-19479`
 - **RSQUARE** — Represents the right square bracket token in the Kotlin parser `KotlinParser.ts:13958-13960`
 - **RSQUARE** — Represents the right square bracket character `KotlinParser.ts:18289-18291`
 - **RSQUARE** — Matches a closing square bracket `KotlinParser.ts:18724-18726`
 - **RSQUARE** — Represents a closing square bracket `KotlinParser.ts:21182-21184`
-- **ruleIndex** — Represents the index of the current rule being parsed `KotlinParser.ts:13814-13816`, `KotlinParser.ts:13885-13887`, `KotlinParser.ts:13920-13922`, `KotlinParser.ts:15632-15634`, `KotlinParser.ts:15690-15692`, `KotlinParser.ts:15734-15736`, `KotlinParser.ts:15866-15868`, `KotlinParser.ts:15916-15918`, `KotlinParser.ts:15957-15959`, `KotlinParser.ts:16098-16100`, `KotlinParser.ts:16139-16141`, `KotlinParser.ts:16168-16170`, `KotlinParser.ts:16332-16334`, `KotlinParser.ts:16364-16366`, `KotlinParser.ts:16396-16398`, `KotlinParser.ts:16434-16436`, `KotlinParser.ts:16822-16824`, `KotlinParser.ts:16863-16865`, `KotlinParser.ts:16892-16894`, `KotlinParser.ts:16933-16935`, `KotlinParser.ts:16965-16967`, `KotlinParser.ts:17030-17032`, `KotlinParser.ts:17713-17715`, `KotlinParser.ts:17772-17774`, `KotlinParser.ts:17824-17826`, `KotlinParser.ts:17874-17876`, `KotlinParser.ts:17927-17929`, `KotlinParser.ts:17962-17964`, `KotlinParser.ts:19131-19133`, `KotlinParser.ts:19181-19183`, `KotlinParser.ts:19225-19227`, `KotlinParser.ts:19363-19365`, `KotlinParser.ts:19392-19394`, `KotlinParser.ts:19445-19447`, `KotlinParser.ts:20045-20047`, `KotlinParser.ts:20083-20085`, `KotlinParser.ts:20118-20120`, `KotlinParser.ts:20786-20788`, `KotlinParser.ts:20815-20817`, `KotlinParser.ts:20847-20849`, `KotlinParser.ts:20888-20890`, `KotlinParser.ts:21473-21475`, `KotlinParser.ts:21523-21525`
-- **ruleIndex** — Represents the rule index in the Kotlin parser `KotlinParser.ts:13979-13981`, `KotlinParser.ts:14011-14013`, `KotlinParser.ts:14043-14045`
-- **ruleIndex** — Represents the index of a rule in the Kotlin grammar `KotlinParser.ts:14084-14086`, `KotlinParser.ts:14113-14115`, `KotlinParser.ts:14142-14144`, `KotlinParser.ts:14996-14998`, `KotlinParser.ts:15034-15036`, `KotlinParser.ts:15775-15777`, `KotlinParser.ts:15816-15818`
-- **ruleIndex** — Tracks the index of the current rule `KotlinParser.ts:14192-14194`, `KotlinParser.ts:14230-14232`, `KotlinParser.ts:17177-17179`, `KotlinParser.ts:17212-17214`, `KotlinParser.ts:17253-17255`, `KotlinParser.ts:18354-18356`, `KotlinParser.ts:18386-18388`, `KotlinParser.ts:18433-18435`, `KotlinParser.ts:18698-18700`, `KotlinParser.ts:18754-18756`, `KotlinParser.ts:18804-18806`, `KotlinParser.ts:18833-18835`, `KotlinParser.ts:18880-18882`, `KotlinParser.ts:19510-19512`, `KotlinParser.ts:19569-19571`, `KotlinParser.ts:20473-20475`, `KotlinParser.ts:20514-20516`, `KotlinParser.ts:20555-20557`, `KotlinParser.ts:21019-21021`, `KotlinParser.ts:21045-21047`, `KotlinParser.ts:21074-21076`
-- **ruleIndex** — Stores the index of a rule in the Kotlin parser `KotlinParser.ts:14298-14300`, `KotlinParser.ts:14339-14341`
-- **ruleIndex** — Represents the index of a rule `KotlinParser.ts:14380-14382`, `KotlinParser.ts:14436-14438`, `KotlinParser.ts:14773-14775`, `KotlinParser.ts:14817-14819`, `KotlinParser.ts:16004-16006`, `KotlinParser.ts:16054-16056`, `KotlinParser.ts:16728-16730`, `KotlinParser.ts:16769-16771`, `KotlinParser.ts:19622-19624`, `KotlinParser.ts:19684-19686`, `KotlinParser.ts:20611-20613`, `KotlinParser.ts:20643-20645`, `KotlinParser.ts:20681-20683`
-- **ruleIndex** — Tracks the index of the current rule being parsed `KotlinParser.ts:14492-14494`, `KotlinParser.ts:14544-14546`, `KotlinParser.ts:14591-14593`, `KotlinParser.ts:16587-16589`, `KotlinParser.ts:16622-16624`, `KotlinParser.ts:16666-16668`, `KotlinParser.ts:17429-17431`, `KotlinParser.ts:17481-17483`, `KotlinParser.ts:17516-17518`, `KotlinParser.ts:17584-17586`, `KotlinParser.ts:17634-17636`, `KotlinParser.ts:17663-17665`, `KotlinParser.ts:18222-18224`, `KotlinParser.ts:18254-18256`, `KotlinParser.ts:18310-18312`, `KotlinParser.ts:18592-18594`, `KotlinParser.ts:18657-18659`, `KotlinParser.ts:19842-19844`, `KotlinParser.ts:19907-19909`, `KotlinParser.ts:19945-19947`, `KotlinParser.ts:20001-20003`, `KotlinParser.ts:21112-21114`, `KotlinParser.ts:21156-21158`, `KotlinParser.ts:21212-21214`
-- **ruleIndex** — Tracks the index of the current rule in the parser `KotlinParser.ts:14629-14631`, `KotlinParser.ts:14673-14675`, `KotlinParser.ts:14717-14719`
-- **ruleIndex** — Manages the index of parsing rules `KotlinParser.ts:14870-14872`, `KotlinParser.ts:14920-14922`, `KotlinParser.ts:14961-14963`, `KotlinParser.ts:15090-15092`, `KotlinParser.ts:15146-15148`, `KotlinParser.ts:15190-15192`
-- **ruleIndex** — Represents the index of a rule in the Kotlin parser `KotlinParser.ts:15255-15257`, `KotlinParser.ts:15296-15298`
-- **ruleIndex** — Stores the index of the current rule `KotlinParser.ts:15346-15348`, `KotlinParser.ts:15402-15404`, `KotlinParser.ts:15573-15575`, `KotlinParser.ts:16481-16483`, `KotlinParser.ts:16546-16548`, `KotlinParser.ts:17080-17082`, `KotlinParser.ts:17130-17132`, `KotlinParser.ts:17279-17281`, `KotlinParser.ts:17329-17331`, `KotlinParser.ts:17379-17381`, `KotlinParser.ts:19043-19045`, `KotlinParser.ts:19084-19086`, `KotlinParser.ts:20153-20155`, `KotlinParser.ts:20182-20184`, `KotlinParser.ts:20211-20213`, `KotlinParser.ts:20240-20242`, `KotlinParser.ts:20272-20274`, `KotlinParser.ts:20301-20303`, `KotlinParser.ts:20339-20341`, `KotlinParser.ts:20374-20376`, `KotlinParser.ts:20403-20405`, `KotlinParser.ts:20444-20446`, `KotlinParser.ts:20722-20724`, `KotlinParser.ts:20751-20753`, `KotlinParser.ts:20929-20931`, `KotlinParser.ts:20955-20957`, `KotlinParser.ts:20987-20989`
-- **ruleIndex** — Represents the index of a rule in the parser `KotlinParser.ts:15482-15484`, `KotlinParser.ts:15520-15522`, `KotlinParser.ts:18938-18940`, `KotlinParser.ts:18970-18972`, `KotlinParser.ts:19011-19013`, `KotlinParser.ts:19287-19289`, `KotlinParser.ts:19316-19318`, `KotlinParser.ts:19716-19718`, `KotlinParser.ts:19754-19756`, `KotlinParser.ts:19792-19794`
-- **ruleIndex** — Returns the index of the nullable type rule `KotlinParser.ts:16215-16217`
-- **ruleIndex** — Returns the index of the quest rule `KotlinParser.ts:16244-16246`
-- **ruleIndex** — Returns the index of the user type rule `KotlinParser.ts:16294-16296`
-- **ruleIndex** — Represents the index of the current rule in the parser `KotlinParser.ts:18003-18005`, `KotlinParser.ts:18038-18040`, `KotlinParser.ts:18076-18078`
-- **ruleIndex** — Manages the index for parsing rules `KotlinParser.ts:18111-18113`, `KotlinParser.ts:18152-18154`, `KotlinParser.ts:18181-18183`
-- **ruleIndex** — Represents the index of the current rule `KotlinParser.ts:18489-18491`, `KotlinParser.ts:18545-18547`, `KotlinParser.ts:21277-21279`, `KotlinParser.ts:21306-21308`
-- **ruleNames** — Stores names of rules `KotlinLexer.ts:860-862`, `UnicodeClasses.ts:62-64`
+- **ruleIndex** — Represents the index of the current rule being parsed `KotlinParser.ts:13814-13816`
+- **ruleIndex** — Represents the rule index in the Kotlin parser `KotlinParser.ts:13885-13887`
+- **ruleIndex** — Represents the index of a rule in the Kotlin grammar `KotlinParser.ts:13920-13922`
+- **ruleIndex** — Tracks the index of the current rule `KotlinParser.ts:13979-13981`
+- **ruleIndex** — Stores the index of a rule in the Kotlin parser `KotlinParser.ts:14011-14013`
+- **ruleIndex** — Represents the index of a rule `KotlinParser.ts:14043-14045`
+- **ruleIndex** — Tracks the index of the current rule being parsed `KotlinParser.ts:14084-14086`
+- **ruleIndex** — Tracks the index of the current rule in the parser `KotlinParser.ts:14113-14115`
+- **ruleIndex** — Manages the index of parsing rules `KotlinParser.ts:14142-14144`
+- **ruleIndex** — Represents the index of a rule in the Kotlin parser `KotlinParser.ts:14192-14194`
+- **ruleIndex** — Stores the index of the current rule `KotlinParser.ts:14230-14232`
+- **ruleIndex** — Represents the index of a rule in the parser `KotlinParser.ts:14298-14300`
+- **ruleIndex** — Returns the index of the nullable type rule `KotlinParser.ts:14339-14341`
+- **ruleIndex** — Returns the index of the quest rule `KotlinParser.ts:14380-14382`
+- **ruleIndex** — Returns the index of the user type rule `KotlinParser.ts:14436-14438`
+- **ruleIndex** — Represents the index of the current rule in the parser `KotlinParser.ts:14492-14494`
+- **ruleIndex** — Manages the index for parsing rules `KotlinParser.ts:14544-14546`
+- **ruleIndex** — Represents the index of the current rule `KotlinParser.ts:14591-14593`
+- **ruleIndex** — Returns the index for the constructor invocation rule `KotlinParser.ts:14629-14631`
+- **ruleIndex** — Returns the index for the annotated delegation specifier rule `KotlinParser.ts:14673-14675`
+- **ruleIndex** — Returns the index for the explicit delegation rule `KotlinParser.ts:14717-14719`
+- **ruleIndex** — Returns the index for the type parameters rule `KotlinParser.ts:14773-14775`
+- **ruleIndex** — Returns the index of the rule for type parameters `KotlinParser.ts:14817-14819`
+- **ruleIndex** — Returns the index of the rule for type constraints `KotlinParser.ts:14870-14872`
+- **ruleIndex** — Returns the index of the rule for type constraint `KotlinParser.ts:14920-14922`
+- **ruleIndex** — Returns the index of the rule for class member declarations `KotlinParser.ts:14961-14963`
+- **ruleIndex** — Returns the index of the rule for class member declaration `KotlinParser.ts:14996-14998`
+- **ruleIndex** — Returns the index of the rule for anonymous initializer `KotlinParser.ts:15034-15036`
+- **ruleIndex** — Returns the index of the companion object rule `KotlinParser.ts:15090-15092`
+- **ruleIndex** — Returns the index of the function value parameters rule `KotlinParser.ts:15146-15148`
+- **ruleIndex** — Returns the index of the function value parameter rule `KotlinParser.ts:15190-15192`
+- **ruleIndex** — Returns the index of the function declaration rule `KotlinParser.ts:15255-15257`
+- **ruleIndex** — Returns the index of the function body rule `KotlinParser.ts:15296-15298`
+- **ruleIndex** — Returns the index of the variable declaration rule `KotlinParser.ts:15346-15348`
+- **ruleIndex** — Returns the index of the multi-variable declaration rule `KotlinParser.ts:15402-15404`
+- **ruleIndex** — Returns the rule index for property declaration `KotlinParser.ts:15482-15484`
+- **ruleIndex** — Returns the rule index for property delegate `KotlinParser.ts:15520-15522`
+- **ruleIndex** — Returns the rule index for the getter rule `KotlinParser.ts:15573-15575`
+- **ruleIndex** — Returns the index of the rule for the setter `KotlinParser.ts:15632-15634`
+- **ruleIndex** — Returns the index of the rule for the parameters with optional type `KotlinParser.ts:15690-15692`
+- **ruleIndex** — Returns the index of the rule for the function value parameter with optional type `KotlinParser.ts:15734-15736`
+- **ruleIndex** — Returns the index of the parameter with optional type rule `KotlinParser.ts:15775-15777`
+- **ruleIndex** — Returns the index of the parameter rule `KotlinParser.ts:15816-15818`
+- **ruleIndex** — Returns the rule index for objectDeclaration `KotlinParser.ts:15866-15868`
+- **ruleIndex** — Returns the index of the secondary constructor rule `KotlinParser.ts:15916-15918`
+- **ruleIndex** — Returns the index of the constructor delegation call rule `KotlinParser.ts:15957-15959`
+- **ruleIndex** — Returns the index of the enum class body rule `KotlinParser.ts:16004-16006`
+- **ruleIndex** — Returns the index of the rule for the enum entry `KotlinParser.ts:16054-16056`
+- **ruleIndex** — Returns the index of the rule for type `KotlinParser.ts:16098-16100`
+- **ruleIndex** — Returns the index of the rule for the type reference `KotlinParser.ts:16139-16141`
+- **ruleIndex** — Returns the index of the rule for the userType `KotlinParser.ts:16168-16170`
+- **ruleIndex** — Returns the index of the rule for the simpleUserType `KotlinParser.ts:16215-16217`
+- **ruleIndex** — Returns the rule index for type projection `KotlinParser.ts:16244-16246`
+- **ruleIndex** — Returns the rule index for type projection modifiers `KotlinParser.ts:16294-16296`
+- **ruleIndex** — Returns the rule index for type projection modifier. `KotlinParser.ts:164 `KotlinParser.ts:16332-16334`
+- **ruleIndex** — Returns the rule index for function type `KotlinParser.ts:16364-16366`
+- **ruleIndex** — Returns the rule index for function type parameters `KotlinParser.ts:16396-16398`
+- **ruleIndex** — Returns the rule index for the current rule `KotlinParser.ts:16434-16436`
+- **ruleIndex** — Returns the index of the receiver type rule `KotlinParser.ts:16481-16483`
+- **ruleIndex** — Returns the index of the parenthesized user type rule `KotlinParser.ts:16546-16548`
+- **ruleIndex** — Returns the index of the rule for definitely non-nullable type `KotlinParser.ts:16587-16589`
+- **ruleIndex** — Returns the index of the rule for statements `KotlinParser.ts:16622-16624`
+- **ruleIndex** — Returns the index of the current rule `KotlinParser.ts:16666-16668`
+- **ruleIndex** — Returns the index of the block rule `KotlinParser.ts:16728-16730`
+- **ruleIndex** — Returns the index of the loop statement rule `KotlinParser.ts:16769-16771`
+- **ruleIndex** — Returns the index of the forStatement rule `KotlinParser.ts:16822-16824`
+- **ruleIndex** — Returns the index of the whileStatement rule `KotlinParser.ts:16863-16865`
+- **ruleIndex** — Returns the index of the rule for the do while statement `KotlinParser.ts:16892-16894`
+- **ruleIndex** — Returns the index of the assignment rule `KotlinParser.ts:16933-16935`
+- **ruleIndex** — Returns the index of the semi rule `KotlinParser.ts:16965-16967`
+- **ruleIndex** — Returns the index of the semicolon rule `KotlinParser.ts:17030-17032`
+- **ruleIndex** — Returns the index of the expression rule `KotlinParser.ts:17080-17082`
+- **ruleIndex** — Returns the index of the disjunction rule `KotlinParser.ts:17130-17132`
+- **ruleIndex** — Returns the index of the conjunction rule `KotlinParser.ts:17177-17179`
+- **ruleIndex** — Returns the index of the equality rule `KotlinParser.ts:17212-17214`
+- **ruleIndex** — Returns the index of the comparison rule `KotlinParser.ts:17253-17255`
+- **ruleIndex** — Returns the index of the generic call like comparison rule `KotlinParser.ts:17279-17281`
+- **ruleIndex** — Returns the index of the rule for infix operation `KotlinParser.ts:17329-17331`
+- **ruleIndex** — Returns the index of the `elvisExpression` rule `KotlinParser.ts:17379-17381`
+- **ruleIndex** — Returns the index of the `elvis` rule. `KotlinParser.ts:17663 `KotlinParser.ts:17429-17431`
+- **ruleIndex** — Returns the rule index for infixFunctionCall `KotlinParser.ts:17481-17483`
+- **ruleIndex** — Returns the rule index for rangeExpression `KotlinParser.ts:17516-17518`
+- **ruleIndex** — Returns the index of the additive expression rule `KotlinParser.ts:17584-17586`
+- **ruleIndex** — Returns the index of the multiplicative expression rule `KotlinParser.ts:17634-17636`
+- **ruleIndex** — Returns the index of the as expression rule `KotlinParser.ts:17663-17665`
+- **ruleIndex** — Returns the index of the prefix unary expression rule `KotlinParser.ts:17713-17715`
+- **ruleIndex** — Returns the index of the unary prefix rule `KotlinParser.ts:17772-17774`
+- **ruleIndex** — Returns the index of the rule for postfix unary expression `KotlinParser.ts:17824-17826`
+- **ruleIndex** — Returns the rule index for the postfix unary suffix `KotlinParser.ts:17874-17876`
+- **ruleIndex** — Returns the rule index for the directly assignable expression. `KotlinParser.ts:18111-181 `KotlinParser.ts:17927-17929`
+- **ruleIndex** — Returns the rule index for the parenthesized directly assignable expression `KotlinParser.ts:17962-17964`
+- **ruleIndex** — Returns the rule index for the assignable expression `KotlinParser.ts:18003-18005`
+- **ruleIndex** — Returns the rule index for `parenthesizedAssignableExpression `KotlinParser.ts:18038-18040`
+- **ruleIndex** — Returns the rule index for `assignableSuffix `KotlinParser.ts:18076-18078`
+- **ruleIndex** — Returns the rule index for indexing suffix `KotlinParser.ts:18111-18113`
+- **ruleIndex** — Returns the rule index for navigation suffix `KotlinParser.ts:18152-18154`
+- **ruleIndex** — Returns the index of the rule for callSuffix `KotlinParser.ts:18181-18183`
+- **ruleIndex** — Returns the index of the rule for annotatedLambda `KotlinParser.ts:18222-18224`
+- **ruleIndex** — Returns the index of the rule for type arguments `KotlinParser.ts:18254-18256`
+- **ruleIndex** — Returns the index of the rule for value arguments `KotlinParser.ts:18310-18312`
+- **ruleIndex** — Returns the index of the valueArgument rule `KotlinParser.ts:18354-18356`
+- **ruleIndex** — Returns the index of the primaryExpression rule `KotlinParser.ts:18386-18388`
+- **ruleIndex** — Returns the index of the rule for the parenthesized expression `KotlinParser.ts:18433-18435`
+- **ruleIndex** — Returns the index of the rule for collectionLiteral `KotlinParser.ts:18489-18491`
+- **ruleIndex** — Returns the index of the rule for literalConstant `KotlinParser.ts:18545-18547`
+- **ruleIndex** — Returns the index of the rule for stringLiteral `KotlinParser.ts:18592-18594`
+- **ruleIndex** — Returns the index of the line string literal rule `KotlinParser.ts:18657-18659`
+- **ruleIndex** — Returns the index of the multi-line string literal rule `KotlinParser.ts:18698-18700`
+- **ruleIndex** — Returns the index of the line string content rule `KotlinParser.ts:18754-18756`
+- **ruleIndex** — Returns the index of the line string expression rule `KotlinParser.ts:18804-18806`
+- **ruleIndex** — Returns the index of the rule for multi-line string content `KotlinParser.ts:18833-18835`
+- **ruleIndex** — Returns the index of the rule for multi-line string expression `KotlinParser.ts:18880-18882`
+- **ruleIndex** — Returns the index of the rule for lambda literal `KotlinParser.ts:18938-18940`
+- **ruleIndex** — Returns the index of the lambda parameters rule `KotlinParser.ts:18970-18972`
+- **ruleIndex** — Returns the index of the lambda parameter rule `KotlinParser.ts:19011-19013`
+- **ruleIndex** — Returns the index of the anonymous function rule `KotlinParser.ts:19043-19045`
+- **ruleIndex** — Returns the index of the function literal rule `KotlinParser.ts:19084-19086`
+- **ruleIndex** — Returns the index of the object literal rule `KotlinParser.ts:19131-19133`
+- **ruleIndex** — Returns the rule index for this expression `KotlinParser.ts:19181-19183`
+- **ruleIndex** — Returns the rule index for the if expression `KotlinParser.ts:19225-19227`
+- **ruleIndex** — Returns the rule index for the whenSubject rule `KotlinParser.ts:19287-19289`
+- **ruleIndex** — Returns the index of the `whenExpression` rule `KotlinParser.ts:19316-19318`
+- **ruleIndex** — Returns the index of the `whenEntry` rule `KotlinParser.ts:19363-19365`
+- **ruleIndex** — Returns the index of the rule for `whenCondition `KotlinParser.ts:19392-19394`
+- **ruleIndex** — Returns the index of the rule for `rangeTest `KotlinParser.ts:19445-19447`
+- **ruleIndex** — Returns the index of the rule for typeTest `KotlinParser.ts:19510-19512`
+- **ruleIndex** — Returns the index of the rule for tryExpression `KotlinParser.ts:19569-19571`
+- **ruleIndex** — Returns the rule index for the catch block `KotlinParser.ts:19622-19624`
+- **ruleIndex** — Returns the index of the finallyBlock rule `KotlinParser.ts:19684-19686`
+- **ruleIndex** — Returns the index of the jumpExpression rule `KotlinParser.ts:19716-19718`
+- **ruleIndex** — Returns the index of the rule for callableReference `KotlinParser.ts:19754-19756`
+- **ruleIndex** — Returns the index of the rule for assignmentAndOperator `KotlinParser.ts:19792-19794`
+- **ruleIndex** — Returns the index of the rule for equalityOperator `KotlinParser.ts:19842-19844`
+- **ruleIndex** — Returns the index of the comparison operator rule `KotlinParser.ts:19907-19909`
+- **ruleIndex** — Returns the index of the in operator rule `KotlinParser.ts:19945-19947`
+- **ruleIndex** — Returns the index of the is operator rule `KotlinParser.ts:20001-20003`
+- **ruleIndex** — Returns the index of the additiveOperator rule `KotlinParser.ts:20045-20047`
+- **ruleIndex** — Returns the index of the multiplicativeOperator rule `KotlinParser.ts:20083-20085`
+- **ruleIndex** — Returns the index of the rule for the `asOperator` rule `KotlinParser.ts:20118-20120`
+- **ruleIndex** — Returns the index of the rule for the `prefixUnaryOperator` rule `KotlinParser.ts:20153-20155`
+- **ruleIndex** — Returns the index of the rule for the `postfixUnaryOperator` rule `KotlinParser.ts:20182-20184`
+- **ruleIndex** — Returns the rule index for the excl rule `KotlinParser.ts:20211-20213`
+- **ruleIndex** — Returns the rule index for the memberAccessOperator rule `KotlinParser.ts:20240-20242`
+- **ruleIndex** — Returns the index of the safe navigation rule `KotlinParser.ts:20272-20274`
+- **ruleIndex** — Returns the index of the modifiers rule `KotlinParser.ts:20301-20303`
+- **ruleIndex** — Returns the index of the parameter modifiers rule `KotlinParser.ts:20339-20341`
+- **ruleIndex** — Returns the rule index for the modifier rule `KotlinParser.ts:20374-20376`
+- **ruleIndex** — Returns the rule index for the type modifiers rule `KotlinParser.ts:20403-20405`
+- **ruleIndex** — Returns the index of the rule for type modifiers `KotlinParser.ts:20444-20446`
+- **ruleIndex** — Returns the index of the rule for class modifiers `KotlinParser.ts:20473-20475`
+- **ruleIndex** — Returns the index of the rule for member modifiers `KotlinParser.ts:20514-20516`
+- **ruleIndex** — Returns the index of the visibility modifier rule `KotlinParser.ts:20555-20557`
+- **ruleIndex** — Returns the index of the variance modifier rule `KotlinParser.ts:20611-20613`
+- **ruleIndex** — Returns the index of the type parameter modifiers rule `KotlinParser.ts:20643-20645`
+- **ruleIndex** — Returns the index of the rule for type parameter modifier `KotlinParser.ts:20681-20683`
+- **ruleIndex** — Returns the index of the rule for function modifier `KotlinParser.ts:20722-20724`
+- **ruleIndex** — Returns the index of the rule for property modifier `KotlinParser.ts:20751-20753`
+- **ruleIndex** — Returns the index of the inheritance modifier rule `KotlinParser.ts:20786-20788`
+- **ruleIndex** — Returns the index of the parameter modifier rule `KotlinParser.ts:20815-20817`
+- **ruleIndex** — Returns the index of the reification modifier rule `KotlinParser.ts:20847-20849`
+- **ruleIndex** — Returns the index of the platform modifier rule `KotlinParser.ts:20888-20890`
+- **ruleIndex** — Returns the index of the annotation rule `KotlinParser.ts:20929-20931`
+- **ruleIndex** — Returns the index of the single annotation rule `KotlinParser.ts:20955-20957`
+- **ruleIndex** — Returns the index of the rule for a multi-annotation `KotlinParser.ts:20987-20989`
+- **ruleIndex** — Returns the index of the current rule, which is annotation use site target `KotlinParser.ts:21019-21021`
+- **ruleIndex** — Returns the index of the current rule, which is unescaped annotation `KotlinParser.ts:21045-21047`
+- **ruleIndex** — Returns the rule index for the simpleIdentifier rule `KotlinParser.ts:21074-21076`
+- **ruleIndex** — Returns the rule index for the identifier rule `KotlinParser.ts:21112-21114`
+- **ruleIndex** — Returns the index of the rule for the single annotation `KotlinParser.ts:21156-21158`
+- **ruleIndex** — Returns the index of the rule for the multi annotation `KotlinParser.ts:21212-21214`
+- **ruleIndex** — Returns the index of the rule for annotation use site target `KotlinParser.ts:21277-21279`
+- **ruleIndex** — Returns the index of the rule for unescaped annotation `KotlinParser.ts:21306-21308`
+- **ruleIndex** — Returns the index of the rule for simple identifier `KotlinParser.ts:21473-21475`
+- **ruleIndex** — Returns the index of the identifier rule `KotlinParser.ts:21523-21525`
+- **ruleNames** — Stores names of rules `KotlinLexer.ts:860-862`
 - **ruleNames** — Stores names of rule tokens `KotlinParser.ts:880-882`
+- **ruleNames** — An array containing rule names for Unicode classes `UnicodeClasses.ts:62-64`
 - **safeNav** — Represents the safe navigation operator in Kotlin `KotlinParser.ts:11604-11624`
 - **safeNav** — Represents a safe navigation operator `KotlinParser.ts:20438-20440`
 - **script** — Represents a script in the Kotlin file `KotlinParser.ts:970-1044`
@@ -756,8 +1503,11 @@ UnicodeClasses.ts
 - **semi** — Represents the semicolon character `KotlinParser.ts:15479-15481`
 - **semi** — Matches a semicolon `KotlinParser.ts:19678-19680`
 - **SEMICOLON** — Represents the semicolon character `KotlinParser.ts:15446-15448`
-- **SEMICOLON** — Represents a semicolon `KotlinParser.ts:15998-16000`, `KotlinParser.ts:17200-17202`, `KotlinParser.ts:17237-17243`, `KotlinParser.ts:19494-19500`
+- **SEMICOLON** — Represents a semicolon `KotlinParser.ts:15998-16000`
 - **SEMICOLON** — Represents the semicolon `KotlinParser.ts:17068-17070`
+- **SEMICOLON** — Returns the SEMICOLON token or an array of tokens if i is provided `KotlinParser.ts:17200-17202`
+- **SEMICOLON** — Returns the SEMICOLON token or an array of tokens if i is provided. `KotlinParser.ts:17237 `KotlinParser.ts:17237-17243`
+- **SEMICOLON** — Returns the terminal node or nodes for the semicolon `KotlinParser.ts:19494-19500`
 - **semis** — Multiple semicolons `KotlinParser.ts:6831-6873`
 - **semis** — Represents semicolons in the Kotlin grammar `KotlinParser.ts:14139-14141`
 - **semis** — Parses semicolons in the Kotlin parser `KotlinParser.ts:14954-14960`
@@ -777,16 +1527,29 @@ UnicodeClasses.ts
 - **shebangLine** — Parses the shebang line `KotlinParser.ts:13846-13848`
 - **ShebangLine** — Parses a shebang line `KotlinParser.ts:13908-13910`
 - **simpleIdentifier** — Represents a simple identifier in Kotlin `KotlinParser.ts:12544-12575`
-- **simpleIdentifier** — Represents a simple identifier in the Kotlin grammar `KotlinParser.ts:14110-14112`, `KotlinParser.ts:15078-15080`, `KotlinParser.ts:15757-15759`, `KotlinParser.ts:15798-15800`, `KotlinParser.ts:15842-15844`, `KotlinParser.ts:18336-18338`
-- **simpleIdentifier** — Parses a simple identifier `KotlinParser.ts:14168-14170`, `KotlinParser.ts:14253-14255`, `KotlinParser.ts:14893-14895`, `KotlinParser.ts:15319-15321`, `KotlinParser.ts:16845-16847`, `KotlinParser.ts:18105-18107`, `KotlinParser.ts:20027-20029`, `KotlinParser.ts:21498-21504`
-- **simpleIdentifier** — Represents a simple identifier `KotlinParser.ts:14459-14461`, `KotlinParser.ts:14796-14798`, `KotlinParser.ts:16077-16079`
-- **simpleIdentifier** — Matches a simple identifier in the Kotlin grammar `KotlinParser.ts:15216-15218`
-- **simpleIdentifier** — Returns the context of the simple identifier rule `KotlinParser.ts:16317-16319`
-- **simpleIdentifier** — Context for a simple identifier in the parser `KotlinParser.ts:17697-17703`
-- **simpleIdentifier** — Represents the context for a simple identifier `KotlinParser.ts:18583-18585`
-- **simpleIdentifier** — Context for simple identifiers `KotlinParser.ts:18618-18620`
-- **simpleIdentifier** — Token representing a simple identifier `KotlinParser.ts:19430-19432`
-- **simpleIdentifier** — Represents a simple identifier in the grammar `KotlinParser.ts:19871-19873`
+- **simpleIdentifier** — Represents a simple identifier in the Kotlin grammar `KotlinParser.ts:14110-14112`
+- **simpleIdentifier** — Parses a simple identifier `KotlinParser.ts:14168-14170`
+- **simpleIdentifier** — Represents a simple identifier `KotlinParser.ts:14253-14255`
+- **simpleIdentifier** — Matches a simple identifier in the Kotlin grammar `KotlinParser.ts:14459-14461`
+- **simpleIdentifier** — Returns the context of the simple identifier rule `KotlinParser.ts:14796-14798`
+- **simpleIdentifier** — Context for a simple identifier in the parser `KotlinParser.ts:14893-14895`
+- **simpleIdentifier** — Represents the context for a simple identifier `KotlinParser.ts:15078-15080`
+- **simpleIdentifier** — Context for simple identifiers `KotlinParser.ts:15216-15218`
+- **simpleIdentifier** — Token representing a simple identifier `KotlinParser.ts:15319-15321`
+- **simpleIdentifier** — Represents a simple identifier in the grammar `KotlinParser.ts:15757-15759`
+- **simpleIdentifier** — Returns the context of a simple identifier `KotlinParser.ts:15798-15800`
+- **simpleIdentifier** — Returns a SimpleIdentifierContext `KotlinParser.ts:15842-15844`
+- **simpleIdentifier** — Returns the context of the simpleIdentifier rule `KotlinParser.ts:16077-16079`
+- **simpleIdentifier** — Returns a SimpleIdentifierContext or null based on the provided index `KotlinParser.ts:16317-16319`
+- **simpleIdentifier** — Returns the context of a simple identifier if it exists `KotlinParser.ts:16845-16847`
+- **simpleIdentifier** — Returns the simple identifier context or null `KotlinParser.ts:17697-17703`, `KotlinParser.ts:20027-20029`
+- **simpleIdentifier** — Returns the context of the simple identifier rule or null if not found `KotlinParser.ts:18105-18107`
+- **simpleIdentifier** — Returns the simple identifier context for this expression `KotlinParser.ts:18336-18338`
+- **simpleIdentifier** — Returns the simple identifier context from the parser `KotlinParser.ts:18583-18585`
+- **simpleIdentifier** — Returns the context for the simpleIdentifier rule or a list of contexts if an index is provided `KotlinParser.ts:18618-18620`
+- **simpleIdentifier** — Returns a simple identifier context or null `KotlinParser.ts:19430-19432`
+- **simpleIdentifier** — Returns the simple identifier context `KotlinParser.ts:19871-19873`
+- **simpleIdentifier** — Returns the SimpleIdentifierContext at the specified index or all contexts if no index is provided `KotlinParser.ts:21498-21504`
 - **simpleUserType** — Represents a simple user-defined type in Kotlin `KotlinParser.ts:5210-5249`
 - **simpleUserType** — Returns the context of the simple user type rule or its children `KotlinParser.ts:16269-16275`
 - **singleAnnotation** — Represents a single annotation in Kotlin `KotlinParser.ts:12344-12395`
@@ -810,9 +1573,12 @@ UnicodeClasses.ts
 - **superExpression** — Context for super expressions `KotlinParser.ts:18642-18644`
 - **SUSPEND** — Parses a suspend keyword in the Kotlin grammar `KotlinParser.ts:14579-14581`
 - **SUSPEND** — Represents a suspension state in the parser `KotlinParser.ts:19254-19256`
-- **SUSPEND** — Represents a suspend keyword `KotlinParser.ts:20669-20671`, `KotlinParser.ts:21467-21469`
+- **SUSPEND** — Represents a suspend keyword `KotlinParser.ts:20669-20671`
 - **SUSPEND** — Indicates a suspended function `KotlinParser.ts:20926-20928`
-- **symbolicNames** — Stores names of symbolic tokens `KotlinLexer.ts:857-859`, `KotlinParser.ts:877-879`, `UnicodeClasses.ts:59-61`
+- **SUSPEND** — Returns the terminal node for the SUSPEND token if it exists `KotlinParser.ts:21467-21469`
+- **symbolicNames** — Stores names of symbolic tokens `KotlinLexer.ts:857-859`
+- **symbolicNames** — Represents a set of symbolic names for different types of tokens in the Kotlin parser `KotlinParser.ts:877-879`
+- **symbolicNames** — An array containing symbolic names for Unicode classes `UnicodeClasses.ts:59-61`
 - **TAILREC** — Indicates a tail-recursive function `KotlinParser.ts:20911-20913`
 - **TAILREC** — Represents a tailrec keyword `KotlinParser.ts:21425-21427`
 - **THIS** — Represents the 'this' keyword in the grammar `KotlinParser.ts:15942-15944`
@@ -828,17 +1594,23 @@ UnicodeClasses.ts
 - **TRY** — Parses a 'try' keyword `KotlinParser.ts:19815-19817`
 - **tryExpression** — Represents a 'try' expression `KotlinParser.ts:10782-10886`
 - **tryExpression** — Context for try expressions `KotlinParser.ts:18651-18653`
-- **type** — Parses a type `KotlinParser.ts:14174-14176`, `KotlinParser.ts:15343-15345`, `KotlinParser.ts:19780-19782`
-- **type** — Represents a type `KotlinParser.ts:14465-14467`, `KotlinParser.ts:14814-14816`, `KotlinParser.ts:19213-19215`
-- **type** — Parses a type in the Kotlin parser `KotlinParser.ts:14899-14901`
-- **type** — Represents the type of a function `KotlinParser.ts:15246-15248`
-- **type** — Represents the type of a variable or function `KotlinParser.ts:15570-15572`, `KotlinParser.ts:15629-15631`
-- **type** — Represents a type declaration in the Kotlin grammar `KotlinParser.ts:15772-15774`, `KotlinParser.ts:15804-15806`
-- **type** — Represents a type in the parser `KotlinParser.ts:16355-16357`
-- **type** — Parses the type of a function `KotlinParser.ts:16463-16465`
-- **type** — Represents a type in the Kotlin grammar `KotlinParser.ts:16572-16574`
-- **type** — Type of the current token `KotlinParser.ts:19421-19423`
-- **type** — Represents a type in the grammar `KotlinParser.ts:19877-19879`
+- **type** — Parses a type `KotlinParser.ts:14174-14176`
+- **type** — Represents a type `KotlinParser.ts:14465-14467`
+- **type** — Parses a type in the Kotlin parser `KotlinParser.ts:14814-14816`
+- **type** — Represents the type of a function `KotlinParser.ts:14899-14901`
+- **type** — Represents the type of a variable or function `KotlinParser.ts:15246-15248`
+- **type** — Represents a type declaration in the Kotlin grammar `KotlinParser.ts:15343-15345`
+- **type** — Represents a type in the parser `KotlinParser.ts:15570-15572`
+- **type** — Parses the type of a function `KotlinParser.ts:15629-15631`
+- **type** — Represents a type in the Kotlin grammar `KotlinParser.ts:15772-15774`
+- **type** — Type of the current token `KotlinParser.ts:15804-15806`
+- **type** — Represents a type in the grammar `KotlinParser.ts:16355-16357`
+- **type** — Returns the type context `KotlinParser.ts:16463-16465`
+- **type** — Returns the type context for the current rule `KotlinParser.ts:16572-16574`
+- **type** — Returns the type context if it exists `KotlinParser.ts:19213-19215`
+- **type** — Returns the type context for this expression `KotlinParser.ts:19421-19423`
+- **type** — Returns the context of the type rule `KotlinParser.ts:19780-19782`
+- **type** — Returns a type context `KotlinParser.ts:19877-19879`
 - **type_** — Represents a type in Kotlin `KotlinParser.ts:4922-4982`
 - **type_** — Parses the type of a parameter `KotlinParser.ts:16530-16536`
 - **type_** — Represents a type in the Kotlin parser `KotlinParser.ts:17568-17574`
@@ -883,23 +1655,26 @@ UnicodeClasses.ts
 - **typeProjectionModifiers** — Represents modifiers for a type projection in Kotlin `KotlinParser.ts:5347-5382`
 - **typeProjectionModifiers** — Modifiers for type projection `KotlinParser.ts:16358-16360`
 - **typeReference** — Represents a reference to a type in Kotlin `KotlinParser.ts:4983-5016`
-- **typeReference** — Parses a type reference `KotlinParser.ts:16130-16132`, `KotlinParser.ts:16191-16193`
-- **typeReference** — Context for type references in the parser `KotlinParser.ts:16616-16618`
+- **typeReference** — Parses a type reference `KotlinParser.ts:16130-16132`
+- **typeReference** — Context for type references in the parser `KotlinParser.ts:16191-16193`
+- **typeReference** — Returns the context of the type reference rule `KotlinParser.ts:16616-16618`
 - **typeTest** — Represents a type test `KotlinParser.ts:10750-10781`
 - **typeTest** — Parses a type test expression `KotlinParser.ts:19713-19715`
 - **unaryPrefix** — Parses a unary prefix expression in Kotlin `KotlinParser.ts:7564-7672`
 - **unaryPrefix** — Prefix unary operator `KotlinParser.ts:17955-17961`
 - **unescapedAnnotation** — Represents an unescaped annotation in Kotlin `KotlinParser.ts:12510-12543`
 - **unescapedAnnotation** — Represents an unescaped annotation in the Kotlin parser `KotlinParser.ts:13963-13969`
-- **unescapedAnnotation** — Represents an unescaped annotation `KotlinParser.ts:21135-21137`, `KotlinParser.ts:21196-21202`
+- **unescapedAnnotation** — Represents an unescaped annotation `KotlinParser.ts:21135-21137`
+- **unescapedAnnotation** — Returns the context of an unescaped annotation or an array of contexts `KotlinParser.ts:21196-21202`
 - **UnsignedLiteral** — Represents an unsigned literal in Kotlin `KotlinParser.ts:18801-18803`
 - **userType** — Represents a user-defined type in Kotlin `KotlinParser.ts:5155-5209`
 - **userType** — Parses a user-defined type in the Kotlin grammar `KotlinParser.ts:14573-14575`
-- **userType** — Represents a user-defined type in the parser `KotlinParser.ts:14614-14616`, `KotlinParser.ts:14702-14704`
-- **userType** — Parses a user-defined type `KotlinParser.ts:16162-16164`
-- **userType** — Context for user types in the parser `KotlinParser.ts:16651-16653`
-- **userType** — Represents a user-defined type `KotlinParser.ts:16694-16700`
-- **userType** — Represents a user type `KotlinParser.ts:21303-21305`
+- **userType** — Represents a user-defined type in the parser `KotlinParser.ts:14614-14616`
+- **userType** — Parses a user-defined type `KotlinParser.ts:14702-14704`
+- **userType** — Context for user types in the parser `KotlinParser.ts:16162-16164`
+- **userType** — Represents a user-defined type `KotlinParser.ts:16651-16653`
+- **userType** — Represents a user type `KotlinParser.ts:16694-16700`
+- **userType** — Returns the user type context or null if not found `KotlinParser.ts:21303-21305`
 - **VAL** — Parses a value declaration in the Kotlin grammar `KotlinParser.ts:14486-14488`
 - **VAL** — Represents the keyword "val" `KotlinParser.ts:15425-15427`
 - **VAL** — Represents a value `KotlinParser.ts:19542-19544`
@@ -916,12 +1691,15 @@ UnicodeClasses.ts
 - **VAR** — Represents the keyword "var" `KotlinParser.ts:15428-15430`
 - **VARARG** — Represents a variable argument modifier `KotlinParser.ts:21010-21012`
 - **VARARG** — Represents a vararg keyword `KotlinParser.ts:21431-21433`
-- **variableDeclaration** — Declares a variable `KotlinParser.ts:3368-3439`, `KotlinParser.ts:19545-19547`
-- **variableDeclaration** — Parses a variable declaration `KotlinParser.ts:15374-15380`, `KotlinParser.ts:17003-17005`
+- **variableDeclaration** — Declares a variable `KotlinParser.ts:3368-3439`
+- **variableDeclaration** — Parses a variable declaration `KotlinParser.ts:15374-15380`
 - **variableDeclaration** — Represents a declaration of a single variable `KotlinParser.ts:15461-15463`
-- **variableDeclaration** — Represents a variable declaration `KotlinParser.ts:19204-19206`
+- **variableDeclaration** — Represents a variable declaration `KotlinParser.ts:17003-17005`
+- **variableDeclaration** — Returns the variable declaration context if it exists `KotlinParser.ts:19204-19206`
+- **variableDeclaration** — Returns the variable declaration context `KotlinParser.ts:19545-19547`
 - **varianceModifier** — Represents the variance modifier in Kotlin `KotlinParser.ts:12024-12049`
-- **varianceModifier** — Represents a variance modifier `KotlinParser.ts:16419-16421`, `KotlinParser.ts:20882-20884`
+- **varianceModifier** — Represents a variance modifier `KotlinParser.ts:16419-16421`
+- **varianceModifier** — Returns the variance modifier context or null if not found `KotlinParser.ts:20882-20884`
 - **visibilityModifier** — Represents the visibility modifier in Kotlin `KotlinParser.ts:11998-12023`
 - **visibilityModifier** — Represents a visibility modifier `KotlinParser.ts:20584-20586`
 - **visitErrorNode** — Visits an error node `KotlinParserListener.ts:1929-1929`
@@ -940,7 +1718,8 @@ UnicodeClasses.ts
 - **whenSubject** — Represents the subject of a when expression `KotlinParser.ts:19610-19612`
 - **WHERE** — Represents the WHERE keyword `KotlinParser.ts:14840-14842`
 - **WHERE** — Represents a where keyword `KotlinParser.ts:21434-21436`
-- **WHILE** — Represents the while keyword `KotlinParser.ts:17053-17055`, `KotlinParser.ts:17106-17108`
+- **WHILE** — Represents the while keyword `KotlinParser.ts:17053-17055`
+- **WHILE** — Returns the terminal node for the WHILE keyword `KotlinParser.ts:17106-17108`
 - **whileStatement** — A while loop statement `KotlinParser.ts:6507-6668`
 - **whileStatement** — Parses a while statement `KotlinParser.ts:16959-16961`
 
@@ -1142,99 +1921,101 @@ UnicodeClasses.ts
 - **_serializedATN** — Represents the serialized ATN in Kotlin `KotlinParser.ts:12622-13752`
 - **_serializedATN** — Stores the serialized ATN for the grammar `UnicodeClasses.ts:78-252`
 - **ABSTRACT** — Represents an abstract keyword `KotlinLexer.ts:132-132`
-- **ABSTRACT** — Represents a constant value for abstract in the parser `KotlinParser.ts:139-139`
+- **ABSTRACT** — Represents the token for abstract in Kotlin `KotlinParser.ts:139-139`
 - **ACTUAL** — Represents an actual keyword `KotlinLexer.ts:142-142`
-- **ACTUAL** — Represents the ACTUAL keyword in Kotlin `KotlinParser.ts:149-149`
+- **ACTUAL** — Indicates an actual parameter in a function call `KotlinParser.ts:149-149`
 - **ADD** — Represents an addition operator in Kotlin code `KotlinLexer.ts:24-24`
 - **ADD** — Represents the addition operator `KotlinParser.ts:31-31`
 - **ADD_ASSIGNMENT** — Represents an addition assignment operator `KotlinLexer.ts:35-35`
-- **ADD_ASSIGNMENT** — Represents the addition assignment operator in Kotlin `KotlinParser.ts:42-42`
+- **ADD_ASSIGNMENT** — Represents the addition assignment operator `KotlinParser.ts:42-42`
 - **AMP** — Represents the ampersand character `KotlinLexer.ts:63-63`
-- **AMP** — Represents the bitwise AND operator in Kotlin `KotlinParser.ts:70-70`
+- **AMP** — Represents an ampersand `KotlinParser.ts:70-70`
 - **ANNOTATION** — Represents the annotation keyword `KotlinLexer.ts:121-121`
-- **ANNOTATION** — Represents the integer value 115 `KotlinParser.ts:128-128`
+- **ANNOTATION** — Represents the constant value 115 `KotlinParser.ts:128-128`
 - **ARROW** — Represents an arrow `KotlinLexer.ts:40-40`
-- **ARROW** — Represents the arrow operator in Kotlin `KotlinParser.ts:47-47`
+- **ARROW** — Represents the arrow operator `KotlinParser.ts:47-47`
 - **AS** — Represents the as keyword `KotlinLexer.ts:108-108`
-- **AS** — Represents the keyword AS with a value of 102 `KotlinParser.ts:115-115`
+- **AS** — Represents the keyword 'as' with a value of 102 `KotlinParser.ts:115-115`
 - **AS_SAFE** — Represents the safe assignment operator `KotlinLexer.ts:59-59`
-- **AS_SAFE** — Represents a safe assignment operator `KotlinParser.ts:66-66`
+- **AS_SAFE** — Represents an assignment operator with a safety check `KotlinParser.ts:66-66`
 - **ASSIGNMENT** — Represents an assignment operator `KotlinLexer.ts:34-34`
-- **ASSIGNMENT** — Represents the assignment operator in Kotlin `KotlinParser.ts:41-41`
+- **ASSIGNMENT** — Represents the assignment operator `KotlinParser.ts:41-41`
 - **AT_BOTH_WS** — Represents an at symbol with both whitespace `KotlinLexer.ts:50-50`
 - **AT_BOTH_WS** — Represents an at symbol with both pre and post-whitespace `KotlinParser.ts:57-57`
 - **AT_NO_WS** — Represents an at symbol with no whitespace `KotlinLexer.ts:47-47`
-- **AT_NO_WS** — Represents a token with no whitespace `KotlinParser.ts:54-54`
+- **AT_NO_WS** — Represents the at operator with no whitespace `KotlinParser.ts:54-54`
 - **AT_POST_WS** — Represents an at symbol with post-whitespace `KotlinLexer.ts:48-48`
-- **AT_POST_WS** — Represents a token with whitespace after `KotlinParser.ts:55-55`
+- **AT_POST_WS** — Represents the at operator with post-whitespace `KotlinParser.ts:55-55`
 - **AT_PRE_WS** — Represents an at symbol with pre-whitespace `KotlinLexer.ts:49-49`
-- **AT_PRE_WS** — Represents a token with whitespace before `KotlinParser.ts:56-56`
+- **AT_PRE_WS** — Represents the at operator with pre-whitespace `KotlinParser.ts:56-56`
 - **BinLiteral** — Represents a bin literal `KotlinLexer.ts:148-148`
-- **BinLiteral** — Represents a binary literal `KotlinParser.ts:155-155`
-- **BooleanLiteral** — Represents a boolean literal `KotlinLexer.ts:151-151`, `KotlinParser.ts:158-158`
+- **BinLiteral** — Represents a binary literal in Kotlin `KotlinParser.ts:155-155`
+- **BooleanLiteral** — Represents a boolean literal `KotlinLexer.ts:151-151`
+- **BooleanLiteral** — Represents a boolean literal value `KotlinParser.ts:158-158`
 - **BREAK** — Represents the break keyword `KotlinLexer.ts:107-107`
-- **BREAK** — Represents the keyword BREAK with a value of 101 `KotlinParser.ts:114-114`
+- **BREAK** — Represents the keyword 'break' with a value of 101 `KotlinParser.ts:114-114`
 - **BREAK_AT** — Represents the break keyword with an at sign `KotlinLexer.ts:66-66`
-- **BREAK_AT** — Represents the break keyword in Kotlin `KotlinParser.ts:73-73`
+- **BREAK_AT** — Represents the token for the break keyword in Kotlin `KotlinParser.ts:73-73`
 - **BY** — Represents a by keyword `KotlinLexer.ts:88-88`
-- **BY** — Represents the by keyword in Kotlin `KotlinParser.ts:95-95`
+- **BY** — Represents the keyword 'by' with a value of 82 `KotlinParser.ts:95-95`
 - **CATCH** — Represents the 'catch' keyword `KotlinLexer.ts:99-99`
-- **CATCH** — Represents the keyword CATCH with a value of 93 `KotlinParser.ts:106-106`
-- **channelNames** — Represents the names of different token channels `KotlinLexer.ts:184-184`
-- **channelNames** — Represents the names of token channels `UnicodeClasses.ts:15-15`
-- **CharacterLiteral** — Represents a character literal `KotlinLexer.ts:153-153`, `KotlinParser.ts:160-160`
+- **CATCH** — Represents the keyword 'catch' with a value of 93 `KotlinParser.ts:106-106`
+- **channelNames** — Represents the names of different token channels `KotlinLexer.ts:184-184`, `UnicodeClasses.ts:15-15`
+- **CharacterLiteral** — Represents a character literal `KotlinLexer.ts:153-153`
+- **CharacterLiteral** — Represents a character literal value `KotlinParser.ts:160-160`
 - **CLASS** — Represents a class declaration `KotlinLexer.ts:80-80`
-- **CLASS** — Represents the constant value 74 `KotlinParser.ts:87-87`
+- **CLASS** — Represents the token for class declaration `KotlinParser.ts:87-87`
 - **COLON** — Represents a colon `KotlinLexer.ts:32-32`
-- **COLON** — Represents the colon character in Kotlin `KotlinParser.ts:39-39`
+- **COLON** — Represents the colon operator `KotlinParser.ts:39-39`
 - **COLONCOLON** — Represents a colon colon `KotlinLexer.ts:44-44`
-- **COLONCOLON** — Represents the double colon operator in Kotlin `KotlinParser.ts:51-51`
+- **COLONCOLON** — Represents the double colon operator `KotlinParser.ts:51-51`
 - **COMMA** — Represents a comma in Kotlin code `KotlinLexer.ts:14-14`
-- **COMMA** — Static readonly value representing the comma token `KotlinParser.ts:21-21`
+- **COMMA** — Represents the comma character identifier `KotlinParser.ts:21-21`
 - **COMPANION** — Represents a companion object declaration `KotlinLexer.ts:89-89`
-- **COMPANION** — Represents the companion keyword in Kotlin `KotlinParser.ts:96-96`
+- **COMPANION** — Represents the keyword 'companion' with a value of 83 `KotlinParser.ts:96-96`
 - **CONJ** — Represents a logical conjunction operator in Kotlin code `KotlinLexer.ts:28-28`
-- **CONJ** — Represents the conjunction operator `KotlinParser.ts:35-35`
+- **CONJ** — Represents the logical conjunction operator `KotlinParser.ts:35-35`
 - **CONST** — Represents a const keyword `KotlinLexer.ts:135-135`
-- **CONST** — Represents the CONST keyword in Kotlin `KotlinParser.ts:142-142`
+- **CONST** — Represents the token for const in Kotlin `KotlinParser.ts:142-142`
 - **CONSTRUCTOR** — Represents a constructor declaration `KotlinLexer.ts:87-87`
-- **CONSTRUCTOR** — Represents the constructor keyword in Kotlin `KotlinParser.ts:94-94`
+- **CONSTRUCTOR** — Represents the token for constructor declaration `KotlinParser.ts:94-94`
 - **CONTINUE** — Represents the continue keyword `KotlinLexer.ts:106-106`
-- **CONTINUE** — Represents the keyword CONTINUE with a value of 100 `KotlinParser.ts:113-113`
+- **CONTINUE** — Represents the keyword 'continue' with a value of 100 `KotlinParser.ts:113-113`
 - **CONTINUE_AT** — Represents the continue keyword with an at sign `KotlinLexer.ts:65-65`
-- **CONTINUE_AT** — Represents the continue keyword in Kotlin `KotlinParser.ts:72-72`
+- **CONTINUE_AT** — Represents the token for the continue keyword in Kotlin `KotlinParser.ts:72-72`
 - **CROSSINLINE** — Represents a crossinline keyword `KotlinLexer.ts:139-139`
-- **CROSSINLINE** — Represents the CROSSINLINE keyword in Kotlin `KotlinParser.ts:146-146`
+- **CROSSINLINE** — Specifies a function that can be inlined across multiple calls `KotlinParser.ts:146-146`
 - **DATA** — Represents the data keyword `KotlinLexer.ts:122-122`
-- **DATA** — Represents a constant value for data in the parser `KotlinParser.ts:129-129`
+- **DATA** — Represents the constant value 116 `KotlinParser.ts:129-129`
 - **decisionsToDFA** — Stores decisions to DFA `KotlinLexer.ts:1755-1757`
 - **decisionsToDFA** — Represents the decisions to DFA in Kotlin `KotlinParser.ts:13769-13771`
 - **decisionsToDFA** — Stores the decisions to DFA for the Unicode classes parser `UnicodeClasses.ts:273-275`
 - **DECR** — Represents a decrement operator in Kotlin code `KotlinLexer.ts:27-27`
 - **DECR** — Represents the decrement operator `KotlinParser.ts:34-34`
 - **DELEGATE** — Represents the delegate keyword `KotlinLexer.ts:77-77`
-- **DELEGATE** — Represents the constant value 71 `KotlinParser.ts:84-84`
+- **DELEGATE** — Represents the token for delegation `KotlinParser.ts:84-84`
 - **DelimitedComment** — Represents a delimited comment in Kotlin code `KotlinLexer.ts:8-8`
 - **DelimitedComment** — A token representing a delimited comment `KotlinParser.ts:15-15`
 - **DISJ** — Represents a logical disjunction operator in Kotlin code `KotlinLexer.ts:29-29`
-- **DISJ** — Represents the disjunction operator `KotlinParser.ts:36-36`
+- **DISJ** — Represents the logical disjunction operator `KotlinParser.ts:36-36`
 - **DIV** — Represents a division operator in Kotlin code `KotlinLexer.ts:23-23`
 - **DIV** — Represents the division operator `KotlinParser.ts:30-30`
 - **DIV_ASSIGNMENT** — Represents a division assignment operator `KotlinLexer.ts:38-38`
-- **DIV_ASSIGNMENT** — Represents the division assignment operator in Kotlin `KotlinParser.ts:45-45`
+- **DIV_ASSIGNMENT** — Represents the division assignment operator `KotlinParser.ts:45-45`
 - **DO** — Represents the 'do' keyword `KotlinLexer.ts:102-102`
-- **DO** — Represents the keyword DO with a value of 96 `KotlinParser.ts:109-109`
+- **DO** — Represents the keyword 'do' with a value of 96 `KotlinParser.ts:109-109`
 - **DOT** — Represents a dot in Kotlin code `KotlinLexer.ts:13-13`
-- **DOT** — Static readonly value representing the dot token `KotlinParser.ts:20-20`
+- **DOT** — Represents the dot character identifier `KotlinParser.ts:20-20`
 - **DOUBLE_ARROW** — Represents a double arrow `KotlinLexer.ts:41-41`
 - **DOUBLE_ARROW** — Represents a double arrow operator `KotlinParser.ts:48-48`
 - **DOUBLE_SEMICOLON** — Represents a double semicolon `KotlinLexer.ts:45-45`
 - **DOUBLE_SEMICOLON** — Represents a double semicolon operator `KotlinParser.ts:52-52`
-- **DoubleLiteral** — Represents a double literal `KotlinLexer.ts:145-145`, `KotlinParser.ts:152-152`
+- **DoubleLiteral** — Represents a double literal `KotlinLexer.ts:145-145`
+- **DoubleLiteral** — Represents a double-precision floating-point literal in Kotlin `KotlinParser.ts:152-152`
 - **DYNAMIC** — Represents the dynamic keyword `KotlinLexer.ts:114-114`
-- **DYNAMIC** — Represents the integer value 108 `KotlinParser.ts:121-121`
+- **DYNAMIC** — Represents the constant value 108 `KotlinParser.ts:121-121`
 - **ELSE** — Represents the 'else' keyword `KotlinLexer.ts:96-96`
-- **ELSE** — Represents the else keyword in `KotlinParser.ts:103-103`
+- **ELSE** — Represents the keyword 'else' with a value of 90 `KotlinParser.ts:103-103`
 - **enterAdditiveExpression** — Parses the start of an additive expression `KotlinParserListener.ts:1061-1061`
 - **enterAdditiveOperator** — Parses the start of an additive operator `KotlinParserListener.ts:1611-1611`
 - **enterAnnotatedDelegationSpecifier** — Parses the start of an annotated delegation specifier `KotlinParserListener.ts:381-381`
@@ -1410,11 +2191,11 @@ UnicodeClasses.ts
 - **enterWhenSubject** — Enters the parsing of a `when` subject `KotlinParserListener.ts:1451-1451`
 - **enterWhileStatement** — Parses a while statement `KotlinParserListener.ts:901-901`
 - **ENUM** — Represents the enum keyword `KotlinLexer.ts:119-119`
-- **ENUM** — Represents the integer value 113 `KotlinParser.ts:126-126`
+- **ENUM** — Represents the constant value 113 `KotlinParser.ts:126-126`
 - **EQEQ** — Represents the equal to operator `KotlinLexer.ts:60-60`
-- **EQEQ** — Represents the equality operator in Kotlin `KotlinParser.ts:67-67`
+- **EQEQ** — Represents an equals sign followed by another equals sign `KotlinParser.ts:67-67`
 - **EQEQEQ** — Represents the equal to or equal to operator `KotlinLexer.ts:61-61`
-- **EQEQEQ** — Represents the triple equality operator in Kotlin `KotlinParser.ts:68-68`
+- **EQEQEQ** — Represents an equals sign followed by two more equals signs `KotlinParser.ts:68-68`
 - **ErrorCharacter** — Represents an error character in the Kotlin lexer `KotlinLexer.ts:179-179`
 - **ErrorCharacter** — Represents an error character in the parser `KotlinParser.ts:186-186`
 - **EXCL_EQ** — Represents the not equal to operator `KotlinLexer.ts:57-57`
@@ -1600,51 +2381,53 @@ UnicodeClasses.ts
 - **exitWhenSubject** — Exits the parsing of a `when` subject `KotlinParserListener.ts:1456-1456`
 - **exitWhileStatement** — Exits the while statement parsing `KotlinParserListener.ts:906-906`
 - **EXPECT** — Represents an expect keyword `KotlinLexer.ts:141-141`
-- **EXPECT** — Represents the EXPECT keyword in Kotlin `KotlinParser.ts:148-148`
+- **EXPECT** — Used to expect a certain value in a context `KotlinParser.ts:148-148`
 - **EXTERNAL** — Represents the external keyword `KotlinLexer.ts:129-129`
-- **EXTERNAL** — Represents a constant value for external in the parser `KotlinParser.ts:136-136`
+- **EXTERNAL** — Represents the token for external in Kotlin `KotlinParser.ts:136-136`
 - **FIELD** — Represents the field keyword `KotlinLexer.ts:70-70`
-- **FIELD** — Represents the field keyword in Kotlin `KotlinParser.ts:77-77`
+- **FIELD** — Represents the token for the field keyword in Kotlin `KotlinParser.ts:77-77`
 - **FieldIdentifier** — Represents a field identifier in the Kotlin lexer `KotlinLexer.ts:156-156`
 - **FieldIdentifier** — Represents a field identifier in Kotlin `KotlinParser.ts:163-163`
 - **FILE** — Represents the file keyword `KotlinLexer.ts:69-69`
-- **FILE** — Represents the file keyword in Kotlin `KotlinParser.ts:76-76`
+- **FILE** — Represents the token for the file keyword in Kotlin `KotlinParser.ts:76-76`
 - **FINAL** — Represents a final keyword `KotlinLexer.ts:133-133`
-- **FINAL** — Represents a constant value for final in the parser `KotlinParser.ts:140-140`
+- **FINAL** — Represents the token for final in Kotlin `KotlinParser.ts:140-140`
 - **FINALLY** — Represents the 'finally' keyword `KotlinLexer.ts:100-100`
-- **FINALLY** — Represents the keyword FINALLY with a value of 94 `KotlinParser.ts:107-107`
-- **FloatLiteral** — Represents a float literal `KotlinLexer.ts:144-144`, `KotlinParser.ts:151-151`
+- **FINALLY** — Represents the keyword 'finally' with a value of 94 `KotlinParser.ts:107-107`
+- **FloatLiteral** — Represents a float literal `KotlinLexer.ts:144-144`
+- **FloatLiteral** — Represents a floating-point literal in Kotlin `KotlinParser.ts:151-151`
 - **FOR** — Represents the 'for' keyword `KotlinLexer.ts:101-101`
-- **FOR** — Represents the keyword FOR with a value of 95 `KotlinParser.ts:108-108`
+- **FOR** — Represents the keyword 'for' with a value of 95 `KotlinParser.ts:108-108`
 - **FUN** — Represents a function declaration `KotlinLexer.ts:82-82`
-- **FUN** — Represents the function keyword in Kotlin `KotlinParser.ts:89-89`
+- **FUN** — Represents the token for function declaration `KotlinParser.ts:89-89`
 - **GE** — Represents the greater than or equal to operator `KotlinLexer.ts:56-56`
 - **GE** — Represents a greater than or equal to operator `KotlinParser.ts:63-63`
 - **GET** — Represents the get keyword `KotlinLexer.ts:72-72`
-- **GET** — Represents the get keyword in Kotlin `KotlinParser.ts:79-79`
+- **GET** — Represents the token for the get keyword in Kotlin `KotlinParser.ts:79-79`
 - **HASH** — Represents a hash `KotlinLexer.ts:46-46`
 - **HASH** — Represents a hash operator `KotlinParser.ts:53-53`
 - **HexLiteral** — Represents a hex literal `KotlinLexer.ts:147-147`
-- **HexLiteral** — Represents the HEX_LITERAL keyword in Kotlin `KotlinParser.ts:154-154`
-- **Identifier** — Represents an identifier `KotlinLexer.ts:154-154`, `KotlinParser.ts:161-161`
+- **HexLiteral** — Represents a hexadecimal literal in Kotlin `KotlinParser.ts:154-154`
+- **Identifier** — Represents an identifier `KotlinLexer.ts:154-154`
+- **Identifier** — Represents an identifier value `KotlinParser.ts:161-161`
 - **IdentifierOrSoftKey** — Represents an identifier or a soft key in the Kotlin lexer `KotlinLexer.ts:155-155`
 - **IdentifierOrSoftKey** — Represents an identifier or a soft key in Kotlin `KotlinParser.ts:162-162`
 - **IF** — Represents the 'if' keyword `KotlinLexer.ts:95-95`
-- **IF** — Represents the if keyword in Kotlin `KotlinParser.ts:102-102`
+- **IF** — Represents the keyword 'if' with a value of 89 `KotlinParser.ts:102-102`
 - **IMPORT** — Represents the import keyword `KotlinLexer.ts:79-79`
-- **IMPORT** — Represents the constant value 73 `KotlinParser.ts:86-86`
+- **IMPORT** — Represents the token for import statements `KotlinParser.ts:86-86`
 - **IN** — Represents the in keyword `KotlinLexer.ts:110-110`
-- **IN** — Represents the integer value 104 `KotlinParser.ts:117-117`
+- **IN** — Represents the keyword 'in' with a value of 104 `KotlinParser.ts:117-117`
 - **INCR** — Represents an increment operator in Kotlin code `KotlinLexer.ts:26-26`
 - **INCR** — Represents the increment operator `KotlinParser.ts:33-33`
 - **INFIX** — Represents the infix keyword `KotlinLexer.ts:128-128`
-- **INFIX** — Represents a constant value for infix in the parser `KotlinParser.ts:135-135`
+- **INFIX** — Represents the token for infix in Kotlin `KotlinParser.ts:135-135`
 - **INIT** — Represents an initialization block `KotlinLexer.ts:90-90`
-- **INIT** — Represents the init keyword in Kotlin `KotlinParser.ts:97-97`
+- **INIT** — Represents the keyword 'init' with a value of 84 `KotlinParser.ts:97-97`
 - **INLINE** — Represents the inline keyword `KotlinLexer.ts:127-127`
-- **INLINE** — Represents a constant value for inline in the parser `KotlinParser.ts:134-134`
+- **INLINE** — Represents the token for inline in Kotlin `KotlinParser.ts:134-134`
 - **INNER** — Represents the inner keyword `KotlinLexer.ts:123-123`
-- **INNER** — Represents a constant value for inner in the parser `KotlinParser.ts:130-130`
+- **INNER** — Represents the constant value 117 `KotlinParser.ts:130-130`
 - **Inside** — Represents the inside of a string `KotlinLexer.ts:182-182`
 - **Inside_Comment** — Represents being inside a comment in the Kotlin lexer `KotlinLexer.ts:176-176`
 - **Inside_Comment** — Represents being inside a comment in Kotlin `KotlinParser.ts:183-183`
@@ -1653,119 +2436,119 @@ UnicodeClasses.ts
 - **Inside_WS** — Represents being inside whitespace in the Kotlin lexer `KotlinLexer.ts:177-177`
 - **Inside_WS** — Represents whitespace within a specific context `KotlinParser.ts:184-184`
 - **IntegerLiteral** — Represents an integer literal `KotlinLexer.ts:146-146`
-- **IntegerLiteral** — Represents the INTEGER_LITERAL keyword in Kotlin `KotlinParser.ts:153-153`
+- **IntegerLiteral** — Represents an integer literal in Kotlin `KotlinParser.ts:153-153`
 - **INTERFACE** — Represents an interface declaration `KotlinLexer.ts:81-81`
-- **INTERFACE** — Represents the constant value `KotlinParser.ts:88-88`
+- **INTERFACE** — Represents the token for interface declaration `KotlinParser.ts:88-88`
 - **INTERNAL** — Represents the internal keyword `KotlinLexer.ts:118-118`
-- **INTERNAL** — Represents the integer value 112 `KotlinParser.ts:125-125`
+- **INTERNAL** — Represents the constant value 112 `KotlinParser.ts:125-125`
 - **IS** — Represents the is keyword `KotlinLexer.ts:109-109`
-- **IS** — Represents the keyword IS with a value of 103 `KotlinParser.ts:116-116`
+- **IS** — Represents the keyword 'is' with a value of 103 `KotlinParser.ts:116-116`
 - **LANGLE** — Represents a left angle bracket `KotlinLexer.ts:53-53`, `KotlinParser.ts:60-60`
 - **LATEINIT** — Represents a lateinit keyword `KotlinLexer.ts:136-136`
-- **LATEINIT** — Represents the LATEINIT keyword in Kotlin `KotlinParser.ts:143-143`
+- **LATEINIT** — Represents the token for lateinit in Kotlin `KotlinParser.ts:143-143`
 - **LCURL** — Represents a left curly brace in Kotlin code `KotlinLexer.ts:19-19`
-- **LCURL** — Static readonly value representing the left curly brace token `KotlinParser.ts:26-26`
+- **LCURL** — Represents the left curly brace character identifier `KotlinParser.ts:26-26`
 - **LE** — Represents the less than or equal to operator `KotlinLexer.ts:55-55`
 - **LE** — Represents a less than or equal to operator `KotlinParser.ts:62-62`
 - **LineComment** — Represents a line comment in Kotlin code `KotlinLexer.ts:9-9`
 - **LineComment** — A token representing a line comment `KotlinParser.ts:16-16`
-- **LineStrEscapedChar** — Represents an escaped character in a line string `KotlinLexer.ts:169-169`
-- **LineStrEscapedChar** — Represents a line string escaped character `KotlinParser.ts:176-176`
+- **LineStrEscapedChar** — Represents an escaped character in a line string `KotlinLexer.ts:169-169`, `KotlinParser.ts:176-176`
 - **LineStrExprStart** — Represents the start of an expression in a line string `KotlinLexer.ts:170-170`
-- **LineStrExprStart** — Indicates the start of a line string expression `KotlinParser.ts:177-177`
+- **LineStrExprStart** — Represents the start of a line string expression `KotlinParser.ts:177-177`
 - **LineString** — Represents a line of string `KotlinLexer.ts:180-180`
 - **LineStrRef** — Represents a reference to a line string in the Kotlin lexer `KotlinLexer.ts:167-167`
 - **LineStrRef** — Represents a line string reference `KotlinParser.ts:174-174`
 - **LineStrText** — Represents the text of a line string in the Kotlin lexer `KotlinLexer.ts:168-168`
 - **LineStrText** — Represents a line string text `KotlinParser.ts:175-175`
-- **literalNames** — Contains the names of various literal tokens `KotlinLexer.ts:186-340`
-- **literalNames** — Stores names of literal tokens `KotlinParser.ts:362-516`
+- **literalNames** — Contains the names of literal tokens `KotlinLexer.ts:186-340`
+- **literalNames** — Stores a list of literal names for parsing `KotlinParser.ts:362-516`
 - **literalNames** — Stores an empty array of literal names `UnicodeClasses.ts:17-17`
-- **LongLiteral** — Represents a long literal `KotlinLexer.ts:150-150`, `KotlinParser.ts:157-157`
+- **LongLiteral** — Represents a long literal `KotlinLexer.ts:150-150`
+- **LongLiteral** — Represents a long literal in Kotlin `KotlinParser.ts:157-157`
 - **LPAREN** — Represents a left parenthesis in Kotlin code `KotlinLexer.ts:15-15`
-- **LPAREN** — Static readonly value representing the left parenthesis token `KotlinParser.ts:22-22`
+- **LPAREN** — Represents the left parenthesis character identifier `KotlinParser.ts:22-22`
 - **LSQUARE** — Represents a left square bracket in Kotlin code `KotlinLexer.ts:17-17`
-- **LSQUARE** — Static readonly value representing the left square bracket token `KotlinParser.ts:24-24`
+- **LSQUARE** — Represents the left square bracket character identifier `KotlinParser.ts:24-24`
 - **MOD** — Represents a modulo operator in Kotlin code `KotlinLexer.ts:22-22`
-- **MOD** — Represents the modulo operator `KotlinParser.ts:29-29`
+- **MOD** — Represents the modulo operator identifier `KotlinParser.ts:29-29`
 - **MOD_ASSIGNMENT** — Represents a modulo assignment operator `KotlinLexer.ts:39-39`
-- **MOD_ASSIGNMENT** — Represents the modulo assignment operator in Kotlin `KotlinParser.ts:46-46`
-- **modeNames** — Defines the names of different modes `KotlinLexer.ts:519-519`
-- **modeNames** — Defines the names of modes `UnicodeClasses.ts:30-30`
+- **MOD_ASSIGNMENT** — Represents the modulo assignment operator `KotlinParser.ts:46-46`
+- **modeNames** — Defines the names of different modes `KotlinLexer.ts:519-519`, `UnicodeClasses.ts:30-30`
 - **MULT** — Represents a multiplication operator in Kotlin code `KotlinLexer.ts:21-21`
-- **MULT** — Represents the multiplication operator `KotlinParser.ts:28-28`
+- **MULT** — Represents the multiplication operator identifier `KotlinParser.ts:28-28`
 - **MULT_ASSIGNMENT** — Represents a multiplication assignment operator `KotlinLexer.ts:37-37`
-- **MULT_ASSIGNMENT** — Represents the multiplication assignment operator in Kotlin `KotlinParser.ts:44-44`
+- **MULT_ASSIGNMENT** — Represents the multiplication assignment operator `KotlinParser.ts:44-44`
 - **MultiLineStrExprStart** — Represents the start of an expression in a multi-line string `KotlinLexer.ts:175-175`
-- **MultiLineStrExprStart** — Indicates the start of a multi-line string expression `KotlinParser.ts:182-182`
+- **MultiLineStrExprStart** — Represents a multi-line string expression start identifier `KotlinParser.ts:182-182`
 - **MultiLineString** — Represents a multi-line string `KotlinLexer.ts:181-181`
 - **MultiLineStringQuote** — Represents a multi-line string quote in the Kotlin lexer `KotlinLexer.ts:172-172`
-- **MultiLineStringQuote** — Represents a multi-line string quote `KotlinParser.ts:179-179`
+- **MultiLineStringQuote** — Represents a multi-line string quote identifier `KotlinParser.ts:179-179`
 - **MultiLineStrRef** — Represents a reference to a multi-line string in the Kotlin lexer `KotlinLexer.ts:173-173`
-- **MultiLineStrRef** — Refers to a multi-line string reference `KotlinParser.ts:180-180`
+- **MultiLineStrRef** — Represents a multi-line string reference identifier `KotlinParser.ts:180-180`
 - **MultiLineStrText** — Represents the text of a multi-line string in the Kotlin lexer `KotlinLexer.ts:174-174`
-- **MultiLineStrText** — Contains the text of a multi-line string `KotlinParser.ts:181-181`
+- **MultiLineStrText** — Represents a multi-line string text identifier `KotlinParser.ts:181-181`
 - **NL** — Represents newline in Kotlin code `KotlinLexer.ts:11-11`
-- **NL** — Static readonly value representing the newline token `KotlinParser.ts:18-18`
+- **NL** — Represents the newline character identifier `KotlinParser.ts:18-18`
 - **NOINLINE** — Represents a noinline keyword `KotlinLexer.ts:138-138`
-- **NOINLINE** — Represents the NOINLINE keyword in Kotlin `KotlinParser.ts:145-145`
+- **NOINLINE** — Indicates a function that should not be inlined `KotlinParser.ts:145-145`
 - **NOT_IN** — Represents the not in keyword `KotlinLexer.ts:112-112`
-- **NOT_IN** — Represents the integer value 106 `KotlinParser.ts:119-119`
+- **NOT_IN** — Represents the keyword 'not in' with a value of 106 `KotlinParser.ts:119-119`
 - **NOT_IS** — Represents the not is keyword `KotlinLexer.ts:111-111`
-- **NOT_IS** — Represents the integer value 105 `KotlinParser.ts:118-118`
-- **NullLiteral** — Represents a null literal `KotlinLexer.ts:152-152`, `KotlinParser.ts:159-159`
+- **NOT_IS** — Represents the keyword 'not is' with a value of 105 `KotlinParser.ts:118-118`
+- **NullLiteral** — Represents a null literal `KotlinLexer.ts:152-152`
+- **NullLiteral** — Represents a null literal value `KotlinParser.ts:159-159`
 - **OBJECT** — Represents an object declaration `KotlinLexer.ts:83-83`
-- **OBJECT** — Represents the object keyword in Kotlin `KotlinParser.ts:90-90`
+- **OBJECT** — Represents the token for object declaration `KotlinParser.ts:90-90`
 - **OPEN** — Represents an open keyword `KotlinLexer.ts:134-134`
-- **OPEN** — Represents the OPEN keyword in Kotlin `KotlinParser.ts:141-141`
+- **OPEN** — Represents the token for open in Kotlin `KotlinParser.ts:141-141`
 - **OPERATOR** — Represents the operator keyword `KotlinLexer.ts:126-126`
-- **OPERATOR** — Represents a constant value for operator in the parser `KotlinParser.ts:133-133`
+- **OPERATOR** — Represents the token for operator in Kotlin `KotlinParser.ts:133-133`
 - **OUT** — Represents the out keyword `KotlinLexer.ts:113-113`
-- **OUT** — Represents the integer value 107 `KotlinParser.ts:120-120`
+- **OUT** — Represents the constant value 107 `KotlinParser.ts:120-120`
 - **OVERRIDE** — Represents an override keyword `KotlinLexer.ts:131-131`
-- **OVERRIDE** — Represents a constant value for override in the parser `KotlinParser.ts:138-138`
+- **OVERRIDE** — Represents the token for override in Kotlin `KotlinParser.ts:138-138`
 - **PACKAGE** — Represents the package keyword `KotlinLexer.ts:78-78`
-- **PACKAGE** — Represents the constant value 72 `KotlinParser.ts:85-85`
+- **PACKAGE** — Represents the token for package declaration `KotlinParser.ts:85-85`
 - **PARAM** — Represents the param keyword `KotlinLexer.ts:75-75`
-- **PARAM** — Represents the constant value 69 `KotlinParser.ts:82-82`
+- **PARAM** — Represents a static parameter identifier `KotlinParser.ts:82-82`
 - **PRIVATE** — Represents the private keyword `KotlinLexer.ts:116-116`
-- **PRIVATE** — Represents the integer value 110 `KotlinParser.ts:123-123`
+- **PRIVATE** — Represents the constant value 110 `KotlinParser.ts:123-123`
 - **PROPERTY** — Represents the property keyword `KotlinLexer.ts:71-71`
-- **PROPERTY** — Represents the property keyword in Kotlin `KotlinParser.ts:78-78`
+- **PROPERTY** — Represents the token for the property keyword in Kotlin `KotlinParser.ts:78-78`
 - **PROTECTED** — Represents the protected keyword `KotlinLexer.ts:117-117`
-- **PROTECTED** — Represents the integer value 111 `KotlinParser.ts:124-124`
+- **PROTECTED** — Represents the constant value 111 `KotlinParser.ts:124-124`
 - **PUBLIC** — Represents the public keyword `KotlinLexer.ts:115-115`
-- **PUBLIC** — Represents the integer value 109 `KotlinParser.ts:122-122`
-- **QUEST_NO_WS** — Represents a question mark without whitespace `KotlinLexer.ts:52-52`
-- **QUEST_NO_WS** — Represents a question mark with no whitespace `KotlinParser.ts:59-59`
-- **QUEST_WS** — Represents a question mark with whitespace `KotlinLexer.ts:51-51`, `KotlinParser.ts:58-58`
+- **PUBLIC** — Represents the constant value 109 `KotlinParser.ts:122-122`
+- **QUEST_NO_WS** — Represents a question mark without whitespace `KotlinLexer.ts:52-52`, `KotlinParser.ts:59-59`
+- **QUEST_WS** — Represents a question mark with whitespace `KotlinLexer.ts:51-51`
+- **QUEST_WS** — Represents a question mark followed by whitespace `KotlinParser.ts:58-58`
 - **QUOTE_CLOSE** — Represents the closing quote character in the Kotlin lexer `KotlinLexer.ts:166-166`
 - **QUOTE_CLOSE** — Represents the closing quote character `KotlinParser.ts:173-173`
 - **QUOTE_OPEN** — Represents the opening quote character in the Kotlin lexer `KotlinLexer.ts:157-157`
 - **QUOTE_OPEN** — Represents the opening quote character `KotlinParser.ts:164-164`
 - **RANGE** — Represents a range `KotlinLexer.ts:42-42`
-- **RANGE** — Represents the range operator in Kotlin `KotlinParser.ts:49-49`
+- **RANGE** — Represents the range operator `KotlinParser.ts:49-49`
 - **RANGE_UNTIL** — Represents a range until `KotlinLexer.ts:43-43`
-- **RANGE_UNTIL** — Represents the range until operator in Kotlin `KotlinParser.ts:50-50`
+- **RANGE_UNTIL** — Represents the range until operator `KotlinParser.ts:50-50`
 - **RANGLE** — Represents a right angle bracket `KotlinLexer.ts:54-54`, `KotlinParser.ts:61-61`
 - **RCURL** — Represents a right curly brace in Kotlin code `KotlinLexer.ts:20-20`
-- **RCURL** — Represents the right curly brace token `KotlinParser.ts:27-27`
+- **RCURL** — Represents the right curly brace character identifier `KotlinParser.ts:27-27`
 - **RealLiteral** — Represents a real literal `KotlinLexer.ts:143-143`
-- **RealLiteral** — Represents the REAL_LITERAL keyword in Kotlin `KotlinParser.ts:150-150`
+- **RealLiteral** — Represents a real literal in Kotlin `KotlinParser.ts:150-150`
 - **RECEIVER** — Represents the receiver keyword `KotlinLexer.ts:74-74`
-- **RECEIVER** — Represents the constant value 68 `KotlinParser.ts:81-81`
+- **RECEIVER** — Represents a static receiver identifier `KotlinParser.ts:81-81`
 - **REIFIED** — Represents a reified keyword `KotlinLexer.ts:140-140`
-- **REIFIED** — Represents the REIFIED keyword in Kotlin `KotlinParser.ts:147-147`
+- **REIFIED** — Denotes a reified function that can be accessed at runtime `KotlinParser.ts:147-147`
 - **RESERVED** — Represents reserved keywords in Kotlin code `KotlinLexer.ts:12-12`
 - **RESERVED** — A token representing a reserved keyword `KotlinParser.ts:19-19`
 - **RETURN** — Represents the return keyword `KotlinLexer.ts:105-105`
-- **RETURN** — Represents the keyword RETURN with a value of 99 `KotlinParser.ts:112-112`
+- **RETURN** — Represents the keyword 'return' with a value of 99 `KotlinParser.ts:112-112`
 - **RETURN_AT** — Represents the return keyword with an at sign `KotlinLexer.ts:64-64`
-- **RETURN_AT** — Represents the return keyword in Kotlin `KotlinParser.ts:71-71`
+- **RETURN_AT** — Represents the token for the return keyword in Kotlin `KotlinParser.ts:71-71`
 - **RPAREN** — Represents a right parenthesis in Kotlin code `KotlinLexer.ts:16-16`
-- **RPAREN** — Static readonly value representing the right parenthesis token `KotlinParser.ts:23-23`
+- **RPAREN** — Represents the right parenthesis character identifier `KotlinParser.ts:23-23`
 - **RSQUARE** — Represents a right square bracket in Kotlin code `KotlinLexer.ts:18-18`
-- **RSQUARE** — Static readonly value representing the right square bracket token `KotlinParser.ts:25-25`
+- **RSQUARE** — Represents the right square bracket character identifier `KotlinParser.ts:25-25`
 - **RULE_additiveExpression** — Represents an additive expression `KotlinParser.ts:274-274`
 - **RULE_additiveOperator** — Parses an additive operator `KotlinParser.ts:329-329`
 - **RULE_annotatedDelegationSpecifier** — Defines the structure of an annotated delegation specifier `KotlinParser.ts:206-206`
@@ -1941,73 +2724,80 @@ UnicodeClasses.ts
 - **RULE_whenSubject** — Parses the subject of a `when` expression `KotlinParser.ts:313-313`
 - **RULE_whileStatement** — Represents a while loop statement `KotlinParser.ts:258-258`
 - **ruleNames** — Lists the names of lexical rules `KotlinLexer.ts:521-838`
-- **ruleNames** — Stores names of parsing rules `KotlinParser.ts:694-869`
-- **ruleNames** — Lists the names of rules for Unicode classes `UnicodeClasses.ts:32-40`
+- **ruleNames** — Stores a list of rule names for parsing `KotlinParser.ts:694-869`
+- **ruleNames** — Lists the names of Unicode class rules `UnicodeClasses.ts:32-40`
 - **SEALED** — Represents the sealed keyword `KotlinLexer.ts:120-120`
-- **SEALED** — Represents the integer value 114 `KotlinParser.ts:127-127`
+- **SEALED** — Represents the constant value 114 `KotlinParser.ts:127-127`
 - **SEMICOLON** — Represents a semicolon `KotlinLexer.ts:33-33`
-- **SEMICOLON** — Represents the semicolon character in Kotlin `KotlinParser.ts:40-40`
+- **SEMICOLON** — Represents the semicolon operator `KotlinParser.ts:40-40`
 - **SET** — Represents the set keyword `KotlinLexer.ts:73-73`
-- **SET** — Represents the constant value 67 `KotlinParser.ts:80-80`
+- **SET** — Represents the token for the set keyword in `KotlinParser.ts:80-80`
 - **SETPARAM** — Represents the setparam keyword `KotlinLexer.ts:76-76`
-- **SETPARAM** — Represents the constant value 70 `KotlinParser.ts:83-83`
+- **SETPARAM** — Represents the token for setting parameters `KotlinParser.ts:83-83`
 - **ShebangLine** — Represents a shebang line in Kotlin code `KotlinLexer.ts:7-7`
-- **ShebangLine** — Static readonly value representing the shebang line token `KotlinParser.ts:14-14`
+- **ShebangLine** — Represents the shebang line identifier `KotlinParser.ts:14-14`
 - **SINGLE_QUOTE** — Represents the single quote character `KotlinLexer.ts:62-62`
 - **SINGLE_QUOTE** — Represents a single quote `KotlinParser.ts:69-69`
 - **SUB** — Represents a subtraction operator in Kotlin code `KotlinLexer.ts:25-25`
 - **SUB** — Represents the subtraction operator `KotlinParser.ts:32-32`
 - **SUB_ASSIGNMENT** — Represents a subtraction assignment operator `KotlinLexer.ts:36-36`
-- **SUB_ASSIGNMENT** — Represents the subtraction assignment operator in Kotlin `KotlinParser.ts:43-43`
+- **SUB_ASSIGNMENT** — Represents the subtraction assignment operator `KotlinParser.ts:43-43`
 - **SUPER** — Represents the 'super' keyword `KotlinLexer.ts:92-92`
-- **SUPER** — Represents the super keyword in Kotlin `KotlinParser.ts:99-99`
+- **SUPER** — Represents the keyword 'super' with a value of 86 `KotlinParser.ts:99-99`
 - **SUPER_AT** — Represents the super keyword with an at sign `KotlinLexer.ts:68-68`
-- **SUPER_AT** — Represents the super keyword in Kotlin `KotlinParser.ts:75-75`
+- **SUPER_AT** — Represents the token for the super keyword in Kotlin `KotlinParser.ts:75-75`
 - **SUSPEND** — Represents a suspend keyword `KotlinLexer.ts:130-130`
-- **SUSPEND** — Represents a constant value for suspend in the parser `KotlinParser.ts:137-137`
+- **SUSPEND** — Represents the token for suspend in Kotlin `KotlinParser.ts:137-137`
 - **symbolicNames** — Lists the names of symbolic tokens `KotlinLexer.ts:342-517`
-- **symbolicNames** — Stores names of symbolic tokens `KotlinParser.ts:518-693`
-- **symbolicNames** — Contains symbolic names for Unicode classes `UnicodeClasses.ts:19-28`
+- **symbolicNames** — Stores a list of symbolic names for parsing `KotlinParser.ts:518-693`
+- **symbolicNames** — Contains a list of symbolic names for Unicode classes `UnicodeClasses.ts:19-28`
 - **TAILREC** — Represents the tailrec keyword `KotlinLexer.ts:125-125`
-- **TAILREC** — Represents a constant value for tailrec in the parser `KotlinParser.ts:132-132`
+- **TAILREC** — Represents the token for tail recursion in Kotlin `KotlinParser.ts:132-132`
 - **THIS** — Represents the 'this' keyword `KotlinLexer.ts:91-91`
-- **THIS** — Represents the this keyword in Kotlin `KotlinParser.ts:98-98`
+- **THIS** — Represents the keyword 'this' with a value of 85 `KotlinParser.ts:98-98`
 - **THIS_AT** — Represents the this keyword with an at sign `KotlinLexer.ts:67-67`
-- **THIS_AT** — Represents the this keyword in Kotlin `KotlinParser.ts:74-74`
+- **THIS_AT** — Represents the token for the this keyword in Kotlin `KotlinParser.ts:74-74`
 - **THROW** — Represents the 'throw' keyword `KotlinLexer.ts:104-104`
-- **THROW** — Represents the keyword THROW with a value of 98 `KotlinParser.ts:111-111`
+- **THROW** — Represents the keyword 'throw' with a value of 98 `KotlinParser.ts:111-111`
 - **TRIPLE_QUOTE_CLOSE** — Represents the closing triple quote character in the Kotlin lexer `KotlinLexer.ts:171-171`
-- **TRIPLE_QUOTE_CLOSE** — Marks the end of a triple-quoted string `KotlinParser.ts:178-178`
+- **TRIPLE_QUOTE_CLOSE** — Represents the closing triple quote character `KotlinParser.ts:178-178`
 - **TRIPLE_QUOTE_OPEN** — Represents the opening triple quote character in the Kotlin lexer `KotlinLexer.ts:158-158`
 - **TRIPLE_QUOTE_OPEN** — Represents the opening triple quote character `KotlinParser.ts:165-165`
 - **TRY** — Represents the 'try' keyword `KotlinLexer.ts:98-98`
-- **TRY** — Represents the keyword TRY with a value of 92 `KotlinParser.ts:105-105`
+- **TRY** — Represents the keyword 'try' with a value of 92 `KotlinParser.ts:105-105`
 - **TYPE_ALIAS** — Represents a type alias declaration `KotlinLexer.ts:86-86`
-- **TYPE_ALIAS** — Represents the type alias keyword in Kotlin `KotlinParser.ts:93-93`
+- **TYPE_ALIAS** — Represents the token for type alias declaration `KotlinParser.ts:93-93`
 - **TYPEOF** — Represents the 'typeof' keyword `KotlinLexer.ts:93-93`
 - **TYPEOF** — Represents the type of an expression in Kotlin `KotlinParser.ts:100-100`
-- **UNICODE_CLASS_LL** — Represents a Unicode class for lowercase letters `KotlinLexer.ts:159-159`, `KotlinParser.ts:166-166`, `UnicodeClasses.ts:7-7`
-- **UNICODE_CLASS_LM** — Represents a Unicode class for lowercase letters and modifiers `KotlinLexer.ts:160-160`, `KotlinParser.ts:167-167`
+- **UNICODE_CLASS_LL** — Represents a Unicode class for lowercase letters `KotlinLexer.ts:159-159`, `KotlinParser.ts:166-166`
+- **UNICODE_CLASS_LL** — Represents the Unicode class for lowercase letters `UnicodeClasses.ts:7-7`
+- **UNICODE_CLASS_LM** — Represents a Unicode class for lowercase letters and modifiers `KotlinLexer.ts:160-160`
+- **UNICODE_CLASS_LM** — Represents a Unicode class for lowercase letters `KotlinParser.ts:167-167`
 - **UNICODE_CLASS_LM** — Represents a Unicode class for lowercase letters with modifiers `UnicodeClasses.ts:8-8`
-- **UNICODE_CLASS_LO** — Represents a Unicode class for lowercase letters and other characters `KotlinLexer.ts:161-161`, `KotlinParser.ts:168-168`
+- **UNICODE_CLASS_LO** — Represents a Unicode class for lowercase letters and other characters `KotlinLexer.ts:161-161`
+- **UNICODE_CLASS_LO** — Represents a Unicode class for lowercase letters `KotlinParser.ts:168-168`
 - **UNICODE_CLASS_LO** — Represents a Unicode class for lowercase letters with other modifiers `UnicodeClasses.ts:9-9`
-- **UNICODE_CLASS_LT** — Represents a Unicode class for lowercase letters and other characters `KotlinLexer.ts:162-162`, `KotlinParser.ts:169-169`
+- **UNICODE_CLASS_LT** — Represents a Unicode class for lowercase letters and other characters `KotlinLexer.ts:162-162`
+- **UNICODE_CLASS_LT** — Represents a Unicode class for lowercase letters `KotlinParser.ts:169-169`
 - **UNICODE_CLASS_LT** — Represents a Unicode class for lowercase letters with other modifiers `UnicodeClasses.ts:10-10`
 - **UNICODE_CLASS_LU** — Represents a Unicode class for uppercase letters `KotlinLexer.ts:163-163`, `KotlinParser.ts:170-170`
 - **UNICODE_CLASS_LU** — Represents a Unicode class for lowercase letters with other modifiers `UnicodeClasses.ts:11-11`
-- **UNICODE_CLASS_ND** — Represents a Unicode class for numbers and digits `KotlinLexer.ts:164-164`, `KotlinParser.ts:171-171`
+- **UNICODE_CLASS_ND** — Represents a Unicode class for numbers and digits `KotlinLexer.ts:164-164`
+- **UNICODE_CLASS_ND** — Represents a Unicode class for numeric digits `KotlinParser.ts:171-171`
 - **UNICODE_CLASS_ND** — Represents a Unicode class for numbers `UnicodeClasses.ts:12-12`
-- **UNICODE_CLASS_NL** — Represents a Unicode class for numbers and letters `KotlinLexer.ts:165-165`, `KotlinParser.ts:172-172`
+- **UNICODE_CLASS_NL** — Represents a Unicode class for numbers and letters `KotlinLexer.ts:165-165`
+- **UNICODE_CLASS_NL** — Represents a Unicode class for newline characters `KotlinParser.ts:172-172`
 - **UNICODE_CLASS_NL** — Represents a Unicode class for numbers with other modifiers `UnicodeClasses.ts:13-13`
-- **UnsignedLiteral** — Represents an unsigned literal `KotlinLexer.ts:149-149`, `KotlinParser.ts:156-156`
+- **UnsignedLiteral** — Represents an unsigned literal `KotlinLexer.ts:149-149`
+- **UnsignedLiteral** — Represents an unsigned literal in Kotlin `KotlinParser.ts:156-156`
 - **VAL** — Represents a value declaration `KotlinLexer.ts:84-84`
-- **VAL** — Represents the val keyword in Kotlin `KotlinParser.ts:91-91`
+- **VAL** — Represents the token for value declaration `KotlinParser.ts:91-91`
 - **VALUE** — Represents the value keyword `KotlinLexer.ts:124-124`
-- **VALUE** — Represents a constant value for value in the parser `KotlinParser.ts:131-131`
+- **VALUE** — Represents the constant value 118 `KotlinParser.ts:131-131`
 - **VAR** — Represents a variable declaration `KotlinLexer.ts:85-85`
-- **VAR** — Represents the variable keyword in Kotlin `KotlinParser.ts:92-92`
+- **VAR** — Represents the token for variable declaration `KotlinParser.ts:92-92`
 - **VARARG** — Represents a vararg keyword `KotlinLexer.ts:137-137`
-- **VARARG** — Represents the VARARG keyword in Kotlin `KotlinParser.ts:144-144`
+- **VARARG** — Represents the variable argument marker in Kotlin `KotlinParser.ts:144-144`
 - **visitAdditiveExpression** — Parses an additive expression `KotlinParserVisitor.ts:717-717`
 - **visitAdditiveOperator** — Parses an additive operator `KotlinParserVisitor.ts:1047-1047`
 - **visitAnnotatedDelegationSpecifier** — Visits an annotated delegation specifier in Kotlin `KotlinParserVisitor.ts:309-309`
@@ -2182,15 +2972,15 @@ UnicodeClasses.ts
 - **visitWhenExpression** — Parses a `when` expression `KotlinParserVisitor.ts:957-957`
 - **visitWhenSubject** — Parses the subject of a `when` expression `KotlinParserVisitor.ts:951-951`
 - **visitWhileStatement** — Parses a while statement `KotlinParserVisitor.ts:621-621`
-- **vocabulary** — Initializes the vocabulary for the lexer using literal and symbolic names `KotlinLexer.ts:1749-1749`
-- **vocabulary** — Initializes the vocabulary for the parser `KotlinParser.ts:13763-13763`
-- **vocabulary** — Initializes a vocabulary with literal, symbolic, and empty arrays `UnicodeClasses.ts:263-267`
+- **vocabulary** — Initializes the vocabulary for the lexer `KotlinLexer.ts:1749-1749`
+- **vocabulary** — Initializes a vocabulary for parsing with literal and symbolic names `KotlinParser.ts:13763-13763`
+- **vocabulary** — Initializes a vocabulary object with specified names `UnicodeClasses.ts:263-267`
 - **WHEN** — Represents the 'when' keyword `KotlinLexer.ts:97-97`
-- **WHEN** — Represents the when keyword in Kotlin `KotlinParser.ts:104-104`
+- **WHEN** — Represents the keyword 'when' with a value of 91 `KotlinParser.ts:104-104`
 - **WHERE** — Represents the 'where' keyword `KotlinLexer.ts:94-94`
-- **WHERE** — Represents the where keyword in Kotlin `KotlinParser.ts:101-101`
+- **WHERE** — Represents the keyword 'where' with a value of 88 `KotlinParser.ts:101-101`
 - **WHILE** — Represents the 'while' keyword `KotlinLexer.ts:103-103`
-- **WHILE** — Represents the keyword WHILE with a value of 97 `KotlinParser.ts:110-110`
+- **WHILE** — Represents the keyword 'while' with a value of 97 `KotlinParser.ts:110-110`
 - **WS** — Represents whitespace in Kotlin code `KotlinLexer.ts:10-10`
 - **WS** — A token representing whitespace `KotlinParser.ts:17-17`
 

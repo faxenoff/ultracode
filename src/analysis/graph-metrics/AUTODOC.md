@@ -101,7 +101,8 @@ graph-metrics-analyzer
 - **authors** — Represents an array of authors in the BusFactorFileEntry `types.ts:71-71`
 - **authors** — Represents an array of author objects with name, email, and files contributed `types.ts:78-78`
 - **busFactor** — Represents the bus factor of a file in the BusFactorFileEntry `types.ts:72-72`
-- **busFactor** — Stores a numerical value representing the bus factor `types.ts:79-79`, `types.ts:86-86`
+- **busFactor** — Stores a numerical value representing the bus factor `types.ts:79-79`
+- **busFactor** — Represents the bus factor of a contributor `types.ts:86-86`
 - **byFile** — A metric calculated per file in the BusFactorFileEntry `types.ts:91-91`
 - **byModule** — A metric calculated per module in the BusFactorModuleEntry `types.ts:92-92`
 - **cache** — Caches results of graph metrics analysis `graph-metrics-analyzer.ts:32-32`
@@ -123,9 +124,10 @@ graph-metrics-analyzer
 - **entries** — An array of PageRankEntry objects `types.ts:15-15`
 - **entries** — An array of CentralityEntry objects representing the results of the centrality analysis `types.ts:63-63`
 - **file** — Represents a map of community IDs to an array of entities with their IDs, names, files, and types `graph-metrics-analyzer.ts:135-135`
-- **file** — Represents a file in the BusFactorFileEntry `types.ts:53-53`, `types.ts:70-70`
 - **file** — The file associated with an entity `types.ts:6-6`
 - **file** — The file associated with an entity in the graph `types.ts:30-30`
+- **file** — Represents a file in the BusFactorFileEntry `types.ts:53-53`
+- **file** — Stores the name of the file being analyzed `types.ts:70-70`
 - **files** — Represents a map of author names to their email and set of files they authored `graph-metrics-analyzer.ts:304-304`
 - **files** — Initializes a map to store module information `graph-metrics-analyzer.ts:345-345`
 - **filesContributed** — Represents the number of files contributed by an author in the BusFactorModuleEntry `types.ts:78-78`
@@ -138,10 +140,11 @@ graph-metrics-analyzer
 - **max** — The maximum PageRank score `types.ts:19-19`
 - **mean** — The mean of the PageRank scores `types.ts:17-17`
 - **median** — The median of the PageRank scores `types.ts:18-18`
-- **metric** — Represents the metric type of the bus factor result `types.ts:62-62`, `types.ts:84-84`
-- **metric** — The type of graph metric being calculated `types.ts:99-99`
 - **metric** — The metric type, such as "pagerank" `types.ts:14-14`
 - **metric** — The type of metric used in the result, such as "louvain" `types.ts:41-41`
+- **metric** — Represents the metric type of the bus factor result `types.ts:62-62`
+- **metric** — The type of graph metric being calculated `types.ts:84-84`
+- **metric** — Represents the type of graph metric being analyzed `types.ts:99-99`
 - **minCommunitySize** — The minimum size of a community in the LouvainResult `types.ts:101-101`
 - **modularity** — A measure of the quality of the community detection in LouvainResult `types.ts:43-43`
 - **module** — Represents a module in the BusFactorModuleEntry `types.ts:77-77`
@@ -149,9 +152,12 @@ graph-metrics-analyzer
 - **name** — Represents a map of file names to a map of author names to their email and line count `graph-metrics-analyzer.ts:274-274`
 - **name** — Represents a map of author names to their email and set of files they authored `graph-metrics-analyzer.ts:304-304`
 - **name** — Represents a map of module names to a map of author names to their email and set of files they authored `graph-metrics-analyzer.ts:345-345`
-- **name** — Represents the name of an author in the BusFactorFileEntry `types.ts:52-52`, `types.ts:71-71`
-- **name** — The name of an entity in the graph `types.ts:29-29`, `types.ts:78-78`
-- **name** — The name of an entity `types.ts:5-5`, `types.ts:89-89`
+- **name** — The name of an entity `types.ts:5-5`
+- **name** — The name of an entity in the graph `types.ts:29-29`
+- **name** — Represents the name of an author in the BusFactorFileEntry `types.ts:52-52`
+- **name** — Stores the name of an author `types.ts:71-71`
+- **name** — Stores the name of an author along with their email and the number of files they contributed `types.ts:78-78`
+- **name** — Represents the top authors in the graph, including their name, email, number of files contributed, and the percentage of total files they contributed `types.ts:89-89`
 - **outDegree** — The out-degree of an entity in the graph `types.ts:10-10`
 - **outDegree** — Represents the out-degree of an entity `types.ts:56-56`
 - **overall** — Represents the overall bus factor of the result `types.ts:85-90`
@@ -162,7 +168,8 @@ graph-metrics-analyzer
 - **projectPath** — The path to the project directory `types.ts:98-98`
 - **result** — Stores the result of graph metrics analysis `graph-metrics-analyzer.ts:23-23`
 - **riskLevel** — Represents the risk level of a file in the BusFactorFileEntry `types.ts:73-73`
-- **riskLevel** — Represents the risk level associated with the bus factor `types.ts:80-80`, `types.ts:87-87`
+- **riskLevel** — Represents the risk level associated with the bus factor `types.ts:80-80`
+- **riskLevel** — Represents the risk level of a contributor based on their bus factor `types.ts:87-87`
 - **role** — The role of an entity in the graph, such as "hub" or "authority" `types.ts:58-58`
 - **score** — The score of an entity in the PageRank algorithm `types.ts:8-8`
 - **scores** — A map of node IDs to their betweenness centrality scores `brandes.ts:17-17`
@@ -177,7 +184,9 @@ graph-metrics-analyzer
 - **totalCommunities** — The total number of communities detected in LouvainResult `types.ts:44-44`
 - **totalDegree** — The total degree of an entity in the graph `types.ts:57-57`
 - **totalNodes** — The total number of nodes in the graph `brandes.ts:19-19`
-- **totalNodes** — Represents the total number of nodes in a graph metric result `types.ts:22-22`, `types.ts:45-45`, `types.ts:64-64`
+- **totalNodes** — Represents the total number of nodes in a graph metric result `types.ts:22-22`
+- **totalNodes** — Represents the total number of nodes in a graph `types.ts:45-45`
+- **totalNodes** — Represents the total number of nodes in the graph `types.ts:64-64`
 - **type** — Represents a map of community IDs to an array of entities with their IDs, names, files, and types `graph-metrics-analyzer.ts:135-135`
 - **type** — The type of an entity `types.ts:7-7`
 - **type** — The type of an entity in the graph `types.ts:31-31`

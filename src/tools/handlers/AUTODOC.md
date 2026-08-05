@@ -1,17 +1,1045 @@
----
-module_name: handlers
-description: "MCP tool handler implementations for analysis, search, modification, branching, merging, and more"
-status: active
-language: typescript
----
-
 # Handlers
 
-> Complete set of MCP tool handler implementations covering code analysis, semantic search, file modification, branch management, merge operations, snapshots, tracing, validation, documentation, and system metrics.
-
-## Overview
+## 🤖 Overview
 
 The handlers module contains all tool handler classes that implement the business logic behind MCP tools. Each handler extends `BaseToolHandler`, validates input via Zod schemas, and returns structured `ToolResult` responses. The module supports lazy loading: basic handlers (graph, entity, metrics, index) load immediately at startup, while all other handlers are dynamically imported on first use via the `ToolRegistry` for faster startup times.
+
+## 🤖 Entity Listing
+
+### Function
+- **[relationships, impactResult]** — Analyzes rename impact if not in preview mode `file-tool-handlers.ts:588-588`
+- **[result, impactResult]** — Resolves or rejects based on the preview flag, analyzing modification impact if not in preview mode `file-tool-handlers.ts:106-106`
+- **activeContracts** — Counts the number of active contracts from swagger specs `graph-tool-handlers.ts:282-282`
+- **activePathSet** — A set of active worktree paths `worktree-tool-handlers.ts:172-172`
+- **activePathSet** — Not present in the provided entities `worktree-tool-handlers.ts:342-342`
+- **added** — Filters changed files to include only added files `branch-tool-handlers.ts:342-342`
+- **allPaths** — Stores all file paths `semantic-tool-handlers.ts:600-600`
+- **apiEntities** — API entities for the AnalyzeApiImpactToolHandler `analysis-tool-handlers.ts:1258-1258`
+- **apiEntityIds** — API entity IDs for the AnalyzeApi type `analysis-tool-handlers.ts:1347-1347`
+- **applyContentPagination** — Applies pagination to content results `semantic-tool-handlers.ts:165-212`
+- **autodocNotEnabledResult** — Result when AutoDoc is not enabled `autodoc-tool-handlers.ts:190-202`
+- **bidirectional** — Manages bidirectional synchronization in AutoDoc `autodoc-tool-handlers.ts:762-765`
+- **buildErrorResponse** — Not present in the provided code `file-tool-utils.ts:97-110`
+- **buildSuccessResponse** — Build success response with optional fields `file-tool-utils.ts:77-92`
+- **changedFiles** — Maps lines to file paths and statuses `branch-tool-handlers.ts:326-326`
+- **changedFiles** — Maps each line of changed files to an object containing the file path and its status `branch-tool-handlers.ts:327-339`
+- **changedSet** — Creates a set of recently changed entity IDs `pattern-tool-handlers.ts:110-110`
+- **changedSet** — Represents a set of changed entities `tracing-tool-handlers.ts:187-187`
+- **changedSet** — Creates a set of entity IDs from the recently changed entities `tracing-tool-handlers.ts:292-292`
+- **changes** — Represents the changes made by the batch_modify tool `zig-compat-tool-handlers.ts:149-156`
+- **comp** — Compares analysis results `analysis-tool-handlers.ts:644-644`
+- **conflict** — Represents a conflict during the merge process `merge-tool-handlers.ts:223-223`
+- **contents** — Stores the contents of the files used in the synthesis process `file-tool-handlers.ts:409-412`
+- **createTracingToolHandlers** — Creates tracing tool handlers for different tracing types `tracing-tool-handlers.ts:652-661`
+- **dbEntities** — Stores filtered database entities based on the provided arguments `db-schema-tool-handlers.ts:29-29`
+- **dbEntityIds** — Stores IDs of database entities `db-schema-tool-handlers.ts:81-81`
+- **deleted** — Filters changed files to include only deleted files `branch-tool-handlers.ts:344-344`
+- **diskToDb** — Converts disk documents to database entities `autodoc-tool-handlers.ts:734-737`
+- **displayList** — Displays the list of worktree agents `worktree-tool-handlers.ts:192-199`
+- **docIds** — Document IDs `autodoc-tool-handlers.ts:313-313`
+- **documents** — Stores a collection of documents `semantic-tool-handlers.ts:353-356`
+- **endpoints** — Endpoints for the Refactoring suggestion output format `analysis-tool-handlers.ts:1197-1197`
+- **endpoints** — Maps swagger entities to their endpoints, including method and path `analysis-tool-handlers.ts:1198-1202`
+- **enrichedRelated** — Enriches related concepts for analysis results `analysis-tool-handlers.ts:633-662`
+- **ensureDirectoryExists** — Not present in the provided code `file-tool-utils.ts:115-119`
+- **entityIds** — Maps paginated entities to their IDs `graph-tool-handlers.ts:147-147`
+- **entityInfos** — Maps all matches to entity information including significance, entity name, and file path `pattern-tool-handlers.ts:98-105`
+- **entityMap** — Entity map for the Refactoring suggestion output format `analysis-tool-handlers.ts:1147-1147`
+- **entityMap** — Maps entities to their respective handler functions `analysis-tool-handlers.ts:1348-1348`
+- **entityMap** — Maps entities to their IDs `db-schema-tool-handlers.ts:82-82`
+- **entityNames** — Stores the names of entities used in the file creation process `file-tool-handlers.ts:514-514`
+- **entityNames** — Extracts names from entities `zig-compat-tool-handlers.ts:300-300`
+- **enums** — Filters database entities to enums `db-schema-tool-handlers.ts:71-71`
+- **errorResult** — Returns a tool result with an error message `history-tool-handlers.ts:27-29`
+- **estimateTokens** — Estimates the number of tokens used in a semantic search `semantic-tool-handlers.ts:140-142`
+- **extractTags** — Extracts tags from the description of a tool `get-tools-for-task-handler.ts:43-47`
+- **filePaths** — Stores the file paths used in the synthesis process `file-tool-handlers.ts:403-403`
+- **files** — Represents the file paths used in the create snapshot operation `snapshot-tool-handlers.ts:42-42`
+- **formatEnum** — Formats an enum entity for display `db-schema-tool-handlers.ts:226-232`
+- **formatIndex** — Formats an index entity for display `db-schema-tool-handlers.ts:215-224`
+- **formatLinqQuery** — Formats a LINQ query entity for display `db-schema-tool-handlers.ts:244-252`
+- **formatOutput** — Formats the output based on the specified format, generating a Mermaid diagram, JSON string, or text summary `stacktrace-tool-handler.ts:139-202`
+- **formatProcedure** — Formats a procedure entity for display `db-schema-tool-handlers.ts:192-202`
+- **formatRedisKey** — Formats a Redis key entity for display `db-schema-tool-handlers.ts:234-242`
+- **formatTable** — Formats a table entity for display `db-schema-tool-handlers.ts:167-181`
+- **formatTrigger** — Formats a trigger entity for display `db-schema-tool-handlers.ts:204-213`
+- **formatView** — Formats a view entity for display `db-schema-tool-handlers.ts:183-190`
+- **generatedEntity** — Finds an entity by its ID from a relationship `graph-tool-handlers.ts:272-272`
+- **generatedFromRels** — Filters relationships to find those of a specific type `graph-tool-handlers.ts:265-265`
+- **generateForDirectory** — Generates the AUTODOC.md template for a specific directory `autodoc-batch-handler.ts:152-246`
+- **getAllDocsAsEntities** — Retrieves all documents as entities in the AutoDoc status `autodoc-tool-handlers.ts:726-728`
+- **getAutoDocManagerFromContext** — Retrieves the AutoDoc manager from the context `autodoc-tool-handlers.ts:176-188`
+- **getChangedDirectories** — Retrieves the directories that have changed `autodoc-batch-handler.ts:133-146`
+- **getDocsAsEntities** — Retrieves documents as entities in the AutoDoc status `autodoc-tool-handlers.ts:721-723`
+- **getEngine** — Returns a shared PatternEngine instance `pattern-tool-handlers.ts:25-30`
+- **hasMore** — Indicates whether there are more results to fetch `semantic-tool-handlers.ts:195-195`
+- **hasSecurityPatterns** — Checks if any match contains a security-related tag `pattern-tool-handlers.ts:87-88`
+- **hasSecurityPatterns** — Checks if any pattern tag contains security-related keywords `pattern-tool-handlers.ts:88-88`
+- **hop1Entities** — Stores entities at one hop away `semantic-tool-handlers.ts:659-659`
+- **hop2Entities** — Retrieves entities from the storage based on hop2 candidates `semantic-tool-handlers.ts:724-724`
+- **hop2SourceIds** — Maps hop2 sources to their source IDs, filtering out invalid IDs `semantic-tool-handlers.ts:682-682`
+- **hop2SourceIds** — Parses hop2Sources to extract and filter source IDs, removing the 'ent:' prefix `semantic-tool-handlers.ts:682-682`
+- **indentedMember** — Stores the indented member to be added to the entity `file-tool-handlers.ts:792-792`
+- **indexes** — Filters database entities to indexes `db-schema-tool-handlers.ts:70-70`
+- **inFile** — Indicates whether the analysis is performed within a file `analysis-tool-handlers.ts:880-883`
+- **invalidFiles** — Filters results to find invalid files `validation-tool-handlers.ts:506-506`
+- **jsonResult** — Returns a tool result with JSON-formatted data `history-tool-handlers.ts:31-33`
+- **keywords** — Keywords used for matching tasks with tools `get-tools-for-task-handler.ts:117-117`
+- **linqQueries** — Filters database entities to LINQ queries or expressions `db-schema-tool-handlers.ts:74-74`
+- **loadSourceCode** — Loads source code for semantic search `semantic-tool-handlers.ts:123-135`
+- **mappedResults** — Maps results to a specific format `semantic-tool-handlers.ts:472-544`
+- **mappedResults** — Maps search results to a structured format, including file paths and content if requested `semantic-tool-handlers.ts:812-828`
+- **mappedResults** — Maps each result to an object containing file path, line numbers, and content if specified `semantic-tool-handlers.ts:1096-1112`
+- **match** — Finds an entity by name in the provided entities array `file-tool-handlers.ts:81-81`
+- **matchesPattern** — Matches a task with a pattern of keywords and tools `get-tools-for-task-handler.ts:127-127`
+- **migrationEntities** — Represents database schema entities that are part of migrations `db-schema-tool-handlers.ts:94-94`
+- **migrations** — Stores migration entities for database schema `db-schema-tool-handlers.ts:95-100`
+- **modified** — Filters changed files to include only modified files `branch-tool-handlers.ts:343-343`
+- **namePattern** — Defines the name pattern for analysis results `analysis-tool-handlers.ts:621-621`
+- **output** — Maps matches to an array of match objects with detailed information `pattern-tool-handlers.ts:181-195`
+- **patterns** — Generates file patterns for extensions `validation-tool-handlers.ts:459-459`
+- **plannedFiles** — Maps filtered entities to planned file outputs `file-tool-handlers.ts:328-332`
+- **procedures** — Filters database entities to procedures or functions `db-schema-tool-handlers.ts:67-67`
+- **promises** — Processes files to validate and returns results `validation-tool-handlers.ts:475-486`
+- **recentlyChangedAnnotation** — Annotates recently changed entities `tracing-tool-handlers.ts:202-202`
+- **recentlyChangedAnnotationBw** — Annotates backward trace nodes with recently-changed status `tracing-tool-handlers.ts:305-305`
+- **recommendations** — Recommendations for relevant tools based on the task description `get-tools-for-task-handler.ts:177-184`
+- **redisKeys** — Filters database entities to Redis keys `db-schema-tool-handlers.ts:72-72`
+- **references** — Stores references to entities affected by the renaming process `file-tool-handlers.ts:592-592`
+- **refIds** — Stores reference IDs of entities affected by the renaming process `file-tool-handlers.ts:600-600`
+- **reindexFiles** — Re-index files using DevAgent `file-tool-utils.ts:54-72`
+- **renamed** — Filters changed files to include only renamed files `branch-tool-handlers.ts:345-345`
+- **renames** — Represents the renames made by the batch_rename tool `zig-compat-tool-handlers.ts:200-205`
+- **rerankedMap** — Maps reranked results `semantic-tool-handlers.ts:365-365`
+- **result** — The result of the list branches operation `branch-tool-handlers.ts:68-72`
+- **result** — Returns a result object containing database schema entities `db-schema-tool-handlers.ts:144-144`
+- **result** — Maps each view to a formatted view `db-schema-tool-handlers.ts:145-145`
+- **result** — Maps each procedure to a formatted procedure `db-schema-tool-handlers.ts:146-146`
+- **result** — Maps each trigger to a formatted trigger `db-schema-tool-handlers.ts:147-147`
+- **result** — Maps each index to a formatted index `db-schema-tool-handlers.ts:148-148`
+- **result** — Maps each enum to a formatted enum `db-schema-tool-handlers.ts:149-149`
+- **result** — Conditionally maps each redis key to a formatted redis key if there are any `db-schema-tool-handlers.ts:150-150`
+- **result** — Conditionally maps each linq query to a formatted linq query if there are any `db-schema-tool-handlers.ts:151-151`
+- **result** — Represents the result of the spawn_agent_worktree command execution `worktree-tool-handlers.ts:354-359`
+- **result** — Maps each submodule to an object containing its path, URL, branch, and commit hash `worktree-tool-handlers.ts:360-365`
+- **result** — Maps each subtree to an object containing its prefix and last merge commit `worktree-tool-handlers.ts:366-369`
+- **runGraphMetric** — Shared helper to run GraphMetricsAnalyzer and format result `graph-metrics-tool-handlers.ts:17-68`
+- **schemas** — Schemas for the Refactoring suggestion output format `analysis-tool-handlers.ts:1204-1204`
+- **schemas** — Filters swagger entities to extract schema names `analysis-tool-handlers.ts:1204-1204`
+- **scored** — Filters and maps entities based on their types and complexity `zig-compat-tool-handlers.ts:419-419`
+- **scored** — Maps entities to a scored format `zig-compat-tool-handlers.ts:420-420`
+- **scored** — Sorts entities by their complexity score in descending order `zig-compat-tool-handlers.ts:421-421`
+- **seen** — Tracks seen entities `semantic-tool-handlers.ts:581-581`
+- **session** — A session object for worktree agents `worktree-tool-handlers.ts:177-177`
+- **setupSemanticSearch** — Setup semantic search capability for impact analysis `file-tool-utils.ts:21-41`
+- **startEnrichBackground** — Not directly described in the provided code snippet `autodoc-batch-handler.ts:277-352`
+- **steps** — Creates a list of steps with entity details and complexity scores `zig-compat-tool-handlers.ts:424-435`
+- **summary** — Provides a summary of the operation `metrics-tool-handlers.ts:262-262`
+- **summary** — Summary of metrics tool handlers `metrics-tool-handlers.ts:263-263`
+- **summaryEntities** — Not directly described in the provided code snippet `autodoc-batch-handler.ts:181-189`
+- **swaggerEntities** — Lists entities analyzed in the Swagger impact `analysis-tool-handlers.ts:1095-1095`
+- **swaggerEntityIds** — Swagger entity IDs for the Refactoring suggestion output format `analysis-tool-handlers.ts:1146-1146`
+- **swaggerSpecs** — Filters entities to find those with a specific metadata type `graph-tool-handlers.ts:260-260`
+- **syncAutodocFiles** — Not directly described in the provided code snippet `autodoc-batch-handler.ts:251-272`
+- **synthesized** — Stores the result of the synthesis process `file-tool-handlers.ts:418-418`
+- **tables** — Filters database entities to tables `db-schema-tool-handlers.ts:64-64`
+- **target** — Not present in the provided entities `worktree-tool-handlers.ts:231-231`
+- **toCleanup** — Filters branches to exclude current branch and main/master branches `branch-tool-handlers.ts:242-242`
+- **toSplit** — Filters entities by type to determine which entities to split `file-tool-handlers.ts:310-310`
+- **toSplit** — Filters entities based on target types `file-tool-handlers.ts:310-310`
+- **totalErrors** — Counts the total number of errors in validation results `validation-tool-handlers.ts:110-110`
+- **totalErrors** — Tracks the total number of errors found during validation `validation-tool-handlers.ts:504-504`
+- **totalWarnings** — Counts the total number of warnings in validation results `validation-tool-handlers.ts:111-111`
+- **totalWarnings** — Tracks the total number of warnings found during validation `validation-tool-handlers.ts:505-505`
+- **triggers** — Filters database entities to triggers `db-schema-tool-handlers.ts:69-69`
+- **uniqueNames** — Ensures unique names for analysis results `analysis-tool-handlers.ts:617-617`
+- **validEntityIds** — Stores valid entity IDs `semantic-tool-handlers.ts:618-618`
+- **views** — Filters database entities to views `db-schema-tool-handlers.ts:65-65`
+- **withTimeTravel** — A helper function to set up time travel and commit manager for history operations `history-tool-handlers.ts:39-71`
+- **worktreeList** — A list of worktree information `worktree-tool-handlers.ts:175-175`
+- **worktreeList** — Maps each worktree to an object containing its path, branch, isMain, hasActiveSession, sessionId, and agentId `worktree-tool-handlers.ts:176-186`
+
+### Method
+- **calculateHotspotScore** — Calculates the score for a code hotspot `analysis-tool-handlers.ts:418-533`
+- **errorResult** — Returns an error result for the worktree agent spawning `worktree-tool-handlers.ts:139-143`
+- **execute** — Executes the analysis tool `analysis-tool-handlers.ts:116-185`
+- **execute** — Executes the AnalyzeApiImpactToolHandler `analysis-tool-handlers.ts:213-290`
+- **execute** — Executes the analysis tool handler logic `analysis-tool-handlers.ts:552-682`
+- **execute** — Executes the analysis of state chaos by querying the graph storage and enriching results with graph metrics `analysis-tool-handlers.ts:705-834`
+- **execute** — Executes the analysis of code impact by finding the entity and calculating its impact using level-based BFS `analysis-tool-handlers.ts:863-1070`
+- **execute** — Executes the analysis of swagger impact by filtering swagger entities and finding related code entities through relationships `analysis-tool-handlers.ts:1089-1228`
+- **execute** — Parses and executes API impact analysis based on provided arguments `analysis-tool-handlers.ts:1252-1425`
+- **execute** — Detects the technology stack `analysis-tool-handlers.ts:1442-1480`
+- **execute** — Executes the batch generation process for changed directories `autodoc-batch-handler.ts:37-118`
+- **execute** — Executes the AutoDoc initialization `autodoc-tool-handlers.ts:213-246`
+- **execute** — Executes the AutoDoc get operation `autodoc-tool-handlers.ts:258-415`
+- **execute** — Executes the AutoDoc tool handler based on the parsed arguments `autodoc-tool-handlers.ts:427-481`
+- **execute** — Executes the AutoDocDetectLanguageToolHandler `autodoc-tool-handlers.ts:493-609`
+- **execute** — Executes the AutoDoc validation process, returning a `autodoc-tool-handlers.ts:621-648`
+- **execute** — Executes the AutoDoc status check, returning the current status `autodoc-tool-handlers.ts:660-683`
+- **execute** — Executes the AutoDoc sync operation `autodoc-tool-handlers.ts:695-825`
+- **execute** — Executes the generate docs process with specified arguments. `autodoc-tool-hand—you can't see the full context. Please provide the full context or clarify the question `autodoc-tool-handlers.ts:837-882`
+- **execute** — Parses and executes the AutoDoc changelog retrieval based on provided arguments `autodoc-tool-handlers.ts:894-930`
+- **execute** — Handles the execution of AutoDoc install hooks based on the provided action and project path `autodoc-tool-handlers.ts:942-1017`
+- **execute** — Analyzes code comments and existing documentation to detect `autodoc-tool-handlers.ts:1029-1104`
+- **execute** — Executes the list branches operation, retrieving branch information and statistics `branch-tool-handlers.ts:54-85`
+- **execute** — Executes the cleanup branches operation `branch-tool-handlers.ts:103-155`
+- **execute** — Executes the branch status retrieval, handling errors and providing metadata `branch-tool-handlers.ts:171-210`
+- **execute** — Executes the cleanup of old branches, handling dry run and providing cleanup details `branch-tool-handlers.ts:228-268`
+- **execute** — Executes the retrieval of changed files between branches, handling git commands and categorizing changes `branch-tool-handlers.ts:286-376`
+- **execute** — Executes the database schema retrieval process `db-schema-tool-handlers.ts:24-160`
+- **execute** — Executes the architecture diagram generation process `diagram-tool-handler.ts:23-65`
+- **execute** — Executes the listing of file entities `entity-tool-handlers.ts:64-131`
+- **execute** — Parses and executes the `ListFileEntitiesToolHandler` to list file entities based on provided filters `entity-tool-handlers.ts:153-230`
+- **execute** — Executes the query by fetching entities and relationships, handling pagination, and returning the results `entity-tool-handlers.ts:250-297`
+- **execute** — Executes the modification of entity code `file-tool-handlers.ts:53-171`
+- **execute** — Executes the synthesis of files based on parsed arguments `file-tool-handlers.ts:190-211`
+- **execute** — Executes the rename operation, ensuring directory existence and updating the file system `file-tool-handlers.ts:230-265`
+- **execute** — Splits a file into multiple files based on entity types, handling preview and file creation `file-tool-handlers.ts:285-381`
+- **execute** — Synthesizes multiple files into a single file, handling preview and file writing `file-tool-handlers.ts:400-457`
+- **execute** — Creates a new file, handling overwrite checks and semantic search impact analysis `file-tool-handlers.ts:476-542`
+- **execute** — Renames a symbol in a file, analyzing impact and handling preview `file-tool-handlers.ts:562-683`
+- **execute** — Adds a member to a target entity, validating the entity type and handling preview `file-tool-handlers.ts:705-835`
+- **execute** — Executes the logic to recommend relevant tools based on the task description and agent type `get-tools-for-task-handler.ts:35-207`
+- **execute** — Executes the graph metric analysis `graph-metrics-tool-handlers.ts:75-79`
+- **execute** — Executes the PageRank metric calculation for the given project path and storage `graph-metrics-tool-handlers.ts:102-106`
+- **execute** — Executes the Louvain Communities metric calculation for the given project path and storage `graph-metrics-tool-handlers.ts:120-124`
+- **execute** — Executes the Centrality Analysis metric calculation for the given project path and storage `graph-metrics-tool-handlers.ts:137-141`
+- **execute** — Executes the Bus Factor metric calculation for the given project path and storage `graph-metrics-tool-handlers.ts:153-157`
+- **execute** — Executes the reset graph operation, clearing the graph storage and returning a success message `graph-tool-handlers.ts:35-43`
+- **execute** — Executes the graph reset operation by clearing the graph storage for the specified project `graph-tool-handlers.ts:60-108`
+- **execute** — Executes the graph query to fetch entities and relationships, returning paginated results `graph-tool-handlers.ts:128-178`
+- **execute** — Executes the graph query to fetch statistics and co-occurrence data, returning the results `graph-tool-handlers.ts:194-227`
+- **execute** — Executes the graph query to check the health of the graph, including swagger files and active contracts `graph-tool-handlers.ts:243-310`
+- **execute** — Executes the GetHelpToolHandler by loading the specified documentation topic and returning the result `help-tool-handler.ts:38-118`
+- **execute** — Executes the GetEntityHistoryToolHandler `history-tool-handlers.ts:82-101`
+- **execute** — Executes the diff commits operation, returning a result object with commit details and summary `history-tool-handlers.ts:113-148`
+- **execute** — Executes the checkout commit operation, returning a result object with commit details and optional entity or entity search results `history-tool-handlers.ts:160-193`
+- **execute** — Executes the list commits operation, returning a result object with a list of commits and their details `history-tool-handlers.ts:205-225`
+- **execute** — Executes the indexing process based on provided arguments `index-tool-handler.ts:58-97`
+- **execute** — Executes the semantic merge operation using the MergeAgent `merge-tool-handlers.ts:36-116`
+- **execute** — Executes the merge analysis by calling the MergeAgent to analyze conflicts and returns the result `merge-tool-handlers.ts:146-196`
+- **execute** — Executes the merge suggestions by first analyzing conflicts and then retrieving AI suggestions for a specific conflict `merge-tool-handlers.ts:214-269`
+- **execute** — Returns information about the semantic merge tool, including its name, version, description, capabilities, tools, and metrics `merge-tool-handlers.ts:283-329`
+- **execute** — Executes the tool handler `metrics-tool-handlers.ts:120-160`
+- **execute** — Executes the bus statistics tool handler `metrics-tool-handlers.ts:176-227`
+- **execute** — Executes the GetAgentMetrics command, returning agent metrics and summaries `metrics-tool-handlers.ts:244-281`
+- **execute** — Executes the GetBusStats command, returning bus statistics `metrics-tool-handlers.ts:299-337`
+- **execute** — Executes the ClearBusTopic command, clearing messages in a specified topic `metrics-tool-handlers.ts:354-399`
+- **execute** — Executes the GetWatcherStatus command, returning the status of file and git watchers `metrics-tool-handlers.ts:413-484`
+- **execute** — Executes the detect_patterns tool `pattern-tool-handlers.ts:39-146`
+- **execute** — Executes the check for entity patterns, ensuring graph storage and handling potential errors `pattern-tool-handlers.ts:156-208`
+- **execute** — Executes the semantic search operation `semantic-tool-handlers.ts:267-570`
+- **execute** — Executes the FindSimilarCodeToolHandler to find similar code snippets `semantic-tool-handlers.ts:778-850`
+- **execute** — Executes the semantic tool for detecting code clones with a given similarity threshold `semantic-tool-handlers.ts:864-961`
+- **execute** — Executes the Jscpd tool for detecting code clones in a specified directory `semantic-tool-handlers.ts:983-1045`
+- **execute** — Executes the cross-language search tool to find code clones across multiple languages `semantic-tool-handlers.ts:1070-1136`
+- **execute** — Executes the pattern search tool to find code clones based on a given pattern `semantic-tool-handlers.ts:1164-1260`
+- **execute** — Executes the create snapshot operation, returning the snapshot ID and creation details `snapshot-tool-handlers.ts:31-72`
+- **execute** — Executes the rollback operation by retrieving the snapshot manager and performing the rollback based on the provided arguments `snapshot-tool-handlers.ts:89-139`
+- **execute** — Executes the list snapshots operation by retrieving the snapshot manager and listing the snapshots based on the provided arguments `snapshot-tool-handlers.ts:156-190`
+- **execute** — Executes the cleanup snapshots operation by retrieving the snapshot manager, filtering the snapshots to be cleaned, and performing the cleanup based on the provided arguments `snapshot-tool-handlers.ts:208-257`
+- **execute** — Method to execute the analyze_stacktrace tool, parsing the stacktrace, running diagnosis, and enriching with recent changes `stacktrace-tool-handler.ts:30-136`
+- **execute** — Executes the taint analysis process, logging the start and end of the analysis, and formatting the results for output `taint-tool-handlers.ts:32-83`
+- **execute** — Executes the tracing process based on parsed arguments `tracing-tool-handlers.ts:143-242`
+- **execute** — Executes the tracing tool handler `tracing-tool-handlers.ts:257-326`
+- **execute** — Executes the trace data flow analysis based on the provided arguments `tracing-tool-handlers.ts:341-415`
+- **execute** — Executes the state impact analysis based on the provided arguments `tracing-tool-handlers.ts:430-487`
+- **execute** — Executes the decision points analysis based on the provided arguments `tracing-tool-handlers.ts:502-566`
+- **execute** — Executes the NgRx flow tracing based on the provided arguments `tracing-tool-handlers.ts:580-642`
+- **execute** — Executes the validation process `validation-tool-handlers.ts:87-138`
+- **execute** — Executes the validation process for a directory `validation-tool-handlers.ts:451-541`
+- **execute** — Executes the logic for spawning a worktree agent `worktree-tool-handlers.ts:42-137`
+- **execute** — Executes the spawn_agent_worktree command to create a worktree and launch an agent `worktree-tool-handlers.ts:157-211`
+- **execute** — Executes the cleanup of a worktree based on the provided arguments `worktree-tool-handlers.ts:225-302`
+- **execute** — Executes the retrieval of information about the worktree and its siblings, submodules, and subtrees `worktree-tool-handlers.ts:316-376`
+- **execute** — Executes the grep_index tool to perform trigram-accelerated search `zig-compat-tool-handlers.ts:35-112`
+- **execute** — Executes the DetectArchitectureLayersToolHandler `zig-compat-tool-handlers.ts:124-177`
+- **execute** — Executes a batch rename operation based on provided arguments, returning a ToolResult with preview or applied renames `zig-compat-tool-handlers.ts:189-226`
+- **execute** — Executes a security scan, identifying vulnerable entities and returning a ToolResult with vulnerability details `zig-compat-tool-handlers.ts:238-281`
+- **execute** — Executes a review context check, identifying affected entities and returning a ToolResult with review priority `zig-compat-tool-handlers.ts:293-335`
+- **execute** — Executes an architecture layers detection, identifying file paths per layer and returning a ToolResult with layer details `zig-compat-tool-handlers.ts:360-399`
+- **execute** — Executes an onboarding generation, scoring entities by complexity and relationships, and returning a ToolResult with onboarding steps `zig-compat-tool-handlers.ts:411-453`
+- **execute** — Parses and executes the setup embedding command, returning a structured result based on the provided model ID and quantization settings `zig-compat-tool-handlers.ts:465-498`
+- **expandWithGraphNeighbors** — Expands results with graph neighbors `semantic-tool-handlers.ts:575-753`
+- **findOxlintBin** — Finds the path to the oxlint binary `validation-tool-handlers.ts:353-382`
+- **formatResult** — Not present in the provided code `index-tool-handler.ts:104-148`
+- **getChangeFrequencyFromGit** — Retrieves change frequency from Git `analysis-tool-handlers.ts:399-416`
+- **getCurrentBranch** — Retrieves the current branch name `merge-tool-handlers.ts:118-129`
+- **getDefaultValidators** — Retrieves default validators for file validation `validation-tool-handlers.ts:140-154`
+- **getExtensions** — Not present in the provided code `index-tool-handler.ts:99-102`
+- **parseArgs** — Parses command-line arguments for the analysis tool `analysis-tool-handlers.ts:112-114`
+- **parseArgs** — Parses arguments for the AnalyzeApiImpactToolHandler `analysis-tool-handlers.ts:209-211`
+- **parseArgs** — Parses the provided arguments using the FindRelatedConceptsSchema `analysis-tool-handlers.ts:548-550`
+- **parseArgs** — Parses the provided arguments using the AnalyzeStateChaosSchema `analysis-tool-handlers.ts:701-703`
+- **parseArgs** — Parses the provided arguments using the AnalyzeCodeImpactSchema `analysis-tool-handlers.ts:859-861`
+- **parseArgs** — Parses the provided arguments using the Analyze `analysis-tool-handlers.ts:1085-1087`
+- **parseArgs** — Parses the provided arguments using the AnalyzeApiImpactSchema `analysis-tool-handlers.ts:1248-1250`
+- **parseArgs** — Parses and validates arguments for API impact analysis `analysis-tool-handlers.ts:1438-1440`
+- **parseArgs** — Parses the input arguments into a structured format `autodoc-batch-handler.ts:33-35`
+- **parseArgs** — Parses command-line arguments `autodoc-tool-handlers.ts:209-211`
+- **parseArgs** — Parses arguments for the AutoDoc get operation `autodoc-tool-handlers.ts:254-256`
+- **parseArgs** — Parses command-line arguments for AutoDoc tools `autodoc-tool-handlers.ts:423-425`
+- **parseArgs** — Parses command-line arguments for the AutoDocDetectLanguageToolHandler `autodoc-tool-handlers.ts:489-491`
+- **parseArgs** — Parses arguments using a schema `autodoc-tool-handlers.ts:617-619`
+- **parseArgs** — Parses arguments using a different schema `autodoc-tool-handlers.ts:656-658`
+- **parseArgs** — Parses the AutoDoc status arguments `autodoc-tool-handlers.ts:691-693`
+- **parseArgs** — Parses arguments using another schema `autodoc-tool-handlers.ts:833-835`
+- **parseArgs** — Parses the provided arguments using AutoDocChangelogSchema `autodoc-tool-handlers.ts:890-892`
+- **parseArgs** — Parses the input arguments for the AutoDoc install hooks tool `autodoc-tool-handlers.ts:938-940`
+- **parseArgs** — Parses the input arguments for the AutoDoc language detection tool `autodoc-tool-handlers.ts:1025-1027`
+- **parseArgs** — Parses the arguments for the list branches operation `branch-tool-handlers.ts:50-52`
+- **parseArgs** — Parses arguments for the cleanup branches operation `branch-tool-handlers.ts:99-101`
+- **parseArgs** — Parses the arguments using the GetBranchStatusSchema `branch-tool-handlers.ts:167-169`
+- **parseArgs** — Parses the arguments using the CleanupBranchesSchema `branch-tool-handlers.ts:224-226`
+- **parseArgs** — Parses the arguments using the GetChangedFilesSchema `branch-tool-handlers.ts:282-284`
+- **parseArgs** — Parses and validates arguments for the database schema retrieval `db-schema-tool-handlers.ts:20-22`
+- **parseArgs** — Parses input arguments into the expected type `diagram-tool-handler.ts:19-21`
+- **parseArgs** — Parses arguments for listing file entities `entity-tool-handlers.ts:60-62`
+- **parseArgs** — Parses arguments using ListEntityRelationshipsSchema. `entity-tool-handlers.ts:149-1 `entity-tool-handlers.ts:149-151`
+- **parseArgs** — Parses the provided arguments using the QuerySchema `entity-tool-handlers.ts:246-248`
+- **parseArgs** — Parses arguments for modifying entity code `file-tool-handlers.ts:49-51`
+- **parseArgs** — Parses arguments for the SynthesizeFilesToolHandler `file-tool-handlers.ts:186-188`
+- **parseArgs** — Parses the arguments using RenameFileSchema `file-tool-handlers.ts:226-228`
+- **parseArgs** — Parses the arguments using SplitFileSchema `file-tool-handlers.ts:281-283`
+- **parseArgs** — Parses the arguments using SynthesizeFilesSchema `file-tool-handlers.ts:396-398`
+- **parseArgs** — Parses the arguments using CreateFileSchema `file-tool-handlers.ts:472-474`
+- **parseArgs** — Parses the arguments using RenameSymbolSchema `file-tool-handlers.ts:558-560`
+- **parseArgs** — Parses the arguments using AddMemberSchema `file-tool-handlers.ts:701-703`
+- **parseArgs** — Parses the arguments for getting tools for a task `get-tools-for-task-handler.ts:31-33`
+- **parseArgs** — Parses arguments for the GraphMetricsToolHandler `graph-metrics-tool-handlers.ts:71-73`
+- **parseArgs** — Parses the input arguments using the PageRankSchema `graph-metrics-tool-handlers.ts:98-100`
+- **parseArgs** — Parses the input arguments using the LouvainCommunitiesSchema `graph-metrics-tool-handlers.ts:116-118`
+- **parseArgs** — Parses the input arguments using the CentralityAnalysisSchema `graph-metrics-tool-handlers.ts:133-135`
+- **parseArgs** — Parses the input arguments using the BusFactorSchema `graph-metrics-tool-handlers.ts:149-151`
+- **parseArgs** — Parses arguments for the reset graph operation `graph-tool-handlers.ts:31-33`
+- **parseArgs** — Parses the provided arguments using CleanIndexSchema `graph-tool-handlers.ts:56-58`
+- **parseArgs** — Parses the provided arguments using GetGraphSchema `graph-tool-handlers.ts:124-126`
+- **parseArgs** — Parses the provided arguments using GetGraphStatsSchema `graph-tool-handlers.ts:190-192`
+- **parseArgs** — Parses the provided arguments using GetGraphHealthSchema `graph-tool-handlers.ts:239-241`
+- **parseArgs** — Parses the input arguments into the HelpArgs type `help-tool-handler.ts:34-36`
+- **parseArgs** — Parses arguments for the GetEntityHistoryToolHandler `history-tool-handlers.ts:78-80`
+- **parseArgs** — Parses the arguments using the DiffCommitsSchema `history-tool-handlers.ts:109-111`
+- **parseArgs** — Parses the arguments using the CheckoutCommitSchema `history-tool-handlers.ts:156-158`
+- **parseArgs** — Parses the arguments using the ListCommitsSchema `history-tool-handlers.ts:201-203`
+- **parseArgs** — Parses command-line arguments into IndexToolArgs `index-tool-handler.ts:54-56`
+- **parseArgs** — Parses command-line arguments for semantic merge `merge-tool-handlers.ts:32-34`
+- **parseArgs** — Parses the arguments using the AnalyzeMergeConflictsSchema `merge-tool-handlers.ts:142-144`
+- **parseArgs** — Parses the arguments using the GetMergeSuggestionsSchema `merge-tool-handlers.ts:210-212`
+- **parseArgs** — Parses the arguments using the GetSemanticMergeInfoSchema `merge-tool-handlers.ts:279-281`
+- **parseArgs** — Parses command-line arguments for the bus statistics tool `metrics-tool-handlers.ts:116-118`
+- **parseArgs** — Parses command-line arguments for the GetVersionSchema `metrics-tool-handlers.ts:172-174`
+- **parseArgs** — Parses command-line arguments for the GetAgentMetricsSchema `metrics-tool-handlers.ts:240-242`
+- **parseArgs** — Parses command-line arguments for the GetBusStatsSchema `metrics-tool-handlers.ts:295-297`
+- **parseArgs** — Parses command-line arguments for the ClearBusTopicSchema `metrics-tool-handlers.ts:350-352`
+- **parseArgs** — Parses command-line arguments for the GetWatcherStatusSchema `metrics-tool-handlers.ts:409-411`
+- **parseArgs** — Parses arguments for the detect_patterns tool `pattern-tool-handlers.ts:35-37`
+- **parseArgs** — Parses the provided arguments using the CheckEntityPatternsSchema `pattern-tool-handlers.ts:152-154`
+- **parseArgs** — Parses arguments for semantic search `semantic-tool-handlers.ts:263-265`
+- **parseArgs** — Parses the input arguments for the FindSimilarCodeToolHandler `semantic-tool-handlers.ts:774-776`
+- **parseArgs** — Parses the arguments using the DetectCodeClonesSchema `semantic-tool-handlers.ts:860-862`
+- **parseArgs** — Parses the arguments using the JscpdDetectClonesSchema `semantic-tool-handlers.ts:979-981`
+- **parseArgs** — Parses the arguments using the CrossLanguageSearchSchema `semantic-tool-handlers.ts:1066-1068`
+- **parseArgs** — Parses the arguments using the PatternSearchSchema `semantic-tool-handlers.ts:1160-1162`
+- **parseArgs** — Parses command-line arguments for the create snapshot operation `snapshot-tool-handlers.ts:27-29`
+- **parseArgs** — Parses the provided arguments using the RollbackSnapshotSchema `snapshot-tool-handlers.ts:85-87`
+- **parseArgs** — Parses the provided arguments using the ListSnapshotsSchema `snapshot-tool-handlers.ts:152-154`
+- **parseArgs** — Parses the provided arguments using the CleanupSnapshotsSchema `snapshot-tool-handlers.ts:204-206`
+- **parseArgs** — Method to parse the arguments for the analyze_stacktrace tool `stacktrace-tool-handler.ts:26-28`
+- **parseArgs** — Parses command-line arguments into a structured object `taint-tool-handlers.ts:28-30`
+- **parseArgs** — Parses command-line arguments for tracing `tracing-tool-handlers.ts:139-141`
+- **parseArgs** — Parses arguments for tracing tools `tracing-tool-handlers.ts:253-255`
+- **parseArgs** — Parses the provided arguments into a TraceDataFlowSchema object `tracing-tool-handlers.ts:337-339`
+- **parseArgs** — Parses the provided arguments into an AnalyzeStateImpactSchema object `tracing-tool-handlers.ts:426-428`
+- **parseArgs** — Parses the provided arguments into a FindDecisionPointsSchema object `tracing-tool-handlers.ts:498-500`
+- **parseArgs** — Parses the provided arguments into a TraceNgRxFlowSchema object `tracing-tool-handlers.ts:576-578`
+- **parseArgs** — Parses command-line arguments for validation `validation-tool-handlers.ts:83-85`
+- **parseArgs** — Parses command-line arguments for the validation tool `validation-tool-handlers.ts:447-449`
+- **parseArgs** — Parses the arguments for spawning a worktree agent `worktree-tool-handlers.ts:38-40`
+- **parseArgs** — Parses the arguments for the spawn_agent_worktree command `worktree-tool-handlers.ts:153-155`
+- **parseArgs** — Parses the arguments into a `CleanupArgs` object `worktree-tool-handlers.ts:221-223`
+- **parseArgs** — Parses the arguments into a `GetInfoArgs` object `worktree-tool-handlers.ts:312-314`
+- **parseArgs** — Parses arguments for the grep_index tool `zig-compat-tool-handlers.ts:31-33`
+- **parseArgs** — Parses arguments for the DetectArchitectureLayersToolHandler `zig-compat-tool-handlers.ts:120-122`
+- **parseArgs** — Parses command-line arguments into a BatchRenameSchema object `zig-compat-tool-handlers.ts:185-187`
+- **parseArgs** — Parses command-line arguments into a SecurityScanSchema object `zig-compat-tool-handlers.ts:234-236`
+- **parseArgs** — Parses command-line arguments into a GetReviewContextSchema object `zig-compat-tool-handlers.ts:289-291`
+- **parseArgs** — Parses command-line arguments into a DetectArchitectureLayersSchema object `zig-compat-tool-handlers.ts:356-358`
+- **parseArgs** — Parses command-line arguments into a GenerateOnboardingSchema object `zig-compat-tool-handlers.ts:407-409`
+- **parseArgs** — Parses command-line arguments into a SetupEmbeddingSchema object `zig-compat-tool-handlers.ts:461-463`
+- **parseValidatorOutput** — Parses the output of a validator `validation-tool-handlers.ts:384-439`
+- **preloadChangeFrequencies** — Preloads change frequencies for analysis `analysis-tool-handlers.ts:296-394`
+- **runValidator** — Runs a validator on a file `validation-tool-handlers.ts:156-346`
+- **textResult** — Returns a text result indicating the outcome of the batch generation `autodoc-batch-handler.ts:120-122`
+
+### Class
+- **AddMemberToolHandler** — Handles the addition of members to entities based on provided arguments `file-tool-handlers.ts:700-836`
+- **AnalyzeApiImpactToolHandler** — Handler for analyzing API impact `analysis-tool-handlers.ts:1247-1426`
+- **AnalyzeCodeImpactToolHandler** — Handles the analysis of code impact `analysis-tool-handlers.ts:858-1071`
+- **AnalyzeHotspotsToolHandler** — Handles analysis of code hotspots `analysis-tool-handlers.ts:205-534`
+- **AnalyzeMergeConflictsToolHandler** — Analyzes merge conflicts `merge-tool-handlers.ts:141-197`
+- **AnalyzeStacktraceToolHandler** — Class for handling the analyze_stacktrace tool, parsing arguments, executing the tool, and formatting the output `stacktrace-tool-handler.ts:25-137`
+- **AnalyzeStateChaosToolHandler** — Handles the analyze state chaos analysis tool `analysis-tool-handlers.ts:700-835`
+- **AnalyzeStateImpactToolHandler** — Analyzes the impact of state changes `tracing-tool-handlers.ts:422-488`
+- **AnalyzeSwaggerImpactToolHandler** — Handles the analysis of Swagger impact `analysis-tool-handlers.ts:1084-1229`
+- **AutoDocBatchGenerateHandler** — A class that extends BaseToolHandler to handle the generation of AUTODOC.md templates for changed directories `autodoc-batch-handler.ts:32-123`
+- **AutoDocChangelogToolHandler** — Manages the changelog for AutoDoc tools `autodoc-tool-handlers.ts:889-931`
+- **AutoDocDetectLanguageToolHandler** — A handler for detecting the language of documents `autodoc-tool-handlers.ts:1024-1105`
+- **AutoDocGenerateToolHandler** — Manages the generation of AutoDoc documents `autodoc-tool-handlers.ts:832-883`
+- **AutoDocGetToolHandler** — Handles the get operation for AutoDoc `autodoc-tool-handlers.ts:422-482`
+- **AutoDocInitToolHandler** — Handler for initializing AutoDoc `autodoc-tool-handlers.ts:208-247`
+- **AutoDocInstallHooksToolHandler** — Manages the installation of hooks for AutoDoc tools `autodoc-tool-handlers.ts:937-1018`
+- **AutoDocSaveToolHandler** — Handler for saving AutoDoc documents `autodoc-tool-handlers.ts:253-416`
+- **AutoDocSearchToolHandler** — Handles the search operation for AutoDoc `autodoc-tool-handlers.ts:488-610`
+- **AutoDocStatusToolHandler** — Manages the status of AutoDoc tools `autodoc-tool-handlers.ts:655-684`
+- **AutoDocSyncToolHandler** — Manages the synchronization of AutoDoc tools `autodoc-tool-handlers.ts:690-826`
+- **AutoDocValidateToolHandler** — Validates references using AutoDoc manager and returns validation results `autodoc-tool-handlers.ts:616-649`
+- **BatchModifyToolHandler** — A tool handler for batch_modify that allows mass code modifications `zig-compat-tool-handlers.ts:119-178`
+- **BatchRenameToolHandler** — A tool handler for batch_rename that allows mass code renaming `zig-compat-tool-handlers.ts:184-227`
+- **BusFactorToolHandler** — Not present in the provided code `graph-metrics-tool-handlers.ts:148-158`
+- **CentralityAnalysisToolHandler** — Not present in the provided code `graph-metrics-tool-handlers.ts:132-142`
+- **CheckEntityPatternsToolHandler** — A handler for the check_entity_patterns tool `pattern-tool-handlers.ts:151-209`
+- **CheckoutCommitToolHandler** — A handler for viewing graph state at a specific commit `history-tool-handlers.ts:155-194`
+- **CleanIndexToolHandler** — Handles the clean index operation for a graph, ensuring the correct project context and clearing the index `graph-tool-handlers.ts:55-109`
+- **CleanupBranchesToolHandler** — Represents a handler for cleaning up branches `branch-tool-handlers.ts:223-269`
+- **CleanupSnapshotsToolHandler** — Handles cleanup of snapshots `snapshot-tool-handlers.ts:203-258`
+- **CleanupWorktreeHandler** — A handler for cleaning up a worktree `worktree-tool-handlers.ts:220-303`
+- **ClearBusTopicToolHandler** — Handler for clearing bus topics `metrics-tool-handlers.ts:349-400`
+- **CopyFileToolHandler** — Parses and executes the copy operation, normalizing paths and handling errors `file-tool-handlers.ts:185-212`
+- **CreateFileToolHandler** — Handles the creation of new files based on provided arguments `file-tool-handlers.ts:471-543`
+- **CreateSnapshotToolHandler** — Handles the creation of a snapshot with optional description and file paths `snapshot-tool-handlers.ts:26-73`
+- **CrossLanguageSearchToolHandler** — Handles the execution of cross-language code search using semantic search `semantic-tool-handlers.ts:1065-1137`
+- **DetectArchitectureLayersToolHandler** — A tool handler for detecting architecture layers `zig-compat-tool-handlers.ts:353-400`
+- **DetectCodeClonesToolHandler** — Handles the execution of detecting code clones using semantic search `semantic-tool-handlers.ts:859-962`
+- **DetectPatternsToolHandler** — A handler for the detect_patterns tool `pattern-tool-handlers.ts:34-147`
+- **DetectTechnologyStackToolHandler** — Handles the detection of the technology stack in the codebase `analysis-tool-handlers.ts:1437-1481`
+- **DiffCommitsToolHandler** — A handler for comparing two graph commits `history-tool-handlers.ts:108-149`
+- **FindDecisionPointsToolHandler** — Finds decision points in the code `tracing-tool-handlers.ts:494-567`
+- **FindRelatedConceptsToolHandler** — Handles the find related concepts analysis tool `analysis-tool-handlers.ts:547-683`
+- **FindSimilarCodeToolHandler** — Handles the execution of finding similar code snippets using semantic search `semantic-tool-handlers.ts:773-851`
+- **GenerateOnboardingToolHandler** — A tool handler for generating onboarding content `zig-compat-tool-handlers.ts:406-454`
+- **GetAgentMetricsToolHandler** — Handles agent metrics tool operations `metrics-tool-handlers.ts:239-282`
+- **GetArchitectureDiagramToolHandler** — Class for handling architecture diagram generation `diagram-tool-handler.ts:18-66`
+- **GetBranchStatusToolHandler** — A handler for getting the status of a branch, parsing arguments, and executing the operation `branch-tool-handlers.ts:166-211`
+- **GetBusStatsToolHandler** — Handler for retrieving bus statistics `metrics-tool-handlers.ts:294-338`
+- **GetChangedFilesToolHandler** — Represents a handler for getting changed files `branch-tool-handlers.ts:281-377`
+- **GetDatabaseSchemaToolHandler** — A handler for retrieving database schema information `db-schema-tool-handlers.ts:19-161`
+- **GetEntityHistoryToolHandler** — A handler for getting the history of changes for a specific entity `history-tool-handlers.ts:77-102`
+- **GetGraphHealthToolHandler** — Handles the get graph health operation, parsing arguments and executing the operation to check the health of the graph `graph-tool-handlers.ts:238-311`
+- **GetGraphStatsToolHandler** — Handles the get graph stats operation, parsing arguments and executing the operation to retrieve graph statistics `graph-tool-handlers.ts:189-228`
+- **GetGraphToolHandler** — Handles the get graph operation, parsing arguments and executing the operation to retrieve graph data `graph-tool-handlers.ts:123-179`
+- **GetHelpToolHandler** — A class that extends BaseToolHandler to provide access to documentation and guides about UltraCode `help-tool-handler.ts:33-119`
+- **GetMergeSuggestionsToolHandler** — Retrieves merge suggestions `merge-tool-handlers.ts:209-270`
+- **GetMetricsToolHandler** — Handles metrics tool operations `metrics-tool-handlers.ts:115-161`
+- **GetReviewContextToolHandler** — A tool handler for get_review_context that retrieves PR review context `zig-compat-tool-handlers.ts:288-336`
+- **GetSemanticMergeInfoToolHandler** — Retrieves semantic merge information `merge-tool-handlers.ts:278-330`
+- **GetToolsForTaskHandler** — A handler class for recommending relevant tools based on task description `get-tools-for-task-handler.ts:30-208`
+- **GetVersionToolHandler** — Handles version tool operations `metrics-tool-handlers.ts:171-228`
+- **GetWatcherStatusToolHandler** — Handler for retrieving watcher status `metrics-tool-handlers.ts:408-485`
+- **GetWorktreeInfoHandler** — Not present in the provided entities `worktree-tool-handlers.ts:311-377`
+- **GraphMetricsToolHandler** — Class for handling graph metrics tool `graph-metrics-tool-handlers.ts:70-80`
+- **GrepIndexToolHandler** — A tool handler for grep_index that uses trigram index for search `zig-compat-tool-handlers.ts:30-113`
+- **IndexToolHandler** — Thin wrapper around performAutoIndex() from auto-indexer.ts `index-tool-handler.ts:53-149`
+- **JscpdDetectClonesToolHandler** — Handles the execution of detecting code clones using Jscpd `semantic-tool-handlers.ts:978-1046`
+- **ListBranchesToolHandler** — A handler for listing branches, parsing arguments, and executing the operation `branch-tool-handlers.ts:49-86`
+- **ListCommitsToolHandler** — A handler for listing graph commits (version history) `history-tool-handlers.ts:200-226`
+- **ListEntityRelationshipsToolHandler** — Handler for listing entity relationships `entity-tool-handlers.ts:148-231`
+- **ListFileEntitiesToolHandler** — Handler for listing file entities `entity-tool-handlers.ts:59-132`
+- **ListSnapshotsToolHandler** — Handles listing snapshots `snapshot-tool-handlers.ts:151-191`
+- **ListWorktreeAgentsHandler** — A handler for listing worktree agents `worktree-tool-handlers.ts:152-212`
+- **LouvainCommunitiesToolHandler** — Not present in the provided code `graph-metrics-tool-handlers.ts:115-125`
+- **ModifyEntityCodeToolHandler** — Handles modifying entity code with validation and impact analysis `file-tool-handlers.ts:48-172`
+- **PageRankToolHandler** — Not present in the provided code `graph-metrics-tool-handlers.ts:97-107`
+- **PatternSearchToolHandler** — Handles the execution of pattern-based code search using semantic search `semantic-tool-handlers.ts:1159-1261`
+- **QueryToolHandler** — Handler for querying entities `entity-tool-handlers.ts:245-298`
+- **RenameFileToolHandler** — Parses and executes the rename operation, normalizing paths, ensuring directory existence, and updating GraphStorage entities `file-tool-handlers.ts:225-266`
+- **RenameSymbolToolHandler** — Handles the renaming of symbols in code based on provided arguments `file-tool-handlers.ts:557-684`
+- **ResetGraphToolHandler** — Handles the reset operation for a graph, ensuring the correct project context and clearing the graph storage `graph-tool-handlers.ts:30-44`
+- **RollbackSnapshotToolHandler** — Handles the rollback of a snapshot (undo operation) `snapshot-tool-handlers.ts:84-140`
+- **SecurityScanToolHandler** — A tool handler for security_scan that performs vulnerability scanning `zig-compat-tool-handlers.ts:233-282`
+- **SemanticMergeToolHandler** — Handles semantic merge operations with specified parameters `merge-tool-handlers.ts:31-130`
+- **SemanticSearchToolHandler** — Handles semantic search operations `semantic-tool-handlers.ts:262-754`
+- **SetupEmbeddingToolHandler** — A tool handler for setting up embedding configurations `zig-compat-tool-handlers.ts:460-499`
+- **SpawnAgentWorktreeHandler** — A handler for spawning a worktree agent `worktree-tool-handlers.ts:37-144`
+- **SplitFileToolHandler** — Parses and executes the split operation, filtering entities by type and planning file outputs `file-tool-handlers.ts:280-382`
+- **SuggestRefactoringToolHandler** — Handles refactoring suggestions `analysis-tool-handlers.ts:111-186`
+- **SwitchBranchToolHandler** — A handler for switching branches, parsing arguments, and executing the operation `branch-tool-handlers.ts:98-156`
+- **SynthesizeFilesToolHandler** — Handles the synthesis of files based on provided arguments `file-tool-handlers.ts:395-458`
+- **TaintAnalysisToolHandler** — Represents a handler for analyzing taint vulnerabilities in a project `taint-tool-handlers.ts:27-84`
+- **TraceBackwardsToolHandler** — Handles backward tracing to find why a method isn't called `tracing-tool-handlers.ts:249-327`
+- **TraceDataFlowToolHandler** — Handles tracing data flow between methods `tracing-tool-handlers.ts:333-416`
+- **TraceFlowToolHandler** — Handles tracing execution from A to B `tracing-tool-handlers.ts:135-243`
+- **TraceNgRxFlowToolHandler** — Traces NgRx flow in the code `tracing-tool-handlers.ts:573-643`
+- **ValidateDirectoryToolHandler** — Handles validation operations for a directory `validation-tool-handlers.ts:446-542`
+- **ValidateFileToolHandler** — Handles validation of a single file `validation-tool-handlers.ts:82-440`
+
+### Interface
+- **AutoDocStatus** — Represents the status of the AutoDoc tool `autodoc-tool-handlers.ts:110-115`
+- **BrokenReference** — Details of a broken reference `autodoc-tool-handlers.ts:75-83`
+- **BusStatsResult** — Represents the result of bus statistics `metrics-tool-handlers.ts:71-76`
+- **ChangelogEntry** — Represents an entry in the changelog `autodoc-tool-handlers.ts:97-104`
+- **CloneGroup** — Group of clones found during semantic search `semantic-tool-handlers.ts:102-106`
+- **CloneMember** — Represents a member of a clone group `semantic-tool-handlers.ts:91-97`
+- **ConductorContext** — Context for re-indexing files `file-tool-utils.ts:46-48`
+- **ContentPaginationResult** — Pagination result for content `semantic-tool-handlers.ts:149-159`
+- **DbSchemaArgs** — Represents arguments for retrieving database schema information `db-schema-tool-handlers.ts:12-17`
+- **DebugInfo** — Contains debug information for the AutoDoc process `autodoc-tool-handlers.ts:135-147`
+- **EntityFilters** — Filters for entity queries `entity-tool-handlers.ts:25-29`
+- **ExecError** — Represents an error with stdout/stderr from exec `validation-tool-handlers.ts:73-76`
+- **FileSyncResult** — Represents the result of a file sync operation `autodoc-tool-handlers.ts:120-130`
+- **FileValidationResult** — Complete file validation result `validation-tool-handlers.ts:47-54`
+- **Hotspot** — Code hotspot with metrics `analysis-tool-handlers.ts:51-58`
+- **HotspotMetrics** — Represents the metrics of a code hotspot `analysis-tool-handlers.ts:63-74`
+- **IndexerAgent** — Represents an agent for indexing operations `metrics-tool-handlers.ts:94-103`
+- **IndexToolResponse** — Represents the result of an indexing operation, including success status, message, entity count, and performance metrics `index-tool-handler.ts:21-41`
+- **ListBranchesResult** — Represents the result of listing branches, including current branch, list of branches, and optional statistics `branch-tool-handlers.ts:28-39`
+- **MetricsResult** — Represents the overall metrics result including timestamp, system metrics, graph, and agents `metrics-tool-handlers.ts:40-45`
+- **OutdatedDoc** — Represents an outdated document `autodoc-tool-handlers.ts:88-92`
+- **PaginationMapping** — Pagination mapping for query results `entity-tool-handlers.ts:42-45`
+- **ParsedEntity** — Represents a parsed entity from GraphStorage `analysis-tool-handlers.ts:79-94`
+- **ParsedValidatorFile** — Represents a file parsed from eslint/pylint JSON output `validation-tool-handlers.ts:59-68`
+- **QueryResults** — Query results with entities and relationships `entity-tool-handlers.ts:34-37`
+- **RefactoringSuggestionOutput** — Refactoring suggestion output format for API response `analysis-tool-handlers.ts:38-46`
+- **ResultWithContent** — Result with content for semantic search `semantic-tool-handlers.ts:144-147`
+- **SavedDocument** — AutoDoc document with metadata and content `autodoc-tool-handlers.ts:52-60`
+- **SearchResult** — Represents the result of a search operation `autodoc-tool-handlers.ts:499-507`
+- **SemanticResultMetadata** — Metadata for semantic search results `semantic-tool-handlers.ts:31-70`
+- **SemanticSearchContext** — Context for setting up semantic search `file-tool-utils.ts:13-15`
+- **SemanticSearchResult** — Represents a result from a semantic search operation `semantic-tool-handlers.ts:75-86`
+- **SystemMetrics** — Represents system metrics including memory usage, uptime, and node version `metrics-tool-handlers.ts:25-35`
+- **ToolHandlerContext** — Manages the context for a tool handler `autodoc-tool-handlers.ts:152-158`
+- **ToolMatch** — Represents a match of a tool with a task, including the tool's name, description, tags, score, and reason `get-tools-for-task-handler.ts:22-28`
+- **ValidationIssue** — Single validation issue from linter/validator `validation-tool-handlers.ts:26-32`
+- **ValidationResult** — Result of document reference validation `autodoc-tool-handlers.ts:66-70`
+- **ValidationResult** — Result from a single validator run `validation-tool-handlers.ts:37-42`
+- **ValidationResultResponse** — Represents the result of document reference validation `autodoc-tool-handlers.ts:163-170`
+- **VersionResult** — Represents the version information including name, version, and details `metrics-tool-handlers.ts:50-66`
+- **WatcherStatusResult** — Represents the status of the file watcher and git watcher `metrics-tool-handlers.ts:81-89`
+
+### Type_alias
+- **Args** — Represents the arguments for the AutoDoc Batch Generate Handler `autodoc-batch-handler.ts:30-30`
+- **Args** — Type for architecture diagram tool handler arguments `diagram-tool-handler.ts:16-16`
+- **Args** — Type inference for the analyze_stacktrace tool arguments `stacktrace-tool-handler.ts:23-23`
+- **CleanupArgs** — Represents the arguments for cleaning up a worktree `worktree-tool-handlers.ts:218-218`
+- **DetectionResult** — Represents the result of detecting the language of a document `autodoc-tool-handlers.ts:1034-1034`
+- **GetInfoArgs** — Not present in the provided entities `worktree-tool-handlers.ts:309-309`
+- **GetToolsForTaskArgs** — Represents the arguments for getting tools for a task, including the task description and agent type `get-tools-for-task-handler.ts:20-20`
+- **HelpArgs** — Represents the arguments for the GetHelpToolHandler, specifying the documentation topic `help-tool-handler.ts:31-31`
+- **IndexToolArgs** — Represents the arguments for the index tool, inferred from the IndexToolSchema `index-tool-handler.ts:51-51`
+- **ListArgs** — Represents the arguments for listing worktree agents `worktree-tool-handlers.ts:150-150`
+- **ResultWithDebug** — Represents the result of a tracing operation with debug information `tracing-tool-handlers.ts:223-223`
+- **SearchResult** — Type for search results `file-tool-utils.ts:31-31`
+- **SpawnArgs** — Represents the arguments for spawning a worktree agent `worktree-tool-handlers.ts:35-35`
+- **StorageWithContext** — Stores context for tracing operations `tracing-tool-handlers.ts:148-148`
+
+### Import_decl
+- **../../agents/dev/file-extensions.js** — Imports `../../agents/dev/file-extensions.js` from `../../agents/dev/file-extensions.js`. `index-tool-handler.ts:9-9`, `validation-tool-handlers.ts:10-10`
+- **../../agents/merge-agent.js** — Imports `../../agents/merge-agent.js` from `../../agents/merge-agent.js`. `merge-tool-handlers.ts:12-12`
+- **../../analysis/patterns/pattern-engine.js** — Imports `../../analysis/patterns/pattern-engine.js` from `../../analysis/patterns/pattern-engine.js`. `pattern-tool-handlers.ts:8-8`
+- **../../analysis/patterns/pattern-formatter.js** — Imports `../../analysis/patterns/pattern-formatter.js` from `../../analysis/patterns/pattern-formatter.js`. `pattern-tool-handlers.ts:9-9`
+- **../../analysis/patterns/types.js** — Imports `../../analysis/patterns/types.js` from `../../analysis/patterns/types.js`. `pattern-tool-handlers.ts:10-10`
+- **../../analysis/stacktrace/diagnosis-engine.js** — Imports `../../analysis/stacktrace/diagnosis-engine.js` from `../../analysis/stacktrace/diagnosis-engine.js`. `stacktrace-tool-handler.ts:9-9`
+- **../../analysis/stacktrace/stacktrace-parser.js** — Imports `../../analysis/stacktrace/stacktrace-parser.js` from `../../analysis/stacktrace/stacktrace-parser.js`. `stacktrace-tool-handler.ts:10-10`
+- **../../analysis/stacktrace/types.js** — Imports `../../analysis/stacktrace/types.js` from `../../analysis/stacktrace/types.js`. `stacktrace-tool-handler.ts:11-11`
+- **../../analysis/technology-detector.js** — Imports `../../analysis/technology-detector.js` from `../../analysis/technology-detector.js`. `analysis-tool-handlers.ts:15-15`
+- **../../autodoc/generator/batch-autodoc.js** — Imports `../../autodoc/generator/batch-autodoc.js`. `autodoc-batch-handler.ts:14-22`
+- **../../autodoc/generator/generate-handler-utils.js** — Imports `../../autodoc/generator/generate-handler-utils.js` from `../../autodoc/generator/generate-handler-utils.js`. `autodoc-tool-handlers.ts:23-23`
+- **../../autodoc/storage/autodoc-manager.js** — Imports `../../autodoc/storage/autodoc-manager.js` from `../../autodoc/storage/autodoc-manager.js`. `autodoc-tool-handlers.ts:24-24`
+- **../../autodoc/storage/doc-storage.js** — Imports `../../autodoc/storage/doc-storage.js` from `../../autodoc/storage/doc-storage.js`. `autodoc-batch-handler.ts:23-23`
+- **../../autodoc/types.js** — Imports `../../autodoc/types.js` from `../../autodoc/types.js`. `autodoc-batch-handler.ts:24-24`, `autodoc-tool-handlers.ts:25-25`
+- **../../core/agent-registry.js** — Imports `../../core/agent-registry.js` from `../../core/agent-registry.js`. `merge-tool-handlers.ts:13-13`
+- **../../core/auto-indexer.js** — Imports `../../core/auto-indexer.js` from `../../core/auto-indexer.js`. `index-tool-handler.ts:10-10`
+- **../../core/branch-manager.js** — Imports `../../core/branch-manager.js` from `../../core/branch-manager.js`. `branch-tool-handlers.ts:14-14`
+- **../../core/client-session.js** — Imports `../../core/client-session.js` from `../../core/client-session.js`. `worktree-tool-handlers.ts:14-14`
+- **../../core/di-container.js** — Imports `../../core/di-container.js` from `../../core/di-container.js`. `merge-tool-handlers.ts:14-14`
+- **../../core/indexing-state.js** — Imports `../../core/indexing-state.js` from `../../core/indexing-state.js`. `graph-tool-handlers.ts:13-13`, `index-tool-handler.ts:11-11`, `pattern-tool-handlers.ts:11-11`
+- **../../core/service-container.js** — Imports `../../core/service-container.js` from `../../core/service-container.js`. `autodoc-tool-handlers.ts:26-26`
+- **../../diagrams/renderers/index.js** — Imports `../../diagrams/renderers/index.js` from `../../diagrams/renderers/index.js`. `diagram-tool-handler.ts:9-9`
+- **../../diagrams/schema-collector.js** — Imports `../../diagrams/schema-collector.js` from `../../diagrams/schema-collector.js`. `diagram-tool-handler.ts:10-10`
+- **../../logging/index.js** — Imports `../../logging/index.js` from `../../logging/index.js`. `analysis-tool-handlers.ts:16-16`, `autodoc-batch-handler.ts:25-25`, `autodoc-tool-handlers.ts:27-27`, `branch-tool-handlers.ts:15-15`, `entity-tool-handlers.ts:12-12`, `graph-tool-handlers.ts:14-14`, `history-tool-handlers.ts:12-12`, `index-tool-handler.ts:12-12`, `metrics-tool-handlers.ts:13-13`, `pattern-tool-handlers.ts:12-12`, `semantic-tool-handlers.ts:15-15`, `taint-tool-handlers.ts:2-2`, `tracing-tool-handlers.ts:17-17`, `validation-tool-handlers.ts:11-11`, `worktree-tool-handlers.ts:15-15`
+- **../../semantic/vector-store.js** — Imports `../../semantic/vector-store.js` from `../../semantic/vector-store.js`. `file-tool-handlers.ts:21-21`
+- **../../shared/git-worktree.js** — Imports `../../shared/git-worktree.js`. `worktree-tool-handlers.ts:16-22`
+- **../../storage/graph-storage-libsql.js** — Imports `../../storage/graph-storage-libsql.js` from `../../storage/graph-storage-libsql.js`. `analysis-tool-handlers.ts:17-17`, `history-tool-handlers.ts:13-13`
+- **../../storage/prolly/index.js** — Imports `../../storage/prolly/index.js` from `../../storage/prolly/index.js`. `analysis-tool-handlers.ts:18-18`, `history-tool-handlers.ts:14-14`
+- **../../tracing/graph-cache.js** — Imports `../../tracing/graph-cache.js` from `../../tracing/graph-cache.js`. `tracing-tool-handlers.ts:18-18`
+- **../../tracing/index.js** — Imports `../../tracing/index.js`. `tracing-tool-handlers.ts:19-25`
+- **../../tracing/ngrx-trace-engine.js** — Imports `../../tracing/ngrx-trace-engine.js` from `../../tracing/ngrx-trace-engine.js`. `tracing-tool-handlers.ts:26-26`
+- **../../tracing/trace-engine.js** — Imports `../../tracing/trace-engine.js` from `../../tracing/trace-engine.js`. `diagram-tool-handler.ts:11-11`, `stacktrace-tool-handler.ts:12-12`
+- **../../tracing/types.js** — Imports `../../tracing/types.js`. `tracing-tool-handlers.ts:27-33`
+- **../../types/agent.js** — Imports `../../types/agent.js` from `../../types/agent.js`. `file-tool-utils.ts:7-7`, `merge-tool-handlers.ts:15-15`, `metrics-tool-handlers.ts:14-14`
+- **../../types/semantic.js** — Imports `../../types/semantic.js` from `../../types/semantic.js`. `analysis-tool-handlers.ts:19-19`, `autodoc-tool-handlers.ts:28-28`
+- **../../types/storage.js** — Imports `../../types/storage.js` from `../../types/storage.js`. `analysis-tool-handlers.ts:20-20`, `autodoc-batch-handler.ts:26-26`, `db-schema-tool-handlers.ts:8-8`, `entity-tool-handlers.ts:13-13`, `file-tool-handlers.ts:22-22`, `graph-metrics-tool-handlers.ts:2-2`, `graph-tool-handlers.ts:16-16`, `semantic-tool-handlers.ts:16-16`
+- **../../utils/config-detector.js** — Imports `../../utils/config-detector.js` from `../../utils/config-detector.js`. `validation-tool-handlers.ts:12-12`
+- **../../utils/error-handling.js** — Imports `../../utils/error-handling.js` from `../../utils/error-handling.js`. `analysis-tool-handlers.ts:21-21`, `autodoc-tool-handlers.ts:29-29`, `branch-tool-handlers.ts:16-16`, `file-tool-handlers.ts:23-23`, `graph-tool-handlers.ts:17-17`, `merge-tool-handlers.ts:16-16`, `metrics-tool-handlers.ts:15-15`, `pattern-tool-handlers.ts:13-13`, `semantic-tool-handlers.ts:17-17`, `snapshot-tool-handlers.ts:12-12`, `validation-tool-handlers.ts:13-13`
+- **../../validation/linters/biome-linter.js** — Imports `../../validation/linters/biome-linter.js` from `../../validation/linters/biome-linter.js`. `validation-tool-handlers.ts:14-14`
+- **../../validation/linters/oxlint-linter.js** — Imports `../../validation/linters/oxlint-linter.js` from `../../validation/linters/oxlint-linter.js`. `validation-tool-handlers.ts:15-15`
+- **../../versioning/version-manager.js** — Imports `../../versioning/version-manager.js` from `../../versioning/version-manager.js`. `snapshot-tool-handlers.ts:13-13`
+- **../base-schemas.js** — Imports `../base-schemas.js` from `../base-schemas.js`. `analysis-tool-handlers.ts:22-22`, `entity-tool-handlers.ts:14-14`, `file-tool-handlers.ts:24-24`, `graph-tool-handlers.ts:18-18`, `semantic-tool-handlers.ts:18-18`, `tracing-tool-handlers.ts:34-34`
+- **../base-tool-handler.js** — Imports `../base-tool-handler.js` from `../base-tool-handler.js`. `analysis-tool-handlers.ts:23-23`, `autodoc-batch-handler.ts:27-27`, `autodoc-tool-handlers.ts:30-30`, `branch-tool-handlers.ts:17-17`, `db-schema-tool-handlers.ts:9-9`, `diagram-tool-handler.ts:12-12`, `diagram-tool-handler.ts:13-13`, `entity-tool-handlers.ts:15-15`, `file-tool-handlers.ts:25-25`, `get-tools-for-task-handler.ts:9-9`, `graph-metrics-tool-handlers.ts:3-3`, `graph-tool-handlers.ts:19-19`, `help-tool-handler.ts:12-12`, `history-tool-handlers.ts:15-15`, `index-tool-handler.ts:13-13`, `merge-tool-handlers.ts:17-17`, `metrics-tool-handlers.ts:16-16`, `pattern-tool-handlers.ts:14-14`, `semantic-tool-handlers.ts:19-19`, `snapshot-tool-handlers.ts:14-14`, `stacktrace-tool-handler.ts:13-13`, `taint-tool-handlers.ts:3-3`, `tracing-tool-handlers.ts:35-35`, `validation-tool-handlers.ts:16-16`, `worktree-tool-handlers.ts:23-23`, `zig-compat-tool-handlers.ts:14-14`
+- **../impact-analyzer.js** — Imports `../impact-analyzer.js` from `../impact-analyzer.js`. `file-tool-handlers.ts:26-26`, `file-tool-utils.ts:8-8`
+- **../jscpd.js** — Imports `../jscpd.js` from `../jscpd.js`. `semantic-tool-handlers.ts:20-20`
+- **../response-limits.js** — Imports `../response-limits.js` from `../response-limits.js`. `analysis-tool-handlers.ts:24-24`, `entity-tool-handlers.ts:16-16`, `graph-tool-handlers.ts:20-20`, `semantic-tool-handlers.ts:21-21`, `taint-tool-handlers.ts:4-4`
+- **../schemas/autodoc-schemas.js** — Imports `../schemas/autodoc-schemas.js`. `autodoc-tool-handlers.ts:31-43`
+- **../schemas/diagram-schemas.js** — Imports `../schemas/diagram-schemas.js` from `../schemas/diagram-schemas.js`. `diagram-tool-handler.ts:14-14`
+- **../schemas/history-schemas.js** — Imports `../schemas/history-schemas.js`. `history-tool-handlers.ts:16-21`
+- **../schemas/missing-tool-schemas.js** — Imports `../schemas/missing-tool-schemas.js` from `../schemas/missing-tool-schemas.js`. `autodoc-batch-handler.ts:28-28`
+- **../schemas/missing-tool-schemas.js** — Imports `../schemas/missing-tool-schemas.js`. `zig-compat-tool-handlers.ts:15-24`
+- **../schemas/pattern-schemas.js** — Imports `../schemas/pattern-schemas.js` from `../schemas/pattern-schemas.js`. `pattern-tool-handlers.ts:15-15`
+- **../schemas/semantic-schemas.js** — Imports `../schemas/semantic-schemas.js` from `../schemas/semantic-schemas.js`. `db-schema-tool-handlers.ts:10-10`, `semantic-tool-handlers.ts:22-22`
+- **../schemas/stacktrace-schemas.js** — Imports `../schemas/stacktrace-schemas.js` from `../schemas/stacktrace-schemas.js`. `stacktrace-tool-handler.ts:14-14`
+- **../schemas/validation-schemas.js** — Imports `../schemas/validation-schemas.js` from `../schemas/validation-schemas.js`. `validation-tool-handlers.ts:17-17`
+- **../schemas/worktree-schemas.js** — Imports `../schemas/worktree-schemas.js`. `worktree-tool-handlers.ts:24-29`
+- **../tool-definitions.js** — Imports `../tool-definitions.js` from `../tool-definitions.js`. `get-tools-for-task-handler.ts:10-10`, `index-tool-handler.ts:14-14`
+- **../utils/recent-changes-enrichment.js** — Imports `../utils/recent-changes-enrichment.js`. `analysis-tool-handlers.ts:25-29`, `pattern-tool-handlers.ts:16-20`, `stacktrace-tool-handler.ts:15-21`, `tracing-tool-handlers.ts:36-41`
+- **./file-tool-utils.js** — Imports `./file-tool-utils.js`. `file-tool-handlers.ts:27-33`
+- **node:child_process** — Imports `node:child_process` from `node:child_process`. `analysis-tool-handlers.ts:13-13`, `branch-tool-handlers.ts:12-12`, `worktree-tool-handlers.ts:11-11`
+- **node:fs** — Imports `node:fs` from `node:fs`. `entity-tool-handlers.ts:10-10`, `help-tool-handler.ts:8-8`, `semantic-tool-handlers.ts:13-13`
+- **node:fs/promises** — Imports `node:fs/promises` from `node:fs/promises`. `autodoc-batch-handler.ts:11-11`
+- **node:path** — Imports `node:path` from `node:path`. `autodoc-batch-handler.ts:12-12`, `autodoc-tool-handlers.ts:21-21`, `help-tool-handler.ts:9-9`, `worktree-tool-handlers.ts:12-12`
+- **node:url** — Imports `node:url` from `node:url`. `help-tool-handler.ts:10-10`
+- **zod** — Imports `zod` from `zod`. `analysis-tool-handlers.ts:14-14`, `autodoc-batch-handler.ts:13-13`, `autodoc-tool-handlers.ts:22-22`, `branch-tool-handlers.ts:13-13`, `diagram-tool-handler.ts:8-8`, `entity-tool-handlers.ts:11-11`, `file-tool-handlers.ts:20-20`, `get-tools-for-task-handler.ts:8-8`, `graph-metrics-tool-handlers.ts:1-1`, `graph-tool-handlers.ts:12-12`, `help-tool-handler.ts:11-11`, `history-tool-handlers.ts:11-11`, `index-tool-handler.ts:8-8`, `merge-tool-handlers.ts:11-11`, `metrics-tool-handlers.ts:12-12`, `pattern-tool-handlers.ts:7-7`, `semantic-tool-handlers.ts:14-14`, `snapshot-tool-handlers.ts:11-11`, `stacktrace-tool-handler.ts:8-8`, `taint-tool-handlers.ts:1-1`, `tracing-tool-handlers.ts:16-16`, `validation-tool-handlers.ts:9-9`, `worktree-tool-handlers.ts:13-13`, `zig-compat-tool-handlers.ts:13-13`
+
+### Property
+- **_debug** — Debug information for tracing operations `tracing-tool-handlers.ts:223-223`
+- **activeContracts** — Represents the number of active contracts `graph-tool-handlers.ts:253-253`
+- **added** — Stores the number of added documents `autodoc-tool-handlers.ts:122-122`
+- **affectedEndpoints** — Lists endpoints affected by the analysis `analysis-tool-handlers.ts:942-942`
+- **affectedSchemas** — Lists schemas affected by the analysis `analysis-tool-handlers.ts:943-943`
+- **affectsApiContract** — Determines if the analysis affects the API contract `analysis-tool-handlers.ts:941-941`
+- **agentAndStoreOk** — Indicates if both an agent and a store are available `autodoc-tool-handlers.ts:142-142`
+- **agents** — Represents the agent metrics `metrics-tool-handlers.ts:44-44`
+- **agentType** — Specifies the type of agent used `autodoc-tool-handlers.ts:139-139`
+- **aiSuggestions** — Generates AI suggestions for conflicts during the merge `merge-tool-handlers.ts:77-77`
+- **allocCallCount** — Counts the number of alloc() calls in the code `analysis-tool-handlers.ts:486-486`
+- **arch** — Represents the architecture of the system `metrics-tool-handlers.ts:56-56`
+- **autoIndexExtensions** — Not present in the provided code `index-tool-handler.ts:100-100`
+- **avgSimilarity** — Average similarity score of clones in a group `semantic-tool-handlers.ts:103-103`
+- **bareExceptCount** — Counts the number of bare except blocks in the code `analysis-tool-handlers.ts:468-468`
+- **bin** — Represents the binary path for a validator `validation-tool-handlers.ts:367-367`
+- **branch** — Represents the branch of a changelog entry `autodoc-tool-handlers.ts:100-100`
+- **branchCount** — Counts the number of branches in the code `semantic-tool-handlers.ts:52-52`
+- **branches** — An array of branch information, each containing the branch name, whether it is the current branch, and the last indexed time `branch-tool-handlers.ts:30-34`
+- **branchManagement** — Indicates whether branch management is enabled `metrics-tool-handlers.ts:63-63`
+- **branchManager** — Represents the branch manager `metrics-tool-handlers.ts:87-87`
+- **breakingChangeRisk** — Assesses the risk of breaking changes `analysis-tool-handlers.ts:944-944`
+- **broken** — Array of broken references `autodoc-tool-handlers.ts:69-69`
+- **broken** — Represents the count of broken entries `autodoc-tool-handlers.ts:167-167`
+- **brokenInFile** — Broken references within a specific file `autodoc-tool-handlers.ts:168-168`
+- **brokenRefs** — Stores broken references `autodoc-tool-handlers.ts:113-113`
+- **brokenRefs** — Array of broken references `autodoc-tool-handlers.ts:169-169`
+- **brokenRefs** — Stores broken references in the AutoDoc status `autodoc-tool-handlers.ts:705-705`
+- **callCount** — Counts the number of function calls in the code `semantic-tool-handlers.ts:56-56`
+- **changeCount** — Counts changes in the codebase `analysis-tool-handlers.ts:207-207`
+- **changeFrequency** — Represents the change frequency of a code hotspot `analysis-tool-handlers.ts:69-69`
+- **changeFrequency** — Represents the frequency of code changes `analysis-tool-handlers.ts:425-425`
+- **changeFrequency** — Represents the frequency of changes in a file `analysis-tool-handlers.ts:431-431`
+- **changeFrequencyCache** — Caches change frequencies for efficient retrieval `analysis-tool-handlers.ts:207-207`
+- **changeFrequencyScore** — Represents the change frequency score of a code hotspot `analysis-tool-handlers.ts:70-70`
+- **changeFrequencyScore** — Represents the score based on change frequency `analysis-tool-handlers.ts:425-425`
+- **changeFrequencyScore** — Represents the score of change frequency in a file `analysis-tool-handlers.ts:431-431`
+- **changeMetrics** — Stores metrics related to code changes `analysis-tool-handlers.ts:424-426`
+- **changes** — Stores the changes in a changelog entry `autodoc-tool-handlers.ts:102-102`
+- **changeSource** — Represents the source of change frequency for a code hotspot `analysis-tool-handlers.ts:71-71`
+- **changeSource** — Indicates the source of change frequency data `analysis-tool-handlers.ts:425-425`
+- **changeSource** — Indicates the source of changes in a file `analysis-tool-handlers.ts:431-431`
+- **changeType** — Iterates over the commit hashes and change types in the crash point history `stacktrace-tool-handler.ts:194-194`
+- **changeType** — Iterates over an array of crash points, each containing a commit hash and change type `stacktrace-tool-handler.ts:195-195`
+- **cloneType** — Type of clone found during semantic search `semantic-tool-handlers.ts:104-104`
+- **code** — Represents the code of a parsed entity `analysis-tool-handlers.ts:84-84`
+- **code** — Represents a string value for code `validation-tool-handlers.ts:391-391`
+- **cognitive** — Cognitive complexity of the semantic search result `semantic-tool-handlers.ts:44-44`
+- **cognitiveComplexity** — Represents the cognitive complexity of a code hotspot `analysis-tool-handlers.ts:66-66`
+- **column** — Column number of the validation issue `validation-tool-handlers.ts:28-28`
+- **column** — Represents the column number of a validation issue `validation-tool-handlers.ts:62-62`
+- **column** — Represents a column number in a file `validation-tool-handlers.ts:393-393`
+- **commitHash** — Iterates over the commit hashes and change types in the crash point history `stacktrace-tool-handler.ts:194-194`
+- **commitHash** — Iterates over an array of crash points, each containing a commit hash and change type `stacktrace-tool-handler.ts:195-195`
+- **commitsAnalyzed** — Tracks the number of commits analyzed `analysis-tool-handlers.ts:1017-1017`
+- **communityId** — Identifies a community or group within a graph `analysis-tool-handlers.ts:725-725`
+- **communityRisk** — Assesses the risk associated with a community `analysis-tool-handlers.ts:726-726`
+- **conditionAnalyzer** — Analyzes conditions in the code `tracing-tool-handlers.ts:495-495`
+- **confidence** — Confidence level of the refactoring suggestion `analysis-tool-handlers.ts:41-41`
+- **confidence** — Confidence level of the document, if applicable `autodoc-tool-handlers.ts:59-59`
+- **confidence** — Represents the confidence level of a document `autodoc-tool-handlers.ts:91-91`
+- **consumers** — Identifies consumers of the analyzed code `analysis-tool-handlers.ts:945-945`
+- **content** — Content of the document `autodoc-tool-handlers.ts:55-55`
+- **content** — Document content `autodoc-tool-handlers.ts:352-352`
+- **content** — Content field in success response `file-tool-utils.ts:80-80`
+- **content** — Represents an array of text content objects `file-tool-utils.ts:100-100`
+- **content** — Content of the semantic search result `semantic-tool-handlers.ts:37-37`
+- **content** — Represents the content of a semantic search result `semantic-tool-handlers.ts:82-82`
+- **content** — Stores the content of a semantic tool handler `semantic-tool-handlers.ts:145-145`
+- **contentPagination** — Pagination for content `semantic-tool-handlers.ts:151-158`
+- **count** — Counts changes in the codebase `analysis-tool-handlers.ts:305-305`
+- **count** — The number of oversized entities `index-tool-handler.ts:38-38`
+- **couplingScore** — Represents the coupling score of a code hotspot `analysis-tool-handlers.ts:72-72`
+- **createdAt** — Indicates the timestamp when a document was created `autodoc-tool-handlers.ts:355-355`
+- **currentBranch** — The name of the current branch `branch-tool-handlers.ts:29-29`
+- **currentBranch** — Represents the current branch of the repository `metrics-tool-handlers.ts:85-85`
+- **currentRepositoryPath** — Returns the current repository path `metrics-tool-handlers.ts:101-101`
+- **cwd** — Represents the current working directory of the system `metrics-tool-handlers.ts:58-58`
+- **cyclomatic** — Cyclomatic complexity of the semantic search result `semantic-tool-handlers.ts:43-43`
+- **cyclomaticComplexity** — Represents the cyclomatic complexity of a code hotspot `analysis-tool-handlers.ts:65-65`
+- **dataFlowAnalyzer** — Analyzes data flow between methods `tracing-tool-handlers.ts:334-334`
+- **dbEngine** — Filters database entities by database engine `db-schema-tool-handlers.ts:15-15`
+- **dbToDisk** — Converts database entries to disk storage `autodoc-tool-handlers.ts:126-129`
+- **dependencyCount** — Represents the number of dependencies in a code hotspot `analysis-tool-handlers.ts:73-73`
+- **depth** — Represents the depth of affected entities `zig-compat-tool-handlers.ts:296-296`
+- **description** — Description of the refactoring suggestion `analysis-tool-handlers.ts:42-42`
+- **description** — The description of a tool `get-tools-for-task-handler.ts:24-24`
+- **details** — Represents detailed information about the version `metrics-tool-handlers.ts:53-59`
+- **diagnostics** — Stores diagnostic information from validation `validation-tool-handlers.ts:389-394`
+- **diskToDb** — Manages the mapping of disk files to database entries `autodoc-tool-handlers.ts:121-125`
+- **docId** — Stores the unique identifier of a document `autodoc-tool-handlers.ts:89-89`
+- **documentation** — Manages documentation related to AutoDoc `autodoc-tool-handlers.ts:1051-1051`
+- **documents** — Stores a collection of documents `autodoc-tool-handlers.ts:111-111`
+- **durationMs** — The duration of the indexing operation in milliseconds `index-tool-handler.ts:25-25`
+- **durationSeconds** — The duration of the indexing operation in seconds `index-tool-handler.ts:32-32`
+- **embeddingPerformance** — Contains performance metrics related to embeddings `index-tool-handler.ts:30-35`
+- **embeddings** — Contains information about generated and skipped embeddings `index-tool-handler.ts:26-29`
+- **embeddingsPerSecond** — The number of embeddings processed per second during the indexing operation `index-tool-handler.ts:33-33`
+- **end** — Represents the end line of a parsed entity `analysis-tool-handlers.ts:87-87`
+- **endLine** — End line number of the semantic search result `semantic-tool-handlers.ts:39-39`
+- **endLine** — Ending line number of the semantic search result `semantic-tool-handlers.ts:96-96`
+- **entities** — Entities in query results `entity-tool-handlers.ts:35-35`
+- **entities** — Represents pagination metadata for entities `entity-tool-handlers.ts:43-43`
+- **entities** — Represents the set of entities in the Zig-compatible Tool Handlers `zig-compat-tool-handlers.ts:296-296`
+- **entity** — Represents an entity in the security scan context `zig-compat-tool-handlers.ts:243-243`
+- **entityCount** — The number of entities processed during the indexing operation `index-tool-handler.ts:24-24`
+- **entityId** — Optional entityId for the refactoring suggestion `analysis-tool-handlers.ts:43-43`
+- **entityId** — Entity ID in search results `file-tool-utils.ts:31-31`
+- **entityId** — Entity ID of the semantic search result `semantic-tool-handlers.ts:41-41`
+- **entityType** — Entity type for entity queries `entity-tool-handlers.ts:27-27`
+- **entityType** — Type of the entity in the semantic search result `semantic-tool-handlers.ts:33-33`
+- **error** — Stores an error message or object related to the AutoDoc process `autodoc-tool-handlers.ts:124-124`
+- **error** — Represents an array of error objects with path and error details `autodoc-tool-handlers.ts:128-128`
+- **error** — Represents a single error string `autodoc-tool-handlers.ts:145-145`
+- **error** — Stores an error message `metrics-tool-handlers.ts:249-249`
+- **errors** — Stores the number of errors encountered `autodoc-tool-handlers.ts:124-124`
+- **errors** — Collects error messages or objects during the AutoDoc process `autodoc-tool-handlers.ts:128-128`
+- **errors** — Number of errors in the validation result `validation-tool-handlers.ts:39-39`
+- **evalExecCount** — Counts the number of eval() executions in the code `analysis-tool-handlers.ts:467-467`
+- **exists** — Indicates whether the file watcher exists `metrics-tool-handlers.ts:84-84`
+- **exists** — Checks if a file exists `metrics-tool-handlers.ts:85-85`
+- **exists** — Indicates whether a branch manager exists `metrics-tool-handlers.ts:87-87`
+- **exists** — Returns the existence status of a file watcher `metrics-tool-handlers.ts:95-95`
+- **external** — Represents the amount of memory used by external objects `metrics-tool-handlers.ts:29-29`
+- **features** — Represents the features enabled in the system `metrics-tool-handlers.ts:60-65`
+- **file** — Represents the file path of an entity `analysis-tool-handlers.ts:1142-1142`
+- **file** — Analysis Tool Handlers file `analysis-tool-handlers.ts:1143-1143`
+- **file** — Stores the file path of a consumer in a file `analysis-tool-handlers.ts:1144-1144`, `analysis-tool-handlers.ts:1344-1344`
+- **file** — Stores the file path of a producer in a file `analysis-tool-handlers.ts:1343-1343`
+- **file** — Stores the file path of a generated type in a file `analysis-tool-handlers.ts:1345-1345`
+- **file** — File path of the validation result `validation-tool-handlers.ts:48-48`
+- **file** — Represents a file in the security scan context `zig-compat-tool-handlers.ts:243-243`
+- **file** — Represents an array of entities affected by a change, each containing file path, entity names, and depth `zig-compat-tool-handlers.ts:296-296`
+- **filePath** — Optional filePath for the refactoring suggestion `analysis-tool-handlers.ts:44-44`
+- **filePath** — Represents the file path of the code entity `analysis-tool-handlers.ts:55-55`
+- **filePath** — Represents the file path as an optional string `analysis-tool-handlers.ts:83-83`
+- **filePath** — File path where the document is stored `autodoc-tool-handlers.ts:56-56`
+- **filePath** — Stores the file path of a document `autodoc-tool-handlers.ts:78-78`
+- **filePath** — File path of a search result `autodoc-tool-handlers.ts:90-90`
+- **filePath** — Stores the file path as a string `autodoc-tool-handlers.ts:502-502`
+- **filePath** — File path for entity queries `entity-tool-handlers.ts:26-26`
+- **filePath** — File path of the semantic search result `semantic-tool-handlers.ts:35-35`
+- **filePath** — Represents the file path for semantic search operations `semantic-tool-handlers.ts:81-81`
+- **fileSync** — Synchronizes files with the AutoDoc status `autodoc-tool-handlers.ts:708-708`
+- **fileWatcher** — Represents the file watcher `metrics-tool-handlers.ts:84-84`
+- **flushAndSave** — Flushes and saves the document to the storage `autodoc-tool-handlers.ts:376-376`
+- **forceUnwrapCount** — Counts the number of force unwrap operations in the code `analysis-tool-handlers.ts:483-483`
+- **formatter** — Formats the output of the tracing process `tracing-tool-handlers.ts:137-137`
+- **formatter** — Formats the output of tracing tools `tracing-tool-handlers.ts:251-251`
+- **formatter** — Initializes a new instance of the OutputFormatter class `tracing-tool-handlers.ts:335-335`, `tracing-tool-handlers.ts:424-424`, `tracing-tool-handlers.ts:496-496`
+- **freeCallCount** — Counts the number of free() calls in the code `analysis-tool-handlers.ts:487-487`
+- **from** — Represents the source entity in a relationship `db-schema-tool-handlers.ts:78-78`
+- **generated** — The number of embeddings generated during the indexing operation `index-tool-handler.ts:27-27`
+- **generateEmbedding** — Generates an embedding for a document `autodoc-tool-handlers.ts:322-322`
+- **generateEmbedding** — Represents the method to generate embeddings from text `autodoc-tool-handlers.ts:535-535`
+- **getAllEntities** — Retrieves all entities related to AutoDoc `autodoc-tool-handlers.ts:1041-1041`
+- **getBranch** — Retrieves the current branch information `metrics-tool-handlers.ts:98-98`
+- **getBranchManager** — Gets the branch manager instance `metrics-tool-handlers.ts:100-100`
+- **getConductor** — Returns the conductor `file-tool-utils.ts:47-47`
+- **getCooccurrenceOps** — Returns a function that returns a promise for getting statistics `graph-tool-handlers.ts:203-203`
+- **getDatabasePath** — Retrieves the database path or sets it to "unknown" if not found `graph-tool-handlers.ts:296-296`
+- **getExistingIds** — Retrieves existing document IDs `autodoc-tool-handlers.ts:315-315`
+- **getFileWatcherStatus** — Gets the status of the file watcher `metrics-tool-handlers.ts:95-95`
+- **getGitWatcher** — Gets the Git watcher status `metrics-tool-handlers.ts:96-99`
+- **getGraphStorage** — Retrieves graph storage `autodoc-tool-handlers.ts:157-157`
+- **getIndexerAgent** — Retrieves the indexer agent information `metrics-tool-handlers.ts:420-420`
+- **getIndexingStats** — Retrieves indexing statistics `metrics-tool-handlers.ts:102-102`
+- **getProjectContext** — Retrieves project context for tracing operations `tracing-tool-handlers.ts:148-148`
+- **getSemanticAgent** — Retrieves a semantic agent `autodoc-tool-handlers.ts:156-156`
+- **getSemanticAgent** — Returns a promise for the semantic agent `file-tool-utils.ts:14-14`
+- **getServiceContainer** — Retrieves a service container `autodoc-tool-handlers.ts:155-155`
+- **getStats** — Returns a function that returns a promise for getting statistics `graph-tool-handlers.ts:203-203`
+- **getVectorStore** — Retrieves the vector store `autodoc-tool-handlers.ts:298-298`
+- **getVectorStore** — Retrieves the vector store for similarity search `autodoc-tool-handlers.ts:300-300`
+- **getVectorStore** — Checks if the semantic agent has a getVectorStore method `autodoc-tool-handlers.ts:304-304`
+- **getVectorStore** — Retrieves the vector store from the semantic agent `autodoc-tool-handlers.ts:531-531`
+- **gitWatcher** — Represents the git watcher `metrics-tool-handlers.ts:85-85`
+- **graph** — Represents the graph metrics `metrics-tool-handlers.ts:43-43`
+- **hasAgent** — Checks if an agent is available `autodoc-tool-handlers.ts:138-138`
+- **hasAsyncCalls** — Indicates whether the code has asynchronous calls `semantic-tool-handlers.ts:57-57`
+- **hasAwaits** — Indicates whether the code uses await `semantic-tool-handlers.ts:51-51`
+- **hasBranches** — Indicates whether the code has branches `semantic-tool-handlers.ts:48-48`
+- **hasDocumentation** — Indicates whether the code has documentation `semantic-tool-handlers.ts:59-59`
+- **hasExamples** — Indicates whether the code has examples `semantic-tool-handlers.ts:61-61`
+- **hasExceptions** — Indicates whether the code has exception handling `semantic-tool-handlers.ts:50-50`
+- **hasGetVectorStoreFn** — Checks if a function to get a vector store is available `autodoc-tool-handlers.ts:141-141`
+- **hasLoops** — Indicates whether the code has loops `semantic-tool-handlers.ts:49-49`
+- **hasMore** — Indicates whether there are more semantic tool handlers to process `semantic-tool-handlers.ts:156-156`
+- **hasParams** — Indicates whether the code has parameters `semantic-tool-handlers.ts:60-60`
+- **hasRegexLiterals** — Indicates whether the code uses regex literals `semantic-tool-handlers.ts:68-68`
+- **hasSecurityHints** — Indicates whether the code has security hints `semantic-tool-handlers.ts:69-69`
+- **hasStore** — Checks if a store is available `autodoc-tool-handlers.ts:140-140`
+- **hasTypeAssertions** — Indicates whether the code has type assertions `semantic-tool-handlers.ts:67-67`
+- **heapTotal** — Represents the total amount of memory allocated to the heap `metrics-tool-handlers.ts:28-28`
+- **heapUsed** — Represents the amount of memory currently used by the heap `metrics-tool-handlers.ts:27-27`
+- **hop2Id** — Stores the ID of the hop2 entity in the semantic search results `semantic-tool-handlers.ts:699-699`
+- **id** — Unique identifier for the code hotspot `analysis-tool-handlers.ts:52-52`
+- **id** — Represents the unique identifier of a parsed entity `analysis-tool-handlers.ts:80-80`
+- **id** — Unique identifier for a document `autodoc-tool-handlers.ts:53-53`
+- **id** — Stores the unique identifier of a changelog entry `autodoc-tool-handlers.ts:98-98`
+- **id** — Document ID `autodoc-tool-handlers.ts:351-351`
+- **id** — Unique identifier for a search result `autodoc-tool-handlers.ts:500-500`
+- **id** — Unique identifier for the semantic search result `semantic-tool-handlers.ts:76-76`
+- **id** — Unique identifier for a semantic search result `semantic-tool-handlers.ts:92-92`
+- **id** — Stores an identifier `semantic-tool-handlers.ts:365-365`
+- **idx** — Indexes the analysis results `analysis-tool-handlers.ts:577-577`
+- **idx** — Stores an index `semantic-tool-handlers.ts:586-586`
+- **impact** — Impact of the refactoring suggestion `analysis-tool-handlers.ts:40-40`
+- **impactedDocs** — Stores the impacted documents in a changelog entry `autodoc-tool-handlers.ts:103-103`
+- **includedCount** — Count of included results in a pagination `semantic-tool-handlers.ts:152-152`
+- **includeRelationships** — Indicates whether to include relationship summaries in the result `db-schema-tool-handlers.ts:16-16`
+- **indexedBranches** — The number of branches that have been indexed `branch-tool-handlers.ts:37-37`
+- **indexerAgentExists** — Indicates whether the indexer agent exists `metrics-tool-handlers.ts:83-83`
+- **indexing** — Not present in the provided code `index-tool-handler.ts:100-100`
+- **indexingStats** — Retrieves indexing statistics `metrics-tool-handlers.ts:88-88`
+- **innerHtmlAssignCount** — Counts the number of innerHTML assignments in the code `analysis-tool-handlers.ts:456-456`
+- **insert** — Inserts a document `autodoc-tool-handlers.ts:350-356`
+- **isCurrent** — Indicates whether a branch is the current branch `branch-tool-handlers.ts:32-32`
+- **isDeprecated** — Indicates whether the code is deprecated `semantic-tool-handlers.ts:62-62`
+- **isExpanded** — Indicates whether a result is expanded `semantic-tool-handlers.ts:84-84`
+- **isStateful** — Indicates whether the analysis tool is stateful `analysis-tool-handlers.ts:91-91`
+- **issues** — Array of validation issues in the result `validation-tool-handlers.ts:41-41`
+- **isValid** — Determines if a file is valid based on linter/validator results `validation-tool-handlers.ts:52-52`
+- **isWatching** — Indicates whether the git watcher is currently watching `metrics-tool-handlers.ts:85-85`
+- **isWatching** — Determines if the watcher is currently active `metrics-tool-handlers.ts:97-97`
+- **keywords** — Defines a record of patterns with keywords and associated tools `get-tools-for-task-handler.ts:50-50`
+- **labels** — Stores an array of objects with optional span details `validation-tool-handlers.ts:393-393`
+- **language** — Language of the semantic search result `semantic-tool-handlers.ts:40-40`
+- **lastIndexed** — The last indexed time of a branch `branch-tool-handlers.ts:33-33`
+- **limit** — Limits the number of results returned `autodoc-tool-handlers.ts:548-548`
+- **limit** — Limit for search results `file-tool-utils.ts:30-30`
+- **line** — Represents the line number of a parsed entity `analysis-tool-handlers.ts:86-86`
+- **line** — Represents an optional end line number `analysis-tool-handlers.ts:87-87`
+- **line** — Indicates the line number within a file `autodoc-tool-handlers.ts:79-79`
+- **line** — Line number of the validation issue `validation-tool-handlers.ts:27-27`
+- **line** — Represents the line number of a validation issue `validation-tool-handlers.ts:61-61`
+- **line** — Represents a line number in a file `validation-tool-handlers.ts:393-393`
+- **linesOfCode** — Represents the number of lines of code in a code hotspot `analysis-tool-handlers.ts:64-64`
+- **linesOfCode** — Lines of code in the semantic search result `semantic-tool-handlers.ts:45-45`
+- **location** — Represents the location of a parsed entity `analysis-tool-handlers.ts:85-88`
+- **loopCount** — Counts the number of loops in the code `semantic-tool-handlers.ts:53-53`
+- **markedOutdated** — Marks documents as outdated in the AutoDoc status `autodoc-tool-handlers.ts:707-707`
+- **maxTokens** — The maximum number of tokens in an oversized entity `index-tool-handler.ts:39-39`
+- **members** — Members of a clone group `semantic-tool-handlers.ts:105-105`
+- **memory** — Contains detailed memory usage metrics such as heap used, heap total, external, and RSS `metrics-tool-handlers.ts:26-32`
+- **message** — Provides a message describing the outcome of the indexing operation `index-tool-handler.ts:23-23`
+- **message** — Stores a message or error message `semantic-tool-handlers.ts:157-157`
+- **message** — Message of the validation issue `validation-tool-handlers.ts:29-29`
+- **message** — Contains the message of a validation issue `validation-tool-handlers.ts:63-63`
+- **message** — Represents a single validation issue from a linter or validator `validation-tool-handlers.ts:390-390`
+- **messages** — Contains messages from a validator run `validation-tool-handlers.ts:60-67`
+- **metadata** — Stores metadata for analysis operations `analysis-tool-handlers.ts:89-93`
+- **metadata** — Stores metadata associated with a document `autodoc-tool-handlers.ts:354-354`
+- **metadata** — Stores metadata related to AutoDoc `autodoc-tool-handlers.ts:1041-1041`
+- **metadata** — Stores metadata for semantic search results `semantic-tool-handlers.ts:83-83`
+- **metadataFilter** — Filters results based on metadata `autodoc-tool-handlers.ts:548-548`
+- **metric** — Enum representing different graph metrics `graph-metrics-tool-handlers.ts:21-21`
+- **metrics** — Represents the metrics of a code hotspot `analysis-tool-handlers.ts:57-57`
+- **metrics** — Represents metrics for code analysis `analysis-tool-handlers.ts:90-90`
+- **minCommunitySize** — Optional number specifying the minimum community size `graph-metrics-tool-handlers.ts:23-23`
+- **minSimilarity** — Minimum similarity threshold for search results `file-tool-utils.ts:30-30`
+- **multiLanguage** — Indicates whether multi-language support is enabled `metrics-tool-handlers.ts:62-62`
+- **name** — Name of the code hotspot `analysis-tool-handlers.ts:53-53`
+- **name** — Represents the name of a parsed entity `analysis-tool-handlers.ts:81-81`
+- **name** — Names the analysis results `analysis-tool-handlers.ts:577-577`
+- **name** — Represents the name of an entity `analysis-tool-handlers.ts:1142-1142`
+- **name** — Name of the Refactoring suggestion output format `analysis-tool-handlers.ts:1143-1143`
+- **name** — Stores the name of a consumer in a file `analysis-tool-handlers.ts:1144-1144`, `analysis-tool-handlers.ts:1344-1344`
+- **name** — Stores the name of a producer in a file `analysis-tool-handlers.ts:1343-1343`
+- **name** — analysis-tool-handlers.ts:1345 `analysis-tool-handlers.ts:1345-1345`
+- **name** — The name of a branch `branch-tool-handlers.ts:31-31`
+- **name** — Name for entity queries `entity-tool-handlers.ts:28-28`
+- **name** — The name of a tool `get-tools-for-task-handler.ts:23-23`
+- **name** — Represents the name of the version `metrics-tool-handlers.ts:51-51`
+- **name** — Stores the name of the tool handler `metrics-tool-handlers.ts:188-188`
+- **name** — Name of the semantic search result `semantic-tool-handlers.ts:32-32`
+- **name** — Name of a semantic search result `semantic-tool-handlers.ts:77-77`
+- **name** — Stores a name `semantic-tool-handlers.ts:93-93`
+- **name** — Contains an array of objects with indices, names, and paths for semantic tool handlers `semantic-tool-handlers.ts:586-586`
+- **neighborsAdded** — Tracks neighbors added during expansion `semantic-tool-handlers.ts:579-579`
+- **nestingDepth** — Represents the nesting depth of a code hotspot `analysis-tool-handlers.ts:67-67`
+- **nestingDepth** — Nesting depth of the semantic search result `semantic-tool-handlers.ts:46-46`
+- **ngrxEngine** — Engine for tracing NgRx flow `tracing-tool-handlers.ts:574-574`
+- **nodeVersion** — Represents the version of Node.js `metrics-tool-handlers.ts:34-34`
+- **nodeVersion** — Represents the version of the Node.js runtime `metrics-tool-handlers.ts:54-54`
+- **nonNullAssertionCount** — Counts the number of non-null assertions in the code `analysis-tool-handlers.ts:456-456`
+- **normalizeInputPath** — Normalizes an input file path `autodoc-tool-handlers.ts:153-153`
+- **openWithoutWithCount** — Counts the number of open() calls without with() in the code `analysis-tool-handlers.ts:469-469`
+- **outdatedDocs** — Stores outdated documents `autodoc-tool-handlers.ts:114-114`
+- **outdatedDocs** — Stores outdated documents in the AutoDoc status `autodoc-tool-handlers.ts:706-706`
+- **oversizedEntities** — Contains information about oversized entities `index-tool-handler.ts:37-40`
+- **oxlintBinPath** — Stores the path to the oxlint binary `validation-tool-handlers.ts:348-348`
+- **pageRank** — Represents the rank of a node in a graph `analysis-tool-handlers.ts:724-724`
+- **paramCount** — Counts the number of parameters in the function `semantic-tool-handlers.ts:65-65`
+- **parameterCount** — Represents the number of parameters in a code hotspot `analysis-tool-handlers.ts:68-68`
+- **path** — Represents a file path used in the AutoDoc tool handlers `autodoc-tool-handlers.ts:124-124`
+- **path** — Represents an array of error paths and their corresponding `autodoc-tool-handlers.ts:128-128`
+- **path** — Path of the semantic search result `semantic-tool-handlers.ts:36-36`
+- **path** — Path to the file containing the semantic search result `semantic-tool-handlers.ts:94-94`
+- **path** — Stores a file path `semantic-tool-handlers.ts:586-586`
+- **persist** — Optional boolean indicating whether to persist results `graph-metrics-tool-handlers.ts:24-24`
+- **pid** — Represents the process ID of the system `metrics-tool-handlers.ts:57-57`
+- **platform** — Represents the platform information in the version details `metrics-tool-handlers.ts:55-55`
+- **projectPath** — Specifies the path to the project for which the database schema is being retrieved `db-schema-tool-handlers.ts:13-13`
+- **reason** — Provides the reason for skipping a step `autodoc-tool-handlers.ts:144-144`
+- **reason** — The reason why a tool matches the task `get-tools-for-task-handler.ts:27-27`
+- **reason** — Represents the reason for the file watcher's status `metrics-tool-handlers.ts:84-84`
+- **reason** — Provides a reason for an error or condition `metrics-tool-handlers.ts:95-95`
+- **recentlyAddedCount** — Counts recently added entities `analysis-tool-handlers.ts:1014-1014`
+- **recentlyModifiedCount** — Counts recently modified entities `analysis-tool-handlers.ts:1015-1015`
+- **recentMessages** — Represents the recent messages in the bus `metrics-tool-handlers.ts:75-75`
+- **ref** — Represents a reference with source location and target ID `autodoc-tool-handlers.ts:76-82`
+- **references** — Stores references to documents `autodoc-tool-handlers.ts:112-112`
+- **relatedId** — Stores a related ID `semantic-tool-handlers.ts:634-634`
+- **relationships** — Relationships in query results `entity-tool-handlers.ts:36-36`
+- **relationships** — Represents pagination metadata for relationships `entity-tool-handlers.ts:44-44`
+- **relationshipType** — Defines the type of relationship between entities `semantic-tool-handlers.ts:85-85`
+- **relType** — Stores a relationship type `semantic-tool-handlers.ts:636-636`
+- **relType** — Specifies the type of relationship between code snippets in the semantic search results `semantic-tool-handlers.ts:701-701`
+- **repositoryPath** — Represents the path to the repository `metrics-tool-handlers.ts:86-86`
+- **requestId** — Stores a request ID for tracking `autodoc-tool-handlers.ts:154-154`
+- **reranked** — Indicates whether the semantic search result was reranked `semantic-tool-handlers.ts:80-80`
+- **results** — Results of a semantic search `semantic-tool-handlers.ts:150-150`
+- **results** — Stores a collection of results `semantic-tool-handlers.ts:579-579`
+- **results** — Stores the results of a single validator run `validation-tool-handlers.ts:53-53`
+- **returnCount** — Counts the number of return statements in the code `semantic-tool-handlers.ts:54-54`
+- **returnType** — Specifies the return type of the function `semantic-tool-handlers.ts:64-64`
+- **risk** — Represents a risk in the security scan context `zig-compat-tool-handlers.ts:243-243`
+- **rss** — Represents the resident set size, which is the amount of physical memory used by the process `metrics-tool-handlers.ts:30-30`
+- **rule** — Rule associated with the validation issue `validation-tool-handlers.ts:30-30`
+- **ruleId** — Represents the rule ID of a validation issue `validation-tool-handlers.ts:64-64`
+- **savedDocsCount** — Counts the number of saved documents `autodoc-tool-handlers.ts:136-136`
+- **schemaName** — Schema name for the Refactoring suggestion output format `analysis-tool-handlers.ts:1144-1144`
+- **schemaName** — Represents the name of the schema in the generated types array `analysis-tool-handlers.ts:1345-1345`
+- **score** — Represents the score of a code hotspot `analysis-tool-handlers.ts:56-56`
+- **score** — Represents a numerical score. `analysis-tool-handlers.ts:423 `analysis-tool-handlers.ts:423-423`
+- **score** — Score of a search result `autodoc-tool-handlers.ts:505-505`
+- **score** — The score indicating how well a tool matches the task `get-tools-for-task-handler.ts:26-26`
+- **score** — Stores a score or similarity score `semantic-tool-handlers.ts:365-365`
+- **searchWithFilters** — Searches with specified filters `autodoc-tool-handlers.ts:546-549`
+- **section** — Section of the document, if applicable `autodoc-tool-handlers.ts:57-57`
+- **section** — Section of a search result `autodoc-tool-handlers.ts:503-503`
+- **semanticSearch** — Indicates whether semantic search is enabled `metrics-tool-handlers.ts:61-61`
+- **severity** — Severity level of the validation issue `validation-tool-handlers.ts:31-31`
+- **severity** — Represents the severity of a validation issue `validation-tool-handlers.ts:66-66`
+- **severity** — Indicates the severity of a validation issue, either "error", "warning", or "info" `validation-tool-handlers.ts:392-392`
+- **similarity** — Similarity score in search results `file-tool-utils.ts:31-31`
+- **similarity** — Similarity score of the semantic search result `semantic-tool-handlers.ts:79-79`
+- **similarity** — Stores a similarity score `semantic-tool-handlers.ts:635-635`
+- **similarity** — Represents the similarity score between code snippets in the semantic search results `semantic-tool-handlers.ts:700-700`
+- **sink** — Represents a sink in the security scan context `zig-compat-tool-handlers.ts:243-243`
+- **skipped** — Indicates if a step was skipped `autodoc-tool-handlers.ts:143-143`
+- **skipped** — The number of embeddings skipped during the indexing operation `index-tool-handler.ts:28-28`
+- **snapshots** — Indicates whether snapshots are enabled `metrics-tool-handlers.ts:64-64`
+- **snippet** — Snippet of a search result `autodoc-tool-handlers.ts:504-504`
+- **source** — Represents the source code for analysis `analysis-tool-handlers.ts:207-207`
+- **source** — Stores the count and source of entity changes `analysis-tool-handlers.ts:305-305`
+- **source** — Source of a search result `autodoc-tool-handlers.ts:506-506`
+- **sourceLocation** — Represents the file path and line number of a source location `autodoc-tool-handlers.ts:77-80`
+- **span** — Stores an array of objects with optional span details `validation-tool-handlers.ts:393-393`
+- **stack** — Contains the stack trace of an error `autodoc-tool-handlers.ts:146-146`
+- **staleWarnings** — Stores an array of stale warnings `graph-tool-handlers.ts:254-254`
+- **start** — Represents the start line of a parsed entity `analysis-tool-handlers.ts:86-86`
+- **startLine** — Start line number of the semantic search result `semantic-tool-handlers.ts:38-38`
+- **startLine** — Starting line number of the semantic search result `semantic-tool-handlers.ts:95-95`
+- **stateIdentifier** — Identifies the state for analysis `analysis-tool-handlers.ts:723-723`
+- **stateTracker** — Tracks state changes during tracing `tracing-tool-handlers.ts:423-423`
+- **stats** — Optional statistics including total branches and indexed branches `branch-tool-handlers.ts:35-38`
+- **stderr** — Contains the standard error of an exec command `validation-tool-handlers.ts:75-75`
+- **stdout** — Contains the standard output of an exec command `validation-tool-handlers.ts:74-74`
+- **step** — Represents a step in the AutoDoc process `autodoc-tool-handlers.ts:137-137`
+- **success** — Indicates a successful operation `autodoc-tool-handlers.ts:164-164`
+- **success** — Indicates whether the indexing operation was successful `index-tool-handler.ts:22-22`
+- **suggestedCode** — Optional suggested code for the refactoring suggestion `analysis-tool-handlers.ts:45-45`
+- **summary** — Stores the summary of a changelog entry `autodoc-tool-handlers.ts:101-101`
+- **swaggerFilesFound** — Stores the number of swagger files found `graph-tool-handlers.ts:252-252`
+- **symbol** — Represents the symbol of a validation issue `validation-tool-handlers.ts:65-65`
+- **system** — Represents the system metrics `metrics-tool-handlers.ts:42-42`
+- **tableName** — Filters database entities by table name `db-schema-tool-handlers.ts:14-14`
+- **tags** — The tags associated with a tool `get-tools-for-task-handler.ts:25-25`
+- **targetId** — Identifies the target document ID `autodoc-tool-handlers.ts:81-81`
+- **text** — Text field in success response `file-tool-utils.ts:80-80`
+- **text** — Contains the actual text content `file-tool-utils.ts:100-100`
+- **timestamp** — Stores the timestamp of a changelog entry `autodoc-tool-handlers.ts:99-99`
+- **timestamp** — Represents the timestamp of the metrics result `metrics-tool-handlers.ts:41-41`
+- **timestamp** — Represents the timestamp of the metrics `metrics-tool-handlers.ts:82-82`
+- **title** — Title of the document `autodoc-tool-handlers.ts:54-54`
+- **title** — Title of a search result `autodoc-tool-handlers.ts:501-501`
+- **to** — Represents the target entity in a relationship `db-schema-tool-handlers.ts:78-78`
+- **tokenLimit** — Token limit for a semantic search `semantic-tool-handlers.ts:155-155`
+- **tokensUsed** — Tokens used in a semantic search `semantic-tool-handlers.ts:154-154`
+- **tools** — Defines a record mapping task patterns to their associated keywords and tools `get-tools-for-task-handler.ts:50-50`
+- **topics** — Represents the topics in the bus `metrics-tool-handlers.ts:74-74`
+- **topN** — Optional number specifying the top N results `graph-metrics-tool-handlers.ts:22-22`
+- **total** — Total number of references `autodoc-tool-handlers.ts:67-67`
+- **total** — Stores the total count of items `autodoc-tool-handlers.ts:165-165`
+- **totalBranches** — The total number of branches `branch-tool-handlers.ts:36-36`
+- **totalCount** — Total count of results in a pagination `semantic-tool-handlers.ts:153-153`
+- **totalEmbeddings** — The total number of embeddings processed during the indexing operation `index-tool-handler.ts:31-31`
+- **totalErrors** — Represents the count of errors in the validation process `validation-tool-handlers.ts:50-50`
+- **totalMessages** — Represents the total number of messages in the bus `metrics-tool-handlers.ts:73-73`
+- **totalTopics** — Represents the total number of topics in the bus `metrics-tool-handlers.ts:72-72`
+- **totalWarnings** — Represents the count of warnings in the validation process `validation-tool-handlers.ts:51-51`
+- **traceEngine** — Manages the tracing process `tracing-tool-handlers.ts:136-136`
+- **traceEngine** — Represents the trace engine for data flow analysis `tracing-tool-handlers.ts:250-250`
+- **type** — Type of refactoring suggestion `analysis-tool-handlers.ts:39-39`
+- **type** — Represents the type of a parsed entity `analysis-tool-handlers.ts:54-54`
+- **type** — Represents the type of an entity `analysis-tool-handlers.ts:82-82`
+- **type** — Type definition for Refactoring suggestion output format `analysis-tool-handlers.ts:1142-1142`
+- **type** — Specifies the type of a consumer in a file `analysis-tool-handlers.ts:1143-1143`, `analysis-tool-handlers.ts:1344-1344`
+- **type** — analysis-tool-handlers.ts:134 `analysis-tool-handlers.ts:1343-1343`
+- **type** — Type of the document `autodoc-tool-handlers.ts:58-58`
+- **type** — Type of the search result `autodoc-tool-handlers.ts:548-548`
+- **type** — Represents the type of relationship `db-schema-tool-handlers.ts:78-78`
+- **type** — Type field in success response `file-tool-utils.ts:80-80`
+- **type** — Specifies the type of content as text `file-tool-utils.ts:100-100`
+- **type** — Type of the semantic search result `semantic-tool-handlers.ts:34-34`
+- **type** — Represents the type of a semantic tool handler `semantic-tool-handlers.ts:78-78`
+- **typeAssertionCount** — Counts the number of type assertions in the code `analysis-tool-handlers.ts:456-456`
+- **unit** — Represents the unit of measurement for memory metrics `metrics-tool-handlers.ts:31-31`
+- **unreachableCount** — Counts the number of unreachable code blocks in the code `analysis-tool-handlers.ts:485-485`
+- **unsafeCastCount** — Counts the number of unsafe casts in the code `analysis-tool-handlers.ts:484-484`
+- **update** — Updates a document `autodoc-tool-handlers.ts:344-344`
+- **updated** — Stores the number of updated documents `autodoc-tool-handlers.ts:123-123`
+- **uptime** — Represents the time the process has been running `metrics-tool-handlers.ts:33-33`
+- **valid** — Number of valid references `autodoc-tool-handlers.ts:68-68`
+- **valid** — Represents the count of valid entries `autodoc-tool-handlers.ts:166-166`
+- **validated** — Validates the AutoDoc status `autodoc-tool-handlers.ts:704-704`
+- **validator** — Validator used to generate the result `validation-tool-handlers.ts:38-38`
+- **validators** — Array of validators used in the validation `validation-tool-handlers.ts:49-49`
+- **vector** — Represents a vector used for embedding or similarity search `autodoc-tool-handlers.ts:353-353`
+- **version** — Represents the version number `metrics-tool-handlers.ts:52-52`
+- **version** — Stores the version of the tool handler `metrics-tool-handlers.ts:188-188`
+- **volatileRatio** — Calculates the ratio of volatile entities `analysis-tool-handlers.ts:1016-1016`
+- **warning** — Issues a warning message `analysis-tool-handlers.ts:946-946`
+- **warning** — A warning message related to the indexing operation `index-tool-handler.ts:36-36`
+- **warnings** — Number of warnings in the validation result `validation-tool-handlers.ts:40-40`
+- **wideTryBlockCount** — Counts the number of wide try blocks in the code `analysis-tool-handlers.ts:470-470`
+- **workersUsed** — The number of workers used during the indexing operation `index-tool-handler.ts:34-34`
+- **written** — Indicates whether a document has been written `autodoc-tool-handlers.ts:127-127`
 
 ## Data Flow
 

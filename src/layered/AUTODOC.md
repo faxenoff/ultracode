@@ -25,11 +25,13 @@ Layered Indexing Flow
 ## 🤖 Entity Listing
 
 ### Function
-- **branches** — Represents branches in the repository `git-delta-computer.ts:463-467`, `git-delta-computer.ts:469-469`
+- **branches** — Represents branches in the repository `git-delta-computer.ts:463-467`
+- **branches** — Filters out empty or "HEAD" branches from the list of branches `git-delta-computer.ts:469-469`
 - **deserializeVectorMap** — Deserializes a BLOB into a map of string to Float32Array `vector-cache-manager.ts:100-131`
 - **embeddings** — Stores embeddings for vectors `layered-vector-store.ts:456-462`
 - **entityIds** — Stores entity IDs for tracking changes `git-delta-computer.ts:257-257`
-- **entityIds** — Retrieves the IDs of entities in the working delta `layered-graph-index.ts:763-763`, `layered-graph-index.ts:794-794`
+- **entityIds** — Retrieves the IDs of entities in the working delta `layered-graph-index.ts:763-763`
+- **entityIds** — Extracts the IDs of entities from an array of entity objects `layered-graph-index.ts:794-794`
 - **events** — Stores events related to file changes, branch switches, and commits `file-change-integration.ts:281-286`
 - **isBunRuntime** — Checks if the runtime is Bun `delta-maintenance-service.ts:34-36`
 - **serializeVectorMap** — Serializes a map of string to Float32Array into a BLOB `vector-cache-manager.ts:70-95`
@@ -90,8 +92,10 @@ Layered Indexing Flow
 - **enqueue** — Adds a file change event to the queue `incremental-update-queue.ts:137-154`
 - **enqueueBatch** — Adds a batch of file change events to the queue `incremental-update-queue.ts:161-176`
 - **ensureBranchDelta** — Ensures a branch delta is present `layered-graph-index.ts:270-310`
-- **entitiesExistInBaseBatch** — Checks if entities exist in the base batch `git-delta-computer.ts:404-412`, `layered-graph-index.ts:822-831`
-- **extractEntitiesFromFile** — Extracts entities from a file `git-delta-computer.ts:308-334`, `layered-graph-index.ts:659-686`
+- **entitiesExistInBaseBatch** — Checks if entities exist in the base batch `git-delta-computer.ts:404-412`
+- **entitiesExistInBaseBatch** — Checks if entities exist in the base batch of the layered graph index `layered-graph-index.ts:822-831`
+- **extractEntitiesFromFile** — Extracts entities from a file `git-delta-computer.ts:308-334`
+- **extractEntitiesFromFile** — Parses entities from a file `layered-graph-index.ts:659-686`
 - **flush** — Flushes the queue to process pending changes `incremental-update-queue.ts:335-347`
 - **forceCleanupOrphaned** — Forces cleanup of orphaned deltas `delta-maintenance-service.ts:462-466`
 - **forceCompactAll** — Forces compaction of all deltas `delta-maintenance-service.ts:447-457`
@@ -102,9 +106,10 @@ Layered Indexing Flow
 - **generateEntityId** — Generates a unique identifier for an entity `git-delta-computer.ts:376-379`
 - **getAllBranches** — Retrieves all branches in the repository `git-delta-computer.ts:452-476`
 - **getBranchDelta** — Retrieves a branch delta `layered-graph-index.ts:312-330`
-- **getCachedBranches** — Retrieves cached branches from the database `layered-cache-manager.ts:274-292`, `vector-cache-manager.ts:383-401`
+- **getCachedBranches** — Retrieves cached branches from the database `layered-cache-manager.ts:274-292`
 - **getCachedBranches** — Retrieves cached branches `layered-graph-index.ts:355-374`
 - **getCachedBranches** — Retrieves cached branches for the layered index `layered-index-manager.ts:359-361`
+- **getCachedBranches** — Retrieves a list of cached branch names, either from in-memory or SQLite storage `vector-cache-manager.ts:383-401`
 - **getCommitSha** — Retrieves the commit SHA for a given branch `git-delta-computer.ts:148-162`
 - **getConfig** — Retrieves the configuration for the layered graph index `layered-graph-index.ts:517-519`
 - **getConfigPresetName** — Retrieves the name of the selected configuration preset `layered-index-manager.ts:518-525`
@@ -112,7 +117,8 @@ Layered Indexing Flow
 - **getCurrentBranch** — Gets the current branch name `git-delta-computer.ts:445-447`
 - **getDeltaInfo** — Retrieves information about a specific vector delta `vector-cache-manager.ts:506-549`
 - **getDimension** — Gets the dimension of the vectors `vector-delta.ts:272-284`
-- **getEntitiesByFilePath** — Retrieves entities by file path `git-delta-computer.ts:420-428`, `layered-graph-index.ts:836-849`
+- **getEntitiesByFilePath** — Retrieves entities by file path `git-delta-computer.ts:420-428`
+- **getEntitiesByFilePath** — Retrieves entities by their file path from the layered graph index `layered-graph-index.ts:836-849`
 - **getFileStats** — Retrieves file statistics `git-delta-computer.ts:481-512`
 - **getGitDiff** — Retrieves the git diff between two branches `git-delta-computer.ts:89-124`
 - **getMemoryUsage** — Gets the memory usage of the delta `vector-delta.ts:250-267`
@@ -155,7 +161,8 @@ Layered Indexing Flow
 - **loadVectorDelta** — Loads a vector delta from the database `vector-cache-manager.ts:302-353`
 - **mergeEntityDelta** — Merges entity deltas `branch-delta.ts:149-168`
 - **mergeRelationshipDelta** — Merges relationship deltas `branch-delta.ts:173-192`
-- **mergeWith** — Merges this delta with another delta `branch-delta.ts:132-144`, `vector-delta.ts:119-144`
+- **mergeWith** — Merges this delta with another delta `branch-delta.ts:132-144`
+- **mergeWith** — Applies this delta to base vector results, filtering deleted vectors, replacing modified, and adding new `vector-delta.ts:119-144`
 - **modifyVector** — Modifies an existing vector in the delta `vector-delta.ts:171-183`
 - **needsCompaction** — Determines if the delta needs compaction `branch-delta.ts:241-243`
 - **onBranchDeltaEvicted** — Handles the eviction of a branch delta `layered-graph-index.ts:643-654`
@@ -204,7 +211,8 @@ Layered Indexing Flow
 - **start** — Starts the maintenance loop `delta-maintenance-service.ts:183-210`
 - **stop** — Stops the maintenance loop `delta-maintenance-service.ts:218-224`
 - **switchBranch** — Switches to a different branch in the layered index `layered-index-manager.ts:342-354`
-- **toJSON** — Converts the delta to JSON `branch-delta.ts:260-276`, `vector-delta.ts:295-304`
+- **toJSON** — Converts the delta to JSON `branch-delta.ts:260-276`
+- **toJSON** — Not present in the provided code `vector-delta.ts:295-304`
 - **totalChanges** — Returns the total number of changes in the delta `branch-delta.ts:37-46`
 - **totalChanges** — Calculates the total number of changes in the working delta `layered-graph-index.ts:757-759`
 - **totalChanges** — Total number of vector changes `vector-delta.ts:42-44`
@@ -288,16 +296,19 @@ Layered Indexing Flow
 - **node:path** — Imports `node:path` from `node:path`. `git-delta-computer.ts:15-15`, `layered-cache-manager.ts:18-18`, `vector-cache-manager.ts:19-19`
 
 ### Property
-- **added** — Stores entities that have been added to the branch `branch-delta.ts:298-298`, `branch-delta.ts:303-303`
+- **added** — Stores entities that have been added to the branch `branch-delta.ts:298-298`
+- **added** — Contains an array of added files and their contents `branch-delta.ts:303-303`
 - **added** — A map of added embeddings `vector-delta.ts:325-325`
 - **addedEmbeddings** — Map of added embeddings `vector-delta.ts:27-27`
-- **additions** — Counts additions in the diff `git-delta-computer.ts:484-484`, `git-delta-computer.ts:485-485`
+- **additions** — Counts additions in the diff `git-delta-computer.ts:484-484`
+- **additions** — Stores the number of additions for each branch in a map `git-delta-computer.ts:485-485`
 - **autoCompaction** — Enables or disables auto-compaction `delta-maintenance-service.ts:56-56`
 - **base_commit_sha** — Stores the SHA of the base commit for the branch delta `layered-cache-manager.ts:30-30`
 - **base_commit_sha** — Stores the SHA of the base commit for the branch `vector-cache-manager.ts:31-31`
-- **baseCommitSha** — Stores the SHA of the base commit `branch-delta.ts:21-21`, `branch-delta.ts:295-295`
-- **baseCommitSha** — SHA of the base commit `vector-delta.ts:24-24`
+- **baseCommitSha** — Stores the SHA of the base commit `branch-delta.ts:21-21`
+- **baseCommitSha** — Represents the SHA of the base commit in the branch delta `branch-delta.ts:295-295`
 - **baseCommitSha** — Represents the commit SHA of the base branch `vector-delta.ts:323-323`
+- **baseCommitSha** — SHA of the base commit `vector-delta.ts:24-24`
 - **baseIndex** — Stores the base index for comparison in the GitDeltaComputer `git-delta-computer.ts:30-30`
 - **baseIndex** — The base index containing main branch entities `layered-graph-index.ts:71-71`
 - **baseIndex** — Represents the base index used by the Layered Index Manager `layered-index-manager.ts:133-133`
@@ -307,18 +318,21 @@ Layered Indexing Flow
 - **branch** — The branch name (if known) `incremental-update-queue.ts:42-42`
 - **branch** — Optional branch name associated with the similarity result `layered-vector-store.ts:39-39`
 - **branch** — Represents a branch in the vector delta storage `vector-cache-manager.ts:507-507`
-- **branch_name** — Stores the name of the branch associated with the branch delta `layered-cache-manager.ts:29-29`
 - **branch_name** — Represents the name of a branch `layered-cache-manager.ts:286-286`
-- **branch_name** — Stores the name of the branch associated with the vector delta `vector-cache-manager.ts:30-30`, `vector-cache-manager.ts:48-48`
-- **branch_name** — Represents the name of a branch in the vector delta `vector-cache-manager.ts:395-395`
+- **branch_name** — Stores the name of the branch associated with the branch delta `layered-cache-manager.ts:29-29`
+- **branch_name** — Extracts the branch name from the list of cached branches `vector-cache-manager.ts:395-395`
+- **branch_name** — Stores the name of the branch associated with the vector delta `vector-cache-manager.ts:30-30`
+- **branch_name** — Represents the name of a branch in the vector delta `vector-cache-manager.ts:48-48`
 - **branchDeltaCache** — A cache for branch deltas `layered-graph-index.ts:74-74`
 - **branchDeltaCache** — LRU cache for branch vector deltas `layered-vector-store.ts:51-51`
 - **branchManager** — Manages branch operations `delta-maintenance-service.ts:126-126`
 - **branchManager** — Manages branches for the GitDeltaComputer `git-delta-computer.ts:29-29`
 - **branchManager** — A manager for branches `layered-graph-index.ts:89-89`
 - **branchManager** — Manages branches for the layered index manager `layered-index-manager.ts:135-135`
-- **branchName** — Stores the name of the branch `branch-delta.ts:20-20`, `branch-delta.ts:294-294`
-- **branchName** — Name of the branch `vector-delta.ts:23-23`, `vector-delta.ts:322-322`
+- **branchName** — Stores the name of the branch `branch-delta.ts:20-20`
+- **branchName** — Represents the name of the branch `branch-delta.ts:294-294`
+- **branchName** — Name of the branch `vector-delta.ts:23-23`
+- **branchName** — Represents the name of the branch in the vector delta `vector-delta.ts:322-322`
 - **bytesFreed** — Tracks the total bytes freed during maintenance `delta-maintenance-service.ts:76-76`
 - **cachedBranches** — Stores the cached branches `layered-index-manager.ts:111-111`
 - **cacheHits** — Counts the number of cache hits `layered-index-manager.ts:86-86`
@@ -332,7 +346,8 @@ Layered Indexing Flow
 - **changesBefore** — Tracks the number of changes before compaction `delta-maintenance-service.ts:87-87`
 - **changeType** — The type of change (added, modified, deleted, renamed) `incremental-update-queue.ts:33-33`
 - **clientId** — The client ID for Layer 2 [FUTURE] `incremental-update-queue.ts:45-45`
-- **column** — Column number of the start position `layered-graph-index.ts:46-46`, `layered-graph-index.ts:47-47`
+- **column** — Column number of the start position `layered-graph-index.ts:46-46`
+- **column** — Represents the end position of a column in a file `layered-graph-index.ts:47-47`
 - **compactionsRun** — Number of compactions performed by the maintenance service `layered-index-manager.ts:66-66`
 - **compactionThreshold** — Sets the threshold for delta compaction `delta-maintenance-service.ts:47-47`
 - **config** — Configuration for delta maintenance `delta-maintenance-service.ts:127-127`
@@ -345,24 +360,28 @@ Layered Indexing Flow
 - **currentBranch** — Represents the current branch being used `layered-index-manager.ts:108-108`
 - **databaseSize** — Represents the size of the database `layered-cache-manager.ts:365-365`
 - **databaseSize** — Represents the size of the SQLite database file `vector-cache-manager.ts:414-414`
-- **db** — Represents the SQLite database connection `layered-cache-manager.ts:51-51`, `vector-cache-manager.ts:138-138`
-- **dbPath** — Stores the path to the SQLite database file `layered-cache-manager.ts:52-52`, `vector-cache-manager.ts:139-139`
+- **db** — Represents the SQLite database connection `layered-cache-manager.ts:51-51`
+- **db** — Manages persistent storage of branch vector deltas using SQLite `vector-cache-manager.ts:138-138`
+- **dbPath** — Stores the path to the SQLite database file `layered-cache-manager.ts:52-52`
+- **dbPath** — Database location: %LOCALAPPDATA%/UltraCode/projects/<hash>/layered/vector-deltas.db `vector-cache-manager.ts:139-139`
 - **debounceAbortController** — Controls the debounce timer for file change events `incremental-update-queue.ts:93-93`
 - **debounceWindowMs** — The debounce window in milliseconds (default: 300ms) `incremental-update-queue.ts:50-50`
 - **debug** — Enables or disables debug logging `delta-maintenance-service.ts:59-59`
 - **debug** — Boolean flag to enable debug logging `file-change-integration.ts:40-40`
 - **debug** — Whether debug logging is enabled (default: false) `incremental-update-queue.ts:59-59`
 - **debug** — Boolean flag to enable or disable debug mode `layered-index-manager.ts:59-59`
-- **deleted** — Stores entities that have been deleted from the branch `branch-delta.ts:300-300`, `branch-delta.ts:305-305`
+- **deleted** — Stores entities that have been deleted from the branch `branch-delta.ts:300-300`
+- **deleted** — Lists the names of deleted files `branch-delta.ts:305-305`
 - **deleted** — A set of deleted embedding IDs `vector-delta.ts:327-327`
 - **deletedEmbeddingIds** — Set of deleted embedding IDs `vector-delta.ts:29-29`
 - **deleteStmt** — Prepares an SQLite statement for deleting branch deltas `layered-cache-manager.ts:61-61`
 - **deleteStmt** — Prepares an SQL statement for deleting vector deltas from the database `vector-cache-manager.ts:148-148`
-- **deletions** — Counts deletions in the diff `git-delta-computer.ts:484-484`, `git-delta-computer.ts:485-485`
+- **deletions** — Counts deletions in the diff `git-delta-computer.ts:484-484`
+- **deletions** — Stores the number of deletions for each branch in a map `git-delta-computer.ts:485-485`
 - **deltasCompacted** — Tracks the number of deltas compacted `delta-maintenance-service.ts:70-70`
 - **deltasDeleted** — Tracks the number of deltas deleted `delta-maintenance-service.ts:73-73`
-- **dimension** — Stores the dimension of the vectors `vector-cache-manager.ts:37-37`, `vector-cache-manager.ts:50-50`
-- **dimension** — Stores the dimension of the vectors in the delta `vector-cache-manager.ts:509-509`
+- **dimension** — Stores the dimension of the vectors in the delta `vector-cache-manager.ts:50-50`, `vector-cache-manager.ts:509-509`
+- **dimension** — Stores the dimension of the vectors `vector-cache-manager.ts:37-37`
 - **embeddingGenerator** — Embedding generator for lazy embedding generation `layered-vector-store.ts:61-61`
 - **enableBranchWatching** — Boolean flag to enable automatic delta recomputation on branch changes `file-change-integration.ts:31-31`
 - **enableCommitWatching** — Boolean flag to enable automatic delta update on new commits `file-change-integration.ts:34-34`
@@ -404,57 +423,65 @@ Layered Indexing Flow
 - **isInitialized** — Boolean flag indicating if the integration is initialized `file-change-integration.ts:69-69`
 - **isInitialized** — Indicates whether the index is initialized `layered-graph-index.ts:83-83`
 - **isInitialized** — Indicates whether the layered index manager is initialized `layered-index-manager.ts:155-155`
-- **isProcessing** — Indicates whether the queue is currently processing `incremental-update-queue.ts:94-94`, `incremental-update-queue.ts:377-377`
+- **isProcessing** — Indicates whether the queue is currently processing `incremental-update-queue.ts:94-94`
+- **isProcessing** — Indicates whether the queue is currently processing changes `incremental-update-queue.ts:377-377`
 - **isRunning** — Indicates if maintenance is running `delta-maintenance-service.ts:131-131`
 - **last_modified** — Stores the timestamp of the last modification of the branch delta `layered-cache-manager.ts:31-31`
-- **last_modified** — Stores the timestamp of the last modification of the vector delta `vector-cache-manager.ts:32-32`
 - **last_modified** — Stores the last modification timestamp of the vector delta `vector-cache-manager.ts:52-52`
+- **last_modified** — Stores the timestamp of the last modification of the vector delta `vector-cache-manager.ts:32-32`
 - **lastBatchTime** — Stores the timestamp of the last batch processed `incremental-update-queue.ts:80-80`
-- **lastModified** — Stores the last modified timestamp `branch-delta.ts:24-24`, `branch-delta.ts:296-296`
+- **lastModified** — Stores the last modified timestamp `branch-delta.ts:24-24`
+- **lastModified** — Indicates the last modified timestamp `branch-delta.ts:296-296`
 - **lastModified** — Stores the last modified timestamp of the vector deltas `vector-cache-manager.ts:511-511`
-- **lastModified** — Timestamp of the last modification `vector-delta.ts:31-31`
 - **lastModified** — Stores the timestamp of the last modification of the delta `vector-delta.ts:324-324`
+- **lastModified** — Timestamp of the last modification `vector-delta.ts:31-31`
 - **lastProcessTime** — Stores the timestamp of the last batch processing `layered-index-manager.ts:78-78`
 - **lastRunDurationMs** — Stores the duration of the last maintenance run in milliseconds `delta-maintenance-service.ts:79-79`
-- **lastRunTime** — Stores the timestamp of the last maintenance run `delta-maintenance-service.ts:64-64`, `layered-index-manager.ts:68-68`
+- **lastRunTime** — Stores the timestamp of the last maintenance run `delta-maintenance-service.ts:64-64`
+- **lastRunTime** — Represents the last time the maintenance service was run, used for tracking and optimization `layered-index-manager.ts:68-68`
 - **lastUpdateTime** — Number representing the last update timestamp `file-change-integration.ts:54-54`
 - **layer** — Indicates the layer from which the similarity result came `layered-vector-store.ts:36-36`
-- **layeredConfig** — Partial configuration for the layered index `layered-index-manager.ts:47-47`
 - **layeredConfig** — Stores the layered index configuration `layered-index-manager.ts:130-130`
+- **layeredConfig** — Partial configuration for the layered index `layered-index-manager.ts:47-47`
 - **layeredIndex** — Manages layered indexing operations `delta-maintenance-service.ts:123-123`
 - **layeredIndex** — Instance of ILayeredIndex for applying updates to appropriate delta layers `file-change-integration.ts:64-64`
 - **layeredIndex** — Represents the layered index for incremental updates `incremental-update-queue.ts:88-88`
 - **layeredIndex** — Manages the layered graph index for entity indexing `layered-index-manager.ts:139-139`
 - **layeredVectorStore** — Manages the layered vector store for semantic search `layered-index-manager.ts:140-140`
 - **limit** — The maximum number of entities to return in a query `layered-graph-index.ts:62-62`
-- **line** — Line number of the start position `layered-graph-index.ts:46-46`, `layered-graph-index.ts:47-47`
+- **line** — Line number of the start position `layered-graph-index.ts:46-46`
+- **line** — Represents the end position of a line in a file `layered-graph-index.ts:47-47`
 - **listStmt** — Prepares an SQLite statement for listing branch deltas `layered-cache-manager.ts:62-62`
 - **listStmt** — Prepares an SQL statement for listing vector deltas from the database `vector-cache-manager.ts:149-149`
 - **location** — Location of the entity, including start and end positions `layered-graph-index.ts:45-48`
 - **maintenance** — Manages maintenance tasks for layered indexing `delta-maintenance-service.ts:113-113`
-- **maintenance** — Manages the maintenance service for the Layered Index Manager `layered-index-manager.ts:99-99`, `layered-index-manager.ts:117-117`
+- **maintenance** — Manages the maintenance service for the Layered Index Manager `layered-index-manager.ts:99-99`
+- **maintenance** — Represents the maintenance statistics for the index manager `layered-index-manager.ts:117-117`
 - **maintenanceIntervalMs** — Sets the interval for maintenance tasks `delta-maintenance-service.ts:53-53`
 - **maintenanceLoopRunning** — Indicates if maintenance loop is running `delta-maintenance-service.ts:130-130`
 - **maintenanceService** — Provides maintenance services for the layered index manager `layered-index-manager.ts:152-152`
 - **maintenanceTimer** — Timer for maintenance intervals `delta-maintenance-service.ts:213-213`
 - **maxBatchSize** — The max batch size before fallback to full rebuild (default: 100) `incremental-update-queue.ts:53-53`
 - **maxIncrementalFiles** — Number representing the maximum files to process incrementally, defaulting to 100 `file-change-integration.ts:37-37`
-- **memory_usage** — Stores the memory usage of the vector delta `vector-cache-manager.ts:38-38`, `vector-cache-manager.ts:51-51`
+- **memory_usage** — Stores the memory usage of the vector delta `vector-cache-manager.ts:38-38`
+- **memory_usage** — Tracks the memory usage of the cache `vector-cache-manager.ts:51-51`
 - **memoryCache** — A map for in-memory cache storage `layered-cache-manager.ts:56-56`
 - **memoryCache** — Represents the in-memory cache for vector deltas `vector-cache-manager.ts:143-143`
 - **memoryFreed** — Tracks the memory freed during compaction `delta-maintenance-service.ts:93-93`
 - **memoryUsage** — Tracks the memory usage of the vector deltas `vector-cache-manager.ts:510-510`
 - **metadata** — Metadata associated with the entity `layered-graph-index.ts:49-49`
 - **misses** — Count of cache misses `delta-maintenance-service.ts:104-104`
-- **modified** — Stores entities that have been modified in the branch `branch-delta.ts:299-299`, `branch-delta.ts:304-304`
+- **modified** — Stores entities that have been modified in the branch `branch-delta.ts:299-299`
+- **modified** — Contains an array of modified files and their contents `branch-delta.ts:304-304`
 - **modified** — A map of modified embeddings `vector-delta.ts:326-326`
 - **modifiedEmbeddings** — Map of modified embeddings `vector-delta.ts:28-28`
-- **name** — Name of the entity `layered-graph-index.ts:43-43`
 - **name** — The name of the entity `layered-graph-index.ts:59-59`
+- **name** — Name of the entity `layered-graph-index.ts:43-43`
 - **oldPath** — The old path for renamed files `incremental-update-queue.ts:36-36`
 - **orphanedDeltaMaxAgeDays** — Defines the maximum age for orphaned deltas `delta-maintenance-service.ts:50-50`
 - **orphansDeleted** — Number of orphans deleted by the maintenance service `layered-index-manager.ts:67-67`
-- **pendingChanges** — Holds pending file change events `incremental-update-queue.ts:92-92`, `incremental-update-queue.ts:376-376`
+- **pendingChanges** — Holds pending file change events `incremental-update-queue.ts:92-92`
+- **pendingChanges** — Represents the number of pending changes in the queue `incremental-update-queue.ts:376-376`
 - **pendingUpdates** — Tracks the number of pending updates in the queue `layered-index-manager.ts:76-76`
 - **processingBatch** — Indicates whether a batch of updates is currently being processed `layered-index-manager.ts:77-77`
 - **processingPromise** — Represents the promise for the current batch processing `incremental-update-queue.ts:95-95`
@@ -474,13 +501,16 @@ Layered Indexing Flow
 - **start** — Start position of the entity `layered-graph-index.ts:46-46`
 - **stats** — Maintains statistics for maintenance operations `delta-maintenance-service.ts:134-141`
 - **stats** — Statistics object for tracking integration performance `file-change-integration.ts:72-77`
-- **stats** — Maintains statistics for the incremental update queue `incremental-update-queue.ts:98-103`, `incremental-update-queue.ts:378-378`
+- **stats** — Maintains statistics for the incremental update queue `incremental-update-queue.ts:98-103`
+- **stats** — Stores statistics related to the queue's performance `incremental-update-queue.ts:378-378`
 - **success** — Indicates successful maintenance operation `delta-maintenance-service.ts:96-96`
 - **timestamp** — The timestamp of the change `incremental-update-queue.ts:39-39`
 - **total_branches** — Stores the total number of branches in the cache `layered-cache-manager.ts:42-42`
 - **total_branches** — Stores the total number of branches `vector-cache-manager.ts:42-42`
-- **total_changes** — Stores the total number of changes in the branch delta `layered-cache-manager.ts:38-38`, `layered-cache-manager.ts:43-43`
-- **total_changes** — Stores the total number of changes in the vector delta `vector-cache-manager.ts:36-36`, `vector-cache-manager.ts:43-43`, `vector-cache-manager.ts:49-49`
+- **total_changes** — Stores the total number of changes in the branch delta `layered-cache-manager.ts:38-38`
+- **total_changes** — Represents the total number of changes made to the cache `layered-cache-manager.ts:43-43`
+- **total_changes** — Stores the total number of changes in the vector delta `vector-cache-manager.ts:36-36`
+- **total_changes** — Represents the total number of changes in the vector cache `vector-cache-manager.ts:43-43`, `vector-cache-manager.ts:49-49`
 - **total_memory_usage** — Stores the total memory usage across all branches `vector-cache-manager.ts:44-44`
 - **totalBatches** — Tracks the number of batches processed `incremental-update-queue.ts:77-77`
 - **totalBranches** — Represents the total number of branches `layered-cache-manager.ts:363-363`

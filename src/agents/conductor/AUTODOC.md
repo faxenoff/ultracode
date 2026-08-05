@@ -1,17 +1,88 @@
----
-module_name: conductor
-description: "Task orchestration helpers for complexity analysis and method proposal generation"
-status: active
-language: typescript
----
-
 # Conductor
 
-> Provides task complexity analysis, delegation strategy selection, and method proposal generation for the Conductor orchestrator agent.
+## 🤖 Overview
 
-## Overview
+The `conductor` module is responsible for orchestrating tasks and managing agent capabilities, providing a configuration and task analysis framework. It is used by developers to define and manage task execution strategies and agent behavior.
 
-The conductor module contains helper functions and types used by the ConductorOrchestrator agent. It analyzes incoming tasks to determine their complexity score (1-10), selects an appropriate delegation strategy (dev-agent, dora, or multi-agent), and generates method proposals with different risk/timeline tradeoffs. Configuration is resolved from YAML config with sensible defaults.
+## 🤖 Architecture
+
+```
+[Config] → [Method Proposals] → [Task Analysis] → [Types]
+```
+
+## 🤖 Flow
+
+```
+[Config] → [Method Proposals] → [Task Analysis] → [Types]
+```
+
+## 🤖 Entity Listing
+
+### Function
+- **analyzeTaskComplexity** — Analyze task complexity and determine delegation strategy `task-analysis.ts:25-75`
+- **createMethodProposalTemplate** — Creates a method proposal template based on task type `method-proposals.ts:78-101`
+- **generateMethodProposals** — Generates method proposals for a task based on complexity analysis, always returning 5 proposals `method-proposals.ts:14-73`
+- **getConductorAgentDefaults** — Returns default capabilities and configuration for Conductor agents `config.ts:29-67`
+- **getTaskTypeKey** — Determines the key for a task based on its payload and type `method-proposals.ts:106-120`
+- **initializeMethodProposalTemplates** — Creates a map of method proposal templates for different task types `method-proposals.ts:125-134`
+- **isDirectImplementation** — Returns true if the task is of type "direct" or if the payload contains "directImplementation" or "bypassDelegation" set to true `task-analysis.ts:91-97`
+- **isIndexingTask** — Check if a task is an indexing operation (automated, no approval needed) `task-analysis.ts:80-86`
+
+### Interface
+- **ConductorConfig** — Represents the configuration for the Conductor orchestrator agent `types.ts:9-18`
+- **MethodProposal** — Represents a method proposal with its details `types.ts:37-46`
+- **SubTask** — Represents a subtask with its properties `types.ts:28-35`
+- **TaskComplexityAnalysis** — Analyzes the complexity of a task and provides a score `types.ts:20-26`
+- **TaskPayload** — Task payload interface for complexity analysis `task-analysis.ts:13-20`
+
+### Type_alias
+- **ConductorConfigOverrides** — Represents partial overrides for the Conductor configuration `types.ts:48-50`
+
+### Import_decl
+- **../../config/yaml-config.js** — Imports `../../config/yaml-config.js` from `../../config/yaml-config.js`. `config.ts:7-7`
+- **../../types/agent.js** — Imports `../../types/agent.js` from `../../types/agent.js`. `config.ts:8-8`, `method-proposals.ts:7-7`, `task-analysis.ts:7-7`, `types.ts:7-7`
+- **./types.js** — Imports `./types.js` from `./types.js`. `config.ts:9-9`, `method-proposals.ts:8-8`, `task-analysis.ts:8-8`
+
+### Property
+- **bypassDelegation** — Task payload field indicating whether delegation should be bypassed `task-analysis.ts:18-18`
+- **capabilities** — Represents the capabilities of Conductor agents, including max concurrency, memory limit, and priority `config.ts:30-30`
+- **complexityThreshold** — Sets the complexity threshold for task delegation `types.ts:13-13`
+- **config** — Contains the configuration for Conductor agents, including resource constraints, task queue limit, load balancing strategy, complexity threshold, and mandatory delegation `config.ts:31-31`
+- **cons** — Lists the disadvantages of a task or method proposal `types.ts:42-42`
+- **delegationStrategy** — Specifies the delegation strategy for the task `types.ts:24-24`
+- **dependencies** — Dependencies for a subtask `types.ts:32-32`
+- **description** — Description of a subtask `types.ts:30-30`
+- **description** — Provides a detailed description of a task or method proposal `types.ts:40-40`
+- **directImplementation** — Task payload field indicating whether direct implementation is needed `task-analysis.ts:17-17`
+- **factors** — Lists the factors contributing to the complexity score `types.ts:22-22`
+- **fileCount** — Task payload field indicating the number of files affected `task-analysis.ts:14-14`
+- **id** — Unique identifier for a subtask `types.ts:29-29`
+- **id** — Represents a unique identifier for a task or method proposal `types.ts:38-38`
+- **loadBalancingStrategy** — Determines the load balancing strategy for task distribution `types.ts:12-12`
+- **mandatoryDelegation** — Indicates whether delegation is mandatory `types.ts:14-14`
+- **maxConcurrency** — Specifies the maximum number of concurrent agents allowed `config.ts:30-30`
+- **maxConcurrency** — Defines the maximum number of concurrent tasks `types.ts:15-15`
+- **memoryLimit** — Defines the maximum memory limit for agents `config.ts:30-30`
+- **memoryLimit** — Specifies the memory limit for the Conductor orchestrator agent `types.ts:16-16`
+- **name** — Specifies the name of a task or method proposal `types.ts:39-39`
+- **payload** — Additional payload for a subtask `types.ts:34-34`
+- **priority** — Determines the priority level of agents `config.ts:30-30`
+- **priority** — Sets the priority level for the Conductor orchestrator agent `types.ts:17-17`, `types.ts:33-33`
+- **pros** — Lists the advantages of a task or method proposal `types.ts:41-41`
+- **recommended** — Indicates whether a task or method proposal is recommended `types.ts:45-45`
+- **requiresApproval** — Indicates whether approval is required for the task `types.ts:23-23`
+- **requiresResearch** — Checks if the payload contains a `requiresResearch` property `method-proposals.ts:112-112`
+- **requiresResearch** — Task payload field indicating whether research is required `task-analysis.ts:15-15`
+- **requiresTesting** — Task payload field indicating whether testing is required `task-analysis.ts:16-16`
+- **resourceConstraints** — Defines the resource constraints for the Conductor orchestrator agent `types.ts:10-10`
+- **resourceConstraints** — Defines resource constraints for the Conductor orchestrator `types.ts:49-49`
+- **riskLevel** — Defines the risk level of a task or method proposal `types.ts:44-44`
+- **score** — Represents the complexity score of a task on a 1-10 scale `types.ts:21-21`
+- **subtasks** — Contains subtasks for the task `types.ts:25-25`
+- **targetAgent** — Target agent for a subtask `types.ts:31-31`
+- **taskQueueLimit** — Specifies the maximum number of tasks that can be in the task queue `types.ts:11-11`
+- **timeline** — Indicates the timeline or schedule for a task or method proposal `types.ts:43-43`
+- **type** — Type of a subtask `types.ts:34-34`
 
 ## Data Flow
 
@@ -70,10 +141,6 @@ Functions are pure and do not throw exceptions. Invalid or missing payload field
 
 - Complexity scoring uses fixed heuristics rather than ML-based analysis.
 - Method proposals are static templates, not dynamically adapted to project context.
-
-## Exports
-
-
 
 ## Files
 

@@ -1,36 +1,116 @@
 # Strategies
 
-## Overview
+## 🤖 Overview
 
-This module implements a four-tier runtime relationship detection system for inferring implicit code relationships in a hypothesis engine. It uses pattern matching, callback resolution, interface narrowing, and proximity-based bridging to discover connections between entities in a code graph that may not have direct call relationships. Each strategy operates independently on the same graph storage and contributes discovered relationships back to the hypothesis store. The tiers progress from targeted pattern matching (decorators, events) through increasingly general approaches (callbacks, interfaces) to broad proximity-based discovery.
+The `callback-arg.ts` file is responsible for detecting callback patterns in code, such as `setTimeout(fn)`, `promise.then(fn)`, and `array.map(fn)`. It identifies these patterns by scanning for known callback APIs and checking adjacent edges for referenced functions. This module is used by the hypothesis generation system to infer potential callback arguments in code.
 
-## Flow
+## 🤖 Architecture
 
 ```
-Code Graph (entities + relationships)
-           ↓
-    ┌──────────────────────────────┐
-    │  Four Detection Strategies   │
-    └──────────────────────────────┘
-           ↓
-    ├─→ Tier 1: Decorator/Event Registration (string-key.ts)
-    ├─→ Tier 2: Callback Argument Resolution (callback-arg.ts)
-    ├─→ Tier 3: Interface Method Narrowing (interface-narrow.ts)
-    └─→ Tier 4: Proximity Bridging (proximity-bridge.ts)
-           ↓
-    Hypothesis Store (inferred relationships + confidence)
+  +-------------------+
+  |   callback-arg.ts |
+  +-------------------+
+    |
+    v
+  +-------------------+
+  |   findCallbackEntry |
+  +-------------------+
+    |
+    v
+  +-------------------+
+  |   generate         |
+  +-------------------+
+    |
+    v
+  +-------------------+
+  |   storage         |
+  +-------------------+
+    |
+    v
+  +-------------------+
+  |   hypothesisStore |
+  +-------------------+
 ```
 
-## Entity Listing
+## 🤖 Flow
 
-### Functions
+```
+  +-------------------+
+  |   callback-arg.ts |
+  +-------------------+
+    |
+    v
+  +-------------------+
+  |   storage         |
+  +-------------------+
+    |
+    v
+  +-------------------+
+  |   hypothesisStore |
+  +-------------------+
+    |
+    v
+  +-------------------+
+  |   generate         |
+  +-------------------+
+    |
+    v
+  +-------------------+
+  |   findCallbackEntry |
+  +-------------------+
+    |
+    v
+  +-------------------+
+  |   bySource         |
+  +-------------------+
+    |
+    v
+  +-------------------+
+  |   allRels          |
+  +-------------------+
+    |
+    v
+  +-------------------+
+  |   rel              |
+  +-------------------+
+    |
+    v
+  +-------------------+
+  |   targetEntity     |
+  +-------------------+
+    |
+    v
+  +-------------------+
+  |   entry            |
+  +-------------------+
+```
 
-| Name | Description | Location |
-|------|-------------|----------|
-| `generate` | Detects decorator patterns and register/dispatch event bindings within the same directory scope, marking relationships with decorator or event types. | [string-key.ts:16-18] |
-| `generate` | Detects callback patterns in setTimeout, promise.then, array.map calls and registers inferred callback relationships by scanning adjacent edges for referenced functions. | [callback-arg.ts:21-68] |
-| `generate` | Narrows interface method implementations to concrete functions with confidence scoring based on parameter and return type compatibility across the entity set. | [interface-narrow.ts:20-78] |
-| `generateForPair` | Executes on-demand bidirectional breadth-first search to bridge disconnected entities using proximity heuristics and gap detection between a source and target. | [proximity-bridge.ts:28-110] |
+## 🤖 Entity Listing
+
+### Function
+- **generate** — Analyzes relationships in the graph storage to identify callback argument patterns and stores hypotheses in the hypothesis store `callback-arg.ts:21-68`
+- **generate** — Analyzes relationships to identify interface method calls and their confidence levels, then stores these as hypotheses `interface-narrow.ts:20-78`
+- **generate** — Generates hypotheses using both decorator-based and name-based strategies `string-key.ts:20-25`
+- **generateDecoratorHypotheses** — Generates hypotheses based on decorator patterns `string-key.ts:28-58`
+- **generateForPair** — Generates proximity-based hypotheses for a specific source→target pair `proximity-bridge.ts:28-110`
+- **generateNameMatchHypotheses** — Generates hypotheses based on name-based register/dispatch matching `string-key.ts:61-126`
+- **nextId** — Generates a unique identifier for hypotheses `callback-arg.ts:17-19`, `interface-narrow.ts:16-18`, `proximity-bridge.ts:23-25`
+- **nextId** — Returns a unique identifier for hypotheses `string-key.ts:16-18`
+- **scorePair** — Computes the score for a pair of nodes based on shared lexemes and file/dir relationships `proximity-bridge.ts:113-135`
+- **sharesMeaningfulLexeme** — Determines if two nodes share a meaningful lexeme `proximity-bridge.ts:138-147`
+
+### Import_decl
+- **../../types/storage.js** — Imports `../../types/storage.js` from `../../types/storage.js`. `callback-arg.ts:10-10`, `interface-narrow.ts:10-10`, `proximity-bridge.ts:14-14`, `string-key.ts:11-11`
+- **../catalogs.js** — Imports `../catalogs.js` from `../catalogs.js`. `callback-arg.ts:11-11`, `string-key.ts:12-12`
+- **../types.js** — Imports `../types.js` from `../types.js`. `callback-arg.ts:12-12`, `interface-narrow.ts:11-11`, `proximity-bridge.ts:15-15`, `string-key.ts:13-13`
+- **node:path** — Imports `node:path` from `node:path`. `proximity-bridge.ts:13-13`, `string-key.ts:10-10`
+
+### Property
+- **bwdId** — Represents a node in the backward BFS frontier `proximity-bridge.ts:72-72`
+- **callerFile** — Not present in the provided code `string-key.ts:66-66`, `string-key.ts:67-67`
+- **callerId** — Not present in the provided code `string-key.ts:66-66`, `string-key.ts:67-67`
+- **fwdId** — Represents a node in the forward BFS frontier `proximity-bridge.ts:72-72`
+- **score** — Calculates the score for a pair of nodes based on their proximity `proximity-bridge.ts:72-72`
 
 ## Module Files
 

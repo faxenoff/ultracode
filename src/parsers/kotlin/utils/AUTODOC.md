@@ -1,17 +1,91 @@
----
-module_name: kotlin-utils
-description: "AST helper utilities for Kotlin ANTLR parser traversal and data extraction"
-status: active
-language: typescript
----
-
 # Kotlin Utils
 
-> Provides utility functions for traversing Kotlin ANTLR AST nodes, extracting text and locations, handling types, and detecting Kotlin-specific patterns like scope functions, coroutine builders, and extension functions.
+## 🤖 Overview
 
-## Overview
+This module provides Kotlin-specific AST helper utilities for parsing and analyzing Kotlin code. It includes functions for extracting base type names, checking nullable types, and handling Kotlin-specific keywords. Developers working with Kotlin codebases can use this module to enhance their AST analysis capabilities.
 
-This module contains shared helper functions used by all Kotlin extractors. It provides AST location extraction, node traversal utilities, text helpers, type parsing (including nullable types and generics), and Kotlin-specific constants and checks for keywords, scope functions, coroutine builders, Flow operators, companion objects, and extension functions.
+## 🤖 Architecture
+
+```
+  +---------------------+
+  | Kotlin AST Helpers |
+  |     (ast-helpers.ts) |
+  +---------------------+
+           |
+           v
+  +---------------------+
+  | Shared JVM Helpers |
+  | (from shared-ast-helpers.js) |
+  +---------------------+
+           |
+           v
+  +---------------------+
+  | Kotlin-Specific |
+  | Type Extraction |
+  | (extractBaseTypeName) |
+  +---------------------+
+           |
+           v
+  +---------------------+
+  | Kotlin-Specific |
+  | Keywords Check |
+  | (isNullableType) |
+  +---------------------+
+           |
+           v
+  +---------------------+
+  | Kotlin-Specific |
+  | Keywords List |
+  | (KOTLIN_KEYWORDS) |
+  +---------------------+
+```
+
+## 🤖 Flow
+
+```
+  +---------------------+
+  | Kotlin AST Parsing |
+  | (from shared-ast-helpers.js) |
+  +---------------------+
+           |
+           v
+  +---------------------+
+  | Kotlin-Specific |
+  | Type Extraction |
+  | (extractBaseTypeName) |
+  +---------------------+
+           |
+           v
+  +---------------------+
+  | Kotlin-Specific |
+  | Keywords Check |
+  | (isNullableType) |
+  +---------------------+
+           |
+           v
+  +----------------
+```
+
+## 🤖 Entity Listing
+
+### Function
+- **determineCallTarget** — Analyzes an expression to determine its call target, name, and whether it's a safe call `ast-helpers.ts:200-224`
+- **extractBaseTypeName** — Extracts the base type name from a Kotlin type expression by removing generics, nullable markers, and star projections `ast-helpers.ts:29-35`
+- **extractReceiverType** — Extracts the receiver type from a function text `ast-helpers.ts:248-252`
+- **isCompanionCall** — Checks if a target is a companion call `ast-helpers.ts:229-231`
+- **isCoroutineBuilder** — Identifies if a given name is a Kotlin coroutine builder `ast-helpers.ts:181-183`
+- **isExtensionFunction** — Checks if a function text represents an extension function `ast-helpers.ts:257-259`
+- **isFlowOperator** — Checks if a given name is a Kotlin flow operator `ast-helpers.ts:188-190`
+- **isKotlinKeyword** — Checks if a given name is a Kotlin keyword `ast-helpers.ts:167-169`
+- **isLambdaInvocation** — Determines if an expression is a lambda invocation `ast-helpers.ts:236-239`
+- **isNullableType** — Checks if a type is nullable by ending with a question mark `ast-helpers.ts:40-42`
+- **isScopeFunction** — Determines if a given name is a Kotlin scope function `ast-helpers.ts:174-176`
+- **parts** — Splits an expression text into parts based on the safe call pattern `ast-helpers.ts:209-209`
+
+### Property
+- **isSafeCall** — Determines if a call is safe `ast-helpers.ts:203-203`
+- **name** — Represents the name of a call in the determined call target object `ast-helpers.ts:202-202`
+- **target** — Represents the target of a call in the determined call target object `ast-helpers.ts:201-201`
 
 ## Data Flow
 

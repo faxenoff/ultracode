@@ -1,17 +1,89 @@
----
-module_name: analysis
-description: "Conflict detection and change intent classification for semantic merge"
-status: active
-language: typescript
----
-
 # Analysis
 
-> Detects merge conflicts between code units from different branches and classifies the intent behind each change (bug fix, refactoring, feature addition, or API change).
+## 🤖 Overview
 
-## Overview
+The `merge/analysis` module detects conflicts during code merges by analyzing changes from both branches. It is used by developers to identify and resolve conflicts before merging. The module includes a `ConflictDetector` class that determines conflict types and severities based on code unit changes.
 
-The analysis module provides two core capabilities for the semantic merge pipeline. ConflictDetector analyzes pairs of code units from two branches to identify overlapping changes, API-breaking modifications, and incompatible intents, assigning severity levels and auto-resolvability flags. IntentClassifier uses heuristic pattern matching to determine why code was changed, collecting evidence such as added try-catch blocks, null checks, renamed variables, or signature changes to classify each modification.
+## 🤖 Architecture
+
+```
+  +-------------------+
+  | ConflictDetector |
+  +-------------------+
+    |
+    v
+  +-------------------+
+  | detectConflict() |
+  +-------------------+
+    |
+    v
+  +-------------------+
+  | detectAPIConflict() |
+  +-------------------+
+    |
+    v
+  +-------------------+
+  | detectIntentConflict() |
+  +-------------------+
+```
+
+## 🤖 Flow
+
+```
+  +-------------------+
+  | detectConflict() |
+  +-------------------+
+    |
+    v
+  +-------------------+
+  | detectAPIConflict() |
+  +-------------------+
+    |
+    v
+  +-------------------+
+  | detectIntentConflict() |
+  +-------------------+
+    |
+    v
+  +-------------------+
+  | return SemanticConflict |
+  +-------------------+
+```
+
+## 🤖 Entity Listing
+
+### Method
+- **areIntentsCompatible** — Checks if two change intents are compatible based on a predefined matrix `conflict-detector.ts:127-146`
+- **classifyIntent** — Determines the change intent for a given base and changed unit `intent-classifier.ts:31-83`
+- **classifyNewUnit** — Classifies the intent for a new unit without a base unit `intent-classifier.ts:88-113`
+- **classifySeverity** — Classifies the severity of a conflict based on the extent of changes in the code units `conflict-detector.ts:151-173`
+- **collectAPIChangeEvidence** — Collects evidence for an API change intent `intent-classifier.ts:222-244`
+- **collectBugFixEvidence** — Collects evidence for a bug fix intent `intent-classifier.ts:118-159`
+- **collectFeatureAdditionEvidence** — Collects evidence for a feature addition intent `intent-classifier.ts:192-217`
+- **collectRefactoringEvidence** — Collects evidence for a refactoring intent `intent-classifier.ts:164-187`
+- **computeDifference** — Computes the difference between two code units based on their content lengths `conflict-detector.ts:178-187`
+- **detectAPIConflict** — Detects API breaking changes between two code units `conflict-detector.ts:77-102`
+- **detectConflict** — Determines whether there is a conflict between two changes and returns a semantic conflict if found `conflict-detector.ts:30-72`
+- **detectConflicts** — Detects conflicts in a list of code unit matches and returns an array of semantic conflicts `conflict-detector.ts:224-250`
+- **detectIntentConflict** — Detects incompatible intents between two code units `conflict-detector.ts:107-122`
+- **isAutoResolvable** — Determines if a conflict can be auto-resolved based on its severity and the compatibility of the change intents `conflict-detector.ts:192-219`
+
+### Class
+- **ConflictDetector** — Detects conflicts during merge by analyzing changes in code units `conflict-detector.ts:19-251`
+- **IntentClassifier** — Classifies change intents based on evidence collected from code units `intent-classifier.ts:23-245`
+
+### Import_decl
+- **../models/change-intent.js** — Imports `../models/change-intent.js` from `../models/change-intent.js`. `conflict-detector.ts:1-1`
+- **../models/change-intent.js** — Imports `../models/change-intent.js`. `intent-classifier.ts:1-11`
+- **../models/code-unit.js** — Imports `../models/code-unit.js` from `../models/code-unit.js`. `conflict-detector.ts:2-2`, `intent-classifier.ts:12-12`
+- **../models/semantic-conflict.js** — Imports `../models/semantic-conflict.js`. `conflict-detector.ts:3-10`
+
+### Property
+- **baseUnit** — Represents the base code unit in the merge process `conflict-detector.ts:226-226`
+- **branchAIntent** — Represents the change intent in branchA `conflict-detector.ts:229-229`
+- **branchAUnit** — Represents the code unit in branchA `conflict-detector.ts:227-227`
+- **branchBIntent** — Represents the change intent in branchB `conflict-detector.ts:230-230`
+- **branchBUnit** — Represents the code unit in branchB `conflict-detector.ts:228-228`
 
 ## Data Flow
 

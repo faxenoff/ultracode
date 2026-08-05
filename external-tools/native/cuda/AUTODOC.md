@@ -146,18 +146,19 @@ The `external-tools/native/cuda` module provides CUDA-accelerated vector operati
 - **path** — Returns a boolean indicating success, the path, the number of loaded vectors, whether the index is trained, the dimensions, and the index type `index.d.ts:242-242`
 - **projectKey** — Key for the project `index.d.ts:129-129`
 - **projectKey** — Key identifier for the project `index.d.ts:179-179`
-- **projectKey** — Represents the project key `index.d.ts:199-199`, `index.d.ts:254-254`
+- **projectKey** — Represents the project key `index.d.ts:199-199`
+- **projectKey** — Represents the project key used for operations `index.d.ts:254-254`
 - **sqBits** — Square bits for the IVF index `index.d.ts:129-129`
 - **success** — Indicates the success of an operation `index.d.ts:129-129`
 - **success** — Boolean indicating success of operation `index.d.ts:136-136`
 - **success** — Boolean indicating the success of an operation `index.d.ts:143-143`
-- **success** — Returns a boolean indicating success and a path string `index.d.ts:164-164`, `index.d.ts:236-236`
+- **success** — Returns a boolean indicating success and a path string `index.d.ts:164-164`
 - **success** — Returns a boolean indicating success, a path string, and the number of loaded vectors `index.d.ts:170-170`
-- **success** — Returns a boolean indicating success `index.d.ts:173-173`, `index.d.ts:245-245`, `index.d.ts:248-248`
+- **success** — Returns a boolean indicating success `index.d.ts:173-173`, `index.d.ts:242-242`, `index.d.ts:245-245`, `index.d.ts:248-248`
 - **success** — Returns a boolean indicating success, a project key, dimensions, factory, index type, and whether the index is trained `index.d.ts:199-199`
 - **success** — Returns a boolean indicating success, the number of vectors trained on, and whether the index is trained `index.d.ts:206-206`
 - **success** — Returns a boolean indicating success, the number of vectors added, and the total number of vectors `index.d.ts:213-213`
-- **success** — Returns a boolean indicating success, a path string, the number of loaded vectors, whether the index is trained, dimensions, and index type `index.d.ts:242-242`
+- **success** — Returns a boolean indicating success, a path string, the number of loaded vectors, whether the index is trained, dimensions, and index type `index.d.ts:236-236`
 - **totalMemoryMB** — Total GPU memory in MB `index.d.ts:18-18`
 - **totalVectors** — Total number of vectors in the IVF index `index.d.ts:143-143`
 - **totalVectors** — Total number of vectors in the index `index.d.ts:213-213`

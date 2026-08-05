@@ -61,6 +61,7 @@ generate-rust.sh
 - **PROJECT_ROOT** — Represents the root directory of the project `generate-java.sh:8-8`
 - **PROJECT_ROOT** — Points to the root directory of the project `generate-kotlin.sh:9-9`
 - **RUST_GRAMMAR_BASE** — Provides the base URL for downloading Rust ANTLR grammar files `download-rust.sh:7-7`
-- **SCRIPT_DIR** — Stores the directory of the current script `download-java.sh:5-5`, `generate-java.sh:5-5`
-- **SCRIPT_DIR** — Sets the directory of the current script `download-kotlin.sh:6-6`, `generate-kotlin.sh:6-6`
-- **SCRIPT_DIR** — Stores the directory path of the current script `download-rust.sh:5-5`
+- **SCRIPT_DIR** — Stores the directory of the current script `download-java.sh:5-5`
+- **SCRIPT_DIR** — Sets the directory of the current script `download-kotlin.sh:6-6`
+- **SCRIPT_DIR** — Stores the directory path of the current script `download-rust.sh:5-5`, `generate-kotlin.sh:6-6`
+- **SCRIPT_DIR** — Stores the directory path of the current script file `generate-java.sh:5-5`

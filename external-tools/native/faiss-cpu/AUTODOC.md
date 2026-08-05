@@ -1,8 +1,35 @@
 # faiss-cpu
 
-## Overview
+## 🤖 Overview
 
-The `faiss-cpu` module is a native dependency wrapper for FAISS (Facebook AI Similarity Search) optimized for CPU-based operations. This package integrates vector similarity search capabilities into the broader ecosystem, enabling efficient nearest-neighbor search and clustering operations without requiring GPU acceleration. It serves as an external tool managed through the native dependencies system.
+The `external-tools/native/faiss-cpu` module provides a native CPU implementation of the FAISS library, enabling efficient similarity search and clustering for high-dimensional vectors. This module is primarily used by developers and data scientists who need to perform fast nearest neighbor searches on large datasets without relying on GPU acceleration.
+
+## 🤖 Architecture
+
+```
+[FAISS CPU]
+    |
+    v
+[Vector Index] → [Search Engine] → [Distance Metric]
+    |
+    v
+[Data Structure] → [Index Manager] → [Memory Allocator]
+```
+
+## 🤖 Flow
+
+```
+[User Input] → [Index Manager] → [Vector Index] → [Search Engine] → [Distance Metric] → [Result Output]
+```
+
+## 🤖 Entity Listing
+
+### Module
+- **ultracode-faiss-cpu** — FAISS CPU native addon for ultracode (macOS/Linux, no CUDA) `package.json:1-1`
+
+### Import_decl
+- **cmake-js** — Imports `cmake-js`. `package.json:0-0`
+- **node-addon-api** — Imports `node-addon-api`. `package.json:0-0`
 
 ## Entity listing
 

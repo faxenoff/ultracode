@@ -1,17 +1,57 @@
----
-module_name: java-utils
-description: "AST helper utilities for Java ANTLR parser traversal and data extraction"
-status: active
-language: typescript
----
-
 # Java Utils
 
-> Provides utility functions for traversing Java ANTLR AST nodes, extracting text and locations, handling type expressions, and identifying call targets.
+## 🤖 Overview
 
-## Overview
+The `ast-helpers.ts` module provides utilities for parsing and manipulating Java ANTLR Abstract Syntax Trees (ASTs). It includes shared JVM helpers and Java-specific type extraction and method call detection. Developers using this module will primarily interact with the exported functions for type analysis and AST traversal.
 
-This module contains shared helper functions used by all Java extractors. It provides AST location extraction, node traversal utilities, text extraction, type parsing helpers, and Java-specific constants (keywords, primitives). Functions are stateless and designed for safe concurrent use across the parser pipeline.
+## 🤖 Architecture
+
+```
+  extractGenericArguments
+  findAllDescendants
+  findAncestor
+  getIdentifierText
+  getLocation
+  getTerminalLocation
+  getText
+  getTextTrimmed
+  isSuperCall
+  isThisCall
+  visitChildren
+  extractBaseTypeName
+  JAVA_KEYWORDS
+```
+
+## 🤖 Flow
+
+```
+  extractGenericArguments
+  findAllDescendants
+  findAncestor
+  getIdentifierText
+  getLocation
+  getTerminalLocation
+  getText
+  getTextTrimmed
+  isSuperCall
+  isThisCall
+  visitChildren
+  extractBaseTypeName
+  JAVA_KEYWORDS
+```
+
+## 🤖 Entity Listing
+
+### Function
+- **determineCallTarget** — Parses an expression text to determine the call target and method name `ast-helpers.ts:120-136`
+- **extractBaseTypeName** — Extracts the base type name from a Java type expression by removing generics, arrays, and varargs `ast-helpers.ts:29-35`
+- **isJavaKeyword** — Checks if a given name is a Java keyword `ast-helpers.ts:102-104`
+- **isJavaPrimitive** — Determines if a given type is a Java primitive `ast-helpers.ts:109-111`
+- **isStaticCall** — Checks if a target is a static call by testing if it starts with an uppercase letter `ast-helpers.ts:141-144`
+
+### Property
+- **name** — Represents the method name part of a call target in the `determineCallTarget` function `ast-helpers.ts:120-120`
+- **target** — Represents the target part of a call target in the `determineCallTarget` function `ast-helpers.ts:120-120`
 
 ## Data Flow
 

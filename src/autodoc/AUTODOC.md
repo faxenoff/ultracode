@@ -198,7 +198,8 @@ The `autodoc` module provides an automatic documentation layer with semantic sea
 - **entityId** — Optionally stores an entity ID string `types.ts:578-578`
 - **entityRefs** — Manages references to code entities `types.ts:292-292`
 - **error** — Represents an error or exception during the documentation process `types.ts:601-601`
-- **error** — Represents an error message `types.ts:616-616`, `types.ts:632-632`
+- **error** — Represents an error message `types.ts:616-616`
+- **error** — Represents an error message as a string `types.ts:632-632`
 - **errors** — Stores error messages or validation results `types.ts:515-515`
 - **existingDoc** — Existing documentation related to a documentation entity `types.ts:428-428`
 - **extractedRefs** — Stores the list of extracted references from the documentation `types.ts:612-612`
@@ -211,7 +212,9 @@ The `autodoc` module provides an automatic documentation layer with semantic sea
 - **filePath** — Path to the file where documentation is saved `types.ts:410-410`
 - **filePath** — Stores the file path of a document `types.ts:418-418`
 - **filePath** — Stores the file path of a file `types.ts:442-442`
-- **filePath** — Stores a file path string `types.ts:507-507`, `types.ts:534-534`, `types.ts:543-543`
+- **filePath** — Stores a file path string `types.ts:507-507`
+- **filePath** — Represents the file path of an entity as a string `types.ts:534-534`
+- **filePath** — Stores the file path as a string `types.ts:543-543`
 - **filledSections** — Counts the number of filled sections in documentation `types.ts:336-336`
 - **fixBrokenRefs** — Fix broken references in documentation entities `types.ts:570-570`
 - **fixedRefs** — Represents types of references between documentation and code entities `types.ts:635-635`
@@ -223,8 +226,9 @@ The `autodoc` module provides an automatic documentation layer with semantic sea
 - **id** — Represents the unique identifier for a document or code entity `types.ts:253-253`
 - **id** — Unique identifier for a documentation entity `types.ts:278-278`
 - **id** — Unique identifier for a parsed section `types.ts:377-377`
-- **id** — Stores the unique identifier of a document `types.ts:407-407`, `types.ts:416-416`, `types.ts:423-423`
-- **id** — Stores an identifier string `types.ts:466-466`
+- **id** — Stores the unique identifier of a document `types.ts:407-407`
+- **id** — Stores an identifier string `types.ts:416-416`
+- **id** — Represents a unique identifier as a string `types.ts:423-423`, `types.ts:466-466`
 - **impactedDocs** — Documentation files impacted by the change log entry `types.ts:270-270`
 - **includeCallers** — Include callers in the context `types.ts:563-563`
 - **includeCode** — Include code references in the context `types.ts:562-562`
@@ -308,7 +312,8 @@ The `autodoc` module provides an automatic documentation layer with semantic sea
 - **title** — Represents the title or name of a document or code entity `types.ts:191-191`
 - **title** — Title of a parsed section `types.ts:359-359`
 - **title** — Stores the title of a document `types.ts:381-381`
-- **title** — Holds a title string `types.ts:470-470`, `types.ts:509-509`
+- **title** — Holds a title string `types.ts:470-470`
+- **title** — Represents the title of an entity as a string `types.ts:509-509`
 - **totalDocs** — Counts the total number of documentation entities `types.ts:332-332`
 - **totalLoc** — Stores the total lines of code in the source code `types.ts:123-123`
 - **totalRefs** — Counts the total number of references in documentation `types.ts:340-340`

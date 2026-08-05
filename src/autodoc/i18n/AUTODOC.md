@@ -1,17 +1,439 @@
----
-module_name: i18n
-description: "Language detection and localized section names for multi-language documentation"
-status: active
-language: typescript
----
-
 # I18n
 
-> Provides language detection from text, code comments, and file content, plus localized section names and placeholders for English, Russian, and Chinese documentation output.
+## 🤖 Overview
 
-## Overview
+The `i18n` module provides language detection and localization utilities for the AutoDoc system. It is used by developers and maintainers to ensure consistent internationalization across different language versions of the documentation.
 
-The i18n module enables AutoDoc to produce documentation in multiple languages. The language detector uses fast `charCodeAt`-based Unicode range classification (Cyrillic, CJK, Latin) to determine dominant language from text or code comments, with aggregation across multiple files. The section-names component provides a comprehensive translation table for all documentation section titles, document type names, and template placeholders in three languages (en, ru, zh).
+## 🤖 Architecture
+
+```
+language-detector.ts
+    |
+    v
+    language-detector.ts
+    |
+    v
+    language-detector.ts
+    |
+    v
+    language-detector.ts
+    |
+    v
+    language-detector.ts
+    |
+    v
+    language-detector.ts
+    |
+    v
+    language-detector.ts
+    |
+    v
+    language
+```
+
+## 🤖 Flow
+
+```
+language-detector.ts
+    |
+    v
+    language-detector.ts
+    |
+    v
+    language-detector.ts
+    |
+    v
+    language-detector.ts
+    |
+    v
+    language-detector.ts
+    |
+    v
+    language-detector.ts
+    |
+    v
+    language-detector.ts
+    |
+    v
+    language-detector.ts
+    |
+    v
+    language-detector.ts
+    |
+    v
+    language-detector.ts
+    |
+    v
+    language-detector.ts
+    |
+    v
+    language-detector.ts
+    |
+    v
+    language-detector.ts
+    |
+    v
+    language-detector.ts
+    |
+    v
+    language-detector.ts
+    |
+    v
+    language-detector.ts
+    |
+    v
+    language-detector.ts
+    |
+    v
+    language-detector.ts
+    |
+    v
+    language-detector.ts
+    |
+    v
+    language-detector.ts
+    |
+    v
+    language-detector.ts
+    |
+    v
+    language-detector.ts
+    |
+    v
+    language-detector.ts
+    |
+    v
+    language-detector.ts
+    |
+    v
+    language-detector.ts
+    |
+    v
+    language-detector.ts
+    |
+    v
+    language-detector.ts
+    |
+    v
+    language-detector.ts
+    |
+    v
+    language-detector.ts
+    |
+    v
+    language-detector.ts
+    |
+    v
+    language-detector.ts
+    |
+    v
+    language-detector.ts
+    |
+    v
+    language-detector.ts
+    |
+    v
+    language-detector.ts
+    |
+    v
+    language-detector.ts
+    |
+    v
+    language-detector.ts
+    |
+    v
+    language-detector.ts
+    |
+    v
+    language-detector.ts
+    |
+    v
+    language-detector.ts
+    |
+    v
+    language-detector.ts
+    |
+    v
+    language-detector.ts
+    |
+    v
+    language-detector.ts
+    |
+    v
+    language-detector.ts
+    |
+    v
+    language-detector.ts
+    |
+    v
+    language-detector.ts
+    |
+    v
+    language-detector.ts
+    |
+    v
+    language-detector.ts
+    |
+    v
+    language-detector.ts
+    |
+    v
+    language-detector.ts
+    |
+    v
+    language-detector.ts
+    |
+    v
+    language-detector.ts
+    |
+    v
+    language-detector.ts
+    |
+    v
+    language-detector.ts
+    |
+    v
+    language-detector.ts
+    |
+    v
+    language-detector.ts
+    |
+    v
+    language-detector.ts
+    |
+    v
+    language-detector.ts
+    |
+    v
+    language-detector.ts
+    |
+    v
+    language-detector.ts
+    |
+    v
+    language-detector.ts
+    |
+    v
+    language-detector.ts
+    |
+    v
+    language-detector.ts
+    |
+    v
+    language-detector.ts
+    |
+    v
+    language-detector.ts
+    |
+    v
+    language-detector.ts
+    |
+    v
+    language-detector.ts
+    |
+    v
+    language-detector.ts
+    |
+    v
+    language-detector.ts
+    |
+    v
+    language-detector.ts
+    |
+    v
+    language-detector.ts
+    |
+    v
+    language-detector.ts
+    |
+    v
+    language-detector.ts
+    |
+    v
+    language-detector.ts
+    |
+    v
+    language-detector.ts
+    |
+    v
+    language-detector.ts
+    |
+    v
+    language-detector.ts
+    |
+    v
+    language-detector.ts
+    |
+    v
+    language-detector.ts
+    |
+    v
+    language-detector.ts
+    |
+    v
+    language-detector.ts
+    |
+    v
+    language-detector.ts
+    |
+    v
+    language-detector.ts
+    |
+    v
+    language-detector.ts
+    |
+    v
+    language-detector.ts
+    |
+    v
+    language-detector.ts
+    |
+    v
+    language-detector.ts
+    |
+    v
+    language-detector.ts
+    |
+    v
+    language-detector.ts
+    |
+    v
+    language-detector.ts
+    |
+    v
+    language-detector.ts
+    |
+    v
+    language-detector.ts
+    |
+    v
+    language-detector.ts
+    |
+    v
+    language-detector.ts
+    |
+    v
+    language-detector.ts
+    |
+    v
+    language-detector.ts
+    |
+    v
+    language-detector.ts
+    |
+    v
+    language-detector.ts
+    |
+    v
+    language-detector.ts
+    |
+    v
+    language-detector.ts
+    |
+    v
+    language-detector.ts
+    |
+    v
+    language-detector.ts
+    |
+    v
+    language-detector.ts
+    |
+    v
+    language-detector.ts
+    |
+    v
+    language-detector.ts
+    |
+    v
+    language-detector.ts
+    |
+    v
+    language-detector.ts
+    |
+    v
+    language-detector.ts
+    |
+    v
+    language-detector.ts
+    |
+    v
+    language-detector.ts
+    |
+    v
+    language-detector.ts
+    |
+    v
+    language-detector.ts
+    |
+    v
+    language-detector.ts
+    |
+    v
+    language-detector.ts
+    |
+    v
+    language-detector.ts
+    |
+    v
+    language-detector.ts
+    |
+    v
+    language-detector.ts
+    |
+    v
+    language-detector.ts
+    |
+    v
+    language-detector.ts
+    |
+    v
+    language-detector.ts
+    |
+    v
+    language-detector.ts
+    |
+    v
+    language-detector.ts
+    |
+    v
+    language-detector.ts
+    |
+    v
+    language-detector.ts
+    |
+    v
+    language-detector.ts
+```
+
+## 🤖 Entity Listing
+
+### Function
+- **aggregateLanguageDetection** — Aggregates language detection results `language-detector.ts:199-244`
+- **classifyChar** — Fast character classification using charCodeAt (no regex overhead) `language-detector.ts:37-65`
+- **detectLanguageFromCode** — Detects documentation language based on non-Latin characters in code `language-detector.ts:160-194`
+- **detectLanguageFromComments** — Detects documentation language based on non-Latin characters in comments `language-detector.ts:150-154`
+- **detectLanguageFromText** — Detects documentation language based on non-Latin characters in comments `language-detector.ts:88-145`
+- **findSectionKey** — Finds the key corresponding to the given localized section name `section-names.ts:209-221`
+- **getAllSectionNames** — Returns a record of all section names in the specified language `section-names.ts:202-204`
+- **getDocTypeName** — Returns the document type name based on the provided type and language `section-names.ts:195-197`
+- **getPlaceholder** — Returns the placeholder for the given key in the specified language `section-names.ts:256-258`
+- **getSectionName** — Returns the localized section name for a given language and section key `section-names.ts:188-190`
+
+### Interface
+- **LanguageDetectionResult** — Result of language detection `language-detector.ts:70-82`
+
+### Import_decl
+- **../types.js** — Imports `../types.js` from `../types.js`. `language-detector.ts:12-12`, `section-names.ts:12-12`
+
+### Property
+- **charCounts** — Character counts by script `language-detector.ts:76-81`
+- **chinese** — CJK Unified Ideographs and CJK Extension A `language-detector.ts:78-78`
+- **confidence** — Confidence score (0-1) `language-detector.ts:74-74`
+- **language** — Detected language code `language-detector.ts:72-72`
+- **latin** — Latin characters `language-detector.ts:79-79`
+- **other** — Other characters `language-detector.ts:80-80`
+- **russian** — Cyrillic characters (Russian) `language-detector.ts:77-77`
 
 ## Data Flow
 
@@ -68,10 +490,6 @@ Language detection returns `"en"` with zero confidence when input has no classif
 - Only three languages are supported; adding new languages requires extending both the detector Unicode ranges and all translation tables.
 - Language detection is script-based, not NLP-based, so it cannot distinguish between languages sharing the same script (e.g., Ukrainian vs Russian Cyrillic).
 - Python docstrings and comments are handled, but other language-specific comment syntaxes (e.g., Ruby `#`, Lua `--`) are not extracted.
-
-## Exports
-
-
 
 ## Files
 

@@ -2,7 +2,55 @@
 
 ## 🤖 Overview
 
-The storage module is the persistence layer of AutoDoc. `AutoDocManager` is the central orchestrator that integrates `DocStorage` (documentation sections), `RefStorage` (references between docs/code/comments), and optionally `GraphStorage` (code entity lookups). It provides high-level operations: saving documents with automatic reference extraction, building documentation context for entities, validating all references, handling code moves/renames, and tracking changes via a changelog. Both storage classes use native SQLite (better-sqlite3 / bun:sqlite via NativeSQLiteClient) for cross-runtime Bun/Node.js compatibility, support branch isolation via project context, and optimize bulk operations with batch SQL statements.
+The `autodoc-storage` module provides storage classes for managing documentation entities and references. It includes `DocStorage` and `RefStorage` for handling documentation and references, respectively. The `AutoDocManager` class integrates these storage modules to manage the auto-documentation process.
+
+## 🤖 Architecture
+
+```
+AutoDocManager
+├── DocStorage
+│   └── DocEntity
+│       └── DocContext
+│           └── DocEntityType
+│               └── OutdatedDoc
+│                   └── AutoDocTodo
+│                       └── AutoDocStatus
+│                           └── AutoDocConfig
+│                               └── RefStorage
+│                                   └── RefEntity
+│                                       └── RefContext
+│                                           └── RefSourceType
+│                                               └── RefTargetType
+│                                                   └── RefType
+│                                                       └── Relationship
+│                                                           └── GraphStorage
+│                                                               └── GraphEntity
+```
+
+## 🤖 Flow
+
+```
+AutoDocManager
+├── DocStorage
+│   └── parseMarkdown
+│       └── flattenSections
+│           └── DocEntity
+│               └── DocContext
+│                   └── DocEntityType
+│                       └── OutdatedDoc
+│                           └── AutoDocTodo
+│                               └── AutoDocStatus
+│                                   └── AutoDocConfig
+│                                       └── RefStorage
+│                                           └── RefEntity
+│                                               └── RefContext
+│                                                   └── RefSourceType
+│                                                       └── RefTargetType
+│                                                           └── RefType
+│                                                               └── Relationship
+│                                                                   └── GraphStorage
+│                                                                       └── GraphEntity
+```
 
 ## 🤖 Entity Listing
 
@@ -31,7 +79,8 @@ The storage module is the persistence layer of AutoDoc. `AutoDocManager` is the 
 - **createDoc** — Creates a new document in the database `doc-storage.ts:176-212`
 - **createRef** — Creates a new reference `ref-storage.ts:162-209`
 - **createRefs** — Creates new references in the database `ref-storage.ts:495-547`
-- **createTables** — Creates necessary tables in the database `doc-storage.ts:88-159`, `ref-storage.ts:86-153`
+- **createTables** — Creates necessary tables in the database `doc-storage.ts:88-159`
+- **createTables** — Creates necessary tables in the SQLite database for storing references `ref-storage.ts:86-153`
 - **deleteComment** — Deletes a comment from the database `ref-storage.ts:731-739`
 - **deleteCommentsByFile** — Deletes comments by file `ref-storage.ts:773-782`
 - **deleteDoc** — Deletes a document from the database `doc-storage.ts:257-265`
@@ -68,8 +117,10 @@ The storage module is the persistence layer of AutoDoc. `AutoDocManager` is the 
 - **getDocumentsByFile** — Retrieves documents by file name `autodoc-manager.ts:243-245`
 - **getLastSync** — Method to get last sync time `autodoc-manager.ts:140-143`
 - **getMaxLastSync** — Retrieves the maximum last sync timestamp for documents `doc-storage.ts:436-445`
-- **getOutdatedDocs** — Retrieves outdated documents based on confidence threshold `autodoc-manager.ts:250-252`, `doc-storage.ts:577-595`
-- **getProjectContext** — Retrieves the current project context `doc-storage.ts:52-54`, `ref-storage.ts:51-53`
+- **getOutdatedDocs** — Retrieves outdated documents based on confidence threshold `autodoc-manager.ts:250-252`
+- **getOutdatedDocs** — Retrieves outdated documentation entries based on confidence threshold `doc-storage.ts:577-595`
+- **getProjectContext** — Retrieves the current project context `doc-storage.ts:52-54`
+- **getProjectContext** — Returns the current project context for branch isolation `ref-storage.ts:51-53`
 - **getRef** — Retrieves a reference by ID `ref-storage.ts:268-278`
 - **getReferences** — Retrieves references to a document `autodoc-manager.ts:396-398`
 - **getReferencesTo** — Retrieves documents referenced by a given entity `autodoc-manager.ts:403-405`
@@ -84,7 +135,8 @@ The storage module is the persistence layer of AutoDoc. `AutoDocManager` is the 
 - **getTodos** — Retrieves all todo items in a document `doc-storage.ts:687-721`
 - **inferDocType** — Infers the document type `autodoc-manager.ts:587-599`
 - **initialize** — Method to initialize the AutoDoc manager `autodoc-manager.ts:64-75`
-- **initialize** — Initializes the storage and creates tables if needed `doc-storage.ts:59-77`, `ref-storage.ts:58-75`
+- **initialize** — Initializes the storage and creates tables if needed `doc-storage.ts:59-77`
+- **initialize** — Initializes storage and creates tables if needed `ref-storage.ts:58-75`
 - **invalidateRef** — Invalidates a reference `ref-storage.ts:430-434`
 - **isInitialized** — Method to check if the AutoDoc manager is initialized `autodoc-manager.ts:95-97`
 - **markOutdated** — Marks a document as outdated `doc-storage.ts:600-611`
@@ -159,11 +211,14 @@ The storage module is the persistence layer of AutoDoc. `AutoDocManager` is the 
 - **config** — AutoDoc configuration `autodoc-manager.ts:54-54`
 - **content** — Content of the document entity `doc-storage.ts:903-903`
 - **content** — Content of a reference `ref-storage.ts:915-915`
-- **count** — Counts the number of documents `doc-storage.ts:806-806`, `doc-storage.ts:811-811`, `doc-storage.ts:816-816`
-- **count** — Counts the number of documents in the storage `doc-storage.ts:822-822`
-- **count** — Counts the number of references `ref-storage.ts:634-634`, `ref-storage.ts:795-795`
-- **count** — Extracts the count of valid references from a database query result `ref-storage.ts:798-798`
-- **count** — Extracts the count of total comments from a database query result `ref-storage.ts:801-801`
+- **count** — Counts the number of documents `doc-storage.ts:806-806`
+- **count** — Counts the number of documents in the storage `doc-storage.ts:811-811`
+- **count** — Calculates the count of filled sections from a database query result `doc-storage.ts:816-816`
+- **count** — Parses the count from outdated sections result `doc-storage.ts:822-822`
+- **count** — Counts the number of references `ref-storage.ts:634-634`
+- **count** — Extracts the count of valid references from a database query result `ref-storage.ts:795-795`
+- **count** — Extracts the count of total comments from a database query result `ref-storage.ts:798-798`
+- **count** — Parses the count from a database query result `ref-storage.ts:801-801`
 - **created_at** — Creation time of the document entity `doc-storage.ts:909-909`
 - **created_at** — Stores the timestamp when a document was created `doc-storage.ts:921-921`
 - **created_at** — Stores the timestamp when the reference was created `ref-storage.ts:902-902`
@@ -175,14 +230,19 @@ The storage module is the persistence layer of AutoDoc. `AutoDocManager` is the 
 - **doc_refs** — References to documents `ref-storage.ts:917-917`
 - **docStorage** — Instance of DocStorage for document management `autodoc-manager.ts:50-50`
 - **entity_refs** — References to entities `ref-storage.ts:918-918`
-- **error** — Stores an error message `autodoc-manager.ts:421-421`, `autodoc-manager.ts:424-424`, `autodoc-manager.ts:464-464`
-- **file_path** — File path of the document entity `doc-storage.ts:900-900`, `doc-storage.ts:915-915`
+- **error** — Stores an error message `autodoc-manager.ts:421-421`
+- **error** — Stores a reference and its associated error in an array `autodoc-manager.ts:424-424`
+- **error** — Validates a single reference and returns whether it is valid along with an optional error message `autodoc-manager.ts:464-464`
+- **file_path** — File path of the document entity `doc-storage.ts:900-900`
+- **file_path** — Stores the file path of a document entity `doc-storage.ts:915-915`
 - **file_path** — Path to the file containing the reference `ref-storage.ts:912-912`
 - **flow_tags** — Flow tags associated with a reference `ref-storage.ts:919-919`
 - **fromId** — Retrieves a document by its ID `autodoc-manager.ts:335-335`
 - **getIncomingRelationships** — Method to get incoming relationships for an entity `autodoc-manager.ts:46-46`
 - **graphStorage** — GraphStorage instance for entity lookups `autodoc-manager.ts:52-52`
-- **id** — Unique identifier for a document entity `doc-storage.ts:898-898`, `doc-storage.ts:914-914`, `doc-storage.ts:926-926`
+- **id** — Unique identifier for a document entity `doc-storage.ts:898-898`
+- **id** — Represents the unique identifier of a document entity `doc-storage.ts:914-914`
+- **id** — Represents the unique identifier for a document `doc-storage.ts:926-926`
 - **id** — Stores the unique identifier for a reference row `ref-storage.ts:889-889`
 - **id** — Unique identifier for a reference `ref-storage.ts:911-911`
 - **impacted_docs** — Lists the documents impacted by a change `doc-storage.ts:932-932`
@@ -193,8 +253,8 @@ The storage module is the persistence layer of AutoDoc. `AutoDocManager` is the 
 - **initialized** — A boolean indicating whether the storage has been initialized `ref-storage.ts:34-34`
 - **last_sync** — Last synchronization time of the document entity `doc-storage.ts:907-907`
 - **limit** — Limits the number of changelog entries `autodoc-manager.ts:575-575`
-- **limit** — Defines the maximum number of documents to retrieve in a single query `doc-storage.ts:375-375`
 - **limit** — Limits the number of changelog entries returned `doc-storage.ts:757-757`
+- **limit** — Defines the maximum number of documents to retrieve in a single query `doc-storage.ts:375-375`
 - **limit** — Limits the number of references returned `ref-storage.ts:552-552`
 - **line** — Represents a line of code or text `autodoc-manager.ts:335-335`
 - **line_end** — End line number of a reference `ref-storage.ts:914-914`
@@ -206,7 +266,8 @@ The storage module is the persistence layer of AutoDoc. `AutoDocManager` is the 
 - **parent_entity_id** — ID of the parent entity for a reference `ref-storage.ts:916-916`
 - **priority** — Priority level of the todo entity `doc-storage.ts:917-917`
 - **reason** — Reason for the todo entity `doc-storage.ts:918-918`
-- **ref** — Stores a reference `autodoc-manager.ts:421-421`, `autodoc-manager.ts:424-424`
+- **ref** — Stores a reference `autodoc-manager.ts:421-421`
+- **ref** — Stores a reference and its associated error in an array `autodoc-manager.ts:424-424`
 - **ref_syntax** — Represents the syntax of the reference `ref-storage.ts:899-899`
 - **ref_type** — Represents the type of reference `ref-storage.ts:898-898`
 - **refStorage** — Instance of RefStorage for reference management `autodoc-manager.ts:51-51`
@@ -233,7 +294,8 @@ The storage module is the persistence layer of AutoDoc. `AutoDocManager` is the 
 - **target_line_start** — Stores the start line number of the target entity `ref-storage.ts:906-906`
 - **target_type** — Specifies the type of the target entity for a reference `ref-storage.ts:896-896`
 - **timestamp** — Stores the timestamp of a document entity `doc-storage.ts:927-927`
-- **title** — Title of the document entity `doc-storage.ts:902-902`, `doc-storage.ts:916-916`
+- **title** — Title of the document entity `doc-storage.ts:902-902`
+- **title** — Stores the title of a document entity `doc-storage.ts:916-916`
 - **total** — Represents the total number of references `autodoc-manager.ts:419-419`
 - **totalComments** — Returns the total number of comments `ref-storage.ts:791-791`
 - **totalRefs** — Returns the total number of references `ref-storage.ts:791-791`
@@ -242,7 +304,8 @@ The storage module is the persistence layer of AutoDoc. `AutoDocManager` is the 
 - **updated_at** — Last update time of the document entity `doc-storage.ts:910-910`
 - **updated_at** — Stores the timestamp when the reference was last updated `ref-storage.ts:903-903`
 - **updated_at** — Timestamp when a reference was last updated `ref-storage.ts:921-921`
-- **valid** — Indicates the number of valid references `autodoc-manager.ts:420-420`, `autodoc-manager.ts:464-464`
+- **valid** — Indicates the number of valid references `autodoc-manager.ts:420-420`
+- **valid** — Validates a single reference and returns whether it is valid along with an optional error message `autodoc-manager.ts:464-464`
 - **valid** — Indicates whether the reference is valid `ref-storage.ts:900-900`
 - **validation_error** — Stores the validation error message if the reference is invalid `ref-storage.ts:901-901`
 - **validOnly** — Filters references to only valid ones `ref-storage.ts:552-552`
@@ -250,14 +313,14 @@ The storage module is the persistence layer of AutoDoc. `AutoDocManager` is the 
 
 ### embedded_sql
 - **ALTER TABLE doc_entities ADD COLUMN source_hash TEXT NOT NULL DEFAULT** — Adds a new column `source_hash` to the `doc_entities` table with a default value of an empty string `doc-storage.ts:156-156`
-- **CREATE INDEX IF NOT EXISTS idx_changelog_branch ON doc_changelog(branch)** — `doc-storage.ts:133-133`
-- **CREATE INDEX IF NOT EXISTS idx_changelog_commit ON doc_changelog(commit_hash)** — `doc-storage.ts:132-132`
-- **CREATE INDEX IF NOT EXISTS idx_changelog_time ON doc_changelog(timestamp)** — `doc-storage.ts:131-131`
+- **CREATE INDEX IF NOT EXISTS idx_changelog_branch ON doc_changelog(branch)** — Creates an index on the `branch` column of the `doc_changelog` table if it does not exist `doc-storage.ts:133-133`
+- **CREATE INDEX IF NOT EXISTS idx_changelog_commit ON doc_changelog(commit_hash)** — Creates an index on the commit_hash column of the doc_changelog table `doc-storage.ts:132-132`
+- **CREATE INDEX IF NOT EXISTS idx_changelog_time ON doc_changelog(timestamp)** — Creates an index on the timestamp column of the doc_changelog table `doc-storage.ts:131-131`
 - **CREATE INDEX IF NOT EXISTS idx_comment_branch ON comment_refs(project_hash, branch_name)** — Creates an index on the project_hash and branch_name columns of the comment_refs table `ref-storage.ts:151-151`
 - **CREATE INDEX IF NOT EXISTS idx_comment_file ON comment_refs(file_path)** — Creates an index on the file_path column of the comment_refs table `ref-storage.ts:145-145`
 - **CREATE INDEX IF NOT EXISTS idx_comment_lines ON comment_refs(file_path, line_start, line_end)** — Creates an index on the file_path, line_start, and line_end columns of the comment_refs table `ref-storage.ts:148-148`
 - **CREATE INDEX IF NOT EXISTS idx_comment_parent ON comment_refs(parent_entity_id)** — Creates an index on the parent_entity_id column of the comment_refs table `ref-storage.ts:146-146`
-- **CREATE INDEX IF NOT EXISTS idx_doc_branch ON doc_entities(project_hash, branch_name)** — `doc-storage.ts:116-116`
+- **CREATE INDEX IF NOT EXISTS idx_doc_branch ON doc_entities(project_hash, branch_name)** — Creates an index on the project_hash and branch_name columns of the doc_entities table `doc-storage.ts:116-116`
 - **CREATE INDEX IF NOT EXISTS idx_doc_confidence ON doc_entities(confidence)** — Creates an index on the confidence column of the doc_entities table `doc-storage.ts:114-114`
 - **CREATE INDEX IF NOT EXISTS idx_doc_file ON doc_entities(file_path)** — Creates an index on the file_path column of the doc_entities table `doc-storage.ts:111-111`
 - **CREATE INDEX IF NOT EXISTS idx_doc_section ON doc_entities(section)** — Creates an index on the section column of the doc_entities table `doc-storage.ts:113-113`
@@ -276,44 +339,44 @@ The storage module is the persistence layer of AutoDoc. `AutoDocManager` is the 
 - **CREATE INDEX IF NOT EXISTS idx_todo_file ON doc_todos(file_path)** — Creates an index on the `file_path` column of the `doc_todos` table `doc-storage.ts:152-152`
 - **CREATE INDEX IF NOT EXISTS idx_todo_priority ON doc_todos(priority)** — Creates an index on the `priority` column of the `doc_todos` table `doc-storage.ts:150-150`
 - **CREATE TABLE IF NOT EXISTS comment_refs ( id TEXT PRIMARY KEY, file_path TEXT NOT NULL, line_start I** — Creates a table `comment_refs` with specified columns if it doesn't already exist `ref-storage.ts:127-143`
-- **CREATE TABLE IF NOT EXISTS doc_changelog ( id TEXT PRIMARY KEY, timestamp INTEGER NOT NULL, commit_h** — `doc-storage.ts:119-129`
+- **CREATE TABLE IF NOT EXISTS doc_changelog ( id TEXT PRIMARY KEY, timestamp INTEGER NOT NULL, commit_h** — Creates a new table for storing changelog information if it does not exist `doc-storage.ts:119-129`
 - **CREATE TABLE IF NOT EXISTS doc_entities ( id TEXT PRIMARY KEY, type TEXT NOT NULL, file_path TEXT NO** — Creates a table to store document entities with various attributes `doc-storage.ts:92-109`
 - **CREATE TABLE IF NOT EXISTS doc_references ( id TEXT PRIMARY KEY, source_type TEXT NOT NULL, source_f** — Creates a table for storing document references with various fields `ref-storage.ts:90-114`
-- **CREATE TABLE IF NOT EXISTS doc_todos ( id TEXT PRIMARY KEY, file_path TEXT NOT NULL, title TEXT NOT N** — `doc-storage.ts:136-148`
+- **CREATE TABLE IF NOT EXISTS doc_todos ( id TEXT PRIMARY KEY, file_path TEXT NOT NULL, title TEXT NOT N** — Creates a table `doc_todos` with specified columns and constraints if it does not exist `doc-storage.ts:136-148`
 - **DELETE FROM comment_refs** — Deletes all comment references `ref-storage.ts:869-869`
 - **DELETE FROM comment_refs WHERE file_path = ?** — Deletes comment references by file path `ref-storage.ts:777-777`
 - **DELETE FROM comment_refs WHERE id = ?** — Deletes a comment reference by its ID `ref-storage.ts:735-735`
-- **DELETE FROM doc_changelog** — `doc-storage.ts:878-878`
+- **DELETE FROM doc_changelog** — Deletes all entries from the doc_changelog table `doc-storage.ts:878-878`
 - **DELETE FROM doc_entities** — Deletes all rows from the doc_entities table. `doc-storage.ts:878 `doc-storage.ts:878-878`
-- **DELETE FROM doc_entities WHERE id = ?** — `doc-storage.ts:261-261`
+- **DELETE FROM doc_entities WHERE id = ?** — Deletes a document entity from the database based on its ID `doc-storage.ts:261-261`
 - **DELETE FROM doc_references** — Deletes all document references `ref-storage.ts:869-869`
 - **DELETE FROM doc_references WHERE id = ?** — Deletes a record from the doc_references table where the id matches the specified value. `ref-storage.ts `ref-storage.ts:259-259`
-- **DELETE FROM doc_references WHERE source_file_path = ?** — `ref-storage.ts:471-471`
+- **DELETE FROM doc_references WHERE source_file_path = ?** — Executes a SQL query to delete references from a specific file path `ref-storage.ts:471-471`
 - **DELETE FROM doc_references WHERE target_id = ?** — Deletes references where the target ID matches the provided value `ref-storage.ts:485-485`
-- **DELETE FROM doc_todos** — `doc-storage.ts:878-878`
+- **DELETE FROM doc_todos** — Deletes all entries from the doc_todos table `doc-storage.ts:878-878`
 - **INSERT INTO comment_refs ( id, file_path, line_start, line_end, content, parent_entity_id, doc_refs,** — Inserts a new comment reference into the database with specified fields. `ref-storage.ts:665-6 `ref-storage.ts:665-669`
-- **INSERT INTO doc_changelog (id, timestamp, commit_hash, branch, summary, changes, impacted_docs) VALU** — `doc-storage.ts:737-738`
+- **INSERT INTO doc_changelog (id, timestamp, commit_hash, branch, summary, changes, impacted_docs) VALU** — Inserts a new changelog entry into the database `doc-storage.ts:737-738`
 - **INSERT INTO doc_entities (id, type, file_path, section, title, content, tags, auto_generated, confid** — Inserts a new document entity into the `doc_entities` table with specified fields `doc-storage.ts:190-191`
-- **INSERT INTO doc_entities (id, type, file_path, section, title, content, tags, auto_generated, confid** — `doc-storage.ts:555-557`
+- **INSERT INTO doc_entities (id, type, file_path, section, title, content, tags, auto_generated, confid** — Inserts a new document entity into the database `doc-storage.ts:555-557`
 - **INSERT INTO doc_references ( id, source_type, source_file_path, source_line_start, source_line_end, s** — Inserts a new record into the doc_references table with specified fields `ref-storage.ts:176-182`
 - **INSERT INTO doc_references ( id, source_type, source_file_path, source_line_start, source_line_end, s** — Inserts a new reference into the database with specified fields `ref-storage.ts:512-518`
 - **SELECT * FROM comment_refs WHERE file_path = ? ORDER BY line_start** — Retrieves comment references by file path and orders them by line start `ref-storage.ts:763-763`
 - **SELECT * FROM comment_refs WHERE id = ?** — Retrieves a comment reference by its ID `ref-storage.ts:748-748`
 - **SELECT * FROM doc_changelog WHERE 1=1** — Parses a SQL query to select all rows from the doc_changelog table `doc-storage.ts:763-763`
 - **SELECT * FROM doc_entities WHERE (title LIKE ? COLLATE NOCASE OR content LIKE ? COLLATE NOCASE) AND p** — Selects entities based on title or content matching a pattern `doc-storage.ts:458-464`
-- **SELECT * FROM doc_entities WHERE confidence < ? ORDER BY confidence ASC** — `doc-storage.ts:581-581`
-- **SELECT * FROM doc_entities WHERE file_path = ? AND project_hash = ? AND branch_name = ? ORDER BY sec** — `doc-storage.ts:322-322`
-- **SELECT * FROM doc_entities WHERE id = ? AND project_hash = ? AND branch_name = ?** — `doc-storage.ts:276-276`
+- **SELECT * FROM doc_entities WHERE confidence < ? ORDER BY confidence ASC** — Selects document entities with confidence less than a given value, ordered by confidence `doc-storage.ts:581-581`
+- **SELECT * FROM doc_entities WHERE file_path = ? AND project_hash = ? AND branch_name = ? ORDER BY sec** — Retrieves document entities based on their file path, project hash, and branch name, ordered by section `doc-storage.ts:322-322`
+- **SELECT * FROM doc_entities WHERE id = ? AND project_hash = ? AND branch_name = ?** — Retrieves a document entity based on its ID, project hash, and branch name `doc-storage.ts:276-276`
 - **SELECT * FROM doc_entities WHERE project_hash = ? AND branch_name = ? ORDER BY file_path, section** — Parses a SQL query to select entities based on project hash and branch name `doc-storage.ts:382-382`
-- **SELECT * FROM doc_entities WHERE type = ? ORDER BY file_path, section** — `doc-storage.ts:365-365`
+- **SELECT * FROM doc_entities WHERE type = ? ORDER BY file_path, section** — Retrieves document entities based on their type, ordered by file path and section `doc-storage.ts:365-365`
 - **SELECT * FROM doc_references WHERE id = ?** — Selects all columns from the `ref-storage.ts:272-272`
 - **SELECT * FROM doc_references WHERE project_hash = ? AND branch_name = ?** — Selects all references where the project hash and branch name match the provided values `ref-storage.ts:559-559`
-- **SELECT * FROM doc_references WHERE source_file_path = ? AND project_hash = ? AND branch_name = ? ORD** — `ref-storage.ts:289-289`
+- **SELECT * FROM doc_references WHERE source_file_path = ? AND project_hash = ? AND branch_name = ? ORD** — Executes a SQL query to select all references from a specific file path, project hash, and branch name `ref-storage.ts:289-289`
 - **SELECT * FROM doc_references WHERE target_file_path = ? AND target_line_start >= ? AND target_line_e** — Selects references where the target file path matches and the line range is within the specified bounds `ref-storage.ts:376-377`
-- **SELECT * FROM doc_references WHERE target_id = ? AND project_hash = ? AND branch_name = ?** — `ref-storage.ts:334-334`
+- **SELECT * FROM doc_references WHERE target_id = ? AND project_hash = ? AND branch_name = ?** — Executes a SQL query to select all references with a specific target ID, project hash, and branch name `ref-storage.ts:334-334`
 - **SELECT * FROM doc_references WHERE valid = 0 AND project_hash = ? AND branch_name = ? ORDER BY sourc** — Retrieves invalid references for a specific project and branch, ordered by source file path and line start `ref-storage.ts:393-393`
-- **SELECT * FROM doc_todos WHERE completed = 0 AND priority = ? ORDER BY created_at ASC** — `doc-storage.ts:693-695`
-- **SELECT * FROM doc_todos WHERE completed = 0 ORDER BY CASE priority WHEN 'high' THEN 1 WHEN 'medium' T** — `doc-storage.ts:699-707`
+- **SELECT * FROM doc_todos WHERE completed = 0 AND priority = ? ORDER BY created_at ASC** — Selects incomplete todos with a specific priority, ordered by creation time `doc-storage.ts:693-695`
+- **SELECT * FROM doc_todos WHERE completed = 0 ORDER BY CASE priority WHEN 'high' THEN 1 WHEN 'medium' T** — Selects incomplete todos ordered by priority and creation time `doc-storage.ts:699-707`
 - **SELECT COUNT(*) as count FROM comment_refs** — Counts the number of comment references `ref-storage.ts:800-800`
 - **SELECT COUNT(*) as count FROM doc_entities** — Executes a SQL query to count all rows in the doc_entities table `doc-storage.ts:805-805`
 - **SELECT COUNT(*) as count FROM doc_entities WHERE confidence < ?** — Executes a SQL query to count rows in the doc_entities table where the confidence is less than a given value `doc-storage.ts:819-819`
@@ -323,20 +386,20 @@ The storage module is the persistence layer of AutoDoc. `AutoDocManager` is the 
 - **SELECT COUNT(*) as count FROM doc_references** — Counts the number of document references `ref-storage.ts:794-794`
 - **SELECT COUNT(*) as count FROM doc_references WHERE valid = 1** — Counts the number of valid document references `ref-storage.ts:797-797`
 - **SELECT MAX(last_sync) as max_sync FROM doc_entities WHERE last_sync IS NOT NULL** — Returns the maximum last sync timestamp from entities `doc-storage.ts:440-440`
-- **SELECT source_hash FROM doc_entities WHERE id = ? AND project_hash = ? AND branch_name = ?** — `doc-storage.ts:539-539`
-- **UPDATE comment_refs SET content = ?, parent_entity_id = ?, doc_refs = ?, entity_refs = ?, flow_tags =** — `ref-storage.ts:710-713`
-- **UPDATE doc_entities SET type = ?, title = ?, content = ?, tags = ?, auto_generated = ?, confidence =** — `doc-storage.ts:234-236`
+- **SELECT source_hash FROM doc_entities WHERE id = ? AND project_hash = ? AND branch_name = ?** — Retrieves the source hash of a document entity based on its ID, project hash, and branch name `doc-storage.ts:539-539`
+- **UPDATE comment_refs SET content = ?, parent_entity_id = ?, doc_refs = ?, entity_refs = ?, flow_tags =** — Updates comment references with new content, parent entity ID, doc references, entity references, flow tags, and updated_at `ref-storage.ts:710-713`
+- **UPDATE doc_entities SET type = ?, title = ?, content = ?, tags = ?, auto_generated = ?, confidence =** — Updates the type, title, content, tags, auto_generated, confidence, last_sync, source_hash, and updated_at fields of a document entity `doc-storage.ts:234-236`
 - **UPDATE doc_references SET target_id = ?, ref_syntax = ?, valid = ?, validation_error = ?, updated_at** — Updates the target_id, ref_syntax, valid, validation_error, and updated_at fields of the doc_references table `ref-storage.ts:231-234`
 - **UPDATE doc_references SET target_line_start = target_line_start + ?, target_line_end = target_line_e** — Updates the line range and timestamp for references where the target file path matches and the line start is greater than or equal to a specified value `ref-storage.ts:452-457`
-- **UPDATE doc_todos SET completed = 1, completed_at = ? WHERE id = ?** — `doc-storage.ts:678-678`
+- **UPDATE doc_todos SET completed = 1, completed_at = ? WHERE id = ?** — Updates the status of a todo item to completed with a specific completion time `doc-storage.ts:678-678`
 - **WITH combined AS ( SELECT *, 1 as priority FROM doc_entities WHERE (title LIKE ? COLLATE NOCASE OR c** — Builds a SQL query to combine entities with different priorities based on title or content `doc-storage.ts:480-498`
-- **WITH combined AS ( SELECT *, 1 as priority FROM doc_entities WHERE file_path = ? AND project_hash = ?** — `doc-storage.ts:331-344`
-- **WITH combined AS ( SELECT *, 1 as priority FROM doc_entities WHERE id = ? AND project_hash = ? AND b** — `doc-storage.ts:286-298`
+- **WITH combined AS ( SELECT *, 1 as priority FROM doc_entities WHERE file_path = ? AND project_hash = ?** — Combines and prioritizes document entities based on their file path, project hash, and branch name `doc-storage.ts:331-344`
+- **WITH combined AS ( SELECT *, 1 as priority FROM doc_entities WHERE id = ? AND project_hash = ? AND b** — Combines and prioritizes document entities based on their ID, project hash, and branch name `doc-storage.ts:286-298`
 - **WITH combined AS ( SELECT *, 1 as priority FROM doc_entities WHERE project_hash = ? AND branch_name =** — Builds a SQL query to combine entities with different priorities `doc-storage.ts:399-412`
 - **WITH combined AS ( SELECT *, 1 as priority FROM doc_references WHERE project_hash = ? AND branch_nam** — Combines references with a priority and selects the top one based on the priority `ref-storage.ts:585-598`
-- **WITH combined AS ( SELECT *, 1 as priority FROM doc_references WHERE source_file_path = ? AND projec** — `ref-storage.ts:298-311`
-- **WITH combined AS ( SELECT *, 1 as priority FROM doc_references WHERE target_id = ? AND project_hash =** — `ref-storage.ts:343-355`
-- **WITH combined AS ( SELECT *, 1 as priority FROM doc_references WHERE valid = 0 AND project_hash = ? A** — `ref-storage.ts:402-415`
+- **WITH combined AS ( SELECT *, 1 as priority FROM doc_references WHERE source_file_path = ? AND projec** — Constructs a SQL query to combine references with priority and select the top one `ref-storage.ts:298-311`
+- **WITH combined AS ( SELECT *, 1 as priority FROM doc_references WHERE target_id = ? AND project_hash =** — Constructs a SQL query to combine references with priority and select the top one `ref-storage.ts:343-355`
+- **WITH combined AS ( SELECT *, 1 as priority FROM doc_references WHERE valid = 0 AND project_hash = ? A** — Constructs a SQL query to combine references with priority and select the top one `ref-storage.ts:402-415`
 
 ## Data Flow
 

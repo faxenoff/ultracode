@@ -169,17 +169,20 @@ The `taint` module is designed to analyze and track the flow of potentially tain
 - **entityId** — The unique identifier for a taint flow step `types.ts:45-45`
 - **file** — File path where the taint source, sink, or sanitizer is located `types.ts:15-15`
 - **file** — The file path where a taint flow step is located `types.ts:25-25`
-- **file** — Specifies the file path `types.ts:35-35`, `types.ts:47-47`
+- **file** — Specifies the file path `types.ts:35-35`
+- **file** — Indicates the file name where the entity is located `types.ts:47-47`
 - **flow** — The flow of a taint vulnerability `types.ts:57-57`
 - **id** — Unique identifier for a taint source, sink, or sanitizer `types.ts:13-13`
-- **id** — Represents a unique identifier `types.ts:23-23`, `types.ts:33-33`
+- **id** — Represents a unique identifier `types.ts:23-23`
+- **id** — Represents a unique identifier as a string `types.ts:33-33`
 - **includeTests** — Whether to include tests in a taint analysis `types.ts:67-67`
 - **isSanitizer** — Indicates whether the function is a sanitizer, removing taint `flow-semantics.ts:29-29`
 - **isSink** — Indicates whether the function is a sink, dangerous if tainted data reaches it `flow-semantics.ts:31-31`
 - **isSource** — Indicates whether the function is a source, introducing tainted data `flow-semantics.ts:30-30`
 - **line** — Line number in the file where the taint source, sink, or sanitizer is located `types.ts:16-16`
 - **line** — The line number in the file where a taint flow step is located `types.ts:26-26`
-- **line** — Indicates the line number `types.ts:36-36`, `types.ts:48-48`
+- **line** — Indicates the line number `types.ts:36-36`
+- **line** — Specifies the line number within the file where the entity is defined `types.ts:48-48`
 - **mappings** — An array of FlowMapping objects that describe how taint flows within the function `flow-semantics.ts:28-28`
 - **maxDepth** — The maximum depth for a taint analysis `types.ts:66-66`
 - **metadata** — Merges metadata into the entity's metadata `taint-flow-analyzer.ts:618-618`
@@ -187,13 +190,14 @@ The `taint` module is designed to analyze and track the flow of potentially tain
 - **missingSanitizers** — The list of missing sanitizers for a taint vulnerability `types.ts:59-59`
 - **name** — Name of a taint source, sink, or sanitizer `types.ts:14-14`
 - **name** — The name of a taint flow step `types.ts:24-24`
-- **name** — Stores the name of an entity `types.ts:34-34`, `types.ts:46-46`
+- **name** — Stores the name of an entity `types.ts:34-34`
+- **name** — Stores the name of an entity as a string `types.ts:46-46`
 - **newlyClassified** — A set of newly classified entities `taint-flow-analyzer.ts:386-386`
 - **order** — The order of a taint flow step `types.ts:44-44`
 - **pathBuilder** — Builds paths in the graph for taint analysis `taint-flow-analyzer.ts:38-38`
 - **pattern** — A regular expression pattern for identifying untrusted data entry points `catalogs.ts:4-4`
-- **pattern** — Represents a regular expression pattern `catalogs.ts:11-11`, `catalogs.ts:19-19`
-- **pattern** — Builds a combined regular expression from an array of patterns `catalogs.ts:440-440`
+- **pattern** — Represents a regular expression pattern `catalogs.ts:11-11`
+- **pattern** — Builds a combined regular expression from an array of patterns `catalogs.ts:19-19`, `catalogs.ts:440-440`
 - **priority** — The priority of the untrusted data entry point, with 1 being the highest `catalogs.ts:7-7`
 - **priority** — Determines the priority of the pattern, with higher values indicating more critical untrusted data entry points `catalogs.ts:15-15`
 - **priority** — Classifies code as a source with type, description, and priority `catalogs.ts:456-456`

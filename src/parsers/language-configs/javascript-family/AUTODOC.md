@@ -1,17 +1,50 @@
----
-module_name: javascript-family
-description: "Parser configurations for JavaScript, TypeScript, JSX, and TSX"
-status: active
-language: typescript
----
-
 # JavaScript Family
 
-> Parser configuration objects for the JavaScript language family: standard JavaScript, TypeScript with full type system support, and JSX/TSX with element syntax.
+## 🤖 Overview
 
-## Overview
+The `javascript-family` module provides language-specific configurations for JavaScript, JSX, TSX, and TypeScript. Developers and linters use these configurations to enforce coding standards and perform static analysis.
 
-The javascript-family module provides `LanguageConfig` objects for JavaScript, TypeScript, JSX, and TSX. The JavaScript config defines standard function/class/import/export node types. TypeScript extends this with interfaces, type aliases, enums, and access modifiers. JSX and TSX extend their respective base configs with JSX element and expression node types. These are the most feature-complete configurations in the project.
+## 🤖 Architecture
+
+```
+  +-------------------+
+  |   Language Configs |
+  |   (JavaScript, JSX, TSX, TypeScript) |
+  +-------------------+
+          |
+          v
+  +-------------------+
+  |   Exported Configs |
+  |   (JAVASCRIPT_CONFIG, JSX_CONFIG, TSX_CONFIG, TYPESCRIPT_CONFIG) |
+  +-------------------+
+```
+
+## 🤖 Flow
+
+```
+  +-------------------+
+  |   Language Files |
+  |   (javascript.ts, jsx.ts, tsx.ts, typescript.ts) |
+  |   (4 entities each) |
+  +-------------------+
+          |
+          v
+  +-------------------+
+  |   Language Configs |
+  |   (JavaScript, JSX, TS
+```
+
+## 🤖 Entity Listing
+
+### Function
+- **JAVASCRIPT_CONFIG** — Defines the configuration for the JavaScript language, including keywords, node types, and extractors for parsing and analyzing JavaScript code `javascript.ts:33-45`, `javascript.ts:46-48`
+- **TYPESCRIPT_CONFIG** — Represents the TypeScript language configuration with details on keywords, node types, and extractors `typescript.ts:41-57`, `typescript.ts:58-60`
+
+### Import_decl
+- **../shared/keywords.js** — Imports `../shared/keywords.js` from `../shared/keywords.js`. `javascript.ts:5-5`, `jsx.ts:5-5`, `tsx.ts:5-5`, `typescript.ts:5-5`
+- **../shared/types.js** — Imports `../shared/types.js` from `../shared/types.js`. `javascript.ts:6-6`, `jsx.ts:6-6`, `tsx.ts:6-6`, `typescript.ts:6-6`
+- **./javascript.js** — Imports `./javascript.js` from `./javascript.js`. `jsx.ts:7-7`
+- **./typescript.js** — Imports `./typescript.js` from `./typescript.js`. `tsx.ts:7-7`
 
 ## Data Flow
 

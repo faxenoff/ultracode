@@ -119,7 +119,7 @@ The `code-validator.ts` module provides a comprehensive code validation system t
 | `ValidationReport` | `code-validator.ts:26-37` | Single-file lint result containing file path, timestamp, problems array, and summary counts (errors, warnings, info). |
 | `ValidationProblem` | `code-validator.ts:39-46` | Individual lint problem with severity level, message text, line and column position, optional rule identifier, and linter source. |
 | `BeforeAfterReport` | `code-validator.ts:48-58` | Before/after validation comparison containing baseline and current reports with improvement metrics (errors fixed, warnings fixed, new errors introduced). |
-| `Linter` | `code-validator.ts:50-68` | Pluggable linter interface defining `name` property and `lint(filePath: string, content: string)` method returning problems array. |
+| `Linter` | `code-validator.ts:49-59` | Pluggable linter interface defining `name` property and `lint(filePath: string, content: string)` method returning problems array. |
 
 ### Classes
 

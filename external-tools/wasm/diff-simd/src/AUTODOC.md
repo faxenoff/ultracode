@@ -1,51 +1,76 @@
 # external-tools/wasm/diff-simd/src
 
-## Overview
+## 🤖 Overview
 
-This WASM module provides high-performance diff computation for comparing code strings using the Myers algorithm with SIMD optimization potential. It exposes a single public function `compute_diff_simd` that takes two code strings and returns their differences in unified diff format. The module is designed to run in WebAssembly environments where performance and efficiency are critical, splitting the diffing pipeline into specialized stages: line extraction, LCS computation via Myers algorithm, operation reconstruction via backtracking, and finally formatting into a standard unified diff output.
+The `diff-simd` module implements a Myers diff algorithm with SIMD optimization for computing the difference between two strings efficiently. It is used by developers to generate unified diff formats for large codebases, leveraging SIMD instructions for performance improvements.
 
-## Flow
+## 🤖 Architecture
 
 ```
-Input: old_code, new_code (strings)
-        ↓
-    [Split into lines]
-        ↓
-    [Myers Diff Algorithm] → compute LCS & trace
-        ↓
-    [Backtrack] → reconstruct diff operations
-        ↓
-    [Generate Unified Diff] → format as unified diff
-        ↓
-Output: unified diff string
+  +-------------------+
+  |   compute_diff_simd |
+  +-------------------+
+          |
+          v
+  +-------------------+
+  |     myers_diff     |
+  +-------------------+
+          |
+          v
+  +-------------------+
+  | generate_unified_diff |
+  +-------------------+
 ```
 
-## Entity Listing
+## 🤖 Flow
 
-### Public API
+```
+  +-------------------+
+  |   compute_diff_simd |
+  +-------------------+
+          |
+          v
+  +-------------------+
+  |     myers_diff     |
+  +-------------------+
+          |
+          v
+  +-------------------+
+  | generate_unified_diff |
+  +-------------------+
+          |
+          v
+  +-------------------+
+  |     unified diff   |
+  +-------------------+
+```
 
-- **compute_diff_simd** (`lib.rs:10-19`) — WASM-exported function that computes the difference between two code strings using the Myers algorithm and returns a unified diff format string.
+## 🤖 Entity Listing
 
-### Core Algorithm
+### Function
+- **backtrack** — Backtracks through the trace to construct diff operations `lib.rs:73-112`
+- **compute_diff_simd** — Computes the difference between two strings using the Myers algorithm with SIMD optimization `lib.rs:10-19`
+- **generate_unified_diff** — Generates a unified diff format string from the LCS `lib.rs:143-187`
+- **myers_diff** — Implements the Myers diff algorithm for string comparison `lib.rs:25-70`
+- **simple_diff** — Provides a fallback diff algorithm for very large diffs `lib.rs:115-140`
+- **test_deletion** — Tests the deletion operation in the diff `lib.rs:223-230`
+- **test_insertion** — Tests the insertion operation in the diff `lib.rs:213-220`
+- **test_simple_diff** — Tests the simple diff algorithm `lib.rs:202-210`
 
-- **myers_diff** (`lib.rs:25-70`) — Implements the Myers least-edit-distance algorithm to compute the longest common subsequence (LCS) between two line sequences, returning a vector of diff operations.
-- **backtrack** (`lib.rs:73-112`) — Reconstructs the actual diff operations from the Myers algorithm trace by walking backward through the computed edit trace.
-- **generate_unified_diff** (`lib.rs:143-187`) — Formats a sequence of diff operations into standard unified diff format with context lines and operation markers.
+### Enum_decl
+- **DiffOp** — Represents a diff operation, such as equal, delete, or insert `lib.rs:191-195`
 
-### Fallback / Alternative Diff
+### Constant
+- **Delete** — Represents a delete operation in the diff `lib.rs:193-193`
+- **Equal** — Represents an equal operation in the diff `lib.rs:192-192`
+- **Insert** — Represents an insert operation in the diff `lib.rs:194-194`
 
-- **simple_diff** (`lib.rs:115-140`) — A simpler, less-optimized diff algorithm available as a fallback alternative to the Myers implementation.
+### Module
+- **tests** — Contains test functions for the diff algorithms `lib.rs:198-231`
 
-### Types
-
-- **DiffOp** (`lib.rs:191-195`) — Enumeration representing diff operations (likely including Context, Addition, Deletion, and similar diff line types).
-
-### Tests
-
-- **tests** (`lib.rs:198-231`) — Test module containing unit tests for diff functionality.
-  - **test_simple_diff** (`lib.rs:202-210`) — Tests the basic diff computation between two code strings.
-  - **test_insertion** (`lib.rs:213-220`) — Tests correct handling of line insertion scenarios.
-  - **test_deletion** (`lib.rs:223-230`) — Tests correct handling of line deletion scenarios.
+### Import_decl
+- **use super::*;** — Imports `use super::*;`. `lib.rs:199-199`
+- **use wasm_bindgen::prelude::*;** — Imports `use wasm_bindgen::prelude::*;`. `lib.rs:1-1`
 
 ## Dependencies
 

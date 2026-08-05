@@ -92,14 +92,20 @@ The `file-sync` module facilitates bidirectional synchronization between .md fil
 - **added** — Array of files added during disk to database sync `file-sync.ts:30-30`
 - **content** — Reads the content of a document from disk and returns it along with the modification time `file-sync.ts:331-331`
 - **dbToDisk** — Contains the result of syncing files from database to disk `file-sync.ts:35-38`
-- **depth** — Depth of directory traversal `file-sync.ts:56-56`, `file-sync.ts:71-71`
+- **depth** — Depth of directory traversal `file-sync.ts:56-56`
+- **depth** — Represents the depth of a directory path in an array `file-sync.ts:71-71`
 - **diskToDb** — Contains the result of syncing files from disk to database `file-sync.ts:29-33`
-- **error** — Represents an error encountered during file operations `file-sync.ts:32-32`, `file-sync.ts:37-37`
-- **errors** — Array of errors encountered during disk to database sync `file-sync.ts:32-32`, `file-sync.ts:37-37`
-- **file** — Represents a file in the file system `file-sync.ts:32-32`, `file-sync.ts:37-37`
+- **error** — Represents an error encountered during file operations `file-sync.ts:32-32`
+- **error** — Not applicable in this context `file-sync.ts:37-37`
+- **errors** — Array of errors encountered during disk to database sync `file-sync.ts:32-32`
+- **errors** — Stores an array of objects containing file paths and error messages `file-sync.ts:37-37`
+- **file** — Represents a file in the file system `file-sync.ts:32-32`
+- **file** — Not applicable in this context `file-sync.ts:37-37`
 - **mtime** — Modification time of a file `file-sync.ts:43-43`
 - **mtime** — Reads the modification time of a document from disk and returns it along with the content `file-sync.ts:331-331`
-- **path** — Path to a file or directory `file-sync.ts:42-42`, `file-sync.ts:56-56`, `file-sync.ts:71-71`
+- **path** — Path to a file or directory `file-sync.ts:42-42`
+- **path** — Represents a directory path and its depth in an array `file-sync.ts:56-56`
+- **path** — Represents an array of subdirectories with their paths and depths `file-sync.ts:71-71`
 - **updated** — Array of files updated during disk to database sync `file-sync.ts:31-31`
 - **written** — Array of files written during database to disk sync `file-sync.ts:36-36`
 

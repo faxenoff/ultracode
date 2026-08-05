@@ -1,10 +1,65 @@
 # Data
 
-Global cache entries for programming languages and framework patterns
+## 🤖 Overview
 
-## Overview
+This module provides a comprehensive collection of global cache entries for various programming languages and frameworks, including React, Angular, Vue, Express, NestJS, Go, Rust, Java, Kotlin, JavaScript, TypeScript, Node.js, and Python. Developers and language designers can use these entries to understand and implement best practices and patterns specific to each language and framework.
 
-The data submodule provides curated lists of language built-ins and framework patterns as GlobalCacheEntry arrays. Each entry includes the text to embed, a category (builtin, stdlib, framework, pattern), and the source language. Framework entries additionally specify the framework name. The getAllGlobalEntries() function aggregates all entries from all languages and frameworks into a single array for batch embedding generation.
+## 🤖 Architecture
+
+```
+  +---------------------+
+  |     Language Cache  |
+  |     (Language-Specific) |
+  +---------------------+
+          |               |
+          v               v
+  +---------------------+   +---------------------+
+  |     Framework Cache  |   |     Built-in Cache   |
+  |     (Framework-Specific) |   |     (Language-Specific) |
+  +---------------------+   +---------------------+
+          |               |
+          v               v
+  +---------------------+
+  |     Global Cache     |
+  |     (Combined)       |
+  +---------------------+
+```
+
+## 🤖 Flow
+
+```
+  +---------------------+
+  |     Language Cache  |
+  |     (Language-Specific) |
+  +---------------------+
+          |               |
+          v               v
+  +---------------------+   +---------------------+
+  |     Framework Cache  |   |     Built-in Cache   |
+  |     (Framework-Specific) |   |     (Language-Specific) |
+  +---------------------+   +---------------------+
+          |               |
+          v               v
+  +---------------------+
+  |     Global Cache     |
+  |     (Combined)       |
+  +---------------------+
+```
+
+## 🤖 Entity Listing
+
+### Function
+- **getAllGlobalEntries** — Returns an array of all global cache entries combined `index.ts:33-51`
+
+### Import_decl
+- **../types.js** — Imports `../types.js` from `../types.js`. `frameworks.ts:5-5`, `go-rust.ts:5-5`, `index.ts:21-21`, `java-kotlin.ts:5-5`, `javascript.ts:5-5`, `nodejs.ts:5-5`, `python.ts:5-5`, `testing.ts:8-8`
+- **./frameworks.js** — Imports `./frameworks.js` from `./frameworks.js`. `index.ts:22-22`
+- **./go-rust.js** — Imports `./go-rust.js` from `./go-rust.js`. `index.ts:23-23`
+- **./java-kotlin.js** — Imports `./java-kotlin.js` from `./java-kotlin.js`. `index.ts:24-24`
+- **./javascript.js** — Imports `./javascript.js` from `./javascript.js`. `index.ts:25-25`
+- **./nodejs.js** — Imports `./nodejs.js` from `./nodejs.js`. `index.ts:26-26`
+- **./python.js** — Imports `./python.js` from `./python.js`. `index.ts:27-27`
+- **./testing.js** — Imports `./testing.js` from `./testing.js`. `index.ts:28-28`
 
 ## Data Flow
 

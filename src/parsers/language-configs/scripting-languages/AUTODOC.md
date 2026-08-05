@@ -1,17 +1,80 @@
----
-module_name: scripting-languages
-description: "Parser configurations for scripting languages: Python, Bash, Batch, PowerShell"
-status: active
-language: typescript
----
-
 # Scripting Languages
 
-> Parser configuration objects for interpreted scripting languages: Python (with four-layer architecture), Bash, Windows Batch, and PowerShell.
+## 🤖 Overview
 
-## Overview
+This module provides configuration for various scripting languages, including Bash, Batch, PowerShell, and Python. It defines language-specific settings such as keywords, node types, and extractors for each language. Developers and script authors use this module to understand and parse the syntax and semantics of these scripting languages.
 
-The scripting-languages module provides `LanguageConfig` objects for Python, Bash, Batch (cmd), and PowerShell. The Python config is the most comprehensive, featuring a four-layer extraction architecture that handles functions, classes, decorators, comprehensions, context managers, async constructs, and magic methods. Bash covers shell functions and commands, Batch handles Windows cmd/bat files, and PowerShell includes cmdlet, function, class, and filter support.
+## 🤖 Architecture
+
+```
+  +---------------------+
+  |     Language Configs     |
+  |     (bash, batch, etc.)  |
+  +---------------------+
+          |
+          v
+  +---------------------+
+  |     Language Keywords     |
+  |     (from shared/keywords.js) |
+  +---------------------+
+          |
+          v
+  +---------------------+
+  |     Language Node Types     |
+  |     (defined per language)  |
+  +---------------------+
+          |
+          v
+  +---------------------+
+  |     Language Extractors     |
+  |     (for name and modifiers) |
+  +---------------------+
+```
+
+## 🤖 Flow
+
+```
+  +---------------------+
+  |     Language Configs     |
+  |     (bash, batch, etc.)  |
+  +---------------------+
+          |
+          v
+  +---------------------+
+  |     Language Keywords     |
+  |     (from shared/keywords.js) |
+  +---------------------+
+          |
+          v
+  +----------------
+  |     Language Node Types     |
+  |     (defined per language)  |
+  +----------------
+          |
+          v
+  +---------------------+
+  |     Language Extractors     |
+  |     (for name and modifiers) |
+  +---------------------+
+          |
+          v
+  +---------------------+
+  |     Language Parsing     |
+  |     (uses extractors)     |
+  +---------------------+
+```
+
+## 🤖 Entity Listing
+
+### Function
+- **BASH_CONFIG** — Represents the configuration for the Bash/Shell Script Language, including keywords, node types, and extractors for parsing and analyzing Bash scripts `bash.ts:23-36`, `bash.ts:37-46`
+- **BATCH_CONFIG** — Defines the configuration for the Batch/CMD language, including keywords, node types, and extractors `batch.ts:23-35`, `batch.ts:36-47`
+- **POWERSHELL_CONFIG** — Defines the configuration for the PowerShell language, including keywords, node types, and extractors for parsing and analyzing PowerShell code `powershell.ts:23-38`, `powershell.ts:39-48`
+- **PYTHON_CONFIG** — Represents a comprehensive configuration for the Python language, including keywords, node types, and extractors for enhanced parsing and structural subtyping support `python.ts:75-127`, `python.ts:128-159`
+
+### Import_decl
+- **../shared/keywords.js** — Imports `../shared/keywords.js` from `../shared/keywords.js`. `bash.ts:5-5`, `batch.ts:5-5`, `powershell.ts:5-5`, `python.ts:5-5`
+- **../shared/types.js** — Imports `../shared/types.js` from `../shared/types.js`. `bash.ts:6-6`, `batch.ts:6-6`, `powershell.ts:6-6`, `python.ts:6-6`
 
 ## Data Flow
 

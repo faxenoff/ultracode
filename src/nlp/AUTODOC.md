@@ -1,190 +1,103 @@
----
-module_name: nlp
-description: Natural language processing utilities for semantic search — tokenization, TF-IDF extraction, co-occurrence indexing, and automatic query expansion via PRF
-status: active
-language: TypeScript
-entry_point: index.ts
-exports:
-  - CooccurrenceIndex
-  - QueryExpander
-  - TfIdfExtractor
-  - tokenize
-  - tokenizeUnique
-  - countTokens
-  - extractNgrams
-  - extractTopTerms
-  - createPrfOnlyExpander
-  - STOP_WORDS
-dependencies:
-  - ../storage/libsql/cooccurrence-ops
-tags: [nlp, tokenizer, tfidf, cooccurrence, query-expansion, prf, stop-words, semantic-search]
----
+# Overview
 
-## Overview
+## 🤖 Entity Listing
 
-Lightweight NLP pipeline for semantic search query improvement. No heavy ML dependencies. Four components form a chain: `tokenizer` splits text into normalized tokens (Unicode-aware, camelCase/snake_case splitting, bilingual stop words), `TfIdfExtractor` scores terms by TF-IDF for pseudo-relevance feedback, `CooccurrenceIndex` tracks term pair frequencies within a sliding window using PMI scoring persisted via LibSQL, and `QueryExpander` combines co-occurrence and PRF signals to produce weighted expanded queries. The module is consumed primarily by the `semantic` module's `HybridSearchEngine` for two-pass search.
+### Function
+- **countTokens** — Counts the number of tokens in a given text `tokenizer.ts:353-362`
+- **createPrfOnlyExpander** — Creates a QueryExpander instance with co-occurrence weight disabled `query-expander.ts:214-219`
+- **documents** — Filters and maps results to content, ensuring non-empty strings `query-expander.ts:188-188`
+- **documents** — Maps results to content and filters out empty or zero-length strings `query-expander.ts:188-188`
+- **expandedTerms** — Maps sorted terms to their respective terms `query-expander.ts:139-139`
+- **extractNgrams** — Extracts n-grams from a list of tokens `tokenizer.ts:371-379`
+- **extractTopTerms** — Extracts top terms from a set of documents using TF-IDF scoring `tfidf.ts:195-203`
+- **rawTokens** — Returns raw tokens without any preprocessing `tokenizer.ts:308-308`
+- **sortedTerms** — Sorts terms by their weights in descending order `query-expander.ts:135-135`
+- **splitCamelCase** — Splits camelCase identifiers into separate tokens `tokenizer.ts:263-271`
+- **splitSnakeCase** — Splits snake_case identifiers into separate tokens `tokenizer.ts:279-281`
+- **tokenize** — Tokenizes text into words and code identifiers `tokenizer.ts:296-339`
+- **tokenizeUnique** — Tokenizes text and returns unique tokens `tokenizer.ts:345-347`
+- **totalTokens** — Computes the total number of tokens across all terms in the term frequency map `tfidf.ts:92-92`
 
-```
-query ──► tokenize() ──► QueryExpander.expand()
-                              │
-              ┌───────────────┼───────────────┐
-              ▼               ▼               ▼
-         original        CooccurrenceIndex  TfIdfExtractor
-         tokens          (co-oc terms)      (PRF terms)
-              │               │               │
-              └───────────────┴───────────────┘
-                              ▼
-                        ExpandedQuery (weighted term map)
-```
+### Method
+- **buildIdfMap** — Constructs an IDF map based on document frequencies from a list of documents `tfidf.ts:165-189`
+- **clear** — Clears the storage `cooccurrence-index.ts:243-245`
+- **constructor** — Initializes the co-occurrence index with a storage object and optional configuration `cooccurrence-index.ts:36-45`
+- **constructor** — Initializes a QueryExpander with a co-occurrence index and configuration `query-expander.ts:60-77`
+- **constructor** — Initializes the TF-IDF extractor with given options `tfidf.ts:44-51`
+- **expand** — Expands a query using co-occurrence and PRF terms `query-expander.ts:86-150`
+- **expandWithoutPrf** — Expands a query without using PRF terms `query-expander.ts:156-158`
+- **extractPairs** — Extracts term pairs within a sliding window `cooccurrence-index.ts:143-165`
+- **extractPrfTerms** — Extracts PRF terms from results, excluding specified terms `query-expander.ts:185-193`
+- **extractTopTerms** — Extracts top terms from a list of documents using BM25 scoring and excludes specified terms `tfidf.ts:61-115`
+- **extractWithPrecomputedIdf** — Calculates TF-IDF scores for a document using precomputed IDF values `tfidf.ts:126-156`
+- **getConfig** — Returns the current configuration `query-expander.ts:205-207`
+- **getCooccurrenceTerms** — Retrieves co-occurrence terms for a query, excluding specified terms `query-expander.ts:163-180`
+- **getRelatedTerms** — Retrieves related terms for a given term from the storage `cooccurrence-index.ts:189-191`
+- **getRelatedTermsForQuery** — Retrieves related terms for multiple terms, merges and dedups them, and returns the top results `cooccurrence-index.ts:200-219`
+- **getStats** — Retrieves statistics from the storage `cooccurrence-index.ts:236-238`
+- **hashChunk** — Generates a hash for a chunk based on its length and first/last characters `cooccurrence-index.ts:170-177`
+- **pruneRarePairs** — Prunes rare co-occurrence pairs from the storage based on a minimum count `cooccurrence-index.ts:250-252`
+- **recalculatePMI** — Recalculates the PMI (Pointwise Mutual Information) for co-occurrence pairs `cooccurrence-index.ts:229-231`
+- **setConfig** — Sets configuration for query expansion `query-expander.ts:198-200`
+- **updateFromChunk** — Updates co-occurrence counts from a text chunk `cooccurrence-index.ts:57-81`
+- **updateFromChunks** — Aggregates term pairs and term counts from chunks, updates the database with these values `cooccurrence-index.ts:89-134`
 
-## Data Flow
+### Class
+- **CooccurrenceIndex** — Class for building and querying a co-occurrence index from text content `cooccurrence-index.ts:33-253`
+- **QueryExpander** — Class for expanding queries using co-occurrence and PRF `query-expander.ts:56-208`
+- **TfIdfExtractor** — Class for extracting top terms using TF-IDF scoring `tfidf.ts:41-190`
 
-### Inputs
+### Interface
+- **CooccurrenceIndexConfig** — Configuration for the co-occurrence index, including window size, minimum term length, and maximum terms per chunk `cooccurrence-index.ts:20-27`
+- **ExpandedQuery** — Expanded query with original and expanded strings, original tokens, co-occurrence terms, PRF terms, and all terms `query-expander.ts:37-50`
+- **QueryExpansionConfig** — Configuration for query expansion with weights and limits for co-occurrence, PRF, and expanded terms `query-expander.ts:20-35`
+- **TermScore** — Represents a term with its score, term frequency, and inverse document frequency `tfidf.ts:19-24`
+- **TfIdfOptions** — Configuration options for the TF-IDF extractor `tfidf.ts:26-35`
 
-| Source | Type | Description |
-|--------|------|-------------|
-| Raw text | `string` | Source code comments, docstrings, markdown chunks |
-| Search queries | `string` | User natural language queries |
-| Top search results | `Array<{ content: string }>` | Initial search results for PRF extraction |
-| Storage backend | `CooccurrenceOperations` | SQLite persistence for co-occurrence pairs |
+### Import_decl
+- **../search/bm25.js** — Imports `../search/bm25.js` from `../search/bm25.js`. `tfidf.ts:12-12`
+- **../search/stemmer.js** — Imports `../search/stemmer.js` from `../search/stemmer.js`. `tokenizer.ts:14-14`
+- **../storage/libsql/cooccurrence-ops.js** — Imports `../storage/libsql/cooccurrence-ops.js` from `../storage/libsql/cooccurrence-ops.js`. `cooccurrence-index.ts:13-13`
+- **./cooccurrence-index.js** — Imports `./cooccurrence-index.js` from `./cooccurrence-index.js`. `query-expander.ts:12-12`
+- **./tfidf.js** — Imports `./tfidf.js` from `./tfidf.js`. `query-expander.ts:13-13`
+- **./tokenizer.js** — Imports `./tokenizer.js` from `./tokenizer.js`. `cooccurrence-index.ts:14-14`, `query-expander.ts:14-14`, `tfidf.ts:13-13`
 
-### Processing
-
-| Step | Component | Operation |
-|------|-----------|-----------|
-| 1. Tokenize | `tokenize()` | Lowercase, split camelCase/snake_case, filter stop words |
-| 2. Index | `CooccurrenceIndex.updateFromChunk()` | Sliding window pair extraction, PMI storage |
-| 3. Expand | `QueryExpander.expand()` | Merge original + co-oc + PRF terms with weights |
-| 4. Score | `TfIdfExtractor.extractTopTerms()` | TF-IDF over PRF documents, return top-k |
-
-### Outputs
-
-| Output | Type | Consumer |
-|--------|------|----------|
-| Expanded query | `ExpandedQuery` | `semantic/hybrid-search.ts` |
-| Token list | `string[]` | Co-occurrence indexing, TF-IDF |
-| Term scores | `TermScore[]` | QueryExpander PRF stage |
-| Related terms | `RelatedTerm[]` | QueryExpander co-occurrence stage |
-
-## Public API
-
-| Export | Kind | Description | Location |
-|--------|------|-------------|----------|
-| `CooccurrenceIndex` | class | Term co-occurrence index with sliding window and PMI scoring | [`cooccurrence-index.ts:33-253`](./cooccurrence-index.ts) |
-| `CooccurrenceIndexConfig` | interface | Config: windowSize, minTermLength, maxTermsPerChunk | [`cooccurrence-index.ts:20-27`](./cooccurrence-index.ts) |
-| `QueryExpander` | class | Two-stage query expansion (co-occurrence + PRF) | [`query-expander.ts:56-208`](./query-expander.ts) |
-| `QueryExpansionConfig` | interface | Config: weights, max terms, min length | [`query-expander.ts:20-35`](./query-expander.ts) |
-| `ExpandedQuery` | interface | Expansion result with original/expanded strings and weight map | [`query-expander.ts:37-50`](./query-expander.ts) |
-| `createPrfOnlyExpander` | function | Factory for PRF-only expander (no co-occurrence) | [`query-expander.ts:214-219`](./query-expander.ts) |
-| `TfIdfExtractor` | class | TF-IDF scoring with log-norm TF and doc frequency filtering | [`tfidf.ts:40-189`](./tfidf.ts) |
-| `TfIdfOptions` | interface | Config: minLength, logNormTf, minDocFreq, maxDocFreqRatio | [`tfidf.ts:25-34`](./tfidf.ts) |
-| `TermScore` | interface | Term with score, tf, and idf values | [`tfidf.ts:18-23`](./tfidf.ts) |
-| `extractTopTerms` | function | Convenience one-off TF-IDF extraction without instance | [`tfidf.ts:195-203`](./tfidf.ts) |
-| `tokenize` | function | Text to normalized token array (Unicode, camelCase split) | [`tokenizer.ts:293-333`](./tokenizer.ts) |
-| `tokenizeUnique` | function | Text to unique token `Set<string>` | [`tokenizer.ts:296-339`](./tokenizer.ts) |
-| `countTokens` | function | Text to token frequency `Map<string, number>` | [`tokenizer.ts:347-356`](./tokenizer.ts) |
-| `extractNgrams` | function | Extract n-grams from token array | [`tokenizer.ts:371-379`](./tokenizer.ts) |
-| `STOP_WORDS` | const | Combined English + Russian stop word set (~150 words) | [`tokenizer.ts:247-247`](./tokenizer.ts) |
-
-## Dependencies
-
-### Internal
-
-| Module | Usage |
-|--------|-------|
-| `../storage/libsql/cooccurrence-ops` | `CooccurrenceOperations` class and `RelatedTerm` type for persistence |
-
-### External
-
-None. The module is dependency-free beyond Node.js/Bun built-ins.
-
-## Configuration
-
-| Parameter | Default | Description |
-|-----------|---------|-------------|
-| `windowSize` | `5` | Sliding window size for co-occurrence pair extraction |
-| `minTermLength` | `3` | Minimum token length (shared across components) |
-| `maxTermsPerChunk` | `500` | Token cap per chunk to prevent memory issues |
-| `originalWeight` | `1.0` | Weight for original query terms in expansion |
-| `cooccurrenceWeight` | `0.6` | Weight for co-occurrence expansion terms |
-| `prfWeight` | `0.4` | Weight for pseudo-relevance feedback terms |
-| `maxCoocTermsPerToken` | `3` | Max co-occurrence terms per query token |
-| `maxPrfTerms` | `5` | Max PRF terms extracted via TF-IDF |
-| `maxExpandedTerms` | `15` | Total term cap in expanded query |
-| `logNormTf` | `true` | Use `1 + log(tf)` normalization in TF-IDF |
-| `maxDocFreqRatio` | `0.9` | Exclude terms appearing in >90% of documents |
-
-## Behavioral Properties
-
-### Async
-
-`CooccurrenceIndex.updateFromChunk()` and `getRelatedTerms()` are async (SQLite I/O). `QueryExpander.expand()` is async due to co-occurrence lookup. `TfIdfExtractor` and `tokenize()` are synchronous (pure computation). `updateFromChunks()` aggregates pairs in memory before a single batch write.
-
-### Idempotency
-
-`tokenize()`, `countTokens()`, `extractNgrams()` are pure functions (same input, same output). `CooccurrenceIndex.updateFromChunk()` is additive (counts accumulate). `TfIdfExtractor.extractTopTerms()` is pure given same documents. `recalculatePMI()` is idempotent (recomputes from current counts).
-
-### Side Effects
-
-`CooccurrenceIndex` writes to SQLite via `CooccurrenceOperations` (pair counts, term frequencies, PMI scores). `clear()` deletes all co-occurrence data. `pruneRarePairs()` removes low-count pairs. No file I/O, no network calls, no subprocess spawning.
-
-### State
-
-`CooccurrenceIndex` is stateless in memory; all state persisted in SQLite. `TfIdfExtractor` holds immutable config only. `QueryExpander` holds config and a `TfIdfExtractor` instance. `STOP_WORDS` is a module-level frozen constant.
-
-## Error Handling
-
-No explicit try/catch blocks in this module. Errors from `CooccurrenceOperations` (SQLite failures) propagate to callers as unhandled rejections. `tokenize()` guards against null/non-string input (returns `[]`). `extractTopTerms()` returns `[]` for empty document arrays. `updateFromChunk()` short-circuits on fewer than 2 tokens. `QueryExpander` gracefully handles null `coocIndex` (skips co-occurrence stage).
-
-## Observability
-
-| Component | Method | Metrics |
-|-----------|--------|---------|
-| `CooccurrenceIndex` | `getStats()` | Pair count, term count (delegated to storage) |
-| `QueryExpander` | `getConfig()` | Current expansion configuration |
-| `ExpandedQuery` | `allTerms` | Full weighted term map for debugging |
-| `ExpandedQuery` | `coocTerms`, `prfTerms` | Separate expansion source breakdown |
-
-No structured logging in this module. Debugging relies on `ExpandedQuery.allTerms` inspection.
-
-## Known Limitations
-
-1. **No stemming/lemmatization:** Tokens are lowercased but not stemmed. "running" and "run" are treated as different terms.
-2. **Stop words are static:** English + Russian only. No support for adding custom stop words at runtime.
-3. **CamelCase heuristic:** Acronym splitting (`XMLParser` -> `xml`, `parser`) uses regex heuristics that may mishandle edge cases.
-4. **No error recovery:** SQLite failures in `CooccurrenceIndex` propagate unhandled; callers must wrap in try/catch.
-5. **Memory on large batches:** `updateFromChunks()` accumulates all pairs in memory before flushing; very large batch inputs may spike memory.
-
-## TypeScript Notes
-
-### Module Boundary
-
-```typescript
-// Config interfaces use optional fields with ?? defaults in constructors
-interface CooccurrenceIndexConfig {
-  windowSize?: number;    // default 5
-  minTermLength?: number; // default 3
-}
-
-// ExpandedQuery uses Map for weighted terms (not Record)
-allTerms: Map<string, number>;
-
-// CooccurrenceIndex requires a storage adapter (dependency injection)
-constructor(storage: CooccurrenceOperations, config?: CooccurrenceIndexConfig)
-```
-
-Key imported types: `CooccurrenceOperations` (class, `../storage/libsql/cooccurrence-ops.ts:34-364`), `RelatedTerm` (interface, `../storage/libsql/cooccurrence-ops.ts:18-22`).
-
-## Exports
-
-
-
-## Files
-
-| File | Description |
-|------|-------------|
-| `index.ts` | Barrel re-export of all module components |
-| `tokenizer.ts` | Unicode-aware tokenization with camelCase/snake_case splitting and bilingual stop words |
-| `tfidf.ts` | TF-IDF scoring for pseudo-relevance feedback term extraction |
-| `cooccurrence-index.ts` | Sliding-window term co-occurrence index with PMI scoring via SQLite |
-| `query-expander.ts` | Two-stage query expansion combining co-occurrence and PRF signals |
+### Property
+- **allTerms** — All terms with final weights (for debugging) `query-expander.ts:49-49`
+- **config** — Configuration object for the co-occurrence index `cooccurrence-index.ts:34-34`
+- **config** — Configuration for the query expander `query-expander.ts:57-57`
+- **content** — Expands a query by adding terms based on co-occurrence and PRF scores `query-expander.ts:86-86`
+- **content** — Extracts PRF terms from results, excluding specified terms `query-expander.ts:185-185`
+- **cooccurrenceWeight** — Weight for co-occurrence terms `query-expander.ts:24-24`
+- **coocTerms** — Co-occurrence expansion terms with weights `query-expander.ts:45-45`
+- **expanded** — Expanded query string for embedding `query-expander.ts:41-41`
+- **idf** — The inverse document frequency of a term `tfidf.ts:23-23`
+- **logNormTf** — Boolean indicating whether to use log normalization for term frequency `tfidf.ts:30-30`
+- **maxCoocTermsPerToken** — Maximum co-occurrence terms per query term `query-expander.ts:28-28`
+- **maxDocFreqRatio** — Maximum document frequency ratio for terms `tfidf.ts:34-34`
+- **maxExpandedTerms** — Maximum total terms in expanded query `query-expander.ts:32-32`
+- **maxPrfTerms** — Maximum PRF terms to extract `query-expander.ts:30-30`
+- **maxTermsPerChunk** — Maximum terms per chunk to process (default: 500) `cooccurrence-index.ts:26-26`
+- **minDocFreq** — Minimum document frequency for terms `tfidf.ts:32-32`
+- **minLength** — Minimum token length for terms `tfidf.ts:28-28`
+- **minTermLength** — Minimum term length (default: 3) `cooccurrence-index.ts:24-24`
+- **minTermLength** — Minimum term length `query-expander.ts:34-34`
+- **options** — Configuration options for the TF-IDF extractor `tfidf.ts:42-42`
+- **original** — Original query string `query-expander.ts:39-39`
+- **originalTokens** — Original query tokens `query-expander.ts:43-43`
+- **originalWeight** — Weight for original query terms `query-expander.ts:22-22`
+- **prfTerms** — PRF expansion terms with weights `query-expander.ts:47-47`
+- **prfWeight** — Weight for PRF terms `query-expander.ts:26-26`
+- **score** — Returns an array of terms with their scores `query-expander.ts:166-166`
+- **score** — The score of a term in the TF-IDF context `tfidf.ts:21-21`
+- **term** — Term in co-occurrence or PRF expansion `query-expander.ts:45-45`, `query-expander.ts:47-47`
+- **term** — Stores co-occurrence terms with their weights `query-expander.ts:102-102`
+- **term** — Stores PRF terms with their scores `query-expander.ts:117-117`
+- **term** — Returns an array of terms with their scores `query-expander.ts:166-166`
+- **term** — A term in the document `tfidf.ts:20-20`
+- **tf** — The term frequency of a term in a document `tfidf.ts:22-22`
+- **tfidfExtractor** — TfIdfExtractor instance for term scoring `query-expander.ts:58-58`
+- **weight** — Weight of a term in co-occurrence or PRF expansion `query-expander.ts:45-45`, `query-expander.ts:47-47`
+- **weight** — Stores co-occurrence terms with their weights `query-expander.ts:102-102`
+- **weight** — Stores PRF terms with their scores `query-expander.ts:117-117`
+- **windowSize** — Sliding window size for co-occurrence (default: 5) `cooccurrence-index.ts:22-22`

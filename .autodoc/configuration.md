@@ -113,7 +113,7 @@ Archives            # .zip, .tar, .gz, .7z, .rar
 |----------|-------|------|-------------|
 | `DEFAULT_BATCH_SIZE` | 100 | `src/config/constants.ts:206` | Default entity batch size |
 | `MAX_ENTITIES_PER_BATCH` | 1000 | `src/config/constants.ts:221` | Maximum entities per batch |
-| `INDEXING_CONCURRENCY` | 8 | `src/agents/dev-agent.ts:447` | Indexing concurrency |
+| `INDEXING_CONCURRENCY` | 8 | `src/agents/dev-agent.ts:89-2111` | Indexing concurrency |
 
 ---
 

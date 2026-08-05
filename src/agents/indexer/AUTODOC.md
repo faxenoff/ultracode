@@ -1,17 +1,149 @@
----
-module_name: indexer
-description: "Entity resolution, relationship building, stable ID generation, and Git event handling for code indexing"
-status: active
-language: typescript
----
-
 # Indexer
 
-> Core indexing infrastructure for resolving entities by name, building relationships from parsed code, generating deterministic IDs with xxHash, and handling Git events for incremental index updates.
+## 🤖 Overview
 
-## Overview
+The `indexer` module provides a set of functions for resolving entity references and managing relationships between entities. It is used by developers to efficiently index and query entities within a codebase.
 
-The indexer module provides the data processing layer between parser output and graph storage. It resolves entity references using name and line-based disambiguation (with suffix matching for cross-module calls), builds typed relationships (imports, calls, extends, contains, etc.) from parsed entities, and generates deterministic IDs using xxHash for stable cross-session entity identity. The Git event handlers manage branch changes, uncommitted file changes, and debounced embedding generation.
+The `indexer` module is structured around several key files, each handling specific aspects of entity resolution and relationship management. These files include `entity-resolution.ts`, `external-placeholder.ts`, `git-event-handlers.ts`, `relationship-builder.ts`, `sem-id.ts`, and `stable-id.ts`.
+
+## 🤖 Architecture
+
+```
+  +---------------------+
+  | entity-resolution.ts |
+  +---------------------+
+  |     +-----------------+
+  |     | external-placeholder.ts |
+  |     +-----------------+
+  |     +-----------------+
+  |     | git-event-handlers.ts |
+  |     +-----------------+
+  |     +-----------------+
+  |     | relationship-builder.ts |
+  |     +-----------------+
+  |     +-----------------+
+  |     | sem-id.ts |
+  |     +-----------------+
+  |     +-----------------+
+  |     | stable-id.ts |
+  |     +-----------------+
+  +---------------------+
+```
+
+## 🤖 Flow
+
+```
+  +---------------------+
+  | entity-resolution.ts |
+  +---------------------+
+  |     +-----------------+
+  |     | external-placeholder.ts |
+  |     +-----------------+
+  |     +-----------------+
+  |     | git-event-handlers.ts |
+  |     +-----------------+
+  |     +-----------------+
+  |     | relationship-builder.ts |
+  |     +-----------------+
+  |     +-----------------+
+  |     | sem-id.ts |
+  |     +-----------------+
+  |     +-----------------+
+  |     | stable-id.ts |
+  |     +-----------------+
+  +---------------------+
+```
+
+## 🤖 Entity Listing
+
+### Function
+- **absolutePaths** — Resolves relative paths to absolute paths for files `git-event-handlers.ts:37-37`
+- **addEntitiesToNameMap** — Incrementally adds entities to both byName and bySuffix maps `entity-resolution.ts:42-62`
+- **baseKey** — Not present in the provided code snippet `relationship-builder.ts:97-97`
+- **buildEntityNameMap** — Builds a map of entity names to their instances for efficient lookup `entity-resolution.ts:21-29`
+- **buildRelationships** — Builds relationships from parsed entities and storage entities `relationship-builder.ts:16-207`
+- **containers** — Filters candidates to those with types that are containers `entity-resolution.ts:132-132`
+- **createExternalPlaceholder** — Creates a placeholder entity for an external reference `external-placeholder.ts:60-99`
+- **files** — List of changed files `git-event-handlers.ts:118-118`, `git-event-handlers.ts:119-119`
+- **fileStem** — File stem for generating semIds `sem-id.ts:86-90`
+- **generateRefId** — Function to generate reference IDs `sem-id.ts:145-147`
+- **generateSemId** — Function to generate semantic IDs `sem-id.ts:108-139`
+- **getChangedFilesBetweenBranches** — Parses the output of git diff to get files that differ between branches `git-event-handlers.ts:105-126`
+- **handleBranchChange** — Switches to a new branch, retrieves changed files, and triggers reindexing for those files `git-event-handlers.ts:131-179`
+- **handleDebouncedEmbeddingGeneration** — Handles debounced file changes for embedding generation, called after user stops editing `git-event-handlers.ts:74-100`
+- **handleUncommittedChanges** — Handles uncommitted file changes detected by GitWatcher, triggering incremental reindexing for changed files `git-event-handlers.ts:29-66`
+- **ifaceKey** — Not present in the provided code snippet `relationship-builder.ts:118-118`
+- **initXXHash** — Initialize xxHash (delegates to fast-hash.ts) `stable-id.ts:25-27`
+- **parseExternalId** — Parses an external ID string into source and symbol components `external-placeholder.ts:19-50`
+- **placeholders** — Array to collect new placeholder entities `external-placeholder.ts:213-213`
+- **processExternalRelationships** — Processes external relationships by resolving placeholders and updating relationships `external-placeholder.ts:111-136`
+- **realEntities** — Filters entities to separate placeholders and real entities `external-placeholder.ts:214-214`
+- **refKey** — Represents the key used to find referenced entities in the entity map `relationship-builder.ts:55-55`
+- **resolveByNameAndLine** — Resolves an entity by name, optionally using line number for disambiguation `entity-resolution.ts:81-151`
+- **resolveExternalPlaceholders** — Resolves placeholders by finding matching real entities and updating relationships, then deletes placeholders `external-placeholder.ts:194-255`
+- **resolveOrCreatePlaceholder** — Resolves or creates placeholders for external IDs based on existing entities or by creating new placeholders `external-placeholder.ts:141-178`
+- **sameFile** — Filters candidates to those with the same file path as the source file `entity-resolution.ts:122-122`
+- **scheduleEmbeddingGeneration** — Schedules the generation of embeddings with a debounce period and abort controller `git-event-handlers.ts:194-221`
+- **stableEntityId** — Generate semantic entity ID (Zig-compatible) `stable-id.ts:41-56`
+- **stableRelationshipId** — Generate stable relationship ID based on source, target, and type `stable-id.ts:62-64`
+- **targetKey** — Not present in the provided code snippet `relationship-builder.ts:143-148`
+- **triggerEmbeddingGeneration** — Handles debounced file changes for embedding generation, called after user stops editing (debounce period elapsed) `git-event-handlers.ts:227-249`
+- **typeAbbrev** — 2-char type abbreviation for semId encoding `sem-id.ts:77-79`
+
+### Interface
+- **EmbeddingSchedulerContext** — Represents the context for scheduling embedding generation, including debounce period, abort controller, and pending generation status `git-event-handlers.ts:181-188`
+- **GitEventContext** — Represents the context for handling Git events, including agent ID, current repository path, and branch manager `git-event-handlers.ts:19-23`
+- **ParentContext** — Parent context for building hierarchical semIds `sem-id.ts:22-26`
+- **PlaceholderResolutionResult** — Defines the result of resolving placeholders, including counts and unresolved placeholders `external-placeholder.ts:187-192`
+
+### Type_alias
+- **OrdinalMap** — Per-file ordinal tracker for disambiguating duplicate names in the same scope `sem-id.ts:29-29`
+
+### Import_decl
+- **../../core/branch-manager.js** — Imports `../../core/branch-manager.js` from `../../core/branch-manager.js`. `git-event-handlers.ts:14-14`
+- **../../core/knowledge-bus.js** — Imports `../../core/knowledge-bus.js` from `../../core/knowledge-bus.js`. `git-event-handlers.ts:15-15`
+- **../../logging/index.js** — Imports `../../logging/index.js` from `../../logging/index.js`. `git-event-handlers.ts:16-16`
+- **../../types/parser.js** — Imports `../../types/parser.js` from `../../types/parser.js`. `relationship-builder.ts:9-9`
+- **../../types/storage.js** — Imports `../../types/storage.js` from `../../types/storage.js`. `entity-resolution.ts:8-8`, `external-placeholder.ts:8-8`, `external-placeholder.ts:9-9`, `relationship-builder.ts:10-10`, `relationship-builder.ts:11-11`, `stable-id.ts:8-8`
+- **../../utils/fast-hash.js** — Imports `../../utils/fast-hash.js` from `../../utils/fast-hash.js`. `stable-id.ts:9-9`
+- **../../utils/runtime-detection.js** — Imports `../../utils/runtime-detection.js` from `../../utils/runtime-detection.js`. `git-event-handlers.ts:17-17`
+- **./sem-id.js** — Imports `./sem-id.js` from `./sem-id.js`. `stable-id.ts:10-10`
+- **./stable-id.js** — Imports `./stable-id.js` from `./stable-id.js`. `external-placeholder.ts:10-10`
+- **nanoid** — Imports `nanoid` from `nanoid`. `relationship-builder.ts:8-8`
+- **node:child_process** — Imports `node:child_process` from `node:child_process`. `git-event-handlers.ts:12-12`
+- **node:path** — Imports `node:path` from `node:path`. `git-event-handlers.ts:13-13`, `sem-id.ts:15-15`
+
+### Property
+- **abortController** — Represents the abort controller for managing the cancellation of embedding generation `git-event-handlers.ts:184-184`
+- **agentId** — Stores the ID of the agent handling the Git event `git-event-handlers.ts:20-20`, `git-event-handlers.ts:182-182`
+- **branchManager** — Stores the branch manager for managing branches `git-event-handlers.ts:22-22`
+- **currentRepositoryPath** — Stores the current path of the repository `git-event-handlers.ts:21-21`
+- **debouncePeriodMs** — Represents the debounce period in milliseconds for scheduling embedding generation `git-event-handlers.ts:183-183`
+- **deleteEntity** — Deletes a placeholder by its ID `external-placeholder.ts:200-200`
+- **entityType** — Type of the entity `sem-id.ts:25-25`
+- **fromId** — Represents the fromId property in the relationship type `external-placeholder.ts:112-112`
+- **fromId** — Returns a promise of an array of objects containing placeholder details `external-placeholder.ts:198-198`
+- **getAllEntities** — Retrieves all entities from the storage `external-placeholder.ts:195-195`
+- **getRelationships** — Retrieves relationships from the storage based on the toId `external-placeholder.ts:196-198`
+- **id** — Represents the ID of an entity `external-placeholder.ts:112-112`, `external-placeholder.ts:198-198`
+- **name** — Name of the entity `sem-id.ts:24-24`
+- **pendingGeneration** — Indicates whether embedding generation is pending `git-event-handlers.ts:185-185`
+- **relationshipsUpdated** — Counts the number of relationships that were updated during placeholder resolution `external-placeholder.ts:191-191`
+- **resolved** — Counts the number of placeholders that were resolved `external-placeholder.ts:189-189`
+- **semId** — Semantic ID (SemId) generation — Zig-compatible entity IDs `sem-id.ts:23-23`
+- **setAbortController** — Sets the abort controller for managing the cancellation of embedding generation `git-event-handlers.ts:187-187`
+- **setPendingGeneration** — Sets the pending generation flag `git-event-handlers.ts:186-186`
+- **source** — Represents the source component of an external ID `external-placeholder.ts:19-19`
+- **symbol** — Represents the symbol component of an external ID `external-placeholder.ts:19-19`
+- **toId** — Represents the toId property in the relationship type `external-placeholder.ts:112-112`
+- **toId** — Represents a string identifier for a placeholder `external-placeholder.ts:197-197`
+- **toId** — Returns a promise of an array of objects containing placeholder details `external-placeholder.ts:198-198`
+- **toId** — Updates a relationship by changing the toId of a placeholder `external-placeholder.ts:199-199`
+- **totalPlaceholders** — Counts the total number of placeholders `external-placeholder.ts:188-188`
+- **type** — Represents the type of an entity `external-placeholder.ts:112-112`
+- **type** — Represents the type of an entity, specifically an import type `external-placeholder.ts:198-198`
+- **unresolved** — Stores the names of placeholders that could not be resolved `external-placeholder.ts:190-190`
+- **updateRelationship** — Updates a relationship by changing the toId of a placeholder `external-placeholder.ts:199-199`
 
 ## Data Flow
 
@@ -95,10 +227,6 @@ Entity resolution returns `undefined` when no match is found rather than throwin
 - `buildRelationships` uses positional matching between parsed and storage entities (index-based), which requires consistent ordering.
 - Suffix-based entity resolution without the pre-built suffix index falls back to O(n) scan.
 - External placeholder resolution is name-based only; overloaded names may resolve to the wrong entity.
-
-## Exports
-
-
 
 ## Files
 

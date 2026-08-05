@@ -34,14 +34,21 @@ BloomFilter
 - **formatSpeedup** — Formats the speedup or slowdown ratio between two times as a string `optimizations-benchmark.ts:161-168`
 - **getHistoryNew** — Efficiently filters snapshots using binary search to find the first snapshot with a timestamp greater than or equal to the cutoff `optimizations-benchmark.ts:85-99`
 - **getHistoryOld** — Filters snapshots to include only those with timestamps greater than or equal to the cutoff `optimizations-benchmark.ts:81-83`
-- **index** — Finds the index of a subscription in an array of subscriptions by subscription ID `optimizations-benchmark.ts:112-112`, `optimizations-benchmark.ts:131-131`
-- **items** — Represents a set of items that can be added to a Bloom filter `bloom-filter.test.ts:82-82`, `bloom-filter.test.ts:104-104`, `bloom-filter.test.ts:126-126`
+- **index** — Finds the index of a subscription in an array of subscriptions by subscription ID `optimizations-benchmark.ts:112-112`
+- **index** — Finds the index of a subscription by its ID `optimizations-benchmark.ts:131-131`
+- **items** — Represents a set of items that can be added to a Bloom filter `bloom-filter.test.ts:82-82`
+- **items** — Creates an array of 50 items with names like "item-0" to "item-49" `bloom-filter.test.ts:104-104`
+- **items** — Creates an array of 100 items with names like "item-0" to "item-99" `bloom-filter.test.ts:126-126`
 - **matchTopicNew** — O(log n) match topic function `optimizations-benchmark.ts:60-70`
 - **matchTopicOld** — O(n) match topic function `optimizations-benchmark.ts:50-57`
 - **newTime** — Benchmarks the time taken to deduplicate new results `optimizations-benchmark.ts:204-204`
-- **newTime** — Measures the time taken for the new deduplication function `optimizations-benchmark.ts:239-245`, `optimizations-benchmark.ts:275-275`, `optimizations-benchmark.ts:332-336`
+- **newTime** — Measures the time taken for the new deduplication function `optimizations-benchmark.ts:239-245`
+- **newTime** — Measures the time taken to get history using the new method `optimizations-benchmark.ts:275-275`
+- **newTime** — Unsubscribes new subscriptions for a list of IDs `optimizations-benchmark.ts:332-336`
 - **oldTime** — Benchmarks the time taken to deduplicate old results `optimizations-benchmark.ts:203-203`
-- **oldTime** — Measures the time taken for the old deduplication function `optimizations-benchmark.ts:227-233`, `optimizations-benchmark.ts:274-274`, `optimizations-benchmark.ts:322-326`
+- **oldTime** — Measures the time taken for the old deduplication function `optimizations-benchmark.ts:227-233`
+- **oldTime** — Measures the time taken to get history using the old method `optimizations-benchmark.ts:274-274`
+- **oldTime** — Unsubscribes old subscriptions for a list of IDs `optimizations-benchmark.ts:322-326`
 - **snapshots** — Represents a collection of timestamped values `optimizations-benchmark.ts:265-268`
 - **subsNew** — Represents the new subscription data `optimizations-benchmark.ts:317-317`
 - **subsOld** — Represents the old subscription data `optimizations-benchmark.ts:316-316`
@@ -59,7 +66,8 @@ BloomFilter
 - **bun:test** — Imports `bun:test` from `bun:test`. `bloom-filter.test.ts:1-1`
 
 ### Property
-- **id** — Unique identifier for an entity `optimizations-benchmark.ts:12-12`, `optimizations-benchmark.ts:106-106`
+- **id** — Unique identifier for an entity `optimizations-benchmark.ts:12-12`
+- **id** — Represents a subscription ID as a string `optimizations-benchmark.ts:106-106`
 - **name** — Name of an entity `optimizations-benchmark.ts:13-13`
 - **timestamp** — Timestamp of a snapshot `optimizations-benchmark.ts:77-77`
 - **topic** — Topic of a subscription `optimizations-benchmark.ts:107-107`

@@ -96,10 +96,10 @@ export function extractJitHints(node: ts.Node, _sourceFile: ts.SourceFile): JitH
       spreadInCallCount++;
     }
 
-    // Dynamic property access: obj[expr] where expr is NOT a string/number literal
+    // Dynamic property access: obj[expr] where expr names a property that varies
     if (ts.isElementAccessExpression(n)) {
       const arg = n.argumentExpression;
-      if (arg && !ts.isStringLiteral(arg) && !ts.isNumericLiteral(arg)) {
+      if (arg && namesAVaryingProperty(arg)) {
         dynamicPropAccessCount++;
       }
     }
@@ -197,6 +197,82 @@ export function extractJitHints(node: ts.Node, _sourceFile: ts.SourceFile): JitH
     objectShapeVariants,
     conditionalFieldAddCount,
   };
+}
+
+/**
+ * Identifier names that read as an offset rather than a property name.
+ * Kept in sync with COUNTER_NAMES in the Zig scanner
+ * (ultracode.zig/src/parsers/extractors/jit_hints.zig) so both engines count
+ * the same thing.
+ */
+const COUNTER_NAMES = new Set([
+  "idx",
+  "index",
+  "pos",
+  "offset",
+  "ofs",
+  "cursor",
+  "slot",
+  "start",
+  "end",
+  "len",
+  "size",
+  "count",
+  "first",
+  "last",
+  "mid",
+  "lo",
+  "hi",
+  "head",
+  "tail",
+  "qHead",
+  "qTail",
+  "depth",
+  "level",
+  // Positions inside heaps, trees and linked structures — still offsets
+  "left",
+  "right",
+  "smallest",
+  "largest",
+  "parent",
+  "child",
+  "root",
+  "next",
+  "prev",
+  "top",
+  "row",
+  "col",
+  "column",
+  "step",
+  "iter",
+]);
+
+/**
+ * Whether `obj[arg]` looks up a property whose NAME varies — the case that goes
+ * megamorphic. Numeric indexing (`a[i]`, `a[i + 1]`, `a[len - 1]`) computes an
+ * offset arithmetically and has no inline cache to spoil; counting it made the
+ * rule fire on hand-optimized typed-array loops, which is precisely the code it
+ * should leave alone.
+ */
+function namesAVaryingProperty(arg: ts.Expression): boolean {
+  if (ts.isStringLiteral(arg) || ts.isNumericLiteral(arg) || ts.isNoSubstitutionTemplateLiteral(arg)) {
+    return false; // fixed key or literal offset
+  }
+  // `o["pre" + id]` builds a property name; `a[i + 1]` computes an offset
+  if (ts.isBinaryExpression(arg)) return containsStringLiteral(arg);
+  if (ts.isPrefixUnaryExpression(arg) || ts.isPostfixUnaryExpression(arg)) return false; // a[i++], a[-1]
+  if (ts.isPropertyAccessExpression(arg) && arg.name.text === "length") return false;
+  if (ts.isParenthesizedExpression(arg)) return namesAVaryingProperty(arg.expression);
+  if (ts.isIdentifier(arg)) {
+    // Single- and double-letter names are loop variables everywhere
+    return arg.text.length > 2 && !COUNTER_NAMES.has(arg.text);
+  }
+  return true;
+}
+
+function containsStringLiteral(n: ts.Node): boolean {
+  if (ts.isStringLiteral(n) || ts.isTemplateExpression(n) || ts.isNoSubstitutionTemplateLiteral(n)) return true;
+  return ts.forEachChild(n, containsStringLiteral) ?? false;
 }
 
 /** Array methods that iterate — treated as loops for hot-path rules */

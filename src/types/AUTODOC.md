@@ -2,7 +2,176 @@
 
 ## 🤖 Overview
 
-The `src/types/` module provides all shared type contracts for the multi-agent code-analysis platform. It covers agent orchestration, code parsing (12+ languages), graph storage, semantic vector search, query engine, state chaos analysis, layered delta indexing, and WASM/Faiss interop. Every file is purely declarative — no classes are instantiated, no I/O is performed, and everything is erased at compile time (the sole exception is `AgentBusyError` in `errors.ts` and helper factory functions in `layered.ts` / `storage.ts`). There is currently no barrel `index.ts`; consumers import directly from individual files.
+This module provides a comprehensive set of types and interfaces for managing agents, tasks, and messages within a system. It includes definitions for agent types, statuses, capabilities, and resource constraints, along with interfaces for agent messages, tasks, and metrics. The `wasm-modules.d.ts` file defines interfaces for SIMD operations used in vector similarity computations.
+
+## 🤖 Architecture
+
+```
+Agent
+├── AgentType
+│   └── PARSER, INDEXER, QUERY, SEMANTIC, COORDINATOR, DEV, DORA, MERGE
+├── AgentStatus
+│   └── IDLE, BUSY, ERROR, SHUTDOWN
+├── AgentCapabilities
+│   ├── priority
+│   ├── maxConcurrency
+│   └── memoryLimit
+├── ResourceConstraints
+│   ├── maxMemoryMB
+│   ├── maxConcurrentAgents
+│   └── maxCpuPercent
+├── AgentMessage
+│   ├── id
+│   ├── type
+│   └── payload
+└── AgentTask
+    ├── id
+    └── type
+```
+
+## 🤖 Flow
+
+```
+Agent
+├── AgentType
+│   └── PARSER
+│       └── parse
+│           └── parse
+│               └── parse
+│                   └── parse
+│                       └── parse
+│                           └── parse
+│                               └── parse
+│                                   └── parse
+│                                       └── parse
+│                                           └── parse
+│                                               └── parse
+│                                                   └── parse
+│                                                       └── parse
+│                                                           └── parse
+│                                                               └── parse
+│                                                                   └── parse
+│                                                                       └── parse
+│                                                                           └── parse
+│                                                                               └── parse
+│                                                                                   └── parse
+│                                                                                       └── parse
+│                                                                                           └── parse
+│                                                                                               └── parse
+│                                                                                                   └── parse
+│                                                                                                       └── parse
+│                                                                                                           └── parse
+│                                                                                                               └── parse
+│                                                                                                                   └── parse
+│                                                                                                                       └── parse
+│                                                                                                                           └── parse
+│                                                                                                                               └── parse
+│                                                                                                                                   └── parse
+│                                                                                                                                       └── parse
+│                                                                                                                                           └── parse
+│                                                                                                                                               └── parse
+│                                                                                                                                                   └── parse
+│                                                                                                                                                       └── parse
+│                                                                                                                                                           └── parse
+│                                                                                                                                                               └── parse
+│                                                                                                                                                                   └── parse
+│                                                                                                                                                                       └── parse
+│                                                                                                                                                                           └── parse
+│                                                                                                                                                                               └── parse
+│                                                                                                                                                                                   └── parse
+│                                                                                                                                                                                       └── parse
+│                                                                                                                                                                                           └── parse
+│                                                                                                                                                                                               └── parse
+│                                                                                                                                                                                                   └── parse
+│                                                                                                                                                                                                       └── parse
+│                                                                                                                                                                                                           └── parse
+│                                                                                                                                                                                                               ┣── parse
+│                                                                                                                                                                                                                   └── parse
+│                                                                                                                                                                                                                       └── parse
+│                                                                                                                                                                                                                           └── parse
+│                                                                                                                                                                                                                               └── parse
+│                                                                                                                                                                                                                                   └── parse
+│                                                                                                                                                                                                                                       └── parse
+│                                                                                                                                                                                                                                           └── parse
+│                                                                                                                                                                                                                                               └── parse
+│                                                                                                                                                                                                                                                   └── parse
+│                                                                                                                                                                                                                                                       └── parse
+│                                                                                                                                                                                                                                                           └── parse
+│                                                                                                                                                                                                                                                               └── parse
+│                                                                                                                                                                                                                                                                   └── parse
+│                                                                                                                                                                                                                                                                       └── parse
+│                                                                                                                                                                                                                                                                           └── parse
+│                                                                                                                                                                                                                                                                               └── parse
+│                                                                                                                                                                                                                                                                                   └── parse
+│                                                                                                                                                                                                                                                                                       └── parse
+│                                                                                                                                                                                                                                                                                           └── parse
+│                                                                                                                                                                                                                                                                                               └── parse
+│                                                                                                                                                                                                                                                                                                   └── parse
+│                                                                                                                                                                                                                                                                                                       └── parse
+│                                                                                                                                                                                                                                                                                                           └── parse
+│                                                                                                                                                                                                                                                                                                               └── parse
+│                                                                                                                                                                                                                                                                                                                   └── parse
+│                                                                                                                                                                                                                                                                                                                       └── parse
+│                                                                                                                                                                                                                                                                                                                           └── parse
+│                                                                                                                                                                                                                                                                                                                               └── parse
+│                                                                                                                                                                                                                                                                                                                                   └── parse
+│                                                                                                                                                                                                                                                                                                                                       └── parse
+│                                                                                                                                                                                                                                                                                                                                           └── parse
+│                                                                                                                                                                                                                                                                                                                                               └── parse
+│                                                                                                                                                                                                                                                                                                                                                   └── parse
+│                                                                                                                                                                                                                                                                                                                                                       └── parse
+│                                                                                                                                                                                                                                                                                                                                                           └── parse
+│                                                                                                                                                                                                                                                                                                                                                               └── parse
+│                                                                                                                                                                                                                                                                                                                                                                   └── parse
+│                                                                                                                                                                                                                                                                                                                                                                       └── parse
+│                                                                                                                                                                                                                                                                                                                                                                           └── parse
+│                                                                                                                                                                                                                                                                                                                                                                               └── parse
+│                                                                                                                                                                                                                                                                                                                                                                                   └── parse
+│                                                                                                                                                                                                                                                                                                                                                                                       └── parse
+│                                                                                                                                                                                                                                                                                                                                                                                           └── parse
+│                                                                                                                                                                                                                                                                                                                                                                                               └── parse
+│                                                                                                                                                                                                                                                                                                                                                                                                   └── parse
+│                                                                                                                                                                                                                                                                                                                                                                                                       └── parse
+│                                                                                                                                                                                                                                                                                                                                                                                                           └── parse
+│                                                                                                                                                                                                                                                                                                                                                                                                               └── parse
+│                                                                                                                                                                                                                                                                                                                                                                                                                   └── parse
+│                                                                                                                                                                                                                                                                                                                                                                                                                       └── parse
+│                                                                                                                                                                                                                                                                                                                                                                                                                           └── parse
+│                                                                                                                                                                                                                                                                                                                                                                                                                               └── parse
+│                                                                                                                                                                                                                                                                                                                                                                                                                                   └── parse
+│                                                                                                                                                                                                                                                                                                                                                                                                                                       └── parse
+│                                                                                                                                                                                                                                                                                                                                                                                                                                           └── parse
+│                                                                                                                                                                                                                                                                                                                                                                                                                                               └── parse
+│                                                                                                                                                                                                                                                                                                                                                                                                                                                   └── parse
+│                                                                                                                                                                                                                                                                                                                                                                                                                                                       └── parse
+│                                                                                                                                                                                                                                                                                                                                                                                                                                                           └── parse
+│                                                                                                                                                                                                                                                                                                                                                                                                                                                               └── parse
+│                                                                                                                                                                                                                                                                                                                                                                                                                                                                   └── parse
+│                                                                                                                                                                                                                                                                                                                                                                                                                                                                       └── parse
+│                                                                                                                                                                                                                                                                                                                                                                                                                                                                           └── parse
+│                                                                                                                                                                                                                                                                                                                                                                                                                                                                               └── parse
+│                                                                                                                                                                                                                                                                                                                                                                                                                                                                                   └── parse
+│                                                                                                                                                                                                                                                                                                                                                                                                                                                                                       └── parse
+│                                                                                                                                                                                                                                                                                                                                                                                                                                                                                           └── parse
+│                                                                                                                                                                                                                                                                                                                                                                                                                                                                                               └── parse
+│                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                   └── parse
+│                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                       └── parse
+│                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                           └── parse
+│                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                               └── parse
+│                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                   └── parse
+│                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                       └── parse
+│                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                           └── parse
+│                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                               └── parse
+│                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                   └── parse
+│                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                       └── parse
+│                                                                                                                                                                                                                                                                                                                                                                                                                                                                               └── parse
+│                                                                                                                                                                                                                                                                                                                                                                                                                   └── parse
+│                                                                                                                                                                                                                                                                                                                                                                                                                       └── parse
+│                                                                                                                                                                                                                                                                                                                                                                                                                           └── parse
+│                                                                                                                                                                                                                                                                                                                                                                                                                               └── parse
+│                                                                                                                                                                                                                                                                                                                                                                                                                                   └── parse
+│
+```
 
 ## 🤖 Entity Listing
 
@@ -19,14 +188,19 @@ The `src/types/` module provides all shared type contracts for the multi-agent c
 - **fromFactory** — Creates a Faiss index from a factory string `faiss-node.d.ts:58-58`
 - **isEntity** — Checks if an object is an entity by verifying it has id, name, type, and filePath properties `storage.ts:523-527`
 - **isRelationship** — Determines if an object is a relationship by checking for id, fromId, toId, and type properties `storage.ts:529-533`
-- **LayeredIndexConfigPresets** — Presets for LayeredIndexConfig `layered.ts:176-190`, `layered.ts:195-208`, `layered.ts:213-226`, `layered.ts:231-245`
+- **LayeredIndexConfigPresets** — Presets for LayeredIndexConfig `layered.ts:176-190`
+- **LayeredIndexConfigPresets** — Defines a development configuration for LayeredIndexConfig `layered.ts:195-208`
+- **LayeredIndexConfigPresets** — Defines a production configuration for LayeredIndexConfig `layered.ts:213-226`
+- **LayeredIndexConfigPresets** — Defines a server configuration for LayeredIndexConfig `layered.ts:231-245`
 - **parsedEntityToEntity** — Converts a parsed entity to an entity object, omitting certain fields `storage.ts:382-440`
 - **read** — Reads a Faiss index from a file `faiss-node.d.ts:60-60`
 
 ### Method
 - **constructor** — The constructor function for the AgentBusyError class, initializing the error with context and optional options `errors.ts:18-22`
 - **details** — A getter that returns the context object containing details about the agent being busy `errors.ts:24-26`
-- **totalChanges** — Counts the total number of changes in the BranchDelta `layered.ts:342-351`, `layered.ts:366-368`, `layered.ts:383-392`
+- **totalChanges** — Counts the total number of changes in the BranchDelta `layered.ts:342-351`
+- **totalChanges** — Calculates the total number of changes based on added, modified, and deleted embeddings `layered.ts:366-368`
+- **totalChanges** — Returns the total number of changes in the entity and relationship deltas `layered.ts:383-392`
 
 ### Class
 - **AgentBusyError** — An error class representing an agent being busy, extending the standard Error class `errors.ts:15-27`
@@ -252,7 +426,8 @@ The `src/types/` module provides all shared type contracts for the multi-agent c
 - **acquireTimeout** — Defines the timeout for acquiring a connection from the pool `query.ts:229-229`
 - **active** — Number of active connections in the pool `storage.ts:267-267`
 - **ADAPTIVE_DEBUG** — Enables debug mode for adaptive features `global.d.ts:184-184`
-- **added** — Entities added in this layer (not present in parent layer) `layered.ts:21-21`, `layered.ts:36-36`
+- **added** — Entities added in this layer (not present in parent layer) `layered.ts:21-21`
+- **added** — Represents a map of added relationships `layered.ts:36-36`
 - **addedEmbeddings** — Entities added in this layer (not present in parent layer) `layered.ts:116-116`
 - **additions** — Counts the number of additions in the file change `layered.ts:283-283`
 - **addListenerCount** — Counts the number of `addListener` calls `parser.ts:417-417`
@@ -264,18 +439,21 @@ The `src/types/` module provides all shared type contracts for the multi-agent c
 - **agentId** — Unique identifier for an agent `agent.ts:85-85`
 - **agentId** — The unique identifier of the agent that is busy `errors.ts:4-4`
 - **agents** — Map of agent IDs to agent instances `agent.ts:74-74`
-- **alias** — Represents an alias for a Python identifier `parser-python-types.ts:213-213`, `parser-python-types.ts:230-230`
+- **alias** — Represents an alias for a Python identifier `parser-python-types.ts:213-213`
+- **alias** — Optionally stores an alias for a symbol `parser-python-types.ts:230-230`
 - **alias** — Manages alias information for imports `parser.ts:234-234`
 - **analysisTimeMs** — Records the time taken for the analysis in milliseconds `parser-python-types.ts:262-262`
 - **analyzeAsync** — Represents asynchronous analysis in parsing `parser.ts:509-509`
 - **analyzePropertyDecorators** — Analyze property decorators `parser-python-types.ts:77-77`
 - **angularPattern** — Angular-specific state management pattern `chaos-analysis.ts:62-62`
-- **angularPattern** — The Angular-specific state management pattern used `chaos-analysis.ts:93-93`, `chaos-analysis.ts:111-111`
+- **angularPattern** — The Angular-specific state management pattern used `chaos-analysis.ts:93-93`
+- **angularPattern** — Represents an Angular state pattern `chaos-analysis.ts:111-111`
 - **antipatternHints** — Provides hints for common antipatterns `parser.ts:398-409`
 - **anyTypeCount** — Counts the number of `any` type usages `parser.ts:433-433`
 - **apiKey** — The API key for the embedding provider `semantic.ts:243-243`
 - **apiKey** — API key for the OpenAI API `semantic.ts:318-318`
-- **apiKey** — Represents an optional string for API key `semantic.ts:328-328`, `semantic.ts:337-337`
+- **apiKey** — Represents an optional string for API key `semantic.ts:328-328`
+- **apiKey** — Optionally holds the API key for the semantic provider `semantic.ts:337-337`
 - **APPDATA** — Represents the application data directory `global.d.ts:12-12`
 - **argumentCount** — Counts the number of arguments in a function call `parser.ts:280-280`
 - **arguments** — Stores the arguments of the decorator `parser-python-types.ts:110-110`
@@ -309,14 +487,16 @@ The `src/types/` module provides all shared type contracts for the multi-agent c
 - **bareExceptCount** — Counts the number of bare `except` blocks `parser.ts:428-428`
 - **baseClasses** — Base classes of the current class `parser-python-types.ts:153-153`
 - **baseClasses** — Lists base classes for the entity `parser.ts:208-208`
-- **baseCommitSha** — Base commit SHA from which this delta was computed `layered.ts:54-54`, `layered.ts:113-113`
+- **baseCommitSha** — Base commit SHA from which this delta was computed `layered.ts:54-54`
+- **baseCommitSha** — Stores the SHA of the base commit `layered.ts:113-113`
 - **baseUrl** — The base URL for the embedding provider `semantic.ts:242-242`
 - **baseUrl** — The base URL for the embedding service `semantic.ts:304-304`
 - **baseUrl** — Base URL for the OpenAI API `semantic.ts:317-317`
 - **baseUrl** — Base URL for the CloudRU API `semantic.ts:327-327`
 - **baseUrl** — Represents an optional string for base URL `semantic.ts:338-338`
 - **baseUrl** — Specifies the base URL for the TEI service `semantic.ts:347-347`
-- **baseUrl** — Base URL for API requests `semantic.ts:356-356`, `semantic.ts:371-371`
+- **baseUrl** — Base URL for API requests `semantic.ts:356-356`
+- **baseUrl** — Optionally sets the base URL for the semantic provider `semantic.ts:371-371`
 - **basicParsing** — Indicates whether basic parsing is enabled `parser-python-types.ts:248-253`
 - **batches** — The number of batches processed `semantic.ts:276-276`
 - **batchSize** — Number of files to process in a single batch `parser.ts:513-513`
@@ -330,7 +510,9 @@ The `src/types/` module provides all shared type contracts for the multi-agent c
 - **body** — Contains the body of the request `global.d.ts:233-233`
 - **bodyUsed** — Indicates whether the body of the response has been used `global.d.ts:218-218`
 - **branches** — Represents branches in the code `parser.ts:292-296`
-- **branchName** — Branch name (e.g., "feature/auth") `layered.ts:51-51`, `layered.ts:89-89`, `layered.ts:110-110`
+- **branchName** — Branch name (e.g., "feature/auth") `layered.ts:51-51`
+- **branchName** — Stores the name of the branch `layered.ts:89-89`
+- **branchName** — Represents the name of the branch `layered.ts:110-110`
 - **breakingChange** — Whether the refactoring introduces breaking changes `chaos-analysis.ts:219-219`
 - **buildInheritanceHierarchies** — Build inheritance hierarchies `parser-python-types.ts:80-80`
 - **BUNDLED** — Represents whether the application is bundled `global.d.ts:16-16`
@@ -358,7 +540,9 @@ The `src/types/` module provides all shared type contracts for the multi-agent c
 - **changeType** — Indicates the type of change in the file content `parser.ts:477-477`
 - **chaosScore** — Represents the overall chaos score of the codebase `chaos-analysis.ts:279-279`
 - **checkServer** — Determines if the server should be checked `semantic.ts:309-309`
-- **checkServer** — Function to check server status `semantic.ts:350-350`, `semantic.ts:359-359`, `semantic.ts:377-377`
+- **checkServer** — Function to check server status `semantic.ts:350-350`
+- **checkServer** — Optionally checks the server status before performing semantic operations `semantic.ts:359-359`
+- **checkServer** — Indicates whether to check the server status before proceeding `semantic.ts:377-377`
 - **childCount** — Represents the count of child nodes of the AST node `parser-ast-types.ts:25-25`
 - **children** — Represents the list of child nodes of the AST node `parser-ast-types.ts:23-23`
 - **children** — Represents the children of a parsed entity `parser.ts:169-169`
@@ -387,18 +571,29 @@ The `src/types/` module provides all shared type contracts for the multi-agent c
 - **cognitive** — Not applicable `parser.ts:359-359`
 - **cognitiveComplexity** — Cognitive complexity of the code `chaos-analysis.ts:187-187`
 - **column** — Column number `chaos-analysis.ts:58-58`
-- **column** — Represents the column number of the starting position `parser-ast-types.ts:18-18`, `parser-ast-types.ts:19-19`, `parser-ast-types.ts:39-39`
-- **column** — The column number of a position `parser-ast-types.ts:68-68`, `parser-ast-types.ts:69-69`, `parser-ast-types.ts:70-70`, `parser-ast-types.ts:79-79`, `parser-ast-types.ts:80-80`
-- **column** — Column number of the method `parser-python-types.ts:136-136`, `parser-python-types.ts:137-137`
-- **column** — Represents the column number of a Python element `parser-python-types.ts:186-186`, `parser-python-types.ts:187-187`
-- **column** — Represents the column number in the Python code `parser-python-types.ts:224-224`
-- **column** — Represents the column number in a source file `parser.ts:64-64`
+- **column** — Represents the column number of the starting position `parser-ast-types.ts:18-18`
+- **column** — The column number of a position `parser-ast-types.ts:19-19`
+- **column** — Parses a position based on row and column `parser-ast-types.ts:39-39`
+- **column** — Stores the start position as a row and column `parser-ast-types.ts:68-68`
+- **column** — Stores the old end position as a row and column `parser-ast-types.ts:69-69`
+- **column** — Stores the new end position as a row and column `parser-ast-types.ts:70-70`
+- **column** — Represents the end position's column number `parser-ast-types.ts:79-79`
+- **column** — Represents the column number of the end position `parser-ast-types.ts:80-80`
+- **column** — Column number of the method `parser-python-types.ts:136-136`
+- **column** — Represents the column number of a Python element `parser-python-types.ts:137-137`
+- **column** — Represents the column number in the Python code `parser-python-types.ts:186-186`
+- **column** — Represents the end position of a token `parser-python-types.ts:187-187`
+- **column** — Represents the column number of a usage location in the code `parser-python-types.ts:224-224`
 - **column** — Indicates the column number of the error `parser.ts:461-461`
-- **column** — Represents the column number of a source position `parser.ts:485-485`, `parser.ts:486-486`, `parser.ts:487-487`
-- **column** — Indicates the column number of a source code element `parser.ts:561-561`, `parser.ts:575-575`
-- **column** — Represents the column number in the source code `parser.ts:591-591`
-- **column** — Represents the column number in a file `storage.ts:76-76`, `storage.ts:77-77`
-- **column** — Represents the column number in the file where the entity is located `storage.ts:124-124`
+- **column** — Represents the column number of a source position `parser.ts:485-485`
+- **column** — Indicates the column number of a source code element `parser.ts:486-486`
+- **column** — Represents the column number in the source code `parser.ts:487-487`
+- **column** — Stores an array of location objects with line and column numbers `parser.ts:561-561`
+- **column** — Optionally stores an array of location objects with line and column numbers `parser.ts:575-575`
+- **column** — Represents the column number in a source file `parser.ts:64-64`, `parser.ts:591-591`
+- **column** — Represents the column number in a file `storage.ts:76-76`
+- **column** — Represents the column number in the file where the entity is located `storage.ts:77-77`
+- **column** — Stores the column number of a file `storage.ts:124-124`
 - **commitSha** — Tracks the commit SHA from which the delta was computed `layered.ts:265-265`
 - **compactionIntervalMinutes** — Compaction interval in minutes `layered.ts:156-156`
 - **compactionThreshold** — Compaction threshold `layered.ts:149-149`
@@ -417,7 +612,9 @@ The `src/types/` module provides all shared type contracts for the multi-agent c
 - **concurrency** — Number of concurrent API requests `semantic.ts:321-321`
 - **concurrency** — Represents an optional number for concurrency level `semantic.ts:331-331`
 - **concurrency** — Represents an optional number for concurrency level. `semantic `semantic.ts:340-340`
-- **concurrency** — Maximum number of concurrent requests `semantic.ts:349-349`, `semantic.ts:358-358`, `semantic.ts:373-373`
+- **concurrency** — Maximum number of concurrent requests `semantic.ts:349-349`
+- **concurrency** — Optionally defines the number of concurrent operations for semantic tasks `semantic.ts:358-358`
+- **concurrency** — Specifies the number of concurrent requests allowed `semantic.ts:373-373`
 - **concurrentConnections** — The number of concurrent connections to the storage `storage.ts:241-241`
 - **concurrentQueries** — Defines the maximum number of queries that can be processed concurrently `query.ts:255-255`
 - **condition** — Not present in the provided code `chaos-analysis.ts:365-365`
@@ -444,8 +641,9 @@ The `src/types/` module provides all shared type contracts for the multi-agent c
 - **consumers** — The consumers of the state flow node `chaos-analysis.ts:115-115`
 - **consumers** — Lists the components that will use the refactoring `chaos-analysis.ts:236-236`
 - **content** — Stores the new content of the file `parser.ts:478-478`
-- **content** — The content string associated with the embedding `semantic.ts:32-32`, `semantic.ts:45-45`, `semantic.ts:55-55`
-- **content** — Content of the code fragment `semantic.ts:87-87`, `semantic.ts:115-115`
+- **content** — Contains the content of the request `semantic.ts:55-55`, `semantic.ts:87-87`
+- **content** — Content of the code fragment `semantic.ts:45-45`, `semantic.ts:115-115`
+- **content** — The content string associated with the embedding `semantic.ts:32-32`
 - **content** — The textual content of an entity `storage.ts:284-284`
 - **contentHash** — Stores the hash of the content parsed `parser.ts:452-452`
 - **context** — Surrounding context (3 lines) `chaos-analysis.ts:64-64`
@@ -475,7 +673,10 @@ The `src/types/` module provides all shared type contracts for the multi-agent c
 - **created_at** — Represents the creation timestamp of an entity `storage.ts:208-208`
 - **createdAt** — Time when the task was created `agent.ts:47-47`
 - **createdAt** — The timestamp when the embedding was created `semantic.ts:33-33`
-- **createdAt** — Represents the timestamp when an entity was created `storage.ts:109-109`, `storage.ts:130-130`, `storage.ts:278-278`, `storage.ts:287-287`
+- **createdAt** — Represents the timestamp when an entity was created `storage.ts:109-109`
+- **createdAt** — Stores the timestamp when a file was created `storage.ts:130-130`
+- **createdAt** — Stores the creation timestamp as a number `storage.ts:278-278`
+- **createdAt** — Stores the timestamp when the entity was created `storage.ts:287-287`
 - **credentials** — Controls whether credentials are sent with the request `global.d.ts:235-235`
 - **crossFileReferencesResolved** — Resolves cross-file references in the Python code `parser-python-types.ts:269-269`
 - **crossReferences** — Stores cross-references found in the Python code `parser-python-types.ts:277-277`
@@ -510,7 +711,8 @@ The `src/types/` module provides all shared type contracts for the multi-agent c
 - **defaultValues** — Detects default values assigned to state variables `chaos-analysis.ts:161-161`
 - **defensive** — Indicates defensive coding patterns `chaos-analysis.ts:177-177`
 - **deleteCount** — Counts the number of deletions in the parsed entity `parser.ts:390-390`
-- **deleted** — Entity IDs deleted in this layer (present in parent but removed) `layered.ts:27-27`, `layered.ts:42-42`
+- **deleted** — Entity IDs deleted in this layer (present in parent but removed) `layered.ts:27-27`
+- **deleted** — Represents a set of deleted embedding IDs `layered.ts:42-42`
 - **deletedEmbeddingIds** — Entity IDs deleted in this layer (present in parent but removed) `layered.ts:122-122`
 - **deleterName** — Name of the deleter method `parser-python-types.ts:124-124`
 - **deletions** — Counts the number of deletions in the file change `layered.ts:286-286`
@@ -518,15 +720,17 @@ The `src/types/` module provides all shared type contracts for the multi-agent c
 - **deprecated** — Not applicable `parser.ts:341-341`
 - **depth** — Distance from origin (0 = source) `chaos-analysis.ts:66-66`
 - **depth** — The depth of the state flow node in the graph `chaos-analysis.ts:112-112`
-- **depth** — Number for graph depth `query.ts:62-62`
 - **depth** — The depth of the graph traversal `query.ts:81-81`
+- **depth** — Number for graph depth `query.ts:62-62`
 - **depth** — Specifies the depth of the graph query `storage.ts:178-178`
 - **description** — Description of the refactoring step `chaos-analysis.ts:216-216`
 - **description** — Provides a detailed description of a state management issue `chaos-analysis.ts:378-378`
-- **description** — Represents a description in the parser system `parser.ts:319-319`, `parser.ts:324-324`
-- **description** — Parser system types: entity extraction, relationships, caching, pattern detection, and incremental file parsing `parser.ts:331-331`, `parser.ts:337-337`
-- **description** — Provides a description of a parsed entity `parser.ts:570-570`
-- **description** — Provides a textual description of a parsed entity `parser.ts:590-590`
+- **description** — Represents a description in the parser system `parser.ts:319-319`
+- **description** — Parser system types: entity extraction, relationships, caching, pattern detection, and incremental file parsing `parser.ts:324-324`
+- **description** — Provides a description of a parsed entity `parser.ts:331-331`
+- **description** — Provides a textual description of a parsed entity `parser.ts:337-337`
+- **description** — Represents a string description `parser.ts:570-570`
+- **description** — Optionally stores a string description `parser.ts:590-590`
 - **description** — Describes the nature of a code change `semantic.ts:133-133`
 - **designPatterns** — Represents design patterns in the code `parser.ts:272-272`
 - **designPatterns** — Describes design patterns used in the parser system `parser.ts:566-571`
@@ -553,8 +757,8 @@ The `src/types/` module provides all shared type contracts for the multi-agent c
 - **durationMs** — Duration of the operation in milliseconds `storage.ts:276-276`
 - **dynamicPropAccessCount** — Counts the number of dynamic property accesses `parser.ts:394-394`
 - **edges** — Represents edges in a state flow graph `chaos-analysis.ts:135-135`
-- **edges** — Array of Relationship for path edges `query.ts:53-53`
 - **edges** — The edges in the graph `query.ts:90-90`
+- **edges** — Array of Relationship for path edges `query.ts:53-53`
 - **edits** — Stores the edits made to the file content `parser.ts:480-489`
 - **EMBEDDING_DEBUG** — Enables debug mode for embedding operations `global.d.ts:38-38`
 - **embeddingBase64** — Embeds base64 encoded data `parser.ts:441-441`
@@ -586,27 +790,32 @@ The `src/types/` module provides all shared type contracts for the multi-agent c
 - **entities** — Represents a collection of parsed entities `parser.ts:588-588`
 - **entities** — Map of string to Entity for graph entities `query.ts:63-63`
 - **entities** — Entities involved in the semantic analysis `semantic.ts:74-74`
-- **entities** — Represents a collection of entities in the storage layer `storage.ts:184-184`, `storage.ts:200-210`
-- **entities** — Collection of entities `storage.ts:327-327`
+- **entities** — Represents a collection of entities in the storage layer `storage.ts:184-184`
+- **entities** — Collection of entities `storage.ts:200-210`
+- **entities** — Runs garbage collection for entities and returns the count of entities and tokens `storage.ts:327-327`
 - **entity** — Represents an entity in the codebase `chaos-analysis.ts:288-288`
 - **entity** — Represents an entity in the parser system `parser.ts:553-553`
-- **entity** — Represents an entity in the query `query.ts:80-80`
 - **entity** — An entity in the graph `query.ts:100-100`
 - **entity** — Criteria for narrowing entity lookup results `query.ts:137-137`
+- **entity** — Represents an entity in the query `query.ts:80-80`
 - **entity** — Represents an entity in the storage layer `storage.ts:191-191`
 - **entity_count** — The number of entities in the storage `storage.ts:222-222`
 - **entityCount** — Represents the count of entities `storage.ts:137-137`
-- **entityDelta** — Entity changes `layered.ts:57-57`, `layered.ts:92-92`
+- **entityDelta** — Entity changes `layered.ts:57-57`
+- **entityDelta** — Represents the delta for an entity `layered.ts:92-92`
 - **entityId** — Entity ID from Code Graph RAG `chaos-analysis.ts:59-59`
-- **entityId** — The unique identifier for the state variable `chaos-analysis.ts:90-90`, `chaos-analysis.ts:108-108`
-- **entityId** — Not present in the provided code `chaos-analysis.ts:362-362`
+- **entityId** — The unique identifier for the state variable `chaos-analysis.ts:90-90`
+- **entityId** — Not present in the provided code `chaos-analysis.ts:108-108`
+- **entityId** — Optionally stores the entity ID `chaos-analysis.ts:362-362`
 - **entityId** — The ID of the entity `query.ts:125-125`
 - **entityId** — Represents the unique identifier of an entity `storage.ts:192-192`
 - **entityId** — Identifier for an entity within a specific context `storage.ts:283-283`
 - **entityName** — Function/class/component name `chaos-analysis.ts:60-60`
-- **entityName** — The name of the entity (function/class/component) where the state variable is used `chaos-analysis.ts:91-91`, `chaos-analysis.ts:109-109`
-- **entityName** — Not present in the provided code `chaos-analysis.ts:363-363`
-- **entityType** — Enumerates the types of entities in the storage layer `storage.ts:145-145`, `storage.ts:172-172`
+- **entityName** — The name of the entity (function/class/component) where the state variable is used `chaos-analysis.ts:91-91`
+- **entityName** — Not present in the provided code `chaos-analysis.ts:109-109`
+- **entityName** — Stores the name of the function or method containing the mutation `chaos-analysis.ts:363-363`
+- **entityType** — Enumerates the types of entities in the storage layer `storage.ts:145-145`
+- **entityType** — Stores the entity type or types for filtering `storage.ts:172-172`
 - **error** — Error encountered during task execution `agent.ts:52-52`
 - **error** — Represents an error object `storage.ts:247-247`
 - **errorCount** — Number of parsing errors encountered `parser.ts:527-527`
@@ -640,26 +849,31 @@ The `src/types/` module provides all shared type contracts for the multi-agent c
 - **extractReferences** — Represents extracting references in parsing `parser.ts:505-505`
 - **failed** — Indicates a failed operation or state `storage.ts:246-246`
 - **file** — File path `chaos-analysis.ts:56-56`
-- **file** — The file path where the state variable is defined `chaos-analysis.ts:88-88`, `chaos-analysis.ts:107-107`
-- **file** — Represents a file in the codebase `chaos-analysis.ts:287-287`
-- **file** — Not present in the provided code `chaos-analysis.ts:360-360`
+- **file** — The file path where the state variable is defined `chaos-analysis.ts:88-88`
+- **file** — Represents a file in the codebase `chaos-analysis.ts:107-107`
+- **file** — Not present in the provided code `chaos-analysis.ts:287-287`
+- **file** — Stores the file path `chaos-analysis.ts:360-360`
 - **file_path** — Represents the file path of an entity in the schema `storage.ts:204-204`
 - **fileCount** — Count of files `storage.ts:307-307`
 - **filePath** — Represents the file path in the layered indexing architecture `layered.ts:259-259`
-- **filePath** — Represents the file path of a parsed entity `parser.ts:167-167`
 - **filePath** — Stores the file path of the parsed code `parser.ts:449-449`
 - **filePath** — Stores the file path of the changed content `parser.ts:476-476`
+- **filePath** — Represents the file path of a parsed entity `parser.ts:167-167`
 - **filePath** — String or array of string for file path `query.ts:43-43`
-- **filePath** — Represents the file path of an entity `storage.ts:73-73`, `storage.ts:193-193`
-- **filePath** — Stores the file path of an entity `storage.ts:146-146`, `storage.ts:174-174`
-- **filePath** — File path where an entity is located `storage.ts:304-304`
+- **filePath** — Represents the file path of an entity `storage.ts:73-73`
+- **filePath** — Stores the file path of an entity `storage.ts:146-146`
+- **filePath** — File path where an entity is located `storage.ts:174-174`
+- **filePath** — Stores the file path as a string `storage.ts:193-193`
+- **filePath** — Represents the file path, which can be a string or undefined `storage.ts:304-304`
 - **files** — List of files involved in the refactoring `chaos-analysis.ts:217-217`
 - **files** — Stores the list of files in the GitDiffResult `layered.ts:291-291`
 - **files** — Represents the files to be parsed `parser.ts:497-497`
 - **files** — A collection of files related to the entity `storage.ts:218-223`
 - **filesParsed** — Total number of files parsed `parser.ts:520-520`
 - **filesWithMutations** — List of files containing mutations `chaos-analysis.ts:180-180`
-- **filters** — Represents a set of filters for querying entities `storage.ts:143-149`, `storage.ts:157-163`, `storage.ts:170-177`
+- **filters** — Represents a set of filters for querying entities `storage.ts:143-149`
+- **filters** — Stores filters for querying entities, including relationship types, from and to IDs `storage.ts:157-163`
+- **filters** — Stores filters for querying entities, including entity types, relationship types, file paths, and names `storage.ts:170-177`
 - **firstChild** — Represents the first child node of the AST node `parser-ast-types.ts:35-35`
 - **firstNamedChild** — Represents the first named child node of the AST node `parser-ast-types.ts:37-37`
 - **flowMap** — Maps the flow of state management in the codebase `chaos-analysis.ts:309-309`
@@ -698,9 +912,10 @@ The `src/types/` module provides all shared type contracts for the multi-agent c
 - **hasGetter** — Checks if a node has a getter `parser.ts:255-255`
 - **hash** — Stores the hash of the cached content `parser.ts:467-467`
 - **hash** — Represents a unique identifier for the query `query.ts:179-179`
-- **hash** — Represents the hash of an entity `storage.ts:74-74`, `storage.ts:207-207`
+- **hash** — Represents the hash of an entity `storage.ts:74-74`
 - **hash** — Represents the hash of the file `storage.ts:135-135`
-- **hash** — A unique identifier for the entity, typically a hash of its content `storage.ts:220-220`
+- **hash** — A unique identifier for the entity, typically a hash of its content `storage.ts:207-207`
+- **hash** — Stores the hash as a string `storage.ts:220-220`
 - **hasLock** — Not present in the provided code `chaos-analysis.ts:367-367`
 - **hasLocks** — Indicates whether locks are used in state management `chaos-analysis.ts:408-408`
 - **hasMutation** — Indicates if the state flow node has mutations `chaos-analysis.ts:114-114`
@@ -731,17 +946,22 @@ The `src/types/` module provides all shared type contracts for the multi-agent c
 - **HUGGINGFACE_CONCURRENCY** — Specifies the number of concurrent API requests to Hugging Face `global.d.ts:63-63`
 - **HUGGINGFACE_TIMEOUT_MS** — Sets the timeout for Hugging Face API requests in milliseconds `global.d.ts:62-62`
 - **HUGGINGFACE_WARMUP_TEXT** — Defines the text used to warm up the Hugging Face API `global.d.ts:64-64`
-- **id** — Unique identifier for an agent `agent.ts:34-34`, `agent.ts:44-44`, `agent.ts:56-56`
+- **id** — Unique identifier for an agent `agent.ts:34-34`
+- **id** — Represents the unique identifier of the agent `agent.ts:44-44`, `agent.ts:56-56`
 - **id** — The unique identifier for the state flow node `chaos-analysis.ts:106-106`
 - **id** — Represents the unique identifier of a parsed entity `parser.ts:164-164`
-- **id** — String or array of string for entity ID `query.ts:42-42`
 - **id** — Stores the ID of a graph query `query.ts:178-178`
-- **id** — A unique identifier for the embedding `semantic.ts:30-30`, `semantic.ts:43-43`, `semantic.ts:51-51`
-- **id** — Identifier for a semantic analysis result `semantic.ts:84-84`, `semantic.ts:99-99`, `semantic.ts:111-111`
-- **id** — Represents the unique identifier of an entity `storage.ts:70-70`, `storage.ts:117-117`
-- **id** — Represents the unique identifier of an entity in the schema `storage.ts:201-201`, `storage.ts:212-212`
-- **id** — Unique identifier for a performance metric `storage.ts:274-274`
-- **id** — Unique identifier for an entity `storage.ts:282-282`
+- **id** — String or array of string for entity ID `query.ts:42-42`
+- **id** — Represents the unique identifier of a semantic entity `semantic.ts:84-84`
+- **id** — Identifies the request uniquely `semantic.ts:51-51`, `semantic.ts:99-99`
+- **id** — Identifier for a semantic analysis result `semantic.ts:43-43`, `semantic.ts:111-111`
+- **id** — A unique identifier for the embedding `semantic.ts:30-30`
+- **id** — Represents the unique identifier of an entity `storage.ts:70-70`
+- **id** — Represents the unique identifier of an entity in the schema `storage.ts:117-117`
+- **id** — Unique identifier for a performance metric `storage.ts:201-201`
+- **id** — Unique identifier for an entity `storage.ts:212-212`
+- **id** — Stores the id as a number `storage.ts:274-274`
+- **id** — Stores the id as a string `storage.ts:282-282`
 - **identifier** — Variable name (e.g., "token", "userId") `chaos-analysis.ts:73-73`
 - **idiom** — Represents a specific Python idiom `parser.ts:574-574`
 - **idle** — Number of idle connections in the pool `storage.ts:268-268`
@@ -762,10 +982,13 @@ The `src/types/` module provides all shared type contracts for the multi-agent c
 - **includeSourceSnippets** — Represents including source snippets in parsing `parser.ts:511-511`
 - **includeVisualization** — Not present in the provided code `chaos-analysis.ts:328-328`
 - **incomingRelationships** — The incoming relationships of an entity `query.ts:104-104`
-- **index** — Index of the method `parser-python-types.ts:136-136`, `parser-python-types.ts:137-137`
-- **index** — Represents the index of a Python element `parser-python-types.ts:186-186`, `parser-python-types.ts:187-187`
+- **index** — Index of the method `parser-python-types.ts:136-136`
+- **index** — Represents the index of a Python element `parser-python-types.ts:137-137`
+- **index** — Represents the end position of a token `parser-python-types.ts:186-186`
+- **index** — Represents the end position of a token with line, column, and index details `parser-python-types.ts:187-187`
 - **index** — Represents the character index in a source file `parser.ts:65-65`
-- **index** — Represents the index position in a file `storage.ts:76-76`, `storage.ts:77-77`
+- **index** — Represents the index position in a file `storage.ts:76-76`
+- **index** — Represents the end position of a line in a file `storage.ts:77-77`
 - **index** — Returns an array of indices and scores for the top k vectors closest to the query vector `wasm-modules.d.ts:18-18`
 - **INDEXER_AGENT_BATCH_SIZE** — The batch size for indexer agents `global.d.ts:145-145`
 - **INDEXER_AGENT_CACHE_SIZE** — The cache size for indexer agents `global.d.ts:146-146`
@@ -830,8 +1053,8 @@ The `src/types/` module provides all shared type contracts for the multi-agent c
 - **l3Entries** — Tracks entries in the L3 cache `query.ts:217-217`
 - **label** — The label of the state flow edge `chaos-analysis.ts:125-125`
 - **labels** — An array of indices corresponding to the distances `faiss-node.d.ts:11-11`
-- **language** — Represents the programming language of a parsed entity `parser.ts:168-168`
 - **language** — Stores the language of the parsed code `parser.ts:450-450`
+- **language** — Represents the programming language of a parsed entity `parser.ts:168-168`
 - **language** — Language of the cross-language result `semantic.ts:113-113`
 - **language** — Specifies the programming language of an entity `storage.ts:99-99`
 - **language** — Represents the programming language of the entity `storage.ts:112-112`
@@ -840,7 +1063,9 @@ The `src/types/` module provides all shared type contracts for the multi-agent c
 - **lastActivity** — Timestamp of the last activity of the agent `agent.ts:92-92`
 - **lastChild** — Represents the last child node of the AST node `parser-ast-types.ts:36-36`
 - **lastIndexed** — Represents the timestamp when the file was last indexed `storage.ts:136-136`
-- **lastModified** — Last modification timestamp `layered.ts:63-63`, `layered.ts:98-98`, `layered.ts:125-125`
+- **lastModified** — Last modification timestamp `layered.ts:63-63`
+- **lastModified** — Stores the last modified timestamp `layered.ts:98-98`
+- **lastModified** — Stores the timestamp of the last modification `layered.ts:125-125`
 - **lastNamedChild** — Represents the last named child node of the AST node `parser-ast-types.ts:38-38`
 - **lastVacuum** — The timestamp of the last vacuum operation `storage.ts:236-236`
 - **length** — Number for path length `query.ts:55-55`
@@ -851,23 +1076,29 @@ The `src/types/` module provides all shared type contracts for the multi-agent c
 - **LIBSQL_SEARCH_L** — Sets the search limit for the LIBSQL library `global.d.ts:84-84`
 - **lightweight** — Indicates whether a query is lightweight `storage.ts:153-153`
 - **limit** — The maximum number of results to return `semantic.ts:144-144`
-- **limit** — Defines the maximum number of results to return in a query `storage.ts:150-150`, `storage.ts:164-164`, `storage.ts:179-179`
-- **limit** — Maximum limit for a batch of operations `storage.ts:305-305`
+- **limit** — Defines the maximum number of results to return in a query `storage.ts:150-150`
+- **limit** — Maximum limit for a batch of operations `storage.ts:164-164`
+- **limit** — Stores the limit for pagination `storage.ts:179-179`
+- **limit** — Represents the maximum number of entities allowed in storage `storage.ts:305-305`
 - **line** — Line number `chaos-analysis.ts:57-57`
 - **line** — The line number in the file where the state variable is defined `chaos-analysis.ts:89-89`
 - **line** — Not present in the provided code `chaos-analysis.ts:361-361`
 - **line** — Stores the line number of the decorator `parser-python-types.ts:111-111`
-- **line** — Line number of the method `parser-python-types.ts:136-136`, `parser-python-types.ts:137-137`
-- **line** — Represents the line number of a Python element `parser-python-types.ts:186-186`, `parser-python-types.ts:187-187`
-- **line** — Represents the line number in the Python code `parser-python-types.ts:218-218`, `parser-python-types.ts:224-224`
-- **line** — Represents the line number in a source file `parser.ts:63-63`
+- **line** — Line number of the method `parser-python-types.ts:136-136`
+- **line** — Represents the line number of a Python element `parser-python-types.ts:137-137`
+- **line** — Represents the line number in the Python code `parser-python-types.ts:186-186`
+- **line** — Stores the line number of a symbol `parser-python-types.ts:187-187`
+- **line** — Stores the column number of a symbol `parser-python-types.ts:218-218`
+- **line** — Stores an array of usage locations with line, column, and context information `parser-python-types.ts:224-224`
 - **line** — Represents a line number in the source code `parser.ts:251-251`
 - **line** — Indicates the line number of the error `parser.ts:461-461`
 - **line** — Line number in the source file `parser.ts:540-540`
-- **line** — Indicates the line number of a source code element `parser.ts:561-561`, `parser.ts:575-575`
-- **line** — Represents the line number in the source code `parser.ts:591-591`
-- **line** — Represents the line number in a file `storage.ts:76-76`, `storage.ts:77-77`
-- **line** — Represents the line number in the file where the entity is located `storage.ts:123-123`
+- **line** — Indicates the line number of a source code element `parser.ts:561-561`
+- **line** — Represents the line number in the source code `parser.ts:575-575`
+- **line** — Represents the line number in a source file `parser.ts:63-63`, `parser.ts:591-591`
+- **line** — Represents the line number in a file `storage.ts:76-76`
+- **line** — Represents the line number in the file where the entity is located `storage.ts:77-77`
+- **line** — Stores the line number of a file `storage.ts:123-123`
 - **linesOfCode** — Not applicable `parser.ts:360-360`
 - **linesOfLogic** — Not applicable `parser.ts:361-361`
 - **llamacpp** — Represents configuration for Llama.cpp server with optional parameters `semantic.ts:369-381`
@@ -878,13 +1109,16 @@ The `src/types/` module provides all shared type contracts for the multi-agent c
 - **localPath** — The local path to the model `semantic.ts:296-296`
 - **location** — Location of the method `parser-python-types.ts:135-138`
 - **location** — Represents the location of a Python element `parser-python-types.ts:185-188`
-- **location** — Represents the location of a parsed entity `parser.ts:162-162`
 - **location** — Stores the location of a node in the source code `parser.ts:281-281`
-- **location** — Represents a location in the parser system `parser.ts:295-295`, `parser.ts:299-299`, `parser.ts:304-304`, `parser.ts:308-308`, `parser.ts:312-312`
-- **location** — Not applicable `parser.ts:352-352`
-- **location** — Indicates the location of the parsed entity in the source code `parser.ts:383-383`
-- **location** — Specifies the location of the error in the source code `parser.ts:461-461`
-- **location** — Represents the location of a source code element `parser.ts:561-561`
+- **location** — Represents a location in the parser system `parser.ts:295-295`
+- **location** — Not applicable `parser.ts:299-299`
+- **location** — Indicates the location of the parsed entity in the source code `parser.ts:304-304`
+- **location** — Specifies the location of the error in the source code `parser.ts:308-308`
+- **location** — Represents the location of a source code element `parser.ts:312-312`
+- **location** — Stores the source span location of a parser entity `parser.ts:352-352`
+- **location** — Optionally stores the line and column of a parser entity `parser.ts:383-383`
+- **location** — Represents the line and column number of the current position in the code `parser.ts:461-461`
+- **location** — Represents the location of a parsed entity `parser.ts:162-162`, `parser.ts:561-561`
 - **location** — Represents the location of an entity `storage.ts:75-78`
 - **location** — Represents the location of an entity in the schema `storage.ts:205-205`
 - **locations** — Identifies the locations of issues found in the codebase `chaos-analysis.ts:296-296`
@@ -960,7 +1194,9 @@ The `src/types/` module provides all shared type contracts for the multi-agent c
 - **metadata** — Metadata associated with the relationship `parser.ts:538-546`
 - **metadata** — Stores additional metadata about parsed entities `parser.ts:592-592`
 - **metadata** — Stores metadata about the query execution `query.ts:190-194`
-- **metadata** — Optional metadata for the embedding `semantic.ts:34-34`, `semantic.ts:46-46`, `semantic.ts:54-54`
+- **metadata** — Optional metadata for the embedding `semantic.ts:34-34`
+- **metadata** — Stores additional metadata associated with the request `semantic.ts:46-46`
+- **metadata** — Stores additional information or attributes associated with a semantic entity `semantic.ts:54-54`
 - **metadata** — Stores metadata associated with an entity `storage.ts:79-108`
 - **metadata** — Stores additional metadata about the entity `storage.ts:121-128`
 - **metadata** — Represents metadata associated with an entity `storage.ts:206-206`
@@ -984,9 +1220,11 @@ The `src/types/` module provides all shared type contracts for the multi-agent c
 - **mode** — Determines the mode of the request (e.g., 'cors', 'no-cors', 'same-origin') `global.d.ts:234-234`
 - **modelDir** — The directory containing the model for the embedding provider `semantic.ts:245-245`
 - **modelDir** — Directory path for model files `semantic.ts:386-386`
-- **modelName** — The name of the model used for embedding generation `semantic.ts:210-210`, `semantic.ts:293-293`
+- **modelName** — The name of the model used for embedding generation `semantic.ts:210-210`
+- **modelName** — Specifies the model name used for semantic operations `semantic.ts:293-293`
 - **modelName** — Name of the model used for embeddings `storage.ts:286-286`
-- **modified** — Entities modified in this layer (present in parent but changed) `layered.ts:24-24`, `layered.ts:39-39`
+- **modified** — Entities modified in this layer (present in parent but changed) `layered.ts:24-24`
+- **modified** — Represents a map of modified relationships `layered.ts:39-39`
 - **modifiedEmbeddings** — Entities modified in this layer (present in parent but changed) `layered.ts:119-119`
 - **modifiers** — Stores modifiers for the entity `parser.ts:186-186`
 - **modifiers** — Stores modifiers for an entity `storage.ts:80-80`
@@ -1003,19 +1241,25 @@ The `src/types/` module provides all shared type contracts for the multi-agent c
 - **mutationType** — Not present in the provided code `chaos-analysis.ts:364-364`
 - **name** — Name of the proposed component `chaos-analysis.ts:232-232`
 - **name** — Stores the name of the decorator `parser-python-types.ts:108-108`
-- **name** — Represents the name of a Python class or method `parser-python-types.ts:166-166`, `parser-python-types.ts:177-177`
-- **name** — Represents the name of a Python identifier `parser-python-types.ts:212-212`
-- **name** — Represents the name of a parsed entity `parser.ts:160-160`
-- **name** — Provides the name of the entity `parser.ts:189-189`, `parser.ts:198-198`
+- **name** — Represents the name of a Python class or method `parser-python-types.ts:166-166`
+- **name** — Represents the name of a Python identifier `parser-python-types.ts:177-177`
+- **name** — Stores the name of a symbol `parser-python-types.ts:212-212`
+- **name** — Provides the name of the entity `parser.ts:189-189`
+- **name** — Represents the name of a parsed entity `parser.ts:160-160`, `parser.ts:198-198`
 - **name** — Stores the name of a function or variable `parser.ts:248-248`
 - **name** — Represents the name of a node `parser.ts:279-279`
 - **name** — Represents a name in the parser system `parser.ts:322-322`
-- **name** — Not applicable `parser.ts:350-350`, `parser.ts:370-370`
+- **name** — Not applicable `parser.ts:350-350`
+- **name** — Represents the name of a parser entity `parser.ts:370-370`
 - **name** — String or regular expression for entity name `query.ts:40-40`
-- **name** — Name of the code fragment `semantic.ts:90-90`, `semantic.ts:117-117`
-- **name** — Represents the name of an entity `storage.ts:71-71`, `storage.ts:84-84`, `storage.ts:102-102`
-- **name** — Stores the name of an entity `storage.ts:147-147`, `storage.ts:175-175`
-- **name** — Represents the name of an entity in the schema `storage.ts:202-202`
+- **name** — Name of the code fragment `semantic.ts:90-90`
+- **name** — Optionally holds the name of the semantic entity `semantic.ts:117-117`
+- **name** — Represents the name of an entity `storage.ts:71-71`
+- **name** — Stores the name of an entity `storage.ts:84-84`
+- **name** — Represents the name of an entity in the schema `storage.ts:102-102`
+- **name** — Stores the name of a file or a regular expression `storage.ts:147-147`
+- **name** — Stores the name or regular expression for filtering `storage.ts:175-175`
+- **name** — Stores the name as a string `storage.ts:202-202`
 - **namedChildCount** — Represents the count of named child nodes of the AST node `parser-ast-types.ts:26-26`
 - **namedChildren** — Represents the list of named child nodes of the AST node `parser-ast-types.ts:24-24`
 - **namePattern** — String for entity name pattern `query.ts:41-41`
@@ -1032,14 +1276,17 @@ The `src/types/` module provides all shared type contracts for the multi-agent c
 - **node** — Represents a node in the parsed entity stack `storage.ts:472-472`
 - **NODE_ENV** — Represents the environment in which the Node.js process is running `global.d.ts:8-8`
 - **nodes** — Represents nodes in a state flow graph `chaos-analysis.ts:134-134`
-- **nodes** — Array of Entity for path nodes `query.ts:54-54`
 - **nodes** — The nodes in the graph `query.ts:89-89`
+- **nodes** — Array of Entity for path nodes `query.ts:54-54`
 - **nodeText** — Stores the text content of the AST node `parser-ast-types.ts:78-78`
 - **nodeType** — Represents the type of the AST node `parser-ast-types.ts:77-77`
 - **nonNullAssertionCount** — Counts the number of non-null assertions `parser.ts:402-402`
-- **ntotal** — Number of vectors in the index `faiss-node.d.ts:21-21`, `faiss-node.d.ts:31-31`, `faiss-node.d.ts:42-42`, `faiss-node.d.ts:53-53`
+- **ntotal** — Number of vectors in the index `faiss-node.d.ts:21-21`
+- **ntotal** — Represents the total number of elements `faiss-node.d.ts:31-31`, `faiss-node.d.ts:42-42`, `faiss-node.d.ts:53-53`
 - **nullChecks** — Identifies null checks in the code `chaos-analysis.ts:159-159`
-- **offset** — Specifies the starting point for a query `storage.ts:151-151`, `storage.ts:165-165`, `storage.ts:180-180`
+- **offset** — Specifies the starting point for a query `storage.ts:151-151`
+- **offset** — Stores the offset for pagination `storage.ts:165-165`
+- **offset** — Represents the offset value, which can be a number or undefined `storage.ts:180-180`
 - **ok** — Indicates whether the response is successful `global.d.ts:213-213`
 - **oldEndIndex** — The old end index of an edit operation `parser-ast-types.ts:66-66`
 - **oldEndIndex** — Indicates the end index of the previous content `parser.ts:483-483`
@@ -1117,7 +1364,8 @@ The `src/types/` module provides all shared type contracts for the multi-agent c
 - **PATH** — Represents the path to executable files `global.d.ts:11-11`
 - **path** — Stores the file path for GitFileChange `layered.ts:274-274`
 - **path** — Represents the file path of a parsed entity `parser.ts:165-165`
-- **path** — Path to the code fragment `semantic.ts:86-86`, `semantic.ts:114-114`
+- **path** — Path to the code fragment `semantic.ts:86-86`
+- **path** — Stores the file path associated with the semantic entity `semantic.ts:114-114`
 - **path** — Represents the file path `storage.ts:134-134`
 - **path** — The file path of the entity `storage.ts:219-219`
 - **pattern** — Represents a state management pattern in the codebase `chaos-analysis.ts:294-294`
@@ -1128,7 +1376,8 @@ The `src/types/` module provides all shared type contracts for the multi-agent c
 - **patternRecognition** — Recognizes patterns in the Python code `parser-python-types.ts:282-291`
 - **patterns** — Stores patterns for code analysis `parser.ts:262-275`
 - **patterns** — Detects and stores patterns in the parsed content `parser.ts:457-457`
-- **payload** — Data content of the message `agent.ts:39-39`, `agent.ts:48-48`
+- **payload** — Data content of the message `agent.ts:39-39`
+- **payload** — Holds the data or information associated with the agent `agent.ts:48-48`
 - **payload** — Represents the payload of a parser task `parser.ts:496-500`
 - **performanceMetricsCount** — The count of performance metrics `storage.ts:239-239`
 - **phase** — Phase of the refactoring process `chaos-analysis.ts:215-215`
@@ -1148,7 +1397,8 @@ The `src/types/` module provides all shared type contracts for the multi-agent c
 - **protocol** — The protocol used for the embedding provider `semantic.ts:251-251`
 - **protocol** — Communication protocol used `semantic.ts:363-363`
 - **provider** — Specifies the provider used for embedding generation `semantic.ts:208-208`
-- **provider** — The provider of the embedding service `semantic.ts:278-278`, `semantic.ts:300-300`
+- **provider** — The provider of the embedding service `semantic.ts:278-278`
+- **provider** — Optionally sets the embedding provider kind for semantic operations `semantic.ts:300-300`
 - **providerOptions** — Options for the embedding provider `semantic.ts:240-258`
 - **pullTimeoutMs** — Sets the timeout for pulling data in milliseconds `semantic.ts:311-311`
 - **pythonHints** — Stores Python-specific hints or annotations `parser.ts:426-439`
@@ -1193,14 +1443,17 @@ The `src/types/` module provides all shared type contracts for the multi-agent c
 - **referrerPolicy** — Specifies the referrer policy for the request `global.d.ts:239-239`
 - **regexLiterals** — Represents the regex literals in the parsed entity `parser.ts:407-407`
 - **relatedIdentifiers** — Similar names (e.g., ["_token", "tokenValue", "savedToken"]) `chaos-analysis.ts:77-77`
-- **relationshipDelta** — Relationship changes `layered.ts:60-60`, `layered.ts:95-95`
+- **relationshipDelta** — Relationship changes `layered.ts:60-60`
+- **relationshipDelta** — Represents the delta for a relationship `layered.ts:95-95`
 - **relationshipMapping** — Enable Layer 3: Relationship mapping `parser-python-types.ts:68-68`
 - **relationshipMapping** — Maps relationships between classes and methods `parser-python-types.ts:266-279`
 - **relationships** — Defines relationships between entities `parser.ts:177-184`
 - **relationships** — Defines the relationships between different entities `parser.ts:456-456`
 - **relationships** — Map of string to Relationship for graph relationships `query.ts:64-64`
-- **relationships** — Represents a collection of relationships between entities `storage.ts:185-185`, `storage.ts:211-217`
-- **relationshipType** — Enumerates the types of relationships between entities `storage.ts:159-159`, `storage.ts:173-173`
+- **relationships** — Represents a collection of relationships between entities `storage.ts:185-185`
+- **relationships** — Represents a set of relationships with properties including id, from_id, to_id, type, and metadata `storage.ts:211-217`
+- **relationshipType** — Enumerates the types of relationships between entities `storage.ts:159-159`
+- **relationshipType** — Stores the relationship type or types for filtering `storage.ts:173-173`
 - **removeListenerCount** — Counts the number of `removeListener` calls `parser.ts:418-418`
 - **replacement** — Replacement for the refactoring operation `chaos-analysis.ts:223-223`
 - **resetPoints** — Lists points where state management can be reset `chaos-analysis.ts:409-409`
@@ -1210,7 +1463,8 @@ The `src/types/` module provides all shared type contracts for the multi-agent c
 - **results** — An array of similarity results from the semantic search `semantic.ts:62-62`
 - **retryAfterMs** — The number of milliseconds to wait before retrying the task `errors.ts:9-9`
 - **returnCount** — Not applicable `parser.ts:364-364`
-- **returns** — Represents returns in the parser system `parser.ts:306-309`, `parser.ts:328-333`
+- **returns** — Represents returns in the parser system `parser.ts:306-309`
+- **returns** — Returns an object with type and description or undefined `parser.ts:328-333`
 - **returnType** — Specifies the return type of the entity `parser.ts:195-195`
 - **returnType** — Specifies the return type of a function `storage.ts:81-81`
 - **riskLevel** — The risk level of the impact analysis `query.ts:112-112`
@@ -1218,9 +1472,17 @@ The `src/types/` module provides all shared type contracts for the multi-agent c
 - **root** — Entity for dependency tree root `query.ts:73-73`
 - **rootId** — String for graph root ID `query.ts:61-61`
 - **rootNode** — The root node of the tree-sitter tree `parser-ast-types.ts:56-56`
-- **row** — Represents the row number of the starting position `parser-ast-types.ts:18-18`, `parser-ast-types.ts:19-19`, `parser-ast-types.ts:39-39`
-- **row** — The row number of a position `parser-ast-types.ts:68-68`, `parser-ast-types.ts:69-69`, `parser-ast-types.ts:70-70`, `parser-ast-types.ts:79-79`, `parser-ast-types.ts:80-80`
-- **row** — Represents the row number of a source position `parser.ts:485-485`, `parser.ts:486-486`, `parser.ts:487-487`
+- **row** — Represents the row number of the starting position `parser-ast-types.ts:18-18`
+- **row** — The row number of a position `parser-ast-types.ts:19-19`
+- **row** — Parses a position based on row and column `parser-ast-types.ts:39-39`
+- **row** — Stores the start position as a row and column `parser-ast-types.ts:68-68`
+- **row** — Stores the old end position as a row and column `parser-ast-types.ts:69-69`
+- **row** — Stores the new end position as a row and column `parser-ast-types.ts:70-70`
+- **row** — Stores the end position as a row and column `parser-ast-types.ts:79-79`
+- **row** — Represents the row number of the end position `parser-ast-types.ts:80-80`
+- **row** — Represents the row number of a source position `parser.ts:485-485`
+- **row** — Represents the old end position of a parser entity `parser.ts:486-486`
+- **row** — Represents the new end position of a parser entity `parser.ts:487-487`
 - **scope** — Scope of the state variable `chaos-analysis.ts:75-75`
 - **scope** — Not present in the provided code `chaos-analysis.ts:325-325`
 - **score** — Evaluates the score of state variable patterns `chaos-analysis.ts:149-149`
@@ -1250,8 +1512,8 @@ The `src/types/` module provides all shared type contracts for the multi-agent c
 - **signal** — Provides a signal to abort the request `global.d.ts:242-242`
 - **signature** — Represents the signature of a parsed entity `parser.ts:166-166`
 - **signature** — Represents the signature of a function `storage.ts:98-98`
-- **similarity** — The similarity score between the query and the result `semantic.ts:44-44`
-- **similarity** — Similarity score for a code fragment `semantic.ts:85-85`, `semantic.ts:112-112`
+- **similarity** — Similarity score for a code fragment `semantic.ts:85-85`
+- **similarity** — The similarity score between the query and the result `semantic.ts:44-44`, `semantic.ts:112-112`
 - **since** — Not applicable `parser.ts:343-343`
 - **size** — Stores the size of the cached content `parser.ts:470-470`
 - **size** — Represents the size of the entity `storage.ts:113-113`
@@ -1278,16 +1540,21 @@ The `src/types/` module provides all shared type contracts for the multi-agent c
 - **start** — Represents the start location of an entity `storage.ts:76-76`
 - **startedAt** — Time when the task started `agent.ts:49-49`
 - **startIndex** — Represents the start index of the AST node `parser-ast-types.ts:20-20`
-- **startIndex** — The starting index of an edit operation `parser-ast-types.ts:65-65`, `parser-ast-types.ts:81-81`
+- **startIndex** — The starting index of an edit operation `parser-ast-types.ts:65-65`
+- **startIndex** — Stores the start index of a position `parser-ast-types.ts:81-81`
 - **startIndex** — Indicates the start index of the edits `parser.ts:482-482`
-- **startLine** — Start line number of the code fragment `semantic.ts:92-92`, `semantic.ts:119-119`
+- **startLine** — Start line number of the code fragment `semantic.ts:92-92`
+- **startLine** — Optionally indicates the starting line number of the semantic entity `semantic.ts:119-119`
 - **startPosition** — Represents the starting position of the AST node `parser-ast-types.ts:18-18`
-- **startPosition** — The starting position of an edit operation `parser-ast-types.ts:68-68`, `parser-ast-types.ts:79-79`
+- **startPosition** — The starting position of an edit operation `parser-ast-types.ts:68-68`
+- **startPosition** — Stores the start position as a row and column `parser-ast-types.ts:79-79`
 - **startPosition** — Represents the start position of a source span `parser.ts:485-485`
-- **stateIdentifier** — Identifies a specific state variable in the code `chaos-analysis.ts:132-132`, `chaos-analysis.ts:175-175`
-- **stateIdentifier** — Identifies the state for the refactoring plan `chaos-analysis.ts:256-256`
-- **stateIdentifier** — Identifies the current state of the chaos analysis `chaos-analysis.ts:276-276`
-- **stateIdentifier** — Identifies a specific state variable or pattern `chaos-analysis.ts:377-377`, `chaos-analysis.ts:389-389`
+- **stateIdentifier** — Identifies a specific state variable in the code `chaos-analysis.ts:132-132`
+- **stateIdentifier** — Identifies the state for the refactoring plan `chaos-analysis.ts:175-175`
+- **stateIdentifier** — Identifies the current state of the chaos analysis `chaos-analysis.ts:256-256`
+- **stateIdentifier** — Identifies a specific state variable or pattern `chaos-analysis.ts:276-276`
+- **stateIdentifier** — Stores the identifier for the state `chaos-analysis.ts:377-377`
+- **stateIdentifier** — Represents the identifier for the current state `chaos-analysis.ts:389-389`
 - **stateIdentifiers** — Not present in the provided code `chaos-analysis.ts:326-326`
 - **stateManagement** — State management libraries used `chaos-analysis.ts:44-44`
 - **statePattern** — Represents a state management pattern in the codebase `chaos-analysis.ts:308-308`
@@ -1328,14 +1595,18 @@ The `src/types/` module provides all shared type contracts for the multi-agent c
 - **throughput** — Rate of files parsed per unit time `parser.ts:525-525`
 - **throwNonErrorCount** — Counts the number of throws that do not throw errors `parser.ts:403-403`
 - **throws** — Not applicable `parser.ts:334-339`
-- **timeMs** — Records the total time taken for the analysis in milliseconds `parser-python-types.ts:273-273`, `parser-python-types.ts:289-289`
+- **timeMs** — Records the total time taken for the analysis in milliseconds `parser-python-types.ts:273-273`
+- **timeMs** — Optionally stores the time in milliseconds for a symbol `parser-python-types.ts:289-289`
 - **timeMs** — Stores the time in milliseconds `storage.ts:248-248`
 - **timeoutMs** — Timeout duration in milliseconds for parsing operations `parser.ts:514-514`
 - **timeoutMs** — The timeout in milliseconds for the embedding provider `semantic.ts:246-246`
 - **timeoutMs** — The timeout in milliseconds for the embedding service `semantic.ts:305-305`
 - **timeoutMs** — Timeout for API requests in milliseconds `semantic.ts:319-319`
-- **timeoutMs** — Represents an optional number for timeout in milliseconds `semantic.ts:329-329`, `semantic.ts:339-339`
-- **timeoutMs** — Timeout duration for server requests `semantic.ts:348-348`, `semantic.ts:357-357`, `semantic.ts:372-372`
+- **timeoutMs** — Represents an optional number for timeout in milliseconds `semantic.ts:329-329`
+- **timeoutMs** — Timeout duration for server requests `semantic.ts:339-339`
+- **timeoutMs** — Optionally sets the timeout duration in milliseconds for semantic operations `semantic.ts:348-348`
+- **timeoutMs** — Represents the timeout duration in milliseconds for a request `semantic.ts:357-357`
+- **timeoutMs** — Represents the timeout duration in milliseconds for a specific operation `semantic.ts:372-372`
 - **timeouts** — Number of timeout events in the pool `storage.ts:270-270`
 - **timestamp** — Time when the message was sent `agent.ts:38-38`
 - **timestamp** — Not present in the provided code `chaos-analysis.ts:314-314`
@@ -1355,7 +1626,7 @@ The `src/types/` module provides all shared type contracts for the multi-agent c
 - **toolName** — Name of the tool or system generating the performance metric `storage.ts:275-275`
 - **total** — The total number of embeddings in the pool `semantic.ts:268-268`
 - **total** — Total number of connections in the pool `storage.ts:266-266`
-- **totalChanges** — Returns the total number of vector changes in the delta `layered.ts:66-66`
+- **totalChanges** — Returns the total number of changes made to the branch `layered.ts:66-66`
 - **totalEmbeddings** — The total number of embeddings in the storage `storage.ts:237-237`
 - **totalEntities** — Counts the total number of entities processed `parser-python-types.ts:295-295`
 - **totalEntities** — Represents the total number of entities `storage.ts:186-186`
@@ -1381,32 +1652,43 @@ The `src/types/` module provides all shared type contracts for the multi-agent c
 - **totalTimeMs** — Represents the total time taken in milliseconds for Python analysis `parser-python-types.ts:298-298`
 - **tryCatch** — Identifies try-catch blocks in the code `chaos-analysis.ts:162-162`
 - **ttl** — The time-to-live duration for a cache entry `storage.ts:255-255`
-- **type** — Type of the agent, such as parser, indexer, etc `agent.ts:35-35`, `agent.ts:45-45`, `agent.ts:57-57`
+- **type** — Type of the agent, such as parser, indexer, etc `agent.ts:35-35`
+- **type** — Specifies the type of the agent `agent.ts:45-45`, `agent.ts:57-57`
 - **type** — TypeScript type `chaos-analysis.ts:74-74`
-- **type** — The type of the state variable `chaos-analysis.ts:92-92`, `chaos-analysis.ts:124-124`
-- **type** — Type of the refactoring operation `chaos-analysis.ts:221-221`, `chaos-analysis.ts:233-233`
+- **type** — The type of the state variable `chaos-analysis.ts:92-92`
+- **type** — Type of the refactoring operation `chaos-analysis.ts:124-124`
+- **type** — Specifies the type of operation, either "extract", "centralize", "remove", "replace", or "rename" `chaos-analysis.ts:221-221`
+- **type** — Specifies the type of entity, either "service", "store", "context", or "manager" `chaos-analysis.ts:233-233`
 - **type** — Represents the type of the response `global.d.ts:220-220`
 - **type** — Type of entity `layered.ts:256-256`
 - **type** — Represents the type of the AST node `parser-ast-types.ts:17-17`
 - **type** — Represents the type of a Python identifier `parser-python-types.ts:236-236`
-- **type** — Represents the type of a parsed entity `parser.ts:161-161`
-- **type** — Specifies the type of the entity `parser.ts:179-179`, `parser.ts:199-199`
-- **type** — Represents a type in the parser system `parser.ts:293-293`, `parser.ts:298-298`, `parser.ts:302-302`, `parser.ts:323-323`, `parser.ts:330-330`
-- **type** — Not applicable `parser.ts:336-336`
-- **type** — Specifies the type of the parsed entity `parser.ts:381-381`
-- **type** — Represents the type of a parser task `parser.ts:495-495`
-- **type** — Type of relationship `parser.ts:535-535`
-- **type** — Defines a type for entities in the parser system `parser.ts:554-554`, `parser.ts:559-559`, `parser.ts:581-581`
-- **type** — EntityType or array of EntityType `query.ts:39-39`
+- **type** — Specifies the type of the entity `parser.ts:179-179`
+- **type** — Represents the type of a parsed entity `parser.ts:161-161`, `parser.ts:199-199`
+- **type** — Represents a type in the parser system `parser.ts:293-293`
+- **type** — Not applicable `parser.ts:298-298`
+- **type** — Specifies the type of the parsed entity `parser.ts:302-302`
+- **type** — Represents the type of a parser task `parser.ts:323-323`
+- **type** — Type of relationship `parser.ts:330-330`
+- **type** — Defines a type for entities in the parser system `parser.ts:336-336`
+- **type** — Specifies the type of a parser entity as a SideEffectCategory `parser.ts:381-381`
+- **type** — Specifies the type of a parser entity as "parse:file", "parse:batch", or "parse:incremental" `parser.ts:495-495`
+- **type** — Specifies the type of a parser entity as ExtendedRelationshipKind `parser.ts:535-535`
+- **type** — Specifies the type of a parser entity as "class_based", "function_based", or "async" `parser.ts:554-554`
+- **type** — Specifies the type of a parser entity as "try_except", "try_finally", or "try_except_finally". `parser `parser.ts:559-559`
+- **type** — Indicates the type of the entity, either "import", "inheritance", or "reference" `parser.ts:581-581`
 - **type** — The type of the entity or relationship `query.ts:88-88`
-- **type** — Query type definitions for graph operations and traversal `query.ts:127-127`, `query.ts:181-181`
+- **type** — Query type definitions for graph operations and traversal `query.ts:127-127`
+- **type** — EntityType or array of EntityType `query.ts:39-39`, `query.ts:181-181`
 - **type** — Type of the code fragment `semantic.ts:88-88`
 - **type** — Defines the type of a semantic analysis `semantic.ts:130-130`
 - **type** — Represents the type of an entity `storage.ts:72-72`
-- **type** — Specifies the type of an entity `storage.ts:85-85`, `storage.ts:190-190`, `storage.ts:203-203`
+- **type** — Specifies the type of an entity `storage.ts:85-85`
 - **type** — Represents the type of the relationship `storage.ts:120-120`
 - **type** — Specifies the type of the graph query `storage.ts:169-169`
-- **type** — Specifies the type of the entity, such as function, class, method, etc `storage.ts:215-215`
+- **type** — Specifies the type of the entity, such as function, class, method, etc `storage.ts:190-190`
+- **type** — Stores the type as a string `storage.ts:203-203`
+- **type** — Represents the type of the entity `storage.ts:215-215`
 - **typeArguments** — Stores type arguments in a function call `parser.ts:286-286`
 - **typeAssertionCount** — Counts the number of type assertions `parser.ts:400-400`
 - **typeGuards** — Identifies type guards in the code `chaos-analysis.ts:160-160`

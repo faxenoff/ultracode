@@ -1,9 +1,79 @@
 # Overview
 
+## 🤖 Overview
+
+The `semantic` module provides tools for semantic analysis and vector indexing, used by developers and data scientists to understand and manage code patterns and embeddings. It includes functionalities for code analysis, embedding generation, and efficient vector search.
+
+## 🤖 Architecture
+
+```
+  +-------------------+
+  | code-analyzer.ts  |
+  |   +-----------------+
+  |   | semantic-cache |
+  |   |   +-----------------+
+  |   |   | embedding-generator |
+  |   |   |   +-----------------+
+  |   |   |   | embedding-warmup |
+  |   |   |   |   +-----------------+
+  |   |   |   |   | embedding-dump |
+  |   |   |   |   |   +-----------------+
+  |   |   |   |   |   | embedding-router |
+  |   |   |   |   |   |   +-----------------+
+  |   |   |   |   |   |   | embedding-generator |
+  |   |   |   |   |   |   |   +-----------------+
+  |   |   |   |   |   |   |   | embedding-warmup |
+  |   |   |   |   |   |   |   |   +-----------------+
+  |   |   |   |   |   |   |   |   | embedding-dump |
+  |   |   |   |   |   |   |   |   |   +-----------------+
+  |   |   |   |   |   |   |   |   |   | embedding-router |
+  |   |   |
+  |   |   |   +-----------------+
+  |   |   |   | embedding-generator |
+  |   |   |   |   +-----------------+
+  |   |   |   |   | embedding-warmup |
+  |   |   |   |   |   +-----------------+
+  |   |   |   |   |   | embedding-dump |
+  |   |   |   |   |   |   +-----------------+
+  |   |   |   |   |   |   | embedding-router |
+  |   |   |   |   |   |   |   +-----------------+
+  |   |   |   |   |   |   |   | embedding-generator |
+  |   |   |   |   |   |   |   |   +-----------------+
+  |   |   |   |   |   |   |   |   | embedding-warmup |
+  |   |   |   |   |   |   |   |   |   +-----------------+
+  |   |   |   |   |   |   |   |   |   | embedding-dump |
+  |   |   |   |   |   |   |   |   |   |   +-----------------+
+  |   |   |   |   |   |   |   |   |   |   | embedding-router |
+  |   |   |   |   |   |   |   |   |   |   |   +-----------------+
+  |   |   |   |   |   |   |   |   |   |   |   | embedding-generator |
+  |   |   |   |   |   |   |   |   |   |   |   |   +-----------------+
+  |   |   |   |   |   |   |   |   |   |   |   |   | embedding-warmup |
+  |   |   |   |   |   |   |   |   |   |   |   |   |   +-----------------+
+  |   |   |   |   |   |   |   |   |   |   |   |   |   | embedding-dump |
+  |   |   |   |   |   |   |   |   |   |   |   |   |   |   +-----------------+
+  |   |   |   |   |   |   |   |   |   |   |   |   |   |   | embedding-router |
+  |   |   |   |   |   |   |   |   |   |   |   |   |   |   |   +-----------------+
+  |   |   |   |   |   |   |   |   |   |   |   |   |   |   |   | embedding-generator |
+  |   |   |   |   |   |   |   |   |   |   |   |   |   |   |   |   +-----------------+
+  |   |   |   |   |   |   |   |   |   |   |   |   |   |   |   |   | embedding-warmup |
+  |   |   |   |   |   |   |   |   |   |   |   |   |   |   |   |   |   +-----------------+
+  |   |   |   |   |   |   |   |   |   |   |   |   |   |   |   |   |   | embedding-dump |
+  |   |   |   |   |   |   |   |   |   |   |   |   |   |   |   |   |   |   +-----------------+
+  |   |   |   |   |   |   |   |   |   |   |   |   |   |   |   |   |   |   | embedding-router |
+  |   |   |   |   |   |   |   |   |   |   |   |   |   |   |   |   |   |   |   +-----------------+
+  |   |   |   |   |   |   |   |   |   |   |   |   |   |   |   |   |   |   |   | embedding-generator |
+  |   |   |   |   |   |   |   |   |   |   |   |   |   |   |   |   |   |   |   |   +-----------------+
+  |   |   |   |   |   |   |   |   |   |   |   |   |   |   |   |   |   |   |   |   | embedding-warmup |
+  |   |   |   |   |   |   |   |   |   |   |   |   |   |   |   |   |   |   |   |   |   +-----------------+
+  |   |   |   |   |   |   |   |   |   |   |   |   |   |   |   |   |   |   |   |   |   | embedding-dump |
+  |   |   |   |   |   |   |   |   |   |   |   |   |   |
+```
+
 ## 🤖 Entity Listing
 
 ### Function
-- **all** — Not present in the provided code `code-analyzer.ts:100-100`, `code-analyzer.ts:100-100`
+- **all** — Not present in the provided code `code-analyzer.ts:100-100`
+- **all** — Parses code to find and replace matches of patterns in the code `code-analyzer.ts:100-100`
 - **allDocsPhase1** — Stores all documents in phase 1 `vector-store.ts:708-708`
 - **allDocsPhase2** — Contains all documents in phase 2 `vector-store.ts:794-794`
 - **allFilePaths** — Stores all file paths of documents `vector-store.ts:637-637`
@@ -23,14 +93,22 @@
 - **classifyTier** — Classify an entity into a quantization tier based on type and connectivity `quantization.ts:39-43`
 - **cleanupDump** — Removes the dump directory and logs the cleanup action `embedding-dump.ts:150-161`
 - **cnt** — Counts the number of matches for a regular expression in the provided code `code-analyzer.ts:66-68`
-- **completed** — Indicates if the batch processing is completed `embedding-accumulator.ts:583-583`, `embedding-accumulator.ts:583-583`
+- **completed** — Indicates if the batch processing is completed `embedding-accumulator.ts:583-583`
+- **completed** — A promise that resolves to an array of completed results from inFlight promises `embedding-accumulator.ts:583-583`
 - **computeDot** — Computes the dot product of two vectors `native-vector-index.ts:398-404`
 - **computeNorm** — Computes the L2 norm of a vector `native-vector-index.ts:407-409`
 - **computeRrf** — Computes the relevance ranking for documents based on query terms `hybrid-search.ts:225-225`
 - **createChildEntity** — Creates a child entity from a parent and child parsed entity `entity-expander.ts:111-123`
 - **createHeaderEntity** — Creates a header entity from a parsed entity `entity-expander.ts:84-106`
-- **data** — Represents the binary data of an embedding `embedding-accumulator.ts:846-846`, `embedding-accumulator.ts:847-847`, `embedding-accumulator.ts:848-848`, `embedding-accumulator.ts:849-849`, `embedding-accumulator.ts:852-852`, `embedding-accumulator.ts:853-853`, `embedding-accumulator.ts:854-854`, `embedding-accumulator.ts:855-855`, `embedding-accumulator.ts:858-863`
-- **data** — Stores binary embeddings for efficient FAISS insertion `embedding-accumulator.ts:861-861`
+- **data** — Represents the binary data of an embedding `embedding-accumulator.ts:846-846`
+- **data** — Stores binary embeddings for efficient FAISS insertion `embedding-accumulator.ts:847-847`
+- **data** — Calculates the maximum and minimum character lengths of text strings `embedding-accumulator.ts:848-848`
+- **data** — Categorizes text strings by their character lengths `embedding-accumulator.ts:849-849`
+- **data** — Categorizes text strings by their character lengths. `embedding `embedding-accumulator.ts:852-852`
+- **data** — Calculates the number of text strings longer than 1000 characters `embedding-accumulator.ts:853-853`
+- **data** — Maps each text to an object containing its ID, character count, truncated character count, and a preview `embedding-accumulator.ts:854-854`, `embedding-accumulator.ts:858-863`
+- **data** — Determines the truncated character count based on the sorted batch index `embedding-accumulator.ts:855-855`
+- **data** — Sets the truncated character count based on the sorted batch index `embedding-accumulator.ts:861-861`
 - **dedupeById** — Removes duplicate embeddings by their IDs `vector-store.ts:43-47`
 - **defaultTermMatchScorer** — Defines the default scorer for term matching in the search process `hybrid-search.ts:330-340`
 - **detectOptimalThreads** — Detects optimal thread count based on P-cores (Performance cores) for llama.cpp server processes `llamacpp-server-manager.ts:43-145`
@@ -51,7 +129,8 @@
 - **expandLargeEntities** — Expands large entities by adding class headers and child entities, logging the count of expanded and added children `entity-expander.ts:132-166`
 - **extractCodeMetrics** — Extracts code metrics from the provided code string `code-analyzer.ts:70-81`
 - **extractEntities** — Not present in the provided code `code-analyzer.ts:94-102`
-- **files** — Filters and sorts files in the dump directory that match the batch file pattern `embedding-dump.ts:97-97`, `embedding-dump.ts:127-127`
+- **files** — Filters and sorts files in the dump directory that match the batch file pattern `embedding-dump.ts:97-97`
+- **files** — Parses the directory to find files starting with "batch-" and ending with ".json" `embedding-dump.ts:127-127`
 - **find** — Finds the root of a node in a union-find structure `code-analyzer.ts:382-395`
 - **findDylib** — Function to find the libmlx_embed.dylib library in known locations `mlx-native.ts:40-59`
 - **findMlxFramework** — Function to find the libmlx.dylib framework in known locations `mlx-native.ts:64-84`
@@ -123,7 +202,9 @@
 - **sortedBatch** — Sorts the batch of embeddings for efficient processing `embedding-accumulator.ts:493-493`
 - **startEmbeddingWarmup** — Starts embedding provider warmup in background `embedding-warmup.ts:46-117`
 - **strong** — Strong similarity threshold `code-analyzer.ts:211-211`
-- **table** — Represents a table of code metrics `code-analyzer.ts:364-364`, `code-analyzer.ts:365-365`, `code-analyzer.ts:366-366`
+- **table** — Represents a table of code metrics `code-analyzer.ts:364-364`
+- **table** — Checks if the code has a function with more than 50 lines `code-analyzer.ts:365-365`
+- **table** — Validates if the code contains a complex condition with an if statement having more than 50 characters in the parentheses `code-analyzer.ts:366-366`
 - **takeWarmupGenerator** — Takes and returns the warmup generator, resetting related variables `embedding-warmup.ts:155-161`
 - **tierBitWidth** — Map tier to TurboQuant bit width `quantization.ts:46-55`
 - **toSimilarCode** — Not present in the provided code `code-analyzer.ts:113-130`
@@ -397,7 +478,7 @@
 - **setVectorProvider** — Sets the vector provider for embedding accumulation `embedding-accumulator.ts:148-153`
 - **siftDown** — Moves an element down in a heap to maintain heap property `ivf-index.ts:101-115`
 - **simType** — Similarity type for code comparison `code-analyzer.ts:351-354`
-- **size** — Returns the total size of the cache, including embeddings, results, and miscellaneous data `semantic-cache.ts:178-180`
+- **size** — Represents the size of the cache, which is the sum of the sizes of embeddings, results, and miscellaneous data `semantic-cache.ts:178-180`
 - **sortDescending** — Sorts an array in descending order `ivf-index.ts:117-121`
 - **start** — Initiates the llama.cpp server process `llamacpp-server-manager.ts:382-601`
 - **start** — Starts the MLX server process `mlx-server-manager.ts:257-408`
@@ -600,13 +681,14 @@
 - **content** — Content associated with the binary embedding `embedding-accumulator.ts:39-39`
 - **content** — Content associated with an embedding `embedding-dump.ts:22-22`
 - **content** — Represents the content of an embedding item `embedding-router.ts:273-273`
-- **content** — A string or undefined representing the content `hybrid-search.ts:23-23`
 - **content** — Stores the content of a search result `hybrid-search.ts:31-31`
+- **content** — A string or undefined representing the content `hybrid-search.ts:23-23`
 - **content** — Chunk content `smart-chunker.ts:25-25`
 - **contentCache** — Stores content associated with vectors `native-vector-provider.ts:69-69`
 - **contextSize** — Sets the context size for the llama.cpp server `llamacpp-server-manager.ts:157-157`
 - **coocTerms** — An array of objects with term and weight properties `hybrid-search.ts:12-12`
-- **count** — Tracks the number of accumulated embeddings `embedding-accumulator.ts:402-402`, `embedding-accumulator.ts:557-557`
+- **count** — Tracks the number of accumulated embeddings `embedding-accumulator.ts:402-402`
+- **count** — Represents a promise that holds an array of vector embeddings and a count `embedding-accumulator.ts:557-557`
 - **count** — Counts the number of elements in a collection `ivf-index.ts:131-131`
 - **count** — Returns the count of vectors in the store `vector-store.ts:1482-1482`
 - **counters** — Counters for cache hits, misses, and evictions `semantic-cache.ts:62-62`
@@ -630,8 +712,8 @@
 - **dimension** — The dimension of the vectors stored in the index `native-vector-index.ts:37-37`
 - **dimensions** — Vector dimensions for embeddings `embedding-accumulator.ts:57-57`
 - **dimensions** — Dimensions for index initialization `embedding-router.ts:29-29`
-- **dimensions** — Number of dimensions for the vectors `native-vector-provider.ts:33-33`
 - **dimensions** — Returns the number of dimensions for vectors `native-vector-provider.ts:271-271`
+- **dimensions** — Number of dimensions for the vectors `native-vector-provider.ts:33-33`
 - **diskSizeBytes** — Returns the total size of the dump directory in bytes `embedding-dump.ts:120-120`
 - **doc** — Represents a document `vector-store.ts:797-797`
 - **docId** — Represents the ID of a document `vector-store.ts:783-783`
@@ -645,10 +727,11 @@
 - **embeddingGen** — Generates embeddings for code snippets `code-analyzer.ts:134-134`
 - **embeddingGen** — A generator for embeddings used in hybrid search `hybrid-search.ts:85-85`
 - **embeddingGenerator** — Generator for creating embeddings from text inputs `embedding-accumulator.ts:85-85`
-- **embeddings** — Stores the accumulated embeddings `embedding-accumulator.ts:402-402`, `embedding-accumulator.ts:557-557`
+- **embeddings** — Stores the accumulated embeddings `embedding-accumulator.ts:402-402`
+- **embeddings** — Represents a promise that holds an array of vector embeddings and a count `embedding-accumulator.ts:557-557`
 - **embeddings** — Array of embeddings in the batch `embedding-dump.ts:30-30`
-- **embeddings** — LRUCache for storing embeddings `semantic-cache.ts:58-58`
-- **embeddings** — Manages cache for vector embeddings `semantic-cache.ts:225-225`, `semantic-cache.ts:237-237`
+- **embeddings** — Manages cache for vector embeddings `semantic-cache.ts:225-225`
+- **embeddings** — LRUCache for storing embeddings `semantic-cache.ts:58-58`, `semantic-cache.ts:237-237`
 - **embeddingStats** — Statistics related to embeddings `embedding-accumulator.ts:128-139`
 - **enabled** — Indicates whether the llama.cpp server is enabled or not `llamacpp-server-manager.ts:153-153`
 - **enabled** — Boolean indicating whether the MLX server is enabled `mlx-server-manager.ts:28-28`
@@ -679,7 +762,8 @@
 - **flushTimer** — Timer for periodic flush `embedding-router.ts:55-55`
 - **functions** — Counts the number of functions in the provided code `code-analyzer.ts:27-27`
 - **general** — Represents general cache information `semantic-cache.ts:200-200`
-- **general** — Manages general cache entries `semantic-cache.ts:227-227`, `semantic-cache.ts:239-239`
+- **general** — Manages general cache entries `semantic-cache.ts:227-227`
+- **general** — Stores an array of key-value pairs for general cache entries `semantic-cache.ts:239-239`
 - **gpuClient** — GPU client for the Embedding Router `embedding-router.ts:53-53`
 - **grpcPort** — Port number for gRPC API of OVMS Native `ovms-native-manager.ts:34-34`
 - **handle** — Handle to the loaded MLX Native library `mlx-native.ts:29-29`
@@ -693,11 +777,13 @@
 - **healthCheckIntervalMs** — Defines the interval in milliseconds for health checks of the llama.cpp server `llamacpp-server-manager.ts:162-162`
 - **healthCheckIntervalMs** — Optional number representing the interval in milliseconds for health checks `mlx-server-manager.ts:34-34`
 - **healthCheckIntervalMs** — Interval in milliseconds for health checks of the OVMS Native process `ovms-native-manager.ts:35-35`
-- **healthCheckRunning** — Indicates whether a health check is currently running `llamacpp-server-manager.ts:225-225`, `mlx-server-manager.ts:74-74`, `ovms-native-manager.ts:71-71`
+- **healthCheckRunning** — Indicates whether a health check is currently running `llamacpp-server-manager.ts:225-225`
+- **healthCheckRunning** — Indicates whether the health check is currently running `mlx-server-manager.ts:74-74`, `ovms-native-manager.ts:71-71`
 - **healthCheckTimer** — Represents the timer for health checks `llamacpp-server-manager.ts:227-227`
 - **healthCheckTimer** — Manages the interval for health checks `mlx-server-manager.ts:76-76`
 - **healthCheckTimer** — Not present in the provided code `ovms-native-manager.ts:571-571`
-- **hiddenDim** — Hidden dimension for the model, defaulting to 384 `mlx-native.ts:25-25`, `mlx-native.ts:31-31`
+- **hiddenDim** — Hidden dimension for the model, defaulting to 384 `mlx-native.ts:25-25`
+- **hiddenDim** — Represents the dimension of the hidden layer in the model `mlx-native.ts:31-31`
 - **hitRate** — Represents the hit rate of the cache `embedding-generator.ts:319-319`
 - **hitRate** — Hit rate of the cache `semantic-cache.ts:32-32`
 - **hits** — Represents the number of cache hits `embedding-generator.ts:319-319`
@@ -705,11 +791,13 @@
 - **hnswM** — HNSW M parameter for the GPU subprocess `embedding-router.ts:33-33`
 - **host** — Optional string representing the host address for the MLX server `mlx-server-manager.ts:31-31`
 - **hyperplanes** — Flat hyperplane matrix [64 × dim] `hash-filter.ts:34-34`
-- **id** — Identifier for the binary embedding `embedding-accumulator.ts:37-37`, `embedding-accumulator.ts:48-48`
-- **id** — Represents the unique identifier for an embedding `embedding-accumulator.ts:825-825`, `embedding-accumulator.ts:827-827`
+- **id** — Represents the unique identifier for an embedding `embedding-accumulator.ts:48-48`, `embedding-accumulator.ts:825-825`
+- **id** — Identifier for the binary embedding `embedding-accumulator.ts:37-37`, `embedding-accumulator.ts:827-827`
 - **id** — Unique identifier for an embedding `embedding-dump.ts:21-21`
-- **id** — Represents the unique identifier for an embedding item `embedding-router.ts:273-273`, `embedding-router.ts:297-297`
-- **id** — A string representing the unique identifier `hybrid-search.ts:18-18`, `hybrid-search.ts:27-27`
+- **id** — Represents the unique identifier for an embedding item `embedding-router.ts:273-273`
+- **id** — Returns a promise containing an array of arrays, each containing an object with an id and a score `embedding-router.ts:297-297`
+- **id** — A string representing the unique identifier `hybrid-search.ts:18-18`
+- **id** — Stores a unique identifier for an entity `hybrid-search.ts:27-27`
 - **id** — Chunk ID: entityId#chunk_N `smart-chunker.ts:23-23`
 - **id** — Represents the ID of a vector `vector-store.ts:605-605`
 - **id** — Represents the unique identifier for a vector `vector-store.ts:1456-1456`
@@ -735,8 +823,8 @@
 - **instance** — A static property to hold the single instance of the GlobalEmbeddingCache class `global-embedding-cache.ts:42-42`
 - **invSqrtPadded** — Computes the inverse square root of the padded dimension `turbo-quant.ts:150-150`
 - **isFlushing** — Boolean indicating if the router is currently flushing `embedding-router.ts:57-57`
-- **isInitialized** — Boolean indicating if the router is initialized `embedding-router.ts:56-56`
 - **isInitialized** — Indicates whether the embedding router has been initialized `embedding-router.ts:392-392`
+- **isInitialized** — Boolean indicating if the router is initialized `embedding-router.ts:56-56`
 - **isInitialized** — Indicates whether the provider has been initialized `native-vector-provider.ts:73-73`
 - **isInitialized** — Indicates if the vector store is initialized `vector-store.ts:63-63`
 - **isInitializing** — Boolean indicating whether the embedding generator is initializing `embedding-generator.ts:85-85`
@@ -773,7 +861,7 @@
 - **lines** — Counts the number of lines in the provided code `code-analyzer.ts:24-24`
 - **lines** — Indicates the number of lines in an entity `entity-expander.ts:217-217`
 - **list** — Index of the list in the inverted file `ivf-index.ts:50-50`
-- **lists** — Represents an array of inverted lists `ivf-index.ts:164-164`
+- **lists** — Initializes an empty array to store inverted lists `ivf-index.ts:164-164`
 - **loaded** — Boolean indicating whether the MLX Native library is loaded `mlx-native.ts:32-32`
 - **loops** — Counts the number of loops in the provided code `code-analyzer.ts:26-26`
 - **masterIdx** — Index of the master list in the inverted file `ivf-index.ts:45-45`
@@ -787,12 +875,15 @@
 - **maxTokens** — Maximum tokens for a single entity (from embedding provider) `entity-expander.ts:25-25`, `entity-expander.ts:225-225`
 - **maxTokens** — Max tokens per chunk (from provider) `smart-chunker.ts:14-14`
 - **mcp** — Represents an optional object with an embedding configuration `embedding-warmup.ts:37-37`
-- **memory** — Represents memory usage `semantic-cache.ts:198-198`, `semantic-cache.ts:199-199`, `semantic-cache.ts:200-200`
+- **memory** — Represents memory usage `semantic-cache.ts:198-198`
+- **memory** — Represents the memory usage of the cache `semantic-cache.ts:199-199`
+- **memory** — Returns the total memory usage of the cache by summing the memory usage of embeddings, results, and miscellaneous data `semantic-cache.ts:200-200`
 - **memoryUsage** — Memory usage of the cache `semantic-cache.ts:33-33`
 - **memoryUsage** — Returns the memory usage of the vector store `vector-store.ts:1409-1409`
 - **mentions** — Tracks mentions of entities `vector-store.ts:788-788`
 - **metadata** — Metadata of a cached entity `code-analyzer.ts:184-184`
-- **metadata** — Optional metadata for the binary embedding `embedding-accumulator.ts:40-40`, `embedding-accumulator.ts:50-50`
+- **metadata** — Optional metadata for the binary embedding `embedding-accumulator.ts:40-40`
+- **metadata** — Optional metadata field that can store any key-value pairs `embedding-accumulator.ts:50-50`
 - **metadata** — Additional metadata for an embedding `embedding-dump.ts:24-24`
 - **metadata** — Represents the metadata of an embedding item `embedding-router.ts:273-273`
 - **metadata** — Stores metadata associated with a search result `hybrid-search.ts:32-32`
@@ -804,24 +895,26 @@
 - **misses** — Represents the number of cache misses `embedding-generator.ts:319-319`
 - **misses** — Number of cache misses `semantic-cache.ts:30-30`
 - **mlock** — Indicates whether the llama.cpp server should lock memory `llamacpp-server-manager.ts:167-167`
-- **mode** — Specifies the mode of the llama.cpp server, either for embeddings or LLM `llamacpp-server-manager.ts:154-154`
 - **mode** — Represents the mode in which the server is running `llamacpp-server-manager.ts:182-182`
+- **mode** — Specifies the mode of the llama.cpp server, either for embeddings or LLM `llamacpp-server-manager.ts:154-154`
 - **model** — Determines the model name for embedding warmup `embedding-warmup.ts:37-37`
 - **model** — A parameter to specify the model used for embeddings `global-embedding-cache.ts:81-81`
-- **model** — String representing the model used by the MLX server `mlx-server-manager.ts:29-29`
 - **model** — Represents the model used by the MLX embedding server `mlx-server-manager.ts:47-47`
+- **model** — String representing the model used by the MLX server `mlx-server-manager.ts:29-29`
 - **modelDir** — Path to the directory containing the model.safetensors and config.json files `mlx-native.ts:22-22`
 - **modelPath** — Represents an optional string for the model path `embedding-warmup.ts:36-36`
-- **modelPath** — Stores the path to the model used by the llama.cpp server `llamacpp-server-manager.ts:155-155`
 - **modelPath** — Represents the path to the model used by the server `llamacpp-server-manager.ts:183-183`
+- **modelPath** — Stores the path to the model used by the llama.cpp server `llamacpp-server-manager.ts:155-155`
 - **ms** — Stores the time in milliseconds for a batch log entry `embedding-accumulator.ts:138-138`
 - **ms** — Represents the time in milliseconds `embedding-accumulator.ts:812-812`
 - **n** — Stores the number of items in a batch log entry `embedding-accumulator.ts:138-138`
 - **n** — Represents the number of embeddings accumulated `embedding-accumulator.ts:812-812`
-- **name** — Stores the name of the largest entity `entity-expander.ts:179-179`, `entity-expander.ts:184-184`
-- **name** — Represents the name of an entity `entity-expander.ts:213-213`, `vector-store.ts:897-897`
+- **name** — Stores the name of the largest entity `entity-expander.ts:179-179`
+- **name** — Represents the name of an entity `entity-expander.ts:184-184`
+- **name** — Stores the name of the entity `entity-expander.ts:213-213`
 - **name** — A string representing the name `hybrid-search.ts:21-21`
 - **name** — Represents the name of a document or entity `vector-store.ts:605-605`
+- **name** — Stores the name of an entity along with its entity and reference information `vector-store.ts:897-897`
 - **needsExpansion** — Stores the number of entities that need expansion `entity-expander.ts:176-176`
 - **newestEntry** — Returns the newest entry in the store `vector-store.ts:1320-1320`
 - **nextIdx** — Tracks the next available index for new vectors `native-vector-provider.ts:66-66`
@@ -882,17 +975,18 @@
 - **restartCount** — Number representing the count of restarts for the MLX server `mlx-server-manager.ts:44-44`
 - **restartCount** — Count of restarts for the OVMS Native process `ovms-native-manager.ts:45-45`
 - **restPort** — Port number for REST API of OVMS Native `ovms-native-manager.ts:33-33`
-- **results** — LRUCache for storing similarity results `semantic-cache.ts:59-59`
 - **results** — Represents search results `semantic-cache.ts:199-199`
-- **results** — Manages cache for similarity results `semantic-cache.ts:226-226`, `semantic-cache.ts:238-238`
+- **results** — Manages cache for similarity results `semantic-cache.ts:226-226`
+- **results** — LRUCache for storing similarity results `semantic-cache.ts:59-59`, `semantic-cache.ts:238-238`
 - **results** — Stores the results of a search operation `vector-store.ts:454-454`
 - **reverseMap** — Maps master indices to list positions for efficient removal `ivf-index.ts:166-166`
 - **saved** — Indicates whether the vector store has been saved `vector-store.ts:511-511`
 - **saveMutex** — Ensures exclusive access to save operations `native-vector-provider.ts:78-78`
 - **scheduleInFlight** — Schedules in-flight processing `embedding-accumulator.ts:117-117`
-- **score** — Represents the score associated with an embedding item `embedding-router.ts:273-273`, `embedding-router.ts:297-297`
-- **score** — A number representing the score `hybrid-search.ts:22-22`
+- **score** — Represents the score associated with an embedding item `embedding-router.ts:273-273`
+- **score** — Returns a promise containing an array of arrays, each containing an object with an id and a score `embedding-router.ts:297-297`
 - **score** — Represents the score of a search result `hybrid-search.ts:28-28`
+- **score** — A number representing the score `hybrid-search.ts:22-22`
 - **score** — Score of the result in the IVF search `ivf-index.ts:46-46`
 - **score** — Stores the similarity score of a vector `native-vector-index.ts:29-29`
 - **searchMetrics** — Metrics for the search process `hybrid-search.ts:88-92`
@@ -909,8 +1003,9 @@
 - **signFlips** — Stores the sign flips for the Hadamard transform `turbo-quant.ts:151-151`
 - **sim** — Represents a similarity score between vectors `ivf-index.ts:427-427`
 - **size** — Represents the size of the cache `embedding-generator.ts:319-319`
-- **size** — Current size of the cache `semantic-cache.ts:28-28`
-- **size** — Returns the number of items in the cache `semantic-cache.ts:198-198`, `semantic-cache.ts:199-199`, `semantic-cache.ts:200-200`
+- **size** — Returns the number of items in the cache `semantic-cache.ts:198-198`
+- **size** — Current size of the cache `semantic-cache.ts:28-28`, `semantic-cache.ts:199-199`
+- **size** — Returns the total size of the cache by summing the sizes of embeddings, results, and miscellaneous data `semantic-cache.ts:200-200`
 - **start** — Represents the start of a date range `vector-store.ts:1031-1031`
 - **startedAt** — Represents the timestamp when the server started `llamacpp-server-manager.ts:178-178`
 - **startedAt** — Number representing the timestamp when the MLX server started `mlx-server-manager.ts:43-43`
@@ -930,22 +1025,25 @@
 - **suggestion** — Offers a suggestion for improving the code pattern `code-analyzer.ts:36-36`
 - **syncFlushPromise** — Promise for synchronizing flush operations `embedding-accumulator.ts:110-110`
 - **tei** — Represents an optional unknown value for the embedding configuration `embedding-warmup.ts:37-37`
-- **term** — A string representing a term `hybrid-search.ts:12-12`, `hybrid-search.ts:13-13`
-- **text** — Text content for the text item `embedding-accumulator.ts:49-49`
-- **text** — Represents the text content of an embedding `embedding-accumulator.ts:825-825`, `embedding-accumulator.ts:827-827`
-- **text** — Normalized text input for embedding generation `embedding-generator.ts:58-58`
+- **term** — A string representing a term `hybrid-search.ts:12-12`
+- **term** — Represents a term with its associated weight `hybrid-search.ts:13-13`
+- **text** — Represents the text content of an embedding `embedding-accumulator.ts:825-825`
+- **text** — Text content for the text item `embedding-accumulator.ts:49-49`, `embedding-accumulator.ts:827-827`
 - **text** — Represents the text input for embedding generation `embedding-generator.ts:225-225`
+- **text** — Normalized text input for embedding generation `embedding-generator.ts:58-58`
 - **textQueue** — Queue for storing text items to be processed for embeddings `embedding-accumulator.ts:91-91`
 - **textToHash** — A private Map to map text to hash values `global-embedding-cache.ts:44-44`
 - **threads** — Represents the number of threads used by the server `llamacpp-server-manager.ts:169-169`
 - **threadsBatch** — Represents the batch size for thread allocation `llamacpp-server-manager.ts:170-170`
 - **threshold** — Sets a similarity threshold for search results `vector-store.ts:1029-1029`
 - **tiers** — An array of quantization tiers for the vectors `native-vector-index.ts:43-43`
-- **timeMs** — Tracks the time taken for operations `vector-store.ts:400-400`, `vector-store.ts:433-433`
+- **timeMs** — Tracks the time taken for operations `vector-store.ts:400-400`
+- **timeMs** — Represents the time in milliseconds `vector-store.ts:433-433`
 - **timestamp** — Timestamp of the batch `embedding-dump.ts:31-31`
 - **timestamp** — Timestamp of when the embedding was generated `embedding-generator.ts:60-60`
 - **tokenCount** — Approximate token count `smart-chunker.ts:33-33`
-- **tokens** — Stores the tokens count of the largest entity `entity-expander.ts:179-179`, `entity-expander.ts:184-184`
+- **tokens** — Stores the tokens count of the largest entity `entity-expander.ts:179-179`
+- **tokens** — Represents the largest token entity with its name and count `entity-expander.ts:184-184`
 - **total** — Stores the total number of entities `entity-expander.ts:175-175`
 - **total** — A property to get the total number of entries in the cache `global-embedding-cache.ts:186-186`
 - **totalBytes** — Stores the total byte count of all accumulated embeddings `embedding-accumulator.ts:68-68`
@@ -954,7 +1052,8 @@
 - **totalEmbeddings** — Returns the total number of embeddings `vector-store.ts:1317-1317`
 - **totalEncoded** — Stores the total number of encoded vectors in the IVF index `ivf-index.ts:168-168`
 - **totalEntities** — Stores the total number of entities `entity-expander.ts:229-229`
-- **totalVectors** — Returns the total number of vectors `native-vector-provider.ts:270-270`, `vector-store.ts:1322-1322`
+- **totalVectors** — Returns the total number of vectors `native-vector-provider.ts:270-270`
+- **totalVectors** — Stores the total number of vectors `vector-store.ts:1322-1322`
 - **tq** — Represents TurboQuant parameters for the IVF index `ivf-index.ts:163-163`
 - **tq** — Represents the TurboQuant quantizer `turbo-quant.ts:530-530`
 - **tqBits** — Number of bits used for TurboQuant encoding `ivf-index.ts:38-38`
@@ -974,10 +1073,12 @@
 - **unsavedCount** — Counts the number of unsaved vectors `native-vector-provider.ts:72-72`
 - **updateAgeOnGet** — Whether to update the age of cache entries on get `semantic-cache.ts:23-23`
 - **updateAgeOnHas** — Whether to update the age of cache entries on has `semantic-cache.ts:24-24`
-- **usedFaiss** — Indicates whether Faiss is being used `vector-store.ts:398-398`, `vector-store.ts:431-431`
-- **usedFaiss** — Indicates whether Faiss is being used as the vector store backend `vector-store.ts:454-454`
+- **usedFaiss** — Indicates whether Faiss is being used `vector-store.ts:398-398`
+- **usedFaiss** — Indicates whether Faiss is being used as the vector store backend `vector-store.ts:431-431`
+- **usedFaiss** — Returns a promise containing results and a boolean indicating whether Faiss was used `vector-store.ts:454-454`
 - **useLayeredIndex** — Determines if the layered index is used `vector-store.ts:60-60`
-- **useQjl** — Boolean indicating whether to use QJL-corrected search `ivf-index.ts:41-41`, `native-vector-provider.ts:47-47`
+- **useQjl** — Boolean indicating whether to use QJL-corrected search `ivf-index.ts:41-41`
+- **useQjl** — QJL-corrected search: +1-5% recall, ~15% CPU overhead (default: true) `native-vector-provider.ts:47-47`
 - **vecCapacity** — The maximum number of vectors the index can store `native-vector-index.ts:46-46`
 - **vecCount** — The number of vectors currently stored in the index `native-vector-index.ts:45-45`
 - **vector** — Vector representation of a code snippet `code-analyzer.ts:185-185`
@@ -988,5 +1089,6 @@
 - **vectorsFlat** — A contiguous array of vectors in a flat format `native-vector-index.ts:44-44`
 - **vectorStore** — Stores vector representations of code snippets `code-analyzer.ts:133-133`
 - **vectorStore** — A store for vector data used in hybrid search `hybrid-search.ts:84-84`
-- **weight** — A number representing the weight of a term `hybrid-search.ts:12-12`, `hybrid-search.ts:13-13`
+- **weight** — A number representing the weight of a term `hybrid-search.ts:12-12`
+- **weight** — Represents the weight associated with a term `hybrid-search.ts:13-13`
 - **wouldExpand** — Stores the number of entities that would be expanded `entity-expander.ts:177-177`

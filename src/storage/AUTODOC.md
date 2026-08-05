@@ -98,11 +98,18 @@ The `src/storage` module is designed to be a robust foundation for applications 
 - **runBatch** — Not present in the provided code `native-sqlite-client.ts:108-130`
 - **setGlobalProjectContext** — Sets the global project context, potentially resetting graph storage if the project hash changes `graph-storage-factory.ts:262-283`
 - **toFetch** — Represents a fetch operation `graph-storage-libsql.ts:572-572`
-- **vectorOpsContext** — Manages vector operations context `graph-adapter.ts:159-159`, `graph-adapter.ts:160-160`, `graph-adapter.ts:161-161`, `graph-adapter.ts:162-162`, `graph-adapter.ts:163-163`, `graph-adapter.ts:164-164`, `graph-adapter.ts:167-167`
+- **vectorOpsContext** — Manages vector operations context `graph-adapter.ts:159-159`
+- **vectorOpsContext** — Returns the embedding column name `graph-adapter.ts:160-160`
+- **vectorOpsContext** — Converts a vector to a string `graph-adapter.ts:161-161`
+- **vectorOpsContext** — Converts a string to a vector `graph-adapter.ts:162-162`
+- **vectorOpsContext** — Encodes metadata `graph-adapter.ts:163-163`
+- **vectorOpsContext** — Decodes metadata `graph-adapter.ts:164-164`
+- **vectorOpsContext** — Ensures project vector index `graph-adapter.ts:167-167`
 - **writeCache** — Stores and retrieves cached data `graph-adapter.ts:134-134`
 - **writeGraph** — Method to write to the graph `graph-adapter.ts:131-131`
 - **writeSemantic** — Method to write semantic data `graph-adapter.ts:133-133`
-- **yieldToEventLoop** — Helper function to yield to the event loop between batches `batch-operations-libsql.ts:22-22`, `batch-operations-libsql.ts:22-22`
+- **yieldToEventLoop** — Helper function to yield to the event loop between batches `batch-operations-libsql.ts:22-22`
+- **yieldToEventLoop** — Returns a promise that resolves after yielding to the event loop `batch-operations-libsql.ts:22-22`
 
 ### Method
 - **abortStaging** — Aborts staging changes `graph-adapter.ts:777-779`
@@ -364,7 +371,9 @@ The `src/storage` module is designed to be a robust foundation for applications 
 - **_readonly** — Indicates if the database is read-only `sqlite-adapter.ts:142-142`
 - **adapter** — Private property to store the graph adapter `batch-operations-libsql.ts:30-30`
 - **adapter** — Stores the GraphAdapter instance for database operations `graph-storage-libsql.ts:63-63`
-- **args** — Arguments for the SQL statement `native-sqlite-client.ts:33-33`, `native-sqlite-client.ts:56-56`, `native-sqlite-client.ts:92-92`
+- **args** — Arguments for the SQL statement `native-sqlite-client.ts:33-33`
+- **args** — Executes a SQL statement or a prepared statement with arguments, returning a ResultSet `native-sqlite-client.ts:56-56`
+- **args** — Executes a SQL statement or a prepared statement with arguments, returning an IterableIterator of rows `native-sqlite-client.ts:92-92`
 - **batchSize** — Private property to store the batch size `batch-operations-libsql.ts:29-29`
 - **batchUpdateFileInfo** — Updates multiple file information records in the database `graph-adapter.ts:468-468`
 - **branch1Entities** — Entities in branch 1 `graph-storage-libsql.ts:245-245`
@@ -372,12 +381,14 @@ The `src/storage` module is designed to be a robust foundation for applications 
 - **branchName** — Returns the name of a branch `graph-adapter.ts:540-540`
 - **branchName** — Represents the name of the branch associated with a project `graph-storage-libsql.ts:696-696`
 - **bulkInsertEmbeddings** — Inserts a batch of embeddings into the database `graph-adapter.ts:490-491`
-- **cache** — A database client for managing caching data such as embedding cache and query cache `multi-db-manager.ts:25-25`, `multi-db-manager.ts:80-80`
+- **cache** — A database client for managing caching data such as embedding cache and query cache `multi-db-manager.ts:25-25`
+- **cache** — Represents a NativeSQLiteClient instance for caching operations `multi-db-manager.ts:80-80`
 - **cacheOps** — Operations for caching `graph-adapter.ts:102-102`
 - **chain** — Promise chain for managing write operations `db-write-mutex.ts:15-15`
 - **changes** — Represents the changes made to entities `batch-operations-libsql.ts:222-222`
 - **changes** — Number of rows affected by the query `bun-sqlite-adapter.ts:23-23`
-- **changes** — Number of rows affected by the last SQLite statement `sqlite-adapter.ts:29-29`, `sqlite-adapter.ts:82-82`
+- **changes** — Number of rows affected by the last SQLite statement `sqlite-adapter.ts:29-29`
+- **changes** — Returns the number of rows changed by the last operation `sqlite-adapter.ts:82-82`
 - **clear** — Clears all embeddings from the graph adapter `graph-adapter.ts:570-570`
 - **clearAll** — Clears all data from the graph adapter `graph-adapter.ts:571-571`
 - **clearEmbeddingCache** — Clears the cache for vector embeddings `graph-adapter.ts:521-521`
@@ -415,7 +426,9 @@ The `src/storage` module is designed to be a robust foundation for applications 
 - **entityCount** — Represents the count of entities in the graph storage `graph-storage-libsql.ts:699-699`
 - **entityOps** — Operations for entities `graph-adapter.ts:99-99`
 - **entries** — Number of entries in the cache `cache-manager.ts:129-129`
-- **error** — Represents an error encountered during batch operations `batch-operations-libsql.ts:151-151`, `batch-operations-libsql.ts:248-248`, `batch-operations-libsql.ts:295-295`
+- **error** — Represents an error encountered during batch operations `batch-operations-libsql.ts:151-151`
+- **error** — Stores an error in an array of errors `batch-operations-libsql.ts:248-248`
+- **error** — Stores an error message in an array of error objects `batch-operations-libsql.ts:295-295`
 - **evictions** — Tracks the number of cache entries evicted `cache-manager.ts:130-130`
 - **fileCount** — Counts files `graph-adapter.ts:427-427`
 - **fileCount** — Returns the count of files `graph-adapter.ts:544-544`
@@ -425,7 +438,8 @@ The `src/storage` module is designed to be a robust foundation for applications 
 - **filePath** — Stores the file path `graph-adapter.ts:417-417`
 - **filePath** — File path for entities `graph-storage-libsql.ts:281-281`
 - **findRelationships** — Finds relationships `graph-adapter.ts:458-459`
-- **fromId** — Extracts the fromId from a relationship object `batch-operations-libsql.ts:80-80`, `batch-operations-libsql.ts:84-84`
+- **fromId** — Extracts the fromId from a relationship object `batch-operations-libsql.ts:80-80`
+- **fromId** — Extracts the 'fromId' property from a relationship object `batch-operations-libsql.ts:84-84`
 - **gcDeleted** — Indicates whether the graph has been garbage collected `graph-adapter.ts:752-752`
 - **generationManager** — Manager for generating entities `graph-adapter.ts:105-105`
 - **getAllEntities** — Retrieves all entities `graph-adapter.ts:426-426`
@@ -446,7 +460,8 @@ The `src/storage` module is designed to be a robust foundation for applications 
 - **getStats** — Retrieves statistics `graph-adapter.ts:553-558`
 - **getTotalStats** — Retrieves total statistics `graph-adapter.ts:559-564`
 - **getTraceUsageCount** — Gets the count of trace usages `graph-adapter.ts:473-473`
-- **graph** — A database client for managing entities, relationships, and other graph-related data `multi-db-manager.ts:22-22`, `multi-db-manager.ts:77-77`
+- **graph** — A database client for managing entities, relationships, and other graph-related data `multi-db-manager.ts:22-22`
+- **graph** — Represents a NativeSQLiteClient instance for graph operations `multi-db-manager.ts:77-77`
 - **hitRate** — Rate of cache hits `cache-manager.ts:128-128`
 - **hits** — Counter for cache hits `cache-manager.ts:126-126`
 - **id** — Represents the unique identifier of an entity `batch-operations-libsql.ts:222-222`
@@ -459,10 +474,11 @@ The `src/storage` module is designed to be a robust foundation for applications 
 - **insertEntity** — Inserts an entity `graph-adapter.ts:407-407`
 - **insertRelationship** — Inserts a relationship `graph-adapter.ts:452-453`
 - **insertRelationships** — Inserts multiple relationships `graph-adapter.ts:454-455`
-- **inTransaction** — Indicates whether the database is in a transaction `bun-sqlite-adapter.ts:45-45`
-- **inTransaction** — Indicates whether the adapter is currently in a transaction `sqlite-adapter.ts:42-42`
+- **inTransaction** — Indicates whether the database is in a transaction `bun-sqlite-adapter.ts:45-45`, `sqlite-adapter.ts:42-42`
 - **isInitialized** — Boolean indicating whether the graph adapter is initialized `graph-adapter.ts:84-84`
-- **item** — Represents an individual item in a batch operation `batch-operations-libsql.ts:151-151`, `batch-operations-libsql.ts:248-248`, `batch-operations-libsql.ts:295-295`
+- **item** — Represents an individual item in a batch operation `batch-operations-libsql.ts:151-151`
+- **item** — Stores an item in an array of errors `batch-operations-libsql.ts:248-248`
+- **item** — Stores an item in an array of error objects `batch-operations-libsql.ts:295-295`
 - **key** — Represents a key in the cache `cache-manager.ts:145-145`
 - **lastFullIndexAt** — Returns the timestamp of the last full index `graph-adapter.ts:530-530`
 - **lastFullIndexAt** — Stores the timestamp of the last full index operation `graph-storage-libsql.ts:672-672`
@@ -470,7 +486,8 @@ The `src/storage` module is designed to be a robust foundation for applications 
 - **lastIndexedAt** — Stores the timestamp of the last index operation `graph-storage-libsql.ts:698-698`
 - **lastInsertRowid** — Last row ID inserted by the query `bun-sqlite-adapter.ts:24-24`
 - **lastInsertRowid** — Last inserted rowid as a bigint or undefined `native-sqlite-client.ts:29-29`
-- **lastInsertRowid** — The rowid of the last inserted row `sqlite-adapter.ts:30-30`, `sqlite-adapter.ts:82-82`
+- **lastInsertRowid** — The rowid of the last inserted row `sqlite-adapter.ts:30-30`
+- **lastInsertRowid** — Returns the rowid of the last inserted row `sqlite-adapter.ts:82-82`
 - **limit** — Sets a limit for operations `graph-adapter.ts:418-418`
 - **limit** — Limit for query results `graph-storage-libsql.ts:282-282`
 - **listBranches** — Lists all branches `graph-adapter.ts:547-547`
@@ -478,8 +495,10 @@ The `src/storage` module is designed to be a robust foundation for applications 
 - **matched** — Entities that match a certain condition `graph-storage-libsql.ts:247-247`
 - **maxEntries** — Maximum number of entries in the cache `cache-manager.ts:12-12`
 - **maxSize** — Maximum size of the cache in bytes `cache-manager.ts:11-11`
-- **maxSize** — Returns the maximum size of the graph adapter `graph-adapter.ts:705-705`, `graph-adapter.ts:706-706`, `graph-adapter.ts:707-707`
-- **memory** — Specifies if the adapter is using memory storage `sqlite-adapter.ts:46-46`
+- **maxSize** — Returns the maximum size of the graph adapter `graph-adapter.ts:705-705`
+- **maxSize** — Represents the maximum size of the search result `graph-adapter.ts:706-706`
+- **maxSize** — Represents the maximum size the graph can have `graph-adapter.ts:707-707`
+- **memory** — Specifies if the database is in memory `sqlite-adapter.ts:46-46`
 - **memoryUsage** — Not explicitly defined in the provided code `cache-manager.ts:131-131`
 - **metadata** — Represents metadata in the graph adapter `graph-adapter.ts:707-707`
 - **metadataOps** — Operations for metadata `graph-adapter.ts:103-103`
@@ -487,10 +506,10 @@ The `src/storage` module is designed to be a robust foundation for applications 
 - **model** — Represents a model used for embeddings `graph-adapter.ts:519-519`
 - **mutexes** — Initializes a set of DbWriteMutex instances for different database operations `multi-db-manager.ts:89-94`
 - **name** — Mutex name for diagnostics `db-write-mutex.ts:17-17`
-- **name** — Stores the name of the adapter `sqlite-adapter.ts:48-48`
+- **name** — Stores the name of the database `sqlite-adapter.ts:48-48`
 - **namePattern** — Defines a name pattern `graph-adapter.ts:415-415`
 - **namePattern** — A pattern for entity names `graph-storage-libsql.ts:279-279`
-- **open** — Indicates if the adapter is open `sqlite-adapter.ts:49-49`
+- **open** — Indicates if the database is open `sqlite-adapter.ts:49-49`
 - **paths** — Stores a reference to MultiDbPaths or null `multi-db-manager.ts:96-96`
 - **projectHash** — Returns the hash of a project `graph-adapter.ts:539-539`
 - **projectHash** — Represents the hash of a project in the graph storage `graph-storage-libsql.ts:695-695`
@@ -499,7 +518,7 @@ The `src/storage` module is designed to be a robust foundation for applications 
 - **pruned** — Indicates whether the graph has been pruned `graph-adapter.ts:752-752`
 - **readonly** — Not applicable in this context `bun-sqlite-adapter.ts:17-17`
 - **readonly** — Read-only flag for the database connection `native-sqlite-client.ts:47-47`
-- **readonly** — Denotes if the adapter is read-only `sqlite-adapter.ts:47-47`
+- **readonly** — Determines if the database is read-only `sqlite-adapter.ts:47-47`
 - **readwrite** — Not applicable in this context `bun-sqlite-adapter.ts:19-19`
 - **rebuildVectorIndex** — Rebuilds a vector index in the database `graph-adapter.ts:488-488`
 - **recordIncrementalChanges** — Records incremental changes `graph-adapter.ts:534-535`
@@ -513,28 +532,40 @@ The `src/storage` module is designed to be a robust foundation for applications 
 - **searchEntities** — Searches for entities `graph-adapter.ts:414-419`
 - **searchEntitiesInDirectory** — Searches for entities in a specified directory `graph-adapter.ts:420-421`
 - **searchVectors** — Searches for vectors based on certain criteria `graph-adapter.ts:493-494`
-- **semantic** — A database client for managing semantic data such as cooccurrence and term frequency `multi-db-manager.ts:23-23`, `multi-db-manager.ts:78-78`
+- **semantic** — A database client for managing semantic data such as cooccurrence and term frequency `multi-db-manager.ts:23-23`
+- **semantic** — Represents a NativeSQLiteClient instance for semantic operations `multi-db-manager.ts:78-78`
 - **setEmbeddingInCache** — Sets an embedding in the cache `graph-adapter.ts:512-517`
 - **setEmbeddingsInCache** — Sets multiple embeddings in the cache `graph-adapter.ts:518-520`
-- **simple** — Boolean indicating whether the pragma is simple `sqlite-adapter.ts:40-40`
 - **simple** — Executes a simple SQL statement `sqlite-adapter.ts:224-224`
+- **simple** — Boolean indicating whether the pragma is simple `sqlite-adapter.ts:40-40`
 - **size** — Method to get the size of the cache `cache-manager.ts:125-125`
-- **size** — Returns the size of the graph adapter `graph-adapter.ts:705-705`, `graph-adapter.ts:706-706`, `graph-adapter.ts:707-707`
+- **size** — Returns the size of the graph adapter `graph-adapter.ts:705-705`
+- **size** — Represents the size of the search result `graph-adapter.ts:706-706`
+- **size** — Represents the current size of the graph `graph-adapter.ts:707-707`
 - **source** — Represents the SQL query string for the statement `sqlite-adapter.ts:25-25`
-- **sql** — SQL statement or object with sql and args `native-sqlite-client.ts:33-33`, `native-sqlite-client.ts:56-56`, `native-sqlite-client.ts:92-92`
+- **sql** — SQL statement or object with sql and args `native-sqlite-client.ts:33-33`
+- **sql** — Executes a SQL statement or a prepared statement with arguments, returning a ResultSet `native-sqlite-client.ts:56-56`
+- **sql** — Executes a SQL statement or a prepared statement with arguments, returning an IterableIterator of rows `native-sqlite-client.ts:92-92`
 - **stmtCache** — Map of prepared statements `native-sqlite-client.ts:44-44`
 - **store** — LRUCache instance for storing cache entries `cache-manager.ts:58-58`
 - **textPreview** — Provides a text preview of content `graph-adapter.ts:519-519`
 - **timeout** — Timeout for database operations `sqlite-adapter.ts:64-64`
-- **toId** — Extracts the toId from a relationship object `batch-operations-libsql.ts:80-80`, `batch-operations-libsql.ts:84-84`
+- **toId** — Extracts the toId from a relationship object `batch-operations-libsql.ts:80-80`
+- **toId** — Extracts the 'toId' property from a relationship object `batch-operations-libsql.ts:84-84`
 - **tokens** — Represents tokens `graph-adapter.ts:443-443`
 - **tokens** — Represents tokens in the graph `graph-storage-libsql.ts:534-534`
 - **totalEmbeddings** — Returns the total number of embeddings `graph-adapter.ts:557-557`
 - **totalEmbeddings** — Represents the total number of embeddings stored `graph-adapter.ts:563-563`
-- **totalEntities** — Returns the total number of entities `graph-adapter.ts:554-554`, `graph-adapter.ts:560-560`, `graph-storage-libsql.ts:651-651`
-- **totalFiles** — Returns the total number of files `graph-adapter.ts:532-532`, `graph-adapter.ts:556-556`, `graph-adapter.ts:562-562`
+- **totalEntities** — Returns the total number of entities `graph-adapter.ts:554-554`
+- **totalEntities** — Represents the total number of entities `graph-adapter.ts:560-560`
+- **totalEntities** — Represents the total number of entities in the graph storage `graph-storage-libsql.ts:651-651`
+- **totalFiles** — Returns the total number of files `graph-adapter.ts:532-532`
+- **totalFiles** — Represents the total number of files `graph-adapter.ts:556-556`
+- **totalFiles** — Represents the total number of files in the graph `graph-adapter.ts:562-562`
 - **totalFiles** — Represents the total number of files in the graph storage `graph-storage-libsql.ts:651-651`, `graph-storage-libsql.ts:674-674`
-- **totalRelationships** — Returns the total number of relationships `graph-adapter.ts:555-555`, `graph-adapter.ts:561-561`, `graph-storage-libsql.ts:651-651`
+- **totalRelationships** — Returns the total number of relationships `graph-adapter.ts:555-555`
+- **totalRelationships** — Represents the total number of relationships `graph-adapter.ts:561-561`
+- **totalRelationships** — Represents the total number of relationships in the graph storage `graph-storage-libsql.ts:651-651`
 - **type** — Extracts the type from a relationship object `batch-operations-libsql.ts:80-80`
 - **type** — Represents the type of an entity in the database `batch-operations-libsql.ts:84-84`
 - **types** — Defines types `graph-adapter.ts:416-416`
@@ -544,7 +575,8 @@ The `src/storage` module is designed to be a robust foundation for applications 
 - **value** — Represents a value in the cache `cache-manager.ts:145-145`
 - **vectorOps** — Operations for vector embeddings `graph-adapter.ts:101-101`
 - **verbose** — Function to log verbose messages `sqlite-adapter.ts:65-65`
-- **versioning** — A database client for managing versioning data such as graph commits and branch heads `multi-db-manager.ts:24-24`, `multi-db-manager.ts:79-79`
+- **versioning** — A database client for managing versioning data such as graph commits and branch heads `multi-db-manager.ts:24-24`
+- **versioning** — Represents a NativeSQLiteClient instance for versioning operations `multi-db-manager.ts:79-79`
 - **versioningOps** — Operations for versioning `graph-adapter.ts:107-107`
 
 ### embedded_sql

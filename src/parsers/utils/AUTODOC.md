@@ -85,23 +85,27 @@ The `parser-utils.ts` module provides performance optimizations for ANTLR parsin
 - **antlr4ng** — Imports `antlr4ng` from `antlr4ng`. `parser-utils.ts:15-15`
 
 ### Property
-- **acquired** — Represents the number of objects acquired from the pool `parser-utils.ts:95-95`, `parser-utils.ts:131-131`
+- **acquired** — Represents the number of objects acquired from the pool `parser-utils.ts:95-95`
+- **acquired** — Returns the number of acquired objects `parser-utils.ts:131-131`
 - **argumentCount** — Stores the number of arguments passed to the call `parser-utils.ts:170-170`
 - **awaits** — Counts the number of await statements in the control flow `parser-utils.ts:187-187`
 - **branches** — Counts the number of branches in the control flow `parser-utils.ts:183-183`
 - **calls** — Counts the number of calls made to the parser `parser-utils.ts:158-158`
 - **catchType** — Represents the type of exception caught `parser-utils.ts:212-212`
 - **cognitive** — Cognitive complexity metric `parser-utils.ts:246-246`
-- **column** — Represents the column number of a parser rule `parser-utils.ts:237-237`, `parser-utils.ts:238-238`
+- **column** — Represents the column number of a parser rule `parser-utils.ts:237-237`
+- **column** — Stores the column number of the end position `parser-utils.ts:238-238`
 - **complexity** — Measures the complexity of the parser's control flow `parser-utils.ts:160-160`
 - **condition** — Represents a condition for parsing `parser-utils.ts:195-195`
 - **controlFlow** — Analyzes the control flow of the parser `parser-utils.ts:159-159`
-- **created** — Represents the number of objects created in the pool `parser-utils.ts:94-94`, `parser-utils.ts:131-131`
+- **created** — Represents the number of objects created in the pool `parser-utils.ts:94-94`
+- **created** — Returns the number of created objects `parser-utils.ts:131-131`
 - **cyclomatic** — Cyclomatic complexity metric `parser-utils.ts:245-245`
 - **end** — Represents the end position of a parser rule `parser-utils.ts:238-238`
 - **exceptions** — Counts the number of exceptions in the control flow `parser-utils.ts:185-185`
 - **expression** — Represents an expression in the parser `parser-utils.ts:230-230`
-- **factory** — Represents the factory for creating parser instances `parser-utils.ts:91-91`, `parser-utils.ts:98-98`
+- **factory** — Represents the factory for creating parser instances `parser-utils.ts:91-91`
+- **factory** — Initializes the parser with a factory function `parser-utils.ts:98-98`
 - **hasValue** — Indicates whether a value is present `parser-utils.ts:221-221`
 - **hitRate** — Indicates the rate at which the object pool is hit, i.e., the frequency of reusing existing instances `parser-utils.ts:131-131`
 - **index** — Represents the index of a parser rule `parser-utils.ts:237-237`
@@ -113,26 +117,36 @@ The `parser-utils.ts` module provides performance optimizations for ANTLR parsin
 - **isStatic** — Indicates whether the call is static `parser-utils.ts:172-172`
 - **isSuper** — Indicates whether the call is a super call `parser-utils.ts:173-173`
 - **label** — Represents a label in the parser `parser-utils.ts:222-222`
-- **line** — Represents the line number of a parser rule `parser-utils.ts:237-237`, `parser-utils.ts:238-238`
+- **line** — Represents the line number of a parser rule `parser-utils.ts:237-237`
+- **line** — Stores the line number of the end position `parser-utils.ts:238-238`
 - **linesOfCode** — Lines of code metric `parser-utils.ts:247-247`
 - **linesOfLogic** — Lines of logic metric `parser-utils.ts:248-248`
 - **location** — Stores the location of the call `parser-utils.ts:169-169`
-- **location** — Represents the location of a parser rule `parser-utils.ts:196-196`, `parser-utils.ts:204-204`, `parser-utils.ts:213-213`, `parser-utils.ts:220-220`, `parser-utils.ts:229-229`
+- **location** — Represents the location of a parser rule `parser-utils.ts:196-196`
+- **location** — Stores the location information for the parser `parser-utils.ts:204-204`
+- **location** — Represents the location information of a parsed element `parser-utils.ts:213-213`
+- **location** — Represents the location information for a parser `parser-utils.ts:220-220`, `parser-utils.ts:229-229`
 - **loops** — Counts the number of loops in the control flow `parser-utils.ts:184-184`
-- **maxSize** — Represents the maximum size of the object pool `parser-utils.ts:93-93`, `parser-utils.ts:98-98`
+- **maxSize** — Represents the maximum size of the object pool `parser-utils.ts:93-93`
+- **maxSize** — Sets the maximum size for the parser `parser-utils.ts:98-98`
 - **name** — Stores the name of the call `parser-utils.ts:167-167`
 - **nestingDepth** — Nesting depth metric `parser-utils.ts:249-249`
 - **parameterCount** — Represents the count of parameters in a function `parser-utils.ts:250-250`
 - **pool** — Represents the object pool `parser-utils.ts:90-90`
 - **poolSize** — Represents the size of the object pool used for parser instances `parser-utils.ts:131-131`
 - **predictionMode** — Represents the prediction mode of the parser `parser-utils.ts:74-74`
-- **released** — Represents the number of objects released back to the pool `parser-utils.ts:96-96`, `parser-utils.ts:131-131`
-- **reset** — Function to reset parser state before retry `parser-utils.ts:76-76`, `parser-utils.ts:92-92`, `parser-utils.ts:98-98`
+- **released** — Represents the number of objects released back to the pool `parser-utils.ts:96-96`
+- **released** — Returns the number of released objects `parser-utils.ts:131-131`
+- **reset** — Function to reset parser state before retry `parser-utils.ts:76-76`
+- **reset** — Resets the object `parser-utils.ts:92-92`
+- **reset** — Initializes the parser with a factory function `parser-utils.ts:98-98`
 - **returnCount** — Represents the count of return statements in a function `parser-utils.ts:251-251`
 - **returns** — Counts the number of return statements in the control flow `parser-utils.ts:186-186`
 - **start** — Represents the start position of a parser rule `parser-utils.ts:237-237`
 - **target** — Stores the target of the call `parser-utils.ts:168-168`
-- **type** — Represents the type of a parser rule `parser-utils.ts:194-194`, `parser-utils.ts:203-203`, `parser-utils.ts:211-211`
+- **type** — Represents the type of a parser rule `parser-utils.ts:194-194`
+- **type** — Specifies the type of loop or control structure `parser-utils.ts:203-203`
+- **type** — Specifies the type of exception handling `parser-utils.ts:211-211`
 - **typeArguments** — Stores the type arguments for the call `parser-utils.ts:176-176`
 
 ## Data Flow
@@ -148,14 +162,14 @@ The `parser-utils.ts` module provides performance optimizations for ANTLR parsin
 | `parseWithSLLFallback` | function | SLL-first parsing with ALL(*) fallback | [`parser-utils.ts:36-67`](./parser-utils.ts) |
 | `ObjectPool` | class | Generic object pool for instance reuse | [`parser-utils.ts:89-148`](./parser-utils.ts) |
 | `unifiedExtract` | function | Single-pass AST extraction for calls, flow, complexity | [`parser-utils.ts:270-413`](./parser-utils.ts) |
-| `UnifiedExtractionResult` | interface | Combined extraction result type | [`parser-utils.ts:161-237`](./parser-utils.ts) |
+| `UnifiedExtractionResult` | interface | Combined extraction result type | [`parser-utils.ts:162-292`](./parser-utils.ts) |
 | `CallInfo` | interface | Method/constructor call information | [`parser-utils.ts:170-170`](./parser-utils.ts) |
 | `ControlFlowInfo` | interface | Code flow control information | [`parser-utils.ts:186-186`](./parser-utils.ts) |
 | `BranchInfo` | interface | Conditional branch information | [`parser-utils.ts:197-237`](./parser-utils.ts) |
 | `LoopInfo` | interface | Loop information | [`parser-utils.ts:206-214`](./parser-utils.ts) |
 | `ExceptionInfo` | interface | Exception handling information | [`parser-utils.ts:214-237`](./parser-utils.ts) |
 | `ReturnInfo` | interface | Return statement information | [`parser-utils.ts:223-237`](./parser-utils.ts) |
-| `AwaitInfo` | interface | Async await information | [`parser-utils.ts:232-239`](./parser-utils.ts) |
+| `AwaitInfo` | interface | Async await information | [`parser-utils.ts:21-618`](./parser-utils.ts) |
 | `LocationInfo` | interface | Source code position information | [`parser-utils.ts:240-252`](./parser-utils.ts) |
 | `ComplexityMetrics` | interface | Cyclomatic and cognitive complexity | [`parser-utils.ts:248-248`](./parser-utils.ts) |
 | `NodeTypeChecker` | interface | Language-specific node type classification | [`parser-utils.ts:257-265`](./parser-utils.ts) |

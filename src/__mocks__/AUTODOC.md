@@ -1,16 +1,70 @@
 # __mocks__
 
-## Overview
+## 🤖 Overview
 
-Jest manual mock implementations that replace third-party modules with deterministic stubs during unit testing. These mocks eliminate runtime dependencies on external libraries (database connection pools, ID generators, async concurrency limiters) and provide predictable return values for test assertions. Loaded automatically by Jest when tests import the mocked module names.
+The `src/__mocks__` module is a collection of mock implementations for testing purposes. It contains three files: `connection-pool.cjs`, `nanoid.cjs`, and `p-limit.cjs`, each providing mock functionalities for database connections, unique ID generation, and parallel task execution, respectively. These mocks are used by developers to simulate real-world scenarios without relying on actual services or databases.
 
-## Entity Listing
+## 🤖 Architecture
 
-### Mock Modules
+```
+  +-------------------+
+  | connection-pool.cjs |
+  |     (mocks DB connections) |
+  +-------------------+
+           |
+           v
+  +-------------------+
+  | nanoid.cjs        |
+  |     (mocks ID generation) |
+  +-------------------+
+           |
+           v
+  +-------------------+
+  | p-limit.cjs       |
+  |     (mocks parallel tasks) |
+  +-------------------+
+```
 
-- `connection-pool.cjs` — Replaces database connection pool implementation with a stub that returns mock database connections for controlled test scenarios.
-- `nanoid.cjs` — Replaces unique ID generator with a stub producing predictable sequential or fixed IDs for test determinism.
-- `p-limit.cjs` — Replaces async concurrency limiter with a stub that executes queued functions without actual concurrency constraints for faster test execution.
+## 🤖 Flow
+
+```
+  +-------------------+
+  | p-limit.cjs       |
+  |     (mocks parallel tasks) |
+  +-------------------+
+           |
+           v
+  +-------------------+
+  | nanoid.cjs        |
+  |     (mocks ID generation) |
+  +-------------------+
+           |
+           v
+  +-------------------+
+  | connection-pool.cjs |
+  |     (mocks DB connections) |
+  +-------------------+
+```
+
+## 🤖 Entity Listing
+
+### Function
+- **customAlphabet** — Creates a function to generate a random string using a custom character set `nanoid.cjs:12-20`
+- **nanoid** — Generates a random string of a specified length using a default character set `nanoid.cjs:5-10`
+- **nanoidAsync** — Asynchronously generates a random string of a specified length using the default character set `nanoid.cjs:25-27`
+- **pLimit** — A function that returns a new function with concurrency control `p-limit.cjs:1-5`
+- **run** — An asynchronous function that executes a given function with its arguments `p-limit.cjs:2-2`
+- **urlAlphabet** — Returns a function to generate a random string using the default character set, suitable for URLs `nanoid.cjs:22-24`
+
+### Method
+- **acquire** — Acquires a new connection from the pool, creating a new connection object and adding it to the pool `connection-pool.cjs:14-19`
+- **constructor** — Initializes a new connection pool with configuration and an empty map for connections `connection-pool.cjs:4-8`
+- **initialize** — Sets the connection pool to active state `connection-pool.cjs:10-12`
+- **release** — Releases a connection back to the pool, marking it as not in use and updating its last used time `connection-pool.cjs:21-26`
+- **shutdown** — Shuts down the connection pool by clearing all connections and setting the pool to inactive state `connection-pool.cjs:28-31`
+
+### Class
+- **ConnectionPool** — Represents a connection pool for managing database connections `connection-pool.cjs:3-32`
 
 ## Dependencies
 

@@ -261,7 +261,8 @@ This module provides tools for managing and analyzing agent metrics, including p
 - **bareExceptCount** — Counts the number of bare except blocks in the code `impact-analyzer.ts:477-477`
 - **branches** — Array of branch objects containing metadata `branch-tools.ts:26-38`
 - **breakingChanges** — Array of potential breaking changes, each with a description, location, and severity `impact-analyzer.ts:40-44`
-- **byType** — Records the count of entities or relationships by type `graph-query.ts:29-29`, `graph-query.ts:30-30`
+- **byType** — Records the count of entities or relationships by type `graph-query.ts:29-29`
+- **byType** — Represents the counts of relationships by type `graph-query.ts:30-30`
 - **cacheHitRate** — A property representing the cache hit rate of an agent `agent-metrics.ts:14-14`
 - **cacheHitRate** — Tracks the rate of cache hits for tasks `agent-metrics.ts:58-58`
 - **capabilities** — A property representing the capabilities of an agent, including max concurrency, memory limit, and priority `agent-metrics.ts:32-32`
@@ -269,7 +270,9 @@ This module provides tools for managing and analyzing agent metrics, including p
 - **change** — Denotes a change in the codebase that needs analysis `impact-analyzer.ts:243-243`
 - **clone** — An object representing a clone duplication `jscpd.ts:74-74`
 - **cloneCount** — Represents the number of clones found in the code `jscpd.ts:86-86`
-- **clones** — Stores the list of clones found in the code `jscpd.ts:87-87`, `jscpd.ts:91-91`, `jscpd.ts:104-104`
+- **clones** — Stores the list of clones found in the code `jscpd.ts:87-87`
+- **clones** — Contains an array of IClone objects `jscpd.ts:91-91`
+- **clones** — Represents the number of clones `jscpd.ts:104-104`
 - **colEnd** — The end column in a file `jscpd.ts:292-292`
 - **colStart** — The start column in a file `jscpd.ts:291-291`
 - **column** — The column number of a token `jscpd.ts:22-22`
@@ -283,7 +286,8 @@ This module provides tools for managing and analyzing agent metrics, including p
 - **contractBreaks** — A list of contract breaks detected `impact-analyzer.ts:230-235`
 - **cpuUsagePercent** — A property representing the CPU usage of an agent in percent `agent-metrics.ts:31-31`
 - **createAutoIndexContext** — Creates an auto-index context `base-tool-handler.ts:79-79`
-- **currentBranch** — Current branch name `branch-tools.ts:39-39`, `branch-tools.ts:104-104`
+- **currentBranch** — Current branch name `branch-tools.ts:39-39`
+- **currentBranch** — Represents the current branch name or null `branch-tools.ts:104-104`
 - **currentTask** — An optional property representing the current task of an agent `agent-metrics.ts:7-7`
 - **currentTaskType** — Indicates the type of the current task being processed by an agent `agent-metrics.ts:34-34`
 - **currentUsage** — Represents the current resource usage for an agent `agent-metrics.ts:41-41`
@@ -300,8 +304,10 @@ This module provides tools for managing and analyzing agent metrics, including p
 - **directImplementationAttempts** — A property representing the number of direct implementation attempts in a conductor `agent-metrics.ts:22-22`
 - **directImplementationAttempts** — Tracks the number of direct implementation attempts made by agents `agent-metrics.ts:61-61`
 - **directory** — Directory path for the current project `base-tool-handler.ts:108-108`
-- **duplicatedLines** — Stores the count of duplicated lines found in the code `jscpd.ts:82-82`, `jscpd.ts:105-105`
-- **duplicatedTokens** — Stores the count of duplicated tokens found in the code `jscpd.ts:83-83`, `jscpd.ts:106-106`
+- **duplicatedLines** — Stores the count of duplicated lines found in the code `jscpd.ts:82-82`
+- **duplicatedLines** — Stores the number of duplicated lines `jscpd.ts:105-105`
+- **duplicatedTokens** — Stores the count of duplicated tokens found in the code `jscpd.ts:83-83`
+- **duplicatedTokens** — Stores the number of duplicated tokens `jscpd.ts:106-106`
 - **duplicationA** — The first duplication detail `jscpd.ts:38-38`
 - **duplicationB** — The second duplication detail `jscpd.ts:39-39`
 - **duplicationPercentage** — Calculates the percentage of duplication in the code `jscpd.ts:84-84`
@@ -309,25 +315,31 @@ This module provides tools for managing and analyzing agent metrics, including p
 - **end** — The end location of a duplication `jscpd.ts:29-29`
 - **endpoint** — The endpoint where the change was made `impact-analyzer.ts:233-233`
 - **endpoint** — Refers to a specific point of entry or function in the code `impact-analyzer.ts:244-244`
-- **entities** — Represents entities in the graph `graph-query.ts:12-12`, `graph-query.ts:29-29`
-- **entityCount** — Count of entities in the branch `branch-tools.ts:34-34`
+- **entities** — Represents entities in the graph `graph-query.ts:12-12`
+- **entities** — Represents the total number of entities and their counts by type `graph-query.ts:29-29`
 - **entityCount** — Represents the count of entities in a branch's metadata `branch-tools.ts:108-108`
-- **entityId** — An identifier for an entity in the graph storage `impact-analyzer.ts:76-76`, `impact-analyzer.ts:86-86`
-- **entry** — Represents an entry in the file system `jscpd.ts:382-382`, `jscpd.ts:468-468`, `jscpd.ts:572-572`
+- **entityCount** — Count of entities in the branch `branch-tools.ts:34-34`
+- **entityId** — An identifier for an entity in the graph storage `impact-analyzer.ts:76-76`
+- **entityId** — Returns an array of entities with their IDs and similarity scores `impact-analyzer.ts:86-86`
+- **entry** — Represents an entry in the file system `jscpd.ts:382-382`
+- **entry** — Represents a file entry with tokens and format `jscpd.ts:468-468`
+- **entry** — Initializes an empty array of file data entries `jscpd.ts:572-572`
 - **entryCount** — Counts the number of entries in the knowledge bus `agent-metrics.ts:46-46`
 - **evalExecCount** — Counts the number of eval executions in the code `impact-analyzer.ts:477-477`
-- **file** — File path of the entity being analyzed `impact-analyzer.ts:28-28`
 - **file** — The file path of the entity being analyzed `impact-analyzer.ts:137-137`
-- **file** — Stores the file path of an entity `impact-analyzer.ts:361-361`, `impact-analyzer.ts:370-370`
-- **fileCount** — Count of files in the branch `branch-tools.ts:36-36`
+- **file** — Stores the file path of an entity `impact-analyzer.ts:361-361`
+- **file** — File path of the entity being analyzed `impact-analyzer.ts:28-28`, `impact-analyzer.ts:370-370`
 - **fileCount** — Represents the count of files in a branch's metadata `branch-tools.ts:110-110`
+- **fileCount** — Count of files in the branch `branch-tools.ts:36-36`
 - **files** — Not present in the provided code `branch-tools.ts:183-186`
 - **files** — Represents files in the graph `graph-query.ts:31-31`
 - **fmt** — The file format `jscpd.ts:347-347`
 - **forceUnwrapCount** — Counts the number of force unwrap operations in the code `impact-analyzer.ts:497-497`
 - **format** — The format of the clone `jscpd.ts:35-35`
 - **format** — A string format for output `jscpd.ts:50-50`
-- **format** — Represents the format of the code `jscpd.ts:382-382`, `jscpd.ts:468-468`, `jscpd.ts:572-572`
+- **format** — Represents the format of the code `jscpd.ts:382-382`
+- **format** — Represents a file entry with tokens and format `jscpd.ts:468-468`
+- **format** — Represents the format of the file data `jscpd.ts:572-572`
 - **formats** — An array of strings representing formats `jscpd.ts:66-66`
 - **formats** — An array of file formats to consider `jscpd.ts:116-116`
 - **foundDate** — The date when the clone was found `jscpd.ts:37-37`
@@ -348,22 +360,28 @@ This module provides tools for managing and analyzing agent metrics, including p
 - **hash** — A hash value for a file `jscpd.ts:289-289`
 - **hasMore** — Indicates if there are more items to fetch `response-limits.ts:35-35`
 - **id** — A property representing the ID of an agent `agent-metrics.ts:26-26`
-- **ignore** — An array of strings to ignore `jscpd.ts:49-49`, `jscpd.ts:65-65`
-- **ignoreCase** — A boolean indicating whether to ignore case `jscpd.ts:54-54`, `jscpd.ts:70-70`
+- **ignore** — An array of strings to ignore `jscpd.ts:49-49`
+- **ignore** — Stores an array of strings to be ignored `jscpd.ts:65-65`
+- **ignoreCase** — A boolean indicating whether to ignore case `jscpd.ts:54-54`
+- **ignoreCase** — Indicates whether case should be ignored `jscpd.ts:70-70`
 - **indexVersion** — Not present in the provided code `branch-tools.ts:111-111`
 - **inputSchema** — Defines the schema for the input to the tool `tool-definitions.ts:125-125`
 - **isGeneratedCode** — Indicates whether the code is generated `impact-analyzer.ts:236-236`
 - **isNew** — Indicates whether the clone is new `jscpd.ts:36-36`
-- **knowledgeBus** — Handles the knowledge bus, including topic count, entry count, and message queue size `agent-metrics.ts:65-65`, `agent-metrics.ts:91-91`
+- **knowledgeBus** — Handles the knowledge bus, including topic count, entry count, and message queue size `agent-metrics.ts:65-65`
+- **knowledgeBus** — Stores the knowledge bus instance for the agent `agent-metrics.ts:91-91`
 - **lastAccessed** — Last accessed timestamp of the branch `branch-tools.ts:29-29`
 - **lastActivity** — Records the timestamp of the last activity for an agent `agent-metrics.ts:35-35`
-- **lastCommitHash** — Last commit hash of the branch `branch-tools.ts:32-32`, `branch-tools.ts:105-105`
-- **lastIndexedAt** — Last indexed timestamp of the branch `branch-tools.ts:33-33`, `branch-tools.ts:107-107`
+- **lastCommitHash** — Last commit hash of the branch `branch-tools.ts:32-32`
+- **lastCommitHash** — Stores the hash of the last commit or null `branch-tools.ts:105-105`
+- **lastIndexedAt** — Last indexed timestamp of the branch `branch-tools.ts:33-33`
+- **lastIndexedAt** — Stores the timestamp of the last index operation `branch-tools.ts:107-107`
 - **lazyHandlers** — A map of lazy-loaded tool handlers `tool-registry.ts:45-45`
-- **limit** — A property representing the maximum number of results for semantic search `impact-analyzer.ts:75-75`, `impact-analyzer.ts:85-85`
+- **limit** — A property representing the maximum number of results for semantic search `impact-analyzer.ts:75-75`
+- **limit** — Represents the maximum number of entities to consider `impact-analyzer.ts:85-85`
 - **limit** — Limit for pagination `response-limits.ts:33-33`
-- **line** — Line number of the entity being analyzed `impact-analyzer.ts:29-29`
-- **line** — Stores the line number of an entity `impact-analyzer.ts:361-361`, `impact-analyzer.ts:370-370`
+- **line** — Stores the line number of an entity `impact-analyzer.ts:361-361`
+- **line** — Line number of the entity being analyzed `impact-analyzer.ts:29-29`, `impact-analyzer.ts:370-370`
 - **line** — The line number of a token `jscpd.ts:21-21`
 - **lineNum** — The line number in a file `jscpd.ts:290-290`
 - **lines** — Stores the number of lines analyzed in the code `jscpd.ts:101-101`
@@ -377,23 +395,25 @@ This module provides tools for managing and analyzing agent metrics, including p
 - **maxSize** — Maximum size for safe response `response-limits.ts:212-212`
 - **memoryLimitMB** — Specifies the maximum memory usage in megabytes for an agent `agent-metrics.ts:32-32`
 - **memoryUsageMB** — A property representing the memory usage of an agent in megabytes `agent-metrics.ts:30-30`
-- **message** — Message indicating the result of the branch switch `branch-tools.ts:79-79`
 - **message** — Stores a message related to branch operations `branch-tools.ts:161-161`
+- **message** — Message indicating the result of the branch switch `branch-tools.ts:79-79`
 - **message** — A message describing the rule violation `impact-analyzer.ts:234-234`
 - **message** — Contains a message or note related to the analysis `impact-analyzer.ts:245-245`
 - **messageQueueSize** — Represents the size of the message queue in the knowledge bus `agent-metrics.ts:48-48`
-- **metadata** — Metadata of the branch, including last commit hash, last indexed at, entity count, relationship count, and file count `branch-tools.ts:31-37`, `branch-tools.ts:106-112`
+- **metadata** — Metadata of the branch, including last commit hash, last indexed at, entity count, relationship count, and file count `branch-tools.ts:31-37`
+- **metadata** — Contains metadata about the branch, including last indexed time, entity count, relationship count, file count, and index version `branch-tools.ts:106-112`
 - **metrics** — Stores performance metrics for an agent `agent-metrics.ts:33-33`
 - **minConfidence** — Minimum confidence to include in results `impact-analyzer.ts:62-62`
 - **minLines** — The minimum number of lines for a clone `jscpd.ts:43-43`
 - **minLines** — A number representing the minimum number of lines `jscpd.ts:67-67`
-- **minSimilarity** — A property representing the minimum similarity threshold for semantic search `impact-analyzer.ts:75-75`, `impact-analyzer.ts:85-85`
+- **minSimilarity** — A property representing the minimum similarity threshold for semantic search `impact-analyzer.ts:75-75`
+- **minSimilarity** — Specifies the minimum similarity threshold for entities `impact-analyzer.ts:85-85`
 - **minTokens** — The minimum number of tokens for a clone `jscpd.ts:46-46`
 - **minTokens** — A number representing the minimum number of tokens `jscpd.ts:69-69`
 - **name** — Name of the branch `branch-tools.ts:27-27`
-- **name** — Name of the entity being analyzed `impact-analyzer.ts:27-27`
 - **name** — The name of the entity being analyzed `impact-analyzer.ts:137-137`
-- **name** — Stores the name of an entity `impact-analyzer.ts:361-361`, `impact-analyzer.ts:370-370`
+- **name** — Stores the name of an entity `impact-analyzer.ts:361-361`
+- **name** — Name of the entity being analyzed `impact-analyzer.ts:27-27`, `impact-analyzer.ts:370-370`
 - **name** — Specifies the name of the tool `tool-definitions.ts:123-123`
 - **newBranch** — New branch name after switching `branch-tools.ts:78-78`
 - **newClones** — Stores the count of new clones found in the code `jscpd.ts:110-110`
@@ -406,13 +426,15 @@ This module provides tools for managing and analyzing agent metrics, including p
 - **originalSize** — Original size of the text `response-limits.ts:76-76`
 - **overheadReduction** — A property representing the overhead reduction achieved by an agent `agent-metrics.ts:13-13`
 - **overheadReduction** — Measures the reduction in overhead for tasks `agent-metrics.ts:57-57`
-- **pagination** — Pagination metadata in the paginated result `response-limits.ts:44-44`, `response-limits.ts:257-257`
+- **pagination** — Pagination metadata in the paginated result `response-limits.ts:44-44`
+- **pagination** — Returns a response object with pagination metadata `response-limits.ts:257-257`
 - **paramMutationCount** — Counts the number of parameter mutations in the code `impact-analyzer.ts:456-456`
 - **path** — Not present in the provided code `branch-tools.ts:184-184`
 - **path** — The path to the file `jscpd.ts:47-47`
 - **path** — A string representing a file path `jscpd.ts:58-58`
 - **paths** — An array of strings representing file paths `jscpd.ts:63-63`
-- **pattern** — A string pattern to match files `jscpd.ts:48-48`, `jscpd.ts:64-64`
+- **pattern** — A string pattern to match files `jscpd.ts:48-48`
+- **pattern** — Represents a string or undefined pattern `jscpd.ts:64-64`
 - **pendingTasks** — A property representing pending tasks in a conductor `agent-metrics.ts:20-20`
 - **pendingTasks** — Counts the number of pending tasks `agent-metrics.ts:59-59`
 - **percentage** — Represents the percentage of duplication in the code `jscpd.ts:107-107`
@@ -422,14 +444,15 @@ This module provides tools for managing and analyzing agent metrics, including p
 - **posStart** — The start position in a file `jscpd.ts:293-293`
 - **previousBranch** — Previous branch name before switching `branch-tools.ts:77-77`
 - **priority** — Indicates the priority level of an agent `agent-metrics.ts:32-32`
-- **projectPath** — The project path for the request `base-tool-handler.ts:67-67`
 - **projectPath** — Project path for the current request `base-tool-handler.ts:108-108`
+- **projectPath** — The project path for the request `base-tool-handler.ts:67-67`
 - **queueLength** — A property representing the length of the task queue of an agent `agent-metrics.ts:29-29`
 - **range** — The range of a duplication `jscpd.ts:30-30`
 - **registeredAgents** — Counts the number of registered agents `agent-metrics.ts:54-54`
-- **relationshipCount** — Count of relationships in the branch `branch-tools.ts:35-35`
 - **relationshipCount** — Represents the count of relationships in a branch's metadata `branch-tools.ts:109-109`
-- **relationships** — Represents relationships in the graph `graph-query.ts:13-13`, `graph-query.ts:30-30`
+- **relationshipCount** — Count of relationships in the branch `branch-tools.ts:35-35`
+- **relationships** — Represents relationships in the graph `graph-query.ts:13-13`
+- **relationships** — Represents the total number of relationships and their counts by type `graph-query.ts:30-30`
 - **requestId** — A unique identifier for the request `base-tool-handler.ts:52-52`
 - **resourceManager** — Manages resource allocation and usage for agents `agent-metrics.ts:90-90`
 - **resources** — Manages and tracks resource usage and constraints for agents `agent-metrics.ts:64-64`
@@ -441,7 +464,9 @@ This module provides tools for managing and analyzing agent metrics, including p
 - **session** — A per-client session with isolated project state `base-tool-handler.ts:61-61`
 - **severity** — Severity of a potential breaking change, either warning or error `impact-analyzer.ts:43-43`
 - **silent** — A boolean indicating whether to suppress output `jscpd.ts:51-51`
-- **similarity** — A measure of similarity between entities `impact-analyzer.ts:76-76`, `impact-analyzer.ts:86-86`, `impact-analyzer.ts:137-137`
+- **similarity** — A measure of similarity between entities `impact-analyzer.ts:76-76`
+- **similarity** — Returns an array of entities with their names, file paths, and similarity scores `impact-analyzer.ts:86-86`
+- **similarity** — Stores an array of objects representing similar code with name, file, and similarity `impact-analyzer.ts:137-137`
 - **sizeBytes** — Size of the branch in bytes `branch-tools.ts:30-30`
 - **snippetA** — A string representing a snippet from one file `jscpd.ts:75-75`
 - **snippetB** — A string representing a snippet from another file `jscpd.ts:76-76`
@@ -461,18 +486,22 @@ This module provides tools for managing and analyzing agent metrics, including p
 - **success** — Boolean indicating success of the branch switch `branch-tools.ts:76-76`
 - **summary** — Human-readable summary of the impact analysis `impact-analyzer.ts:50-50`
 - **summary** — Provides a summary of the code analysis `jscpd.ts:93-93`
-- **text** — The actual text content of the result `base-tool-handler.ts:31-31`
 - **text** — Text content `base-tool-handler.ts:227-227`
+- **text** — The actual text content of the result `base-tool-handler.ts:31-31`
 - **text** — Truncated text `response-limits.ts:74-74`
 - **throttled** — Indicates whether an agent is throttled due to resource constraints `agent-metrics.ts:39-39`
 - **timestamp** — Records the timestamp of the metrics snapshot `agent-metrics.ts:52-52`
 - **toCol** — Represents the ending column number of a token `jscpd.ts:351-351`
 - **tokens** — Stores the number of tokens analyzed in the code `jscpd.ts:102-102`
-- **tokens** — Represents tokens in the code `jscpd.ts:382-382`, `jscpd.ts:468-468`, `jscpd.ts:572-572`
+- **tokens** — Represents tokens in the code `jscpd.ts:382-382`
+- **tokens** — Represents a file entry with tokens and format `jscpd.ts:468-468`
+- **tokens** — Initializes an empty array of file data entries `jscpd.ts:572-572`
 - **toLine** — Represents the ending line number of a token `jscpd.ts:349-349`
 - **topicCount** — Counts the number of topics in the knowledge bus `agent-metrics.ts:45-45`
 - **toPos** — Represents the ending position of a token `jscpd.ts:353-353`
-- **total** — Total number of entities or relationships `graph-query.ts:29-29`, `graph-query.ts:30-30`, `graph-query.ts:31-31`
+- **total** — Total number of entities or relationships `graph-query.ts:29-29`
+- **total** — Represents the total number of relationships `graph-query.ts:30-30`
+- **total** — Represents the total number of files `graph-query.ts:31-31`
 - **total** — Represents the total number of files analyzed `jscpd.ts:115-115`
 - **total** — A counter for total files processed `jscpd.ts:116-116`
 - **total** — Total number of items `response-limits.ts:34-34`
@@ -484,9 +513,10 @@ This module provides tools for managing and analyzing agent metrics, including p
 - **totalTasks** — Tracks the total number of tasks processed by agents `agent-metrics.ts:55-55`
 - **totalTokensAnalyzed** — Represents the total number of tokens analyzed in the code `jscpd.ts:81-81`
 - **truncatedSize** — Truncated size of the text `response-limits.ts:77-77`
-- **type** — A property representing the type of an agent `agent-metrics.ts:7-7`, `agent-metrics.ts:27-27`
-- **type** — The type of content, either "text" or "json" or "markdown" `base-tool-handler.ts:30-30`
+- **type** — A property representing the type of an agent `agent-metrics.ts:7-7`
+- **type** — Represents the type of the agent `agent-metrics.ts:27-27`
 - **type** — Type of content `base-tool-handler.ts:227-227`
+- **type** — The type of content, either "text" or "json" or "markdown" `base-tool-handler.ts:30-30`
 - **typeAssertionCount** — Counts the number of type assertions in the code `impact-analyzer.ts:456-456`
 - **unsafeCastCount** — Counts the number of unsafe casts in the code `impact-analyzer.ts:497-497`
 - **wasTruncated** — Indicates if the text was truncated `response-limits.ts:75-75`
@@ -505,7 +535,7 @@ This module provides tools for managing and analyzing agent metrics, including p
 | `ImpactAnalyzer` | class | `impact-analyzer.ts:69-445` | Code change impact analysis engine computing direct callers, state mutations, and breaking changes for refactoring decisions. |
 | `ImpactAnalysisResult` | interface | `impact-analyzer.ts:21-54` | Impact analysis output containing direct callers, state impact mutations, breaking changes, and affected file list. |
 | `AgentMetricsSnapshot` | interface | `agent-metrics.ts:68-86` | Aggregated performance metrics snapshot from Conductor, agents, KnowledgeBus, and ResourceManager. |
-| `collectAgentMetrics()` | async function | `agent-metrics.ts:88-126` | Collects and aggregates real-time performance metrics from system components into a single snapshot. |
+| `collectAgentMetrics()` | async function | `agent-metrics.ts:41-166` | Collects and aggregates real-time performance metrics from system components into a single snapshot. |
 | `MAX_RESPONSE_SIZE_BYTES` | const | `response-limits.ts:11-11` | Soft limit constant (50,000 bytes) triggering automatic response truncation. |
 | `paginate<T>()` | function | `response-limits.ts:50-68` | Slices array with offset/limit and returns pagination metadata (total, offset, limit, truncated). |
 | `truncateResponse()` | function | `response-limits.ts:84-107` | Binary-search JSON truncation preserving essential fields (id, name, type) within byte limits. |
