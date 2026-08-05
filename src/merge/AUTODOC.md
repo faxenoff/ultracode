@@ -100,16 +100,16 @@ MergeResult (matched units, conflicts, actions, stats)
 
 | Dependency | Kind | Purpose |
 |------------|------|---------|
-| `src/logging/index.js` | internal | Structured logging with `log.i()`, `log.d()`, `log.w()`, `log.e()` |
-| `src/utils/fast-hash.js` | internal | SHA256 hashing via `hashText()` for content, structural, and signature digests |
-| `src/utils/file-ops.js` | internal | File I/O via `readBytes()` for raw file reading in ContentNormalizer |
-| `src/utils/simd-vector-ops.js` | internal | SIMD-optimized cosine similarity and vector normalization |
-| `src/core/branch-manager.js` | internal | Branch state and metadata management |
-| `src/core/di-container.js` | internal | Dependency injection for service instantiation |
-| `src/core/agent-registry.js` | internal | Agent registration and discovery |
-| `src/agents/conductor-orchestrator.js` | internal | Multi-agent orchestration for DevAgent control |
-| `src/semantic/embedding-generator.js` | internal | External embedding service for vector generation |
-| `src/types/agent.js` | internal | TypeScript types for agent interfaces |
+| ~~`src/logging/index.js`~~ (deleted) | internal | Structured logging with `log.i()`, `log.d()`, `log.w()`, `log.e()` |
+| ~~`src/utils/fast-hash.js`~~ (deleted) | internal | SHA256 hashing via `hashText()` for content, structural, and signature digests |
+| ~~`src/utils/file-ops.js`~~ (deleted) | internal | File I/O via `readBytes()` for raw file reading in ContentNormalizer |
+| ~~`src/utils/simd-vector-ops.js`~~ (deleted) | internal | SIMD-optimized cosine similarity and vector normalization |
+| ~~`src/core/branch-manager.js`~~ (deleted) | internal | Branch state and metadata management |
+| ~~`src/core/di-container.js`~~ (deleted) | internal | Dependency injection for service instantiation |
+| ~~`src/core/agent-registry.js`~~ (deleted) | internal | Agent registration and discovery |
+| ~~`src/agents/conductor-orchestrator.js`~~ (deleted) | internal | Multi-agent orchestration for DevAgent control |
+| ~~`src/semantic/embedding-generator.js`~~ (deleted) | internal | External embedding service for vector generation |
+| ~~`src/types/agent.js`~~ (deleted) | internal | TypeScript types for agent interfaces |
 
 ## Architecture & Design Patterns
 

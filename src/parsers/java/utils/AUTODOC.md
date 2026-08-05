@@ -23,12 +23,12 @@ This module contains shared helper functions used by all Java extractors. It pro
 
 | Export | Type | Description | Location |
 |--------|------|-------------|----------|
-| `getLocation` | function | Extracts position information from an ANTLR context | [`ast-helpers.ts:18-35`](./ast-helpers.ts) |
+| `getLocation` | function | Extracts position information from an ANTLR context | [`ast-helpers.ts:29-35`](./ast-helpers.ts) |
 | `getTerminalLocation` | function | Gets coordinates from a terminal node | [`ast-helpers.ts:40-57`](./ast-helpers.ts) |
 | `visitChildren` | function | Recursively visits child nodes with a visitor function | [`ast-helpers.ts:66-80`](./ast-helpers.ts) |
-| `findAllDescendants` | function | Finds all descendants matching a predicate | [`ast-helpers.ts:85-105`](./ast-helpers.ts) |
+| `findAllDescendants` | function | Finds all descendants matching a predicate | [`ast-helpers.ts:102-104`](./ast-helpers.ts) |
 | `findAncestor` | function | Finds first ancestor matching a predicate | [`ast-helpers.ts:110-122`](./ast-helpers.ts) |
-| `getText` | function | Safely gets context text or empty string | [`ast-helpers.ts:131-133`](./ast-helpers.ts) |
+| `getText` | function | Safely gets context text or empty string | [`ast-helpers.ts:120-136`](./ast-helpers.ts) |
 | `getTextTrimmed` | function | Gets trimmed context text | [`ast-helpers.ts:138-140`](./ast-helpers.ts) |
 | `getIdentifierText` | function | Safely extracts identifier text | [`ast-helpers.ts:145-149`](./ast-helpers.ts) |
 | `extractBaseTypeName` | function | Removes generics and arrays from type text | [`ast-helpers.ts:158-164`](./ast-helpers.ts) |

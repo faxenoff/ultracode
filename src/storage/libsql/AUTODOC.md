@@ -37,7 +37,7 @@ The libsql module implements the persistent storage layer for the code graph usi
 | `ProjectContext` | interface | Multi-tenant project context (projectHash, branchName, baseBranch) | [`types.ts:73-80`](./types.ts) |
 | `DatabaseCorruptionError` | class | Exception for database corruption detection and recovery | [`types.ts:119-127`](./types.ts) |
 | `SUPPORTED_DIMENSIONS` | const | Array of supported embedding dimensions: [384, 768, 1024, 4096] | [`types.ts:44-44`](./types.ts) |
-| `getEmbeddingColumn` | function | Maps dimension to column name (e.g., 384 -> "embedding_384") | [`types.ts:51-56`](./types.ts) |
+| `getEmbeddingColumn` | function | Maps dimension to column name (e.g., 384 -> "embedding_384") | [`types.ts:54-59`](./types.ts) |
 
 ## Dependencies
 

@@ -32,17 +32,17 @@ Native CUDA addon package providing GPU-accelerated vector similarity operations
 
 ### Interfaces
 
-**CUDADeviceInfo** — `external-tools/native/cuda/src/index.d.ts:10-16`
+**CUDADeviceInfo** — ~~`external-tools/native/cuda/src/index.d.ts:10-16`~~ (deleted)
 
 Exposes NVIDIA GPU device metadata and capabilities: device count, model identifier, compute architecture version, total memory, and multiprocessor count for runtime capability negotiation.
 
 ### Functions
 
-**cosineSimilarity** — `external-tools/native/cuda/src/index.d.ts:18-27`
+**cosineSimilarity** — ~~`external-tools/native/cuda/src/index.d.ts:18-27`~~ (deleted)
 
 Computes cosine similarity between two equal-length vectors on the GPU, returning a normalized score in [0, 1] range; typical latency 0.1–0.2ms for 8192-dimensional vectors.
 
-**batchCosineSimilarity** — `external-tools/native/cuda/src/index.d.ts:29-40`
+**batchCosineSimilarity** — ~~`external-tools/native/cuda/src/index.d.ts:29-40`~~ (deleted)
 
 Computes cosine similarities for multiple vector pairs in parallel on the GPU, scaling throughput with batch size while maintaining constant per-operation latency.
 

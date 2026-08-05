@@ -27,8 +27,8 @@ The setup utils module provides foundational infrastructure needed by the setup 
 | `cleanupDockerLlamaServer` | function | Terminates Docker llama-server on Windows | [`docker.ts:65-78`](./docker.ts) |
 | `checkOllama` | function | Checks Ollama installation with retry | [`docker.ts:80-119`](./docker.ts) |
 | `createMultiDeviceConfig` | function | Creates GPU+CPU parallel inference config | [`multi-device.ts:52-203`](./multi-device.ts) |
-| `generateEndpointsArray` | function | Generates endpoint URLs for multi-device setup | [`multi-device.ts:199-199`](./multi-device.ts) |
-| `checkNvidiaContainerToolkit` | function | Checks and configures NVIDIA Container Toolkit | [`nvidia-toolkit.ts:17-17`](./nvidia-toolkit.ts) |
+| `generateEndpointsArray` | function | Generates endpoint URLs for multi-device setup | [`multi-device.ts:98-212`](./multi-device.ts) |
+| `checkNvidiaContainerToolkit` | function | Checks and configures NVIDIA Container Toolkit | [`nvidia-toolkit.ts:17-179`](./nvidia-toolkit.ts) |
 | `sleep` | function | Cross-runtime async sleep (Bun/Node.js) | [`runtime.ts:10-10`](./runtime.ts) |
 
 ## Dependencies

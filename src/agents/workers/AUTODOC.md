@@ -32,9 +32,9 @@ The workers module is the parallel processing backbone for code indexing. It pro
 | `SUPPORTED_LANGUAGES` | const | List of all supported language identifiers | [`language-detection.ts:58-83`](./language-detection.ts) |
 | `getAnalyzer` | function | Gets or creates cached language analyzer | [`analyzer-loader.ts:23-54`](./analyzer-loader.ts) |
 | `getWorkerGlobalCache` | function | Retrieves or initializes the global worker cache instance | [`worker-global-cache.ts:90-93`](./worker-global-cache.ts) |
-| `warmupAnalyzer` | function | Pre-warms ANTLR parsers for JIT compilation | [`analyzer-loader.ts:250-282`](./analyzer-loader.ts) |
+| `warmupAnalyzer` | function | Pre-warms ANTLR parsers for JIT compilation | [`analyzer-loader.ts:59-295`](./analyzer-loader.ts) |
 | `SUPPORTED_WORKER_LANGUAGES` | const | Languages supported by the generic worker | [`analyzer-loader.ts:287-309`](./analyzer-loader.ts) |
-| `WorkerEmbeddingClient` | class | Lightweight HTTP client for embedding generation in workers | [`worker-embedding-client.ts:60-60`](./worker-embedding-client.ts) |
+| `WorkerEmbeddingClient` | class | Lightweight HTTP client for embedding generation in workers | [`worker-embedding-client.ts:60-325`](./worker-embedding-client.ts) |
 | `workerLog` | function | File-based logging from worker processes | [`worker-logging.ts:53-74`](./worker-logging.ts) |
 
 ## Dependencies

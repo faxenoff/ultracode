@@ -30,7 +30,7 @@ The data submodule provides curated lists of language built-ins and framework pa
 | `EXPRESS_PATTERNS` | const | Express routes, middleware, and request handling | [`frameworks.ts:169-171`](./frameworks.ts) |
 | `NESTJS_PATTERNS` | const | NestJS decorators, modules, and dependency injection | [`frameworks.ts:201-203`](./frameworks.ts) |
 | `TESTING_PATTERNS` | const | Testing framework patterns including Jest, Mocha, and assertion utilities | [`testing.ts:13-173`](./testing.ts) |
-| `getAllGlobalEntries` | function | Aggregates all entries from all languages and frameworks | [`index.ts:29-44`](./index.ts) |
+| `getAllGlobalEntries` | function | Aggregates all entries from all languages and frameworks | [`index.ts:33-51`](./index.ts) |
 
 ## Dependencies
 

@@ -1,71 +1,38 @@
-# HelmParser Test Suite
+# Module: src/parsers/__tests__
 
-## Overview
+## 🤖 Entity Listing
 
-This module contains comprehensive tests for the HelmParser, validating its ability to parse Helm chart files and extract entities, patterns, and metadata. The tests cover Chart.yaml parsing, Helm template pattern detection (nindent, indent, toYaml, include, etc.), incremental parsing behavior, and edge cases in YAML/Helm syntax. Tests use Vitest with mocked file operations and logging to ensure isolated, deterministic validation of parser functionality across realistic Helm chart scenarios.
+### Function
+- **callNames** — Maps the calls in the file entity to their names `helm-parser.test.ts:278-278`
+- **callNames** — Stores names of called functions or methods `helm-parser.test.ts:910-910`
+- **define** — Finds the child entity named "my-chart.name" in the file entity `helm-parser.test.ts:191-191`
+- **define** — Finds the child entity named "my-chart.labels" in the result entities `helm-parser.test.ts:202-202`
+- **defines** — Filters the children of the result entities to find those with metadata of type "named-template" `helm-parser.test.ts:221-221`, `helm-parser.test.ts:239-239`
+- **elseIfBranch** — Finds the branch of type "else-if" in the cf branches `helm-parser.test.ts:441-441`
+- **ifBranch** — Finds the branch of type "if" in the cf branches `helm-parser.test.ts:408-408`
+- **indentPattern** — Identifies the pattern with the indent function "indent" `helm-parser.test.ts:558-558`
+- **names** — Stores names of entities parsed from the Chart.yaml file `helm-parser.test.ts:122-122`
+- **nindentPattern** — Identifies the pattern with the indent function "nindent" `helm-parser.test.ts:542-542`
+- **pgDep** — Represents a PostgreSQL dependency in the Chart.yaml file `helm-parser.test.ts:81-81`
+- **redisDep** — Represents a Redis dependency in the Chart.yaml file `helm-parser.test.ts:88-88`
+- **resources** — Finds the entity named "resources" in the result `helm-parser.test.ts:156-156`
+- **targets** — Maps the relationships in the result to their targets `helm-parser.test.ts:307-307`
+- **toYamlPattern** — Converts a value to a YAML pattern `helm-parser.test.ts:604-604`
+- **valuesRefs** — Filters the refs to find those matching ".Values.replicaCount" `helm-parser.test.ts:380-380`
+- **varEntity** — Finds the child entity named "$name" in the file entity `helm-parser.test.ts:491-491`
+- **varEntity** — Finds the entity with the name "$x" among the children `helm-parser.test.ts:520-520`
+- **varEntity** — Represents a variable entity in the parsed chart `helm-parser.test.ts:930-930`
+- **vars** — Filters entities to find those with metadata indicating they are template variables `helm-parser.test.ts:509-509`
+- **withBranch** — Finds the branch of type "if" with condition ".Values.nodeSelector" in the cf branches `helm-parser.test.ts:466-466`
 
-## Flow
+### Import_decl
+- **../helm-parser.js** — Imports `../helm-parser.js` from `../helm-parser.js`. `helm-parser.test.ts:2-2`
+- **vitest** — Imports `vitest` from `vitest`. `helm-parser.test.ts:1-1`
 
-```
-Test Input (filePath + content)
-    ↓
-HelmParser.parse()
-    ↓
-Pattern Detection (functions, variables, includes, range/with)
-    ↓
-Entity Extraction (files, variables, charts, functions, imports)
-    ↓
-Assertion Validation (entities count, properties, categorization)
-    ↓
-Result: Pass/Fail
-```
-
-## Test Infrastructure
-
-- **existsSync mock** (`helm-parser.test.ts:5-12`) — Mocked file existence check that simulates Chart.yaml locations for specific paths to test Helm context detection without filesystem I/O.
-- **log mock** (`helm-parser.test.ts:15-17`) — Mocked logging interface with info, debug, warning, and error methods to capture parser debug output during tests.
-- **parser instance setup** (`helm-parser.test.ts:22-24`) — beforeEach hook that instantiates a fresh HelmParser for each test, ensuring test isolation and preventing state leakage.
-
-## Core Parsing Tests
-
-- **Chart.yaml parsing** (`helm-parser.test.ts:29-101`) — Validates extraction of module entity with name, version, appVersion, and description from Chart.yaml files; tests both standard and edge case YAML formats.
-- **Chart.yaml parsing variations** (`helm-parser.test.ts:106-170`) — Tests multi-chart scenarios, invalid YAML, and misaligned indentation in Chart.yaml; validates error handling and fallback behavior.
-
-## Pattern Detection Tests
-
-- **Helm function patterns** (`helm-parser.test.ts:175-256`) — Tests detection and extraction of Helm built-in functions (nindent, indent, quote, lower) and their arguments; validates regex-based pattern matching.
-- **Advanced function patterns** (`helm-parser.test.ts:261-327`) — Tests complex nested function calls, toYaml patterns, and whitespace handling in template expressions; validates proper tokenization.
-- **Include and define directives** (`helm-parser.test.ts:332-391`) — Tests recognition of Helm include, define, and template directives; validates template name extraction and scope detection.
-- **Control flow directives** (`helm-parser.test.ts:396-477`) — Tests range and with directives for variable bindings; validates context and iterator extraction.
-- **Variable references** (`helm-parser.test.ts:482-523`) — Tests variable references with dot notation, map access, and function calls; validates symbol binding resolution.
-- **String interpolation patterns** (`helm-parser.test.ts:528-616`) — Tests Helm string interpolation with nindent, indent, toYaml, and include patterns; validates quoted and raw string handling.
-
-## Integration and Behavior Tests
-
-- **Batch parsing scenario** (`helm-parser.test.ts:621-658`) — Validates sequential parsing and entity aggregation; tests Prime dependency detection and multiple chart references in batch mode.
-- **Incremental parsing** (`helm-parser.test.ts:663-671`) — Tests incremental parser state management and result merging across multiple file parses; validates cache efficiency.
-- **Entity categorization** (`helm-parser.test.ts:676-706`) — Validates file entity, variable, chart, function, and import categorization; tests proper entity type assignment and filtering.
-- **Large file handling** (`helm-parser.test.ts:711-729`) — Tests parser performance and stability with multi-hundred-line Helm templates; validates incremental parsing on large documents.
-- **Performance regression** (`helm-parser.test.ts:734-738`) — Tests parser speed on repeated parses; validates no unexpected slowdowns.
-- **File system integration** (`helm-parser.test.ts:740-753`) — Tests isHelmContext detection and Chart.yaml discovery; validates mock file operations and path resolution.
-- **Statistics tracking** (`helm-parser.test.ts:755-777`) — Validates entity count, line count, and parse statistics collection; tests incremental stats updates.
-- **Incremental updates** (`helm-parser.test.ts:782-807`) — Tests adding, modifying, and removing entities in incremental parse cycles; validates before/after state correctness.
-- **Complex template structures** (`helm-parser.test.ts:812-860`) — Tests nested conditionals, loops, and variable scoping; validates location tracking and entity nesting.
-- **Comprehensive integration** (`helm-parser.test.ts:865-941`) — End-to-end validation of all parser features: Chart.yaml extraction, pattern detection, variable binding, and entity relationships in a realistic chart.
-
-## Test Fixtures
-
-Test fixtures provide repeatable input scenarios for HelmParser validation:
-
-- **Chart.yaml file paths** (`helm-parser.test.ts:30`, `helm-parser.test.ts:106`, `helm-parser.test.ts:742`, `helm-parser.test.ts:813`, `helm-parser.test.ts:867`) — File path inputs for Chart.yaml and Helm template file processing.
-- **Basic YAML structures** (`helm-parser.test.ts:33-39`, `helm-parser.test.ts:54`, `helm-parser.test.ts:63-74`) — Simple Chart.yaml and template fixtures validating foundational parsing behavior.
-- **Multi-chart variations** (`helm-parser.test.ts:109-131`, `helm-parser.test.ts:133-141`, `helm-parser.test.ts:143-149`, `helm-parser.test.ts:151-159`, `helm-parser.test.ts:161-169`) — Multiple chart configurations testing concurrent parsing and dependency scenarios.
-- **Function pattern fixtures** (`helm-parser.test.ts:178-195`, `helm-parser.test.ts:197-206`, `helm-parser.test.ts:208-225`, `helm-parser.test.ts:227-243`, `helm-parser.test.ts:245-255`) — Helm function call patterns for nindent, indent, quote, and lower functions.
-- **Advanced function fixtures** (`helm-parser.test.ts:264-281`, `helm-parser.test.ts:283-291`, `helm-parser.test.ts:293-310`, `helm-parser.test.ts:312-318`, `helm-parser.test.ts:320-326`) — Nested and complex function calls with toYaml and chained transformations.
-- **Directive fixtures** (`helm-parser.test.ts:335-348`, `helm-parser.test.ts:350-358`, `helm-parser.test.ts:360-368`, `helm-parser.test.ts:370-382`, `helm-parser.test.ts:384-390`) — include, define, and template directive patterns.
-- **Control flow fixtures** (`helm-parser.test.ts:399-410`, `helm-parser.test.ts:412-425`, `helm-parser.test.ts:427-443`, `helm-parser.test.ts:445-462`, `helm-parser.test.ts:464-476`) — range and with directive patterns with variable binding scenarios.
-- **Variable reference fixtures** (`helm-parser.test.ts:485-497`, `helm-parser.test.ts:499-510`, `helm-parser.test.ts:512-522`) — Variable dot-notation and nested access patterns.
-- **String interpolation fixtures** (`helm-parser.test.ts:531-545`, `helm-parser.test.ts:547-560`, `helm-parser.test.ts:562-576`, `helm-parser.test.ts:578-598`, `helm-parser.test.ts:600-614`) — Multi-line template strings with mixed Helm expressions and static content.
-- **Batch and incremental fixtures** (`helm-parser.test.ts:624-647`, `helm-parser.test.ts:666-669`, `helm-parser.test.ts:689-704`) — Sequential file parsing scenarios and delta updates.
-- **Large template fixtures** (`helm-parser.test.ts:714-727`) — Extended Helm templates exceeding 200 lines for performance validation.
-- **Complex structure fixtures** (`helm-parser.test.ts:815-858`, `helm-parser.test.ts:870-939`) — Realistic multi-file chart scenarios with nested templates, includes, and variable scoping.
+### Property
+- **indentFunction** — Stores the indent function as a string `helm-parser.test.ts:537-537`, `helm-parser.test.ts:553-553`
+- **indentFunction** — Parses indentation levels in YAML content `helm-parser.test.ts:569-569`, `helm-parser.test.ts:599-599`
+- **indentValue** — Stores the indent value as a number `helm-parser.test.ts:538-538`, `helm-parser.test.ts:554-554`
+- **indentValue** — Represents a value with its indentation level `helm-parser.test.ts:600-600`
+- **pipeline** — Represents a sequence of operations for parsing Helm charts `helm-parser.test.ts:570-570`
+- **yamlContextIndent** — Manages indentation context for YAML parsing `helm-parser.test.ts:583-583`

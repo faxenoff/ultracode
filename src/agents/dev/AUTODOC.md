@@ -16,29 +16,29 @@ The dev module provides the file discovery and classification layer for the DevA
 
 | Export | Type | Description | Location |
 |--------|------|-------------|----------|
-| `collectFiles` | function | Synchronously collects files with extension filtering | [`file-collector.ts:294-358`](./file-collector.ts) |
+| `collectFiles` | function | Synchronously collects files with extension filtering | [`file-collector.ts:298-362`](./file-collector.ts) |
 | `collectFilesAsync` | function | Async file collection using Bun.Glob or fast-glob | [`file-collector.ts:413-476`](./file-collector.ts) |
-| `CollectFilesOptions` | interface | Options for file collection (patterns, agentId) | [`file-collector.ts:148-151`](./file-collector.ts) |
+| `CollectFilesOptions` | interface | Options for file collection (patterns, agentId) | [`file-collector.ts:141-150`](./file-collector.ts) |
 | `CollectFilesResult` | interface | Result with files array and scan statistics | [`file-collector.ts:153-161`](./file-collector.ts) |
-| `loadIgnoreFile` | function | Loads patterns from `.ultracodeignore` | [`file-collector.ts:29-29`](./file-collector.ts) |
+| `loadIgnoreFile` | function | Loads patterns from `.ultracodeignore` | [`file-collector.ts:29-63`](./file-collector.ts) |
 | `SUPPORTED_CODE_EXTENSIONS` | const | Extensions with AST parsing support | [`file-extensions.ts:12-77`](./file-extensions.ts) |
 | `SUPPORTED_DATA_EXTENSIONS` | const | Extensions without AST parsing (configs, docs) | [`file-extensions.ts:44-77`](./file-extensions.ts) |
 | `ALL_SUPPORTED_EXTENSIONS` | const | Combined array of all supported extensions | [`file-extensions.ts:72-72`](./file-extensions.ts) |
 | `isCodeExtension` | function | Checks if extension supports AST parsing | [`file-extensions.ts:75-77`](./file-extensions.ts) |
 | `isDataExtension` | function | Checks if extension is a data file | [`file-extensions.ts:80-82`](./file-extensions.ts) |
-| `createHeuristicEntities` | function | Creates module entities for non-parseable files | [`heuristic-parser.ts:35-75`](./heuristic-parser.ts) |
+| `createHeuristicEntities` | function | Creates module entities for non-parseable files | [`heuristic-parser.ts:48-88`](./heuristic-parser.ts) |
 | `separateFilesBySupport` | function | Separates files into supported and heuristic groups | [`incremental-indexer.ts:74-100`](./incremental-indexer.ts) |
 | `setupVectorProvider` | function | Configures FAISS vector provider for incremental indexing | [`incremental-indexer.ts:120-169`](./incremental-indexer.ts) |
 | `setupEmbeddingGenerator` | function | Configures EmbeddingGenerator for centralized mode | [`incremental-indexer.ts:178-225`](./incremental-indexer.ts) |
-| `processSupportedFiles` | function | Batch-parses supported files through ParserAgent | [`incremental-indexer.ts:239-243`](./incremental-indexer.ts) |
-| `processHeuristicFiles` | function | Processes unsupported files via heuristic parser | [`incremental-indexer.ts:295-298`](./incremental-indexer.ts) |
+| `processSupportedFiles` | function | Batch-parses supported files through ParserAgent | [`incremental-indexer.ts:220-270`](./incremental-indexer.ts) |
+| `processHeuristicFiles` | function | Processes unsupported files via heuristic parser | [`incremental-indexer.ts:279-310`](./incremental-indexer.ts) |
 | `flushPendingEmbeddings` | function | Flushes accumulated embeddings to FAISS index | [`incremental-indexer.ts:335-366`](./incremental-indexer.ts) |
-| `initializeIndexing` | function | Phase 1: validates params and collects files | [`indexing-pipeline.ts:89-112`](./indexing-pipeline.ts) |
+| `initializeIndexing` | function | Phase 1: validates params and collects files | [`indexing-pipeline.ts:90-113`](./indexing-pipeline.ts) |
 | `detectChangedFiles` | function | Phase 2: detects changed, new, and deleted files | [`indexing-pipeline.ts:124-195`](./indexing-pipeline.ts) |
-| `cleanStaleEntities` | function | Phase 3: removes entities for changed/deleted files | [`indexing-pipeline.ts:207-239`](./indexing-pipeline.ts) |
-| `applyChangeAnalysis` | function | Phase 4: applies change analysis to indexing context | [`indexing-pipeline.ts:253-279`](./indexing-pipeline.ts) |
-| `separateCodeAndDataFiles` | function | Phase 5: separates files by code vs data extension | [`indexing-pipeline.ts:299-325`](./indexing-pipeline.ts) |
-| `buildIndexingResult` | function | Builds final indexing result summary | [`indexing-pipeline.ts:350-363`](./indexing-pipeline.ts) |
+| `cleanStaleEntities` | function | Phase 3: removes entities for changed/deleted files | [`indexing-pipeline.ts:209-241`](./indexing-pipeline.ts) |
+| `applyChangeAnalysis` | function | Phase 4: applies change analysis to indexing context | [`indexing-pipeline.ts:255-281`](./indexing-pipeline.ts) |
+| `separateCodeAndDataFiles` | function | Phase 5: separates files by code vs data extension | [`indexing-pipeline.ts:301-327`](./indexing-pipeline.ts) |
+| `buildIndexingResult` | function | Builds final indexing result summary | [`indexing-pipeline.ts:340-437`](./indexing-pipeline.ts) |
 | `VendoredDetectionResult` | interface | Container for vendored directory detection results with prefixes and timing | [`vendored-detector.ts:58-70`](./vendored-detector.ts) |
 | `detectVendoredDirectories` | function | Recursively scans directory tree to identify vendored code paths | [`vendored-detector.ts:84-158`](./vendored-detector.ts) |
 | `detectKnownVendored` | function | Identifies directories matching known vendored path segment patterns | [`vendored-detector.ts:164-194`](./vendored-detector.ts) |

@@ -24,7 +24,7 @@ The utils module is a collection of internal utilities shared across the entire 
 | Export | Type | Description | Location |
 |--------|------|-------------|----------|
 | `BloomFilter` | class | Probabilistic O(1) membership testing | [`bloom-filter.ts:12-81`](./bloom-filter.ts) |
-| `CircuitBreaker` | class | Three-state fault tolerance pattern | [`circuit-breaker.ts:14-15`](./circuit-breaker.ts) |
+| `CircuitBreaker` | class | Three-state fault tolerance pattern | [`circuit-breaker.ts:15-15`](./circuit-breaker.ts) |
 | `extractComments` | function | Extracts comments from source code | [`comment-extractor.ts`](./comment-extractor.ts) |
 | `getConfigDir` | function | Returns platform-specific config directory | [`config-paths.ts`](./config-paths.ts) |
 | `loadSemanticConfig` | function | Loads semantic-config.json | [`config-paths.ts`](./config-paths.ts) |

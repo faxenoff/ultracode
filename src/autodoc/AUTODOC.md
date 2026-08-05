@@ -85,7 +85,7 @@ Entry point `index.ts` re-exports the full public API from all submodules.
 | `extractCommentRefs` | function | [`link-extractor.ts:317-321`](./parser/link-extractor.ts) | Extract doc/entity refs from code comments |
 | `generateCodeRef` | function | [`link-extractor.ts:228-236`](./parser/link-extractor.ts) | Generate `[-> file:L1-L50]()` syntax |
 | `generateEntityRef` | function | [`link-extractor.ts:241-376`](./parser/link-extractor.ts) | Generate `[-> entity:Name]()` syntax |
-| `generateDocRef` | function | [`link-extractor.ts:249-253`](./parser/link-extractor.ts) | Generate `[-> Doc](./path.md)` syntax |
+| `generateDocRef` | function | [`link-extractor.ts:249-253`](./parser/link-extractor.ts) | Generate `~~[-> Doc](./path.md)~~ (deleted)` syntax |
 | `validateReference` | function | [`link-extractor.ts:262-265`](./parser/link-extractor.ts) | Validate correctness of a parsed reference |
 | `updateLineNumbers` | function | [`link-extractor.ts:282-291`](./parser/link-extractor.ts) | Shift line numbers in refs by a delta |
 

@@ -90,14 +90,14 @@ Full pipeline for semantic code analysis: embedding generation via pluggable pro
 | `SemanticCache` | class | Global LRU cache with TTL for embeddings and search results | [`semantic-cache.ts:77-372`](./semantic-cache.ts) |
 | `EmbeddingAccumulator` | class | Buffered batch insertion into Faiss (flush threshold 500) | [`embedding-accumulator.ts:79-667`](./embedding-accumulator.ts) |
 | `EmbeddingRouter` | class | GPU-aware batch routing for embedding operations | [`embedding-router.ts:51-402`](./embedding-router.ts) |
-| `CodeAnalyzer` | class | Code similarity detection, clone finding, refactoring suggestions | [`code-analyzer.ts:126-126`](./code-analyzer.ts) |
+| `CodeAnalyzer` | class | Code similarity detection, clone finding, refactoring suggestions | [`code-analyzer.ts:113-130`](./code-analyzer.ts) |
 | `GlobalEmbeddingCache` | class | Singleton cache for built-in types and framework patterns | [`global-embedding-cache.ts:49-298`](./global-embedding-cache.ts) |
 | `LayeredFaissProvider` | class | Base + delta Faiss index for multi-project support (v6) | [`faiss/layered-faiss-provider.ts:91-861`](./faiss/layered-faiss-provider.ts) |
-| `getFaissClient()` | function | Singleton Faiss NAPI client (runtime-aware) | [`faiss/faiss-client.ts:489-496`](./faiss/faiss-client.ts) |
+| `getFaissClient()` | function | Singleton Faiss NAPI client (runtime-aware) | [`faiss/faiss-client.ts:496-503`](./faiss/faiss-client.ts) |
 | `initializeFaissProvider()` | function | Initialize and return Faiss provider singleton | [`faiss/faiss-provider.ts:765-769`](./faiss/faiss-provider.ts) |
 | `getGpuClient()` | function | Singleton GPU client (Faiss + CUDA unified) | [`gpu/gpu-client.ts:828-834`](./gpu/gpu-client.ts) |
-| `createProvider()` | function | Factory for embedding providers (OVMS, TEI, Ollama, etc.) | [`providers/factory.ts:218-218`](./providers/factory.ts) |
-| `chunkCode()` | function | Split code into semantic chunks with overlap | [`smart-chunker.ts:162-162`](./smart-chunker.ts) |
+| `createProvider()` | function | Factory for embedding providers (OVMS, TEI, Ollama, etc.) | [`providers/factory.ts:218-227`](./providers/factory.ts) |
+| `chunkCode()` | function | Split code into semantic chunks with overlap | [`smart-chunker.ts:162-268`](./smart-chunker.ts) |
 | `getRecommendedStrategy()` | function | Adaptive CPU/GPU strategy recommendation | [`gpu/adaptive-thresholds.ts:233-270`](./gpu/adaptive-thresholds.ts) |
 
 
@@ -780,7 +780,7 @@ async initialize(): Promise<void> {
 }
 ```
 
-Key type exports: `EmbeddingProvider` (interface, `providers/base.ts:87`), `IFaissClient` (interface, `faiss/faiss-client.ts:59`), `IGpuClient` (interface, `gpu/gpu-client.ts:70`), `IVectorProvider` (interface, `faiss/types.ts:24`).
+Key type exports: `EmbeddingProvider` (interface, `providers/base.ts:87`), `IFaissClient` (interface, `faiss/faiss-client.ts:59-72`), `IGpuClient` (interface, `gpu/gpu-client.ts:70-118`), `IVectorProvider` (interface, `faiss/types.ts:24-35`).
 
 ## Files
 
@@ -823,7 +823,7 @@ Key type exports: `EmbeddingProvider` (interface, `providers/base.ts:87`), `IFai
 | `providers/ovms-provider.ts` | OVMS gRPC provider (highest priority) |
 | `providers/tei-provider.ts` | TEI Docker HTTP provider |
 | `providers/ollama-provider.ts` | Ollama local HTTP provider |
-| `providers/vllm-provider.ts` | vLLM Docker OpenAI-compatible provider |
+| ~~`providers/vllm-provider.ts`~~ (deleted) | vLLM Docker OpenAI-compatible provider |
 | `providers/mlx-provider.ts` | MLX provider (macOS Metal GPU) |
 | `providers/llamacpp-provider.ts` | llama.cpp HTTP provider |
 | `providers/openai-provider.ts` | OpenAI API remote provider |
@@ -831,7 +831,7 @@ Key type exports: `EmbeddingProvider` (interface, `providers/base.ts:87`), `IFai
 | `providers/cloudru-provider.ts` | Cloud.ru API provider |
 | `providers/http-engine.ts` | Shared HTTP engine with retry and timeout |
 | `providers/ovms-grpc-client.ts` | gRPC client for OVMS native communication |
-| `providers/ovms-container.ts` | Docker container management for OVMS |
+| ~~`providers/ovms-container.ts`~~ (deleted) | Docker container management for OVMS |
 | `providers/ovms-utils.ts` | OVMS helper utilities (normalize, model map, warmup) |
 | `global-cache/index.ts` | Aggregate all global cache entries |
 | `global-cache/types.ts` | Global cache entry type definitions |

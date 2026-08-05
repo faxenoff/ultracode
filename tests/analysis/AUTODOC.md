@@ -200,10 +200,10 @@ Result validation (matches, classifications, parsed frames)
 ## Dependencies
 
 **Internal:**
-- `src/analysis/patterns/detectors/python.js` — Python anti-pattern detection functions (checkAssertTrueBool, checkDjangoSqlInjection, checkPdDataLeakage, etc.)
-- `src/analysis/stacktrace/classifier.ts` — Stacktrace classification engine
+- ~~`src/analysis/patterns/detectors/python.js`~~ (deleted) — Python anti-pattern detection functions (checkAssertTrueBool, checkDjangoSqlInjection, checkPdDataLeakage, etc.)
+- ~~`src/analysis/stacktrace/classifier.ts`~~ (deleted) — Stacktrace classification engine
 - `src/analysis/stacktrace/parsers/*` — Language-specific stacktrace parsers (JavaScript, Java, Python, etc.)
-- `src/types/storage.js` — Entity and EntityType type definitions
+- ~~`src/types/storage.js`~~ (deleted) — Entity and EntityType type definitions
 
 **External:**
 - `zod` — Schema validation library for rule file parsing

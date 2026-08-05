@@ -16,7 +16,7 @@ The schemas module contains all Zod schema definitions that validate and type-ch
 
 | Export | Type | Description | Location |
 |--------|------|-------------|----------|
-| `AnalyzeHotspotsSchema` | const | Hotspot analysis with historical metrics options | [`analysis-schemas.ts:44-57`](./analysis-schemas.ts) |
+| `AnalyzeHotspotsSchema` | const | Hotspot analysis with historical metrics options | [`analysis-schemas.ts:45-50`](./analysis-schemas.ts) |
 | `AnalyzeStateChaosSchema` | const | State chaos and race condition analysis params | [`analysis-schemas.ts:53-53`](./analysis-schemas.ts) |
 | `JscpdCloneDetectionSchema` | const | Duplicate code detection parameters | [`analysis-schemas.ts:8-8`](./analysis-schemas.ts) |
 | `DetectPatternsSchema` | const | Code pattern detection and identification parameters | [`pattern-schemas.ts`](./pattern-schemas.ts) |
@@ -29,11 +29,11 @@ The schemas module contains all Zod schema definitions that validate and type-ch
 | `RenameSymbolSchema` | const | Symbol rename with reference updates | [`modification-schemas.ts:55-62`](./modification-schemas.ts) |
 | `SemanticMergeSchema` | const | Semantic branch merge with conflict resolution | [`merge-schemas.ts:8-21`](./merge-schemas.ts) |
 | `ValidateFileSchema` | const | Single file syntax validation | [`validation-schemas.ts:8-18`](./validation-schemas.ts) |
-| `GetEntityHistorySchema` | const | Entity change history via Prolly Tree | [`history-schemas.ts:8-11`](./history-schemas.ts) |
+| `GetEntityHistorySchema` | const | Entity change history via Prolly Tree | [`history-schemas.ts:11-11`](./history-schemas.ts) |
 | `TaintAnalysisSchema` | const | Taint analysis with category, offset/limit pagination | [`taint-schemas.ts`](./taint-schemas.ts) |
 | `GraphMetricsSchema` | const | Graph metrics: pagerank, louvain, centrality, bus_factor | [`graph-metrics-schemas.ts`](./graph-metrics-schemas.ts) |
 | `AnalyzeApiImpactSchema` | const | Unified API impact analysis across Swagger, Protobuf, GraphQL | [`semantic-schemas.ts:29-39`](./semantic-schemas.ts) |
-| `AnalyzeSwaggerImpactSchema` | const | Swagger/OpenAPI spec change impact analysis | [`semantic-schemas.ts:22-27`](./semantic-schemas.ts) |
+| `AnalyzeSwaggerImpactSchema` | const | Swagger/OpenAPI spec change impact analysis | [`semantic-schemas.ts:12-25`](./semantic-schemas.ts) |
 | `GetDatabaseSchemaSchema` | const | Database schema reconstruction with ORM, migrations, drift detection | [`semantic-schemas.ts:73-78`](./semantic-schemas.ts) |
 | `DEFAULT_EXCLUDE_PATTERNS` | const | Default file exclusion patterns for indexing | [`index-schemas.ts:9-60`](./index-schemas.ts) |
 

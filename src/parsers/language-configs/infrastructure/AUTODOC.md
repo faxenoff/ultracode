@@ -23,8 +23,8 @@ Provides language configuration for semantic code parsing of Helm templates. Thi
 ## Dependencies
 
 **Internal:**
-- `LANGUAGE_KEYWORDS` — shared keyword definitions from `../shared/keywords.js` providing consistent language keyword sets across all supported language configurations
-- `LanguageConfig` — shared type definition from `../shared/types.js` establishing the structural contract for all language configuration objects
+- `LANGUAGE_KEYWORDS` — shared keyword definitions from ~~`../shared/keywords.js`~~ (deleted) providing consistent language keyword sets across all supported language configurations
+- `LanguageConfig` — shared type definition from ~~`../shared/types.js`~~ (deleted) establishing the structural contract for all language configuration objects
 
 **Related Modules:**
 - Part of the infrastructure language configuration family (`graphql.ts`, `linq.ts`, `prisma.ts`, `protobuf.ts`, `sql.ts`), all following identical configuration patterns for uniform handling in the semantic analysis pipeline

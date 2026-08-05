@@ -66,8 +66,8 @@ npm run build:comm
 | `MCP_EMBEDDING_PROVIDER` | Embedding provider | `auto` |
 | `MCP_EMBEDDING_MODEL` | Embedding model | auto-detect |
 | `MCP_LOG_LEVEL` | Log level | `info` |
-| `OLLAMA_HOST` | Ollama API URL | `http://localhost:11434` |
-| `TEI_ENDPOINT` | TEI API URL | `http://localhost:8080` |
+| `OLLAMA_HOST` | Ollama API URL | ~~`http://localhost:11434`~~ (deleted) |
+| `TEI_ENDPOINT` | TEI API URL | ~~`http://localhost:8080`~~ (deleted) |
 | `OPENAI_API_KEY` | OpenAI API key | — |
 | `HF_TOKEN` | HuggingFace token | — |
 
@@ -402,7 +402,7 @@ Returns:
 
 ## Deployment Procedures
 
-[→ docs/deployment/deployment.md](../docs/deployment/deployment.md)
+~~[→ docs/deployment/deployment.md](../docs/deployment/deployment.md)~~ (deleted)
 
 ### Developer Setup
 
@@ -450,7 +450,7 @@ At startup, `BackendSelector` automatically selects the optimal compute backend 
 
 ### Postinstall Script Logic
 
-`scripts/postinstall.js` checks the environment and builds what is available:
+~~`scripts/postinstall.js`~~ (deleted) checks the environment and builds what is available:
 - Rust + wasm-pack detected: builds WASM backend
 - CUDA Toolkit + CMake detected: builds CUDA backend
 - Any GPU detected: installs WebGPU support
@@ -478,7 +478,7 @@ For GPU testing, use self-hosted runners with NVIDIA GPUs or install Rust for WA
 
 ## NPM Publishing
 
-[→ docs/deployment/NPM_PUBLISHING.md](../docs/deployment/NPM_PUBLISHING.md)
+~~[→ docs/deployment/NPM_PUBLISHING.md](../docs/deployment/NPM_PUBLISHING.md)~~ (deleted)
 
 ### Package Preparation Checklist
 

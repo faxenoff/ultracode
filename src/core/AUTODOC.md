@@ -63,7 +63,7 @@ The `core` module is the system's backbone, coordinating all major subsystems. I
 | `ClientSession` | Class | Per-client state isolation for pipe mode | [`client-session.ts:59-276`](./client-session.ts) |
 | `ServiceContainer` | Class | Lazy service initialization container | [`service-container.ts:48-419`](./service-container.ts) |
 | `registerAllAgents()` | Function | Register 7 agent types into DI container | [`agent-registry.ts:22-96`](./agent-registry.ts) |
-| `performGlobalShutdown()` | Function | Graceful shutdown with resource cleanup | [`shutdown-handlers.ts:77-130`](./shutdown-handlers.ts) |
+| `performGlobalShutdown()` | Function | Graceful shutdown with resource cleanup | [`shutdown-handlers.ts:78-139`](./shutdown-handlers.ts) |
 | `performAutoIndex()` | Function | Auto-detect and index supported projects | [`auto-indexer.ts:273-445`](./auto-indexer.ts) |
 | `setupConsoleOverride()` | Function | Quiet mode console override for --pipe | [`environment-setup.ts:19-43`](./environment-setup.ts) |
 

@@ -167,7 +167,7 @@ Place your config in the appropriate subfolder under `src/parsers/language-confi
 | `markup-languages/` | CSS, HTML, JSON, XML |
 | `infrastructure/` | Helm |
 
-For Elixir → `scripting-languages/elixir.ts`.
+For Elixir → ~~`scripting-languages/elixir.ts`~~ (deleted).
 
 ### 3.2 Create the config file
 
@@ -605,13 +605,13 @@ Use this checklist when adding a new language. Replace `<lang>` with your langua
 > `src/agents/parser-agent.ts` imports `detectLanguage` from `language-detection.ts` — no separate update needed.
 
 ### Language Configuration
-- [ ] Create `src/parsers/language-configs/<category>/<lang>.ts` with `LanguageConfig`
+- [ ] Create ~~`src/parsers/language-configs/<category>/<lang>.ts`~~ (deleted) with `LanguageConfig`
 - [ ] Add keywords to `LANGUAGE_KEYWORDS` in `src/parsers/language-configs/shared/keywords.ts`
-- [ ] Export from `src/parsers/language-configs/<category>/index.ts`
+- [ ] Export from ~~`src/parsers/language-configs/<category>/index.ts`~~ (deleted)
 - [ ] Import and register in `src/parsers/language-configs/registry.ts` → `LANGUAGE_CONFIGS`
 
 ### Parser Implementation
-- [ ] Create `src/parsers/<lang>-native-parser.ts` implementing `BaseParser`
+- [ ] Create ~~`src/parsers/<lang>-native-parser.ts`~~ (deleted) implementing `BaseParser`
 
 ### UnifiedParser Registration (8 spots in 1 file)
 - [ ] Lazy type import
@@ -648,7 +648,7 @@ Use this checklist when adding a new language. Replace `<lang>` with your langua
 
 ### Unit test for the parser
 
-Create `tests/parsers/elixir-native-parser.test.ts`:
+Create ~~`tests/parsers/elixir-native-parser.test.ts`~~ (deleted):
 
 ```typescript
 import { describe, it, expect, beforeAll } from "bun:test";

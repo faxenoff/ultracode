@@ -63,7 +63,7 @@ GPU Spec (CC, model) → GPUDetector.isWebGPUSafe() → Safety Check against Uns
 
 **External imports:**
 - `bun:test` — Bun's testing framework (`describe`, `test`, `expect`, `beforeEach`, `afterEach`)
-- `src/gpu/detection/gpu-detector.js` — Core module providing:
+- ~~`src/gpu/detection/gpu-detector.js`~~ (deleted) — Core module providing:
   - `GPUDetector` class with `isWebGPUSafe()` method and `clearCache()` utility
   - `WEBGPU_UNSAFE_MIN_CC` constant for minimum unsafe compute capability threshold
   - `WEBGPU_UNSTABLE_ARCHITECTURES` constant listing architectures incompatible with WebGPU

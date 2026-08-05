@@ -6,7 +6,7 @@
 
 ### TEI gRPC Migration
 
-**Documentation:** [TEI_GRPC_MIGRATION_PLAN.md](../docs/TEI_GRPC_MIGRATION_PLAN.md)
+**Documentation:** ~~[TEI_GRPC_MIGRATION_PLAN.md](../docs/TEI_GRPC_MIGRATION_PLAN.md)~~ (deleted)
 
 **Status:** READY -- TEI 1.9.1+ supports Blackwell natively. gRPC image available (`120-1.9.1-grpc`).
 
@@ -47,12 +47,12 @@
 ### Git Delta & Incremental Indexing
 
 - [ ] `src/layered/delta-maintenance-service.ts:348` -- Add `getAllBranches()` to BranchManager
-- [ ] `src/layered/git-delta-computer.ts:414` -- Implement `getEntitiesByFilePath` method
+- [ ] `src/layered/git-delta-computer.ts:28-513` -- Implement `getEntitiesByFilePath` method
 - [ ] `src/layered/incremental-update-queue.ts:248` -- Trigger full rebuild
 
 ### Parser Improvements
 
-- [ ] `src/parsers/swift-analyzer.ts:150` -- Create import relationships
+- [ ] ~~`src/parsers/swift-analyzer.ts:150`~~ (deleted) -- Create import relationships
 - [ ] `src/agents/workers/worker-pool-manager.ts:305` -- Restart worker if needed
 
 ### Tool Parity (UltraSharp <-> UltraCode)
@@ -74,7 +74,7 @@
 
 ### Multi-Process Architecture
 
-**Documentation:** [MULTIPROCESS_ARCHITECTURE.md](../docs/MULTIPROCESS_ARCHITECTURE.md)
+**Documentation:** ~~[MULTIPROCESS_ARCHITECTURE.md](../docs/MULTIPROCESS_ARCHITECTURE.md)~~ (deleted)
 
 - [ ] Move embeddings to worker thread
 - [ ] Testing with multiple VS Code windows

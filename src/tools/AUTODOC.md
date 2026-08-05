@@ -41,11 +41,11 @@ Transport-level check: enforceResponseLimit (Buffer.byteLength)
 | `ToolRegistry` | class | `tool-registry.ts:43-229` | Central handler registry managing handler registration, lazy loading via deferred imports, and per-request instantiation. |
 | `ImpactAnalyzer` | class | `impact-analyzer.ts:69-445` | Code change impact analysis engine computing direct callers, state mutations, and breaking changes for refactoring decisions. |
 | `ImpactAnalysisResult` | interface | `impact-analyzer.ts:21-54` | Impact analysis output containing direct callers, state impact mutations, breaking changes, and affected file list. |
-| `AgentMetricsSnapshot` | interface | `agent-metrics.ts:68-83` | Aggregated performance metrics snapshot from Conductor, agents, KnowledgeBus, and ResourceManager. |
-| `collectAgentMetrics()` | async function | `agent-metrics.ts:105-158` | Collects and aggregates real-time performance metrics from system components into a single snapshot. |
+| `AgentMetricsSnapshot` | interface | `agent-metrics.ts:68-86` | Aggregated performance metrics snapshot from Conductor, agents, KnowledgeBus, and ResourceManager. |
+| `collectAgentMetrics()` | async function | `agent-metrics.ts:88-126` | Collects and aggregates real-time performance metrics from system components into a single snapshot. |
 | `MAX_RESPONSE_SIZE_BYTES` | const | `response-limits.ts:11-11` | Soft limit constant (50,000 bytes) triggering automatic response truncation. |
-| `paginate<T>()` | function | `response-limits.ts:49-67` | Slices array with offset/limit and returns pagination metadata (total, offset, limit, truncated). |
-| `truncateResponse()` | function | `response-limits.ts:83-106` | Binary-search JSON truncation preserving essential fields (id, name, type) within byte limits. |
+| `paginate<T>()` | function | `response-limits.ts:50-68` | Slices array with offset/limit and returns pagination metadata (total, offset, limit, truncated). |
+| `truncateResponse()` | function | `response-limits.ts:84-107` | Binary-search JSON truncation preserving essential fields (id, name, type) within byte limits. |
 | `projectPathParam` | Zod schema | `base-schemas.ts:13-18` | Optional project path parameter auto-resolved via session or fallback. |
 | `PaginationParams` | Zod schema | `base-schemas.ts:39-42` | Standard offset/limit pagination schema for list-type tools. |
 | `branchParam` | Zod schema | `base-schemas.ts:47-47` | Optional branch name parameter for branch-aware tool operations. |
@@ -153,11 +153,11 @@ Transport-level check: enforceResponseLimit (Buffer.byteLength)
 | `list_branches`, `switch_branch`, `create_branch`, `delete_branch`, `branch_status` handlers | handlers | `handlers/branch-tool-handlers.ts:1-377` | Git branch management operations; lazy-loaded to defer git operations. |
 | `validate_file`, `validate_directory` handlers | handlers | `handlers/validation-tool-handlers.ts:1-542` | Code quality validation using Biome and oxlint linters; lazy-loaded to avoid linter initialization overhead. |
 | `show_merge_conflicts`, `resolve_merge_conflict`, `merge_status`, `list_unmerged_files` handlers | handlers | `handlers/merge-tool-handlers.ts:1-330` | Merge conflict resolution and status reporting; lazy-loaded to defer merge tool operations. |
-| `trace_flow`, `trace_backwards`, `trace_data_flow`, `analyze_state_impact` handlers | handlers | `handlers/trace-tool-handlers.ts:1-428` | Code flow tracing and state impact analysis; lazy-loaded to defer graph traversal operations. |
+| `trace_flow`, `trace_backwards`, `trace_data_flow`, `analyze_state_impact` handlers | handlers | ~~`handlers/trace-tool-handlers.ts:1-428`~~ (deleted) | Code flow tracing and state impact analysis; lazy-loaded to defer graph traversal operations. |
 | `list_snapshots`, `create_snapshot`, `restore_snapshot`, `diff_snapshot`, `delete_snapshot` handlers | handlers | `handlers/snapshot-tool-handlers.ts:1-403` | Snapshot management for safe code modification and rollback; lazy-loaded with file handlers. |
-| `format_code`, `lint_code`, `check_types` handlers | handlers | `handlers/code-quality-tool-handlers.ts:1-298` | Code formatting and linting operations; lazy-loaded to defer formatter/linter startup. |
-| `undo`, `get_undo_stack` handlers | handlers | `handlers/undo-tool-handlers.ts:1-184` | Undo/rollback operations tracking recent file changes; lazy-loaded with modification tools. |
-| `analyze_code_impact` handler | handler | `handlers/code-impact-handler.ts:1-156` | Comprehensive impact analysis for code changes including breaking changes; lazy-loaded for heavy analysis. |
+| `format_code`, `lint_code`, `check_types` handlers | handlers | ~~`handlers/code-quality-tool-handlers.ts:1-298`~~ (deleted) | Code formatting and linting operations; lazy-loaded to defer formatter/linter startup. |
+| `undo`, `get_undo_stack` handlers | handlers | ~~`handlers/undo-tool-handlers.ts:1-184`~~ (deleted) | Undo/rollback operations tracking recent file changes; lazy-loaded with modification tools. |
+| `analyze_code_impact` handler | handler | ~~`handlers/code-impact-handler.ts:1-156`~~ (deleted) | Comprehensive impact analysis for code changes including breaking changes; lazy-loaded for heavy analysis. |
 
 ### Key Design Patterns
 

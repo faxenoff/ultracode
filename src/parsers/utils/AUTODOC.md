@@ -25,7 +25,7 @@ This module addresses three performance bottlenecks in ANTLR-based parsing. Firs
 |--------|------|-------------|----------|
 | `parseWithSLLFallback` | function | SLL-first parsing with ALL(*) fallback | [`parser-utils.ts:36-67`](./parser-utils.ts) |
 | `ObjectPool` | class | Generic object pool for instance reuse | [`parser-utils.ts:93-93`](./parser-utils.ts) |
-| `unifiedExtract` | function | Single-pass AST extraction for calls, flow, complexity | [`parser-utils.ts:274-274`](./parser-utils.ts) |
+| `unifiedExtract` | function | Single-pass AST extraction for calls, flow, complexity | [`parser-utils.ts:270-413`](./parser-utils.ts) |
 | `UnifiedExtractionResult` | interface | Combined extraction result type | [`parser-utils.ts:161-237`](./parser-utils.ts) |
 | `CallInfo` | interface | Method/constructor call information | [`parser-utils.ts:170-170`](./parser-utils.ts) |
 | `ControlFlowInfo` | interface | Code flow control information | [`parser-utils.ts:186-186`](./parser-utils.ts) |
@@ -36,10 +36,10 @@ This module addresses three performance bottlenecks in ANTLR-based parsing. Firs
 | `AwaitInfo` | interface | Async await information | [`parser-utils.ts:232-239`](./parser-utils.ts) |
 | `LocationInfo` | interface | Source code position information | [`parser-utils.ts:240-252`](./parser-utils.ts) |
 | `ComplexityMetrics` | interface | Cyclomatic and cognitive complexity | [`parser-utils.ts:248-248`](./parser-utils.ts) |
-| `NodeTypeChecker` | interface | Language-specific node type classification | [`parser-utils.ts:261-261`](./parser-utils.ts) |
+| `NodeTypeChecker` | interface | Language-specific node type classification | [`parser-utils.ts:257-265`](./parser-utils.ts) |
 | `CALL_RELEVANT_NODE_TYPES` | const | Set of node types that can contain calls | [`parser-utils.ts:453-453`](./parser-utils.ts) |
-| `canContainCalls` | function | Checks if a node can contain calls | [`parser-utils.ts:473-484`](./parser-utils.ts) |
-| `logParserPerformance` | function | Logs slow parsing operations | [`parser-utils.ts:480-480`](./parser-utils.ts) |
+| `canContainCalls` | function | Checks if a node can contain calls | [`parser-utils.ts:476-484`](./parser-utils.ts) |
+| `logParserPerformance` | function | Logs slow parsing operations | [`parser-utils.ts:476-484`](./parser-utils.ts) |
 
 ## Dependencies
 

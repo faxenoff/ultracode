@@ -29,12 +29,12 @@ The hooks module provides two complementary capabilities: a hook installer that 
 | `uninstallHooks` | function | Removes AutoDoc section from pre-commit hook | [`hook-installer.ts:166-230`](./hook-installer.ts) |
 | `getHookStatus` | function | Returns installation status (gitRepo, hooksDir, preCommit) | [`hook-installer.ts:235-239`](./hook-installer.ts) |
 | `HookInstallResult` | interface | Result of hook install/uninstall operations | [`hook-installer.ts:19-24`](./hook-installer.ts) |
-| `getStagedMdFiles` | function | Gets staged markdown files from git index | [`pre-commit-check.ts:34-44`](./pre-commit-check.ts) |
-| `getStagedCodeFiles` | function | Gets staged code files from git index | [`pre-commit-check.ts:49-60`](./pre-commit-check.ts) |
+| `getStagedMdFiles` | function | Gets staged markdown files from git index | [`pre-commit-check.ts:35-45`](./pre-commit-check.ts) |
+| `getStagedCodeFiles` | function | Gets staged code files from git index | [`pre-commit-check.ts:50-64`](./pre-commit-check.ts) |
 | `extractReferences` | function | Extracts markdown link references from content | [`pre-commit-check.ts:65-65`](./pre-commit-check.ts) |
-| `checkReferenceTarget` | function | Validates a single reference target (entity, doc, file, URL) | [`pre-commit-check.ts:95-99`](./pre-commit-check.ts) |
+| `checkReferenceTarget` | function | Validates a single reference target (entity, doc, file, URL) | [`pre-commit-check.ts:99-146`](./pre-commit-check.ts) |
 | `runPreCommitCheck` | function | Runs full pre-commit validation on all staged .md files | [`pre-commit-check.ts:153-216`](./pre-commit-check.ts) |
-| `formatPreCommitResult` | function | Formats check results for console output | [`pre-commit-check.ts:221-245`](./pre-commit-check.ts) |
+| `formatPreCommitResult` | function | Formats check results for console output | [`pre-commit-check.ts:225-249`](./pre-commit-check.ts) |
 | `PreCommitCheckResult` | interface | Result of pre-commit check with broken refs and warnings | [`pre-commit-check.ts:20-29`](./pre-commit-check.ts) |
 
 ## Dependencies

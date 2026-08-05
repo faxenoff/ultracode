@@ -23,9 +23,9 @@ The llm module consists of two layers: a provider abstraction that normalizes ac
 
 | Export | Type | Description | Location |
 |--------|------|-------------|----------|
-| `generateModuleDoc` | function | Generates full AUTODOC.md content for a single module via LLM | [`doc-writer.ts:63-67`](./doc-writer.ts) |
+| `generateModuleDoc` | function | Generates full AUTODOC.md content for a single module via LLM | [`doc-writer.ts:41-67`](./doc-writer.ts) |
 | `generateExportDoc` | function | Generates a 1-2 sentence description for a single export | [`doc-writer.ts:84-101`](./doc-writer.ts) |
-| `improveDoc` | function | Improves existing documentation using LLM with optional code context | [`doc-writer.ts:106-108`](./doc-writer.ts) |
+| `improveDoc` | function | Improves existing documentation using LLM with optional code context | [`doc-writer.ts:98-114`](./doc-writer.ts) |
 | `generateArchitectureDoc` | function | Generates project architecture overview from module list | [`doc-writer.ts:127-156`](./doc-writer.ts) |
 | `batchGenerateDocs` | function | Batch generates docs for multiple modules with progress callback | [`doc-writer.ts:252-259`](./doc-writer.ts) |
 | `LLMProvider` | interface | Common interface for all LLM backends (generate, checkHealth, listModels) | [`llm-provider.ts:36-44`](./llm-provider.ts) |
@@ -35,8 +35,8 @@ The llm module consists of two layers: a provider abstraction that normalizes ac
 | `OllamaProvider` | class | Ollama local LLM backend with auto model selection | [`llm-provider.ts:73-255`](./llm-provider.ts) |
 | `TGIProvider` | class | HuggingFace Text Generation Inference backend | [`llm-provider.ts:189-416`](./llm-provider.ts) |
 | `OpenAIProvider` | class | OpenAI-compatible API backend (works with vLLM, LocalAI, etc.) | [`llm-provider.ts:260-538`](./llm-provider.ts) |
-| `createLLMProvider` | function | Factory function to create a provider from LLMConfig | [`llm-provider.ts:1341-1371`](./llm-provider.ts) |
-| `detectLLMProviders` | function | Auto-detects all available LLM providers and selects recommended one | [`llm-provider.ts:1206-1209`](./llm-provider.ts) |
+| `createLLMProvider` | function | Factory function to create a provider from LLMConfig | [`llm-provider.ts:1307-1439`](./llm-provider.ts) |
+| `detectLLMProviders` | function | Auto-detects all available LLM providers and selects recommended one | [`llm-provider.ts:1202-1237`](./llm-provider.ts) |
 
 ## Dependencies
 

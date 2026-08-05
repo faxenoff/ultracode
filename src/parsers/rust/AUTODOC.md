@@ -28,24 +28,24 @@ This module supports Rust code analysis with two components. The AST helpers pro
 | `extractVisibility` | function | Extracts visibility modifier (pub, pub(crate), etc.) | [`ast-helpers.ts:47-50`](./ast-helpers.ts) |
 | `hasModifier` | function | Checks for a specific modifier in a node | [`ast-helpers.ts:55-63`](./ast-helpers.ts) |
 | `extractGenerics` | function | Extracts generic parameters from definitions | [`ast-helpers.ts:72-87`](./ast-helpers.ts) |
-| `extractLifetimes` | function | Extracts lifetime parameters | [`ast-helpers.ts:94-94`](./ast-helpers.ts) |
+| `extractLifetimes` | function | Extracts lifetime parameters | [`ast-helpers.ts:92-104`](./ast-helpers.ts) |
 | `extractDerives` | function | Extracts derived traits from attributes | [`ast-helpers.ts:113-130`](./ast-helpers.ts) |
-| `extractAttributes` | function | Extracts all attributes from a node | [`ast-helpers.ts:136-136`](./ast-helpers.ts) |
+| `extractAttributes` | function | Extracts all attributes from a node | [`ast-helpers.ts:135-144`](./ast-helpers.ts) |
 | `getAttributeName` | function | Returns attribute name from a node | [`ast-helpers.ts:149-152`](./ast-helpers.ts) |
 | `isTupleStruct` | function | Checks if struct is a tuple struct | [`ast-helpers.ts:161-164`](./ast-helpers.ts) |
 | `hasBody` | function | Checks for body in function/block | [`ast-helpers.ts:169-171`](./ast-helpers.ts) |
 | `countNestedItems` | function | Counts nested items in a container | [`ast-helpers.ts:176-195`](./ast-helpers.ts) |
 | `extractTraitBounds` | function | Extracts trait bounds from a parameter | [`ast-helpers.ts:204-216`](./ast-helpers.ts) |
 | `extractSupertraits` | function | Extracts supertraits from trait definition | [`ast-helpers.ts:221-233`](./ast-helpers.ts) |
-| `extractTypeBounds` | function | Extracts type bounds from generics | [`ast-helpers.ts:239-239`](./ast-helpers.ts) |
+| `extractTypeBounds` | function | Extracts type bounds from generics | [`ast-helpers.ts:238-247`](./ast-helpers.ts) |
 | `extractFunctionParameters` | function | Extracts function parameters from signature | [`ast-helpers.ts:256-256`](./ast-helpers.ts) |
 | `extractReturnType` | function | Extracts return type from function | [`ast-helpers.ts:299-302`](./ast-helpers.ts) |
 | `extractFieldType` | function | Extracts struct field type | [`ast-helpers.ts:311-314`](./ast-helpers.ts) |
 | `extractAliasedType` | function | Extracts type from type alias | [`ast-helpers.ts:319-322`](./ast-helpers.ts) |
 | `extractConstType` | function | Extracts constant type | [`ast-helpers.ts:327-330`](./ast-helpers.ts) |
-| `extractStaticType` | function | Extracts static variable type | [`ast-helpers.ts:336-336`](./ast-helpers.ts) |
-| `extractDiscriminant` | function | Extracts enum discriminant value | [`ast-helpers.ts:345-358`](./ast-helpers.ts) |
-| `extractMacroRules` | function | Extracts rules from macro definitions | [`ast-helpers.ts:365-365`](./ast-helpers.ts) |
+| `extractStaticType` | function | Extracts static variable type | [`ast-helpers.ts:335-338`](./ast-helpers.ts) |
+| `extractDiscriminant` | function | Extracts enum discriminant value | [`ast-helpers.ts:347-358`](./ast-helpers.ts) |
+| `extractMacroRules` | function | Extracts rules from macro definitions | [`ast-helpers.ts:363-375`](./ast-helpers.ts) |
 | `extractUseTree` | function | Extracts import tree from use expressions | [`ast-helpers.ts:384-426`](./ast-helpers.ts) |
 | `resolveName` | function | Resolves full identifier name in context | [`ast-helpers.ts:438-462`](./ast-helpers.ts) |
 | `identifyPatterns` | function | Analyzes code for Rust patterns | [`pattern-identifier.ts:19-50`](./pattern-identifier.ts) |
@@ -53,7 +53,7 @@ This module supports Rust code analysis with two components. The AST helpers pro
 | `identifyIteratorPattern` | function | Detects Iterator trait implementations | [`pattern-identifier.ts:86-116`](./pattern-identifier.ts) |
 | `identifyErrorHandlingPatterns` | function | Finds error handling patterns | [`pattern-identifier.ts:125-156`](./pattern-identifier.ts) |
 | `identifyOwnershipPatterns` | function | Identifies ownership patterns | [`pattern-identifier.ts:161-192`](./pattern-identifier.ts) |
-| `identifyUnsafePatterns` | function | Detects unsafe code blocks | [`pattern-identifier.ts:211-211`](./pattern-identifier.ts) |
+| `identifyUnsafePatterns` | function | Detects unsafe code blocks | [`pattern-identifier.ts:210-236`](./pattern-identifier.ts) |
 
 ## Dependencies
 

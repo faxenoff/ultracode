@@ -1,111 +1,194 @@
-# Hypothesis
+# Module: src/hypothesis
 
-Infers runtime relationships via 4-tier hypothesis generation and path-finding bridges.
+## 🤖 Overview
 
-## Overview
+The `hypothesis` module provides a 4-tier runtime relationship inference system for code that static AST analysis cannot connect. It includes a bridge module for handling path finding with stored hypotheses, catalogs for managing hypothesis entries, and an engine for generating and managing hypotheses. This module is used by developers to infer relationships between code elements that are not directly connected by static analysis.
 
-The Hypothesis module infers runtime relationships between code entities that static AST analysis cannot discover—such as event handlers, callbacks, and interface dispatch through dynamic registration. It uses a 4-tier strategy: Tier 1–3 employ direct pattern matching and proximity heuristics to generate hypotheses with confidence scores, which are persisted to SQLite; Tier 4 (bridge) uses stored hypotheses as fallback pathfinding edges when standard graph traversal fails. This enables trace_flow to connect code that relies on late binding, framework-specific registration, or callback pipelines.
-
-## Flow
+## 🤖 Architecture
 
 ```
-Source Entity → Tier 1: Direct Patterns    ↓
-                Tier 2: Register/Dispatch  → Hypotheses → SQLite Cache
-                Tier 3: Proximity Heuristics ↓
-                        (Generate & Persist)
-
-Later:
-Target Entity ← Forward BFS (real edges) ╭─ Bridge hypothesis lookup
-    ↓           Backward BFS (real edges)  ├─ Connect frontier gaps
-  Found ←       Match on stored hypotheses ╰─ Return hypothesis path
+  +---------------------+
+  |     Hypothesis     |
+  |     Inference      |
+  |     Module         |
+  |     (Public API)   |
+  +---------------------+
+          | 
+          v
+  +---------------------+
+  |     Hypothesis      |
+  |     Store           |
+  |     (HypothesisRef) |
+  +---------------------+
+          |
+          v
+  +---------------------+
+  |     Hypothesis      |
+  |     Engine          |
+  |     (GenerateResult)|
+  +---------------------+
+          |
+          v
+  +---------------------+
+  |     Hypothesis      |
+  |     Catalogs        |
+  |     (CALLBACK_ENTRIES)|
+  +---------------------+
+          |
+          v
+  +---------------------+
+  |     Hypothesis      |
+  |     Bridge          |
+  |     (BridgePath)    |
+  +---------------------+
 ```
 
-## Core Data Structures
+## 🤖 Flow
 
-**HypothesisType** (types.ts:14-20)
-Enum of four inference tier types for hypotheses, categorizing generated relationships by their inference strategy.
+```
+  +---------------------+
+  |     Hypothesis      |
+  |     Inference      |
+  |     Module         |
+  |     (Public API)   |
+  +---------------------+
+          |
+          v
+  +---------------------+
+  |     Hypothesis      |
+  |     Store           |
+  |     (HypothesisRef) |
+  +---------------------+
+          |
+          v
+  +---------------------+
+  |     Hypothesis      |
+  |     Engine          |
+  |     (GenerateResult)|
+  +---------------------+
+          |
+          v
+  +---------------------+
+  |     Hypothesis      |
+  |     Catalogs        |
+  |     (CALLBACK_ENTRIES)|
+  +---------------------+
+          |
+          v
+  +---------------------+
+  |     Hypothesis      |
+  |     Bridge          |
+  |     (BridgePath)    |
+  +---------------------+
+```
 
-**Hypothesis** (types.ts:26-35)
-Complete hypothesis with source entity, target entity, confidence score (0–1), and evidence trail explaining the inference basis.
+## 🤖 Entity Listing
 
-**HypothesisRef** (types.ts:38-43)
-Lightweight reference for path steps without string ownership, enabling efficient storage of hypothesis pointers in graph paths.
+### Function
+- **clearHypotheses** — Delete all hypotheses for a project/branch (before re-generation) `hypothesis-ops.ts:16-21`
+- **countHypotheses** — Not applicable in this context `hypothesis-ops.ts:107-113`
+- **findCallbackEntry** — A function to find a callback entry `catalogs.ts:334-336`
+- **findDispatchPair** — A function to find a dispatch pair `catalogs.ts:329-331`
+- **findPathWithHypotheses** — Finds paths between entities using hypothesis bridges `bridge.ts:45-144`
+- **findRegisterPair** — A function to find a register pair `catalogs.ts:324-326`
+- **generateHypotheses** — Generates hypotheses by running Tiers 1–3 strategies and persists results to cache.db `engine.ts:39-86`
+- **getHypothesisStore** — Retrieves or initializes a global hypothesis store instance `engine.ts:104-109`
+- **loadAll** — Load all hypotheses from cache.db into memory store `hypothesis-ops.ts:70-104`
+- **loadCachedHypotheses** — Loads all cached hypotheses using a client and store, returning the number of hypotheses loaded `engine.ts:92-99`
+- **matchesLanguage** — A function to check if the callback entry matches a language `catalogs.ts:317-321`
+- **persistBatch** — Persist hypotheses to cache.db in batch `hypothesis-ops.ts:24-67`
+- **stitchPath** — Asynchronously constructs a path between two entities using forward and backward visited maps, incorporating a hypothesis bridge step `bridge.ts:150-202`
+- **values** — Not applicable in this context `hypothesis-ops.ts:37-37`
 
-**HypothesisStore** (types.ts:51-129)
-In-memory three-index store for source lookup, target lookup, and pair lookups—supports fast hypothesis retrieval by either endpoint.
+### Method
+- **add** — Adds a hypothesis to the store, deduplicating by pair and keeping the highest confidence `types.ts:62-77`
+- **clear** — Clears all stored hypotheses and their associated data `types.ts:102-107`
+- **confidenceBar** — Returns a confidence bar representation based on the hypothesis confidence `types.ts:125-128`
+- **confidenceMarker** — Returns a confidence marker based on the hypothesis confidence `types.ts:120-122`
+- **count** — Returns the number of hypotheses stored `types.ts:94-96`
+- **getAll** — Returns all stored hypotheses `types.ts:98-100`
+- **getBridge** — Retrieves the best hypothesis bridging from → to `types.ts:80-82`
+- **getFromSource** — Returns an array of hypotheses by their source ID `types.ts:85-87`
+- **getToTarget** — Returns an array of hypotheses by their target ID `types.ts:90-92`
+- **toRef** — Converts a hypothesis to a reference object with confidence marker and evidence `types.ts:110-117`
 
-## Generation Pipeline
+### Class
+- **HypothesisStore** — A class for storing and managing hypotheses in an in-memory 3-index lookup `types.ts:51-129`
 
-**generateHypotheses** (engine.ts:39-86)
-Runs Tiers 1–3 strategies (direct patterns, register/dispatch, proximity) and persists all generated hypotheses to the database.
+### Interface
+- **BridgePath** — Represents a path between entities with steps and total confidence `bridge.ts:25-28`
+- **BridgeStep** — A single step in a path, containing entity details and a hypothesis `bridge.ts:30-35`
+- **CallbackEntry** — Represents a callback entry for hypothesis inference `catalogs.ts:23-29`
+- **GenerateResult** — Represents the result of hypothesis generation with counts and duration `engine.ts:23-29`
+- **Hypothesis** — An interface representing inferred runtime relationships with properties like id, fromId, toId, hypothesisType, confidence, relType, evidence, and strategy `types.ts:26-35`
+- **HypothesisRef** — A lightweight reference for a hypothesis, containing confidence, marker, evidence, and type `types.ts:38-43`
+- **RegisterDispatchPair** — Represents a pair of register and dispatch functions for hypothesis inference `catalogs.ts:12-21`
 
-**GenerateResult** (engine.ts:23-29)
-Generation result containing tier counts and execution duration for monitoring inference performance.
+### Enum_decl
+- **HypothesisType** — Represents inferred runtime relationships such as string key matches, callback arguments, interface narrowing, proximity bridges, and framework conventions `types.ts:14-20`
 
-**getHypothesisStore** (engine.ts:104-109)
-Returns singleton hypothesis store instance for application, ensuring consistent access to generated and cached hypotheses throughout the session.
+### Constant
+- **CallbackArgument** — A type of hypothesis representing inferred runtime relationships `types.ts:16-16`
+- **FrameworkConvention** — A type of hypothesis representing inferred runtime relationships `types.ts:19-19`
+- **InterfaceNarrowing** — A type of hypothesis representing inferred runtime relationships `types.ts:17-17`
+- **ProximityBridge** — A type of hypothesis representing inferred runtime relationships `types.ts:18-18`
+- **StringKeyMatch** — A type of hypothesis representing inferred runtime relationships `types.ts:15-15`
 
-## Cache Operations
+### Import_decl
+- **../logging/index.js** — Imports `../logging/index.js` from `../logging/index.js`. `engine.ts:10-10`, `hypothesis-ops.ts:7-7`
+- **../storage/libsql/types.js** — Imports `../storage/libsql/types.js` from `../storage/libsql/types.js`. `engine.ts:11-11`, `hypothesis-ops.ts:8-8`
+- **../types/storage.js** — Imports `../types/storage.js` from `../types/storage.js`. `bridge.ts:17-17`, `engine.ts:12-12`
+- **./hypothesis-ops.js** — Imports `./hypothesis-ops.js` from `./hypothesis-ops.js`. `engine.ts:13-13`
+- **./strategies/callback-arg.js** — Imports `./strategies/callback-arg.js` from `./strategies/callback-arg.js`. `engine.ts:14-14`
+- **./strategies/interface-narrow.js** — Imports `./strategies/interface-narrow.js` from `./strategies/interface-narrow.js`. `engine.ts:15-15`
+- **./strategies/proximity-bridge.js** — Imports `./strategies/proximity-bridge.js` from `./strategies/proximity-bridge.js`. `bridge.ts:18-18`
+- **./strategies/string-key.js** — Imports `./strategies/string-key.js` from `./strategies/string-key.js`. `engine.ts:16-16`
+- **./types.js** — Imports `./types.js` from `./types.js`. `bridge.ts:19-19`, `engine.ts:17-17`, `hypothesis-ops.ts:9-9`
 
-**clearHypotheses** (hypothesis-ops.ts:16-21)
-Deletes all hypotheses for a specific project branch before regeneration, preventing stale data from previous analysis runs.
+### Property
+- **all** — A flat list of all hypotheses for iteration `types.ts:59-59`
+- **argPos** — The position of the argument in the function `catalogs.ts:25-25`
+- **byPair** — A map storing the best hypothesis for each pair of source and target entity IDs `types.ts:57-57`
+- **bySource** — A map storing outgoing hypotheses by source entity ID `types.ts:53-53`
+- **byTarget** — A map storing incoming hypotheses by target entity ID `types.ts:55-55`
+- **confidence** — The confidence score of a hypothesis `bridge.ts:157-157`
+- **confidence** — The confidence level of the register/dispatch pair `catalogs.ts:17-17`, `catalogs.ts:26-26`
+- **confidence** — A confidence score for a hypothesis, ranging from 0.0 to 1.0 `types.ts:31-31`, `types.ts:39-39`
+- **decoratorOnNextFn** — A boolean indicating whether the next function is decorated `catalogs.ts:20-20`
+- **dispatch** — The name of the dispatch function `catalogs.ts:14-14`
+- **durationMs** — Duration in milliseconds taken to generate hypotheses `engine.ts:28-28`
+- **edgeType** — The type of edge connecting two entities `bridge.ts:33-33`
+- **entityId** — The unique identifier of an entity `bridge.ts:31-31`
+- **entityName** — The name of an entity `bridge.ts:32-32`
+- **evidence** — Represents a hypothesis with its confidence and evidence `bridge.ts:157-157`
+- **evidence** — The evidence supporting a hypothesis `types.ts:33-33`, `types.ts:41-41`
+- **fnName** — The name of the function `catalogs.ts:24-24`
+- **fromId** — The identifier of the source entity `bridge.ts:157-157`
+- **fromId** — The identifier of the source entity in a hypothesis `types.ts:28-28`
+- **handlerArgPos** — The position of the handler argument in the dispatch function `catalogs.ts:16-16`
+- **hypothesis** — A reference to a stored hypothesis `bridge.ts:34-34`
+- **hypothesisType** — The type of hypothesis `bridge.ts:157-157`
+- **hypothesisType** — The type of hypothesis, which is an enum value `types.ts:30-30`
+- **id** — A unique identifier for a hypothesis `types.ts:27-27`
+- **keyArgPos** — The position of the key argument in the register function `catalogs.ts:15-15`
+- **languages** — The languages supported by the register/dispatch pair `catalogs.ts:19-19`, `catalogs.ts:28-28`, `catalogs.ts:317-317`
+- **marker** — A marker indicating the confidence level of a hypothesis reference `types.ts:40-40`
+- **register** — The name of the register function `catalogs.ts:13-13`
+- **relType** — The type of relationship between entities `bridge.ts:157-157`
+- **relType** — The relationship type between the register and dispatch functions `catalogs.ts:18-18`, `catalogs.ts:27-27`
+- **relType** — The type of relationship represented by a hypothesis `types.ts:32-32`
+- **steps** — An array of steps in a path `bridge.ts:26-26`
+- **strategy** — The strategy used to infer a hypothesis `types.ts:34-34`
+- **tier1** — Count of hypotheses generated by Tier 1 strategy `engine.ts:25-25`
+- **tier2** — Count of hypotheses generated by Tier 2 strategy `engine.ts:26-26`
+- **tier3** — Count of hypotheses generated by Tier 3 strategy `engine.ts:27-27`
+- **toId** — The identifier of the target entity `bridge.ts:157-157`
+- **toId** — The identifier of the target entity in a hypothesis `types.ts:29-29`
+- **total** — Total number of hypotheses generated `engine.ts:24-24`
+- **totalConfidence** — The total confidence score of a path `bridge.ts:27-27`
+- **type** — The type of hypothesis reference `types.ts:42-42`
 
-**persistBatch** (hypothesis-ops.ts:24-67)
-Saves hypotheses to database in batches using SQLite, optimizing write performance for bulk hypothesis storage.
-
-**loadAll** (hypothesis-ops.ts:70-104)
-Loads all cached hypotheses from database into memory store, hydrating the working hypothesis set from persistent cache.
-
-**countHypotheses** (hypothesis-ops.ts:107-113)
-Returns hypothesis count for a specific project and branch, enabling progress reporting and cache validation.
-
-**loadCachedHypotheses** (engine.ts:92-99)
-Loads hypotheses from cache database into memory store during initialization, restoring previously inferred relationships.
-
-## Bridge Pathfinding
-
-**BridgePath** (bridge.ts:25-28)
-Contains steps and total confidence for bridged entity path, representing a complete journey from source to target using hypothesis edges.
-
-**BridgeStep** (bridge.ts:30-35)
-Single step with entity, edge type, and hypothesis reference—marks whether this step relied on a hypothesis bridge or real code edge.
-
-**findPathWithHypotheses** (bridge.ts:45-144)
-Finds paths between entities using hypothesis bridges as fallback when standard BFS/DFS traversal exhausts real edges, implementing four-phase algorithm: forward BFS from source, backward BFS from target, frontier hypothesis matching, and on-demand Tier 4 bridge generation.
-
-## Framework Catalogs
-
-**RegisterDispatchPair** (catalogs.ts:12-21)
-Framework pattern pairing register method with dispatch method, enabling recognition of framework-specific event binding patterns.
-
-**CallbackEntry** (catalogs.ts:23-29)
-Callback function pattern definition for framework inference, specifying callback names and contexts where callbacks are invoked.
-
-**REGISTER_DISPATCH_PAIRS** (catalogs.ts:35-46)
-Catalog of register/dispatch pairs across major frameworks (React, Vue, Angular, Node.js EventEmitter, and others), hardcoded patterns enabling automated discovery of callback registration.
-
-**CALLBACK_ENTRIES** (catalogs.ts:271-273)
-Catalog of callback function patterns across major frameworks, comprehensive list of callback naming conventions and dispatch points.
-
-**findRegisterPair** (catalogs.ts:324-326)
-Looks up register pair by function name and language, returning matching framework pattern or null if not in catalog.
-
-**findDispatchPair** (catalogs.ts:324-326)
-Finds dispatch pair matching register for language context, enabling bidirectional framework pattern lookup.
-
-**findCallbackEntry** (catalogs.ts:329-331)
-Looks up callback entry by function name and language, identifying whether a function matches known callback patterns.
-
-## Dependencies
-
-**Internal:** GraphStorage (edge and entity lookups during hypothesis generation), Tier 1–3 strategy modules (pattern matching, register/dispatch pairing, proximity heuristics).
-
-**External:** SQLite database for persistent hypothesis cache, hardcoded framework catalogs covering React, Vue, Angular, Node.js event emitters, and other major JavaScript/TypeScript frameworks.
-
-## Design Patterns
-
-**4-Tier Confidence Hierarchy:** Tiers 1–3 apply increasingly speculative heuristics (direct patterns → register/dispatch → proximity), each tier's hypotheses weighted lower than prior tiers, enabling trace_flow to prefer high-confidence relationships while still using bridges when necessary.
-
-**Lazy Bridge Generation:** Tier 4 hypotheses are generated on-demand during pathfinding when frontier BFS gaps remain, avoiding upfront computation of low-confidence relationships that may never be queried.
-
-**Snapshot Persistence:** All generated hypotheses are persisted to SQLite between sessions, allowing expensive inference to run asynchronously or during idle time without blocking interactive trace requests.
+### embedded_sql
+- **DELETE FROM hypotheses WHERE project_hash = ? AND branch_name = ?** — Executes a SQL query to delete hypotheses based on project hash and branch name `hypothesis-ops.ts:18-18`
+- **SELECT COUNT(*) as cnt FROM hypotheses WHERE project_hash = ? AND branch_name = ?** — Counts the number of hypotheses based on project hash and branch name `hypothesis-ops.ts:109-109`
+- **SELECT id, from_id, to_id, hypothesis_type, confidence, rel_type, evidence, strategy FROM hypotheses** — Retrieves detailed information about hypotheses based on project hash and branch name, ordered by confidence `hypothesis-ops.ts:77-80`

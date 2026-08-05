@@ -23,13 +23,13 @@ The providers module uses the factory pattern to create embedding provider insta
 
 | Export | Type | Description | Location |
 |--------|------|-------------|----------|
-| `createProvider` | function | Factory function creating configured EmbeddingProvider instances | [`factory.ts:218-218`](./factory.ts) |
+| `createProvider` | function | Factory function creating configured EmbeddingProvider instances | [`factory.ts:218-227`](./factory.ts) |
 | `ProviderFactoryOptions` | interface | Configuration for provider creation with per-provider settings | [`factory.ts:128-216`](./factory.ts) |
 | `EmbeddingProvider` | interface | Common interface: embed(), embedBatch(), initialize(), getDimension() | [`base.ts:87-118`](./base.ts) |
 | `ProviderKind` | type | Union of all supported provider names including "auto" | [`base.ts:1-22`](./base.ts) |
 | `ProviderInfo` | interface | Provider metadata: name, model, dimension, batch support | [`base.ts:14-22`](./base.ts) |
-| `ProviderCapabilities` | interface | Feature flags: embeddings, rerank, score, classify | [`base.ts:73-78`](./base.ts) |
-| `RerankResult` | interface | Reranking result with index, score, and text | [`base.ts:42-42`](./base.ts) |
+| `ProviderCapabilities` | interface | Feature flags: embeddings, rerank, score, classify | [`base.ts:65-76`](./base.ts) |
+| `RerankResult` | interface | Reranking result with index, score, and text | [`base.ts:42-45`](./base.ts) |
 | `ScoreResult` | interface | Pairwise similarity score result | [`base.ts:62-65`](./base.ts) |
 
 ## Dependencies

@@ -68,7 +68,7 @@ Multi-language source code parsing framework supporting 20+ languages. Uses a tw
 | `TypeScriptParser` | class | [`typescript-parser.ts:164-332`](./typescript-parser.ts) | TS Compiler API parser with Angular/NgRx support |
 | `MultiPassOrchestrator` | class | [`multipass/multipass-orchestrator.ts:38-405`](./multipass/multipass-orchestrator.ts) | Two-pass OXC + TS API coordinator |
 | `getMultiPassOrchestrator` | function | [`multipass/multipass-orchestrator.ts:410-416`](./multipass/multipass-orchestrator.ts) | Singleton factory for orchestrator |
-| `fastParse` | function | [`multipass/oxc-fast-parser.ts:99-102`](./multipass/oxc-fast-parser.ts) | OXC single-file fast parse |
+| `fastParse` | function | [`multipass/oxc-fast-parser.ts:99-175`](./multipass/oxc-fast-parser.ts) | OXC single-file fast parse |
 | `fastParseBatch` | function | [`multipass/oxc-fast-parser.ts:180-181`](./multipass/oxc-fast-parser.ts) | OXC batch fast parse |
 | `BaseParser` | interface | [`base-parser.ts:27-57`](./base-parser.ts) | Common interface for all parsers |
 | `ParserStats` | interface | [`base-parser.ts:13-22`](./base-parser.ts) | Cache hits, throughput, error count |
@@ -202,10 +202,10 @@ Stats via `parser.getStats()`: `filesParsed`, `cacheHits`, `cacheMisses`, `avgPa
 ### Module Boundary
 
 No barrel `index.ts` exists. Entry points are imported directly:
-- `IncrementalParser` from `./parsers/incremental-parser.js`
-- `UnifiedParser` from `./parsers/unified-parser.js`
-- `MultiPassOrchestrator` from `./parsers/multipass/index.js`
-- Language configs from `./parsers/language-configs.js`
+- `IncrementalParser` from ~~`./parsers/incremental-parser.js`~~ (deleted)
+- `UnifiedParser` from ~~`./parsers/unified-parser.js`~~ (deleted)
+- `MultiPassOrchestrator` from ~~`./parsers/multipass/index.js`~~ (deleted)
+- Language configs from ~~`./parsers/language-configs.js`~~ (deleted)
 
 Key types consumed from `../types/parser.ts`: `ParseResult`, `ParsedEntity`, `EntityRelationship`, `ASTNode`, `SupportedLanguage`, `CacheEntry`, `FileChange`.
 
@@ -236,10 +236,10 @@ Key types consumed from `../types/parser.ts`: `ParseResult`, `ParsedEntity`, `En
 | [`kotlin-k2-provider.ts`](./kotlin-k2-provider.ts) | Kotlin K2 compiler provider |
 | [`kotlin-compiler-integration.ts`](./kotlin-compiler-integration.ts) | Kotlin compiler syntax validation |
 | [`kotlin/`](./kotlin/) | Kotlin extractors, framework support (Android, Ktor, Coroutines) |
-| [`python-analyzer.ts`](./python-analyzer.ts) | Python entry-point analyzer |
+| ~~[`python-analyzer.ts`](./python-analyzer.ts)~~ (deleted) | Python entry-point analyzer |
 | [`python-native-parser.ts`](./python-native-parser.ts) | Python native tree-sitter parser |
 | [`pyright-integration.ts`](./pyright-integration.ts) | Pyright type checker integration |
-| [`python/`](./python/) | 4-layer Python analyzer, extractors, utils |
+| ~~[`python/`](./python/)~~ (deleted) | 4-layer Python analyzer, extractors, utils |
 | [`go-analyzer.ts`](./go-analyzer.ts) | Go tree-sitter analyzer |
 | [`go-native-parser.ts`](./go-native-parser.ts) | Go native tree-sitter parser |
 | [`go-ast-cli.go`](./go-ast-cli.go) | Go AST CLI tool (subprocess) |

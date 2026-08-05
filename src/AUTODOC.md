@@ -56,7 +56,7 @@ tags: [mcp-server, entry-point, multi-agent, pipe-transport, lifecycle]
 | `resumeTimers` | function | Legacy: no-op | [`index.ts:162-170`](./index.ts) |
 | `registerAsyncLoopStarter` | function | Legacy: no-op | [`index.ts:162-170`](./index.ts) |
 
-All 8 exports are re-exported from `core/indexing-state.js` and `shared/indexing-context.js`.
+All 8 exports are re-exported from ~~`core/indexing-state.js`~~ (deleted) and ~~`shared/indexing-context.js`~~ (deleted).
 
 ## Dependencies
 

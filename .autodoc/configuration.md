@@ -134,16 +134,16 @@ Archives            # .zip, .tar, .gz, .7z, .rar
 
 | Constant | Value | File | Description |
 |----------|-------|------|-------------|
-| `DEFAULT_MAX_CONNECTIONS` | 5 | `src/storage/connection-pool.ts:25` | Max connections in pool |
-| `DEFAULT_ACQUIRE_TIMEOUT` | 5000ms | `src/storage/connection-pool.ts:27` | Timeout for acquiring a connection |
-| `DEFAULT_IDLE_TIMEOUT` | 30000ms | `src/storage/connection-pool.ts:28` | Idle connection timeout |
+| `DEFAULT_MAX_CONNECTIONS` | 5 | ~~`src/storage/connection-pool.ts:25`~~ (deleted) | Max connections in pool |
+| `DEFAULT_ACQUIRE_TIMEOUT` | 5000ms | ~~`src/storage/connection-pool.ts:27`~~ (deleted) | Timeout for acquiring a connection |
+| `DEFAULT_IDLE_TIMEOUT` | 30000ms | ~~`src/storage/connection-pool.ts:28`~~ (deleted) | Idle connection timeout |
 
 #### Batch Operations
 
 | Constant | Value | File | Description |
 |----------|-------|------|-------------|
-| `DEFAULT_BATCH_SIZE` | 1000 | `src/storage/batch-operations.ts:24` | Batch size for bulk operations |
-| `MAX_BATCH_SIZE` | 5000 | `src/storage/batch-operations.ts:25` | Maximum batch size |
+| `DEFAULT_BATCH_SIZE` | 1000 | ~~`src/storage/batch-operations.ts:24`~~ (deleted) | Batch size for bulk operations |
+| `MAX_BATCH_SIZE` | 5000 | ~~`src/storage/batch-operations.ts:25`~~ (deleted) | Maximum batch size |
 
 ---
 
@@ -167,7 +167,7 @@ Archives            # .zip, .tar, .gz, .7z, .rar
 | `MAX_MEMORY_LIMIT_MB` | 8192 | `src/config/constants.ts:180` | Max memory limit |
 | `CPU_THRESHOLD_PERCENT` | 80% | `src/config/constants.ts:185` | CPU threshold |
 | `MEMORY_CHECK_INTERVAL_MS` | 5000ms | `src/config/constants.ts:190` | Memory check interval |
-| `MAX_MONITORING_INTERVAL` | 10000ms | `src/core/resource-manager.ts:47` | Max monitoring interval |
+| `MAX_MONITORING_INTERVAL` | 10000ms | `src/core/resource-manager.ts:47-52` | Max monitoring interval |
 
 ---
 
@@ -177,17 +177,17 @@ Archives            # .zip, .tar, .gz, .7z, .rar
 
 | Constant | Value | File | Description |
 |----------|-------|------|-------------|
-| `DEFAULT_QUERY_LIMIT` | 100 | `src/storage/graph-storage.ts:40` | Default result limit |
-| `MAX_QUERY_LIMIT` | 1000 | `src/storage/graph-storage.ts:41` | Max result limit |
-| `MAX_SUBGRAPH_DEPTH` | 5 | `src/storage/graph-storage.ts:42` | Max subgraph depth |
-| `MAX_TRAVERSAL_DEPTH` | 10 | `src/query/graph-query-processor.ts:50` | Max graph traversal depth |
+| `DEFAULT_QUERY_LIMIT` | 100 | ~~`src/storage/graph-storage.ts:40`~~ (deleted) | Default result limit |
+| `MAX_QUERY_LIMIT` | 1000 | ~~`src/storage/graph-storage.ts:41`~~ (deleted) | Max result limit |
+| `MAX_SUBGRAPH_DEPTH` | 5 | ~~`src/storage/graph-storage.ts:42`~~ (deleted) | Max subgraph depth |
+| `MAX_TRAVERSAL_DEPTH` | 10 | ~~`src/query/graph-query-processor.ts:50`~~ (deleted) | Max graph traversal depth |
 
 #### Query Optimizer
 
 | Constant | Value | File | Description |
 |----------|-------|------|-------------|
-| `DEFAULT_LIMIT` | 100 | `src/query/query-optimizer.ts:29` | Default limit |
-| `MAX_LIMIT` | 1000 | `src/query/query-optimizer.ts:30` | Max limit |
+| `DEFAULT_LIMIT` | 100 | ~~`src/query/query-optimizer.ts:29`~~ (deleted) | Default limit |
+| `MAX_LIMIT` | 1000 | ~~`src/query/query-optimizer.ts:30`~~ (deleted) | Max limit |
 | `MAX_QUERY_DEPTH` | 10 | `src/types/query.ts:30` | Max query depth |
 | `MAX_CONCURRENT_QUERIES` | 10 | `src/types/query.ts:32` | Max concurrent queries |
 
@@ -201,15 +201,15 @@ Archives            # .zip, .tar, .gz, .7z, .rar
 |----------|-------|------|-------------|
 | `MAX_CACHE_ENTRIES` | 5000 | `src/config/constants.ts:31` | Max cache entries |
 | `CACHE_TTL_MS` | 3600000 (1h) | `src/config/constants.ts:36` | Cache TTL |
-| `L1_MAX_SIZE` | 100 | `src/query/query-cache.ts:32` | Hot cache size |
-| `L2_MAX_SIZE` | 1000 | `src/query/query-cache.ts:33` | Warm cache size |
+| `L1_MAX_SIZE` | 100 | ~~`src/query/query-cache.ts:32`~~ (deleted) | Hot cache size |
+| `L2_MAX_SIZE` | 1000 | ~~`src/query/query-cache.ts:33`~~ (deleted) | Warm cache size |
 
 #### Storage Cache
 
 | Constant | Value | File | Description |
 |----------|-------|------|-------------|
 | `DEFAULT_MAX_SIZE` | 50MB | `src/storage/cache-manager.ts:25` | Max file cache size |
-| `DEFAULT_MAX_ENTRIES` | 1000 | `src/storage/cache-manager.ts:27` | Max entries |
+| `DEFAULT_MAX_ENTRIES` | 1000 | `src/storage/cache-manager.ts:26-51` | Max entries |
 | `DEFAULT_CACHE_SIZE` | 100MB | `src/parsers/incremental-parser.ts:33` | Parser cache |
 
 #### Semantic Cache
@@ -250,7 +250,7 @@ Archives            # .zip, .tar, .gz, .7z, .rar
 | Ollama check | 2000ms | `src/utils/ollama-checker.ts:12` | Health check timeout |
 | Docker pull | 600000ms (10m) | `src/cli/setup-command.ts:741` | Docker pull timeout |
 | Model pull | 1200000ms (20m) | `src/cli/setup-command.ts:837` | Ollama model pull timeout |
-| LLM generation | 120000ms (2m) | `src/autodoc/llm/llm-provider.ts:43` | LLM request timeout |
+| LLM generation | 120000ms (2m) | `src/autodoc/llm/llm-provider.ts:38-46` | LLM request timeout |
 
 ---
 
@@ -269,7 +269,7 @@ Archives            # .zip, .tar, .gz, .7z, .rar
 | Constant | Value | File | Description |
 |----------|-------|------|-------------|
 | `DEFAULT_MAX_DEPTH` | 15 | `src/tracing/trace-engine.ts:39` | Trace depth |
-| `DEFAULT_MAX_PATHS` | 5-10 | `src/tracing/path-builder.ts:32` | Max paths |
+| `DEFAULT_MAX_PATHS` | 5-10 | `src/tracing/path-builder.ts:24-32` | Max paths |
 
 ---
 
@@ -287,7 +287,7 @@ Archives            # .zip, .tar, .gz, .7z, .rar
 
 | Constant | Value | File | Description |
 |----------|-------|------|-------------|
-| `MAX_FILE_CONCURRENCY` | 8 | `src/autodoc/hooks/pre-commit-check.ts:145` | File concurrency |
+| `MAX_FILE_CONCURRENCY` | 8 | `src/autodoc/hooks/pre-commit-check.ts:99-146` | File concurrency |
 | `MAX_REF_CONCURRENCY` | 4 | `src/autodoc/hooks/pre-commit-check.ts:147` | Reference concurrency |
 | `OUTDATED_THRESHOLD` | 0.7 | `src/autodoc/storage/autodoc-manager.ts:36` | Outdated threshold |
 
@@ -633,7 +633,7 @@ Many limits can be overridden via environment variables. Full list in `src/confi
 
 ### Slow search on large codebases
 **Cause**: Small `MAX_QUERY_LIMIT`.
-**Fix**: Increase limits in `src/storage/graph-storage.ts`.
+**Fix**: Increase limits in ~~`src/storage/graph-storage.ts`~~ (deleted).
 
 ### Out of memory during indexing
 **Cause**: Batch sizes too large or too many parallel agents.

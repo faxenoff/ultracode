@@ -23,7 +23,7 @@ The `src/types/` module provides all shared type contracts for the multi-agent c
 
 | Source | Data | Type |
 |--------|------|------|
-| `config/constants.ts` | Numeric constants (cache sizes, pool sizes, vector dimensions) | `const` values |
+| ~~`config/constants.ts`~~ (deleted) | Numeric constants (cache sizes, pool sizes, vector dimensions) | `const` values |
 
 ### Processing
 
@@ -83,7 +83,7 @@ See [`storage.ts`](./storage.ts) for complete list (FileInfo, EntityQuery, Relat
 
 | Export | Type | Description | Location |
 |--------|------|-------------|----------|
-| `VectorEmbedding` | interface | Embedding with id, content, vector (Float32Array), metadata | [`semantic.ts:35-41`](./semantic.ts) |
+| `VectorEmbedding` | interface | Embedding with id, content, vector (Float32Array), metadata | [`semantic.ts:29-35`](./semantic.ts) |
 | `SimilarityResult` | interface | Search result with similarity score | [`semantic.ts:46-51`](./semantic.ts) |
 | `EmbeddingProviderKind` | type | Provider union: ollama, openai, cloudru, huggingface, tei, ovms, vllm, llamacpp, mlx, auto | [`semantic.ts:182-242`](./semantic.ts) |
 | `EmbeddingConfig` | interface | Full embedding config with per-provider options (ollama, openai, tei, ovms, vllm, llamacpp, mlx) | [`semantic.ts:263-350`](./semantic.ts) |
@@ -95,7 +95,7 @@ See [`semantic.ts`](./semantic.ts) for complete list (HybridResult, SemanticAnal
 
 | Export | Type | Description | Location |
 |--------|------|-------------|----------|
-| `QueryOperations` | interface | 11 methods: entity lookup, traversal, dependencies, cycles, hotspots, impact | [`query.ts:152-173`](./query.ts) |
+| `QueryOperations` | interface | 11 methods: entity lookup, traversal, dependencies, cycles, hotspots, impact | [`query.ts:149-170`](./query.ts) |
 | `GraphQuery` | interface | Query descriptor with type, operation, params, hash | [`query.ts:178-185`](./query.ts) |
 | `QueryResult` | interface | Result wrapper with execution metadata and cache info | [`query.ts:190-198`](./query.ts) |
 | `ImpactAnalysis` | interface | Impact result: direct/indirect impacts, risk level, affected files | [`query.ts:118-125`](./query.ts) |
@@ -159,7 +159,7 @@ See [`parser-python-types.ts`](./parser-python-types.ts), [`faiss-node.d.ts`](./
 
 ## Configuration
 
-No runtime configuration — pure type definitions. The only configurable values are constants re-exported from `config/constants.ts` (e.g., `VECTOR_DIMENSIONS`, `MAX_BATCH_SIZE`, `DEFAULT_CACHE_TTL`).
+No runtime configuration — pure type definitions. The only configurable values are constants re-exported from ~~`config/constants.ts`~~ (deleted) (e.g., `VECTOR_DIMENSIONS`, `MAX_BATCH_SIZE`, `DEFAULT_CACHE_TTL`).
 
 ## Behavioral Properties
 

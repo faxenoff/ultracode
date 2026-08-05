@@ -28,17 +28,17 @@ The indexer module provides the data processing layer between parser output and 
 | `resolveByNameAndLine` | function | Resolves entity by name with line/file/container disambiguation | [`entity-resolution.ts:81-145`](./entity-resolution.ts) |
 | `buildRelationships` | function | Builds relationships from parsed entities and storage entities | [`relationship-builder.ts:16-190`](./relationship-builder.ts) |
 | `parseExternalId` | function | Parses external ID into source and symbol (Windows-safe) | [`external-placeholder.ts:19-19`](./external-placeholder.ts) |
-| `createExternalPlaceholder` | function | Creates placeholder entity for unresolved external reference | [`external-placeholder.ts:60-60`](./external-placeholder.ts) |
+| `createExternalPlaceholder` | function | Creates placeholder entity for unresolved external reference | [`external-placeholder.ts:60-99`](./external-placeholder.ts) |
 | `processExternalRelationships` | function | Replaces external IDs with real or placeholder entity IDs | [`external-placeholder.ts:111-112`](./external-placeholder.ts) |
 | `resolveExternalPlaceholders` | function | Post-indexing resolution of placeholder entities to real entities | [`external-placeholder.ts:194-201`](./external-placeholder.ts) |
-| `initXXHash` | function | Initializes xxHash WASM instance (call once at startup) | [`stable-id.ts:27-31`](./stable-id.ts) |
-| `stableEntityId` | function | Generates deterministic entity ID from properties | [`stable-id.ts:52-61`](./stable-id.ts) |
+| `initXXHash` | function | Initializes xxHash WASM instance (call once at startup) | [`stable-id.ts:25-27`](./stable-id.ts) |
+| `stableEntityId` | function | Generates deterministic entity ID from properties | [`stable-id.ts:41-56`](./stable-id.ts) |
 | `stableRelationshipId` | function | Generates deterministic relationship ID from endpoints and type | [`stable-id.ts:66-68`](./stable-id.ts) |
 | `handleUncommittedChanges` | function | Processes uncommitted file changes for incremental reindex | [`git-event-handlers.ts:29-66`](./git-event-handlers.ts) |
 | `handleBranchChange` | function | Handles Git branch switch with full reindex trigger | [`git-event-handlers.ts:131-179`](./git-event-handlers.ts) |
 | `handleDebouncedEmbeddingGeneration` | function | Debounced embedding generation after file changes | [`git-event-handlers.ts:74-100`](./git-event-handlers.ts) |
 | `scheduleEmbeddingGeneration` | function | Schedules delayed embedding generation | [`git-event-handlers.ts:201-228`](./git-event-handlers.ts) |
-| `triggerEmbeddingGeneration` | function | Triggers immediate embedding generation | [`git-event-handlers.ts:234-256`](./git-event-handlers.ts) |
+| `triggerEmbeddingGeneration` | function | Triggers immediate embedding generation | [`git-event-handlers.ts:227-249`](./git-event-handlers.ts) |
 
 
 ### Added Entities

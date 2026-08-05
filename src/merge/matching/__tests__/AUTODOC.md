@@ -141,10 +141,10 @@ Verify Results (ranking, scores)
 ## Dependencies
 
 **Internal:**
-- `CodeUnit`, `CodeUnitType` — code unit models from `../../models/code-unit.js`
-- `VersionedIndex` — indexed code structure from `../../models/versioned-index.js`
-- `FastPathMatcher`, `FastPathMatchLevel` — structural/content matching implementation from `../fast-path-matcher.js`
-- `SemanticMatcher` — embedding-based matching from `../semantic-matcher.js`
+- `CodeUnit`, `CodeUnitType` — code unit models from ~~`../../models/code-unit.js`~~ (deleted)
+- `VersionedIndex` — indexed code structure from ~~`../../models/versioned-index.js`~~ (deleted)
+- `FastPathMatcher`, `FastPathMatchLevel` — structural/content matching implementation from ~~`../fast-path-matcher.js`~~ (deleted)
+- `SemanticMatcher` — embedding-based matching from ~~`../semantic-matcher.js`~~ (deleted)
 
 **External:**
 - `bun:test` — Bun test framework (`describe`, `it`, `beforeEach`, `expect`)

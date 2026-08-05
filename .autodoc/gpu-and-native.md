@@ -454,4 +454,4 @@ Server logs at startup show the selected backend:
 | `src/gpu/backend-selector.ts` | Automatic backend selection |
 | `external-tools/native/cuda/` | C++ CUDA addon source |
 | `scripts/build-native-libs.ps1` | Multi-platform build script |
-| `scripts/postinstall.js` | npm postinstall (FAISS copy, Metal prompt) |
+| ~~`scripts/postinstall.js`~~ (deleted) | npm postinstall (FAISS copy, Metal prompt) |

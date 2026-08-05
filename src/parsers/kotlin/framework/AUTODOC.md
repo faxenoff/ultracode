@@ -32,21 +32,21 @@ This module provides framework-aware analysis for Kotlin projects. The Android e
 | `extractComposeStateUsages` | function | Extracts Compose state usages | [`android-extractor.ts:285-288`](./android-extractor.ts) |
 | `extractResourceReferences` | function | Extracts Android resource references | [`android-extractor.ts:319-322`](./android-extractor.ts) |
 | `extractNavigationDestinations` | function | Extracts navigation destinations | [`android-extractor.ts:353-356`](./android-extractor.ts) |
-| `detectCoroutinesFramework` | function | Checks for coroutine imports | [`coroutines-extractor.ts:115-115`](./coroutines-extractor.ts) |
-| `getCoroutinesConfidence` | function | Returns 0-1 confidence for coroutines usage | [`coroutines-extractor.ts:130-130`](./coroutines-extractor.ts) |
+| `detectCoroutinesFramework` | function | Checks for coroutine imports | [`coroutines-extractor.ts:115-125`](./coroutines-extractor.ts) |
+| `getCoroutinesConfidence` | function | Returns 0-1 confidence for coroutines usage | [`coroutines-extractor.ts:130-139`](./coroutines-extractor.ts) |
 | `isSuspendFunction` | function | Checks if function is suspend | [`coroutines-extractor.ts:148-150`](./coroutines-extractor.ts) |
-| `extractSuspendFunctionInfo` | function | Extracts suspend function details | [`coroutines-extractor.ts:155-155`](./coroutines-extractor.ts) |
+| `extractSuspendFunctionInfo` | function | Extracts suspend function details | [`coroutines-extractor.ts:155-189`](./coroutines-extractor.ts) |
 | `extractFlowInfo` | function | Extracts Flow usage information | [`coroutines-extractor.ts:198-204`](./coroutines-extractor.ts) |
-| `extractFlowOperatorChain` | function | Extracts Flow operator chains | [`coroutines-extractor.ts:228-228`](./coroutines-extractor.ts) |
+| `extractFlowOperatorChain` | function | Extracts Flow operator chains | [`coroutines-extractor.ts:228-241`](./coroutines-extractor.ts) |
 | `extractCoroutineScopeInfo` | function | Extracts coroutine scope information | [`coroutines-extractor.ts:250-257`](./coroutines-extractor.ts) |
 | `enrichEntityWithCoroutines` | function | Enriches entity with coroutine metadata | [`coroutines-extractor.ts:292-298`](./coroutines-extractor.ts) |
 | `extractChannelInfo` | function | Extracts Channel usage info | [`coroutines-extractor.ts:352-356`](./coroutines-extractor.ts) |
 | `extractCoroutineExceptionHandling` | function | Extracts coroutine exception handling | [`coroutines-extractor.ts:391-395`](./coroutines-extractor.ts) |
-| `getCoroutineComplexityScore` | function | Calculates coroutine complexity score | [`coroutines-extractor.ts:410-410`](./coroutines-extractor.ts) |
-| `usesStructuredConcurrency` | function | Checks for structured concurrency patterns | [`coroutines-extractor.ts:437-437`](./coroutines-extractor.ts) |
-| `detectKtorFramework` | function | Checks for Ktor imports | [`ktor-extractor.ts:79-79`](./ktor-extractor.ts) |
-| `getKtorConfidence` | function | Returns 0-1 confidence for Ktor usage | [`ktor-extractor.ts:94-94`](./ktor-extractor.ts) |
-| `extractKtorRoutes` | function | Extracts Ktor route definitions | [`ktor-extractor.ts:112-112`](./ktor-extractor.ts) |
+| `getCoroutineComplexityScore` | function | Calculates coroutine complexity score | [`coroutines-extractor.ts:409-431`](./coroutines-extractor.ts) |
+| `usesStructuredConcurrency` | function | Checks for structured concurrency patterns | [`coroutines-extractor.ts:436-444`](./coroutines-extractor.ts) |
+| `detectKtorFramework` | function | Checks for Ktor imports | [`ktor-extractor.ts:79-89`](./ktor-extractor.ts) |
+| `getKtorConfidence` | function | Returns 0-1 confidence for Ktor usage | [`ktor-extractor.ts:94-103`](./ktor-extractor.ts) |
+| `extractKtorRoutes` | function | Extracts Ktor route definitions | [`ktor-extractor.ts:112-176`](./ktor-extractor.ts) |
 | `extractRouteHandlers` | function | Extracts HTTP method handlers | [`ktor-extractor.ts:181-186`](./ktor-extractor.ts) |
 | `extractInstalledPlugins` | function | Extracts installed Ktor plugins | [`ktor-extractor.ts:234-237`](./ktor-extractor.ts) |
 | `extractSerializationConfig` | function | Extracts serialization configuration | [`ktor-extractor.ts:265-268`](./ktor-extractor.ts) |
@@ -54,7 +54,7 @@ This module provides framework-aware analysis for Kotlin projects. The Android e
 | `enrichEntityWithKtor` | function | Enriches entity with Ktor metadata | [`ktor-extractor.ts:339-345`](./ktor-extractor.ts) |
 | `extractHttpClientConfig` | function | Extracts Ktor HttpClient config | [`ktor-extractor.ts:391-395`](./ktor-extractor.ts) |
 | `extractWebSocketRoutes` | function | Extracts WebSocket route definitions | [`ktor-extractor.ts:440-444`](./ktor-extractor.ts) |
-| `isKtorApplication` | function | Checks if entity is a Ktor application | [`ktor-extractor.ts:476-478`](./ktor-extractor.ts) |
+| `isKtorApplication` | function | Checks if entity is a Ktor application | [`ktor-extractor.ts:475-477`](./ktor-extractor.ts) |
 | `getAllEndpoints` | function | Gets all HTTP endpoints from analysis | [`ktor-extractor.ts:483-487`](./ktor-extractor.ts) |
 
 ## Dependencies

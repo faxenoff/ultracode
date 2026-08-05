@@ -128,16 +128,16 @@ Results tracked in `CodeModificationResult.validationReport` for audit trail.
 
 | Module | Purpose | Import Path |
 |--------|---------|-------------|
-| VersionManager | Snapshot creation and atomic rollback | `../versioning/version-manager.js` |
-| CodeValidator | Before/after validation and metrics comparison | `../validation/code-validator.js` |
-| EmbeddingGenerator | Generate code embeddings for vector database | `../semantic/embedding-generator.js` |
-| VectorStore (type) | Vector embedding storage and query interface | `../semantic/vector-store.js` |
-| GraphStorage (type) | Entity and relationship CRUD operations | `../types/storage.js` |
-| IncrementalParser | Re-parse modified code for signature changes | `../parsers/incremental-parser.js` |
-| CommentExtractor | Extract and associate code comments with entities | `../utils/comment-extractor.js` |
-| readText, stat, writeFile, mkdir, readdir, rm, copyFile | File system I/O operations | `../utils/file-ops.js` |
-| streamReplaceRange, streamCopyFile | Streaming for large file handling | `../utils/stream-helpers.js` |
-| log | Structured logging interface | `../logging/index.js` |
+| VersionManager | Snapshot creation and atomic rollback | ~~`../versioning/version-manager.js`~~ (deleted) |
+| CodeValidator | Before/after validation and metrics comparison | ~~`../validation/code-validator.js`~~ (deleted) |
+| EmbeddingGenerator | Generate code embeddings for vector database | ~~`../semantic/embedding-generator.js`~~ (deleted) |
+| VectorStore (type) | Vector embedding storage and query interface | ~~`../semantic/vector-store.js`~~ (deleted) |
+| GraphStorage (type) | Entity and relationship CRUD operations | ~~`../types/storage.js`~~ (deleted) |
+| IncrementalParser | Re-parse modified code for signature changes | ~~`../parsers/incremental-parser.js`~~ (deleted) |
+| CommentExtractor | Extract and associate code comments with entities | ~~`../utils/comment-extractor.js`~~ (deleted) |
+| readText, stat, writeFile, mkdir, readdir, rm, copyFile | File system I/O operations | ~~`../utils/file-ops.js`~~ (deleted) |
+| streamReplaceRange, streamCopyFile | Streaming for large file handling | ~~`../utils/stream-helpers.js`~~ (deleted) |
+| log | Structured logging interface | ~~`../logging/index.js`~~ (deleted) |
 | nanoid | Generate unique entity identifiers | `nanoid` |
 | xxhash-wasm | WASM SIMD-accelerated 64-bit hashing for diff performance | `xxhash-wasm` |
 

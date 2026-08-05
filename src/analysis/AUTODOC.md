@@ -43,9 +43,9 @@ The analysis module provides three core capabilities for understanding codebases
 
 | Export | File:Lines | Description |
 |--------|-----------|-------------|
-| `TechnologyDetector` | `technology-detector.ts:67-67` | Detects programming languages, frameworks, build tools, and dependencies by scanning entities, relationships, and project manifests (package.json, pom.xml, build.gradle). |
+| `TechnologyDetector` | `technology-detector.ts:67-826` | Detects programming languages, frameworks, build tools, and dependencies by scanning entities, relationships, and project manifests (package.json, pom.xml, build.gradle). |
 | `ChaosAnalyzer` | `chaos/chaos-analyzer.ts:21-618` | Coordinator for state chaos analysis: detects mutable state patterns, race conditions, C# anti-patterns, and produces chaos scoring, divergence risk assessment, and refactoring hotspots. |
-| `StateDetector` | `chaos/state-detector.ts:64-64` | Identifies mutable state patterns in codebases via heuristic scanning of entity names and relationship mutations; integrates race condition detection on results. |
+| `StateDetector` | `chaos/state-detector.ts:64-490` | Identifies mutable state patterns in codebases via heuristic scanning of entity names and relationship mutations; integrates race condition detection on results. |
 | `RaceDetector` | `chaos/race-detector.ts:128-651` | Analyzes state operations for race conditions: competing writes, check-then-act patterns, async boundary violations, and lock inadequacy. |
 
 ### Result Types
@@ -59,14 +59,14 @@ The analysis module provides three core capabilities for understanding codebases
 | `DependencyInfo` | `technology-detector.ts:57-61` | Dependency metadata: name, detected version, and classification (production or development). |
 | `StatePatternWithRaces` | `chaos/state-detector.ts:60-62` | State pattern extended with embedded race condition analysis and severity assessment. |
 | `CSharpChaosPattern` | `chaos/csharp-patterns.ts:19-28` | C# anti-pattern detection result: pattern type, severity, affected entity ID, and refactoring suggestion. |
-| `SwaggerUsageResult` | `swagger-usage-detector.ts:24-31` | Swagger/OpenAPI usage detection summary: files map, total count, and active file count. |
-| `SwaggerFileUsage` | `swagger-usage-detector.ts:33-41` | Per-file usage data: confidence score, active status, and array of detection signals with weights. |
-| `UsageSignal` | `swagger-usage-detector.ts:43-48` | Individual usage signal: signal type, weight, calculated score, and descriptive details. |
-| `GraphQLUsageResult` | `graphql-usage-detector.ts:24-28` | GraphQL schema usage detection summary containing per-file usage data and active schema counts. |
-| `GraphQLFileUsage` | `graphql-usage-detector.ts:30-35` | Per GraphQL schema file usage metrics: confidence score, active status, and array of detection signals. |
-| `GraphQLUsageSignal` | `graphql-usage-detector.ts:37-42` | Individual GraphQL usage detection signal: signal type, weight, calculated score, and descriptive details. |
-| `ProtobufUsageResult` | `protobuf-usage-detector.ts:24-28` | Protobuf schema usage detection summary containing per-file usage data and active schema counts. |
-| `ProtobufFileUsage` | `protobuf-usage-detector.ts:30-35` | Per Protobuf schema file usage metrics: confidence score, active status, and array of detection signals. |
+| `SwaggerUsageResult` | `swagger-usage-detector.ts:16-50` | Swagger/OpenAPI usage detection summary: files map, total count, and active file count. |
+| `SwaggerFileUsage` | `swagger-usage-detector.ts:16-50` | Per-file usage data: confidence score, active status, and array of detection signals with weights. |
+| `UsageSignal` | `swagger-usage-detector.ts:16-50` | Individual usage signal: signal type, weight, calculated score, and descriptive details. |
+| `GraphQLUsageResult` | `graphql-usage-detector.ts:22-58` | GraphQL schema usage detection summary containing per-file usage data and active schema counts. |
+| `GraphQLFileUsage` | `graphql-usage-detector.ts:22-58` | Per GraphQL schema file usage metrics: confidence score, active status, and array of detection signals. |
+| `GraphQLUsageSignal` | `graphql-usage-detector.ts:22-58` | Individual GraphQL usage detection signal: signal type, weight, calculated score, and descriptive details. |
+| `ProtobufUsageResult` | `protobuf-usage-detector.ts:22-39` | Protobuf schema usage detection summary containing per-file usage data and active schema counts. |
+| `ProtobufFileUsage` | `protobuf-usage-detector.ts:22-39` | Per Protobuf schema file usage metrics: confidence score, active status, and array of detection signals. |
 | `ProtobufUsageSignal` | `protobuf-usage-detector.ts:37-42` | Individual Protobuf usage detection signal: signal type, weight, calculated score, and descriptive details. |
 
 ### Utility Functions
@@ -76,10 +76,10 @@ The analysis module provides three core capabilities for understanding codebases
 | `detectCSharpChaosPatterns` | `chaos/csharp-patterns.ts:144-274` | Scans entity array for C# anti-patterns: mutable statics, async-void methods, god-service classes, missing CancellationToken, and singleton mutable state. |
 | `buildRelationshipLookup` | `chaos/state-detector.ts:26-46` | Creates O(1) lookup map from entity ID to their relationships, enabling efficient mutation analysis without repeated linear scans. |
 | `isStateIdentifier` | `chaos/angular-patterns.ts:5-40` | Determines if a name is likely a state variable using keyword matching and regex heuristics (detects Angular, Redux, and general state patterns). |
-| `isCSharpStateIdentifier` | `chaos/csharp-patterns.ts:84-135` | C# state variable detection using entity metadata inspection (field keywords, property patterns, naming conventions). |
+| `isCSharpStateIdentifier` | `chaos/csharp-patterns.ts:84-153` | C# state variable detection using entity metadata inspection (field keywords, property patterns, naming conventions). |
 | `detectSwaggerUsage` | `swagger-usage-detector.ts:74-134` | Multi-signal detection of swagger file usage: analyzes imports (weight 0.4), codegen scripts (0.3), config files (0.2), and generated markers (0.1); returns results with confidence >= 0.3. |
 | `applySwaggerUsageMetadata` | `swagger-usage-detector.ts:140-167` | Applies swagger usage detection results to entities in graph storage, enriching them with usage metadata and 1-sentence descriptions. |
-| `detectGraphQLUsage` | `graphql-usage-detector.ts:61-120` | Multi-signal detection of GraphQL schema file usage via imports, codegen scripts, config files, and generated markers; returns results with confidence >= 0.3. |
+| `detectGraphQLUsage` | `graphql-usage-detector.ts:60-62` | Multi-signal detection of GraphQL schema file usage via imports, codegen scripts, config files, and generated markers; returns results with confidence >= 0.3. |
 | `applyGraphQLUsageMetadata` | `graphql-usage-detector.ts:122-143` | Applies GraphQL usage detection results to entities in graph storage, enriching them with usage metadata. |
 | `detectProtobufUsage` | `protobuf-usage-detector.ts:61-117` | Multi-signal detection of Protobuf schema file usage via imports, codegen scripts, config files, and generated markers; returns results with confidence >= 0.3. |
 | `applyProtobufUsageMetadata` | `protobuf-usage-detector.ts:119-140` | Applies Protobuf usage detection results to entities in graph storage, enriching them with usage metadata. |

@@ -125,9 +125,9 @@ This module contains integration tests for the embedding provider factory and co
 
 - **Imports:**
   - `bun:test` — Test framework providing `describe`, `it`, `expect` assertions
-  - `EmbeddingGenerator` — Embedding generation orchestrator from `../embedding-generator.js`
-  - `ProviderFactoryOptions` — Configuration type for provider factory from `../providers/factory.js`
-  - `createProvider` — Factory function creating provider instances from `../providers/factory.js`
+  - `EmbeddingGenerator` — Embedding generation orchestrator from ~~`../embedding-generator.js`~~ (deleted)
+  - `ProviderFactoryOptions` — Configuration type for provider factory from ~~`../providers/factory.js`~~ (deleted)
+  - `createProvider` — Factory function creating provider instances from ~~`../providers/factory.js`~~ (deleted)
 
 - **Implicit Internal Connections:**
   - Tests validate the factory pattern (`createProvider`) used to instantiate provider implementations

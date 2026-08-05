@@ -23,8 +23,8 @@ This module contains shared helper functions used by all Kotlin extractors. It p
 
 | Export | Type | Description | Location |
 |--------|------|-------------|----------|
-| `getLocation` | function | Extracts position from an ANTLR context | [`ast-helpers.ts:18-35`](./ast-helpers.ts) |
-| `getTerminalLocation` | function | Gets coordinates from a terminal node | [`ast-helpers.ts:40-57`](./ast-helpers.ts) |
+| `getLocation` | function | Extracts position from an ANTLR context | [`ast-helpers.ts:29-35`](./ast-helpers.ts) |
+| `getTerminalLocation` | function | Gets coordinates from a terminal node | [`ast-helpers.ts:40-42`](./ast-helpers.ts) |
 | `visitChildren` | function | Visits child nodes with a visitor function | [`ast-helpers.ts:66-80`](./ast-helpers.ts) |
 | `findAllDescendants` | function | Finds all descendants matching a predicate | [`ast-helpers.ts:85-105`](./ast-helpers.ts) |
 | `findAncestor` | function | Finds first ancestor matching a predicate | [`ast-helpers.ts:110-122`](./ast-helpers.ts) |

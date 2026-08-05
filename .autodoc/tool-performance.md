@@ -87,7 +87,7 @@ TOTAL                               6 653 ms
 | `find_related_concepts` | `entityId=…, limit=15` | **803** | Vector similarity search for related entities; 15/200 results. |
 | `find_duplicates` | default args | **191** | Structural clone detection via graph hashing. |
 | `jscpd_detect_clones` | `paths=[src], formats=[ts], minLines=8, minTokens=50` | **1 418** | Token-based clone detection across all 581 TS source files. 0 duplicates found (clean codebase). |
-| `get_members` | `filePath=src/core/pipe-transport.ts` | **78–80** | AST entity listing; 34 entities returned. |
+| `get_members` | ~~`filePath=src/core/pipe-transport.ts`~~ (deleted) | **78–80** | AST entity listing; 34 entities returned. |
 | `check_entity_patterns` | default args | **114** | Pattern check for single entity. |
 | `query` | natural language query | **117** | SQLite structured query with NL parsing. |
 | `detect_technology_stack` | default args | **127** | Stack detection from file extensions + imports. |

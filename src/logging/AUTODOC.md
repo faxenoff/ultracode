@@ -69,15 +69,15 @@ The logging module provides a high-performance structured logging system where e
 | `formatDuration` | function | Format milliseconds as `"45ms"` string | [`kv-serializer.ts:190-192`](./kv-serializer.ts) |
 | `formatMemory` | function | Convert bytes to whole MB number | [`kv-serializer.ts:198-200`](./kv-serializer.ts) |
 | `formatTimestamp` | function | Format Date to `YYYYMMDD-HHmmss.mmm` (19 chars) | [`log-formatter.ts:17-17`](./log-formatter.ts) |
-| `parseTimestamp` | function | Parse timestamp string back to Date | [`log-formatter.ts:47-47`](./log-formatter.ts) |
-| `formatPid` | function | Format PID to 5-char padded string | [`log-formatter.ts:47-47`](./log-formatter.ts) |
-| `formatBuildHash` | function | Format build hash to 8 chars (padEnd with '0') | [`log-formatter.ts:47-47`](./log-formatter.ts) |
+| `parseTimestamp` | function | Parse timestamp string back to Date | [`log-formatter.ts:45-55`](./log-formatter.ts) |
+| `formatPid` | function | Format PID to 5-char padded string | [`log-formatter.ts:45-55`](./log-formatter.ts) |
+| `formatBuildHash` | function | Format build hash to 8 chars (padEnd with '0') | [`log-formatter.ts:45-55`](./log-formatter.ts) |
 | `formatModule` | function | Format module name to 20 chars (padEnd) | [`log-formatter.ts:68-70`](./log-formatter.ts) |
 | `formatEvent` | function | Format event name to 20 chars (padEnd) | [`log-formatter.ts:75-77`](./log-formatter.ts) |
 | `formatLogLine` | function | Format LogEntry into fixed-position string | [`log-formatter.ts:89-91`](./log-formatter.ts) |
 | `parseLogLine` | function | Parse log string into ParsedLogLine or null | [`log-formatter.ts:108-118`](./log-formatter.ts) |
-| `formatLogLineColored` | function | Format log line with ANSI color codes | [`log-formatter.ts:149-149`](./log-formatter.ts) |
-| `extractFields` | function | Extract specific fields from a ParsedLogLine | [`log-formatter.ts:166-166`](./log-formatter.ts) |
+| `formatLogLineColored` | function | Format log line with ANSI color codes | [`log-formatter.ts:123-172`](./log-formatter.ts) |
+| `extractFields` | function | Extract specific fields from a ParsedLogLine | [`log-formatter.ts:123-172`](./log-formatter.ts) |
 | `LogLevelChar` | type | Log level character union: `E \| W \| I \| D \| T` | [`log-types.ts:8-8`](./log-types.ts) |
 | `LOG_LEVEL_VALUES` | const | Numeric values for level filtering (T=0..E=4) | [`log-types.ts:8-8`](./log-types.ts) |
 | `LOG_LEVEL_NAMES` | const | Full level names for display | [`log-types.ts:20-26`](./log-types.ts) |

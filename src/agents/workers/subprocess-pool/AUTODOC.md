@@ -23,10 +23,10 @@ The subprocess-pool submodule defines the foundational types and spawning logic 
 
 | Export | Type | Description | Location |
 |--------|------|-------------|----------|
-| `spawnProcess` | function | Spawns subprocess based on runtime (Bun or Node.js) | [`spawner.ts:149-155`](./spawner.ts) |
+| `spawnProcess` | function | Spawns subprocess based on runtime (Bun or Node.js) | [`spawner.ts:151-157`](./spawner.ts) |
 | `spawnBunProcess` | function | Spawns Bun subprocess with native IPC | [`spawner.ts:57-100`](./spawner.ts) |
-| `spawnNodeProcess` | function | Spawns Node.js subprocess via fork() with IPC | [`spawner.ts:105-144`](./spawner.ts) |
-| `killProcess` | function | Safely terminates a subprocess | [`spawner.ts:160-167`](./spawner.ts) |
+| `spawnNodeProcess` | function | Spawns Node.js subprocess via fork() with IPC | [`spawner.ts:107-146`](./spawner.ts) |
+| `killProcess` | function | Safely terminates a subprocess | [`spawner.ts:162-169`](./spawner.ts) |
 | `SpawnContext` | interface | Context with runtime info, callbacks, and worker script path | [`spawner.ts:25-32`](./spawner.ts) |
 | `BunProcess` | interface | Bun process interface with IPC support | [`types.ts:18-25`](./types.ts) |
 | `PendingTask` | interface | Task resolve/reject callbacks with timing metadata | [`types.ts:30-35`](./types.ts) |

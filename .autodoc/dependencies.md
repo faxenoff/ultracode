@@ -32,7 +32,7 @@ This document describes all dependencies of UltraCode v3.1+, their purpose, and 
 - **TEI** — Docker container (port 8081), HuggingFace models
 - **Ollama** — local LLM (port 11434), easy setup
 
-> See [EMBEDDINGS_PROVIDERS.md](../docs/EMBEDDINGS_PROVIDERS.md) for detailed provider documentation.
+> See ~~[EMBEDDINGS_PROVIDERS.md](../docs/EMBEDDINGS_PROVIDERS.md)~~ (deleted) for detailed provider documentation.
 
 ### Utilities
 

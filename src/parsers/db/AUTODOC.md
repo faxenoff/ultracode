@@ -62,8 +62,8 @@ Code Entity → Database Entity Links
 ## Dependencies
 
 **Internal:**
-- `Entity` type from `../../types/storage.js` — indexed code entities representing classes, functions, and methods
-- `RelationType` from `../../types/storage.js` — enumeration of relationship types (reads_table, writes_table, maps_to_table) connecting code to database
+- `Entity` type from ~~`../../types/storage.js`~~ (deleted) — indexed code entities representing classes, functions, and methods
+- `RelationType` from ~~`../../types/storage.js`~~ (deleted) — enumeration of relationship types (reads_table, writes_table, maps_to_table) connecting code to database
 
 ## Design Patterns
 

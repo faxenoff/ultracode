@@ -23,24 +23,24 @@ The parser module is the markdown processing backbone of AutoDoc. The link extra
 
 | Export | Type | Description | Location |
 |--------|------|-------------|----------|
-| `extractReferences` | function | Extracts all typed references from markdown content | [`link-extractor.ts:58-81`](./link-extractor.ts) |
-| `generateCodeRef` | function | Generates `[-> file:line]` markdown link for code references | [`link-extractor.ts:228-236`](./link-extractor.ts) |
+| `extractReferences` | function | Extracts all typed references from markdown content | [`link-extractor.ts:61-84`](./link-extractor.ts) |
+| `generateCodeRef` | function | Generates `[-> file:line]` markdown link for code references | [`link-extractor.ts:231-239`](./link-extractor.ts) |
 | `generateEntityRef` | function | Generates `[-> entity:ID]` markdown link for entity references | [`link-extractor.ts:241-376`](./link-extractor.ts) |
-| `generateDocRef` | function | Generates `[-> doc]` markdown link for doc-to-doc references | [`link-extractor.ts:249-253`](./link-extractor.ts) |
-| `validateReference` | function | Validates a parsed reference against a target resolver | [`link-extractor.ts:262-265`](./link-extractor.ts) |
-| `updateLineNumbers` | function | Adjusts line numbers in reference syntax by a delta | [`link-extractor.ts:282-291`](./link-extractor.ts) |
+| `generateDocRef` | function | Generates `[-> doc]` markdown link for doc-to-doc references | [`link-extractor.ts:252-256`](./link-extractor.ts) |
+| `validateReference` | function | Validates a parsed reference against a target resolver | [`link-extractor.ts:265-280`](./link-extractor.ts) |
+| `updateLineNumbers` | function | Adjusts line numbers in reference syntax by a delta | [`link-extractor.ts:285-294`](./link-extractor.ts) |
 | `extractCommentRefs` | function | Extracts @see doc/entity refs and @flow tags from code comments | [`link-extractor.ts:317-321`](./link-extractor.ts) |
 | `generateSeeDocComment` | function | Generates `@see docs://path` comment syntax | [`link-extractor.ts:374-374`](./link-extractor.ts) |
 | `generateSeeEntityComment` | function | Generates `@see entity:ID` comment syntax | [`link-extractor.ts:381-383`](./link-extractor.ts) |
 | `generateFlowComment` | function | Generates `@flow tag1, tag2` comment syntax | [`link-extractor.ts:388-390`](./link-extractor.ts) |
 | `parseMarkdown` | function | Parses markdown content into a structured ParsedDocument | [`md-parser.ts:29-127`](./md-parser.ts) |
 | `flattenSections` | function | Converts nested section tree into a flat array | [`md-parser.ts:132-146`](./md-parser.ts) |
-| `findSectionById` | function | Finds a section by slug ID in nested tree | [`md-parser.ts:151-162`](./md-parser.ts) |
-| `findSectionByTitle` | function | Finds a section by title (case-insensitive) | [`md-parser.ts:167-180`](./md-parser.ts) |
-| `updateSectionContent` | function | Replaces content of a section by title in raw markdown | [`md-parser.ts:185-232`](./md-parser.ts) |
-| `insertSectionAfter` | function | Inserts a new section after a specified section | [`md-parser.ts:237-291`](./md-parser.ts) |
+| `findSectionById` | function | Finds a section by slug ID in nested tree | [`md-parser.ts:152-163`](./md-parser.ts) |
+| `findSectionByTitle` | function | Finds a section by title (case-insensitive) | [`md-parser.ts:168-181`](./md-parser.ts) |
+| `updateSectionContent` | function | Replaces content of a section by title in raw markdown | [`md-parser.ts:186-233`](./md-parser.ts) |
+| `insertSectionAfter` | function | Inserts a new section after a specified section | [`md-parser.ts:238-292`](./md-parser.ts) |
 | `generateMarkdown` | function | Regenerates markdown string from a ParsedDocument | [`md-parser.ts:296-328`](./md-parser.ts) |
-| `extractTitle` | function | Extracts the first H1 title from markdown content | [`md-parser.ts:348-360`](./md-parser.ts) |
+| `extractTitle` | function | Extracts the first H1 title from markdown content | [`md-parser.ts:349-361`](./md-parser.ts) |
 | `getSectionPath` | function | Gets breadcrumb path to a section by ID | [`md-parser.ts:365-388`](./md-parser.ts) |
 
 ## Dependencies

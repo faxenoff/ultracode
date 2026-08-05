@@ -108,9 +108,9 @@ Keywords + Trigrams for indexing
 ## Dependencies
 
 **Tested modules:**
-- `src/search/code-classifier.js` — Character classification with string/comment awareness
-- `src/search/keyword-triage.js` — Keyword detection in code regions
-- `src/search/trigram-extract.js` — N-gram generation for fuzzy matching
+- ~~`src/search/code-classifier.js`~~ (deleted) — Character classification with string/comment awareness
+- ~~`src/search/keyword-triage.js`~~ (deleted) — Keyword detection in code regions
+- ~~`src/search/trigram-extract.js`~~ (deleted) — N-gram generation for fuzzy matching
 
 **Test framework:**
 - `bun:test` — Test runner and assertion library

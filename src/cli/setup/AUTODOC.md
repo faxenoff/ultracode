@@ -18,35 +18,35 @@ The setup module orchestrates the multi-step interactive wizard for configuring 
 |--------|------|-------------|----------|
 | `detectGPU` | function | Detects NVIDIA GPU via nvidia-smi | [`setup-hardware.ts:11-56`](./setup-hardware.ts) |
 | `printHardwareInfo` | function | Displays CPU and GPU info | [`setup-hardware.ts:58-86`](./setup-hardware.ts) |
-| `installProvider` | function | Routes embedding provider installation | [`setup-installers.ts:35-62`](./setup-installers.ts) |
+| `installProvider` | function | Routes embedding provider installation | [`setup-installers.ts:34-61`](./setup-installers.ts) |
 | `selectLanguage` | function | Interactive code language selection | [`setup-selection.ts:14-31`](./setup-selection.ts) |
 | `selectProvider` | function | Interactive provider selection with recommendations | [`setup-selection.ts:115-115`](./setup-selection.ts) |
 | `selectModel` | function | Interactive embedding model selection | [`setup-selection.ts:152-286`](./setup-selection.ts) |
-| `askEnableLLM` | function | Asks about enabling LLM for AutoDoc | [`setup-llm.ts:166-166`](./setup-llm.ts) |
-| `selectLLMProvider` | function | Interactive LLM provider selection | [`setup-llm.ts:186-217`](./setup-llm.ts) |
+| `askEnableLLM` | function | Asks about enabling LLM for AutoDoc | [`setup-llm.ts:162-178`](./setup-llm.ts) |
+| `selectLLMProvider` | function | Interactive LLM provider selection | [`setup-llm.ts:184-294`](./setup-llm.ts) |
 | `selectLLMModel` | function | Interactive LLM model selection | [`setup-llm.ts:295-295`](./setup-llm.ts) |
-| `installLLMProvider` | function | Installs and launches LLM provider | [`setup-llm.ts:489-489`](./setup-llm.ts) |
+| `installLLMProvider` | function | Installs and launches LLM provider | [`setup-llm.ts:300-498`](./setup-llm.ts) |
 | `EmbeddingModel` | interface | Embedding model configuration | [`setup-types.ts:5-39`](./setup-types.ts) |
 | `ModelsConfig` | interface | All available models and providers config | [`setup-types.ts:41-46`](./setup-types.ts) |
 | `GPUInfo` | interface | GPU availability and architecture info | [`setup-types.ts:48-55`](./setup-types.ts) |
 | `LLMConfig` | interface | LLM models and providers config | [`setup-types.ts:102-110`](./setup-types.ts) |
-| `c` | const | ANSI color codes for console output | [`setup-ui.ts:14-25`](./setup-ui.ts) |
+| `c` | const | ANSI color codes for console output | [`setup-ui.ts:13-30`](./setup-ui.ts) |
 | `printBanner` | function | Displays setup welcome banner | [`setup-ui.ts:27-42`](./setup-ui.ts) |
 | `printOK` / `printInfo` / `printWarn` / `printError` | functions | Colored status message printing | [`setup-ui.ts:44-46`](./setup-ui.ts) |
-| `prompt` | function | Interactive string input from stdin | [`setup-ui.ts:60-68`](./setup-ui.ts) |
+| `prompt` | function | Interactive string input from stdin | [`setup-ui.ts:55-70`](./setup-ui.ts) |
 | `AgentDef` | interface | MCP agent configuration definition | [`mcp-installer.ts:33-39`](./mcp-installer.ts) |
 | `AgentStatus` | interface | MCP agent installation and runtime status | [`mcp-installer.ts:172-175`](./mcp-installer.ts) |
 | `ENTRY_NAME` | const | Constant name for MCP configuration entry | [`mcp-installer.ts:25-25`](./mcp-installer.ts) |
 | `getAgents` | function | Retrieves list of available MCP agents | [`mcp-installer.ts:41-166`](./mcp-installer.ts) |
 | `stripBom` | function | Removes Byte Order Mark from text content | [`mcp-installer.ts:177-179`](./mcp-installer.ts) |
-| `detectAgents` | function | Detects installed MCP agents from configuration files | [`mcp-installer.ts:181-209`](./mcp-installer.ts) |
-| `buildJsonEntry` | function | Constructs JSON configuration entry for MCP agent | [`mcp-installer.ts:215-232`](./mcp-installer.ts) |
-| `ensureParentDir` | function | Creates parent directory if it does not exist | [`mcp-installer.ts:238-243`](./mcp-installer.ts) |
-| `installJson` | function | Installs MCP agent configuration in JSON format | [`mcp-installer.ts:245-278`](./mcp-installer.ts) |
+| `detectAgents` | function | Detects installed MCP agents from configuration files | [`mcp-installer.ts:181-210`](./mcp-installer.ts) |
+| `buildJsonEntry` | function | Constructs JSON configuration entry for MCP agent | [`mcp-installer.ts:216-233`](./mcp-installer.ts) |
+| `ensureParentDir` | function | Creates parent directory if it does not exist | [`mcp-installer.ts:239-244`](./mcp-installer.ts) |
+| `installJson` | function | Installs MCP agent configuration in JSON format | [`mcp-installer.ts:246-280`](./mcp-installer.ts) |
 | `installToml` | function | Installs MCP agent configuration in TOML format | [`mcp-installer.ts:280-301`](./mcp-installer.ts) |
 | `installToAgent` | function | Routes installation to correct agent configuration format | [`mcp-installer.ts:303-309`](./mcp-installer.ts) |
 | `installMcpConfigs` | function | Main orchestrator for MCP agent installation and configuration | [`mcp-installer.ts:315-361`](./mcp-installer.ts) |
-| `getCommandForAgent` | function | Generates command string for executing MCP agent | [`mcp-installer.ts:370-372`](./mcp-installer.ts) |
+| `getCommandForAgent` | function | Generates command string for executing MCP agent | [`mcp-installer.ts:370-380`](./mcp-installer.ts) |
 | `performInstall` | function | Executes the actual MCP installation and setup process | [`mcp-installer.ts:374-392`](./mcp-installer.ts) |
 
 ## Dependencies

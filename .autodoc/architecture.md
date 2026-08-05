@@ -90,7 +90,7 @@ Dependency Injection container:
 | Component | File | Key Method |
 |-----------|------|------------|
 | **GraphStorageLibSQL** | [→ graph-storage-libsql.ts](../src/storage/graph-storage-libsql.ts) | [`setProject():92`](../src/storage/graph-storage-libsql.ts#L92), [`getAllRelationships():407`](../src/storage/graph-storage-libsql.ts#L407) |
-| **LibSQLGraphAdapter** | [→ libsql-graph-adapter.ts](../src/storage/libsql-graph-adapter.ts) | [→ libsql/](../src/storage/libsql/AUTODOC.md) |
+| **LibSQLGraphAdapter** | ~~[→ libsql-graph-adapter.ts](../src/storage/libsql-graph-adapter.ts)~~ (deleted) | [→ libsql/](../src/storage/libsql/AUTODOC.md) |
 | **VectorStore** | [→ vector-store.ts](../src/semantic/vector-store.ts) | cosine search |
 | **BatchOperations** | [→ batch-operations-libsql.ts](../src/storage/batch-operations-libsql.ts) | batch INSERT |
 | **CacheManager** | [→ cache-manager.ts](../src/storage/cache-manager.ts) | LRU cache |
@@ -146,8 +146,8 @@ WHERE e.id NOT IN (SELECT entity_id FROM tombstones WHERE branch_id = ?)
 | OVMS | [ovms-provider.ts](../src/semantic/providers/ovms-provider.ts) | 1000+ ch/s | CPU/GPU |
 | TEI | [tei-provider.ts](../src/semantic/providers/tei-provider.ts) | 1000+ ch/s | GPU |
 | Ollama | [ollama-provider.ts](../src/semantic/providers/ollama-provider.ts) | 100-300 ch/s | CPU/GPU |
-| Transformers | [transformers-provider.ts](../src/semantic/providers/transformers-provider.ts) | 200 ch/s | CPU |
-| vLLM | [vllm-provider.ts](../src/semantic/providers/vllm-provider.ts) | 500+ ch/s | GPU |
+| Transformers | ~~[transformers-provider.ts](../src/semantic/providers/transformers-provider.ts)~~ (deleted) | 200 ch/s | CPU |
+| vLLM | ~~[vllm-provider.ts](../src/semantic/providers/vllm-provider.ts)~~ (deleted) | 500+ ch/s | GPU |
 
 **AutoDoc Enrichment** ([→ autodoc/AUTODOC.md](../src/autodoc/AUTODOC.md)): Semantic search is enriched with documentation — results include descriptions from `.autodoc/` files.
 
@@ -248,7 +248,7 @@ The server supports working with multiple projects simultaneously:
 
 ## Agents Architecture
 
-[→ docs/architecture/agents.md](../docs/architecture/agents.md)
+~~[→ docs/architecture/agents.md](../docs/architecture/agents.md)~~ (deleted)
 
 The multi-agent system coordinates through `ConductorOrchestrator`, which manages task delegation, load distribution, and lifecycle management for all agents.
 
@@ -318,7 +318,7 @@ Agents are managed through the `DIContainer` with automatic registration via `Ag
 
 ## Embedding Pipeline
 
-[→ docs/architecture/embedding-pipeline.md](../docs/architecture/embedding-pipeline.md)
+~~[→ docs/architecture/embedding-pipeline.md](../docs/architecture/embedding-pipeline.md)~~ (deleted)
 
 ### Centralized Architecture (v2.6+)
 
@@ -358,7 +358,7 @@ Embedding API throughput: vLLM GPU ~8,000 emb/s, OVMS CPU ~1,000 emb/s, OpenAI ~
 
 ## Layered Indexing
 
-[→ docs/architecture/layered-indexing.md](../docs/architecture/layered-indexing.md)
+~~[→ docs/architecture/layered-indexing.md](../docs/architecture/layered-indexing.md)~~ (deleted)
 
 ### Three-Layer Architecture
 
@@ -440,7 +440,7 @@ Vector search:
 
 ## Prolly Tree (Versioned Graph Storage)
 
-[→ docs/architecture/prolly-tree.md](../docs/architecture/prolly-tree.md)
+~~[→ docs/architecture/prolly-tree.md](../docs/architecture/prolly-tree.md)~~ (deleted)
 
 ### Overview
 
@@ -494,7 +494,7 @@ When one entity changes, only nodes on the path from leaf to root are created as
 
 ## Roslyn Addon
 
-[→ docs/architecture/roslyn-addon.md](../docs/architecture/roslyn-addon.md)
+~~[→ docs/architecture/roslyn-addon.md](../docs/architecture/roslyn-addon.md)~~ (deleted)
 
 ### Overview
 

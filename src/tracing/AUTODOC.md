@@ -38,9 +38,9 @@ GraphologyPathBuilder  StateTracker  ConditionAnalyzer  DataFlowAnalyzer  PathBu
 | `GraphologyPathBuilder` | class | High-performance path traversal using in-memory graphology graph; loads full graph once, supports `loadGraph()`, `traceLinearFlow()`, `findPaths()`, `computePathMetrics()` with O(V+E) complexity for batch operations. | `graphology-path-builder.ts:118-894` |
 | `PathBuilder` | class | BFS/DFS-based traversal with caching; methods include `findPathsForward()`, `findPathsBackward()`, `getCallers()`, `getCursorHierarchy()`; processes nodes in batches of 16 and caches adjacency graphs by scope. | `path-builder.ts:48-732` |
 | `StateTracker` | class | Detects state changes and analyzes ripple effects; classifies state via setter/getter/boolean patterns; provides `detectStateChanges()`, `analyzeStateImpact()`, `traceStateFlow()`, `buildStateImpactMatrix()`. | `state-tracker.ts:38-511` |
-| `ConditionAnalyzer` | class | Identifies branching logic, guards, and decision points; detects guard patterns (if-return), validation patterns (valid/check/verify), and caches decisions per scenario via `findDecisionPoints()`, `analyzeConditions()`. | `condition-analyzer.ts:35-35` |
+| `ConditionAnalyzer` | class | Identifies branching logic, guards, and decision points; detects guard patterns (if-return), validation patterns (valid/check/verify), and caches decisions per scenario via `findDecisionPoints()`, `analyzeConditions()`. | `condition-analyzer.ts:35-611` |
 | `DataFlowAnalyzer` | class | Traces data sources and transformations; classifies sources (API, storage, props, state, config, user_input) and transformations (parse, map, validate, normalize); provides `traceDataFlow()`, `buildBehaviorMatrix()`, `findDataSources()`. | `data-flow-analyzer.ts:58-495` |
-| `OutputFormatter` | class | Renders analysis results in multiple formats; implements `formatTraceFlowAsText()`, `formatMermaidDiagram()`, `formatAsJSON()`, `formatDecisionPoints()` with indentation and styling. | `output-formatter.ts:24-24` |
+| `OutputFormatter` | class | Renders analysis results in multiple formats; implements `formatTraceFlowAsText()`, `formatMermaidDiagram()`, `formatAsJSON()`, `formatDecisionPoints()` with indentation and styling. | `output-formatter.ts:24-585` |
 | `NgRxTraceEngine` | class | NgRx-specific tracing for action→reducer→selector chains; provides `traceActionToEffects()`, `traceActionToReducer()`, `traceReducerToSelectors()`, `analyzeStoreImpact()`; understands dispatches, effects, and store subscriptions. | `ngrx-trace-engine.ts:98-449` |
 
 ### Interfaces & Parameter Types
@@ -80,8 +80,8 @@ GraphologyPathBuilder  StateTracker  ConditionAnalyzer  DataFlowAnalyzer  PathBu
 | `invalidateAndPreload()` | function | Invalidates cache and preloads graph for subsequent operations; useful before batch analysis. | `graph-cache.ts` |
 | `getTraceUsageCount()` | function | Returns number of trace operations executed in current session. | `graph-cache.ts` |
 | `incrementTraceUsage()` | function | Increments trace operation counter (internal usage tracking). | `graph-cache.ts` |
-| `NgRxResolution` | class | Resolves NgRx patterns (actions, effects, reducers, selectors); identifies relationships between store members. | `ngrx-resolution.ts:201` |
-| `enrichPathWithMetadata()` | function | Adds confidence scores, summaries, and warnings to `PathTrace` output. | `path-enrichment.ts:189` |
+| `NgRxResolution` | class | Resolves NgRx patterns (actions, effects, reducers, selectors); identifies relationships between store members. | `ngrx-resolution.ts:199-201` |
+| `enrichPathWithMetadata()` | function | Adds confidence scores, summaries, and warnings to `PathTrace` output. | `path-enrichment.ts:187-189` |
 
 
 ### Added Entities
@@ -318,7 +318,7 @@ GraphologyPathBuilder  StateTracker  ConditionAnalyzer  DataFlowAnalyzer  PathBu
 |------------|---------|----------|
 | `GraphStorage` | Core entity/relationship graph interface; provides node and edge access. | `src/types/storage.ts` |
 | `Entity`, `Relationship`, `RelationType` | Storage types defining code entities and their relationships. | `src/types/storage.ts` |
-| `logging` | Debug and info logging service for trace operations. | `src/logging/index.js` |
+| `logging` | Debug and info logging service for trace operations. | ~~`src/logging/index.js`~~ (deleted) |
 | `SemanticSearchService` | Optional service for entity resolution via semantic similarity when exact matches fail. | `src/semantic/...` |
 
 ## Configuration & Constants

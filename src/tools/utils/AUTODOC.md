@@ -50,6 +50,6 @@ Entity Locations / Diagnostic Results
 - `log` — diagnostic logging utility
 
 **Key relationships:**
-- Depends on `storage/prolly/recently-changed.js` for commit history analysis
+- Depends on ~~`storage/prolly/recently-changed.js`~~ (deleted) for commit history analysis
 - Uses `GraphAdapter` from storage layer for entity-to-location mapping
 - Provides enrichment layer between diagnostic tools and version control metadata

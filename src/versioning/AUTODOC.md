@@ -97,7 +97,7 @@ Initialize (detect Git/backup backend)
 
 **Internal:**
 - `src/utils/stream-helpers.ts` — Streaming file copy utilities for large file handling
-- `src/logging/index.js` — Logging system for snapshot operations
+- ~~`src/logging/index.js`~~ (deleted) — Logging system for snapshot operations
 
 **External:**
 - `xxhash-wasm` — WebAssembly-based xxHash for file integrity verification

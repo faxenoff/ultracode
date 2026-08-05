@@ -178,8 +178,8 @@ node node_modules/ultracode/scripts/postinstall.js
 
 ## Next Steps
 
-- Read [README.md](../../README.md) for detailed features
-- Explore [config/embedding-models.json](../../config/embedding-models.json) for available models
+- Read ~~[README.md](../../README.md)~~ (deleted) for detailed features
+- Explore ~~[config/embedding-models.json](../../config/embedding-models.json)~~ (deleted) for available models
 - Check [deployment.md](deployment.md) for production deployment
 - See [benchmarks.md](benchmarks.md) for provider speed comparison
 

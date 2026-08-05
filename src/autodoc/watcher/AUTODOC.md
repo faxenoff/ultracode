@@ -23,9 +23,9 @@ The watcher module ties together the entire AutoDoc pipeline into an automated, 
 
 | Export | Type | Description | Location |
 |--------|------|-------------|----------|
-| `updateAutodocContent` | function | Incrementally updates AUTODOC.md content from module info and changed files | [`autodoc-updater.ts:48-52`](./autodoc-updater.ts) |
+| `updateAutodocContent` | function | Incrementally updates AUTODOC.md content from module info and changed files | [`autodoc-updater.ts:50-87`](./autodoc-updater.ts) |
 | `diffExports` | function | Computes added/removed exports between old and new export lists | [`autodoc-updater.ts:423-423`](./autodoc-updater.ts) |
-| `generateExportDescription` | function | Generates heuristic description for an export name (without LLM) | [`autodoc-updater.ts:437-477`](./autodoc-updater.ts) |
+| `generateExportDescription` | function | Generates heuristic description for an export name (without LLM) | [`autodoc-updater.ts:438-478`](./autodoc-updater.ts) |
 | `UpdateOptions` | interface | Options for update (useLlm, llmConfig) | [`autodoc-updater.ts:19-28`](./autodoc-updater.ts) |
 | `AutoDocWatcher` | class | Main watcher: subscribes to events, debounces, triggers updates | [`autodoc-watcher.ts:79-806`](./autodoc-watcher.ts) |
 | `AutoDocWatcherConfig` | interface | Configuration for the watcher (debounce timings, rootDir, LLM settings) | [`autodoc-watcher.ts:49-68`](./autodoc-watcher.ts) |
@@ -33,7 +33,7 @@ The watcher module ties together the entire AutoDoc pipeline into an automated, 
 | `resetAutoDocWatcher` | function | Stops and resets the AutoDocWatcher singleton | [`autodoc-watcher.ts:821-826`](./autodoc-watcher.ts) |
 | `ExtractedEntity` | interface | Entity info extracted from code (name, type, exported, line, endLine) | [`module-resolver.ts:169-178`](./module-resolver.ts) |
 | `extractEntitiesFromContent` | function | Lightweight parser extracting functions/classes/interfaces/types/consts/enums with line ranges | [`module-resolver.ts:184-253`](./module-resolver.ts) |
-| `extractExportsFromContent` | function | Extracts export names from file content via regex | [`module-resolver.ts:96-101`](./module-resolver.ts) |
+| `extractExportsFromContent` | function | Extracts export names from file content via regex | [`module-resolver.ts:96-144`](./module-resolver.ts) |
 | `extractExportsFromFile` | function | Reads a file and extracts export names | [`module-resolver.ts:80-91`](./module-resolver.ts) |
 | `findEntityLine` | function | Finds line number of a named entity in file content | [`module-resolver.ts:321-346`](./module-resolver.ts) |
 | `getModuleFiles` | function | Lists code files in a module directory | [`module-resolver.ts:149-167`](./module-resolver.ts) |

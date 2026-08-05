@@ -27,7 +27,7 @@ The CLI module is the entry point for all command-line interactions with the MCP
 | `parseArgs` | function | Parses `process.argv` into `ParsedArgs` | [`args-parser.ts:36-109`](./args-parser.ts) |
 | `printHelp` | function | Prints usage help message to stderr | [`args-parser.ts:114-145`](./args-parser.ts) |
 | `handleSetupCommand` | function | Launches platform-specific setup script (PowerShell/Bash) | [`args-parser.ts:151-199`](./args-parser.ts) |
-| `runSetup` | function | Main interactive setup flow for embedding and LLM providers | [`setup-command.ts:144-144`](./setup-command.ts) |
+| `runSetup` | function | Main interactive setup flow for embedding and LLM providers | [`setup-command.ts:123-145`](./setup-command.ts) |
 
 ## Dependencies
 

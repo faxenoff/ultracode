@@ -24,8 +24,8 @@ The storage module is the persistence layer of AutoDoc. `AutoDocManager` is the 
 | Export | Type | Description | Location |
 |--------|------|-------------|----------|
 | `AutoDocManager` | class | Central manager integrating DocStorage, RefStorage, and GraphStorage | [`autodoc-manager.ts:49-658`](./autodoc-manager.ts) |
-| `getAutoDocManager` | function | Singleton factory for AutoDocManager | [`autodoc-manager.ts:670-675`](./autodoc-manager.ts) |
-| `resetAutoDocManager` | function | Destroys and resets the AutoDocManager singleton | [`autodoc-manager.ts:680-685`](./autodoc-manager.ts) |
+| `getAutoDocManager` | function | Singleton factory for AutoDocManager | [`autodoc-manager.ts:671-676`](./autodoc-manager.ts) |
+| `resetAutoDocManager` | function | Destroys and resets the AutoDocManager singleton | [`autodoc-manager.ts:681-686`](./autodoc-manager.ts) |
 | `DocStorage` | class | CRUD operations for doc_entities, doc_changelog, and doc_todos tables | [`doc-storage.ts:33-816`](./doc-storage.ts) |
 | `RefStorage` | class | CRUD operations for doc_references and comment_refs tables | [`ref-storage.ts:32-876`](./ref-storage.ts) |
 

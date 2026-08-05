@@ -79,11 +79,11 @@ query ──► tokenize() ──► QueryExpander.expand()
 | `TfIdfExtractor` | class | TF-IDF scoring with log-norm TF and doc frequency filtering | [`tfidf.ts:40-189`](./tfidf.ts) |
 | `TfIdfOptions` | interface | Config: minLength, logNormTf, minDocFreq, maxDocFreqRatio | [`tfidf.ts:25-34`](./tfidf.ts) |
 | `TermScore` | interface | Term with score, tf, and idf values | [`tfidf.ts:18-23`](./tfidf.ts) |
-| `extractTopTerms` | function | Convenience one-off TF-IDF extraction without instance | [`tfidf.ts:194-198`](./tfidf.ts) |
+| `extractTopTerms` | function | Convenience one-off TF-IDF extraction without instance | [`tfidf.ts:195-203`](./tfidf.ts) |
 | `tokenize` | function | Text to normalized token array (Unicode, camelCase split) | [`tokenizer.ts:293-333`](./tokenizer.ts) |
-| `tokenizeUnique` | function | Text to unique token `Set<string>` | [`tokenizer.ts:339-341`](./tokenizer.ts) |
+| `tokenizeUnique` | function | Text to unique token `Set<string>` | [`tokenizer.ts:296-339`](./tokenizer.ts) |
 | `countTokens` | function | Text to token frequency `Map<string, number>` | [`tokenizer.ts:347-356`](./tokenizer.ts) |
-| `extractNgrams` | function | Extract n-grams from token array | [`tokenizer.ts:365-373`](./tokenizer.ts) |
+| `extractNgrams` | function | Extract n-grams from token array | [`tokenizer.ts:371-379`](./tokenizer.ts) |
 | `STOP_WORDS` | const | Combined English + Russian stop word set (~150 words) | [`tokenizer.ts:247-247`](./tokenizer.ts) |
 
 ## Dependencies
@@ -173,7 +173,7 @@ allTerms: Map<string, number>;
 constructor(storage: CooccurrenceOperations, config?: CooccurrenceIndexConfig)
 ```
 
-Key imported types: `CooccurrenceOperations` (class, `../storage/libsql/cooccurrence-ops.ts:34`), `RelatedTerm` (interface, `../storage/libsql/cooccurrence-ops.ts:18`).
+Key imported types: `CooccurrenceOperations` (class, `../storage/libsql/cooccurrence-ops.ts:34-364`), `RelatedTerm` (interface, `../storage/libsql/cooccurrence-ops.ts:18-22`).
 
 ## Exports
 

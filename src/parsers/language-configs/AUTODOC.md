@@ -26,11 +26,11 @@ The language-configs module provides `LanguageConfig` objects for every supporte
 | `LANGUAGE_CONFIGS` | const | Registry mapping all language names to configs | [`registry.ts:31-53`](./registry.ts) |
 | `getLanguageConfig` | function | Gets config by language name | [`registry.ts:58-60`](./registry.ts) |
 | `getFileConfig` | function | Gets config by file path (auto-detection) | [`registry.ts:65-68`](./registry.ts) |
-| `isFunctionNode` | function | Checks if AST node is a function | [`registry.ts:73-76`](./registry.ts) |
-| `isClassNode` | function | Checks if AST node is a class | [`registry.ts:81-84`](./registry.ts) |
-| `isImportNode` | function | Checks if AST node is an import | [`registry.ts:89-92`](./registry.ts) |
-| `isExportNode` | function | Checks if AST node is an export | [`registry.ts:97-100`](./registry.ts) |
-| `isTypeNode` | function | Checks if AST node is a type/interface | [`registry.ts:105-108`](./registry.ts) |
+| `isFunctionNode` | function | Checks if AST node is a function | [`registry.ts:71-73`](./registry.ts) |
+| `isClassNode` | function | Checks if AST node is a class | [`registry.ts:78-81`](./registry.ts) |
+| `isImportNode` | function | Checks if AST node is an import | [`registry.ts:86-89`](./registry.ts) |
+| `isExportNode` | function | Checks if AST node is an export | [`registry.ts:94-97`](./registry.ts) |
+| `isTypeNode` | function | Checks if AST node is a type/interface | [`registry.ts:102-105`](./registry.ts) |
 | `validateConfigurations` | function | Validates all configs at startup | [`registry.ts:113-125`](./registry.ts) |
 | `isMagicMethodNode` | function | Checks for Python magic methods | [`python-helpers.ts:14-19`](./python-helpers.ts) |
 | `getPythonNodeCategory` | function | Returns extended Python node category | [`python-helpers.ts:103-143`](./python-helpers.ts) |

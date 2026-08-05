@@ -85,8 +85,8 @@ The `addons` module provides C# code parsing by managing an external Roslyn-base
 
 | Dependency | Kind | Purpose |
 |------------|------|---------|
-| `../logging/index.js` | internal | Structured logging via `log.i`, `log.w`, `log.e`, `log.d`. |
-| `../shared/ipc-protocol.js` | internal | Binary IPC protocol implementation for Named Pipe communication with Roslyn subprocess. |
+| ~~`../logging/index.js`~~ (deleted) | internal | Structured logging via `log.i`, `log.w`, `log.e`, `log.d`. |
+| ~~`../shared/ipc-protocol.js`~~ (deleted) | internal | Binary IPC protocol implementation for Named Pipe communication with Roslyn subprocess. |
 | Node.js `child_process` | standard | Spawn and manage the Roslyn addon subprocess. |
 | Node.js `net` | standard | Named Pipe socket connection and message framing. |
 | Roslyn/.NET | external | `Ultrasharp.Addon.dll` C# parser and analyzer (optional; graceful fallback if unavailable). |
