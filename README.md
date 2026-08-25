@@ -1,3 +1,5 @@
+
+
 ```
          ██  ██
          ██  ██  ██    ██████ █████▄  ▄████▄
@@ -536,7 +538,7 @@ More languages coming. If your favorite niche language deserves better tooling �
 You can add a [short prompt](.autodoc/claude.cfg/add-to-CLAUDE.md) to your system prompts that will help the AI agent learn about UltraCode capabilities.
 
 - **quick-start** — quick start and tool selection
-- **tool-reference** — complete reference of 72 tools
+- **tool-reference** — complete reference of 78 tools
 - **workflows** — ready scenarios: analysis, refactoring, duplicate detection
 - **tracing-guide** — tracing and debugging guide
 
